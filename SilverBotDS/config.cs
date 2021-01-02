@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace SilverBotDS.Config
 {
     public class Config
     {
-      
         public string[] Prefix { get; set; } = { "sd!" };
 
         public string Token { get; set; } = "Discord_Token_Here";
@@ -24,19 +22,16 @@ namespace SilverBotDS.Config
 
         public static Config Get()
         {
-            var new_config = new Config();
+            Config new_config = new Config();
             XmlSerializer serializer = new XmlSerializer(new_config.GetType());
             try
             {
                 using Stream stream = File.OpenRead("silverbot.xml");
-              
-            
+
                 return serializer.Deserialize(stream) as Config;
             }
             catch (FileNotFoundException e)
             {
-           
-              
                 using (StreamWriter streamWriter = new StreamWriter("silverbot.xml"))
                 {
                     System.Xml.XmlDocument xmlDocument = xmlutils.SerializeToXmlDocument(new_config);

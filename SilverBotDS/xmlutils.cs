@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace SilverBotDS
 {
-    class xmlutils
+    internal class xmlutils
     {/// <summary>
      /// stolen from https://stackoverflow.com/questions/2548708/how-to-create-an-xml-document-from-a-net-object
      /// </summary>
@@ -30,6 +25,7 @@ namespace SilverBotDS
 
             return result;
         }
+
         /// <summary>
         /// stolen from https://stackoverflow.com/questions/2548708/how-to-create-an-xml-document-from-a-net-object
         /// </summary>
@@ -47,10 +43,12 @@ namespace SilverBotDS
 
                 memStm.Position = 0;
 
-                XmlReaderSettings settings = new XmlReaderSettings();
-                settings.IgnoreWhitespace = true;
+                XmlReaderSettings settings = new XmlReaderSettings
+                {
+                    IgnoreWhitespace = true
+                };
 
-                using (var xtr = XmlReader.Create(memStm, settings))
+                using (XmlReader xtr = XmlReader.Create(memStm, settings))
                 {
                     xd = new XmlDocument();
                     xd.Load(xtr);
@@ -59,6 +57,7 @@ namespace SilverBotDS
 
             return xd;
         }
+
         /// <summary>
         /// kinda stolen from https://stackoverflow.com/questions/6328288/how-to-comment-a-line-of-a-xml-file-in-c-sharp-with-system-xml
         /// </summary>
@@ -66,7 +65,7 @@ namespace SilverBotDS
         /// <param name="xpath">Xpath of the Object</param>
         /// <param name="comment">The comment</param>
         /// <returns>A XmlDocument that has the comment before the xpath thingy</returns>
-        public static XmlDocument CommentBeforeObject(XmlDocument inputdoc,string xpath,string comment)
+        public static XmlDocument CommentBeforeObject(XmlDocument inputdoc, string xpath, string comment)
         {
             XmlNode elementToComment = inputdoc.SelectSingleNode(xpath);
             XmlComment commentNode = inputdoc.CreateComment(comment);
@@ -74,5 +73,5 @@ namespace SilverBotDS
             parentNode.InsertBefore(commentNode, elementToComment);
             return inputdoc;
         }
-        }
+    }
 }

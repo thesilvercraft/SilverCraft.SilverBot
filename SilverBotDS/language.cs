@@ -5,12 +5,13 @@ using System.Text.Json;
 
 namespace SilverBotDS
 {
+    //TODO finish the summaries and shiz
     internal class Language
     {
         /// <summary>
         /// <b>Hi </b>@max<b>!</b>
         /// <para/>
-        /// <b>Hi </b>{0}<b>!</b>
+        /// <b>Hi␣</b>{0}<b>!</b>
         /// </summary>
         /// <remarks>
         /// Needs to be used like <c>String.Format(Language.Hi,Username);</c>
@@ -20,7 +21,7 @@ namespace SilverBotDS
         /// <summary>
         /// <b>Time in UTC is </b>01.1.2021 17:20:28
         /// <para/>
-        /// <b>Time in UTC is </b>{0}
+        /// <b>Time␣in␣UTC is␣</b>{0}
         /// </summary>
         /// <remarks>
         /// Needs to be used like <c>String.Format(Language.Time_In_Utc,DateTime.NowUTC.ToString(Language.Time_format));</c>
@@ -30,7 +31,7 @@ namespace SilverBotDS
         /// <summary>
         /// <b>Requested by </b>SilverDimond
         /// <para/>
-        /// <b>Requested by </b>
+        /// <b>Requested␣by␣</b>
         /// </summary>
         /// <remarks>
         /// Needs to be used like <c>Language.Requested_by+Username</c> <strong>MAY BE SUBJECT TO CHANGE</strong>
@@ -61,17 +62,16 @@ namespace SilverBotDS
 
         /// <summary>
         /// <b>Joined </b>Testing<b>!</b>
-        /// </summary>
         /// <para/>
-        /// <b>Joined </b>Testing<b>!</b>
+        /// <b>Joined␣</b>{0}<b>!</b>
         /// </summary>
         /// <remarks>
-        /// Needs to be used like <c>Language.Requested_by+Username</c> <strong>MAY BE SUBJECT TO CHANGE</strong>
+        /// Needs to be used like <c>String.Format(Language.Joined,Channel));</c>
         /// </remarks>
         public string Joined { get; set; } = "Joined {0}!";
 
         /// <summary>
-        /// I'm not connected to a voice channel."
+        /// I'm not connected to a voice channel.
         /// </summary>
         public string Not_connected { get; set; } = "I'm not connected to a voice channel.";
 
@@ -81,17 +81,39 @@ namespace SilverBotDS
         public string Not_playing { get; set; } = "Woaaah there, I'm not playing any tracks.";
 
         /// <summary>
-        /// Never gonna give you up<b>|</b> by <b>|</b>Rick Astley
+        /// Never gonna give you up<b> by </b>Rick Astley
+        /// <para/>
+        /// <b>␣by␣</b>
         /// </summary>
-        public string Song_by_author { get; set; } = " by "; //Never gonna give you up" by "Rick Astley
+        /// <remarks>
+        /// Needs to be used like <c>Title+Language.Song_by_author+Author</c>
+        /// </remarks>
+        public string Song_by_author { get; set; } = " by ";
 
+        /// <summary>
+        /// Tip: A Role Named ***DJ*** Will Restrict Access To Members With The Role.
+        /// </summary>
         public string Use_dj_message { get; set; } = "Tip: A Role Named ***DJ*** Will Restrict Access To Members With The Role.";
+
+        /// <summary>
+        /// That track doesnt exist my dude
+        /// </summary>
         public string Track_not_exist { get; set; } = "That track doesnt exist my dude";
+
         public string Removed_front { get; set; } = "Removed: "; //"Removed: "Never gonna give you up by Rick Astley
         public string Paused_front { get; set; } = "Paused: "; //"Paused: "Never gonna give you up by Rick Astley
         public string Resumed_front { get; set; } = "Resumed: "; //"Resumed: "Never gonna give you up by Rick Astley
+
+        /// <summary>
+        /// Please provide a search term.
+        /// </summary>
         public string No_search_term { get; set; } = "Please provide a search term.";
+
+        /// <summary>
+        /// Not sure which voice channel to disconnect from.
+        /// </summary>
         public string Not_sure_which_channel { get; set; } = "Not sure which voice channel to disconnect from.";
+
         public string Seeked_front { get; set; } = "I've seeked: `"; //"I've seeked: `"Never gonna give you up by Rick Astley to 00:00:00.
         public string Seeked_middle { get; set; } = "` to "; //I've seeked: `Never gonna give you up"` to "00:00:00.
         public string Seeked_back { get; set; } = "."; //I've seeked: `Never gonna give you up` to 00:00:00"."

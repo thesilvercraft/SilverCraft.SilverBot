@@ -37,12 +37,6 @@ namespace SilverBotDS
                 Timeout = TimeSpan.FromSeconds(30)
             });
             discord.MessageCreated += Discord_MessageCreated;
-            //var dsconfig = new DiscordSlashConfiguration
-            //  {
-            //      Client = discord,
-            //     Token = config.Token
-            //  };
-            //  var client = new DiscordSlashClient(dsconfig);
             CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration()
             {
                 StringPrefixes = config.Prefix
@@ -51,7 +45,6 @@ namespace SilverBotDS
             commands.RegisterCommands<Genericcommands>();
 
             await discord.ConnectAsync();
-            //await client.StartAsync();
             NuGetUtils.Datum[] data = await NuGetUtils.SearchAsync("DSharpPlus");
             foreach (NuGetUtils.Datum thingy in data)
             {

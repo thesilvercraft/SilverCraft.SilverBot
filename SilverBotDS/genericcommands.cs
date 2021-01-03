@@ -37,7 +37,9 @@ namespace SilverBotDS
         {
             await ctx.RespondAsync($"https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=2147483639&scope=bot");
         }
-        [Obsolete("Will be removed in future release")]
+
+        //TODO if not removed make strings in language file
+        [Obsolete("May be removed in future release")]
         [Command("duckhosting"), Aliases("dukthosting", "ducthosting")]
         [Description("SilverHosting best")]
         public async Task Dukt(CommandContext ctx)
@@ -48,6 +50,7 @@ namespace SilverBotDS
             bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: bob.Build());
         }
+
         [Command("uselessfact")]
         [Description("Wanna hear some useless fact? Just ask me")]
         public async Task UselessFact(CommandContext ctx)
@@ -61,6 +64,8 @@ namespace SilverBotDS
             b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
+
+        //TODO make strings in language file
         [Command("nuget"), Aliases("nu")]
         [Description("Search up packages on the NuGet")]
         public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)
@@ -131,18 +136,19 @@ namespace SilverBotDS
             return isbotadmin;
         }
 
+        //TODO make strings in language file
         [Command("user")]
         [Description("Get the info I know about a specified user")]
         public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
         {
             Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
-          
+
             b.WithTitle("User " + a.Username);
             b.WithDescription("Information about " + a.Mention);
             b.AddField("ID", a.Id.ToString(), true);
             // b.AddField("Has joined the SilverCraft Server", stringutils.BoolToEmoteString(await Is_at_silvercraftAsync(ctx, a)), true);
-           /// b.AddField("Is a SilverCraft bot admin", stringutils.BoolToEmoteString(await Is_bot_adminAsync(ctx, a)), true);
+            /// b.AddField("Is a SilverCraft bot admin", stringutils.BoolToEmoteString(await Is_bot_adminAsync(ctx, a)), true);
             b.AddField("Is a SilverCraft bot owner", Stringutils.BoolToEmoteString(Program.GetConfig().Botowners.Contains(a.Id)), true);
             if (a.Id == 208691453973495808)
             {

@@ -1,11 +1,9 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
-using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace SilverBotDS
@@ -15,7 +13,7 @@ namespace SilverBotDS
         private static readonly Config.Config config = Config.Config.Get();
         private static readonly bool shitlog = false;
 
-        private static void Main(string[] args)
+        private static void Main()
         {
             MainAsync().GetAwaiter().GetResult();
         }
@@ -50,14 +48,14 @@ namespace SilverBotDS
                 StringPrefixes = config.Prefix
             });
 
-            commands.RegisterCommands<genericcommands>();
+            commands.RegisterCommands<Genericcommands>();
 
             await discord.ConnectAsync();
             //await client.StartAsync();
             NuGetUtils.Datum[] data = await NuGetUtils.SearchAsync("DSharpPlus");
             foreach (NuGetUtils.Datum thingy in data)
             {
-                Console.WriteLine($"{thingy.title} {thingy.description} {thingy.iconUrl}");
+                Console.WriteLine($"{thingy.Title} {thingy.Description} {thingy.IconUrl}");
             }
             await Task.Delay(-1);
         }
@@ -66,7 +64,7 @@ namespace SilverBotDS
         {
             if (shitlog)
             {
-                logging.log(e.Message);
+                Logging.Log(e.Message);
             }
         }
     }

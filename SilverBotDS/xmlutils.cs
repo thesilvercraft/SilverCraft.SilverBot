@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace SilverBotDS
 {
-    internal class xmlutils
+    internal class Xmlutils
     {/// <summary>
      /// stolen from https://stackoverflow.com/questions/2548708/how-to-create-an-xml-document-from-a-net-object
      /// </summary>
@@ -48,11 +48,9 @@ namespace SilverBotDS
                     IgnoreWhitespace = true
                 };
 
-                using (XmlReader xtr = XmlReader.Create(memStm, settings))
-                {
-                    xd = new XmlDocument();
-                    xd.Load(xtr);
-                }
+                using XmlReader xtr = XmlReader.Create(memStm, settings);
+                xd = new XmlDocument();
+                xd.Load(xtr);
             }
 
             return xd;

@@ -25,7 +25,7 @@ namespace SilverBotDS
             HttpResponseMessage RM = await httpClient.GetAsync(uri.Uri);
             if (RM.StatusCode == HttpStatusCode.OK)
             {
-                return JsonSerializer.Deserialize<Rootobject>(await RM.Content.ReadAsStringAsync()).data;
+                return JsonSerializer.Deserialize<Rootobject>(await RM.Content.ReadAsStringAsync()).Data;
             }
             else
             {
@@ -35,54 +35,95 @@ namespace SilverBotDS
 
         public class Rootobject
         {
-            public Context context { get; set; }
-            public int totalHits { get; set; }
-            public Datum[] data { get; set; }
+            [JsonPropertyName("context")]
+            public Context Context { get; set; }
+
+            [JsonPropertyName("totalHits")]
+            public int TotalHits { get; set; }
+
+            [JsonPropertyName("data")]
+            public Datum[] Data { get; set; }
         }
 
         public class Context
         {
-            public string vocab { get; set; }
-            public string _base { get; set; }
+            [JsonPropertyName("vocab")]
+            public string Vocab { get; set; }
+
+            [JsonPropertyName("_base")]
+            public string Base { get; set; }
         }
 
         public class Datum
         {
             [JsonPropertyName("@id")]
-            public string atid { get; set; }
+            public string Atid { get; set; }
 
             [JsonPropertyName("@type")]
-            public string type { get; set; }
+            public string Type { get; set; }
 
-            public string registration { get; set; }
+            [JsonPropertyName("registration")]
+            public string Registration { get; set; }
 
-            public string id { get; set; }
-            public string version { get; set; }
+            [JsonPropertyName("id")]
+            public string Id { get; set; }
 
-            public string description { get; set; }
-            public string summary { get; set; }
-            public string title { get; set; }
-            public string iconUrl { get; set; }
-            public string licenseUrl { get; set; }
-            public string projectUrl { get; set; }
-            public string[] tags { get; set; }
-            public string[] authors { get; set; }
-            public int totalDownloads { get; set; }
-            public bool verified { get; set; }
-            public Packagetype[] packageTypes { get; set; }
-            public Version[] versions { get; set; }
+            [JsonPropertyName("version")]
+            public string Version { get; set; }
+
+            [JsonPropertyName("description")]
+            public string Description { get; set; }
+
+            [JsonPropertyName("summary")]
+            public string Summary { get; set; }
+
+            [JsonPropertyName("title")]
+            public string Title { get; set; }
+
+            [JsonPropertyName("iconUrl")]
+            public string IconUrl { get; set; }
+
+            [JsonPropertyName("licenseUrl")]
+            public string LicenseUrl { get; set; }
+
+            [JsonPropertyName("projectUrl")]
+            public string ProjectUrl { get; set; }
+
+            [JsonPropertyName("tags")]
+            public string[] Tags { get; set; }
+
+            [JsonPropertyName("authors")]
+            public string[] Authors { get; set; }
+
+            [JsonPropertyName("totalDownloads")]
+            public int TotalDownloads { get; set; }
+
+            [JsonPropertyName("verified")]
+            public bool Verified { get; set; }
+
+            [JsonPropertyName("packageTypes")]
+            public Packagetype[] PackageTypes { get; set; }
+
+            [JsonPropertyName("versions")]
+            public Version[] Versions { get; set; }
         }
 
         public class Packagetype
         {
-            public string name { get; set; }
+            [JsonPropertyName("name")]
+            public string Name { get; set; }
         }
 
         public class Version
         {
-            public string version { get; set; }
-            public int downloads { get; set; }
-            public string id { get; set; }
+            [JsonPropertyName("version")]
+            public string StrVersion { get; set; }
+
+            [JsonPropertyName("downloads")]
+            public int Downloads { get; set; }
+
+            [JsonPropertyName("id")]
+            public string Id { get; set; }
         }
     }
 }

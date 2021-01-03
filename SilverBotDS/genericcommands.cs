@@ -2,21 +2,24 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
-using DSharpPlus.Interactivity;
 
 namespace SilverBotDS
 {
-    internal class genericcommands : BaseCommandModule
+    internal class Genericcommands : BaseCommandModule
     {
+#pragma warning disable CA1822 // Mark members as static
+
         [Command("hi")]
         [Description("Hello fellow human! beep boop")]
         public async Task GreetCommand(CommandContext ctx)
         {
-            language lang = language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
             await ctx.RespondAsync(string.Format(lang.Hi, ctx.Member.Mention));
         }
 
@@ -24,8 +27,8 @@ namespace SilverBotDS
         [Description("Get the time in UTC")]
         public async Task Time(CommandContext ctx)
         {
-            language lang = language.GetLanguageFromId(ctx.Guild.Id);
-            await ctx.RespondAsync(string.Format(lang.TimeInUtc, DateTime.UtcNow.ToString(lang.Timeformat)));
+            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            await ctx.RespondAsync(string.Format(lang.Time_In_Utc, DateTime.UtcNow.ToString(lang.Time_format)));
         }
 
         [Command("invite")]
@@ -34,10 +37,10 @@ namespace SilverBotDS
         {
             await ctx.RespondAsync($"https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=2147483639&scope=bot");
         }
-
+        [Obsolete("Will be removed in future release")]
         [Command("duckhosting"), Aliases("dukthosting", "ducthosting")]
         [Description("SilverHosting best")]
-        public async Task dukt(CommandContext ctx)
+        public async Task Dukt(CommandContext ctx)
         {
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
             bob.WithTitle("SilverCraftBot sponsored by SilverHosting");
@@ -45,40 +48,49 @@ namespace SilverBotDS
             bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: bob.Build());
         }
-
+        [Command("uselessfact")]
+        [Description("Wanna hear some useless fact? Just ask me")]
+        public async Task UselessFact(CommandContext ctx)
+        {
+            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            DiscordEmbedBuilder b = new DiscordEmbedBuilder();
+            HttpClient client = Webclient.Get();
+            HttpResponseMessage rm = await client.GetAsync("https://uselessfacts.jsph.pl/random.md?language=" + lang.Lang_code_for_useless_facts);
+            b.WithTitle(lang.Useless_fact);
+            b.WithDescription(await rm.Content.ReadAsStringAsync());
+            b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            await ctx.RespondAsync(embed: b.Build());
+        }
         [Command("nuget"), Aliases("nu")]
         [Description("Search up packages on the NuGet")]
-        public async Task nuget(CommandContext ctx, [Description("the name of the package")] string query)
+        public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)
         {
             try
             {
                 NuGetUtils.Datum[] data = await NuGetUtils.SearchAsync(query);
-
                 InteractivityExtension interactivity = ctx.Client.GetInteractivity();
                 List<Page> pages = new List<Page>();
-                Page temppage;
                 DiscordEmbedBuilder tempbuilder;
                 for (int i = 0; i < data.Length; i++)
                 {
                     tempbuilder = new DiscordEmbedBuilder();
-                    tempbuilder.WithTitle(data[i].title);
-                    tempbuilder.WithUrl($"https://www.nuget.org/packages/{data[i].id}");
-                    tempbuilder.WithAuthor(stringutils.ArrayToString(data[i].authors, ","), data[i].projectUrl);
+                    tempbuilder.WithTitle(data[i].Title);
+                    tempbuilder.WithUrl($"https://www.nuget.org/packages/{data[i].Id}");
+                    tempbuilder.WithAuthor(Stringutils.ArrayToString(data[i].Authors, ","), data[i].ProjectUrl);
                     tempbuilder.WithFooter("Requested by " + ctx.User.Username + $" Page: {i}/{data.Length}", ctx.User.GetAvatarUrl(ImageFormat.Png));
-                    if (!string.IsNullOrEmpty(data[i].iconUrl))
+                    if (!string.IsNullOrEmpty(data[i].IconUrl))
                     {
-                        tempbuilder.WithThumbnail(data[i].iconUrl);
+                        tempbuilder.WithThumbnail(data[i].IconUrl);
+                    }
+                    tempbuilder.WithDescription(data[i].Description);
+                    tempbuilder.AddField("nuget verified", Stringutils.BoolToEmoteString(data[i].Verified), true);
+                    if (!string.IsNullOrEmpty(data[i].Type))
+                    {
+                        tempbuilder.AddField("type", data[i].Type, true);
                     }
 
-                    tempbuilder.WithDescription(data[i].description);
-                    tempbuilder.AddField("nuget verified", stringutils.BoolToEmoteString(data[i].verified), true);
-                    if (!string.IsNullOrEmpty(data[i].type))
-                    {
-                        tempbuilder.AddField("type", data[i].type, true);
-                    }
-
-                    tempbuilder.AddField("downloads", data[i].totalDownloads.ToString(), true);
-                    tempbuilder.AddField("version", data[i].version, true);
+                    tempbuilder.AddField("downloads", data[i].TotalDownloads.ToString(), true);
+                    tempbuilder.AddField("version", data[i].Version, true);
                     pages.Add(new Page(embed: tempbuilder));
                 }
 
@@ -89,7 +101,6 @@ namespace SilverBotDS
                 DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
                 bob.WithTitle("Something went fucky wucky on our side");
                 bob.WithDescription("Try again a little later?\n" + e.Message);
-                // bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
                 await ctx.RespondAsync(embed: bob.Build());
                 throw;
             }
@@ -124,24 +135,28 @@ namespace SilverBotDS
         [Description("Get the info I know about a specified user")]
         public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
         {
+            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
+          
             b.WithTitle("User " + a.Username);
             b.WithDescription("Information about " + a.Mention);
             b.AddField("ID", a.Id.ToString(), true);
             // b.AddField("Has joined the SilverCraft Server", stringutils.BoolToEmoteString(await Is_at_silvercraftAsync(ctx, a)), true);
-            //   b.AddField("Is a SilverCraft bot admin", stringutils.BoolToEmoteString(await Is_bot_adminAsync(ctx, a)), true);
-            b.AddField("Is a SilverCraft bot owner", stringutils.BoolToEmoteString(Program.GetConfig().Botowners.Contains(a.Id)), true);
+           /// b.AddField("Is a SilverCraft bot admin", stringutils.BoolToEmoteString(await Is_bot_adminAsync(ctx, a)), true);
+            b.AddField("Is a SilverCraft bot owner", Stringutils.BoolToEmoteString(Program.GetConfig().Botowners.Contains(a.Id)), true);
             if (a.Id == 208691453973495808)
             {
                 b.AddField("Is a bot", ":white_check_mark: see https://discord.com/channels/714154158969716780/714154159590473801/767829209052872724", true);
             }
             else
             {
-                b.AddField("Is a bot", stringutils.BoolToEmoteString(a.IsBot), true);
+                b.AddField("Is a bot", Stringutils.BoolToEmoteString(a.IsBot), true);
             }
             b.WithThumbnail(a.GetAvatarUrl(ImageFormat.Png));
             b.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
+
+#pragma warning restore CA1822 // Mark members as static
     }
 }

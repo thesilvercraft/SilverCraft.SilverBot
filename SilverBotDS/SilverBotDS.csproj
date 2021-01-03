@@ -12,7 +12,6 @@
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-rc1" />
     <PackageReference Include="DSharpPlus.VoiceNext" Version="4.0.0-rc1" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.6.2" />
-    <PackageReference Include="Soyvolon.DSharpPlus.SlashCommands" Version="0.2.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
 

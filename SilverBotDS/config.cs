@@ -34,16 +34,16 @@ namespace SilverBotDS.Config
             {
                 using (StreamWriter streamWriter = new StreamWriter("silverbot.xml"))
                 {
-                    System.Xml.XmlDocument xmlDocument = xmlutils.SerializeToXmlDocument(new_config);
-                    xmlDocument = xmlutils.CommentBeforeObject(xmlDocument, "/Config/Prefix", "Array of prefixes the bot will respond to");
-                    xmlDocument = xmlutils.CommentBeforeObject(xmlDocument, "/Config/Token", "The Discord token, can be got from https://discord.com/developers/");
-                    xmlDocument = xmlutils.CommentBeforeObject(xmlDocument, "/Config/Gtoken", "The Giphy token, can be got from https://developers.giphy.com/");
-                    xmlDocument = xmlutils.CommentBeforeObject(xmlDocument, "/Config/FApiToken", "The FortniteAPI token, can be got from https://dash.fortnite-api.com/");
-                    xmlDocument = xmlutils.CommentBeforeObject(xmlDocument, "/Config/JavaLoc", "Location of java.exe to be able to launch lavalink (type java if in path or if using LiNUX)");
-                    xmlDocument = xmlutils.CommentBeforeObject(xmlDocument, "/Config/LogChannel", "(ulong)Id of channel for general logging");
-                    xmlDocument = xmlutils.CommentBeforeObject(xmlDocument, "/Config/ServerId", "(ulong)Id of Server where the bot admin role can be found");
-                    xmlDocument = xmlutils.CommentBeforeObject(xmlDocument, "/Config/AdminRoleId", "(ulong)Id of bot admin role");
-                    xmlDocument = xmlutils.CommentBeforeObject(xmlDocument, "/Config/Botowners", "(List<ulong>)Id's of bot owners");
+                    System.Xml.XmlDocument xmlDocument = Xmlutils.SerializeToXmlDocument(new_config);
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Prefix", "Array of prefixes the bot will respond to");
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Token", "The Discord token, can be got from https://discord.com/developers/");
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Gtoken", "The Giphy token, can be got from https://developers.giphy.com/");
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/FApiToken", "The FortniteAPI token, can be got from https://dash.fortnite-api.com/");
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/JavaLoc", "Location of java.exe to be able to launch lavalink (type java if in path or if using LiNUX)");
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/LogChannel", "(ulong)Id of channel for general logging");
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/ServerId", "(ulong)Id of Server where the bot admin role can be found");
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/AdminRoleId", "(ulong)Id of bot admin role");
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Botowners", "(List<ulong>)Id's of bot owners");
                     xmlDocument.Save(streamWriter);
                 }
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

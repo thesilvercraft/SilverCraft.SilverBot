@@ -161,9 +161,22 @@ namespace SilverBotDS
         public string Searched_for { get; set; } = "Searched for:`"; //"Searched for:`"UR MOM`
         public string Searched_for_back { get; set; } = "`"; //Searched for:`UR MOM"`"
         public string Multiple_emotes_found { get; set; } = "**Multiple emotes found**";
+
+        /// <summary>
+        /// Already opted into SilverBot emotes
+        /// </summary>
         public string Already_opted_in { get; set; } = "Already opted into SilverBot emotes";
+
+        /// <summary>
+        /// Opted into SilverBot emotes
+        /// </summary>
         public string Opted_in { get; set; } = "Opted into SilverBot emotes";
+
+        /// <summary>
+        /// **All available emotes**
+        /// </summary>
         public string All_availible_emotes { get; set; } = "**All available emotes**";
+
         public string User_is_banned_from_silversocial { get; set; } = "You are banned from using the silversocial features";
         public string User_is_not_banned_from_silversocial { get; set; } = "You are not banned POG";
         public string Time_format { get; set; } = "G"; //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?redirectedfrom=MSDN

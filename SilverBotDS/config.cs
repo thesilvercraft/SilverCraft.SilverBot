@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Web;
 using System.Xml.Serialization;
 
 namespace SilverBotDS.Config
@@ -19,6 +20,7 @@ namespace SilverBotDS.Config
         public ulong ServerId { get; set; } = 679353407667961877;
         public ulong AdminRoleId { get; set; } = 746821906602131506;
         public List<ulong> Botowners { get; set; } = new List<ulong> { 264081339316305920 };
+        public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
 
         public static Config Get()
         {
@@ -27,8 +29,19 @@ namespace SilverBotDS.Config
             try
             {
                 using Stream stream = File.OpenRead("silverbot.xml");
-
-                return serializer.Deserialize(stream) as Config;
+                Config readconfig = serializer.Deserialize(stream) as Config;
+                if (!string.IsNullOrEmpty(readconfig.ConnString))
+                {
+                    Database.setconnstring(readconfig.ConnString);
+                }
+                else
+                {
+                    Uri tmp = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL"));
+                    string[] usernameandpass = tmp.UserInfo.Split(":");
+                    string ConnString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
+                    Database.setconnstring(ConnString);
+                }
+                return readconfig;
             }
             catch (FileNotFoundException e)
             {
@@ -44,6 +57,7 @@ namespace SilverBotDS.Config
                     xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/ServerId", "(ulong)Id of Server where the bot admin role can be found");
                     xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/AdminRoleId", "(ulong)Id of bot admin role");
                     xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Botowners", "(List<ulong>)Id's of bot owners");
+                    xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/ConnString", "PostgresSQL conection string make null if stored in ENV");
                     xmlDocument.Save(streamWriter);
                 }
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

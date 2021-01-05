@@ -1,18 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>66c41ade-60a0-498d-8ca8-105cdbd6ea98</UserSecretsId>
+    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CefSharp.OffScreen" Version="86.0.241" />
     <PackageReference Include="DSharpPlus" Version="4.0.0-rc1" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-rc1" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-rc1" />
     <PackageReference Include="DSharpPlus.VoiceNext" Version="4.0.0-rc1" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.6.2" />
+    <PackageReference Include="Npgsql" Version="5.0.1.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
-
 </Project>

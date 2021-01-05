@@ -6,6 +6,8 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -21,6 +23,46 @@ namespace SilverBotDS
         {
             Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
             await ctx.RespondAsync(string.Format(lang.Hi, ctx.Member.Mention));
+        }
+
+        [Command("runsql")]
+        [Description("UHHHHHHHHHHHHH its a secret")]
+        [RequireOwner()]
+        public async Task runsql(CommandContext ctx, string sql)
+        {
+            var thing = await Database.RunSQLAsync(sql);
+            if (thing.Item1 != null && thing.Item2 == null)
+            {
+                await ctx.RespondAsync(thing.Item1);
+            }
+            if (thing.Item1 == null && thing.Item2 != null)
+            {
+                DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+                bob.WithImageUrl("attachment://html.png");
+                bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+
+                MemoryStream image = new MemoryStream();
+                thing.Item2.Save(image, System.Drawing.Imaging.ImageFormat.Png);
+                image.Position = 0;
+                await ctx.RespondWithFileAsync("html.png", image, embed: bob.Build());
+                thing.Item2.Dispose();
+            }
+        }
+
+        [Command("html")]
+        [Description("UHHHHHHHHHHHHH its a secret")]
+        [RequireOwner()]
+        public async Task htmlbitch(CommandContext ctx, string html)
+        {
+            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+            bob.WithImageUrl("attachment://html.png");
+            bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            Image e = await browser.ScreenshotAsync(html);
+            MemoryStream image = new MemoryStream();
+            e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
+            image.Position = 0;
+            await ctx.RespondWithFileAsync("html.png", image, embed: bob.Build());
+            e.Dispose();
         }
 
         [Command("time")]
@@ -48,6 +90,17 @@ namespace SilverBotDS
             bob.WithTitle("SilverCraftBot sponsored by SilverHosting");
             bob.WithDescription("Use offer code [SLVR](https://www.youtube.com/watch?v=dQw4w9WgXcQ)");
             bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            await ctx.RespondAsync(embed: bob.Build());
+        }
+
+        [Command("monke")]
+        [Description("Reject humanity return to monke")]
+        public async Task Monke(CommandContext ctx)
+        {
+            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+            bob.WithImageUrl("https://i.kym-cdn.com/photos/images/newsfeed/001/867/677/40d.jpg");
+            bob.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: bob.Build());
         }
 
@@ -104,7 +157,7 @@ namespace SilverBotDS
             catch (Exception e)
             {
                 DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
-                bob.WithTitle("Something went fucky wucky on our side");
+                bob.WithTitle("Something went fucky wucky on my side");
                 bob.WithDescription("Try again a little later?\n" + e.Message);
                 await ctx.RespondAsync(embed: bob.Build());
                 throw;

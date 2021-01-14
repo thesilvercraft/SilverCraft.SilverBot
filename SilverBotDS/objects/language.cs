@@ -138,13 +138,41 @@ namespace SilverBotDS
         //Commands
         public string Test { get; set; } = "test";
 
+        /// <summary>
+        /// User:␣
+        /// </summary>
         public string User { get; set; } = "User: ";
+
+        /// <summary>
+        /// ID
+        /// </summary>
         public string Userid { get; set; } = "ID";
+
+        /// <summary>
+        /// Has joined the SilverCraft Server
+        /// </summary>
         public string Has_joined_support { get; set; } = "Has joined the SilverCraft Server";
+
+        /// <summary>
+        /// Is a SilverCraft bot admin
+        /// </summary>
         public string Is_admin { get; set; } = "Is a SilverCraft bot admin";
+
+        /// <summary>
+        /// Is a DJ
+        /// </summary>
         public string Is_a_dj { get; set; } = "Is a DJ";
-        public string Is_an_onwer { get; set; } = "Is a SilverCraft bot owner";
+
+        /// <summary>
+        /// Is a SilverCraft bot owner
+        /// </summary>
+        public string Is_an_owner { get; set; } = "Is a SilverCraft bot owner";
+
+        /// <summary>
+        /// Is a bot
+        /// </summary>
         public string Is_a_bot { get; set; } = "Is a bot";
+
         public string Error { get; set; } = "Error";
         public string Error_sent_to_logs { get; set; } = "Complete error sent to Bot logs";
         public string Silverhosting_joke_title { get; set; } = "SilverCraftBot sponsored by SilverHosting";
@@ -157,15 +185,31 @@ namespace SilverBotDS
         public string Purge_removed_plural { get; set; } = " messages"; //Done. Removed 69" messages"
         public string Invite_title { get; set; } = "SilverCraftBot invite link";
         public string Invite_description { get; set; } = "SilverCraftBot is in open beta https://discord.com/api/oauth2/authorize?client_id=702445582559739976&permissions=2147483639&scope=bot";
+
+        /// <summary>
+        /// **No emote found**
+        /// </summary>
         public string No_emotes_found { get; set; } = "**No emote found**";
-        public string Searched_for { get; set; } = "Searched for:`"; //"Searched for:`"UR MOM`
-        public string Searched_for_back { get; set; } = "`"; //Searched for:`UR MOM"`"
+
+        /// <summary>
+        /// Searched for: `{0}`
+        /// </summary>
+        public string Searched_for { get; set; } = "Searched for: `{0}`";
+
+        /// <summary>
+        /// **Multiple emotes found**
+        /// </summary>
         public string Multiple_emotes_found { get; set; } = "**Multiple emotes found**";
 
         /// <summary>
         /// Already opted into SilverBot emotes
         /// </summary>
         public string Already_opted_in { get; set; } = "Already opted into SilverBot emotes";
+
+        /// <summary>
+        /// Server :{0}
+        /// </summary>
+        public string Server { get; set; } = "Server :{0}";
 
         /// <summary>
         /// Opted into SilverBot emotes
@@ -212,19 +256,60 @@ namespace SilverBotDS
         public string Credits { get; set; } = "Programming by SilverDimond#1691, Most things by SilverDimond#1691, 69% of splashes by ThePajamaSlime#9391, Useless questining by TheNewRicardo#4935, Microsoft for c#, The c# community for their solutions i didnt use, All the 69 NuGet packeges im using, 362700421191565322 the wierd dog that uses python, And most importantly thank you for using the bot.";
         public string Bot_Name { get; set; } = "SilverCraft Bot";
         public string Useless_fact { get; set; } = "Useless fact";
+
+        /// <summary>
+        /// You must have a higher role than the person you are trying to␣
+        /// </summary>
         public string User_has_lower_role { get; set; } = "You must have a higher role than the person you are trying to ";
+
         public string Ban { get; set; } = "ban";
         public string Kick { get; set; } = "kick";
         public string Bot_has_lower_role { get; set; } = "I must have a higher role than the person you are trying to ";
         public string Availible_languages { get; set; } = "Availible languages:";
         public string Random_GIF { get; set; } = "Random GIF:";
+
+        /// <summary>
+        /// Powered by GIPHY
+        /// </summary>
         public string Powered_by_GIPHY { get; set; } = "Powered by GIPHY";
+
         public string SilverBot_Commands { get; set; } = "SilverBot Commands";
         public string Allemotes_Guild { get; set; } = "Guild: ";
         public string User_Doesnt_Have_BanMembers { get; set; } = "You must have BanMembers permission";
         public string User_Doesnt_Have_KickMembers { get; set; } = "You must have kickmembers permission";
         public string Support_Title { get; set; } = "Add a command or splash to SilverCraftBot";
         public string Support_Description { get; set; } = "Splashes https://forms.gle/vYfaKFmqfsZJGc2e8 Commands https://forms.gle/HR3AhCA6yg4LfULU8 Or join https://discord.gg/ZT4gZCyReB";
+
+        /// <summary>
+        /// Meme:␣
+        /// </summary>
+        public string Meme { get; set; } = "Meme: ";
+
+        /// <summary>
+        /// You didnt attach a image
+        /// </summary>
+        /// <remarks>
+        /// Ment to be used when there isnt a more better term
+        /// </remarks>
+        public string No_Image_Generic { get; set; } = "You didnt attach a image";
+
+        /// <summary>
+        /// Bruh discord no likey you need something less than 256kb you sent {0}
+        /// </summary>
+        public string Emote_Was_Larger_Than_256k { get; set; } = "Bruh discord no likey you need something less than 256kb you sent {0}";
+
+        /// <summary>
+        /// You attached more than one image
+        /// </summary>
+        /// <remarks>
+        /// Ment to be used when there isnt a more better term
+        /// </remarks>
+        public string More_Than_One_Image_Generic { get; set; } = "You attached more than one image";
+
+        /// <summary>
+        ///Search results for the term `{0}`
+        /// </summary>
+        [Obsolete("Use Searched_For")]
         public string Search_Results_for_term { get; set; } = "Search results for the term `{0}`";
 
         /// <summary>
@@ -257,7 +342,7 @@ namespace SilverBotDS
         /// </summary>
         public string Now_Playing { get; set; } = "{0}\nNow playing: {1}";
 
-        private static Dictionary<string, Language> CachedLanguages = new Dictionary<string, Language>();
+        private static readonly Dictionary<string, Language> CachedLanguages = new Dictionary<string, Language>();
         private static readonly bool logging = true;
 
         public static Language Get(string a)

@@ -22,10 +22,10 @@ namespace SilverBotDS
         }
 
         /// <summary>
-        /// Split the string on a specified lenght
+        /// Split the string on a specified length
         /// </summary>
         /// <param name="s">The string</param>
-        /// <param name="partLength">The lenght</param>
+        /// <param name="partLength">The length</param>
         /// <returns>An IEnumerable<string> containing the parts</returns>
         public static IEnumerable<string> SplitInParts(string s, int partLength)
         {

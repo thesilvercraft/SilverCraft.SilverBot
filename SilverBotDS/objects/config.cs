@@ -41,6 +41,7 @@ namespace SilverBotDS.Config
                     string ConnString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
                     Database.setconnstring(ConnString);
                 }
+                GiphyO.Set(new GiphyDotNet.Manager.Giphy(readconfig.Gtoken));
                 return readconfig;
             }
             catch (FileNotFoundException e)

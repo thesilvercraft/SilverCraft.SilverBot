@@ -11,13 +11,15 @@ using System.Collections.Concurrent;
 
 namespace SilverBotDS
 {
-    internal class browser
+    internal class Browser
     {
         private static ChromiumWebBrowser CEFBrowser;
         private static ConcurrentDictionary<string, Image> concurrentDictionary = new();
 
         public static async Task<Image> ScreenshotAsync(string url)
         {
+            string loc = new RandomGenerator().RandomString(69);
+            Console.WriteLine("we here " + url);
             if (CEFBrowser == null)
             {
                 CEFBrowser = new ChromiumWebBrowser(url);
@@ -25,23 +27,32 @@ namespace SilverBotDS
                 {
                     await Task.Delay(200);
                 }
-                CEFBrowser.LoadingStateChanged += BrowserLoadingStateChanged;
+                CEFBrowser.LoadingStateChanged += (o, args) =>
+                {
+                    Console.WriteLine("we here ahh ");
+                    BrowserLoadingStateChanged(o, args, loc);
+                };
             }
             else
             {
-                CEFBrowser.LoadingStateChanged += BrowserLoadingStateChanged;
+                CEFBrowser.LoadingStateChanged += (o, args) =>
+                {
+                    Console.WriteLine("we here ahh ");
+                    BrowserLoadingStateChanged(o, args, loc);
+                };
                 while (!CEFBrowser.IsBrowserInitialized)
                 {
                     await Task.Delay(200);
                 }
                 CEFBrowser.Load(url);
             }
-            while (!concurrentDictionary.ContainsKey("e"))
+
+            while (!concurrentDictionary.ContainsKey(loc))
             {
                 await Task.Delay(200);
             }
 
-            concurrentDictionary.TryRemove("e", out Image img);
+            concurrentDictionary.TryRemove(loc, out Image img);
             return img;
         }
 
@@ -49,10 +60,16 @@ namespace SilverBotDS
         {
             try
             {
+                string loc = new RandomGenerator().RandomString(69);
+
                 if (CEFBrowser == null)
                 {
                     CEFBrowser = new ChromiumWebBrowser();
-                    CEFBrowser.LoadingStateChanged += BrowserLoadingStateChanged;
+
+                    CEFBrowser.LoadingStateChanged += (o, args) =>
+                    {
+                        BrowserLoadingStateChanged(o, args, loc);
+                    };
                     while (!CEFBrowser.IsBrowserInitialized)
                     {
                         await Task.Delay(200);
@@ -61,19 +78,22 @@ namespace SilverBotDS
                 }
                 else
                 {
-                    CEFBrowser.LoadingStateChanged += BrowserLoadingStateChanged;
+                    CEFBrowser.LoadingStateChanged += (o, args) =>
+                    {
+                        BrowserLoadingStateChanged(o, args, loc);
+                    };
                     while (!CEFBrowser.IsBrowserInitialized)
                     {
                         await Task.Delay(200);
                     }
                     CEFBrowser.LoadHtml(html);
                 }
-                while (!concurrentDictionary.ContainsKey("e"))
+                while (!concurrentDictionary.ContainsKey(loc))
                 {
                     await Task.Delay(200);
                 }
 
-                concurrentDictionary.TryRemove("e", out Image img);
+                concurrentDictionary.TryRemove(loc, out Image img);
                 return img;
             }
             catch (Exception exep)
@@ -83,7 +103,7 @@ namespace SilverBotDS
             }
         }
 
-        private static void BrowserLoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
+        private static void BrowserLoadingStateChanged(object sender, LoadingStateChangedEventArgs e, string id)
         {
             // Check to see if loading is complete - this event is called twice, one when loading starts
             // second time when it's finished
@@ -91,7 +111,10 @@ namespace SilverBotDS
             if (!e.IsLoading)
             {
                 // Remove the load event handler, because we only want one snapshot of the initial page.
-                CEFBrowser.LoadingStateChanged -= BrowserLoadingStateChanged;
+                CEFBrowser.LoadingStateChanged -= (o, args) =>
+                {
+                    BrowserLoadingStateChanged(o, args, id);
+                };
                 Console.WriteLine(sender.GetType());
 
                 //Give the browser a little time to render
@@ -100,11 +123,12 @@ namespace SilverBotDS
                 var task = CEFBrowser.ScreenshotAsync();
                 task.ContinueWith(x =>
                 {
-                    concurrentDictionary.TryAdd("e", task.Result);
+                    Console.WriteLine("we at " + ((ChromiumWebBrowser)sender).Address + " and serving " + id);
+                    concurrentDictionary.TryAdd(id, task.Result);
 
                     // We no longer need the Bitmap.
                     // Dispose it to avoid keeping the memory alive.  Especially important in 32-bit applications.
-                    //task.Result.Dispose();
+                    /// task.Result.Dispose();
                 }, TaskScheduler.Default);
             }
         }

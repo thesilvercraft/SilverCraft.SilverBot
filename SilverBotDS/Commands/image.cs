@@ -19,6 +19,7 @@ namespace SilverBotDS
 {
     public class Imagemodule : BaseCommandModule
     {
+#pragma warning disable CA1822 // Mark members as static
         //private static Config dconfig = new Config();
 
         //public static void SetConfig(Config GetConfig)

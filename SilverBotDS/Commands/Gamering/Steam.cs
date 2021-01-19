@@ -16,6 +16,8 @@ namespace SilverBotDS
     [Group("steam")]
     internal class SteamCommands : BaseCommandModule
     {
+#pragma warning disable CA1822 // Mark members as static
+
         [Command("search"), Aliases("s")]
         [Description("Search about a game")]
         public async Task Search(CommandContext ctx, [RemainingText()][Description("The game")] string game)

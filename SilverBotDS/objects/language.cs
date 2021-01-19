@@ -342,6 +342,11 @@ namespace SilverBotDS
         /// </summary>
         public string Now_Playing { get; set; } = "{0}\nNow playing: {1}";
 
+        /// <summary>
+        /// Uh oh something went wrong. Please try again a little bit later.
+        /// </summary>
+        public string Fortnite_Search_Fail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
+
         private static readonly Dictionary<string, Language> CachedLanguages = new Dictionary<string, Language>();
         private static readonly bool logging = true;
 

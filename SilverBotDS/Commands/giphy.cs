@@ -16,6 +16,8 @@ namespace SilverBotDS
     [Group("gif")]
     internal class giphy : BaseCommandModule
     {
+#pragma warning disable CA1822 // Mark members as static
+
         [Command("random")]
         public async Task Kindsffeefergergrgfdfdsgfdfg(CommandContext ctx)
         {

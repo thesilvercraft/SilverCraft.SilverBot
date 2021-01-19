@@ -14,6 +14,7 @@
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-rc1" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-rc1" />
     <PackageReference Include="DSharpPlus.VoiceNext" Version="4.0.0-rc1" />
+    <PackageReference Include="Fortnite-API-Wrapper" Version="2.1.0" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="ImageProcessor" Version="2.9.1" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.6.2" />

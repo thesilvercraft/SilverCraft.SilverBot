@@ -100,6 +100,7 @@ namespace SilverBotDS
             commands.RegisterCommands<AdminCommands>();
             commands.RegisterCommands<OwnerOnly>();
             commands.RegisterCommands<SteamCommands>();
+            commands.RegisterCommands<Fortnite>();
             //🥁🥁🥁 drumroll please
             await discord.ConnectAsync();
             //We have achived pog

@@ -123,7 +123,7 @@ namespace SilverBotDS
                 thing += "</table></body></html>";
             }
 
-            return new Tuple<string, Image>(null, await browser.ScreenshotThingAsync(thing));
+            return new Tuple<string, Image>(null, await Browser.ScreenshotThingAsync(thing));
         }
 
         public static async Task InsertAsync(Serveroptin e)

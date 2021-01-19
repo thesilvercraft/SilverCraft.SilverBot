@@ -12,6 +12,8 @@ namespace SilverBotDS
 {
     internal class Moderation : BaseCommandModule
     {
+#pragma warning disable CA1822 // Mark members as static
+
         [Command("kick")]
         [Description("Kick a specified user")]
         [RequireBotPermissions(Permissions.KickMembers)]
@@ -48,7 +50,7 @@ namespace SilverBotDS
         [Description("bans a specified user")]
         [RequireBotPermissions(Permissions.BanMembers)]
         [RequireUserPermissions(Permissions.BanMembers)]
-        public async Task ban(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
+        public async Task Ban(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
         {
             Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();

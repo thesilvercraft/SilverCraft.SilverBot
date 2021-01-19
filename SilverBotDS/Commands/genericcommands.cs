@@ -53,46 +53,6 @@ namespace SilverBotDS
             }
         }
 
-        [Command("runsql")]
-        [Description("UHHHHHHHHHHHHH its a secret")]
-        [RequireOwner()]
-        public async Task runsql(CommandContext ctx, string sql)
-        {
-            var thing = await Database.RunSQLAsync(sql);
-            if (thing.Item1 != null && thing.Item2 == null)
-            {
-                await ctx.RespondAsync(thing.Item1);
-            }
-            if (thing.Item1 == null && thing.Item2 != null)
-            {
-                DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
-                bob.WithImageUrl("attachment://html.png");
-                bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-
-                MemoryStream image = new MemoryStream();
-                thing.Item2.Save(image, System.Drawing.Imaging.ImageFormat.Png);
-                image.Position = 0;
-                await ctx.RespondWithFileAsync("html.png", image, embed: bob.Build());
-                thing.Item2.Dispose();
-            }
-        }
-
-        [Command("html")]
-        [Description("UHHHHHHHHHHHHH its a secret")]
-        [RequireOwner()]
-        public async Task htmlbitch(CommandContext ctx, string html)
-        {
-            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
-            bob.WithImageUrl("attachment://html.png");
-            bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-            Image e = await browser.ScreenshotAsync(html);
-            MemoryStream image = new MemoryStream();
-            e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
-            image.Position = 0;
-            await ctx.RespondWithFileAsync("html.png", image, embed: bob.Build());
-            e.Dispose();
-        }
-
         [Command("time")]
         [Description("Get the time in UTC")]
         public async Task Time(CommandContext ctx)
@@ -266,7 +226,7 @@ namespace SilverBotDS
             b.WithDescription("Information about " + a.Mention);
             b.AddField(lang.Userid, a.Id.ToString(), true);
             // b.AddField("Has joined the SilverCraft Server", stringutils.BoolToEmoteString(await Is_at_silvercraftAsync(ctx, a)), true);
-            /// b.AddField("Is a SilverCraft bot admin", stringutils.BoolToEmoteString(await Is_bot_adminAsync(ctx, a)), true);
+            // b.AddField("Is a SilverCraft bot admin", stringutils.BoolToEmoteString(await Is_bot_adminAsync(ctx, a)), true);
             b.AddField(lang.Is_an_owner, Stringutils.BoolToEmoteString(Program.GetConfig().Botowners.Contains(a.Id)), true);
             if (a.Id == 208691453973495808)
             {

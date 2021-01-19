@@ -22,6 +22,8 @@ namespace SilverBotDS
 {
     internal class Emotes : BaseCommandModule
     {
+#pragma warning disable CA1822 // Mark members as static
+
         [Command("addemote")]
         [Description("Wanna add a emote but discord is too complicated to navigate")]
         [RequireGuild()]
@@ -71,7 +73,7 @@ namespace SilverBotDS
 
         [Command("allemotes")]
         [Description("Get all the emotes from the SilverSocial enabled servers")]
-        public async Task allemotes(CommandContext ctx)
+        public async Task Allemotes(CommandContext ctx)
         {
             StringBuilder builder = new StringBuilder();
             Language lang = Language.GetLanguageFromId(ctx.Guild.Id);

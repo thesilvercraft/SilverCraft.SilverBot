@@ -54,42 +54,40 @@ namespace SilverBotDS.Config
                 ConfigVer = CurrentConfVer
             };
             XmlSerializer serializer = new XmlSerializer(new_config.GetType());
-            try
+
+            if (!File.Exists("silverbot.xml"))
             {
-                if (!File.Exists("silverbot.xml"))
+                using (StreamWriter streamWriter = new StreamWriter("silverbot.xml"))
                 {
-                    using (StreamWriter streamWriter = new StreamWriter("silverbot.xml"))
-                    {
-                        MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(new_config)).Save(streamWriter);
-                        streamWriter.Close();
-                    }
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                    {
-                        new Process
-                        {
-                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbot.xml")
-                            {
-                                UseShellExecute = true
-                            }
-                        }.Start();
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("silverbot.xml should have opened in the default app, edit it, save it and press enter");
-                        Thread.Sleep(1000);
-                        Console.WriteLine("Press any key WHEN READY to continue...");
-                        Console.ReadKey();
-                    }
+                    MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(new_config)).Save(streamWriter);
+                    streamWriter.Close();
                 }
-                else
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
+                    new Process
+                    {
+                        StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbot.xml")
+                        {
+                            UseShellExecute = true
+                        }
+                    }.Start();
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
-                    Console.WriteLine("Press any key to continue...");
+                    Console.WriteLine("silverbot.xml should have opened in the default app, edit it, save it and press enter");
+                    Thread.Sleep(1000);
+                    Console.WriteLine("Press any key WHEN READY to continue...");
                     Console.ReadKey();
-                    Environment.Exit(420);
                 }
             }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+                Environment.Exit(420);
+            }
 
-                using FileStream fs = File.Open("silverbot.xml", FileMode.Open);
+            using FileStream fs = File.Open("silverbot.xml", FileMode.Open);
             Config readconfig = serializer.Deserialize(fs) as Config;
             fs.Close();
             if (readconfig.ConfigVer == null || readconfig.ConfigVer < CurrentConfVer)
@@ -168,13 +166,5 @@ namespace SilverBotDS.Config
             Fortnite.Setapi(new Fortnite_API.FortniteApi(readconfig.FApiToken));
             return readconfig;
         }
-
-            catch (FileNotFoundException)
-            {
-                System.Environment.Exit(420);
-                private Config asdf = new Config();
-                return asdf;
-            }
-}
     }
 }

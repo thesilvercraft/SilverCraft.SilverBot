@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SilverBotDS
 {
     internal class Logging
     {
-        public static void Log(DiscordMessage message)
+        public static async Task Log(DiscordMessage message)
         {
             if (!Directory.Exists(Environment.CurrentDirectory + "\\Logging"))
             {
@@ -26,7 +27,7 @@ namespace SilverBotDS
                 Time = message.Timestamp.UtcDateTime,
                 Attachments = message.Attachments.ToList(),
             };
-            sw.Write(System.Text.Json.JsonSerializer.Serialize(logmessage));
+            await sw.WriteAsync(System.Text.Json.JsonSerializer.Serialize(logmessage));
         }
     }
 

@@ -6,13 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SilverBotDS
 {
-    internal class splashes
+    internal class Splashes
     {
         private static DiscordActivity[] Internal { get; } = {
 new ("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),
+new (".NET gang", ActivityType.Watching),
 new ("As seen on TV!", ActivityType.Playing),
 new ("100% pure!", ActivityType.Playing),
 new ("20 GOTO 10!", ActivityType.Playing),
@@ -30,7 +32,7 @@ new ("Now supports emoji :wink:",ActivityType.Playing),
 new ("Creeper aw man.",ActivityType.Playing),
 new ("if not ok then return end",ActivityType.Playing),
 new ("Now on [insert platform here].",ActivityType.Playing),
-new ("String[] splashes",ActivityType.Playing),
+new ("splashes.json",ActivityType.Playing),
 new ("Limited edition!",ActivityType.Playing),
 new ("Should not be texted while driving",ActivityType.Playing),
 new ("Try it!",ActivityType.Playing),
@@ -117,7 +119,7 @@ new ("Nostalgic!",ActivityType.Playing),
 new ("Giv quadratic formula or I kill",ActivityType.Playing),
 new ("T-shape is cancer",ActivityType.Playing),
 new ("som splashes for u ^_^",ActivityType.Playing),
-new ("0% less memory!",ActivityType.Playing),
+new ("1% less memory!",ActivityType.Playing),
 new ("ThePajamaSlime has invited you to play Minecraft",ActivityType.Playing),
 new ("ThePajamaSlime! ThePajamaSlime! ThePajamaSlime!",ActivityType.Playing),
 new ("Xbox 360 Edition",ActivityType.Playing),
@@ -140,12 +142,12 @@ new ("dabbing on them endermans",ActivityType.Playing),
 new ("GIMP FTW",ActivityType.Playing),
 new ("Bush hid the facts",ActivityType.Playing),
 new ("ugh, finally, no more sugar",ActivityType.Playing),
-new ("-1 splash per update?",ActivityType.Playing),
+new ("1 splash per update?",ActivityType.Playing),
 new ("uploading...41%",ActivityType.Playing),
 new ("my stuff stuff",ActivityType.Playing),
 new ("teleporting-porter-pearl",ActivityType.Playing),
 new ("bot now has graphics, you're welcome",ActivityType.Playing),
-new ("(it's a list, not a method)",ActivityType.Playing),
+new ("(it's a json file with a list, not a method)",ActivityType.Playing),
 new ("superb bus service",ActivityType.Playing),
 new ("SELCET? AWESMOE!",ActivityType.Playing),
 new ("pretty pink spigots",ActivityType.Playing),
@@ -185,6 +187,7 @@ new ("2 meters apart",ActivityType.Playing),
 new ("ERROR",ActivityType.Playing),
 new ("THE CAKE IS A LIE",ActivityType.Playing),
 new ("ThE CaKe Is A lIe",ActivityType.Playing),
+new ("Developers",ActivityType.Playing),
         };
 
         private static DiscordActivity[] Cache;

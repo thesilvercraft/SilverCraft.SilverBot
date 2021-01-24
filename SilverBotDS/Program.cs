@@ -108,9 +108,9 @@ namespace SilverBotDS
             while (true)
             {
                 //update the status to some random one
-                await discord.UpdateStatusAsync(splashes.GetSingle());
-                //wait 10s
-                await Task.Delay(10000);
+                await discord.UpdateStatusAsync(Splashes.GetSingle());
+                //wait the specified time
+                await Task.Delay(config.MsInterval);
                 //repeat🔁
             }
         }
@@ -119,7 +119,7 @@ namespace SilverBotDS
         {
             if (shitlog)
             {
-                Logging.Log(e.Message);
+                await Logging.Log(e.Message).ConfigureAwait(false);
             }
         }
     }

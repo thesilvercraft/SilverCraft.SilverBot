@@ -82,7 +82,7 @@ namespace SilverBotDS
             foreach (DiscordGuild a in ctx.Client.Guilds.Values)
             {
                 var thing = serverthatareoptedin.Find(x => x.ServerId == a.Id);
-                if (thing != null && thing.optedin == true)
+                if (thing != null && thing.Optedin == true)
                 {
                     builder.AppendLine(string.Format(lang.Server, a.Name));
                     foreach (DiscordEmoji emote in a.Emojis.Values.ToList())
@@ -141,7 +141,7 @@ namespace SilverBotDS
             {
                 return false;
             }
-            return thing.optedin;
+            return thing.Optedin;
         }
 
         [Command("emoteinfo")]
@@ -315,7 +315,7 @@ namespace SilverBotDS
             var newserverthing = new Serveroptin
             {
                 ServerId = ctx.Guild.Id,
-                optedin = true
+                Optedin = true
             };
             await Database.InsertAsync(newserverthing);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();

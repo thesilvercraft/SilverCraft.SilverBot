@@ -34,16 +34,44 @@ namespace SilverBotDS
                     tempbuilder = new DiscordEmbedBuilder();
                     tempbuilder.WithTitle(listings[i].Name);
                     tempbuilder.WithUrl(listings[i].StoreLink);
-                    tempbuilder.WithAuthor(listings[i].Price + "merica bucks");
-                    tempbuilder.WithFooter(lang.Requested_by + ctx.User.Username + $" Page: {i}/{listings.Count}", ctx.User.GetAvatarUrl(ImageFormat.Png));
+                    if (listings[i].Price == null)
+                    {
+                        if (listings[i].SaleType == SteamStoreQuery.Enums.sType.FreeToPlay)
+                        {
+                            tempbuilder.WithAuthor("F2P");
+                        }
+                        else if (listings[i].SaleType == SteamStoreQuery.Enums.sType.NotAvailable)
+                        {
+                            tempbuilder.WithAuthor("Not Available");
+                        }
+                        else if (listings[i].SaleType == SteamStoreQuery.Enums.sType.CostsMoney)
+                        {
+                            tempbuilder.WithAuthor("It costs merica bucks but idk how much");
+                        }
+                    }
+                    else
+                    {
+                        tempbuilder.WithAuthor(listings[i].Price + "merica bucks");
+                    }
+
+                    tempbuilder.WithFooter(lang.Requested_by + ctx.User.Username + $" Page: {i + 1}/{listings.Count}", ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(listings[i].ImageLink))
                     {
                         tempbuilder.WithThumbnail(listings[i].ImageLink);
                     }
                     pages.Add(new Page(embed: tempbuilder));
                 }
-
-                await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+                if (pages.Count > 0)
+                {
+                    await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+                }
+                else
+                {
+                    DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+                    bob.WithTitle("Something went fucky wucky on my side");
+                    bob.WithDescription("Try again a little later?\n 0 Games were returned");
+                    await ctx.RespondAsync(embed: bob.Build());
+                }
             }
             catch (Exception e)
             {

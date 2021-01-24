@@ -18,7 +18,7 @@ namespace SilverBotDS
         /// Set the connection string to a string
         /// </summary>
         /// <param name="thingtosetitto">The string to set it to</param>
-        public static void setconnstring(string thingtosetitto)
+        public static void Setconnstring(string thingtosetitto)
         {
             connstring = thingtosetitto;
         }
@@ -132,7 +132,7 @@ namespace SilverBotDS
             conn.Open();
             await using var cmd = new NpgsqlCommand("INSERT INTO serveroptin (serverid, optedin) VALUES (@p1, @p2)", conn);
             cmd.Parameters.AddWithValue("p1", Convert.ToInt64(e.ServerId));
-            cmd.Parameters.AddWithValue("p2", e.optedin);
+            cmd.Parameters.AddWithValue("p2", e.Optedin);
             await cmd.ExecuteNonQueryAsync();
             conn.Close();
         }
@@ -148,7 +148,7 @@ namespace SilverBotDS
                 yield return new Serveroptin
                 {
                     ServerId = Convert.ToUInt64(reader.GetInt64(0)),
-                    optedin = reader.GetBoolean(1)
+                    Optedin = reader.GetBoolean(1)
                 };
             }
             conn.Close();
@@ -164,6 +164,6 @@ namespace SilverBotDS
     public class Serveroptin
     {
         public ulong ServerId { get; set; }
-        public bool optedin { get; set; }
+        public bool Optedin { get; set; }
     }
 }

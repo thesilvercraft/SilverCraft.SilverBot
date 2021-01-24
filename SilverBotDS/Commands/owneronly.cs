@@ -20,15 +20,15 @@ namespace SilverBotDS
 
         [Command("repeat")]
         [Description("Repeats the message content")]
-        public async Task repeat(CommandContext ctx, [RemainingText()][Description("The thing to repeat")] string e)
+        public async Task Repeat(CommandContext ctx, [RemainingText()][Description("The thing to repeat")] string e)
         {
             await ctx.RespondAsync(e);
         }
 
         [Command("setupcategory")]
         [Description("Set up a category in the silverbot dev server")]
-        [RequireBotPermissions(DSharpPlus.Permissions.ManageChannels | DSharpPlus.Permissions.ManageRoles)]
-        public async Task category(CommandContext ctx, [Description("The role to set up a category for")] DiscordRole
+        [RequireBotPermissions(Permissions.ManageChannels | Permissions.ManageRoles)]
+        public async Task Category(CommandContext ctx, [Description("The role to set up a category for")] DiscordRole
          role)
         {
             string name = Regex.Replace(role.Name, @"[^\w]", "");
@@ -59,8 +59,8 @@ namespace SilverBotDS
 
         [Command("setupcategory")]
         [Description("Set up a category in the silverbot dev server")]
-        [RequireBotPermissions(DSharpPlus.Permissions.ManageChannels | DSharpPlus.Permissions.ManageRoles)]
-        public async Task category(CommandContext ctx, [Description("The person to set up a category for")] DiscordMember
+        [RequireBotPermissions(Permissions.ManageChannels | Permissions.ManageRoles)]
+        public async Task Category(CommandContext ctx, [Description("The person to set up a category for")] DiscordMember
              person)
         {
             string name = Regex.Replace(person.Username, @"[^\w]", "");
@@ -91,8 +91,7 @@ namespace SilverBotDS
 
         [Command("runsql")]
         [Description("UHHHHHHHHHHHHH its a secret")]
-        [RequireOwner()]
-        public async Task runsql(CommandContext ctx, string sql)
+        public async Task Runsql(CommandContext ctx, string sql)
         {
             var thing = await Database.RunSQLAsync(sql);
             if (thing.Item1 != null && thing.Item2 == null)
@@ -115,7 +114,6 @@ namespace SilverBotDS
 
         [Command("html")]
         [Description("UHHHHHHHHHHHHH its a secret")]
-        [RequireOwner()]
         public async Task Html(CommandContext ctx, string html)
         {
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
@@ -129,9 +127,27 @@ namespace SilverBotDS
             e.Dispose();
         }
 
+        [Command("splashesreload")]
+        [Description("reload the config for splashes")]
+        public async Task Reloadsplashes(CommandContext ctx)
+        {
+            Splashes.Get(true);
+            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+            bob.WithTitle("Reloaded splashes for ya.");
+
+            bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            if (Program.GetConfig().UseSplashConfig == false)
+            {
+                await ctx.RespondAsync("ps that did nothing as splash config is set false", embed: bob.Build());
+            }
+            else
+            {
+                await ctx.RespondAsync(embed: bob.Build());
+            }
+        }
+
         [Command("htmle")]
         [Description("UHHHHHHHHHHHHH its a secret")]
-        [RequireOwner()]
         public async Task HtmlE(CommandContext ctx, string html)
         {
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();

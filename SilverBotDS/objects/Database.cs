@@ -43,7 +43,6 @@ namespace SilverBotDS
             {
                 try
                 {
-                    Debug.WriteLine("opt ");
                     conn.Open();
                     await using var cmd = new NpgsqlCommand("SELECT optedin FROM serveroptin WHERE serverid = @id", conn);
                     cmd.Parameters.AddWithValue("id", Convert.ToInt64(serverid));
@@ -53,7 +52,6 @@ namespace SilverBotDS
                         e = reader.GetBoolean(0);
                     }
                     conn.Close();
-                    Debug.WriteLine("opt2");
                 }
                 catch (Exception exep)
                 {
@@ -69,61 +67,68 @@ namespace SilverBotDS
         /// </summary>
         /// <param name="sql">the sql to run</param>
         /// <returns>A string and a image one of them is a null</returns>
-        //TODO make thing not use string but use string builder
         public static async Task<Tuple<string, Image>> RunSQLAsync(string sql)
         {
-            using NpgsqlConnection conn = NewConnection();
-            conn.Open();
-            await using var cmd = new NpgsqlCommand(sql, conn);
-
-            DataTable dataTable = new DataTable();
-
-            // create data adapter
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
-            // this will query your database and return the result to your datatable
-            da.Fill(dataTable);
-            conn.Close();
-            string thing = "<html>" +
-                "<head>" +
-                "<style>" +
-                "table, th, td {" +
-                "border: 2px solid white;" +
-                "border-collapse: collapse;" +
-                "}" +
-                "table{" +
-                "width: 100%;" +
-                "height: 100%;" +
-                "}" +
-                "th,tr{" +
-                "color:#ffffff;" +
-                "font-size: 25px;" +
-                "}" +
-                "body{" +
-                "background-color:2C2F33;" +
-                "}" +
-                "</style>" +
-                "</head>" +
-                "<body>" +
-                "<table style=\"width: 100 % \">";
-            if (dataTable.Rows.Count == 0)
+            try
             {
-                return new Tuple<string, Image>("nodata", null);
-            }
-            else
-            {
-                foreach (DataRow dataRow in dataTable.Rows)
+                using NpgsqlConnection conn = NewConnection();
+                conn.Open();
+                await using var cmd = new NpgsqlCommand(sql, conn);
+
+                DataTable dataTable = new DataTable();
+
+                // create data adapter
+                NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+                // this will query your database and return the result to your datatable
+                da.Fill(dataTable);
+                conn.Close();
+                StringBuilder thing = new("<html>" +
+                    "<head>" +
+                    "<style>" +
+                    "table, th, td {" +
+                    "border: 2px solid white;" +
+                    "border-collapse: collapse;" +
+                    "}" +
+                    "table{" +
+                    "width: 100%;" +
+                    "height: 100%;" +
+                    "}" +
+                    "th,tr{" +
+                    "color:#ffffff;" +
+                    "font-size: 25px;" +
+                    "}" +
+                    "body{" +
+                    "background-color:2C2F33;" +
+                    "}" +
+                    "</style>" +
+                    "</head>" +
+                    "<body>" +
+                    "<table style=\"width: 100 % \">");
+                if (dataTable.Rows.Count == 0)
                 {
-                    thing += "<tr>" + Environment.NewLine;
-                    foreach (var item in dataRow.ItemArray)
-                    {
-                        thing += "<td>" + item + "</td>";
-                    }
-                    thing += "</tr>" + Environment.NewLine;
+                    return new Tuple<string, Image>("nodata", null);
                 }
-                thing += "</table></body></html>";
+                else
+                {
+                    foreach (DataRow dataRow in dataTable.Rows)
+                    {
+                        thing.AppendLine("<tr>");
+                        foreach (var item in dataRow.ItemArray)
+                        {
+                            thing.AppendLine("<td>" + item + "</td>");
+                        }
+                        thing.AppendLine("</tr>");
+                    }
+                    thing.AppendLine("</table></body></html>");
+                }
+                return new Tuple<string, Image>(null, await Browser.ScreenshotThingAsync(thing.ToString()));
             }
-
-            return new Tuple<string, Image>(null, await Browser.ScreenshotThingAsync(thing));
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                await Program.SendLogAsync(e.ToString(), new List<DSharpPlus.Entities.DiscordEmbed>());
+                return new Tuple<string, Image>("Error", null);
+            }
         }
 
         public static async Task InsertAsync(Serveroptin e)
@@ -137,25 +142,36 @@ namespace SilverBotDS
             conn.Close();
         }
 
-        public static async IAsyncEnumerable<Serveroptin> ServersoptedinAsync()
+        public static async Task<List<Serveroptin>> ServersoptedinAsync()
         {
-            using NpgsqlConnection conn = NewConnection();
-            conn.Open();
-            await using var cmd = new NpgsqlCommand("SELECT serverid, optedin FROM serveroptin WHERE(optedin = True)", conn);
-            await using var reader = await cmd.ExecuteReaderAsync();
-            while (await reader.ReadAsync())
+            List<Serveroptin> enuma = new();
+            try
             {
-                yield return new Serveroptin
+                using NpgsqlConnection conn = NewConnection();
+                conn.Open();
+                await using var cmd = new NpgsqlCommand("SELECT serverid, optedin FROM serveroptin WHERE(optedin = True)", conn);
+                await using var reader = await cmd.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
                 {
-                    ServerId = Convert.ToUInt64(reader.GetInt64(0)),
-                    Optedin = reader.GetBoolean(1)
-                };
+                    enuma.Add(new Serveroptin
+                    {
+                        ServerId = Convert.ToUInt64(reader.GetInt64(0)),
+                        Optedin = reader.GetBoolean(1)
+                    });
+                }
+                conn.Close();
+                return enuma;
             }
-            conn.Close();
+            catch (Exception e)
+            {
+                Debug.Write(e);
+                throw;
+            }
         }
     }
 
-    public class serverthing
+    public class Serverthing
     {
         public ulong ServerId { get; set; }
         public ulong ChannelId { get; set; }

@@ -68,20 +68,19 @@ namespace SilverBotDS
             await ctx.RespondAsync($"https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=2147483639&scope=bot");
         }
 
-        //TODO if not removed make strings in language file
-        [Obsolete("May be removed in future release")]
         [Command("duckhosting"), Aliases("dukthosting", "ducthosting", ":duckhosting:", "<:duckhosting:797225115837792367>")]
         [Description("SilverHosting best")]
         public async Task Dukt(CommandContext ctx)
         {
+            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
-            bob.WithTitle("SilverCraftBot sponsored by SilverHosting");
-            bob.WithDescription("Use offer code [SLVR](https://www.youtube.com/watch?v=dQw4w9WgXcQ)");
-            bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            bob.WithTitle(lang.Silverhosting_joke_title);
+            bob.WithDescription(lang.Silverhosting_joke_description);
+            bob.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: bob.Build());
         }
 
-        [Command("monke")]
+        [Command("monke"), Aliases(":monkey:", "🐒", "🐵", ":monkey_face:")]
         [Description("Reject humanity return to monke")]
         public async Task Monke(CommandContext ctx)
         {
@@ -111,6 +110,7 @@ namespace SilverBotDS
         [Description("Search up packages on the NuGet")]
         public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)
         {
+            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
             try
             {
                 NuGetUtils.Datum[] data = await NuGetUtils.SearchAsync(query);
@@ -123,7 +123,7 @@ namespace SilverBotDS
                     tempbuilder.WithTitle(data[i].Title);
                     tempbuilder.WithUrl($"https://www.nuget.org/packages/{data[i].Id}");
                     tempbuilder.WithAuthor(Stringutils.ArrayToString(data[i].Authors, ","), data[i].ProjectUrl);
-                    tempbuilder.WithFooter("Requested by " + ctx.User.Username + $" Page: {i}/{data.Length}", ctx.User.GetAvatarUrl(ImageFormat.Png));
+                    tempbuilder.WithFooter(lang.Requested_by + ctx.User.Username + string.Format(lang.Page_Nuget, i, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(data[i].IconUrl))
                     {
                         tempbuilder.WithThumbnail(data[i].IconUrl);
@@ -135,7 +135,7 @@ namespace SilverBotDS
                         tempbuilder.AddField("type", data[i].Type, true);
                     }
 
-                    tempbuilder.AddField("downloads", data[i].TotalDownloads.ToString(), true);
+                    tempbuilder.AddField("<:download_icon:803020837581357137>", data[i].TotalDownloads.ToString(), true);
                     tempbuilder.AddField("version", data[i].Version, true);
                     pages.Add(new Page(embed: tempbuilder));
                 }

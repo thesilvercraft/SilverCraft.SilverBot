@@ -175,8 +175,17 @@ namespace SilverBotDS
 
         public string Error { get; set; } = "Error";
         public string Error_sent_to_logs { get; set; } = "Complete error sent to Bot logs";
+
+        /// <summary>
+        ///SilverCraftBot sponsored by SilverHosting
+        /// </summary>
         public string Silverhosting_joke_title { get; set; } = "SilverCraftBot sponsored by SilverHosting";
+
+        /// <summary>
+        ///Use offer code [SLVR](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+        /// </summary>
         public string Silverhosting_joke_description { get; set; } = "Use offer code [SLVR](https://www.youtube.com/watch?v=dQw4w9WgXcQ)";
+
         public string Purge_number_negative { get; set; } = "The amount of messages to remove must be positive.";
         public string Purge_nothing_to_delete { get; set; } = "Nothing to delete.";
         public string Bot_guilds { get; set; } = "Bot guilds";
@@ -316,6 +325,11 @@ namespace SilverBotDS
         /// Page {0}/{1} Use `next` in the next 5 min to see the next page
         /// </summary>
         public string Page_Gif { get; set; } = "Page {0}/{1} Use `next` in the next 5 min to see the next page";
+
+        /// <summary>
+        /// Page {0}/{1}
+        /// </summary>
+        public string Page_Nuget { get; set; } = "Page {0}/{1}";
 
         /// <summary>
         /// You may not send `next` as the 5 minutes expired

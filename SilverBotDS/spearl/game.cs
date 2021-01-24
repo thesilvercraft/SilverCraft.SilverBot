@@ -7,7 +7,7 @@ namespace codename_spearl
 {
     internal class Game
     {
-        public async Task<ushort> AddUserAsync(User user)
+        public ushort AddUser(User user)
         {
             if (Users.Contains(user))
             {

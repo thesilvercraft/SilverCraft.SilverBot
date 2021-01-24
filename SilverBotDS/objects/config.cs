@@ -18,14 +18,15 @@ namespace SilverBotDS.Config
         public string Gtoken { get; set; } = "Giphy_Token_Here";
         public string FApiToken { get; set; } = "Fartnite_Token_Here";
         public string JavaLoc { get; set; } = "C:\\Program Files\\Java\\jdk-13\\bin\\java.exe";
-        public ulong LogChannel { get; set; } = 717166388044628018;
         public ulong ServerId { get; set; } = 679353407667961877;
         public ulong AdminRoleId { get; set; } = 746821906602131506;
         public List<ulong> Botowners { get; set; } = new List<ulong> { 264081339316305920 };
         public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
         public int MsInterval { get; set; } = 1800000;
         public ulong? ConfigVer { get; set; } = null;
-        public static ulong CurrentConfVer = 1;
+        public readonly static ulong CurrentConfVer = 1;
+        public bool UseSplashConfig { get; set; } = true;
+        public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
 
         public static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument, bool isexample = false)
         {
@@ -38,12 +39,13 @@ namespace SilverBotDS.Config
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Gtoken", "The Giphy token, can be got from https://developers.giphy.com/");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/FApiToken", "The FortniteAPI token, can be got from https://dash.fortnite-api.com/");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/JavaLoc", "Location of java.exe to be able to launch lavalink (type java if in path or if using LiNUX)");
-            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/LogChannel", "(ulong)Id of channel for general logging");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/ServerId", "(ulong)Id of Server where the bot admin role can be found");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/AdminRoleId", "(ulong)Id of bot admin role");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Botowners", "(List<ulong>)Id's of bot owners");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/ConnString", "PostgresSQL conection string make null if stored in ENV");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/MsInterval", "Interval to use so discord dont ban us, in ms, is int32 so use -1 if you want no splash changes, defaults to 30m as kae kinda was like hey you know discord has probably put you on a watchlist");
+            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/UseSplashConfig", "Does the bot use the: True-Config or False-Internal splashes");
+            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/LogWebhook", "Webhook for logging");
             return xmlDocument;
         }
 
@@ -77,20 +79,20 @@ namespace SilverBotDS.Config
                     Console.WriteLine("Press any key WHEN READY to continue...");
                     Console.ReadKey();
                 }
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
-                Environment.Exit(420);
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
+                    Environment.Exit(420);
+                }
             }
 
             using FileStream fs = File.Open("silverbot.xml", FileMode.Open);
             Config readconfig = serializer.Deserialize(fs) as Config;
             fs.Close();
-            if (readconfig.ConfigVer == null || readconfig.ConfigVer < CurrentConfVer)
+            if (readconfig.ConfigVer == null || readconfig.ConfigVer != CurrentConfVer)
             {
             outdated:
                 Console.WriteLine("Outdated config detected. Would you like a new one to generate? (Y/n)");
@@ -100,7 +102,7 @@ namespace SilverBotDS.Config
                     case "y":
                         using (StreamReader streamReader = new StreamReader("silverbot.xml"))
                         {
-                            using (StreamWriter streamWriter = new StreamWriter("silverbotnew.xml"))
+                            using (StreamWriter streamWriter = new StreamWriter("silverbotold.xml", false))
                             {
                                 streamWriter.Write(streamReader.ReadToEnd());
                                 streamWriter.Close();

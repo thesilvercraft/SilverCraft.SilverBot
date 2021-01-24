@@ -77,7 +77,7 @@ namespace SilverBotDS
         {
             StringBuilder builder = new StringBuilder();
             Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
-            List<Serveroptin> serverthatareoptedin = await Database.ServersoptedinAsync().ToListAsync();
+            List<Serveroptin> serverthatareoptedin = await Database.ServersoptedinAsync();
 
             foreach (DiscordGuild a in ctx.Client.Guilds.Values)
             {
@@ -144,28 +144,13 @@ namespace SilverBotDS
             return thing.Optedin;
         }
 
-        [Command("emoteinfo")]
-        [Description("get info about an emote")]
-        public async Task EmoteInfo(CommandContext ctx, [Description("Emote")] DiscordGuildEmoji emote)
-        {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
-            DiscordEmbedBuilder b = new DiscordEmbedBuilder();
-            b.WithTitle(emote.Name);
-            b.WithImageUrl(emote.Url);
-            b.AddField("date", emote.CreationTimestamp.ToUniversalTime().ToString(), true);
-            b.AddField("guild", emote.Guild.Name, true);
-
-            b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-            await ctx.RespondAsync(embed: b.Build());
-        }
-
         [Command("emote")]
         [Description("Get an emote from the SilverSocial enabled servers")]
         public async Task Midsdsdsadng(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote)
         {
             Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
             List<DiscordEmoji> emotes = new List<DiscordEmoji>();
-            List<Serveroptin> serverthatareoptedin = await Database.ServersoptedinAsync().ToListAsync();
+            List<Serveroptin> serverthatareoptedin = await Database.ServersoptedinAsync();
 
             foreach (DiscordGuild a in ctx.Client.Guilds.Values.Where(e => CheckIfGuildIsIn(serverthatareoptedin, e.Id)))
             {
@@ -230,71 +215,71 @@ namespace SilverBotDS
             }
         }
 
-        [Command("reactwithemote")]
-        [Description("Get an emote from the SilverSocial enabled servers and react with it")]
-        [RequireBotPermissions(Permissions.AddReactions | Permissions.UseExternalEmojis)]
-        [RequireUserPermissions(Permissions.AddReactions | Permissions.UseExternalEmojis)]
-        public async Task ReactWithEmote(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote, ulong? idofmessage = null)
-        {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
-            List<DiscordEmoji> emotes = new List<DiscordEmoji>();
-            List<Serveroptin> serverthatareoptedin = await Database.ServersoptedinAsync().ToListAsync();
+        //[Command("reactwithemote")]
+        //[Description("Get an emote from the SilverSocial enabled servers and react with it")]
+        //[RequireBotPermissions(Permissions.AddReactions | Permissions.UseExternalEmojis)]
+        //[RequireUserPermissions(Permissions.AddReactions | Permissions.UseExternalEmojis)]
+        //public async Task ReactWithEmote(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote, ulong? idofmessage = null)
+        //{
+        //    Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+        //    List<DiscordEmoji> emotes = new List<DiscordEmoji>();
+        //    List<Serveroptin> serverthatareoptedin = await Database.ServersoptedinAsync().ToListAsync();
 
-            foreach (DiscordGuild a in ctx.Client.Guilds.Values.Where(e => CheckIfGuildIsIn(serverthatareoptedin, e.Id)))
-            {
-                var cunt = a.Emojis.Values.Where(x => (":" + x.Name + ":") == emote || x.Name == emote || (Regex.IsMatch(emote, @"^\d+$") && x.Id == Convert.ToUInt64(emote)));
-                if (cunt != null)
-                {
-                    foreach (var discordemote in cunt)
-                    {
-                        emotes.Add(discordemote);
-                    }
-                }
-            }
+        //    foreach (DiscordGuild a in ctx.Client.Guilds.Values.Where(e => CheckIfGuildIsIn(serverthatareoptedin, e.Id)))
+        //    {
+        //        var cunt = a.Emojis.Values.Where(x => (":" + x.Name + ":") == emote || x.Name == emote || (Regex.IsMatch(emote, @"^\d+$") && x.Id == Convert.ToUInt64(emote)));
+        //        if (cunt != null)
+        //        {
+        //            foreach (var discordemote in cunt)
+        //            {
+        //                emotes.Add(discordemote);
+        //            }
+        //        }
+        //    }
 
-            if (emotes.Count == 0)
-            {
-                DiscordEmbedBuilder b = new DiscordEmbedBuilder();
-                b.WithTitle(lang.No_emotes_found);
-                b.WithDescription(string.Format(lang.Searched_for, emote));
-                b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                await ctx.RespondAsync(embed: b.Build());
-            }
-            else if (emotes.Count == 1)
-            {
-                await (await ctx.Channel.GetMessageAsync(idofmessage ?? ctx.Message.Id)).CreateReactionAsync(emotes[0]);
-            }
-            else if (emotes.Count > 1)
-            {
-                DiscordEmbedBuilder b = new DiscordEmbedBuilder();
-                b.WithTitle(lang.Multiple_emotes_found);
-                StringBuilder builder = new StringBuilder();
-                foreach (DiscordEmoji e in emotes)
-                {
-                    if (e.IsAnimated)
-                    {
-                        builder.Append("<a:");
-                        builder.Append(e.Name);
-                        builder.Append(':');
-                        builder.Append(e.Id);
-                        builder.Append('>');
-                        builder.AppendLine();
-                    }
-                    else
-                    {
-                        builder.Append("<:");
-                        builder.Append(e.Name);
-                        builder.Append(':');
-                        builder.Append(e.Id);
-                        builder.Append('>');
-                        builder.AppendLine();
-                    }
-                }
-                b.WithDescription(builder.ToString());
-                b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                await ctx.RespondAsync(embed: b.Build());
-            }
-        }
+        //    if (emotes.Count == 0)
+        //    {
+        //        DiscordEmbedBuilder b = new DiscordEmbedBuilder();
+        //        b.WithTitle(lang.No_emotes_found);
+        //        b.WithDescription(string.Format(lang.Searched_for, emote));
+        //        b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+        //        await ctx.RespondAsync(embed: b.Build());
+        //    }
+        //    else if (emotes.Count == 1)
+        //    {
+        //        await (await ctx.Channel.GetMessageAsync(idofmessage ?? ctx.Message.Id)).CreateReactionAsync(emotes[0]);
+        //    }
+        //    else if (emotes.Count > 1)
+        //    {
+        //        DiscordEmbedBuilder b = new DiscordEmbedBuilder();
+        //        b.WithTitle(lang.Multiple_emotes_found);
+        //        StringBuilder builder = new StringBuilder();
+        //        foreach (DiscordEmoji e in emotes)
+        //        {
+        //            if (e.IsAnimated)
+        //            {
+        //                builder.Append("<a:");
+        //                builder.Append(e.Name);
+        //                builder.Append(':');
+        //                builder.Append(e.Id);
+        //                builder.Append('>');
+        //                builder.AppendLine();
+        //            }
+        //            else
+        //            {
+        //                builder.Append("<:");
+        //                builder.Append(e.Name);
+        //                builder.Append(':');
+        //                builder.Append(e.Id);
+        //                builder.Append('>');
+        //                builder.AppendLine();
+        //            }
+        //        }
+        //        b.WithDescription(builder.ToString());
+        //        b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+        //        await ctx.RespondAsync(embed: b.Build());
+        //    }
+        //}
 
         [Command("optintoemotes")]
         [RequireUserPermissions(Permissions.ManageGuild)]

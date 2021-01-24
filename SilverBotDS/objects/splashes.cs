@@ -188,19 +188,29 @@ new ("ERROR",ActivityType.Playing),
 new ("THE CAKE IS A LIE",ActivityType.Playing),
 new ("ThE CaKe Is A lIe",ActivityType.Playing),
 new ("Developers",ActivityType.Playing),
+new ("GREAT SUCCESS!",ActivityType.Playing),
         };
 
         private static DiscordActivity[] Cache;
 
-        public static DiscordActivity[] Get(bool ignorecache = false)
+        /// <summary>
+        /// Gets a list of <see cref="DiscordActivity[]"/>s
+        /// </summary>
+        /// <param name="ignorecache">Should it reload the splashes.json</param>
+        /// <param name="useinternal">Should it ignore splashes.json alltogether</param>
+        /// <returns>a list of <see cref="DiscordActivity[]"/>s</returns>
+        public static DiscordActivity[] Get(bool ignorecache = false, bool useinternal = false)
         {
+            if (useinternal)
+            {
+                return Internal;
+            }
             if (ignorecache || Cache == null)
             {
                 if (File.Exists("splashes.json"))
                 {
                     using StreamReader reader = new("splashes.json");
-                    var arrays = JsonSerializer.Deserialize<DiscordActivity[]>(reader.ReadToEnd());
-                    Cache = arrays;
+                    Cache = JsonSerializer.Deserialize<DiscordActivity[]>(reader.ReadToEnd());
                     return Cache;
                 }
                 else
@@ -220,10 +230,16 @@ new ("Developers",ActivityType.Playing),
             }
         }
 
-        public static DiscordActivity GetSingle(bool ignorecache = false)
+        /// <summary>
+        /// Gets a single (random) <see cref="DiscordActivity"/>
+        /// </summary>
+        /// <param name="ignorecache">Should it reload the splashes.json</param>
+        /// <param name="useinternal">Should it ignore splashes.json alltogether</param>
+        /// <returns>a single (random) <see cref="DiscordActivity"/></returns>
+        public static DiscordActivity GetSingle(bool ignorecache = false, bool useinternal = false)
         {
             RandomGenerator rg = new();
-            var arr = Get(ignorecache);
+            var arr = Get(ignorecache, useinternal);
             return arr[rg.Next(0, arr.Length)];
         }
     }

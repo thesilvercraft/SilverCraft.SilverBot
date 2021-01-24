@@ -2,11 +2,15 @@
 using CefSharp.OffScreen;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -31,6 +35,16 @@ namespace SilverBotDS
         public static Config.Config GetConfig()
         {
             return config;
+        }
+
+        private static DiscordWebhookClient wc = new();
+
+        public static async Task SendLogAsync(string text, List<DiscordEmbed> embeds)
+        {
+            var whb = new DiscordWebhookBuilder();
+            whb.AddEmbeds(embeds);
+            whb.WithContent(text);
+            await wc.BroadcastMessageAsync(whb);
         }
 
         /// <summary>
@@ -69,10 +83,15 @@ namespace SilverBotDS
             return null;
         }
 
+        private static DiscordClient discord;
+
         private static async Task MainAsync()
         {
+            //add log at first
+            UriBuilder uri = new UriBuilder(config.LogWebhook);
+            await wc.AddWebhookAsync(uri.Uri);
             //Make us a little cute client
-            DiscordClient discord = new DiscordClient(new DiscordConfiguration()
+            discord = new DiscordClient(new DiscordConfiguration()
             {
                 Token = config.Token,
                 TokenType = TokenType.Bot,
@@ -108,7 +127,7 @@ namespace SilverBotDS
             while (true)
             {
                 //update the status to some random one
-                await discord.UpdateStatusAsync(Splashes.GetSingle());
+                await discord.UpdateStatusAsync(Splashes.GetSingle(useinternal: config.UseSplashConfig));
                 //wait the specified time
                 await Task.Delay(config.MsInterval);
                 //repeat🔁

@@ -14,12 +14,11 @@ namespace SilverBotDS
     internal class Browser
     {
         private static ChromiumWebBrowser CEFBrowser;
-        private static ConcurrentDictionary<string, Image> concurrentDictionary = new();
+        private static readonly ConcurrentDictionary<string, Image> concurrentDictionary = new();
 
         public static async Task<Image> ScreenshotAsync(string url)
         {
             string loc = new RandomGenerator().RandomString(69);
-            Console.WriteLine("we here " + url);
             if (CEFBrowser == null)
             {
                 CEFBrowser = new ChromiumWebBrowser(url);
@@ -29,7 +28,6 @@ namespace SilverBotDS
                 }
                 CEFBrowser.LoadingStateChanged += (o, args) =>
                 {
-                    Console.WriteLine("we here ahh ");
                     BrowserLoadingStateChanged(o, args, loc);
                 };
             }
@@ -37,7 +35,6 @@ namespace SilverBotDS
             {
                 CEFBrowser.LoadingStateChanged += (o, args) =>
                 {
-                    Console.WriteLine("we here ahh ");
                     BrowserLoadingStateChanged(o, args, loc);
                 };
                 while (!CEFBrowser.IsBrowserInitialized)
@@ -123,12 +120,8 @@ namespace SilverBotDS
                 var task = CEFBrowser.ScreenshotAsync();
                 task.ContinueWith(x =>
                 {
-                    Console.WriteLine("we at " + ((ChromiumWebBrowser)sender).Address + " and serving " + id);
+                    Console.WriteLine("We are located at" + ((ChromiumWebBrowser)sender).Address + " and serving " + id);
                     concurrentDictionary.TryAdd(id, task.Result);
-
-                    // We no longer need the Bitmap.
-                    // Dispose it to avoid keeping the memory alive.  Especially important in 32-bit applications.
-                    /// task.Result.Dispose();
                 }, TaskScheduler.Default);
             }
         }

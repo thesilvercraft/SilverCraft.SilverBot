@@ -37,7 +37,7 @@ namespace SilverBotDS
             return config;
         }
 
-        private static DiscordWebhookClient wc = new();
+        private static readonly DiscordWebhookClient wc = new();
 
         public static async Task SendLogAsync(string text, List<DiscordEmbed> embeds)
         {

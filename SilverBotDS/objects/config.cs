@@ -24,9 +24,11 @@ namespace SilverBotDS.Config
         public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
         public int MsInterval { get; set; } = 1800000;
         public ulong? ConfigVer { get; set; } = null;
-        public readonly static ulong CurrentConfVer = 1;
+        public readonly static ulong CurrentConfVer = 2;
         public bool UseSplashConfig { get; set; } = true;
         public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
+
+        public string Topgg_Sid_Token { get; set; } = "None";
 
         public static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument, bool isexample = false)
         {
@@ -46,6 +48,7 @@ namespace SilverBotDS.Config
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/MsInterval", "Interval to use so discord dont ban us, in ms, is int32 so use -1 if you want no splash changes, defaults to 30m as kae kinda was like hey you know discord has probably put you on a watchlist");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/UseSplashConfig", "Does the bot use the: True-Config or False-Internal splashes");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/LogWebhook", "Webhook for logging");
+            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Topgg_Sid_Token", "Token used for bot command, leave 'None' to disable, This is technically selfbotting but whatever");
             return xmlDocument;
         }
 

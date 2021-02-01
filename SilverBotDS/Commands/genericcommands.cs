@@ -123,20 +123,20 @@ namespace SilverBotDS
                     tempbuilder.WithTitle(data[i].Title);
                     tempbuilder.WithUrl($"https://www.nuget.org/packages/{data[i].Id}");
                     tempbuilder.WithAuthor(Stringutils.ArrayToString(data[i].Authors, ","), data[i].ProjectUrl);
-                    tempbuilder.WithFooter(lang.Requested_by + ctx.User.Username + string.Format(lang.Page_Nuget, i, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
+                    tempbuilder.WithFooter(lang.Requested_by + ctx.User.Username + " " + string.Format(lang.Page_Nuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(data[i].IconUrl))
                     {
                         tempbuilder.WithThumbnail(data[i].IconUrl);
                     }
                     tempbuilder.WithDescription(data[i].Description);
-                    tempbuilder.AddField("nuget verified", Stringutils.BoolToEmoteString(data[i].Verified), true);
+                    tempbuilder.AddField("NuGet verified", Stringutils.BoolToEmoteString(data[i].Verified), true);
                     if (!string.IsNullOrEmpty(data[i].Type))
                     {
-                        tempbuilder.AddField("type", data[i].Type, true);
+                        tempbuilder.AddField("Type", data[i].Type, true);
                     }
 
-                    tempbuilder.AddField("<:download_icon:803020837581357137>", data[i].TotalDownloads.ToString(), true);
-                    tempbuilder.AddField("version", data[i].Version, true);
+                    tempbuilder.AddField("<:green_download_icon:805051604797227038>", data[i].TotalDownloads.ToString(), true);
+                    tempbuilder.AddField("V", data[i].Version, true);
                     pages.Add(new Page(embed: tempbuilder));
                 }
 
@@ -181,34 +181,31 @@ namespace SilverBotDS
         [Description("Don't know what some new bot your friends invited here but you dont want to google? just ask me ")]
         public async Task WhoIsBot(CommandContext ctx, [Description("the bot")] DiscordUser user)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
             DiscordEmbedBuilder b = new();
-            try
+            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            if (!user.IsBot)
             {
-                HttpClient client = Webclient.Get();
-                HttpResponseMessage rm = await client.GetAsync("https://silverdimond.tk/silvercraftbot/bots/" + user.Id);
-                b.WithAuthor(user.Username, iconUrl: user.GetAvatarUrl(ImageFormat.Auto));
-                b.WithThumbnail(user.GetAvatarUrl(ImageFormat.Auto));
-                if (rm.StatusCode == HttpStatusCode.OK)
-                {
-                    b.WithDescription(await rm.Content.ReadAsStringAsync());
-                }
-                else
-                {
-                    b.WithDescription(rm.StatusCode.ToString());
-                }
-                if (user.Id == 159985870458322944)
-                {
-                    b.WithThumbnail("https://media.discordapp.net/attachments/728360861483401240/775156721206558741/scary_mee6.png");
-                }
+                b.WithTitle(lang.User_Isnt_Bot);
+                b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto));
+                await ctx.RespondAsync(embed: b.Build());
+                return;
+            }
+            DBLA.Client client = new(Program.GetConfig().Topgg_Sid_Token, true);
+            var bot = await client.GetViaIdAsync(user.Id);
+
+            if (bot == null)
+            {
+                b.WithTitle(lang.DBLA_Returned_Null);
                 b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto));
                 await ctx.RespondAsync(embed: b.Build());
             }
-            catch (HttpRequestException e)
+            else
             {
-                b = new();
-                b.WithTitle("WebException");
-                b.WithDescription(e.Message);
+                b.WithAuthor(user.Username, bot.Website, user.GetAvatarUrl(ImageFormat.Auto));
+                b.WithThumbnail(user.GetAvatarUrl(ImageFormat.Auto));
+                b.WithDescription(bot.Shortdesc);
+                b.AddField("Prefix used", "`" + bot.Prefix + "`");
+                b.WithUrl(bot.Website);
                 b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto));
                 await ctx.RespondAsync(embed: b.Build());
             }

@@ -38,6 +38,11 @@ namespace SilverBotDS
         /// </remarks>
 
         public string Requested_by { get; set; } = "Requested by ";
+        /// <summary>
+        /// Something went wrong, it's probably on my end.
+        /// </summary>
+
+        public string DBLA_Returned_Null { get; set; } = "Something went wrong, it's probably on my end.";
 
         /// <summary>
         /// Default(EN)
@@ -263,7 +268,7 @@ namespace SilverBotDS
         public string No_inf_on_server { get; set; } = "No infraction data on this server";
         public string Meme_is_nsfw { get; set; } = "The meme was NSFW";
         public string Credits { get; set; } = "Programming by SilverDimond#1691, Most things by SilverDimond#1691, 69% of splashes by ThePajamaSlime#9391, Useless questining by TheNewRicardo#4935, Microsoft for c#, The c# community for their solutions i didnt use, All the 69 NuGet packeges im using, 362700421191565322 the wierd dog that uses python, And most importantly thank you for using the bot.";
-        public string Bot_Name { get; set; } = "SilverCraft Bot";
+        public string Bot_Name { get; set; } = "SilverBot";
         public string Useless_fact { get; set; } = "Useless fact";
 
         /// <summary>
@@ -335,6 +340,11 @@ namespace SilverBotDS
         /// You may not send `next` as the 5 minutes expired
         /// </summary>
         public string Period_Expired { get; set; } = "You may not send `next` as the 5 minutes expired";
+
+        /// <summary>
+        /// Hey that isn't a bot, i think.
+        /// </summary>
+        public string User_Isnt_Bot { get; set; } = "Hey that isn't a bot, i think.";
 
         /// <summary>
         /// Requested by: |loopbot|

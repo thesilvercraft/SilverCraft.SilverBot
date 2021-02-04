@@ -1,6 +1,6 @@
 # SilverBotDS
-This is the hosting guide and not the end user guide.
-Warning: This guide isn't finished at all.
+This is the hosting guide and not the end user guide.  
+Warning: This guide isn't finished at all.  
 To run this you will need to install:
 - .net 5 runtime (https://dotnet.microsoft.com/download/dotnet/5.0)
 - GDI+ (https://github.com/mono/libgdiplus if you aren't on windows)

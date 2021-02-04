@@ -4,7 +4,7 @@ Warning: This guide isn't finished at all.
 To run this you will need to install:
 - .net 5 runtime (https://dotnet.microsoft.com/download/dotnet/5.0)
 - GDI+ (https://github.com/mono/libgdiplus if you aren't on windows)
-- Java 13 (ikr)
+- Java 13 (ikr)  
 You will also need:
 - A discord **bot** token (https://discord.com/developers)
 - A giphy api token (https://developers.giphy.com/)

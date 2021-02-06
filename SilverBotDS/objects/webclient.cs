@@ -9,7 +9,7 @@ namespace SilverBotDS
         public static HttpClient NewhttpClientwithstrign()
         {
             HttpClient e = new HttpClient();
-            e.DefaultRequestHeaders.UserAgent.TryParseAdd($"SilverBotDS");
+            e.DefaultRequestHeaders.UserAgent.TryParseAdd($"Mozilla/5.0+ (compatible; SilverBot/{VersionInfo.VNumber}; {ThisAssembly.Git.RepositoryUrl})");
             return e;
         }
 

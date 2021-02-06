@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -10,7 +11,7 @@ namespace SilverBotDS
      /// </summary>
      /// <param name="input">The object to serialize</param>
      /// <returns>A string containing that object as xml</returns>
-        public static string SerializeToXml(object input)
+        public static async Task<string> SerializeToXmlAsync(object input)
         {
             XmlSerializer ser = new XmlSerializer(input.GetType());
             string result = string.Empty;
@@ -20,7 +21,7 @@ namespace SilverBotDS
                 ser.Serialize(memStm, input);
 
                 memStm.Position = 0;
-                result = new StreamReader(memStm).ReadToEnd();
+                result = await new StreamReader(memStm).ReadToEndAsync();
             }
 
             return result;

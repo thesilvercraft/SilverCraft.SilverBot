@@ -2,10 +2,6 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SilverBotDS
@@ -18,9 +14,9 @@ namespace SilverBotDS
         [Description("Kick a specified user")]
         [RequireBotPermissions(Permissions.KickMembers)]
         [RequireUserPermissions(Permissions.KickMembers)]
-        public async Task kick(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The kick boot has spoken")
+        public async Task Kick(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The kick boot has spoken")
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
             string thing = "";
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
@@ -52,17 +48,17 @@ namespace SilverBotDS
         [RequireUserPermissions(Permissions.BanMembers)]
         public async Task Ban(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
             string thing = "";
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
             if (up < ap)
             {
-                thing += lang.User_has_lower_role + lang.Kick;
+                thing += lang.User_has_lower_role + lang.Ban;
             }
             if (up == ap)
             {
-                thing += lang.User_has_lower_role + lang.Kick;
+                thing += lang.User_has_lower_role + lang.Ban;
             }
             if (ap > bp)
             {

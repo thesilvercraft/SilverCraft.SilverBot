@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,7 +42,7 @@ namespace SilverBotDS
             {
                 try
                 {
-                    conn.Open();
+                    await conn.OpenAsync();
                     await using var cmd = new NpgsqlCommand("SELECT optedin FROM serveroptin WHERE serverid = @id", conn);
                     cmd.Parameters.AddWithValue("id", Convert.ToInt64(serverid));
                     await using var reader = await cmd.ExecuteReaderAsync();
@@ -51,7 +50,7 @@ namespace SilverBotDS
                     {
                         e = reader.GetBoolean(0);
                     }
-                    conn.Close();
+                    await conn.CloseAsync();
                 }
                 catch (Exception exep)
                 {
@@ -72,7 +71,7 @@ namespace SilverBotDS
             try
             {
                 using NpgsqlConnection conn = NewConnection();
-                conn.Open();
+                await conn.OpenAsync();
                 await using var cmd = new NpgsqlCommand(sql, conn);
 
                 DataTable dataTable = new DataTable();
@@ -81,7 +80,7 @@ namespace SilverBotDS
                 NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
                 // this will query your database and return the result to your datatable
                 da.Fill(dataTable);
-                conn.Close();
+                await conn.CloseAsync();
                 StringBuilder thing = new("<html>" +
                     "<head>" +
                     "<style>" +
@@ -121,7 +120,7 @@ namespace SilverBotDS
                     }
                     thing.AppendLine("</table></body></html>");
                 }
-                return new Tuple<string, Image>(null, await Browser.ScreenshotThingAsync(thing.ToString()));
+                return new Tuple<string, Image>(null, await Browser.ScreenshotHtmlAsync(thing.ToString()));
             }
             catch (Exception e)
             {
@@ -134,12 +133,12 @@ namespace SilverBotDS
         public static async Task InsertAsync(Serveroptin e)
         {
             using NpgsqlConnection conn = NewConnection();
-            conn.Open();
+            await conn.OpenAsync();
             await using var cmd = new NpgsqlCommand("INSERT INTO serveroptin (serverid, optedin) VALUES (@p1, @p2)", conn);
             cmd.Parameters.AddWithValue("p1", Convert.ToInt64(e.ServerId));
             cmd.Parameters.AddWithValue("p2", e.Optedin);
             await cmd.ExecuteNonQueryAsync();
-            conn.Close();
+            await conn.CloseAsync();
         }
 
         public static async Task<List<Serveroptin>> ServersoptedinAsync()
@@ -148,7 +147,7 @@ namespace SilverBotDS
             try
             {
                 using NpgsqlConnection conn = NewConnection();
-                conn.Open();
+                await conn.OpenAsync();
                 await using var cmd = new NpgsqlCommand("SELECT serverid, optedin FROM serveroptin WHERE(optedin = True)", conn);
                 await using var reader = await cmd.ExecuteReaderAsync();
 
@@ -160,7 +159,7 @@ namespace SilverBotDS
                         Optedin = reader.GetBoolean(1)
                     });
                 }
-                conn.Close();
+                await conn.CloseAsync();
                 return enuma;
             }
             catch (Exception e)

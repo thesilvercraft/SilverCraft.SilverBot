@@ -8,10 +8,7 @@ namespace SilverBotDS
     {
         private readonly RNGCryptoServiceProvider csp;
 
-        public RandomGenerator()
-        {
-            csp = new RNGCryptoServiceProvider();
-        }
+        public RandomGenerator() => csp = new RNGCryptoServiceProvider();
 
         public int Next(int minValue, int maxExclusiveValue)
         {

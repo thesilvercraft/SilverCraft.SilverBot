@@ -1,12 +1,7 @@
 ﻿using DSharpPlus.Entities;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace SilverBotDS
 {
@@ -199,7 +194,7 @@ new ("GREAT SUCCESS!",ActivityType.Playing),
         /// <param name="ignorecache">Should it reload the splashes.json</param>
         /// <param name="useinternal">Should it ignore splashes.json alltogether</param>
         /// <returns>a list of <see cref="DiscordActivity[]"/>s</returns>
-        public static DiscordActivity[] Get(bool ignorecache = false, bool useinternal = false)
+        public static async System.Threading.Tasks.Task<DiscordActivity[]> GetAsync(bool ignorecache = false, bool useinternal = false)
         {
             if (useinternal)
             {
@@ -210,7 +205,7 @@ new ("GREAT SUCCESS!",ActivityType.Playing),
                 if (File.Exists("splashes.json"))
                 {
                     using StreamReader reader = new("splashes.json");
-                    Cache = JsonSerializer.Deserialize<DiscordActivity[]>(reader.ReadToEnd());
+                    Cache = JsonSerializer.Deserialize<DiscordActivity[]>(json: await reader.ReadToEndAsync());
                     return Cache;
                 }
                 else
@@ -236,10 +231,10 @@ new ("GREAT SUCCESS!",ActivityType.Playing),
         /// <param name="ignorecache">Should it reload the splashes.json</param>
         /// <param name="useinternal">Should it ignore splashes.json alltogether</param>
         /// <returns>a single (random) <see cref="DiscordActivity"/></returns>
-        public static DiscordActivity GetSingle(bool ignorecache = false, bool useinternal = false)
+        public static async Task<DiscordActivity> GetSingleAsync(bool ignorecache = false, bool useinternal = false)
         {
             RandomGenerator rg = new();
-            var arr = Get(ignorecache, useinternal);
+            DiscordActivity[] arr = await GetAsync(ignorecache, useinternal);
             return arr[rg.Next(0, arr.Length)];
         }
     }

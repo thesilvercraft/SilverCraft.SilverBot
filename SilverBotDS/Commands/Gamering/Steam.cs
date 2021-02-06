@@ -7,8 +7,6 @@ using DSharpPlus.Interactivity.Extensions;
 using SteamStoreQuery;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SilverBotDS
@@ -22,7 +20,7 @@ namespace SilverBotDS
         [Description("Search about a game")]
         public async Task Search(CommandContext ctx, [RemainingText()][Description("The game")] string game)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             try
             {
                 List<Listing> listings = Steam.Search(game);

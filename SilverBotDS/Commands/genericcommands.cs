@@ -6,8 +6,6 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,28 +20,28 @@ namespace SilverBotDS
         [Description("Hello fellow human! beep boop")]
         public async Task GreetCommand(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             await ctx.RespondAsync(string.Format(lang.Hi, ctx.Member.Mention));
         }
 
         [Command("meme")]
         public async Task Kindsffeefdfdfergergrgfdfdsgfdfg(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
             HttpClient client = Webclient.Get();
             HttpResponseMessage rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
             if (rm.StatusCode == HttpStatusCode.OK)
             {
-                meme asdf = System.Text.Json.JsonSerializer.Deserialize<meme>(await rm.Content.ReadAsStringAsync());
-                b.WithTitle(lang.Meme + asdf.title);
-                b.WithUrl(asdf.postLink);
-                b.WithAuthor("👍 " + asdf.ups + " | r/" + asdf.subreddit);
+                Meme asdf = System.Text.Json.JsonSerializer.Deserialize<Meme>(await rm.Content.ReadAsStringAsync());
+                b.WithTitle(lang.Meme + asdf.Title);
+                b.WithUrl(asdf.PostLink);
+                b.WithAuthor("👍 " + asdf.Ups + " | r/" + asdf.Subreddit);
                 b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                b.AddField("NSFW", asdf.nsfw.ToString(), true);
-                b.AddField("Spoiler", asdf.spoiler.ToString(), true);
-                b.AddField("Author", asdf.author, true);
-                b.WithImageUrl(asdf.url);
+                b.AddField("NSFW", asdf.Nsfw.ToString(), true);
+                b.AddField("Spoiler", asdf.Spoiler.ToString(), true);
+                b.AddField("Author", asdf.Author, true);
+                b.WithImageUrl(asdf.Url);
                 await ctx.RespondAsync(embed: b.Build());
             }
             else
@@ -57,7 +55,7 @@ namespace SilverBotDS
         [Description("Get the time in UTC")]
         public async Task Time(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             await ctx.RespondAsync(string.Format(lang.Time_In_Utc, DateTime.UtcNow.ToString(lang.Time_format)));
         }
 
@@ -72,7 +70,7 @@ namespace SilverBotDS
         [Description("SilverHosting best")]
         public async Task Dukt(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
             bob.WithTitle(lang.Silverhosting_joke_title);
             bob.WithDescription(lang.Silverhosting_joke_description);
@@ -84,7 +82,7 @@ namespace SilverBotDS
         [Description("Reject humanity return to monke")]
         public async Task Monke(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
             bob.WithImageUrl("https://i.kym-cdn.com/photos/images/newsfeed/001/867/677/40d.jpg");
             bob.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
@@ -95,7 +93,7 @@ namespace SilverBotDS
         [Description("Wanna hear some useless fact? Just ask me")]
         public async Task UselessFact(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
             HttpClient client = Webclient.Get();
             HttpResponseMessage rm = await client.GetAsync("https://uselessfacts.jsph.pl/random.md?language=" + lang.Lang_code_for_useless_facts);
@@ -110,7 +108,7 @@ namespace SilverBotDS
         [Description("Search up packages on the NuGet")]
         public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             try
             {
                 NuGetUtils.Datum[] data = await NuGetUtils.SearchAsync(query);
@@ -146,8 +144,9 @@ namespace SilverBotDS
             {
                 DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
                 bob.WithTitle("Something went fucky wucky on my side");
-                bob.WithDescription("Try again a little later?\n" + e.Message);
+                bob.WithDescription("Try again a little later?");
                 await ctx.RespondAsync(embed: bob.Build());
+                await Program.SendLogAsync(e.Message, new());
                 throw;
             }
         }
@@ -182,7 +181,7 @@ namespace SilverBotDS
         public async Task WhoIsBot(CommandContext ctx, [Description("the bot")] DiscordUser user)
         {
             DiscordEmbedBuilder b = new();
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             if (!user.IsBot)
             {
                 b.WithTitle(lang.User_Isnt_Bot);
@@ -216,7 +215,7 @@ namespace SilverBotDS
         [Description("Get the info I know about a specified user")]
         public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
 
             b.WithTitle(lang.User + a.Username);

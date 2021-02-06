@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
-using GiphyDotNet.Manager;
 using GiphyDotNet.Model.Parameters;
+using System;
+using System.Threading.Tasks;
 
 namespace SilverBotDS
 {
     [Group("gif")]
-    internal class giphy : BaseCommandModule
+    internal class Giphy : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
 
         [Command("random")]
         public async Task Kindsffeefergergrgfdfdsgfdfg(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
             GiphyDotNet.Model.Results.GiphyRandomResult gifresult = await GiphyO.Get().RandomGif(new RandomParameter
             {
@@ -37,7 +33,7 @@ namespace SilverBotDS
         [Command("search"), Aliases("s")]
         public async Task Kindsffeefergergrgfdfdsgfdgfdsfgdfgfdfdghdfg(CommandContext ctx, [RemainingText] string term)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild.Id);
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             GiphyDotNet.Model.Results.GiphySearchResult gifResult;
             int page = 0;
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
@@ -59,6 +55,7 @@ namespace SilverBotDS
             var msg = await interactivity.WaitForMessageAsync(xm => xm.Content.Contains("next"), TimeSpan.FromSeconds(60));
             if (msg.Result != null)
             {
+                _ = msg.Result.DeleteAsync();
                 page++;
                 if (page > gifResult.Data.Length)
                 {

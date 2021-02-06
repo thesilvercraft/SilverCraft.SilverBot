@@ -1,11 +1,6 @@
 ﻿using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -35,9 +30,10 @@ namespace SilverBotDS
             {
                 try
                 {
-                    var client = new RestClient($"https://top.gg/api/bots/{id}");
-
-                    client.Timeout = -1;
+                    var client = new RestClient($"https://top.gg/api/bots/{id}")
+                    {
+                        Timeout = -1
+                    };
                     var request = new RestRequest(Method.GET);
                     if (selfbot)
                     {
@@ -49,8 +45,17 @@ namespace SilverBotDS
                     }
 
                     IRestResponse response = await client.ExecuteAsync(request);
-                    Console.WriteLine(response.Content);
-                    return JsonSerializer.Deserialize<Bot>(response.Content);
+                    //Console.WriteLine(response.Content);
+                    var bot = JsonSerializer.Deserialize<Bot>(response.Content);
+                    if (!string.IsNullOrEmpty(bot.Error))
+                    {
+                        _ = Program.SendLogAsync(bot.Error, new());
+                        return null;
+                    }
+                    else
+                    {
+                        return bot;
+                    }
                 }
                 catch (HttpRequestException ex)
                 {
@@ -65,6 +70,9 @@ namespace SilverBotDS
         /// </summary>
         public class Bot
         {
+            [JsonPropertyName("error")]
+            public string Error { get; set; }
+
             [JsonPropertyName("defAvatar")]
             public string DefAvatar { get; set; }
 

@@ -182,9 +182,9 @@ namespace SilverBotDS
         public string Error_sent_to_logs { get; set; } = "Complete error sent to Bot logs";
 
         /// <summary>
-        ///SilverCraftBot sponsored by SilverHosting
+        ///SilverBot sponsored by SilverHosting
         /// </summary>
-        public string Silverhosting_joke_title { get; set; } = "SilverCraftBot sponsored by SilverHosting";
+        public string Silverhosting_joke_title { get; set; } = "SilverBot sponsored by SilverHosting";
 
         /// <summary>
         ///Use offer code [SLVR](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
@@ -235,7 +235,16 @@ namespace SilverBotDS
         /// </summary>
         public string All_availible_emotes { get; set; } = "**All available emotes**";
 
+        /// <summary>
+        /// You are banned from using the silversocial features
+        /// </summary>
         public string User_is_banned_from_silversocial { get; set; } = "You are banned from using the silversocial features";
+
+        /// <summary>
+        /// This server/server owner is banned from using the silversocial features
+        /// </summary>
+        public string Guild_is_banned_from_silversocial { get; set; } = "This server/server owner is banned from using the silversocial features";
+
         public string User_is_not_banned_from_silversocial { get; set; } = "You are not banned POG";
         public string Time_format { get; set; } = "G"; //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?redirectedfrom=MSDN
         public string Unable_to_send_dm { get; set; } = "I was unable to send a message to this person";
@@ -279,7 +288,7 @@ namespace SilverBotDS
         public string Ban { get; set; } = "ban";
         public string Kick { get; set; } = "kick";
         public string Bot_has_lower_role { get; set; } = "I must have a higher role than the person you are trying to ";
-        public string Availible_languages { get; set; } = "Availible languages:";
+        public string Available_languages { get; set; } = "Available languages:";
         public string Random_GIF { get; set; } = "Random GIF:";
 
         /// <summary>
@@ -319,6 +328,14 @@ namespace SilverBotDS
         /// Ment to be used when there isnt a more better term
         /// </remarks>
         public string More_Than_One_Image_Generic { get; set; } = "You attached more than one image";
+
+        /// <summary>
+        /// The output file is larger than 8mb, its {0}
+        /// </summary>
+        /// <remarks>
+        /// Ment to be used when there isnt a more better term
+        /// </remarks>
+        public string Output_File_Larger_Than_8M { get; set; } = "The output file is larger than 8mb, its {0}";
 
         /// <summary>
         ///Search results for the term `{0}`
@@ -371,10 +388,12 @@ namespace SilverBotDS
         /// </summary>
         public string Fortnite_Search_Fail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
 
+        public ImageThings Imagethings { get; set; } = new();
+
         private static readonly Dictionary<string, Language> CachedLanguages = new Dictionary<string, Language>();
         private static readonly bool logging = true;
 
-        public static Language Get(string a)
+        public static async System.Threading.Tasks.Task<Language> GetAsync(string a)
         {
             if (CachedLanguages.Count != 0)
             {
@@ -419,7 +438,8 @@ namespace SilverBotDS
                     {
                         using Stream stream = File.OpenRead(u);
                         StreamReader reader = new StreamReader(stream);
-                        string content = reader.ReadToEnd();
+                        string content = await reader.ReadToEndAsync();
+                        reader.Close();
                         reader.Dispose();
                         Language asdf = JsonSerializer.Deserialize<Language>(content);
                         string name = Path.GetFileNameWithoutExtension(u);
@@ -439,14 +459,27 @@ namespace SilverBotDS
                     Console.ResetColor();
                 }
 
-                return Get(a);
+                return await GetAsync(a);
             }
         }
 
-        public static Language GetLanguageFromId(ulong id)
+        public static Language GetLanguageFromId(ulong? id)
         {
+            if (id is null)
+            {
+                return new Language();
+            }
             //TODO: IMPLEMENT THE THING LOL
             return new Language();
         }
+    }
+
+    public class ImageThings
+    {
+        public string JPEG_Success { get; set; } = "There ya go a jpegnized image";
+        public string Silver_Success { get; set; } = "There ya go a silver image";
+        public string Comic_Success { get; set; } = "There ya go a image with the comic filter";
+        public string Resize_Success { get; set; } = "There ya go a resized image";
+        public string Tint_Success { get; set; } = "There ya go a tinted image";
     }
 }

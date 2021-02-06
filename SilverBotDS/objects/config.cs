@@ -8,7 +8,7 @@ using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace SilverBotDS.Config
+namespace SilverBotDS
 {
     public class Config
     {
@@ -52,7 +52,7 @@ namespace SilverBotDS.Config
             return xmlDocument;
         }
 
-        public static Config Get()
+        public static async System.Threading.Tasks.Task<Config> GetAsync()
         {
             Config new_config = new Config
             {
@@ -107,7 +107,7 @@ namespace SilverBotDS.Config
                         {
                             using (StreamWriter streamWriter = new StreamWriter("silverbotold.xml", false))
                             {
-                                streamWriter.Write(streamReader.ReadToEnd());
+                                await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
                                 streamWriter.Close();
                             }
                             streamReader.Close();

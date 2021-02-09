@@ -444,7 +444,7 @@ namespace SilverBotDS
         }
 
         [Command("motivate")]
-        public async Task Motivate(CommandContext ctx, string text)
+        public async Task Motivate(CommandContext ctx, [RemainingText] string text)
         {
             try
             {
@@ -458,7 +458,7 @@ namespace SilverBotDS
         }
 
         [Command("motivate")]
-        public async Task Motivate(CommandContext ctx, SDImage image, string text)
+        public async Task Motivate(CommandContext ctx, SDImage image, [RemainingText] string text)
         {
             if (cachedmotivatetemplate == null)
             {
@@ -466,6 +466,7 @@ namespace SilverBotDS
                 Stream myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.motivator_template.png");
                 cachedmotivatetemplate = new Bitmap(myStream);
             }
+
             var font = new Font("Times New Roman", 100);
             using MemoryStream resizedstream = Resize(await image.GetBytesAsync(), new Size(1027, 684));
             using (Bitmap copythingy = new Bitmap(cachedmotivatetemplate))
@@ -480,7 +481,12 @@ namespace SilverBotDS
                     LineAlignment = StringAlignment.Center,
                     Alignment = StringAlignment.Center
                 };
-                drawing.DrawString(text, font, new SolidBrush(Color.White), new RectangleF(new PointF(119, 793), new SizeF(1041, 109)), sf);
+                while (1041 < drawing.MeasureString(text,
+new Font(font.FontFamily, font.Size, font.Style)).Width)
+                {
+                    font = new Font(font.FontFamily, font.Size - 0.5f, font.Style);
+                }
+                drawing.DrawString(text, font, new SolidBrush(Color.White), new RectangleF(new PointF(119, 793), new SizeF(1041, 209)), sf);
                 drawing.Save();
                 using MemoryStream outStream = new();
                 outStream.Position = 0;
@@ -497,62 +503,8 @@ namespace SilverBotDS
             }
         }
 
-        [Command("motivateold")]
-        public async Task motivateold(CommandContext ctx, string text)
-        {
-            try
-            {
-                SDImage image = SDImage.FromContext(ctx);
-                await Motivateold(ctx, image, text);
-            }
-            catch (AttachmentCountIncorrectException ACIE)
-            {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
-            }
-        }
-
-        [Command("motivateold")]
-        public async Task Motivateold(CommandContext ctx, SDImage image, string text)
-        {
-            using MemoryStream inStream = new MemoryStream(await image.GetBytesAsync());
-            var bitmap = new Bitmap(inStream);
-            int x = bitmap.Width, y = bitmap.Height;
-            var font = new Font("Times New Roman", x / 10);
-            using MemoryStream outStream = new MemoryStream();
-
-            Image img = new Bitmap(1, 1);
-
-            Graphics drawing = Graphics.FromImage(img);
-
-            SizeF textSize = drawing.MeasureString(text, font, x);
-            img.Dispose();
-            drawing.Dispose();
-            img = new Bitmap(x, y + (int)textSize.Height);
-            drawing = Graphics.FromImage(img);
-            drawing.Clear(Color.FromArgb(0, 0, 0));
-            StringFormat sf = new StringFormat
-            {
-                LineAlignment = StringAlignment.Center,
-                Alignment = StringAlignment.Center
-            };
-            drawing.DrawString(text, font, new SolidBrush(Color.White), new RectangleF(new PointF(0, y), new SizeF(x, textSize.Height)), sf);
-            drawing.DrawImage(bitmap, new Point(0, 0));
-            drawing.Save();
-            drawing.Dispose();
-            img.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
-            outStream.Position = 0;
-            if (outStream.Length > MaxBytes)
-            {
-                await ctx.RespondAsync("hey vsauce here, your image is larger than 8mb and discord wont let me send it");
-            }
-            else
-            {
-                await ctx.Channel.SendFileAsync("silverbotimage.png", outStream, "there");
-            }
-        }
-
         [Command("caption")]
-        public async Task Caption(CommandContext ctx, string text)
+        public async Task Caption(CommandContext ctx, [RemainingText] string text)
         {
             try
             {
@@ -566,7 +518,7 @@ namespace SilverBotDS
         }
 
         [Command("caption")]
-        public async Task Caption(CommandContext ctx, SDImage image, string text)
+        public async Task Caption(CommandContext ctx, SDImage image, [RemainingText] string text)
         {
             using MemoryStream inStream = new MemoryStream(await image.GetBytesAsync());
             var bitmap = new Bitmap(inStream);

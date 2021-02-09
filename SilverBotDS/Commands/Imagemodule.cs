@@ -4,8 +4,11 @@ using DSharpPlus.Entities;
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters.Photo;
 using ImageProcessor.Imaging.Formats;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SilverBotDS
@@ -367,6 +370,185 @@ namespace SilverBotDS
             img.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
             outStream.Position = 0;
             await ctx.Channel.SendFileAsync("silverbotimage.png", outStream, "there");
+        }
+
+        private static Bitmap cachedmotivatetemplate;
+        private static Bitmap cachedadventuretimetemplate;
+
+        [RequireGuild()]
+        [Command("adventuretime")]
+        public async Task AdventureTime(CommandContext ctx)
+        {
+            await AdventureTime(ctx, ctx.Guild.CurrentMember);
+        }
+
+        [Command("adventuretime")]
+        public async Task AdventureTime(CommandContext ctx, DiscordUser friendo)
+        {
+            await AdventureTime(ctx, ctx.Member, friendo);
+        }
+
+        [Command("adventuretime")]
+        public async Task AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)
+        {
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            try
+            {
+                if (cachedadventuretimetemplate == null)
+                {
+                    Assembly myAssembly = Assembly.GetExecutingAssembly();
+
+                    Stream myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png");
+                    if (myStream is null)
+                    {
+                        Console.Write("FOCK");
+                    }
+                    cachedadventuretimetemplate = new Bitmap(myStream);
+                }
+                using MemoryStream resizedstreama = new(await new SDImage(person.GetAvatarUrl(DSharpPlus.ImageFormat.Png, 256)).GetBytesAsync());
+                using MemoryStream resizedstreamb = new(await new SDImage(friendo.GetAvatarUrl(DSharpPlus.ImageFormat.Png, 256)).GetBytesAsync());
+                using (Bitmap copythingy = new Bitmap(cachedadventuretimetemplate))
+                {
+                    var drawing = Graphics.FromImage(copythingy);
+
+                    using (Bitmap internalimage = new(resizedstreamb))
+                    {
+                        drawing.DrawImageUnscaled(internalimage, new Point(22, 948));
+                    }
+
+                    using (Bitmap internalimage = new(resizedstreama))
+                    {
+                        drawing.DrawImageUnscaled(internalimage, new Point(557, 699));
+                    }
+
+                    drawing.Save();
+                    using MemoryStream outStream = new();
+                    outStream.Position = 0;
+                    copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
+                    outStream.Position = 0;
+                    if (outStream.Length > MaxBytes)
+                    {
+                        await ctx.RespondAsync("hey vsauce here, your image is larger than 8mb and discord wont let me send it");
+                    }
+                    else
+                    {
+                        await ctx.Channel.SendFileAsync("silverbotimage.png", outStream, $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(friendo.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!", mentions: Mentions.None);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+                throw;
+            }
+        }
+
+        [Command("motivate")]
+        public async Task Motivate(CommandContext ctx, string text)
+        {
+            try
+            {
+                SDImage image = SDImage.FromContext(ctx);
+                await Motivate(ctx, image, text);
+            }
+            catch (AttachmentCountIncorrectException ACIE)
+            {
+                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
+            }
+        }
+
+        [Command("motivate")]
+        public async Task Motivate(CommandContext ctx, SDImage image, string text)
+        {
+            if (cachedmotivatetemplate == null)
+            {
+                Assembly myAssembly = Assembly.GetExecutingAssembly();
+                Stream myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.motivator_template.png");
+                cachedmotivatetemplate = new Bitmap(myStream);
+            }
+            var font = new Font("Times New Roman", 100);
+            using MemoryStream resizedstream = Resize(await image.GetBytesAsync(), new Size(1027, 684));
+            using (Bitmap copythingy = new Bitmap(cachedmotivatetemplate))
+            {
+                var drawing = Graphics.FromImage(copythingy);
+                using (Bitmap internalimage = new(resizedstream))
+                {
+                    drawing.DrawImageUnscaled(internalimage, new Point(126, 83));
+                }
+                StringFormat sf = new StringFormat
+                {
+                    LineAlignment = StringAlignment.Center,
+                    Alignment = StringAlignment.Center
+                };
+                drawing.DrawString(text, font, new SolidBrush(Color.White), new RectangleF(new PointF(119, 793), new SizeF(1041, 109)), sf);
+                drawing.Save();
+                using MemoryStream outStream = new();
+                outStream.Position = 0;
+                copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
+                outStream.Position = 0;
+                if (outStream.Length > MaxBytes)
+                {
+                    await ctx.RespondAsync("hey vsauce here, your image is larger than 8mb and discord wont let me send it");
+                }
+                else
+                {
+                    await ctx.Channel.SendFileAsync("silverbotimage.png", outStream, "there");
+                }
+            }
+        }
+
+        [Command("motivateold")]
+        public async Task motivateold(CommandContext ctx, string text)
+        {
+            try
+            {
+                SDImage image = SDImage.FromContext(ctx);
+                await Motivateold(ctx, image, text);
+            }
+            catch (AttachmentCountIncorrectException ACIE)
+            {
+                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
+            }
+        }
+
+        [Command("motivateold")]
+        public async Task Motivateold(CommandContext ctx, SDImage image, string text)
+        {
+            using MemoryStream inStream = new MemoryStream(await image.GetBytesAsync());
+            var bitmap = new Bitmap(inStream);
+            int x = bitmap.Width, y = bitmap.Height;
+            var font = new Font("Times New Roman", x / 10);
+            using MemoryStream outStream = new MemoryStream();
+
+            Image img = new Bitmap(1, 1);
+
+            Graphics drawing = Graphics.FromImage(img);
+
+            SizeF textSize = drawing.MeasureString(text, font, x);
+            img.Dispose();
+            drawing.Dispose();
+            img = new Bitmap(x, y + (int)textSize.Height);
+            drawing = Graphics.FromImage(img);
+            drawing.Clear(Color.FromArgb(0, 0, 0));
+            StringFormat sf = new StringFormat
+            {
+                LineAlignment = StringAlignment.Center,
+                Alignment = StringAlignment.Center
+            };
+            drawing.DrawString(text, font, new SolidBrush(Color.White), new RectangleF(new PointF(0, y), new SizeF(x, textSize.Height)), sf);
+            drawing.DrawImage(bitmap, new Point(0, 0));
+            drawing.Save();
+            drawing.Dispose();
+            img.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
+            outStream.Position = 0;
+            if (outStream.Length > MaxBytes)
+            {
+                await ctx.RespondAsync("hey vsauce here, your image is larger than 8mb and discord wont let me send it");
+            }
+            else
+            {
+                await ctx.Channel.SendFileAsync("silverbotimage.png", outStream, "there");
+            }
         }
 
         [Command("caption")]

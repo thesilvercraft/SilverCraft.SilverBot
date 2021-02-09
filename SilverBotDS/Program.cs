@@ -160,7 +160,7 @@ namespace SilverBotDS
             commands.RegisterCommands<OwnerOnly>();
             commands.RegisterCommands<SteamCommands>();
             commands.RegisterCommands<Fortnite>();
-            commands.RegisterCommands<AudioNLN>();
+            //commands.RegisterCommands<AudioNLN>();
             //Also enable voice
             _ = MainLogLineAsync("Enabling voice with incoming turned on");
             var voice = discord.UseVoiceNext(new VoiceNextConfiguration()
@@ -168,40 +168,16 @@ namespace SilverBotDS
                 EnableIncoming = true
             });
             _ = MainLogLineAsync("Launching lavalink");
-            //Setting an instance of ProcessStartInfo class
 
-            // under System.Diagnostic Assembly Reference
-
-            ProcessStartInfo pro = new ProcessStartInfo();
-
-            //Setting the FileName to be Started like in our
-
-            //Project we are just going to start a CMD Window.
-
-            pro.FileName = config.JavaLoc;
-            pro.Arguments = " -jar Lavalink.jar";
-            pro.UseShellExecute = true;
-            //Instead of using the above two line of codes, You
-
-            // can just use the code below:
-
-            // ProcessStartInfo pro = new ProcessStartInfo("cmd.exe");
-
-            //Creating an Instance of the Process Class
-
-            // which will help to execute our Process
-
-            Process proStart = new Process();
-
-            //Setting up the Process Name here which we are
-
-            // going to start from ProcessStartInfo
-
-            proStart.StartInfo = pro;
-
-            //Calling the Start Method of Process class to
-
-            // Invoke our Process viz 'cmd.exe'
+            Process proStart = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = config.JavaLoc,
+                    Arguments = " -jar Lavalink.jar",
+                    UseShellExecute = true
+                }
+            };
 
             proStart.Start();
 

@@ -164,7 +164,7 @@ namespace SilverBotDS
 
         [Command("emote")]
         [Description("Get an emote from the SilverSocial enabled servers")]
-        public async Task Midsdsdsadng(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote)
+        public async Task GetEmotes(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote)
         {
             Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             List<DiscordEmoji> emotes = new List<DiscordEmoji>();

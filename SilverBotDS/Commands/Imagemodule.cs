@@ -432,7 +432,7 @@ namespace SilverBotDS
                     }
                     else
                     {
-                        await ctx.Channel.SendFileAsync("silverbotimage.png", outStream, $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(friendo.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!", mentions: Mentions.None);
+                        await ctx.Channel.SendFileAsync("silverbotimage.png", outStream, $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!", mentions: Mentions.None);
                     }
                 }
             }

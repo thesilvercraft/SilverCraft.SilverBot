@@ -78,6 +78,37 @@ namespace SilverBotDS
             await ctx.RespondAsync(embed: bob.Build());
         }
 
+        [Command("nou")]
+        public async Task no_U(CommandContext ctx)
+        {
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+            bob.WithImageUrl("https://i.kym-cdn.com/photos/images/facebook/001/441/633/3c5.jpg");
+            bob.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            await ctx.RespondAsync(embed: bob.Build());
+        }
+
+        [Command("nou")]
+        public async Task no_U(CommandContext ctx, DiscordMember member)
+        {
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+            bob.WithImageUrl("https://i.kym-cdn.com/photos/images/facebook/001/441/633/3c5.jpg");
+            bob.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            await ctx.RespondAsync(member.Mention, embed: bob.Build());
+        }
+
+        [Command("booty")]
+        [Hidden]
+        public async Task booty(CommandContext ctx)
+        {
+            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+            bob.WithImageUrl("https://media1.tenor.com/images/ce2e9a0a24f384a9486acfac9bf7f5c1/tenor.gif?itemid=17561816");
+            bob.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            await ctx.RespondAsync("picture📸my🙋‍♂️booty🍑up🆙in 3D🤩i'll 🙋‍♂️shake🤝 my🙋‍♂️ booty🍑in my🙋‍♂️own movie", embed: bob.Build());
+        }
+
         [Command("monke"), Aliases(":monkey:", "🐒", "🐵", ":monkey_face:")]
         [Description("Reject humanity return to monke")]
         public async Task Monke(CommandContext ctx)

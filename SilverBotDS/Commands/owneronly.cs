@@ -16,7 +16,8 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS
 {
-    [RequireOwner()]
+    [RequireOwner]
+    [Hidden]
     internal class OwnerOnly : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static

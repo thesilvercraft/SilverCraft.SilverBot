@@ -114,6 +114,7 @@ namespace SilverBotDS
         }
 
         private static DiscordClient discord;
+        private static LavalinkExtension lavalink;
 
         private static async Task MainAsync()
         {
@@ -182,26 +183,17 @@ namespace SilverBotDS
             proStart.Start();
 
             //🥁🥁🥁 drumroll please
-            var endpoint = new ConnectionEndpoint
-            {
-                Hostname = "127.0.0.1", // From your server configuration.
-                Port = 2333 // From your server configuration
-            };
-            var lavalinkConfig = new LavalinkConfiguration
-            {
-                Password = "youshallnotpass", // From your server configuration.
-                RestEndpoint = endpoint,
-                SocketEndpoint = endpoint
-            };
-            var lavalink = discord.UseLavalink();
+
+            lavalink = discord.UseLavalink();
 
             _ = MainLogLineAsync("Connecting to discord");
             discord.Ready += Discord_Ready;
-            await discord.ConnectAsync();
+            await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
+
             //We have achived pog
             _ = MainLogLineAsync("Waiting 3s");
             await Task.Delay(3000);
-            await lavalink.ConnectAsync(lavalinkConfig);
+
             while (true)
             {
                 _ = MainLogLineAsync("Updating the status to a random one");
@@ -216,6 +208,19 @@ namespace SilverBotDS
 
         private static async Task Discord_Ready(DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e)
         {
+            var endpoint = new ConnectionEndpoint
+            {
+                Hostname = "127.0.0.1", // From your server configuration.
+                Port = 2333 // From your server configuration
+            };
+            var lavalinkConfig = new LavalinkConfiguration
+            {
+                Password = "youshallnotpass", // From your server configuration.
+                RestEndpoint = endpoint,
+                SocketEndpoint = endpoint
+            };
+            await Console.Out.WriteLineAsync("[ReadyEvent] Logged in as " + discord.CurrentUser.Username);
+            await lavalink.ConnectAsync(lavalinkConfig);
         }
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)

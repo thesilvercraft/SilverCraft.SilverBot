@@ -45,7 +45,7 @@ namespace SilverBotDS
                     }
 
                     IRestResponse response = await client.ExecuteAsync(request);
-                    //Console.WriteLine(response.Content);
+
                     var bot = JsonSerializer.Deserialize<Bot>(response.Content);
                     if (!string.IsNullOrEmpty(bot.Error))
                     {

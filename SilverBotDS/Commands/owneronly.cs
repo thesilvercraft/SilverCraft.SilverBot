@@ -219,7 +219,7 @@ namespace SilverBotDS
         [Description("reload the config for splashes")]
         public async Task Reloadsplashes(CommandContext ctx)
         {
-            Splashes.GetAsync(true);
+            await Splashes.GetAsync(true);
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
             bob.WithTitle("Reloaded splashes for ya.");
 
@@ -247,94 +247,6 @@ namespace SilverBotDS
             image.Position = 0;
             await ctx.RespondWithFileAsync("html.png", image, embed: bob.Build());
             e.Dispose();
-        }
-
-        [Command("test")]
-        [Description("UHHHHHHHHHHHHH its a secret")]
-        public async Task Test(CommandContext ctx, DiscordChannel chn = null, DiscordChannel chnb = null)
-        {
-            var vnext = ctx.Client.GetVoiceNext();
-            if (vnext == null)
-            {
-                // not enabled
-                await ctx.RespondAsync("VNext is not enabled or configured.");
-                return;
-            }
-
-            // check whether we aren't already connected
-            var vnc = vnext.GetConnection(ctx.Guild);
-            if (vnc != null)
-            {
-                // already connected
-                await ctx.RespondAsync("Already connected in this guild.");
-                return;
-            }
-
-            // get member's voice state
-            var vstat = ctx.Member?.VoiceState;
-            if (vstat?.Channel == null && chn == null)
-            {
-                // they did not specify a channel and are not in one
-                await ctx.RespondAsync("You are not in a voice channel.");
-                return;
-            }
-
-            // channel not specified, use user's
-            if (chn == null)
-                chn = vstat.Channel;
-            if (chnb == null)
-            {
-                chnb = await ctx.Client.GetChannelAsync(699361202312183886);
-            }
-            var vncb = await vnext.ConnectAsync(chnb);
-            // connect
-            vnc = await vnext.ConnectAsync(chn);
-            // thing = vnc.GetTransmitSink();
-            vncb.UserSpeaking += Vncb_UserSpeaking;
-            vncb.VoiceReceived += Vncb_VoiceReceived;
-            Directory.CreateDirectory("Output");
-            vnc.UserJoined += Vnc_UserJoined;
-            await ctx.RespondAsync($"Connected to `{chn.Name}`");
-        }
-
-        private Task Vnc_UserJoined(VoiceNextConnection sender, DSharpPlus.VoiceNext.EventArgs.VoiceUserJoinEventArgs e)
-        {
-            return Task.CompletedTask;
-        }
-
-        private Task Vncb_UserSpeaking(VoiceNextConnection sender, DSharpPlus.EventArgs.UserSpeakingEventArgs e)
-        {
-            Console.Write("person is speaking");
-            return Task.CompletedTask;
-        }
-
-        // private static VoiceTransmitSink thing;
-        private int howfull = 0;
-
-        private readonly byte[] pog = new byte[1000000];
-
-        private async Task Vncb_VoiceReceived(VoiceNextConnection sender, DSharpPlus.VoiceNext.EventArgs.VoiceReceiveEventArgs e)
-        {
-            //Console.Write("pog");
-
-            var array = e.PcmData.ToArray();
-            Console.WriteLine(array.Length);
-            if (howfull > 99999)
-            {
-                howfull = 0;
-                var fileName = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                var ffmpeg = Process.Start(new ProcessStartInfo
-                {
-                    FileName = "ffmpeg",
-                    Arguments = $@"-ac 2 -f s16le -ar 48000 -i pipe:0 -ac 2 -ar 44100 Output/{fileName}.wav",
-                    RedirectStandardInput = true
-                });
-
-                await ffmpeg.StandardInput.BaseStream.WriteAsync(pog);
-                ffmpeg.Dispose();
-            }
-            array.CopyTo(pog, howfull);
-            howfull += array.Length;
         }
     }
 }

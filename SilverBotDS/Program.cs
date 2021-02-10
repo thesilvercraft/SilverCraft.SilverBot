@@ -161,13 +161,15 @@ namespace SilverBotDS
             commands.RegisterCommands<OwnerOnly>();
             commands.RegisterCommands<SteamCommands>();
             commands.RegisterCommands<Fortnite>();
-            //commands.RegisterCommands<AudioNLN>();
-            //Also enable voice
-            _ = MainLogLineAsync("Enabling voice with incoming turned on");
-            var voice = discord.UseVoiceNext(new VoiceNextConfiguration()
+
+            //Launch lavalink
+            if (!File.Exists("Lavalink.jar"))
             {
-                EnableIncoming = true
-            });
+                _ = MainLogLineAsync("Downloading lavalink");
+                GitHubUtils.Repo repo = new("Frederikam", "Lavalink");
+                GitHubUtils.Release release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo);
+                await release.DownloadLatestAsync();
+            }
             _ = MainLogLineAsync("Launching lavalink");
 
             Process proStart = new Process

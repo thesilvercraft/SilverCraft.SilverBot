@@ -24,17 +24,22 @@ jobs:
     - name: Zip 
       shell: powershell
       run: Compress-7Zip "SilverBotDS\bin\Release\net5.0" -ArchiveFileName "silverbot.zip" -Format Zip
+    - name: Make a random name
+      id: E
+      shell: powershell
+      run: |
+          $e =Get-Random
+          echo "::set-output name=Random::$e"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-         tag_name: ${{ github.ref }}
-         release_name: Release ${{ github.ref }}
-         body: |
-            Automated Release by GitHub Action CI  
-         draft: false
+         tag_name: ${{ steps.E.outputs.Random }}
+         release_name: ${{ steps.E.outputs.Random }}
+         body: Automated release, a release will be created for every single push on the master branch. this one is for ${{ github.sha }}
+         draft: true
          prerelease: true
     - name: Upload Release Asset
       id: upload-release-asset

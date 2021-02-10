@@ -168,7 +168,7 @@ namespace SilverBotDS
                 Database.Setconnstring(ConnString);
             }
             GiphyO.Set(new GiphyDotNet.Manager.Giphy(readconfig.Gtoken));
-            Fortnite.Setapi(new Fortnite_API.FortniteApi(readconfig.FApiToken));
+            Fortnite.Setapi(new Fortnite_API.FortniteApiClient(readconfig.FApiToken));
             return readconfig;
         }
     }

@@ -13,13 +13,13 @@ namespace SilverBotDS
     internal class Fortnite : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
-        private static FortniteApi api;
+        private static FortniteApiClient api;
 
         /// <summary>
         /// fortite mor lioke fartnite am i righe or am i righe
         /// </summary>
         /// <param name="apie"></param>
-        public static void Setapi(FortniteApi apie)
+        public static void Setapi(FortniteApiClient apie)
         {
             api = apie;
         }

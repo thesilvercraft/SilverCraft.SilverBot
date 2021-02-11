@@ -22,7 +22,7 @@
     <PackageReference Include="CefSharp.OffScreen" Version="86.0.241" />
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
     <PackageReference Include="DSharpPlus" Version="4.0.0-rc1" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-rc1" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-rc2" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-rc1" />
     <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-rc1" />
     <PackageReference Include="DSharpPlus.VoiceNext" Version="4.0.0-rc1" />

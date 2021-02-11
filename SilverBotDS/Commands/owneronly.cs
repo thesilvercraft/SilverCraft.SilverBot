@@ -2,10 +2,8 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.VoiceNext;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
@@ -72,7 +70,10 @@ namespace SilverBotDS
             var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders, "Added by SilverBot as requested by" + ctx.User.Username);
             var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
             _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
-            await channel.SendMessageAsync(ctx.User.Mention + " there m8 that took some time to do", mentions: Mentions.None);
+            Discord​Message​Builder discordMessage = new();
+            discordMessage.Content = ctx.User.Mention + " there m8 that took some time to do";
+
+            await channel.SendMessageAsync(discordMessage);
         }
 
         [Command("setupcategory")]
@@ -125,7 +126,8 @@ namespace SilverBotDS
                 MemoryStream image = new MemoryStream();
                 thing.Item2.Save(image, System.Drawing.Imaging.ImageFormat.Png);
                 image.Position = 0;
-                await ctx.RespondWithFileAsync("html.png", image, embed: bob.Build());
+                await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
+
                 thing.Item2.Dispose();
             }
         }
@@ -141,7 +143,7 @@ namespace SilverBotDS
             using Image e = await Browser.ScreenshotAsync(html);
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;
-            await ctx.RespondWithFileAsync("html.png", image, embed: bob.Build());
+            await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
         }
 
         [Command("addemotes")]
@@ -245,7 +247,7 @@ namespace SilverBotDS
             MemoryStream image = new MemoryStream();
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;
-            await ctx.RespondWithFileAsync("html.png", image, embed: bob.Build());
+            await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
             e.Dispose();
         }
     }

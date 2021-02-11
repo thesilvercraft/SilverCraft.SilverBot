@@ -79,7 +79,7 @@ namespace SilverBotDS
         }
 
         [Command("nou")]
-        public async Task no_U(CommandContext ctx)
+        public async Task No_U(CommandContext ctx)
         {
             Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
@@ -89,7 +89,7 @@ namespace SilverBotDS
         }
 
         [Command("nou")]
-        public async Task no_U(CommandContext ctx, DiscordMember member)
+        public async Task No_U(CommandContext ctx, DiscordMember member)
         {
             Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
@@ -100,7 +100,7 @@ namespace SilverBotDS
 
         [Command("booty")]
         [Hidden]
-        public async Task booty(CommandContext ctx)
+        public async Task Booty(CommandContext ctx)
         {
             Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             DiscordEmbedBuilder bob = new DiscordEmbedBuilder();

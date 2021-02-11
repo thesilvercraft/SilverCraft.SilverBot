@@ -8,7 +8,6 @@ using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.Lavalink;
 using DSharpPlus.Net;
-using DSharpPlus.VoiceNext;
 
 using System;
 using System.Collections.Generic;
@@ -83,10 +82,6 @@ namespace SilverBotDS
         {
             CefSettings settings = new CefSettings
             {
-                // Set BrowserSubProcessPath based on app bitness at runtime
-                BrowserSubprocessPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
-                   Environment.Is64BitProcess ? "x64" : "x86",
-                                                  "CefSharp.BrowserSubprocess.exe"),
                 UserAgent = $"Mozilla/5.0+ (compatible; SilverBotCEF/{VersionInfo.VNumber}; {ThisAssembly.Git.RepositoryUrl})"
             };
             //Enable audio if you want

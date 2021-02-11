@@ -1,11 +1,8 @@
 ﻿using DSharpPlus.Entities;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -15,7 +12,7 @@ namespace SilverBotDS
 {
     public class GitHubUtils
     {
-        private static Regex r = new Regex("(?:https?://)?github.com/(?P<user>.+)/(?P<repo>.+)", RegexOptions.IgnoreCase);
+        private static readonly Regex r = new Regex("(?:https?://)?github.com/(?P<user>.+)/(?P<repo>.+)", RegexOptions.IgnoreCase);
 
         public class Repo
         {

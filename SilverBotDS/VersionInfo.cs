@@ -23,7 +23,7 @@ namespace SilverBotDS
                 Console.ForegroundColor = ConsoleColor.Green;
                 LogLine("Running on " + System.Environment.OSVersion.VersionString);
                 Console.ResetColor();
-                HttpClient client = Webclient.Get();
+                System.Net.Http.HttpClient client = WebClient.Get();
                 LogLine("Getting latest version info from silverdimond.tk");
                 HttpResponseMessage rm = await client.GetAsync("https://silverdimond.tk/silvercraftbot/version-info.txt");
                 string _content = await rm.Content.ReadAsStringAsync();

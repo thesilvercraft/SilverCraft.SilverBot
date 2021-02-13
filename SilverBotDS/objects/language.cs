@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DSharpPlus.CommandsNext;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -6,6 +7,7 @@ using System.Text.Json;
 namespace SilverBotDS
 {
     //TODO finish the summaries and shiz
+    //I know i promised language support but im kinda of an idiot so yeah
     internal class Language
     {
         /// <summary>
@@ -27,6 +29,11 @@ namespace SilverBotDS
         /// Needs to be used like <c>String.Format(Language.Time_In_Utc,DateTime.NowUTC.ToString(Language.Time_format));</c>
         /// </remarks>
         public string Time_In_Utc { get; set; } = "Time in UTC is {0}";
+
+        /// <summary>
+        /// This command is disabled
+        /// </summary>
+        public string Command_Is_Disabled { get; set; } = "This command is disabled";
 
         /// <summary>
         /// <b>Requested by </b>SilverDimond
@@ -142,6 +149,26 @@ namespace SilverBotDS
 
         //Commands
         public string Test { get; set; } = "test";
+
+        /// <summary>
+        /// Information about␣
+        /// </summary>
+        public string Information_About { get; set; } = "Information about ";
+
+        /// <summary>
+        /// Has joined the SilverCraft Discord
+        /// </summary>
+        public string Joined_SilverCraft { get; set; } = "Has joined the SilverCraft Discord";
+
+        /// <summary>
+        /// Is a SilverCraft bot admin
+        /// </summary>
+        public string Is_SilverBot_Admin { get; set; } = "Is a SilverCraft bot admin";
+
+        /// <summary>
+        /// Prefix used
+        /// </summary>
+        public string Prefix_Used_Topgg { get; set; } = "Prefix used";
 
         /// <summary>
         /// User:␣
@@ -386,7 +413,7 @@ namespace SilverBotDS
         /// <summary>
         /// Uh oh something went wrong. Please try again a little bit later.
         /// </summary>
-        public string Fortnite_Search_Fail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
+        public string Search_Fail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
 
         public ImageThings Imagethings { get; set; } = new();
 
@@ -461,6 +488,11 @@ namespace SilverBotDS
 
                 return await GetAsync(a);
             }
+        }
+
+        public static Language GetLanguageFromCtx(CommandContext ctx)
+        {
+            return GetLanguageFromId(ctx.Guild?.Id);
         }
 
         public static Language GetLanguageFromId(ulong? id)

@@ -4,13 +4,14 @@ using DSharpPlus.Entities;
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters.Photo;
 using ImageProcessor.Imaging.Formats;
+using SilverBotDS.Utils;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace SilverBotDS
+namespace SilverBotDS.Commands
 {
     public class Imagemodule : BaseCommandModule
     {
@@ -24,7 +25,7 @@ namespace SilverBotDS
         {
             if (lang == null)
             {
-                lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+                lang = Language.GetLanguageFromCtx(ctx);
             }
             if (e == AttachmentCountIncorrect.TooLittleAttachments)
             {
@@ -53,13 +54,31 @@ namespace SilverBotDS
 
         private static MemoryStream Make_jpegnised(byte[] photoBytes)
         {
-            ISupportedImageFormat format = new JpegFormat { Quality = Quality };
+            ISupportedImageFormat format = new JpegFormat { Quality = 1 };
             using MemoryStream inStream = new MemoryStream(photoBytes);
             MemoryStream outStream = new MemoryStream();
             using (ImageFactory imageFactory = new ImageFactory())
             {
                 imageFactory.Load(inStream)
                             .Format(format)
+                            .Save(outStream);
+            }
+            return outStream;
+        }
+
+        private static MemoryStream Shet_On(byte[] photoBytes)
+        {
+            ISupportedImageFormat format = new JpegFormat { Quality = 1 };
+            using MemoryStream inStream = new MemoryStream(photoBytes);
+            MemoryStream outStream = new MemoryStream();
+
+            using (ImageFactory imageFactory = new ImageFactory())
+            {
+                imageFactory.Load(inStream);
+                int x = imageFactory.Image.Width, y = imageFactory.Image.Height;
+                imageFactory.Format(format)
+                            .Resize(new Size(imageFactory.Image.Width / 4, imageFactory.Image.Height / 4))
+                            .Resize(new Size(x, y))
                             .Save(outStream);
             }
             return outStream;
@@ -113,30 +132,21 @@ namespace SilverBotDS
         [Command("jpeg")]
         public async Task Jpegize(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             try
             {
                 SDImage image = SDImage.FromContext(ctx);
-                using MemoryStream outStream = Make_jpegnised(await image.GetBytesAsync());
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.JPEG_Success).WithFile("silverbotimage.jpeg", outStream).SendAsync(ctx.Channel);
-                }
+                await Jpegize(ctx, image);
             }
             catch (AttachmentCountIncorrectException ACIE)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount, lang);
+                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
             }
         }
 
         [Command("jpeg")]
         public async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SDImage image)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             try
             {
                 using MemoryStream outStream = Make_jpegnised(await image.GetBytesAsync());
@@ -155,10 +165,47 @@ namespace SilverBotDS
             }
         }
 
+        [Command("shet")]
+        public async Task Shet(CommandContext ctx)
+        {
+            Language lang = Language.GetLanguageFromCtx(ctx);
+            try
+            {
+                SDImage image = SDImage.FromContext(ctx);
+                await Shet(ctx, image);
+            }
+            catch (AttachmentCountIncorrectException ACIE)
+            {
+                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount, lang);
+            }
+        }
+
+        [Command("shet")]
+        public async Task Shet(CommandContext ctx, [Description("the url of the image")] SDImage image)
+        {
+            Language lang = Language.GetLanguageFromCtx(ctx);
+            try
+            {
+                using MemoryStream outStream = Shet_On(await image.GetBytesAsync());
+                if (outStream.Length > MaxBytes)
+                {
+                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                }
+                else
+                {
+                    await new DiscordMessageBuilder().WithContent("there is your masterpiece").WithFile("silverbotimage.jpeg", outStream).SendAsync(ctx.Channel);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         [Command("resize")]
         public async Task Resize(CommandContext ctx, [Description("the url of the image")] SDImage image, [Description("Width")] int x, [Description("Height")] int y)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             try
             {
                 using MemoryStream outStream = Resize(await image.GetBytesAsync(), new Size(x, y));
@@ -180,53 +227,35 @@ namespace SilverBotDS
         [Command("resize")]
         public async Task Resize(CommandContext ctx, [Description("Width")] int x, [Description("Height")] int y)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             try
             {
                 SDImage image = SDImage.FromContext(ctx);
-                using MemoryStream outStream = Resize(await image.GetBytesAsync(), new Size(x, y));
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.Resize_Success).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
-                }
+                await Resize(ctx, x, y);
             }
             catch (AttachmentCountIncorrectException ACIE)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount, lang);
+                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
             }
         }
 
         [Command("tint")]
         public async Task Tint(CommandContext ctx, [Description("color in hex like #fffff")] string color)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
             try
             {
                 SDImage image = SDImage.FromContext(ctx);
-                using MemoryStream outStream = Tint(await image.GetBytesAsync(), color);
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.Tint_Success).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
-                }
+                await Tint(ctx, image, color);
             }
             catch (AttachmentCountIncorrectException ACIE)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount, lang);
+                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
             }
         }
 
         [Command("tint")]
         public async Task Tint(CommandContext ctx, [Description("the url of the image")] SDImage image, [Description("color in hex like #fffff")] string color)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             try
             {
                 using MemoryStream outStream = Tint(await image.GetBytesAsync(), color);
@@ -248,19 +277,11 @@ namespace SilverBotDS
         [Command("silver")]
         public async Task Grayscale(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             try
             {
                 SDImage image = SDImage.FromContext(ctx);
-                var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.GreyScale);
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.Silver_Success).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
-                }
+                await Grayscale(ctx, image);
             }
             catch (AttachmentCountIncorrectException ACIE)
             {
@@ -277,7 +298,7 @@ namespace SilverBotDS
         {
             try
             {
-                Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+                Language lang = Language.GetLanguageFromCtx(ctx);
                 var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.GreyScale);
                 if (outStream.Length > MaxBytes)
                 {
@@ -297,19 +318,11 @@ namespace SilverBotDS
         [Command("comic")]
         public async Task Comic(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             try
             {
                 SDImage image = SDImage.FromContext(ctx);
-                var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.Comic);
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.Comic_Success).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
-                }
+                await Comic(ctx, image);
             }
             catch (AttachmentCountIncorrectException ACIE)
             {
@@ -326,7 +339,7 @@ namespace SilverBotDS
         {
             try
             {
-                Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+                Language lang = Language.GetLanguageFromCtx(ctx);
                 var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.Comic);
                 if (outStream.Length > MaxBytes)
                 {
@@ -390,7 +403,7 @@ namespace SilverBotDS
         [Command("adventuretime")]
         public async Task AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             try
             {
                 if (cachedadventuretimetemplate == null)
@@ -457,7 +470,7 @@ namespace SilverBotDS
         [Command("motivate")]
         public async Task Motivate(CommandContext ctx, SDImage image, [RemainingText] string text)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             if (cachedmotivatetemplate == null)
             {
                 Assembly myAssembly = Assembly.GetExecutingAssembly();
@@ -516,7 +529,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width)
         [Command("caption")]
         public async Task Caption(CommandContext ctx, SDImage image, [RemainingText] string text)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             using MemoryStream inStream = new MemoryStream(await image.GetBytesAsync());
             var bitmap = new Bitmap(inStream);
             int x = bitmap.Width, y = bitmap.Height;

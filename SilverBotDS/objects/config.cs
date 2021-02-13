@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SilverBotDS.Commands;
+using SilverBotDS.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -16,7 +18,7 @@ namespace SilverBotDS
 
         public string Token { get; set; } = "Discord_Token_Here";
         public string Gtoken { get; set; } = "Giphy_Token_Here";
-        public string FApiToken { get; set; } = "Fartnite_Token_Here";
+        public string FApiToken { get; set; } = "Fortnite_Token_Here";
         public string JavaLoc { get; set; } = "C:\\Program Files\\Java\\jdk-13\\bin\\java.exe";
         public ulong ServerId { get; set; } = 679353407667961877;
         public ulong AdminRoleId { get; set; } = 746821906602131506;
@@ -29,6 +31,10 @@ namespace SilverBotDS
         public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
 
         public string Topgg_Sid_Token { get; set; } = "None";
+        public bool Topgg_Is_Selfbot { get; set; } = true;
+        public int Browser_Type { get; set; } = 1;
+        public string Driver_Location { get; set; } = "";
+        public bool UseColorConfig { get; set; } = true;
 
         public static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument, bool isexample = false)
         {
@@ -48,7 +54,11 @@ namespace SilverBotDS
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/MsInterval", "Interval to use so discord dont ban us, in ms, is int32 so use -1 if you want no splash changes, defaults to 30m as kae kinda was like hey you know discord has probably put you on a watchlist");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/UseSplashConfig", "Does the bot use the: True-Config or False-Internal splashes");
             xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/LogWebhook", "Webhook for logging");
-            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Topgg_Sid_Token", "Token used for bot command, leave 'None' to disable, This is technically selfbotting but whatever");
+            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Topgg_Sid_Token", "Token used for bot command, leave 'None' to disable");
+            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Topgg_Sid_Token", "Set true if its a sid cookie, false if a bot one");
+            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Browser_Type", "What kind of browser to use, used for selinium. 1 for chrome (chromedriver) 2 for firefox");
+            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/Driver_Location", "Location of that browser, leave blank for CWD(current working directory)");
+            xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, "/Config/UseColorConfig", "Does the bot use the: True-Config or False-Internal colors");
             return xmlDocument;
         }
 
@@ -167,8 +177,8 @@ namespace SilverBotDS
                 string ConnString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
                 Database.Setconnstring(ConnString);
             }
-            GiphyO.Set(new GiphyDotNet.Manager.Giphy(readconfig.Gtoken));
-            Fortnite.Setapi(new Fortnite_API.FortniteApiClient(readconfig.FApiToken));
+            Giphy.Set(readconfig.Gtoken);
+            Fortnite.Setapi(readconfig.FApiToken);
             return readconfig;
         }
     }

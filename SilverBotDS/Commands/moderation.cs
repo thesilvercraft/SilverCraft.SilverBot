@@ -4,7 +4,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System.Threading.Tasks;
 
-namespace SilverBotDS
+namespace SilverBotDS.Commands
 {
     internal class Moderation : BaseCommandModule
     {
@@ -16,7 +16,7 @@ namespace SilverBotDS
         [RequireUserPermissions(Permissions.KickMembers)]
         public async Task Kick(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The kick boot has spoken")
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
             string thing = "";
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
@@ -48,7 +48,7 @@ namespace SilverBotDS
         [RequireUserPermissions(Permissions.BanMembers)]
         public async Task Ban(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
             string thing = "";
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;

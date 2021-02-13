@@ -8,7 +8,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SilverBotDS
+namespace SilverBotDS.Commands
 {
     [RequirePermissions(Permissions.Administrator)]
     public sealed class AdminCommands : BaseCommandModule
@@ -68,7 +68,6 @@ namespace SilverBotDS
                 pollResultText.Append("**");
                 pollResultText.Append($"\nYes:{yesVotes} No:{noVotes} Undecided: {commandContext.Guild.MemberCount - (yesVotes + noVotes)} (server total-people that voted)");
                 await pollStartMessage.ModifyAsync(pollResultText.ToString());
-                //    await commandContext.RespondAsync(pollResultText.ToString());
             }
             else
             {

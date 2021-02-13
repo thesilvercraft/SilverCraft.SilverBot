@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,7 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SilverBotDS
+namespace SilverBotDS.Commands
 {
     [RequireOwner]
     [Hidden]
@@ -27,7 +28,7 @@ namespace SilverBotDS
             await ctx.RespondAsync(e);
         }
 
-        private readonly string[] urls = { "silverdimond.tk", "yahoo.com", "bing.com", "vfl.gg", "discord.com", "github.com", "github.com/silverdimond" };
+        private readonly string[] urls = { "https://silverdimond.tk", "https://yahoo.com", "https://bing.com", "https://vfl.gg", "https://discord.com", "https://github.com", "https://github.com/silverdimond" };
 
         [Command("stress")]
         [Description("less gooo baybae")]
@@ -136,9 +137,8 @@ namespace SilverBotDS
         [Description("UHHHHHHHHHHHHH its a secret")]
         public async Task Html(CommandContext ctx, string html)
         {
-            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
-            bob.WithImageUrl("attachment://html.png");
-            bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            DiscordEmbedBuilder bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
+
             using MemoryStream image = new MemoryStream();
             using Image e = await Browser.ScreenshotAsync(html);
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
@@ -154,7 +154,7 @@ namespace SilverBotDS
         {
             try
             {
-                Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+                Language lang = Language.GetLanguageFromCtx(ctx);
                 if (ctx.Message.Attachments.Count == 0)
                 {
                     await ctx.RespondAsync(lang.No_Image_Generic);
@@ -170,7 +170,7 @@ namespace SilverBotDS
                     await ctx.RespondAsync("please use a zip");
                     return;
                 }
-                HttpClient client = Webclient.Get();
+                System.Net.Http.HttpClient client = WebClient.Get();
                 HttpResponseMessage rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
                 using (var fs = new FileStream(
         Environment.CurrentDirectory + "\\temp.zip",
@@ -198,13 +198,13 @@ namespace SilverBotDS
                     if (stream.Length > 256 * 1000)
                     {
                         status.Append(Path.GetFileName(file));
-                        status.Append("\t " + Stringutils.BoolToEmoteString(false) + " Bigger than 256kb");
+                        status.Append("\t " + StringUtils.BoolToEmoteString(false) + " Bigger than 256kb");
                     }
                     else
                     {
                         Console.WriteLine(Path.GetFileName(file));
                         DiscordGuildEmoji emote = await ctx.Guild.CreateEmojiAsync(name: Path.GetFileNameWithoutExtension(file), image: stream, reason: "Added via silverbot by " + ctx.User.Username);
-                        status.Append("\t " + emote.ToString() + ' ' + Stringutils.BoolToEmoteString(true));
+                        status.Append("\t " + emote.ToString() + ' ' + StringUtils.BoolToEmoteString(true));
                     }
                 }
                 await ctx.RespondAsync(status.ToString());

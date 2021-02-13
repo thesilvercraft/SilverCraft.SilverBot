@@ -8,11 +8,11 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SilverBotDS
+namespace SilverBotDS.Utils
 {
     public class GitHubUtils
     {
-        private static readonly Regex r = new Regex("(?:https?://)?github.com/(?P<user>.+)/(?P<repo>.+)", RegexOptions.IgnoreCase);
+        private static readonly Regex r = new Regex("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.IgnoreCase);
 
         public class Repo
         {
@@ -50,27 +50,31 @@ namespace SilverBotDS
         {
             public static async Task DownloadLatestAsync(Release release)
             {
-                HttpClient client = Webclient.Get();
+                HttpClient client = WebClient.Get();
                 using HttpResponseMessage rm = await client.GetAsync(release.Assets[0].Browser_download_url);
+                Uri uri = new Uri(release.Assets[0].Browser_download_url);
+                string filename = Path.GetFileName(uri.LocalPath);
                 using var fs = new FileStream(
-        Environment.CurrentDirectory + "\\lavalink.jar",
+        Environment.CurrentDirectory + $"\\{filename}",
         FileMode.CreateNew);
                 await rm.Content.CopyToAsync(fs);
             }
 
             public async Task DownloadLatestAsync()
             {
-                HttpClient client = Webclient.Get();
+                HttpClient client = WebClient.Get();
                 using HttpResponseMessage rm = await client.GetAsync(Assets[0].Browser_download_url);
+                Uri uri = new Uri(Assets[0].Browser_download_url);
+                string filename = Path.GetFileName(uri.LocalPath);
                 using var fs = new FileStream(
-        Environment.CurrentDirectory + "\\lavalink.jar",
+        Environment.CurrentDirectory + $"\\{filename}",
         FileMode.CreateNew);
                 await rm.Content.CopyToAsync(fs);
             }
 
             public static async Task<Release> GetLatestFromRepoAsync(Repo repo)
             {
-                HttpClient httpClient = Webclient.Get();
+                HttpClient httpClient = WebClient.Get();
                 UriBuilder uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/releases/latest");
                 HttpResponseMessage RM = await httpClient.GetAsync(uri.Uri);
                 if (RM.StatusCode == HttpStatusCode.OK)

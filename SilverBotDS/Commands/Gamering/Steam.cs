@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SilverBotDS
+namespace SilverBotDS.Commands
 {
     [Group("steam")]
     internal class SteamCommands : BaseCommandModule
@@ -20,7 +20,7 @@ namespace SilverBotDS
         [Description("Search about a game")]
         public async Task Search(CommandContext ctx, [RemainingText()][Description("The game")] string game)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             try
             {
                 List<Listing> listings = Steam.Search(game);
@@ -74,7 +74,7 @@ namespace SilverBotDS
             catch (Exception e)
             {
                 DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
-                bob.WithTitle("Something went fucky wucky on my side");
+                bob.WithTitle(lang.Search_Fail);
                 bob.WithDescription("Try again a little later?\n" + e.Message);
                 await ctx.RespondAsync(embed: bob.Build());
                 throw;

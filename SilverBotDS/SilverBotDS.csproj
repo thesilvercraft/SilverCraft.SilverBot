@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.OffScreen.NETCore" Version="88.2.40-pre" />
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
     <PackageReference Include="DSharpPlus" Version="4.0.0-rc2" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-rc2" />
@@ -33,12 +32,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="ImageProcessor.Core" Version="1.1.0" />
+    <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.6.2" />
     <PackageReference Include="Npgsql" Version="5.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
     <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SDBrowser\SDBrowser.csproj" />
   </ItemGroup>
 
   <ItemGroup>

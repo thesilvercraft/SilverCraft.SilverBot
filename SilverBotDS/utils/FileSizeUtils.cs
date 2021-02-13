@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SilverBotDS
+namespace SilverBotDS.Utils
 {
     internal class FileSizeUtils
     {

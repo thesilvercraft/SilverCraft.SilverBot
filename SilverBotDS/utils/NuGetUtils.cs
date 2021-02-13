@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace SilverBotDS
+namespace SilverBotDS.Utils
 {
     internal class NuGetUtils
     {
@@ -17,7 +17,7 @@ namespace SilverBotDS
         /// <exception cref="Exception">given when the webserver didnt return a OK</exception>
         public static async Task<Datum[]> SearchAsync(string query)
         {
-            HttpClient httpClient = Webclient.Get();
+            System.Net.Http.HttpClient httpClient = WebClient.Get();
             UriBuilder uri = new UriBuilder("https://azuresearch-usnc.nuget.org/query")
             {
                 Query = $"?q={query}"

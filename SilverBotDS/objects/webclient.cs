@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SilverBotDS
 {
-    public static class Webclient
+    public static class WebClient
     {
         private static readonly HttpClient HttpClient = NewhttpClientwithstrign();
 

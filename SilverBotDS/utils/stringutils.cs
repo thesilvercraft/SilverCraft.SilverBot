@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SilverBotDS
+namespace SilverBotDS.Utils
 {
-    internal class Stringutils
+    internal class StringUtils
     {
         /// <summary>
         /// A random string from an array of strings

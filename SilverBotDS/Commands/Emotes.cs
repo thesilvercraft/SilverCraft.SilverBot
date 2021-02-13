@@ -4,6 +4,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SilverBotDS
+namespace SilverBotDS.Commands
 {
     internal class Emotes : BaseCommandModule
     {
@@ -25,8 +26,8 @@ namespace SilverBotDS
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task UselessFact(CommandContext ctx, [Description("Name like `Kappa`")] string name, [Description("url of emote")] string url)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
-            HttpClient client = Webclient.Get();
+            Language lang = Language.GetLanguageFromCtx(ctx);
+            System.Net.Http.HttpClient client = WebClient.Get();
             HttpResponseMessage rm = await client.GetAsync(url);
             Stream st = await rm.Content.ReadAsStreamAsync();
             if (st.Length > 256 * 1000)
@@ -44,7 +45,7 @@ namespace SilverBotDS
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task UselessFact(CommandContext ctx, [Description("Name like `Kappa`")] string name)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             if (ctx.Message.Attachments.Count == 0)
             {
                 await ctx.RespondAsync(lang.No_Image_Generic);
@@ -55,7 +56,7 @@ namespace SilverBotDS
                 await ctx.RespondAsync(lang.More_Than_One_Image_Generic);
                 return;
             }
-            HttpClient client = Webclient.Get();
+            System.Net.Http.HttpClient client = WebClient.Get();
             HttpResponseMessage rm = await client.GetAsync(ctx.Message.Attachments[0].ProxyUrl);
             Stream st = await rm.Content.ReadAsStreamAsync();
             if (st.Length > 256 * 1000)
@@ -71,7 +72,7 @@ namespace SilverBotDS
         public async Task Allemotes(CommandContext ctx)
         {
             StringBuilder builder = new StringBuilder();
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             List<Serveroptin> serverthatareoptedin = await Database.ServersoptedinAsync();
             List<Page> pages = new List<Page>();
             DiscordEmbedBuilder b = new DiscordEmbedBuilder();
@@ -166,7 +167,7 @@ namespace SilverBotDS
         [Description("Get an emote from the SilverSocial enabled servers")]
         public async Task GetEmotes(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote)
         {
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
             List<DiscordEmoji> emotes = new List<DiscordEmoji>();
             List<Serveroptin> serverthatareoptedin = await Database.ServersoptedinAsync();
 
@@ -239,7 +240,7 @@ namespace SilverBotDS
         //[RequireUserPermissions(Permissions.AddReactions | Permissions.UseExternalEmojis)]
         //public async Task ReactWithEmote(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote, ulong? idofmessage = null)
         //{
-        //    Language lang =Language.GetLanguageFromId(ctx.Guild?.Id);
+        //    Language lang =Language.GetLanguageFromCtx(ctx);
         //    List<DiscordEmoji> emotes = new List<DiscordEmoji>();
         //    List<Serveroptin> serverthatareoptedin = await Database.ServersoptedinAsync().ToListAsync();
 
@@ -305,7 +306,7 @@ namespace SilverBotDS
         public async Task Optin(CommandContext ctx)
         {
             bool? isoptedin = await Database.Isoptedin(ctx.Guild.Id);
-            Language lang = Language.GetLanguageFromId(ctx.Guild?.Id);
+            Language lang = Language.GetLanguageFromCtx(ctx);
 
             if (isoptedin == true)
             {

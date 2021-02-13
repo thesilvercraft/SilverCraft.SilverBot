@@ -43,7 +43,7 @@ namespace SilverBotDS
         {
             if (bytes == null)
             {
-                bytes = await Webclient.Get().GetByteArrayAsync(URL);
+                bytes = await WebClient.Get().GetByteArrayAsync(URL);
             }
             return bytes;
         }

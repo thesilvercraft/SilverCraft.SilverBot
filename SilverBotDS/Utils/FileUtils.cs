@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace SilverBotDS
+namespace SilverBotDS.Utils
 {
     internal class FileUtils
     {

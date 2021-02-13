@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace SilverBotDS
+namespace SilverBotDS.Utils
 {
     internal class Xmlutils
     {/// <summary>

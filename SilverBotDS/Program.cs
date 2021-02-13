@@ -1,6 +1,4 @@
-﻿using CefSharp;
-using CefSharp.OffScreen;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
@@ -8,7 +6,9 @@ using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.Lavalink;
 using DSharpPlus.Net;
-
+using SDBrowser;
+using SilverBotDS.Commands;
+using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,15 +21,16 @@ namespace SilverBotDS
 {
     internal class Program
     {
-        private static readonly Config config = GetNewConfig();
+        private static Config config;
         private static readonly bool shitlog = false;
 
         private static Config GetNewConfig()
         {
-            MainLogLine("Loading config for some reason");
+            MainLogLine("Loading config");
             var task = Config.GetAsync();
             task.Wait();
             var res = task.Result;
+            MainLogLine("GREAT SUCCESS LOADING CONFIG");
             return res;
         }
 
@@ -45,12 +46,23 @@ namespace SilverBotDS
 
         private static void Main()
         {
-            MainLogLine("Adding resolver so cefsharp works");
-            //Add the resolver so cefsharp works
-            AppDomain.CurrentDomain.AssemblyResolve += Resolver;
-            MainLogLine("Initialising cefsharp");
-            //Do cefsharp things
-            LoadApp();
+            MainLogLine("Load config");
+            config = GetNewConfig();
+            MainLogLine("Connect to selinum??");
+            switch (config.Browser_Type)
+            {
+                case 1:
+                    {
+                        Browser.SetBrowser(new SeleniumBrowser(Browsertype.Chrome, config.Driver_Location));
+                        break;
+                    }
+                case 2:
+                    {
+                        Browser.SetBrowser(new SeleniumBrowser(Browsertype.Firefox, config.Driver_Location));
+                        break;
+                    }
+            }
+
             MainLogLine("Checking for updates");
             //Check for updates
             VersionInfo.Checkforupdates();
@@ -72,40 +84,6 @@ namespace SilverBotDS
             whb.AddEmbeds(embeds);
             whb.WithContent(text);
             await wc.BroadcastMessageAsync(whb);
-        }
-
-        /// <summary>
-        /// Do cefsharp initialisation
-        /// </summary>
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void LoadApp()
-        {
-            CefSettings settings = new CefSettings
-            {
-                UserAgent = $"Mozilla/5.0+ (compatible; SilverBotCEF/{VersionInfo.VNumber}; {ThisAssembly.Git.RepositoryUrl})"
-            };
-            //Enable audio if you want
-            //settings.EnableAudio();
-            // Make sure you set performDependencyCheck false
-            Cef.Initialize(settings, performDependencyCheck: false, browserProcessHandler: null);
-        }
-
-        // Will attempt to load missing assembly from either x86 or x64 subdir
-        private static Assembly Resolver(object sender, ResolveEventArgs args)
-        {
-            if (args.Name.StartsWith("CefSharp"))
-            {
-                string assemblyName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
-                string archSpecificPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
-                                                       Environment.Is64BitProcess ? "x64" : "x86",
-                                                       assemblyName);
-
-                return File.Exists(archSpecificPath)
-                           ? Assembly.LoadFile(archSpecificPath)
-                           : null;
-            }
-
-            return null;
         }
 
         private static DiscordClient discord;

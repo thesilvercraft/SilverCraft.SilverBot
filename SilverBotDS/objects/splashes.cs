@@ -1,4 +1,5 @@
 ﻿using DSharpPlus.Entities;
+using SilverBotDS.Utils;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -92,7 +93,6 @@ new ("Consider Fullscreen!",ActivityType.Playing),
 new ("The Exits are... Irrelevant!",ActivityType.Playing),
 new ("The facts they dont want you to know",ActivityType.Playing),
 new ("max should not be trusted",ActivityType.Playing),
-
 new ("LE:L",ActivityType.Playing),
 new ("requires additional pylons",ActivityType.Playing),
 new ("THAT FACE DOWN",ActivityType.Playing),
@@ -197,7 +197,7 @@ new ("GREAT SUCCESS!",ActivityType.Playing),
         /// <param name="ignorecache">Should it reload the splashes.json</param>
         /// <param name="useinternal">Should it ignore splashes.json alltogether</param>
         /// <returns>a list of <see cref="DiscordActivity[]"/>s</returns>
-        public static async System.Threading.Tasks.Task<DiscordActivity[]> GetAsync(bool ignorecache = false, bool useinternal = false)
+        public static async Task<DiscordActivity[]> GetAsync(bool ignorecache = false, bool useinternal = false)
         {
             if (useinternal)
             {

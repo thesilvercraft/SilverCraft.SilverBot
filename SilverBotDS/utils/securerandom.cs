@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
-namespace SilverBotDS
+namespace SilverBotDS.Utils
 {
     public class RandomGenerator
     {

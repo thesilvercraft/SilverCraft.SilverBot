@@ -26,7 +26,7 @@ namespace SilverBotDS
         public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
         public int MsInterval { get; set; } = 1800000;
         public ulong? ConfigVer { get; set; } = null;
-        public readonly static ulong CurrentConfVer = 2;
+        public readonly static ulong CurrentConfVer = 3;
         public bool UseSplashConfig { get; set; } = true;
         public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
 

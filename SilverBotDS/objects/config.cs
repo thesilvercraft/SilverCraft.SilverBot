@@ -186,7 +186,6 @@ namespace SilverBotDS.Objects
                 var connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
                 Database.Setconnstring(connString);
             }
-            Xmlutils.SerializeToXmlDocument(readconfig).Save(Console.OpenStandardOutput());
 
             Giphy.Set(readconfig?.Gtoken);
             Fortnite.Setapi(readconfig?.FApiToken);

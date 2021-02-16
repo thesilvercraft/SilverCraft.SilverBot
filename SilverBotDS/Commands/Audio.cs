@@ -151,7 +151,6 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
             }
-
             var channel = ctx.Member?.VoiceState?.Channel;
             if (channel == null)
             {
@@ -161,9 +160,10 @@ namespace SilverBotDS.Commands
             if (volume is < 0 or > 100)
             {
                 await SendSimpleMessage(ctx, lang.VolumeNotCorrect);
+                return;
             }
             VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
-            await player.SetVolumeAsync(volume / 10f, true);
+            await player.SetVolumeAsync(volume / 100f, true);
         }
 
         [Command("loop")]

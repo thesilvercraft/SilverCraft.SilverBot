@@ -447,9 +447,9 @@ namespace SilverBotDS.Objects
         public string AlreadyVoted { get; set; } = "Your vote was counted already";
 
         /// <summary>
-        /// Estimated time till it plays:  {0}
+        /// Estimated time till it plays: 
         /// </summary>
-        public string TimeTillTrackPlays { get; set; } = "Estimated time till it plays: {0}";
+        public string TimeTillTrackPlays { get; set; } = "Estimated time till it plays:";
 
         /// <summary>
         /// {0}\nNow playing: {1}

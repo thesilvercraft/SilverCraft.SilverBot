@@ -70,6 +70,10 @@ namespace SilverBotDS.Utils
         /// <returns>A string cotnaining the array</returns>
         public static string ArrayToString(string[] arr, string seperator = "")
         {
+            if (arr is null)
+            {
+                return string.Empty;
+            }
             var sb = new StringBuilder();
 
             if (string.IsNullOrEmpty(seperator))

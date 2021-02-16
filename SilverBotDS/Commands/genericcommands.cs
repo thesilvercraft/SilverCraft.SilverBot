@@ -24,6 +24,7 @@ namespace SilverBotDS.Commands
         {
             return new Genericcommands();
         }
+
 #pragma warning disable CA1822 // Mark members as static
 
         [Command("hi")]
@@ -58,13 +59,12 @@ namespace SilverBotDS.Commands
                         .WithImageUrl(asdf.Url)
                         .WithColor(await ColorUtils.GetSingleAsync());
                 }
-
                 else
                 {
                     b.WithTitle("meme returned null")
                         .WithColor(await ColorUtils.GetSingleAsync());
                 }
-                  
+
                 await new DiscordMessageBuilder()
                                                  .WithReply(ctx.Message.Id)
                                                  .WithEmbed(b.Build())
@@ -205,28 +205,49 @@ namespace SilverBotDS.Commands
             var lang = Language.GetLanguageFromCtx(ctx);
             try
             {
-                var data = await NuGetUtils.SearchAsync(query); 
+                var data = await NuGetUtils.SearchAsync(query);
                 var pages = new List<Page>();
                 for (var i = 0; i < data.Length; i++)
                 {
                     var tempbuilder = new DiscordEmbedBuilder();
                     tempbuilder.WithTitle(data[i].Title);
                     tempbuilder.WithUrl($"https://www.nuget.org/packages/{data[i].Id}");
-                    tempbuilder.WithAuthor(ArrayToString(data[i].Authors, ","), data[i].ProjectUrl);
+                    if (data[i].Authors is null)
+                    {
+                        tempbuilder.WithAuthor(data[i].Title + "'s contributors", data[i].ProjectUrl);
+                    }
+                    else
+                    {
+                        tempbuilder.WithAuthor(ArrayToString(data[i].Authors, ","), data[i].ProjectUrl);
+                    }
                     tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + " " + string.Format(lang.PageNuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(data[i].IconUrl))
                     {
                         tempbuilder.WithThumbnail(data[i].IconUrl);
                     }
-                    tempbuilder.WithDescription(data[i].Description);
-                    tempbuilder.AddField("NuGet verified", BoolToEmoteString(data[i].Verified), true);
+                    if (!string.IsNullOrEmpty(data[i].Description))
+                    {
+                        tempbuilder.WithDescription(data[i].Description);
+                    }
+
+                    if (data[i].Verified is not null)
+                    {
+                        tempbuilder.AddField("NuGet verified", BoolToEmoteString(data[i].Verified == true), true);
+                    }
+
                     if (!string.IsNullOrEmpty(data[i].Type))
                     {
                         tempbuilder.AddField("Type", data[i].Type, true);
                     }
+                    if (data[i].TotalDownloads is not null)
+                    {
+                        tempbuilder.AddField("<:green_download_icon:805051604797227038>", data[i].TotalDownloads.ToString(), true);
+                    }
+                    if (!string.IsNullOrEmpty(data[i].Version))
+                    {
+                        tempbuilder.AddField("V", data[i].Version, true);
+                    }
 
-                    tempbuilder.AddField("<:green_download_icon:805051604797227038>", data[i].TotalDownloads.ToString(), true);
-                    tempbuilder.AddField("V", data[i].Version, true);
                     pages.Add(new Page(embed: tempbuilder));
                 }
 
@@ -245,7 +266,7 @@ namespace SilverBotDS.Commands
 
         private static async Task<bool> Is_at_silvercraftAsync(CommandContext ctx, DiscordUser b)
         {
-            return  (await ctx.Client.GetGuildAsync(Convert.ToUInt64(Program.GetConfig().ServerId))).Members[b.Id] != null;
+            return (await ctx.Client.GetGuildAsync(Convert.ToUInt64(Program.GetConfig().ServerId))).Members[b.Id] != null;
         }
 
         private static async Task<bool> Is_bot_adminAsync(CommandContext ctx, DiscordUser b)

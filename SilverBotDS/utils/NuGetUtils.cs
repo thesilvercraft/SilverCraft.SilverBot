@@ -26,6 +26,7 @@ namespace SilverBotDS.Utils
             var rm = await httpClient.GetAsync(uri.Uri);
             if (rm.StatusCode == HttpStatusCode.OK)
             {
+                Console.WriteLine(await rm.Content.ReadAsStringAsync());
                 return JsonSerializer.Deserialize<Rootobject>(await rm.Content.ReadAsStringAsync())?.Data;
             }
             else
@@ -34,7 +35,7 @@ namespace SilverBotDS.Utils
             }
         }
 
-        private class Rootobject
+        public class Rootobject
         {
             [JsonPropertyName("context")]
             public Context Context { get; set; }
@@ -61,46 +62,46 @@ namespace SilverBotDS.Utils
             public string Atid { get; set; }
 
             [JsonPropertyName("@type")]
-            public string Type { get;  }
+            public string Type { get; set; }
 
             [JsonPropertyName("registration")]
             public string Registration { get; set; }
 
             [JsonPropertyName("id")]
-            public string Id { get;  }
+            public string Id { get; set; }
 
             [JsonPropertyName("version")]
-            public string Version { get;  }
+            public string Version { get; set; }
 
             [JsonPropertyName("description")]
-            public string Description { get;  }
+            public string Description { get; set; }
 
             [JsonPropertyName("summary")]
             public string Summary { get; set; }
 
             [JsonPropertyName("title")]
-            public string Title { get;  }
+            public string Title { get; set; }
 
             [JsonPropertyName("iconUrl")]
-            public string IconUrl { get;  }
+            public string IconUrl { get; set; }
 
             [JsonPropertyName("licenseUrl")]
             public string LicenseUrl { get; set; }
 
             [JsonPropertyName("projectUrl")]
-            public string ProjectUrl { get;  }
+            public string ProjectUrl { get; set; }
 
             [JsonPropertyName("tags")]
             public string[] Tags { get; set; }
 
             [JsonPropertyName("authors")]
-            public string[] Authors { get;  }
+            public string[] Authors { get; set; }
 
             [JsonPropertyName("totalDownloads")]
-            public int TotalDownloads { get;  }
+            public int? TotalDownloads { get; set; }
 
             [JsonPropertyName("verified")]
-            public bool Verified { get;  }
+            public bool? Verified { get; set; }
 
             [JsonPropertyName("packageTypes")]
             public Packagetype[] PackageTypes { get; set; }

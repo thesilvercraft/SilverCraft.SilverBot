@@ -74,6 +74,11 @@ namespace SilverBotDS.Objects
         public string UserNotConnected { get; set; } = "You must be in a voice channel!";
 
         /// <summary>
+        /// Please use a value between 0 and 100!
+        /// </summary>
+        public string VolumeNotCorrect { get; set; } = "Please use a value between 1 and 100%!";
+
+        /// <summary>
         /// <b>Joined </b>Testing<b>!</b>
         /// <para/>
         /// <b>Joined␣</b>{0}<b>!</b>
@@ -140,8 +145,17 @@ namespace SilverBotDS.Objects
         public string AlreadyStoped { get; set; } = "Woaaah there, I can't stop the stopped forced.";
         public string VotingIsBelow85Percent { get; set; } = "You need more than 85% votes to skip this song.";
         public string UserDoesntHaveDj { get; set; } = "You must have a role named `dj`!";
+
+        /// <summary>
+        /// Now loopin song 🔂
+        /// </summary>
         public string LoopingSong { get; set; } = "Now loopin song 🔂";
+
         public string LoopingQueue { get; set; } = "Now loopin queue 🔁";
+
+        /// <summary>
+        /// Now not loopin.
+        /// </summary>
         public string NotLooping { get; set; } = "Now not loopin.";
 
         /// <summary>
@@ -437,6 +451,16 @@ namespace SilverBotDS.Objects
         public string SkippedNP { get; set; } = "Skipped: {0}, Now playing {1}";
 
         /// <summary>
+        /// You can use `sd!forceskip` to instantly skip the song
+        /// </summary>
+        public string CanForceSkip { get; set; } = "You can use `sd!forceskip` to instantly skip the song";
+
+        /// <summary>
+        /// It's not paused right now.
+        /// </summary>
+        public string NotPaused { get; set; } = "It's not paused right now.";
+
+        /// <summary>
         /// Your vote was counted
         /// </summary>
         public string Voted { get; set; } = "Your vote was counted";
@@ -447,7 +471,7 @@ namespace SilverBotDS.Objects
         public string AlreadyVoted { get; set; } = "Your vote was counted already";
 
         /// <summary>
-        /// Estimated time till it plays: 
+        /// Estimated time till it plays:
         /// </summary>
         public string TimeTillTrackPlays { get; set; } = "Estimated time till it plays:";
 

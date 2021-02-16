@@ -20,17 +20,16 @@
 
   <ItemGroup>
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
-    <PackageReference Include="DSharpPlus" Version="4.0.0-rc2" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-rc2" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-rc2" />
-    <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-rc2" />
-    <PackageReference Include="DSharpPlus.VoiceNext" Version="4.0.0-rc2" />
+    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00799" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00799" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00799" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.0" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Humanizer" Version="2.8.26" />
     <PackageReference Include="ImageProcessor.Core" Version="1.1.0" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.6.2" />
     <PackageReference Include="Npgsql" Version="5.0.3" />

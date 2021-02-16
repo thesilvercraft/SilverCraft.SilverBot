@@ -1,9 +1,8 @@
-﻿using SDBrowser;
-using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Threading.Tasks;
+using SDBrowser;
 
-namespace SilverBotDS
+namespace SilverBotDS.Objects
 {
     internal class Browser
     {

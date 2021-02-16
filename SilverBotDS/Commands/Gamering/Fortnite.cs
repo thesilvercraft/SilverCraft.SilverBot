@@ -1,53 +1,56 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Fortnite_API;
-using Fortnite_API.Objects;
 using Fortnite_API.Objects.V1;
-using Fortnite_API.Objects.V2;
+using SilverBotDS.Objects;
 using SilverBotDS.Utils;
-using System;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SilverBotDS.Commands
+namespace SilverBotDS.Commands.Gamering
 {
     internal class Fortnite : BaseCommandModule
     {
+        public static Fortnite CreateInstance()
+        {
+            return new Fortnite();
+        }
 #pragma warning disable CA1822 // Mark members as static
         private static FortniteApiClient api;
-        private static bool Disabled = false;
+        private static bool disabled;
 
         /// <summary>
         /// fortite mor lioke fartnite am i righe or am i righe
         /// </summary>
-        /// <param name="apie"></param>
-        public static void Setapi(string api_key)
+        /// <param name="apiKey">the key to use</param>
+        public static void Setapi(string apiKey)
         {
-            if (string.IsNullOrEmpty(api_key) || api_key == "Fortnite_Token_Here" || api_key.ToLower() == "none")
+            if (string.IsNullOrEmpty(apiKey) || apiKey == "Fortnite_Token_Here" || apiKey.ToLower() == "none")
             {
-                Disabled = true;
+                disabled = true;
             }
-            api = new(api_key);
+            api = new FortniteApiClient(apiKey);
         }
 
-        private async Task SendDisabledMessage(CommandContext ctx)
+        private static async Task SendDisabledMessage(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(new DiscordEmbedBuilder().WithTitle(lang.Command_Is_Disabled).WithColor(color: await ColorUtils.GetSingleAsync())).SendAsync(ctx.Channel);
+            var lang = Language.GetLanguageFromCtx(ctx);
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(new DiscordEmbedBuilder().WithTitle(lang.CommandIsDisabled).WithColor(color: await ColorUtils.GetSingleAsync())).SendAsync(ctx.Channel);
         }
 
         [Command("fortstats")]
         [Description("Get the stats of a person using their username")]
         public async Task Stats(CommandContext ctx, [Description("The username of the person")][RemainingText()] string name)
         {
-            if (Disabled)
+            if (disabled)
             {
                 await SendDisabledMessage(ctx);
                 return;
             }
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            ApiResponse<BrStatsV2V1> statsV2V1 = await api.V1.Stats.GetBrV2Async(x =>
+            var lang = Language.GetLanguageFromCtx(ctx);
+            var statsV2V1 = await api.V1.Stats.GetBrV2Async(x =>
             {
                 x.Name = name;
                 x.ImagePlatform = BrStatsV2V1ImagePlatform.All;
@@ -58,7 +61,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await ctx.RespondAsync(lang.Search_Fail);
+                await ctx.RespondAsync(lang.SearchFail);
             }
         }
 
@@ -66,12 +69,12 @@ namespace SilverBotDS.Commands
         [Description("Get a gif of the latest battle royale news")]
         public async Task Brnews(CommandContext ctx)
         {
-            if (Disabled)
+            if (disabled)
             {
                 await SendDisabledMessage(ctx);
                 return;
             }
-            ApiResponse<NewsV2Combined> newsV2 = await api.V2.News.GetAsync();
+            var newsV2 = await api.V2.News.GetAsync();
             await ctx.RespondAsync(newsV2.Data.Br.Image.ToString());
         }
 
@@ -79,12 +82,12 @@ namespace SilverBotDS.Commands
         [Description("Get a gif of the latest creative news")]
         public async Task Crnews(CommandContext ctx)
         {
-            if (Disabled)
+            if (disabled)
             {
                 await SendDisabledMessage(ctx);
                 return;
             }
-            ApiResponse<NewsV2Combined> newsV2 = await api.V2.News.GetAsync();
+            var newsV2 = await api.V2.News.GetAsync();
             await ctx.RespondAsync(newsV2.Data.Creative.Image.ToString());
         }
 
@@ -92,12 +95,12 @@ namespace SilverBotDS.Commands
         [Description("Get a gif of the latest save-the-world news")]
         public async Task Stwnews(CommandContext ctx)
         {
-            if (Disabled)
+            if (disabled)
             {
                 await SendDisabledMessage(ctx);
                 return;
             }
-            ApiResponse<NewsV2Combined> newsV2 = await api.V2.News.GetAsync();
+            var newsV2 = await api.V2.News.GetAsync();
             await ctx.RespondAsync(newsV2.Data.Stw.Image.ToString());
         }
 
@@ -105,14 +108,14 @@ namespace SilverBotDS.Commands
         [Description("Try to get the item shop items")]
         public async Task Itm(CommandContext ctx)
         {
-            if (Disabled)
+            if (disabled)
             {
                 await SendDisabledMessage(ctx);
                 return;
             }
-            ApiResponse<BrShopV2Combined> shop = await api.V2.Shop.GetBrCombinedAsync();
-            StringBuilder sb = new StringBuilder();
-            foreach (BrShopV2StoreFrontEntry thing in shop.Data.Daily.Entries)
+            var shop = await api.V2.Shop.GetBrCombinedAsync();
+            var sb = new StringBuilder();
+            foreach (var thing in shop.Data.Daily.Entries)
             {
                 sb.Append(thing.DevName + Environment.NewLine);
             }

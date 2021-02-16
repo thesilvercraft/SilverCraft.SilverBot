@@ -1,15 +1,15 @@
-﻿using Npgsql;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
+using Npgsql;
 
-namespace SilverBotDS
+namespace SilverBotDS.Objects
 {
-    internal class Database
+    internal static class Database
     {
         private static string connstring;
 
@@ -38,26 +38,25 @@ namespace SilverBotDS
         public static async Task<bool?> Isoptedin(ulong serverid)
         {
             bool? e = null;
-            using (NpgsqlConnection conn = NewConnection())
+            await using var conn = NewConnection();
+            try
             {
-                try
+                await conn.OpenAsync();
+                await using var cmd = new NpgsqlCommand("SELECT optedin FROM serveroptin WHERE serverid = @id", conn);
+                cmd.Parameters.AddWithValue("id", Convert.ToInt64(serverid));
+                await using var reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
                 {
-                    await conn.OpenAsync();
-                    await using var cmd = new NpgsqlCommand("SELECT optedin FROM serveroptin WHERE serverid = @id", conn);
-                    cmd.Parameters.AddWithValue("id", Convert.ToInt64(serverid));
-                    await using var reader = await cmd.ExecuteReaderAsync();
-                    while (await reader.ReadAsync())
-                    {
-                        e = reader.GetBoolean(0);
-                    }
-                    await conn.CloseAsync();
+                    e = reader.GetBoolean(0);
                 }
-                catch (Exception exep)
-                {
-                    Debug.WriteLine(exep);
-                    Console.WriteLine(exep);
-                }
+                await conn.CloseAsync();
             }
+            catch (Exception exep)
+            {
+                Debug.WriteLine(exep);
+                Console.WriteLine(exep);
+            }
+
             return e;
         }
 
@@ -66,18 +65,18 @@ namespace SilverBotDS
         /// </summary>
         /// <param name="sql">the sql to run</param>
         /// <returns>A string and a image one of them is a null</returns>
-        public static async Task<Tuple<string, Image>> RunSQLAsync(string sql)
+        public static async Task<Tuple<string, Image>> RunSqlAsync(string sql)
         {
             try
             {
-                using NpgsqlConnection conn = NewConnection();
+                await using var conn = NewConnection();
                 await conn.OpenAsync();
                 await using var cmd = new NpgsqlCommand(sql, conn);
 
-                DataTable dataTable = new DataTable();
+                var dataTable = new DataTable();
 
                 // create data adapter
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+                var da = new NpgsqlDataAdapter(cmd);
                 // this will query your database and return the result to your datatable
                 da.Fill(dataTable);
                 await conn.CloseAsync();
@@ -132,7 +131,7 @@ namespace SilverBotDS
 
         public static async Task InsertAsync(Serveroptin e)
         {
-            using NpgsqlConnection conn = NewConnection();
+            await using var conn = NewConnection();
             await conn.OpenAsync();
             await using var cmd = new NpgsqlCommand("INSERT INTO serveroptin (serverid, optedin) VALUES (@p1, @p2)", conn);
             cmd.Parameters.AddWithValue("p1", Convert.ToInt64(e.ServerId));
@@ -146,7 +145,7 @@ namespace SilverBotDS
             List<Serveroptin> enuma = new();
             try
             {
-                using NpgsqlConnection conn = NewConnection();
+                await using var conn = NewConnection();
                 await conn.OpenAsync();
                 await using var cmd = new NpgsqlCommand("SELECT serverid, optedin FROM serveroptin WHERE(optedin = True)", conn);
                 await using var reader = await cmd.ExecuteReaderAsync();
@@ -178,7 +177,7 @@ namespace SilverBotDS
 
     public class Serveroptin
     {
-        public ulong ServerId { get; set; }
-        public bool Optedin { get; set; }
+        public ulong ServerId { get; init; }
+        public bool Optedin { get; init; }
     }
 }

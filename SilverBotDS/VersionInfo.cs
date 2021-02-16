@@ -3,11 +3,11 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Net.Http;
+using WebClient = SilverBotDS.Objects.WebClient;
 
 namespace SilverBotDS
 {
-    internal class VersionInfo
+    internal static class VersionInfo
     {
         public const string VNumber = ThisAssembly.Git.Commit + "-" + ThisAssembly.Git.Branch + "-" + ThisAssembly.Git.CommitDate;
 
@@ -21,14 +21,14 @@ namespace SilverBotDS
             try
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                LogLine("Running on " + System.Environment.OSVersion.VersionString);
+                LogLine("Running on " + Environment.OSVersion.VersionString);
                 Console.ResetColor();
-                System.Net.Http.HttpClient client = WebClient.Get();
+                var client = WebClient.Get();
                 LogLine("Getting latest version info from silverdimond.tk");
-                HttpResponseMessage rm = await client.GetAsync("https://silverdimond.tk/silvercraftbot/version-info.txt");
-                string _content = await rm.Content.ReadAsStringAsync();
-                string[] strings = _content.Split("\n", StringSplitOptions.RemoveEmptyEntries);
-                bool uptodate = true;
+                var rm = await client.GetAsync("https://silverdimond.tk/silvercraftbot/version-info.txt");
+                var content = await rm.Content.ReadAsStringAsync();
+                var strings = content.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+                var uptodate = true;
                 if (strings.Length != 3)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -55,20 +55,18 @@ namespace SilverBotDS
                     Console.ResetColor();
                 }
 #if DEBUG
-                if (!uptodate && (Environment.UserDomainName == null || Environment.UserDomainName == "DESKTOP-QK1H9BG"))
+                if (uptodate || (Environment.UserDomainName != "DESKTOP-QK1H9BG")) return;
+                await using (var sw = new StreamWriter("version-info.txt"))
                 {
-                    using (StreamWriter sw = new StreamWriter("version-info.txt"))
+                    await sw.WriteLineAsync(VNumber);
+                    var generator = new Generator
                     {
-                        await sw.WriteLineAsync(VNumber);
-                        var generator = new Generator
-                        {
-                            Separator = "-"
-                        };
-                        await sw.WriteLineAsync($"codename {generator.Generate()}");
-                        await sw.WriteLineAsync(ThisAssembly.Git.RepositoryUrl);
-                    }
-                    Process.Start("notepad", "version-info.txt");
+                        Separator = "-"
+                    };
+                    await sw.WriteLineAsync($"codename {generator.Generate()}");
+                    await sw.WriteLineAsync(ThisAssembly.Git.RepositoryUrl);
                 }
+                Process.Start("notepad", "version-info.txt");
 
 #endif
             }

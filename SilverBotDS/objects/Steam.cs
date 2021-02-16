@@ -1,7 +1,7 @@
-﻿using SteamStoreQuery;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SteamStoreQuery;
 
-namespace SilverBotDS
+namespace SilverBotDS.Objects
 {
     internal class Steam
     {

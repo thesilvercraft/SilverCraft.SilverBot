@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SilverBotDS.Utils
 {
-    internal class StringUtils
+    internal static class StringUtils
     {
         /// <summary>
         /// A random string from an array of strings
@@ -13,7 +13,7 @@ namespace SilverBotDS.Utils
         /// <returns>A random string from the array</returns>
         public static string RandomFromArray(string[] vs)
         {
-            RandomGenerator randomGenerator = new RandomGenerator();
+            var randomGenerator = new RandomGenerator();
             if (vs.Length == 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(vs.Length), "Array lenght must be above 0");
@@ -26,7 +26,7 @@ namespace SilverBotDS.Utils
         /// </summary>
         /// <param name="s">The string</param>
         /// <param name="partLength">The length</param>
-        /// <returns>An IEnumerable<string> containing the parts</returns>
+        /// <returns>An IEnumerable string containing the parts</returns>
         public static IEnumerable<string> SplitInParts(string s, int partLength)
         {
             if (s == null)
@@ -39,7 +39,7 @@ namespace SilverBotDS.Utils
                 throw new ArgumentException("Part length has to be positive.", nameof(partLength));
             }
 
-            for (int i = 0; i < s.Length; i += partLength)
+            for (var i = 0; i < s.Length; i += partLength)
             {
                 yield return s.Substring(i, Math.Min(partLength, s.Length - i));
             }
@@ -70,7 +70,7 @@ namespace SilverBotDS.Utils
         /// <returns>A string cotnaining the array</returns>
         public static string ArrayToString(string[] arr, string seperator = "")
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             if (string.IsNullOrEmpty(seperator))
             {
@@ -81,7 +81,7 @@ namespace SilverBotDS.Utils
             }
             else
             {
-                int e = 0;
+                var e = 0;
                 foreach (var item in arr)
                 {
                     e++;

@@ -1,10 +1,10 @@
-﻿using DSharpPlus.Entities;
-using SilverBotDS.Utils;
-using System.IO;
+﻿using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
+using SilverBotDS.Utils;
 
-namespace SilverBotDS
+namespace SilverBotDS.Objects
 {
     internal class Splashes
     {
@@ -189,7 +189,7 @@ new ("Developers",ActivityType.Playing),
 new ("GREAT SUCCESS!",ActivityType.Playing),
         };
 
-        private static DiscordActivity[] Cache;
+        private static DiscordActivity[] cache;
 
         /// <summary>
         /// Gets a list of <see cref="DiscordActivity[]"/>s
@@ -203,13 +203,13 @@ new ("GREAT SUCCESS!",ActivityType.Playing),
             {
                 return Internal;
             }
-            if (ignorecache || Cache == null)
+            if (ignorecache || cache == null)
             {
                 if (File.Exists("splashes.json"))
                 {
                     using StreamReader reader = new("splashes.json");
-                    Cache = JsonSerializer.Deserialize<DiscordActivity[]>(json: await reader.ReadToEndAsync());
-                    return Cache;
+                    cache = JsonSerializer.Deserialize<DiscordActivity[]>(json: await reader.ReadToEndAsync());
+                    return cache;
                 }
                 else
                 {
@@ -217,14 +217,14 @@ new ("GREAT SUCCESS!",ActivityType.Playing),
                     {
                         WriteIndented = true
                     };
-                    using StreamWriter writer = new("splashes.json");
+                    await using StreamWriter writer = new("splashes.json");
                     writer.Write(JsonSerializer.Serialize(Internal, options));
                     return Internal;
                 }
             }
             else
             {
-                return Cache;
+                return cache;
             }
         }
 
@@ -237,7 +237,7 @@ new ("GREAT SUCCESS!",ActivityType.Playing),
         public static async Task<DiscordActivity> GetSingleAsync(bool ignorecache = false, bool useinternal = false)
         {
             RandomGenerator rg = new();
-            DiscordActivity[] arr = await GetAsync(ignorecache, useinternal);
+            var arr = await GetAsync(ignorecache, useinternal);
             return arr[rg.Next(0, arr.Length)];
         }
     }

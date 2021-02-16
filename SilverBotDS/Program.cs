@@ -4,7 +4,6 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
-using DSharpPlus.Lavalink;
 using DSharpPlus.Net;
 using SDBrowser;
 using SilverBotDS.Commands;
@@ -13,16 +12,19 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using SilverBotDS.Commands.Gamering;
+using SilverBotDS.Converters;
+using SilverBotDS.Objects;
+using Lavalink4NET;
+using Lavalink4NET.DSharpPlus;
 
 namespace SilverBotDS
 {
-    internal class Program
+    internal static class Program
     {
         private static Config config;
-        private static readonly bool shitlog = false;
+        private static readonly bool Shitlog = false;
 
         private static Config GetNewConfig()
         {
@@ -49,16 +51,18 @@ namespace SilverBotDS
             MainLogLine("Load config");
             config = GetNewConfig();
             MainLogLine("Connect to selinum??");
-            switch (config.Browser_Type)
+            switch (config.BrowserType)
             {
                 case 1:
                     {
-                        Browser.SetBrowser(new SeleniumBrowser(Browsertype.Chrome, config.Driver_Location));
+                        Console.Write("chrome bitch");
+                        Browser.SetBrowser(new SeleniumBrowser(Browsertype.Chrome, config.DriverLocation));
                         break;
                     }
                 case 2:
                     {
-                        Browser.SetBrowser(new SeleniumBrowser(Browsertype.Firefox, config.Driver_Location));
+                        Console.Write("firefox bitch");
+                        Browser.SetBrowser(new SeleniumBrowser(Browsertype.Firefox, config.DriverLocation));
                         break;
                     }
             }
@@ -76,25 +80,25 @@ namespace SilverBotDS
             return config;
         }
 
-        private static readonly DiscordWebhookClient wc = new();
+        private static readonly DiscordWebhookClient Wc = new();
 
         public static async Task SendLogAsync(string text, List<DiscordEmbed> embeds)
         {
             var whb = new DiscordWebhookBuilder();
             whb.AddEmbeds(embeds);
             whb.WithContent(text);
-            await wc.BroadcastMessageAsync(whb);
+            await Wc.BroadcastMessageAsync(whb);
         }
 
         private static DiscordClient discord;
-        private static LavalinkExtension lavalink;
+        private static LavalinkNode audioService;
 
         private static async Task MainAsync()
         {
             //add log at first
             _ = MainLogLineAsync("Adding the logging webhook");
-            UriBuilder uri = new UriBuilder(config.LogWebhook);
-            await wc.AddWebhookAsync(uri.Uri);
+            var uri = new UriBuilder(config.LogWebhook);
+            await Wc.AddWebhookAsync(uri.Uri);
             //Make us a little cute client
             _ = MainLogLineAsync("Creating the discord client");
             discord = new DiscordClient(new DiscordConfiguration()
@@ -111,20 +115,20 @@ namespace SilverBotDS
                 Timeout = TimeSpan.FromSeconds(30)
             });
             //set up logging?
-            if (shitlog)
+            if (Shitlog)
             {
                 _ = MainLogLineAsync("Setup unimplemented message tracking:tm:");
                 discord.MessageCreated += Discord_MessageCreated;
             }
             //Tell our cute client to use commands or in other words become a working class member of society
             _ = MainLogLineAsync("Initialising Commands");
-            CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration()
+            var commands = discord.UseCommandsNext(new CommandsNextConfiguration()
             {
                 StringPrefixes = config.Prefix
             });
             //Register our commands
             _ = MainLogLineAsync("Regisitring Commands&Converters");
-            commands.RegisterConverter(new SDImageConverter());
+            commands.RegisterConverter(new SdImageConverter());
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<Moderation>();
@@ -134,18 +138,19 @@ namespace SilverBotDS
             commands.RegisterCommands<OwnerOnly>();
             commands.RegisterCommands<SteamCommands>();
             commands.RegisterCommands<Fortnite>();
+            commands.RegisterCommands<Audio>();
 
             //Launch lavalink
             if (!File.Exists("Lavalink.jar"))
             {
                 _ = MainLogLineAsync("Downloading lavalink");
                 GitHubUtils.Repo repo = new("Frederikam", "Lavalink");
-                GitHubUtils.Release release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo);
+                var release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo);
                 await release.DownloadLatestAsync();
             }
             _ = MainLogLineAsync("Launching lavalink");
 
-            Process proStart = new Process
+            var proStart = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -156,10 +161,16 @@ namespace SilverBotDS
             };
 
             proStart.Start();
-
+            _ = MainLogLineAsync("Waiting 6s");
+            await Task.Delay(6000);
+            _ = MainLogLineAsync("Making a node");
+            audioService = new LavalinkNode(new LavalinkNodeOptions
+            {
+                RestUri = "http://localhost:2333/",
+                WebSocketUri = "ws://localhost:2333/",
+                Password = "youshallnotpass"
+            }, new DiscordClientWrapper(discord));
             //🥁🥁🥁 drumroll please
-
-            lavalink = discord.UseLavalink();
 
             _ = MainLogLineAsync("Connecting to discord");
             discord.Ready += Discord_Ready;
@@ -183,19 +194,8 @@ namespace SilverBotDS
 
         private static async Task Discord_Ready(DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e)
         {
-            var endpoint = new ConnectionEndpoint
-            {
-                Hostname = "127.0.0.1", // From your server configuration.
-                Port = 2333 // From your server configuration
-            };
-            var lavalinkConfig = new LavalinkConfiguration
-            {
-                Password = "youshallnotpass", // From your server configuration.
-                RestEndpoint = endpoint,
-                SocketEndpoint = endpoint
-            };
-            await Console.Out.WriteLineAsync("[ReadyEvent] Logged in as " + discord.CurrentUser.Username);
-            await lavalink.ConnectAsync(lavalinkConfig);
+            await audioService.InitializeAsync();
+            Audio.SetLavaLinkNode(audioService);
         }
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)

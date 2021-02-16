@@ -6,7 +6,7 @@ namespace SilverBotDS.Utils
     {
         public static string FormatSize(long bytes)
         {
-            int counter = 0;
+            var counter = 0;
             decimal number = bytes;
             while (Math.Round(number / 1024) >= 1)
             {
@@ -27,13 +27,13 @@ namespace SilverBotDS.Utils
         /// <summary>
         /// Make a thing
         /// </summary>
-        /// <param name="FN">Full name</param>
-        /// <param name="SFX">Suffix</param>
+        /// <param name="fn">Full name</param>
+        /// <param name="sfx">Suffix</param>
         /// <returns></returns>
-        public FSize(string FN, string SFX)
+        public FSize(string fn, string sfx)
         {
-            FullName = FN;
-            Suffix = SFX;
+            FullName = fn;
+            Suffix = sfx;
         }
 
         /// <summary>

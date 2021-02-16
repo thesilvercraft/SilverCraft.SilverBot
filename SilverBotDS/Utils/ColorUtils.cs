@@ -1,18 +1,21 @@
 ﻿using DSharpPlus.Entities;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Utils
 {
-    internal class ColorUtils
+    public class ColorUtils
     {
+        public static ColorUtils CreateInstance()
+        {
+            return new ColorUtils();
+        }
+
         private static DiscordColor[] Internal { get; } = { DiscordColor.Red, DiscordColor.Green, DiscordColor.Blue };
-        private static DiscordColor[] Cache;
+        private static DiscordColor[] cache;
 
         /// <summary>
         /// Gets an array of <see cref="DiscordColor"/>s
@@ -26,18 +29,15 @@ namespace SilverBotDS.Utils
             {
                 return Internal;
             }
-            if (ignorecache || Cache == null)
+            if (ignorecache || cache == null)
             {
                 if (File.Exists("colors.json"))
                 {
                     using StreamReader reader = new("colors.json");
-                    List<DiscordColor> list = new();
-                    foreach (var sdcolor in JsonSerializer.Deserialize<SDColor[]>(json: await reader.ReadToEndAsync()))
-                    {
-                        list.Add(sdcolor.ToDiscordColor());
-                    }
-                    Cache = list.ToArray();
-                    return Cache;
+                    var colors = JsonSerializer.Deserialize<SdColor[]>(json: await reader.ReadToEndAsync());
+
+                    cache = (colors ?? Array.Empty<SdColor>()).Select(sdcolor => sdcolor.ToDiscordColor()).ToArray();
+                    return cache;
                 }
                 else
                 {
@@ -45,37 +45,32 @@ namespace SilverBotDS.Utils
                     {
                         WriteIndented = true
                     };
-                    using StreamWriter writer = new("colors.json");
-                    List<SDColor> list = new();
-                    foreach (var dcolor in Internal)
-                    {
-                        list.Add(SDColor.FromDiscordColor(dcolor));
-                    }
-                    writer.Write(JsonSerializer.Serialize(list.ToArray(), options));
+                    await using StreamWriter writer = new("colors.json");
+                    await writer.WriteAsync(JsonSerializer.Serialize(Internal.Select(SdColor.FromDiscordColor).ToArray(), options));
                     return Internal;
                 }
             }
             else
             {
-                return Cache;
+                return cache;
             }
         }
 
-        public class SDColor
+        public class SdColor
         {
             public DiscordColor ToDiscordColor()
             {
                 return new DiscordColor(R, G, B);
             }
 
-            public static SDColor FromDiscordColor(DiscordColor color)
+            public static SdColor FromDiscordColor(DiscordColor color)
             {
-                return new SDColor { R = color.R, G = color.G, B = color.B };
+                return new SdColor { R = color.R, G = color.G, B = color.B };
             }
 
-            public byte R { get; set; }
-            public byte G { get; set; }
-            public byte B { get; set; }
+            private byte R { get; init; }
+            private byte G { get; init; }
+            private byte B { get; init; }
         }
 
         /// <summary>
@@ -87,7 +82,7 @@ namespace SilverBotDS.Utils
         public static async Task<DiscordColor> GetSingleAsync(bool ignorecache = false, bool useinternal = false)
         {
             RandomGenerator rg = new();
-            DiscordColor[] arr = await GetAsync(ignorecache, useinternal);
+            var arr = await GetAsync(ignorecache, useinternal);
             return arr[rg.Next(0, arr.Length)];
         }
     }

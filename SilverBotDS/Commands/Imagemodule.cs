@@ -1,131 +1,127 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using System;
+using System.Drawing;
+using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
+using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters.Photo;
 using ImageProcessor.Imaging.Formats;
+using SilverBotDS.Converters;
+using SilverBotDS.Objects;
 using SilverBotDS.Utils;
-using System;
-using System.Drawing;
-using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
+    [Cooldown(1, 2, CooldownBucketType.User)]
     public class Imagemodule : BaseCommandModule
     {
+        public static Imagemodule CreateInstance()
+        {
+            return new Imagemodule();
+        }
+
 #pragma warning disable CA1822 // Mark members as static
 
         private const int MaxBytes = 8388246;
 
         private const int Quality = 70;
 
-        private async Task Sendcorrectamountofimages(CommandContext ctx, AttachmentCountIncorrect e, Language lang = null)
+        private static async Task Sendcorrectamountofimages(CommandContext ctx, AttachmentCountIncorrect e, Language lang = null)
         {
-            if (lang == null)
-            {
-                lang = Language.GetLanguageFromCtx(ctx);
-            }
+            lang ??= Language.GetLanguageFromCtx(ctx);
             if (e == AttachmentCountIncorrect.TooLittleAttachments)
             {
-                await Send_img_plsAsync(ctx, lang.No_Image_Generic).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, lang.NoImageGeneric).ConfigureAwait(false);
             }
             else
             {
-                await Send_img_plsAsync(ctx, lang.More_Than_One_Image_Generic).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, lang.MoreThanOneImageGeneric).ConfigureAwait(false);
             }
         }
 
         private static MemoryStream Resize(byte[] photoBytes, Size size)
         {
             ISupportedImageFormat format = new PngFormat { Quality = Quality };
-            using MemoryStream inStream = new MemoryStream(photoBytes);
-            MemoryStream outStream = new MemoryStream();
-            using (ImageFactory imageFactory = new ImageFactory())
-            {
-                imageFactory.Load(inStream)
-                            .Format(format)
-                            .Resize(size)
-                            .Save(outStream);
-            }
+            using var inStream = new MemoryStream(photoBytes);
+            var outStream = new MemoryStream();
+            using var imageFactory = new ImageFactory();
+            imageFactory.Load(inStream)
+                .Format(format)
+                .Resize(size)
+                .Save(outStream);
             return outStream;
         }
 
         private static MemoryStream Make_jpegnised(byte[] photoBytes)
         {
             ISupportedImageFormat format = new JpegFormat { Quality = 1 };
-            using MemoryStream inStream = new MemoryStream(photoBytes);
-            MemoryStream outStream = new MemoryStream();
-            using (ImageFactory imageFactory = new ImageFactory())
-            {
-                imageFactory.Load(inStream)
-                            .Format(format)
-                            .Save(outStream);
-            }
+            using var inStream = new MemoryStream(photoBytes);
+            var outStream = new MemoryStream();
+            using var imageFactory = new ImageFactory();
+            imageFactory.Load(inStream)
+                .Format(format)
+                .Save(outStream);
             return outStream;
         }
 
         private static MemoryStream Shet_On(byte[] photoBytes)
         {
             ISupportedImageFormat format = new JpegFormat { Quality = 1 };
-            using MemoryStream inStream = new MemoryStream(photoBytes);
-            MemoryStream outStream = new MemoryStream();
+            using var inStream = new MemoryStream(photoBytes);
+            var outStream = new MemoryStream();
 
-            using (ImageFactory imageFactory = new ImageFactory())
-            {
-                imageFactory.Load(inStream);
-                int x = imageFactory.Image.Width, y = imageFactory.Image.Height;
-                imageFactory.Format(format)
-                            .Resize(new Size(imageFactory.Image.Width / 4, imageFactory.Image.Height / 4))
-                            .Resize(new Size(x, y))
-                            .Save(outStream);
-            }
+            using var imageFactory = new ImageFactory();
+            imageFactory.Load(inStream);
+            int x = imageFactory.Image.Width, y = imageFactory.Image.Height;
+            imageFactory.Format(format)
+                .Resize(new Size(imageFactory.Image.Width / 4, imageFactory.Image.Height / 4))
+                .Resize(new Size(x, y))
+                .Save(outStream);
             return outStream;
         }
 
-        private async Task Send_img_plsAsync(CommandContext ctx, string e)
+        private static async Task Send_img_plsAsync(CommandContext ctx, string e)
         {
-            DiscordEmbedBuilder b = new DiscordEmbedBuilder();
+            var b = new DiscordEmbedBuilder();
             b.WithTitle("Send **an** image my guy");
             b.WithDescription(e);
-            b.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(DSharpPlus.ImageFormat.Png));
+            b.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
 
         private static MemoryStream Tint(byte[] photoBytes, string color)
         {
             ISupportedImageFormat format = new PngFormat { Quality = Quality };
-            using MemoryStream inStream = new MemoryStream(photoBytes);
-            MemoryStream outStream = new MemoryStream();
-            using (ImageFactory imageFactory = new ImageFactory())
-            {
-                imageFactory.Load(inStream)
-                            .Tint(ColorTranslator.FromHtml(color))
-                            .Format(format)
-                            .Save(outStream);
-            }
+            using var inStream = new MemoryStream(photoBytes);
+            var outStream = new MemoryStream();
+            using var imageFactory = new ImageFactory();
+            imageFactory.Load(inStream)
+                .Tint(ColorTranslator.FromHtml(color))
+                .Format(format)
+                .Save(outStream);
             return outStream;
         }
 
         /// <summary>
         /// Filters an image
         /// </summary>
-        /// <param name="photoBytes">The <see cref="byte[]"/> of the original picture</param>
+        /// <param name="photoBytes">The <see cref="byte"/> of the original picture</param>
         /// <param name="filter">The <see cref="IMatrixFilter"/> to use</param>
         /// <returns>A ,<see cref="MemoryStream"/> with a <see cref="PngFormat"/> of 70 Quality</returns>
         private static MemoryStream Filter(byte[] photoBytes, IMatrixFilter filter)
         {
             ISupportedImageFormat format = new PngFormat { Quality = Quality };
-            using MemoryStream inStream = new MemoryStream(photoBytes);
-            MemoryStream outStream = new MemoryStream();
-            using (ImageFactory imageFactory = new ImageFactory())
-            {
-                imageFactory.Load(inStream)
-                            .Filter(filter)
-                            .Format(format)
-                            .Save(outStream);
-            }
+            using var inStream = new MemoryStream(photoBytes);
+            var outStream = new MemoryStream();
+            using var imageFactory = new ImageFactory();
+            imageFactory.Load(inStream)
+                .Filter(filter)
+                .Format(format)
+                .Save(outStream);
             return outStream;
         }
 
@@ -134,93 +130,72 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                SDImage image = SDImage.FromContext(ctx);
+                var image = SdImage.FromContext(ctx);
                 await Jpegize(ctx, image);
             }
-            catch (AttachmentCountIncorrectException ACIE)
+            catch (AttachmentCountIncorrectException acie)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
 
         [Command("jpeg")]
-        public async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SDImage image)
+        private static async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            try
+            var lang = Language.GetLanguageFromCtx(ctx);
+            await using var outStream = Make_jpegnised(await image.GetBytesAsync());
+            if (outStream.Length > MaxBytes)
             {
-                using MemoryStream outStream = Make_jpegnised(await image.GetBytesAsync());
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.JPEG_Success).WithFile("silverbotimage.jpeg", outStream).SendAsync(ctx.Channel);
-                }
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
             }
-            catch
+            else
             {
-                throw;
+                await new DiscordMessageBuilder().WithContent(lang.Imagethings.JpegSuccess).WithFile("silverbotimage.jpeg", outStream).SendAsync(ctx.Channel);
             }
         }
 
         [Command("shet")]
-        public async Task Shet(CommandContext ctx)
+        public static async Task Shet(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             try
             {
-                SDImage image = SDImage.FromContext(ctx);
+                var image = SdImage.FromContext(ctx);
                 await Shet(ctx, image);
             }
-            catch (AttachmentCountIncorrectException ACIE)
+            catch (AttachmentCountIncorrectException acie)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount, lang);
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount, lang);
             }
         }
 
         [Command("shet")]
-        public async Task Shet(CommandContext ctx, [Description("the url of the image")] SDImage image)
+        public static async Task Shet(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            try
+            var lang = Language.GetLanguageFromCtx(ctx);
+            await using var outStream = Shet_On(await image.GetBytesAsync());
+            if (outStream.Length > MaxBytes)
             {
-                using MemoryStream outStream = Shet_On(await image.GetBytesAsync());
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent("there is your masterpiece").WithFile("silverbotimage.jpeg", outStream).SendAsync(ctx.Channel);
-                }
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
             }
-            catch
+            else
             {
-                throw;
+                await new DiscordMessageBuilder().WithContent("there is your masterpiece").WithFile("silverbotimage.jpeg", outStream).SendAsync(ctx.Channel);
             }
         }
 
         [Command("resize")]
-        public async Task Resize(CommandContext ctx, [Description("the url of the image")] SDImage image, [Description("Width")] int x, [Description("Height")] int y)
+        public async Task Resize(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("Width")] int x, [Description("Height")] int y)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            try
+            var lang = Language.GetLanguageFromCtx(ctx);
+            await using var outStream = Resize(await image.GetBytesAsync(), new Size(x, y));
+            if (outStream.Length > MaxBytes)
             {
-                using MemoryStream outStream = Resize(await image.GetBytesAsync(), new Size(x, y));
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.Resize_Success).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
-                }
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
             }
-            catch
+            else
             {
-                throw;
+                await new DiscordMessageBuilder().WithContent(lang.Imagethings.ResizeSuccess).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
             }
         }
 
@@ -229,12 +204,12 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                SDImage image = SDImage.FromContext(ctx);
-                await Resize(ctx, x, y);
+                var image = SdImage.FromContext(ctx);
+                await Resize(ctx, image, x, y);
             }
-            catch (AttachmentCountIncorrectException ACIE)
+            catch (AttachmentCountIncorrectException acie)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
 
@@ -243,124 +218,95 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                SDImage image = SDImage.FromContext(ctx);
+                var image = SdImage.FromContext(ctx);
                 await Tint(ctx, image, color);
             }
-            catch (AttachmentCountIncorrectException ACIE)
+            catch (AttachmentCountIncorrectException acie)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
 
         [Command("tint")]
-        public async Task Tint(CommandContext ctx, [Description("the url of the image")] SDImage image, [Description("color in hex like #fffff")] string color)
+        private async Task Tint(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("color in hex like #fffff")] string color)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            try
+            var lang = Language.GetLanguageFromCtx(ctx);
+            await using var outStream = Tint(await image.GetBytesAsync(), color);
+            if (outStream.Length > MaxBytes)
             {
-                using MemoryStream outStream = Tint(await image.GetBytesAsync(), color);
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.Tint_Success).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
-                }
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
             }
-            catch
+            else
             {
-                throw;
+                await new DiscordMessageBuilder().WithContent(lang.Imagethings.TintSuccess).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
             }
         }
 
         [Command("silver")]
         public async Task Grayscale(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             try
             {
-                SDImage image = SDImage.FromContext(ctx);
+                var image = SdImage.FromContext(ctx);
                 await Grayscale(ctx, image);
             }
-            catch (AttachmentCountIncorrectException ACIE)
+            catch (AttachmentCountIncorrectException acie)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount, lang);
-            }
-            catch
-            {
-                throw;
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount, lang);
             }
         }
 
         [Command("silver")]
-        public async Task Grayscale(CommandContext ctx, [Description("the url of the image")] SDImage image)
+        public async Task Grayscale(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
-            try
+            var lang = Language.GetLanguageFromCtx(ctx);
+            var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.GreyScale);
+            if (outStream.Length > MaxBytes)
             {
-                Language lang = Language.GetLanguageFromCtx(ctx);
-                var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.GreyScale);
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.Silver_Success).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
-                }
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
             }
-            catch
+            else
             {
-                throw;
+                await new DiscordMessageBuilder().WithContent(lang.Imagethings.SilverSuccess).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
             }
         }
 
         [Command("comic")]
         public async Task Comic(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             try
             {
-                SDImage image = SDImage.FromContext(ctx);
+                var image = SdImage.FromContext(ctx);
                 await Comic(ctx, image);
             }
-            catch (AttachmentCountIncorrectException ACIE)
+            catch (AttachmentCountIncorrectException acie)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount, lang);
-            }
-            catch
-            {
-                throw;
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount, lang);
             }
         }
 
         [Command("comic")]
-        public async Task Comic(CommandContext ctx, [Description("the url of the image")] SDImage image)
+        public async Task Comic(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
-            try
+            var lang = Language.GetLanguageFromCtx(ctx);
+            var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.Comic);
+            if (outStream.Length > MaxBytes)
             {
-                Language lang = Language.GetLanguageFromCtx(ctx);
-                var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.Comic);
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent(lang.Imagethings.Comic_Success).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
-                }
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
             }
-            catch
+            else
             {
-                throw;
+                await new DiscordMessageBuilder().WithContent(lang.Imagethings.ComicSuccess).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
             }
         }
 
         private static Image DrawText(string text, Font font, Color textColor, Color backColor)
         {
             Image img = new Bitmap(1, 1);
-            Graphics drawing = Graphics.FromImage(img);
-            SizeF textSize = drawing.MeasureString(text, font);
+            var drawing = Graphics.FromImage(img);
+            var textSize = drawing.MeasureString(text, font);
             img.Dispose();
             drawing.Dispose();
             img = new Bitmap((int)textSize.Width, (int)textSize.Height);
@@ -377,8 +323,8 @@ namespace SilverBotDS.Commands
         [Command("text")]
         public async Task Text(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light")
         {
-            Image img = DrawText(text, new Font(font, 30.0f), Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255));
-            using MemoryStream outStream = new MemoryStream();
+            var img = DrawText(text, new Font(font, 30.0f), Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255));
+            await using var outStream = new MemoryStream();
             img.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
             outStream.Position = 0;
             await new DiscordMessageBuilder().WithContent("there").WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
@@ -387,7 +333,7 @@ namespace SilverBotDS.Commands
         private static Bitmap cachedmotivatetemplate;
         private static Bitmap cachedadventuretimetemplate;
 
-        [RequireGuild()]
+        [RequireGuild]
         [Command("adventuretime")]
         public async Task AdventureTime(CommandContext ctx)
         {
@@ -403,23 +349,24 @@ namespace SilverBotDS.Commands
         [Command("adventuretime")]
         public async Task AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             try
             {
                 if (cachedadventuretimetemplate == null)
                 {
-                    Assembly myAssembly = Assembly.GetExecutingAssembly();
+                    var myAssembly = Assembly.GetExecutingAssembly();
 
-                    Stream myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png");
+                    var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png");
                     if (myStream is null)
                     {
                         Console.Write("FOCK");
                     }
-                    cachedadventuretimetemplate = new Bitmap(myStream);
+                    cachedadventuretimetemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
                 }
-                using MemoryStream resizedstreama = new(await new SDImage(person.GetAvatarUrl(DSharpPlus.ImageFormat.Png, 256)).GetBytesAsync());
-                using MemoryStream resizedstreamb = new(await new SDImage(friendo.GetAvatarUrl(DSharpPlus.ImageFormat.Png, 256)).GetBytesAsync());
-                using Bitmap copythingy = new Bitmap(cachedadventuretimetemplate);
+
+                await using MemoryStream resizedstreama = new(await new SdImage(person.GetAvatarUrl(ImageFormat.Png, 256)).GetBytesAsync());
+                await using MemoryStream resizedstreamb = new(await new SdImage(friendo.GetAvatarUrl(ImageFormat.Png, 256)).GetBytesAsync());
+                using var copythingy = new Bitmap(cachedadventuretimetemplate);
                 var drawing = Graphics.FromImage(copythingy);
 
                 using (Bitmap internalimage = new(resizedstreamb))
@@ -433,13 +380,13 @@ namespace SilverBotDS.Commands
                 }
 
                 drawing.Save();
-                using MemoryStream outStream = new();
+                await using MemoryStream outStream = new();
                 outStream.Position = 0;
                 copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
                 outStream.Position = 0;
                 if (outStream.Length > MaxBytes)
                 {
-                    await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
                 }
                 else
                 {
@@ -458,35 +405,35 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                SDImage image = SDImage.FromContext(ctx);
+                var image = SdImage.FromContext(ctx);
                 await Motivate(ctx, image, text);
             }
-            catch (AttachmentCountIncorrectException ACIE)
+            catch (AttachmentCountIncorrectException acie)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
 
         [Command("motivate")]
-        public async Task Motivate(CommandContext ctx, SDImage image, [RemainingText] string text)
+        public async Task Motivate(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             if (cachedmotivatetemplate == null)
             {
-                Assembly myAssembly = Assembly.GetExecutingAssembly();
-                Stream myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.motivator_template.png");
-                cachedmotivatetemplate = new Bitmap(myStream);
+                var myAssembly = Assembly.GetExecutingAssembly();
+                var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.motivator_template.png");
+                cachedmotivatetemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
             }
 
             var font = new Font("Times New Roman", 100);
-            using MemoryStream resizedstream = Resize(await image.GetBytesAsync(), new Size(1027, 684));
-            using Bitmap copythingy = new Bitmap(cachedmotivatetemplate);
+            await using var resizedstream = Resize(await image.GetBytesAsync(), new Size(1027, 684));
+            using var copythingy = new Bitmap(cachedmotivatetemplate);
             var drawing = Graphics.FromImage(copythingy);
             using (Bitmap internalimage = new(resizedstream))
             {
                 drawing.DrawImageUnscaled(internalimage, new Point(126, 83));
             }
-            StringFormat sf = new StringFormat
+            var sf = new StringFormat
             {
                 LineAlignment = StringAlignment.Center,
                 Alignment = StringAlignment.Center
@@ -498,17 +445,17 @@ new Font(font.FontFamily, font.Size, font.Style)).Width)
             }
             drawing.DrawString(text, font, new SolidBrush(Color.White), new RectangleF(new PointF(119, 793), new SizeF(1041, 209)), sf);
             drawing.Save();
-            using MemoryStream outStream = new();
+            await using MemoryStream outStream = new();
             outStream.Position = 0;
             copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
             outStream.Position = 0;
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
             }
             else
             {
-                await ctx.RespondAsync(new DiscordMessageBuilder().WithContent($"there").WithFile("silverbotimage.png", outStream));
+                await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("there").WithFile("silverbotimage.png", outStream));
             }
         }
 
@@ -517,36 +464,36 @@ new Font(font.FontFamily, font.Size, font.Style)).Width)
         {
             try
             {
-                SDImage image = SDImage.FromContext(ctx);
+                var image = SdImage.FromContext(ctx);
                 await Caption(ctx, image, text);
             }
-            catch (AttachmentCountIncorrectException ACIE)
+            catch (AttachmentCountIncorrectException acie)
             {
-                await Sendcorrectamountofimages(ctx, ACIE.attachmentCount);
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
 
         [Command("caption")]
-        public async Task Caption(CommandContext ctx, SDImage image, [RemainingText] string text)
+        public async Task Caption(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            using MemoryStream inStream = new MemoryStream(await image.GetBytesAsync());
+            var lang = Language.GetLanguageFromCtx(ctx);
+            await using var inStream = new MemoryStream(await image.GetBytesAsync());
             var bitmap = new Bitmap(inStream);
             int x = bitmap.Width, y = bitmap.Height;
             var font = new Font("Impact", x / 10);
-            using MemoryStream outStream = new MemoryStream();
+            await using var outStream = new MemoryStream();
 
             Image img = new Bitmap(1, 1);
 
-            Graphics drawing = Graphics.FromImage(img);
+            var drawing = Graphics.FromImage(img);
 
-            SizeF textSize = drawing.MeasureString(text, font, x);
+            var textSize = drawing.MeasureString(text, font, x);
             img.Dispose();
             drawing.Dispose();
             img = new Bitmap(x, y + (int)textSize.Height);
             drawing = Graphics.FromImage(img);
             drawing.Clear(Color.FromArgb(255, 255, 255));
-            StringFormat sf = new StringFormat
+            var sf = new StringFormat
             {
                 LineAlignment = StringAlignment.Center,
                 Alignment = StringAlignment.Center
@@ -559,27 +506,27 @@ new Font(font.FontFamily, font.Size, font.Style)).Width)
             outStream.Position = 0;
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.Output_File_Larger_Than_8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
             }
             else
             {
-                await ctx.RespondAsync(new DiscordMessageBuilder().WithContent($"there").WithFile("silverbotimage.png", outStream));
+                await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("there").WithFile("silverbotimage.png", outStream));
             }
         }
 
         [Command("usertest")]
         public async Task Usertest(CommandContext ctx)
         {
-            Image img = DrawText(ctx.User.Username + "#" + ctx.User.Discriminator, new Font("Diavlo Light", 30.0f), Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
+            var img = DrawText(ctx.User.Username + "#" + ctx.User.Discriminator, new Font("Diavlo Light", 30.0f), Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
 
-            SDImage image = new(ctx.User.GetAvatarUrl(DSharpPlus.ImageFormat.Png));
+            SdImage image = new(ctx.User.GetAvatarUrl(ImageFormat.Png));
 
             ISupportedImageFormat format = new PngFormat { Quality = Quality };
-            Size size = new Size(200, 200);
-            using MemoryStream inStream = new MemoryStream(await image.GetBytesAsync());
-            using MemoryStream avatarStream = new MemoryStream();
-            using MemoryStream outStream = new MemoryStream();
-            using (ImageFactory imageFactory = new ImageFactory())
+            var size = new Size(200, 200);
+            await using var inStream = new MemoryStream(await image.GetBytesAsync());
+            await using var avatarStream = new MemoryStream();
+            await using var outStream = new MemoryStream();
+            using (var imageFactory = new ImageFactory())
             {
                 imageFactory.Load(inStream)
                             .Resize(size)
@@ -587,10 +534,10 @@ new Font(font.FontFamily, font.Size, font.Style)).Width)
                             .Save(avatarStream);
             }
             avatarStream.Position = 0;
-            Image imanidiot = Image.FromStream(avatarStream);
+            var imanidiot = Image.FromStream(avatarStream);
 
             Image imge = new Bitmap(800, 240);
-            using (Graphics gr = Graphics.FromImage(imge))
+            using (var gr = Graphics.FromImage(imge))
             {
                 gr.Clear(Color.White);
                 gr.DrawImage(imanidiot, new Point(13, 20));
@@ -599,7 +546,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width)
             imge.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
 
             outStream.Position = 0;
-            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent($"there").WithFile("silverbotimage.png", outStream));
+            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("there").WithFile("silverbotimage.png", outStream));
         }
     }
 }

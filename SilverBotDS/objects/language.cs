@@ -1,10 +1,11 @@
-﻿using DSharpPlus.CommandsNext;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text.Json;
+using DSharpPlus.CommandsNext;
 
-namespace SilverBotDS
+namespace SilverBotDS.Objects
 {
     //TODO finish the summaries and shiz
     //I know i promised language support but im kinda of an idiot so yeah
@@ -28,12 +29,12 @@ namespace SilverBotDS
         /// <remarks>
         /// Needs to be used like <c>String.Format(Language.Time_In_Utc,DateTime.NowUTC.ToString(Language.Time_format));</c>
         /// </remarks>
-        public string Time_In_Utc { get; set; } = "Time in UTC is {0}";
+        public string TimeInUtc { get; set; } = "Time in UTC is {0}";
 
         /// <summary>
         /// This command is disabled
         /// </summary>
-        public string Command_Is_Disabled { get; set; } = "This command is disabled";
+        public string CommandIsDisabled { get; set; } = "This command is disabled";
 
         /// <summary>
         /// <b>Requested by </b>SilverDimond
@@ -44,33 +45,33 @@ namespace SilverBotDS
         /// Needs to be used like <c>Language.Requested_by+Username</c> <strong>MAY BE SUBJECT TO CHANGE</strong>
         /// </remarks>
 
-        public string Requested_by { get; set; } = "Requested by ";
+        public string RequestedBy { get; set; } = "Requested by ";
         /// <summary>
         /// Something went wrong, it's probably on my end.
         /// </summary>
 
-        public string DBLA_Returned_Null { get; set; } = "Something went wrong, it's probably on my end.";
+        public string DblaReturnedNull { get; set; } = "Something went wrong, it's probably on my end.";
 
         /// <summary>
         /// Default(EN)
         /// </summary>
-        public string Lang_name { get; set; } = "Default(EN)";
+        public string LangName { get; set; } = "Default(EN)";
 
         /// <summary>
         /// must be en or de for useless facts
         /// </summary>
-        public string Lang_code_for_useless_facts { get; set; } = "en";
+        public string LangCodeForUselessFacts { get; set; } = "en";
 
         //Music related
         /// <summary>
-        /// I'm already connected to a voice channel!
+        ///I'm already in a voice channel!
         /// </summary>
-        public string Already_connected { get; set; } = "I'm already connected to a voice channel!";
+        public string AlreadyConnected { get; set; } = "I'm already in a voice channel!";
 
         /// <summary>
-        /// You must be connected to a voice channel!
+        ///You must be in a voice channel!
         /// </summary>
-        public string User_not_connected { get; set; } = "You must be connected to a voice channel!";
+        public string UserNotConnected { get; set; } = "You must be in a voice channel!";
 
         /// <summary>
         /// <b>Joined </b>Testing<b>!</b>
@@ -85,12 +86,17 @@ namespace SilverBotDS
         /// <summary>
         /// I'm not connected to a voice channel.
         /// </summary>
-        public string Not_connected { get; set; } = "I'm not connected to a voice channel.";
+        public string NotConnected { get; set; } = "I'm not connected to a voice channel.";
 
         /// <summary>
         /// Woaaah there, I'm not playing any tracks.
         /// </summary>
-        public string Not_playing { get; set; } = "Woaaah there, I'm not playing any tracks.";
+        public string NotPlaying { get; set; } = "Woah there, I'm not playing any tracks.";
+
+        /// <summary>
+        /// Woah there, there is nothing queued next.
+        /// </summary>
+        public string NothingInQueue { get; set; } = "Woah there, there is nothing queued next.";
 
         /// <summary>
         /// Never gonna give you up<b> by </b>Rick Astley
@@ -100,51 +106,61 @@ namespace SilverBotDS
         /// <remarks>
         /// Needs to be used like <c>Title+Language.Song_by_author+Author</c>
         /// </remarks>
-        public string Song_by_author { get; set; } = " by ";
+        public string SongByAuthor { get; set; } = " by ";
 
         /// <summary>
         /// Tip: A Role Named ***DJ*** Will Restrict Access To Members With The Role.
         /// </summary>
-        public string Use_dj_message { get; set; } = "Tip: A Role Named ***DJ*** Will Restrict Access To Members With The Role.";
+        public string UseDjMessage { get; set; } = "Tip: A Role Named ***DJ*** Will Restrict Access To Members With The Role.";
 
         /// <summary>
         /// That track doesnt exist my dude
         /// </summary>
-        public string Track_not_exist { get; set; } = "That track doesnt exist my dude";
+        public string TrackNotExist { get; set; } = "That track doesnt exist my dude";
 
-        public string Removed_front { get; set; } = "Removed: "; //"Removed: "Never gonna give you up by Rick Astley
-        public string Paused_front { get; set; } = "Paused: "; //"Paused: "Never gonna give you up by Rick Astley
-        public string Resumed_front { get; set; } = "Resumed: "; //"Resumed: "Never gonna give you up by Rick Astley
+        public string RemovedFront { get; set; } = "Removed: "; //"Removed: "Never gonna give you up by Rick Astley
+        public string PausedFront { get; set; } = "Paused: "; //"Paused: "Never gonna give you up by Rick Astley
+        public string ResumedFront { get; set; } = "Resumed: "; //"Resumed: "Never gonna give you up by Rick Astley
 
         /// <summary>
         /// Please provide a search term.
         /// </summary>
-        public string No_search_term { get; set; } = "Please provide a search term.";
+        public string NoSearchTerm { get; set; } = "Please provide a search term.";
 
         /// <summary>
         /// Not sure which voice channel to disconnect from.
         /// </summary>
-        public string Not_sure_which_channel { get; set; } = "Not sure which voice channel to disconnect from.";
+        public string NotSureWhichChannel { get; set; } = "Not sure which voice channel to disconnect from.";
 
-        public string Seeked_front { get; set; } = "I've seeked: `"; //"I've seeked: `"Never gonna give you up by Rick Astley to 00:00:00.
-        public string Seeked_middle { get; set; } = "` to "; //I've seeked: `Never gonna give you up"` to "00:00:00.
-        public string Seeked_back { get; set; } = "."; //I've seeked: `Never gonna give you up` to 00:00:00"."
-        public string No_lyrics_found { get; set; } = "No lyrics found for "; //"No lyrics found for Never gonna give you up
-        public string No_longer_playing { get; set; } = "No longer playing anything.";
-        public string Already_stoped { get; set; } = "Woaaah there, I can't stop the stopped forced.";
-        public string Already_voted { get; set; } = "You can't vote again.";
-        public string Voting_is_below_85_percent { get; set; } = "You need more than 85% votes to skip this song.";
-        public string User_doesnt_have_dj { get; set; } = "You must have a role named `dj`!";
-        public string Looping_song { get; set; } = "Now loopin song 🔂";
-        public string Looping_queue { get; set; } = "Now loopin queue 🔁";
-        public string Not_looping { get; set; } = "Now not loopin.";
-        public string No_results_front { get; set; } = "I wasn't able to find anything for `"; //"I wasn't able to find anything for `"Never gonna give you up`.
-        public string No_results_back { get; set; } = "`."; //I wasn't able to find anything for `Never gonna give you up"`."
-        public string Noone_in_vc { get; set; } = "Noone is in voice chat. 😥";
-        public string Next_item_not_track { get; set; } = "Next item in queue is not a track. 😥";
-        public string Queue_completed { get; set; } = "Queue completed! Please add more tracks to continue!";
-        public string Left_front { get; set; } = "I've left ";
-        public string Left_back { get; set; } = "!";
+        public string SeekedFront { get; set; } = "I've seeked: `"; //"I've seeked: `"Never gonna give you up by Rick Astley to 00:00:00.
+        public string SeekedMiddle { get; set; } = "` to "; //I've seeked: `Never gonna give you up"` to "00:00:00.
+        public string SeekedBack { get; set; } = "."; //I've seeked: `Never gonna give you up` to 00:00:00"."
+        public string NoLyricsFound { get; set; } = "No lyrics found for "; //"No lyrics found for Never gonna give you up
+        public string NoLongerPlaying { get; set; } = "No longer playing anything.";
+        public string AlreadyStoped { get; set; } = "Woaaah there, I can't stop the stopped forced.";
+        public string VotingIsBelow85Percent { get; set; } = "You need more than 85% votes to skip this song.";
+        public string UserDoesntHaveDj { get; set; } = "You must have a role named `dj`!";
+        public string LoopingSong { get; set; } = "Now loopin song 🔂";
+        public string LoopingQueue { get; set; } = "Now loopin queue 🔁";
+        public string NotLooping { get; set; } = "Now not loopin.";
+
+        /// <summary>
+        /// I wasn't able to find anything for `Never gonna give you up`.
+        /// </summary>
+        /// <remarks>
+        ///  I wasn't able to find anything for `{0}`.
+        /// </remarks>
+        public string NoResults { get; set; } = "I wasn't able to find anything for `{0}`"; //I wasn't able to find anything for `"Never gonna give you up`.
+
+        public string NooneInVc { get; set; } = "Noone is in voice chat. 😥";
+        public string NextItemNotTrack { get; set; } = "Next item in queue is not a track. 😥";
+        public string QueueCompleted { get; set; } = "Queue completed! Please add more tracks to continue!";
+
+        /// <summary>
+        /// I've left {0}!
+        /// </summary>
+        public string Left { get; set; } = "I've left {0}!";
+
         public string Goodbye { get; set; } = "Goodbye";
 
         //Commands
@@ -153,22 +169,22 @@ namespace SilverBotDS
         /// <summary>
         /// Information about␣
         /// </summary>
-        public string Information_About { get; set; } = "Information about ";
+        public string InformationAbout { get; set; } = "Information about ";
 
         /// <summary>
         /// Has joined the SilverCraft Discord
         /// </summary>
-        public string Joined_SilverCraft { get; set; } = "Has joined the SilverCraft Discord";
+        public string JoinedSilverCraft { get; set; } = "Has joined the SilverCraft Discord";
 
         /// <summary>
         /// Is a SilverCraft bot admin
         /// </summary>
-        public string Is_SilverBot_Admin { get; set; } = "Is a SilverCraft bot admin";
+        public string IsSilverBotAdmin { get; set; } = "Is a SilverCraft bot admin";
 
         /// <summary>
         /// Prefix used
         /// </summary>
-        public string Prefix_Used_Topgg { get; set; } = "Prefix used";
+        public string PrefixUsedTopgg { get; set; } = "Prefix used";
 
         /// <summary>
         /// User:␣
@@ -183,69 +199,69 @@ namespace SilverBotDS
         /// <summary>
         /// Has joined the SilverCraft Server
         /// </summary>
-        public string Has_joined_support { get; set; } = "Has joined the SilverCraft Server";
+        public string HasJoinedSupport { get; set; } = "Has joined the SilverCraft Server";
 
         /// <summary>
         /// Is a SilverCraft bot admin
         /// </summary>
-        public string Is_admin { get; set; } = "Is a SilverCraft bot admin";
+        public string IsAdmin { get; set; } = "Is a SilverCraft bot admin";
 
         /// <summary>
         /// Is a DJ
         /// </summary>
-        public string Is_a_dj { get; set; } = "Is a DJ";
+        public string IsADj { get; set; } = "Is a DJ";
 
         /// <summary>
         /// Is a SilverCraft bot owner
         /// </summary>
-        public string Is_an_owner { get; set; } = "Is a SilverCraft bot owner";
+        public string IsAnOwner { get; set; } = "Is a SilverCraft bot owner";
 
         /// <summary>
         /// Is a bot
         /// </summary>
-        public string Is_a_bot { get; set; } = "Is a bot";
+        public string IsABot { get; set; } = "Is a bot";
 
         public string Error { get; set; } = "Error";
-        public string Error_sent_to_logs { get; set; } = "Complete error sent to Bot logs";
+        public string ErrorSentToLogs { get; set; } = "Complete error sent to Bot logs";
 
         /// <summary>
         ///SilverBot sponsored by SilverHosting
         /// </summary>
-        public string Silverhosting_joke_title { get; set; } = "SilverBot sponsored by SilverHosting";
+        public string SilverhostingJokeTitle { get; set; } = "SilverBot sponsored by SilverHosting";
 
         /// <summary>
         ///Use offer code [SLVR](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
         /// </summary>
-        public string Silverhosting_joke_description { get; set; } = "Use offer code [SLVR](https://www.youtube.com/watch?v=dQw4w9WgXcQ)";
+        public string SilverhostingJokeDescription { get; set; } = "Use offer code [SLVR](https://www.youtube.com/watch?v=dQw4w9WgXcQ)";
 
-        public string Purge_number_negative { get; set; } = "The amount of messages to remove must be positive.";
-        public string Purge_nothing_to_delete { get; set; } = "Nothing to delete.";
-        public string Bot_guilds { get; set; } = "Bot guilds";
-        public string Purge_removed_front { get; set; } = "Done. Removed "; //"Done. Removed "69 messages
-        public string Purge_removed_single { get; set; } = " message"; //Done. Removed 1" message"
-        public string Purge_removed_plural { get; set; } = " messages"; //Done. Removed 69" messages"
-        public string Invite_title { get; set; } = "SilverCraftBot invite link";
-        public string Invite_description { get; set; } = "SilverCraftBot is in open beta https://discord.com/api/oauth2/authorize?client_id=702445582559739976&permissions=2147483639&scope=bot";
+        public string PurgeNumberNegative { get; set; } = "The amount of messages to remove must be positive.";
+        public string PurgeNothingToDelete { get; set; } = "Nothing to delete.";
+        public string BotGuilds { get; set; } = "Bot guilds";
+        public string PurgeRemovedFront { get; set; } = "Done. Removed "; //"Done. Removed "69 messages
+        public string PurgeRemovedSingle { get; set; } = " message"; //Done. Removed 1" message"
+        public string PurgeRemovedPlural { get; set; } = " messages"; //Done. Removed 69" messages"
+        public string InviteTitle { get; set; } = "SilverCraftBot invite link";
+        public string InviteDescription { get; set; } = "SilverCraftBot is in open beta https://discord.com/api/oauth2/authorize?client_id=702445582559739976&permissions=2147483639&scope=bot";
 
         /// <summary>
         /// **No emote found**
         /// </summary>
-        public string No_emotes_found { get; set; } = "**No emote found**";
+        public string NoEmotesFound { get; set; } = "**No emote found**";
 
         /// <summary>
         /// Searched for: `{0}`
         /// </summary>
-        public string Searched_for { get; set; } = "Searched for: `{0}`";
+        public string SearchedFor { get; set; } = "Searched for: `{0}`";
 
         /// <summary>
         /// **Multiple emotes found**
         /// </summary>
-        public string Multiple_emotes_found { get; set; } = "**Multiple emotes found**";
+        public string MultipleEmotesFound { get; set; } = "**Multiple emotes found**";
 
         /// <summary>
         /// Already opted into SilverBot emotes
         /// </summary>
-        public string Already_opted_in { get; set; } = "Already opted into SilverBot emotes";
+        public string AlreadyOptedIn { get; set; } = "Already opted into SilverBot emotes";
 
         /// <summary>
         /// Server :{0}
@@ -255,26 +271,26 @@ namespace SilverBotDS
         /// <summary>
         /// Opted into SilverBot emotes
         /// </summary>
-        public string Opted_in { get; set; } = "Opted into SilverBot emotes";
+        public string OptedIn { get; set; } = "Opted into SilverBot emotes";
 
         /// <summary>
         /// **All available emotes**
         /// </summary>
-        public string All_availible_emotes { get; set; } = "**All available emotes**";
+        public string AllAvailibleEmotes { get; set; } = "**All available emotes**";
 
         /// <summary>
         /// You are banned from using the silversocial features
         /// </summary>
-        public string User_is_banned_from_silversocial { get; set; } = "You are banned from using the silversocial features";
+        public string UserIsBannedFromSilversocial { get; set; } = "You are banned from using the silversocial features";
 
         /// <summary>
         /// This server/server owner is banned from using the silversocial features
         /// </summary>
-        public string Guild_is_banned_from_silversocial { get; set; } = "This server/server owner is banned from using the silversocial features";
+        public string GuildIsBannedFromSilversocial { get; set; } = "This server/server owner is banned from using the silversocial features";
 
-        public string User_is_not_banned_from_silversocial { get; set; } = "You are not banned POG";
-        public string Time_format { get; set; } = "G"; //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?redirectedfrom=MSDN
-        public string Unable_to_send_dm { get; set; } = "I was unable to send a message to this person";
+        public string UserIsNotBannedFromSilversocial { get; set; } = "You are not banned POG";
+        public string TimeFormat { get; set; } = "G"; //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?redirectedfrom=MSDN
+        public string UnableToSendDm { get; set; } = "I was unable to send a message to this person";
 
         public string[] Banstrings { get; set; } = new[]
                 {
@@ -286,49 +302,49 @@ namespace SilverBotDS
                  "told someone to buy the bedrock edition infront of"
                 };
 
-        public string Ban_dm_front { get; set; } = "You have been banned from ";
-        public string Kick_dm_front { get; set; } = "You have been banned from ";
-        public string Support_warning_title { get; set; } = "This feature is experimental if you really need support join [here](https://discord.gg/ZT4gZCyReB)";
-        public string Support_what_kind { get; set; } = "What kind of support do you need?";
-        public string Support_what_kind_numbers { get; set; } = "1.Add an command" + Environment.NewLine + "2.Add an splash" + Environment.NewLine + "You should [Click here](https://discord.gg/ZT4gZCyReB) for anything else";
-        public string Support_command_name { get; set; } = "What will this command be like? (e.g. meme)";
-        public string Support_command_action { get; set; } = "What will this command do? (e.g. show help information about the bot)";
-        public string Null_in_queue { get; set; } = "Null in queue please report to [here](https://discord.gg/ZT4gZCyReB) thanks";
-        public string Warn_title { get; set; } = "Oh boy";
-        public string Warn_desc_middle { get; set; } = " has been warned by "; //Max" has been warned by "SilverDimond
-        public string Warn_field_reason { get; set; } = "Reason"; //Reason : posting memes in general
-        public string Warn_field_id { get; set; } = "Id"; //Id : 6969
-        public string All_server_warns { get; set; } = "All server warnings";
-        public string Inf_warned { get; set; } = " warned "; //SilverDimond warned max at 00:69
-        public string Inf_at { get; set; } = " at "; //SilverDimond warned max at 00:69
-        public string No_inf_on_server { get; set; } = "No infraction data on this server";
-        public string Meme_is_nsfw { get; set; } = "The meme was NSFW";
+        public string BanDmFront { get; set; } = "You have been banned from ";
+        public string KickDmFront { get; set; } = "You have been banned from ";
+        public string SupportWarningTitle { get; set; } = "This feature is experimental if you really need support join [here](https://discord.gg/ZT4gZCyReB)";
+        public string SupportWhatKind { get; set; } = "What kind of support do you need?";
+        public string SupportWhatKindNumbers { get; set; } = "1.Add an command" + Environment.NewLine + "2.Add an splash" + Environment.NewLine + "You should [Click here](https://discord.gg/ZT4gZCyReB) for anything else";
+        public string SupportCommandName { get; set; } = "What will this command be like? (e.g. meme)";
+        public string SupportCommandAction { get; set; } = "What will this command do? (e.g. show help information about the bot)";
+        public string NullInQueue { get; set; } = "Null in queue please report to [here](https://discord.gg/ZT4gZCyReB) thanks";
+        public string WarnTitle { get; set; } = "Oh boy";
+        public string WarnDescMiddle { get; set; } = " has been warned by "; //Max" has been warned by "SilverDimond
+        public string WarnFieldReason { get; set; } = "Reason"; //Reason : posting memes in general
+        public string WarnFieldId { get; set; } = "Id"; //Id : 6969
+        public string AllServerWarns { get; set; } = "All server warnings";
+        public string InfWarned { get; set; } = " warned "; //SilverDimond warned max at 00:69
+        public string InfAt { get; set; } = " at "; //SilverDimond warned max at 00:69
+        public string NoInfOnServer { get; set; } = "No infraction data on this server";
+        public string MemeIsNsfw { get; set; } = "The meme was NSFW";
         public string Credits { get; set; } = "Programming by SilverDimond#1691, Most things by SilverDimond#1691, 69% of splashes by ThePajamaSlime#9391, Useless questining by TheNewRicardo#4935, Microsoft for c#, The c# community for their solutions i didnt use, All the 69 NuGet packeges im using, 362700421191565322 the wierd dog that uses python, And most importantly thank you for using the bot.";
-        public string Bot_Name { get; set; } = "SilverBot";
-        public string Useless_fact { get; set; } = "Useless fact";
+        public string BotName { get; set; } = "SilverBot";
+        public string UselessFact { get; set; } = "Useless fact";
 
         /// <summary>
         /// You must have a higher role than the person you are trying to␣
         /// </summary>
-        public string User_has_lower_role { get; set; } = "You must have a higher role than the person you are trying to ";
+        public string UserHasLowerRole { get; set; } = "You must have a higher role than the person you are trying to ";
 
         public string Ban { get; set; } = "ban";
         public string Kick { get; set; } = "kick";
-        public string Bot_has_lower_role { get; set; } = "I must have a higher role than the person you are trying to ";
-        public string Available_languages { get; set; } = "Available languages:";
-        public string Random_GIF { get; set; } = "Random GIF:";
+        public string BotHasLowerRole { get; set; } = "I must have a higher role than the person you are trying to ";
+        public string AvailableLanguages { get; set; } = "Available languages:";
+        public string RandomGif { get; set; } = "Random GIF:";
 
         /// <summary>
         /// Powered by GIPHY
         /// </summary>
-        public string Powered_by_GIPHY { get; set; } = "Powered by GIPHY";
+        public string PoweredByGiphy { get; set; } = "Powered by GIPHY";
 
-        public string SilverBot_Commands { get; set; } = "SilverBot Commands";
-        public string Allemotes_Guild { get; set; } = "Guild: ";
-        public string User_Doesnt_Have_BanMembers { get; set; } = "You must have BanMembers permission";
-        public string User_Doesnt_Have_KickMembers { get; set; } = "You must have kickmembers permission";
-        public string Support_Title { get; set; } = "Add a command or splash to SilverCraftBot";
-        public string Support_Description { get; set; } = "Splashes https://forms.gle/vYfaKFmqfsZJGc2e8 Commands https://forms.gle/HR3AhCA6yg4LfULU8 Or join https://discord.gg/ZT4gZCyReB";
+        public string SilverBotCommands { get; set; } = "SilverBot Commands";
+        public string AllemotesGuild { get; set; } = "Guild: ";
+        public string UserDoesntHaveBanMembers { get; set; } = "You must have BanMembers permission";
+        public string UserDoesntHaveKickMembers { get; set; } = "You must have kickmembers permission";
+        public string SupportTitle { get; set; } = "Add a command or splash to SilverCraftBot";
+        public string SupportDescription { get; set; } = "Splashes https://forms.gle/vYfaKFmqfsZJGc2e8 Commands https://forms.gle/HR3AhCA6yg4LfULU8 Or join https://discord.gg/ZT4gZCyReB";
 
         /// <summary>
         /// Meme:␣
@@ -341,12 +357,12 @@ namespace SilverBotDS
         /// <remarks>
         /// Ment to be used when there isnt a more better term
         /// </remarks>
-        public string No_Image_Generic { get; set; } = "You didnt attach a image";
+        public string NoImageGeneric { get; set; } = "You didnt attach a image";
 
         /// <summary>
         /// Bruh discord no likey you need something less than 256kb you sent {0}
         /// </summary>
-        public string Emote_Was_Larger_Than_256k { get; set; } = "Bruh discord no likey you need something less than 256kb you sent {0}";
+        public string EmoteWasLargerThan256K { get; set; } = "Bruh discord no likey you need something less than 256kb you sent {0}";
 
         /// <summary>
         /// You attached more than one image
@@ -354,7 +370,7 @@ namespace SilverBotDS
         /// <remarks>
         /// Ment to be used when there isnt a more better term
         /// </remarks>
-        public string More_Than_One_Image_Generic { get; set; } = "You attached more than one image";
+        public string MoreThanOneImageGeneric { get; set; } = "You attached more than one image";
 
         /// <summary>
         /// The output file is larger than 8mb, its {0}
@@ -362,33 +378,33 @@ namespace SilverBotDS
         /// <remarks>
         /// Ment to be used when there isnt a more better term
         /// </remarks>
-        public string Output_File_Larger_Than_8M { get; set; } = "The output file is larger than 8mb, its {0}";
+        public string OutputFileLargerThan8M { get; set; } = "The output file is larger than 8mb, its {0}";
 
         /// <summary>
         ///Search results for the term `{0}`
         /// </summary>
         [Obsolete("Use Searched_For")]
-        public string Search_Results_for_term { get; set; } = "Search results for the term `{0}`";
+        public string SearchResultsForTerm { get; set; } = "Search results for the term `{0}`";
 
         /// <summary>
         /// Page {0}/{1} Use `next` in the next 5 min to see the next page
         /// </summary>
-        public string Page_Gif { get; set; } = "Page {0}/{1} Use `next` in the next 5 min to see the next page";
+        public string PageGif { get; set; } = "Page {0}/{1} Use `next` in the next 5 min to see the next page";
 
         /// <summary>
         /// Page {0}/{1}
         /// </summary>
-        public string Page_Nuget { get; set; } = "Page {0}/{1}";
+        public string PageNuget { get; set; } = "Page {0}/{1}";
 
         /// <summary>
         /// You may not send `next` as the 5 minutes expired
         /// </summary>
-        public string Period_Expired { get; set; } = "You may not send `next` as the 5 minutes expired";
+        public string PeriodExpired { get; set; } = "You may not send `next` as the 5 minutes expired";
 
         /// <summary>
         /// Hey that isn't a bot, i think.
         /// </summary>
-        public string User_Isnt_Bot { get; set; } = "Hey that isn't a bot, i think.";
+        public string UserIsntBot { get; set; } = "Hey that isn't a bot, i think.";
 
         /// <summary>
         /// Requested by: |loopbot|
@@ -403,22 +419,59 @@ namespace SilverBotDS
         /// <summary>
         /// Now playing: {0} 🔂
         /// </summary>
-        public string Now_Playing_Loop { get; set; } = "Now playing: {0} 🔂";
+        public string NowPlayingLoop { get; set; } = "Now playing: {0} 🔂";
+
+        /// <summary>
+        /// Now playing: {0}
+        /// </summary>
+        public string NowPlaying { get; set; } = "Now playing: {0}";
+
+        /// <summary>
+        /// Enqueued: {0}
+        /// </summary>
+        public string Enqueued { get; set; } = "Enqueued: {0}";
+
+        /// <summary>
+        /// Skipped: {0}, Now playing {1}
+        /// </summary>
+        public string SkippedNP { get; set; } = "Skipped: {0}, Now playing {1}";
+
+        /// <summary>
+        /// Your vote was counted
+        /// </summary>
+        public string Voted { get; set; } = "Your vote was counted";
+
+        /// <summary>
+        /// Your vote was counted already
+        /// </summary>
+        public string AlreadyVoted { get; set; } = "Your vote was counted already";
+
+        /// <summary>
+        /// Estimated time till it plays:  {0}
+        /// </summary>
+        public string TimeTillTrackPlays { get; set; } = "Estimated time till it plays: {0}";
 
         /// <summary>
         /// {0}\nNow playing: {1}
         /// </summary>
-        public string Now_Playing { get; set; } = "{0}\nNow playing: {1}";
+        public string ReasonNowPlaying { get; set; } = "{0}\nNow playing: {1}";
 
         /// <summary>
         /// Uh oh something went wrong. Please try again a little bit later.
         /// </summary>
-        public string Search_Fail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
+        public string SearchFail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
+
+        public string CultureInfo { get; set; } = "en-GB";
+
+        public CultureInfo GetCultureInfo()
+        {
+            return new CultureInfo(CultureInfo);
+        }
 
         public ImageThings Imagethings { get; set; } = new();
 
         private static readonly Dictionary<string, Language> CachedLanguages = new Dictionary<string, Language>();
-        private static readonly bool logging = true;
+        private static readonly bool Logging = true;
 
         public static async System.Threading.Tasks.Task<Language> GetAsync(string a)
         {
@@ -426,7 +479,7 @@ namespace SilverBotDS
             {
                 if (CachedLanguages.ContainsKey(a))
                 {
-                    if (logging)
+                    if (Logging)
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write("[LANGUAGES]");
@@ -443,7 +496,7 @@ namespace SilverBotDS
                 }
                 else
                 {
-                    if (logging)
+                    if (Logging)
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write("[LANGUAGES]");
@@ -461,19 +514,19 @@ namespace SilverBotDS
             {
                 if (Directory.Exists(Environment.CurrentDirectory + @"\languages\"))
                 {
-                    foreach (string u in Directory.GetFiles(Environment.CurrentDirectory + @"\languages\"))
+                    foreach (var u in Directory.GetFiles(Environment.CurrentDirectory + @"\languages\"))
                     {
-                        using Stream stream = File.OpenRead(u);
-                        StreamReader reader = new StreamReader(stream);
-                        string content = await reader.ReadToEndAsync();
+                        await using Stream stream = File.OpenRead(u);
+                        var reader = new StreamReader(stream);
+                        var content = await reader.ReadToEndAsync();
                         reader.Close();
                         reader.Dispose();
-                        Language asdf = JsonSerializer.Deserialize<Language>(content);
-                        string name = Path.GetFileNameWithoutExtension(u);
+                        var asdf = JsonSerializer.Deserialize<Language>(content);
+                        var name = Path.GetFileNameWithoutExtension(u);
                         CachedLanguages.Add(name, asdf);
                     }
                 }
-                if (logging)
+                if (Logging)
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write("[LANGUAGES]");
@@ -508,10 +561,10 @@ namespace SilverBotDS
 
     public class ImageThings
     {
-        public string JPEG_Success { get; set; } = "There ya go a jpegnized image";
-        public string Silver_Success { get; set; } = "There ya go a silver image";
-        public string Comic_Success { get; set; } = "There ya go a image with the comic filter";
-        public string Resize_Success { get; set; } = "There ya go a resized image";
-        public string Tint_Success { get; set; } = "There ya go a tinted image";
+        public string JpegSuccess { get; set; } = "There ya go a jpegnized image";
+        public string SilverSuccess { get; set; } = "There ya go a silver image";
+        public string ComicSuccess { get; set; } = "There ya go a image with the comic filter";
+        public string ResizeSuccess { get; set; } = "There ya go a resized image";
+        public string TintSuccess { get; set; } = "There ya go a tinted image";
     }
 }

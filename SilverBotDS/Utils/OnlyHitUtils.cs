@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using WebClient = SilverBotDS.Objects.WebClient;
 
 namespace SilverBotDS.Utils
 {
@@ -14,13 +15,13 @@ namespace SilverBotDS.Utils
     {
         public static async Task<CurrentSong> SearchAsync(string url = "https://api.onlyhit.us/fingerprinting/onlyhit.json")
         {
-            System.Net.Http.HttpClient httpClient = WebClient.Get();
-            UriBuilder uri = new UriBuilder(url);
-            HttpResponseMessage RM = await httpClient.GetAsync(uri.Uri);
-            if (RM.StatusCode == HttpStatusCode.OK)
+            var httpClient = WebClient.Get();
+            var uri = new UriBuilder(url);
+            var rm = await httpClient.GetAsync(uri.Uri);
+            if (rm.StatusCode == HttpStatusCode.OK)
             {
-                var cursong = JsonSerializer.Deserialize<CurrentSong>(await RM.Content.ReadAsStringAsync());
-                if (cursong.Status.Msg == "Success")
+                var cursong = JsonSerializer.Deserialize<CurrentSong>(await rm.Content.ReadAsStringAsync());
+                if (cursong != null && cursong.Status.Msg == "Success")
                 {
                     return cursong;
                 }
@@ -28,7 +29,7 @@ namespace SilverBotDS.Utils
             }
             else
             {
-                return await Task.FromException<CurrentSong>(new Exception($"Request yielded a statuscode that isnt OK it is {RM.StatusCode}"));
+                return await Task.FromException<CurrentSong>(new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}"));
             }
         }
 
@@ -38,7 +39,7 @@ namespace SilverBotDS.Utils
             public Status Status { get; set; }
 
             [JsonPropertyName("result_type")]
-            public int Result_type { get; set; }
+            public int ResultType { get; set; }
 
             [JsonPropertyName("metadata")]
             public Metadata Metadata { get; set; }
@@ -62,7 +63,7 @@ namespace SilverBotDS.Utils
             public string Type { get; set; }
 
             [JsonPropertyName("timestamp_utc")]
-            public string Timestamp_utc { get; set; }
+            public string TimestampUtc { get; set; }
 
             [JsonPropertyName("music")]
             public Music[] Music { get; set; }
@@ -74,10 +75,10 @@ namespace SilverBotDS.Utils
             public Album Album { get; set; }
 
             [JsonPropertyName("play_offset_ms")]
-            public int Play_offset_ms { get; set; }
+            public int PlayOffsetMs { get; set; }
 
             [JsonPropertyName("sample_begin_time_offset_ms")]
-            public int Sample_begin_time_offset_ms { get; set; }
+            public int SampleBeginTimeOffsetMs { get; set; }
 
             [JsonPropertyName("contributors")]
             public Contributors Contributors { get; set; }
@@ -86,13 +87,13 @@ namespace SilverBotDS.Utils
             public string Title { get; set; }
 
             [JsonPropertyName("result_from")]
-            public int Result_from { get; set; }
+            public int ResultFrom { get; set; }
 
             [JsonPropertyName("release_date")]
-            public string Release_date { get; set; }
+            public string ReleaseDate { get; set; }
 
             [JsonPropertyName("sample_end_time_offset_ms")]
-            public int Sample_end_time_offset_ms { get; set; }
+            public int SampleEndTimeOffsetMs { get; set; }
 
             [JsonPropertyName("genres")]
             public Genre[] Genres { get; set; }
@@ -101,28 +102,28 @@ namespace SilverBotDS.Utils
             public string Label { get; set; }
 
             [JsonPropertyName("db_end_time_offset_ms")]
-            public int Db_end_time_offset_ms { get; set; }
+            public int DbEndTimeOffsetMs { get; set; }
 
             [JsonPropertyName("score")]
             public int Score { get; set; }
 
             [JsonPropertyName("db_begin_time_offset_ms")]
-            public int Db_begin_time_offset_ms { get; set; }
+            public int DbBeginTimeOffsetMs { get; set; }
 
             [JsonPropertyName("artists")]
             public Artist2[] Artists { get; set; }
 
             [JsonPropertyName("duration_ms")]
-            public int Duration_ms { get; set; }
+            public int DurationMs { get; set; }
 
             [JsonPropertyName("external_ids")]
-            public External_Ids External_ids { get; set; }
+            public ExternalIds ExternalIds { get; set; }
 
             [JsonPropertyName("acrid")]
             public string Acrid { get; set; }
 
             [JsonPropertyName("external_metadata")]
-            public External_Metadata External_metadata { get; set; }
+            public ExternalMetadata ExternalMetadata { get; set; }
         }
 
         public class Album
@@ -140,7 +141,7 @@ namespace SilverBotDS.Utils
             public string[] Lyricists { get; set; }
         }
 
-        public class External_Ids
+        public class ExternalIds
         {
             [JsonPropertyName("isrc")]
             public string Isrc { get; set; }
@@ -149,7 +150,7 @@ namespace SilverBotDS.Utils
             public string Upc { get; set; }
         }
 
-        public class External_Metadata
+        public class ExternalMetadata
         {
             [JsonPropertyName("spotify")]
             public Spotify Spotify { get; set; }

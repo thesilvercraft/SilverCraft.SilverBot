@@ -6,20 +6,20 @@ namespace SilverBotDS.Utils
 {
     public class RandomGenerator
     {
-        private readonly RNGCryptoServiceProvider csp;
+        private readonly RNGCryptoServiceProvider _csp;
 
-        public RandomGenerator() => csp = new RNGCryptoServiceProvider();
+        public RandomGenerator() => _csp = new RNGCryptoServiceProvider();
 
         public int Next(int minValue, int maxExclusiveValue)
         {
             if (minValue >= maxExclusiveValue)
             {
-                ArgumentOutOfRangeException argumentOutOfRangeException = new ArgumentOutOfRangeException(nameof(minValue), "minValue must be lower than maxExclusiveValue");
+                var argumentOutOfRangeException = new ArgumentOutOfRangeException(nameof(minValue), "minValue must be lower than maxExclusiveValue");
                 throw argumentOutOfRangeException;
             }
 
-            long diff = (long)maxExclusiveValue - minValue;
-            long upperBound = uint.MaxValue / diff * diff;
+            var diff = (long)maxExclusiveValue - minValue;
+            var upperBound = uint.MaxValue / diff * diff;
 
             uint ui;
             do
@@ -31,14 +31,14 @@ namespace SilverBotDS.Utils
 
         private uint GetRandomUInt()
         {
-            byte[] randomBytes = GenerateRandomBytes(sizeof(uint));
+            var randomBytes = GenerateRandomBytes(sizeof(uint));
             return BitConverter.ToUInt32(randomBytes, 0);
         }
 
         private byte[] GenerateRandomBytes(int bytesNumber)
         {
-            byte[] buffer = new byte[bytesNumber];
-            csp.GetBytes(buffer);
+            var buffer = new byte[bytesNumber];
+            _csp.GetBytes(buffer);
             return buffer;
         }
 
@@ -47,13 +47,13 @@ namespace SilverBotDS.Utils
         /// </summary>
         /// <param name="length">how much bytes m8</param>
         /// <returns>a base64 thingy</returns>
-        public string RandomString(int length)
+        private string RandomString(int length)
         {
-            byte[] tokenData = GenerateRandomBytes(length);
+            var tokenData = GenerateRandomBytes(length);
             return Convert.ToBase64String(tokenData);
         }
 
-        public string RandomABCString(int length, double timespan = 1.5)
+        public string RandomAbcString(int length, double timespan = 1.5)
         {
             try
             {

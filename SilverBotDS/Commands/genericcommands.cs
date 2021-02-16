@@ -9,22 +9,28 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using SilverBotDS.Objects;
+using static SilverBotDS.Utils.StringUtils;
+using WebClient = SilverBotDS.Objects.WebClient;
 
 namespace SilverBotDS.Commands
 {
-    internal class Genericcommands : BaseCommandModule
+    internal sealed class Genericcommands : BaseCommandModule
     {
+        public static Genericcommands CreateInstance()
+        {
+            return new Genericcommands();
+        }
 #pragma warning disable CA1822 // Mark members as static
 
         [Command("hi")]
         [Description("Hello fellow human! beep boop")]
         public async Task GreetCommand(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithContent(string.Format(lang.Hi, ctx.Member.Mention))
                                              .SendAsync(ctx.Channel);
@@ -33,21 +39,32 @@ namespace SilverBotDS.Commands
         [Command("meme")]
         public async Task Kindsffeefdfdfergergrgfdfdsgfdfg(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            DiscordEmbedBuilder b = new DiscordEmbedBuilder();
-            System.Net.Http.HttpClient client = WebClient.Get();
-            HttpResponseMessage rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
+            var lang = Language.GetLanguageFromCtx(ctx);
+            var b = new DiscordEmbedBuilder();
+            var client = WebClient.Get();
+            var rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
             if (rm.StatusCode == HttpStatusCode.OK)
             {
-                Meme asdf = JsonSerializer.Deserialize<Meme>(await rm.Content.ReadAsStringAsync());
-                b.WithTitle(lang.Meme + asdf.Title)
-                .WithUrl(asdf.PostLink)
-                .WithAuthor("👍 " + asdf.Ups + " | r/" + asdf.Subreddit)
-                .WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                .AddField("NSFW", asdf.Nsfw.ToString(), true)
-                .AddField("Spoiler", asdf.Spoiler.ToString(), true)
-                .AddField("Author", asdf.Author, true)
-                .WithImageUrl(asdf.Url);
+                var asdf = JsonSerializer.Deserialize<Meme>(await rm.Content.ReadAsStringAsync());
+                if (asdf != null)
+                {
+                    b.WithTitle(lang.Meme + asdf.Title)
+                        .WithUrl(asdf.PostLink)
+                        .WithAuthor("👍 " + asdf.Ups + " | r/" + asdf.Subreddit)
+                        .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+                        .AddField("NSFW", asdf.Nsfw.ToString(), true)
+                        .AddField("Spoiler", asdf.Spoiler.ToString(), true)
+                        .AddField("Author", asdf.Author, true)
+                        .WithImageUrl(asdf.Url)
+                        .WithColor(await ColorUtils.GetSingleAsync());
+                }
+
+                else
+                {
+                    b.WithTitle("meme returned null")
+                        .WithColor(await ColorUtils.GetSingleAsync());
+                }
+                  
                 await new DiscordMessageBuilder()
                                                  .WithReply(ctx.Message.Id)
                                                  .WithEmbed(b.Build())
@@ -67,10 +84,10 @@ namespace SilverBotDS.Commands
         [Description("Get the time in UTC")]
         public async Task Time(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
-                                             .WithContent(string.Format(lang.Time_In_Utc, DateTime.UtcNow.ToString(lang.Time_format)))
+                                             .WithContent(string.Format(lang.TimeInUtc, DateTime.UtcNow.ToString(lang.TimeFormat)))
                                              .SendAsync(ctx.Channel);
         }
 
@@ -88,7 +105,7 @@ namespace SilverBotDS.Commands
         [Description("Dump a messages raw content (useful for emote walls)")]
         public async Task DumpMessage(CommandContext ctx, DiscordMessage message)
         {
-            using MemoryStream outStream = new MemoryStream(Encoding.UTF8.GetBytes(message.Content))
+            await using var outStream = new MemoryStream(Encoding.UTF8.GetBytes(message.Content))
             {
                 Position = 0
             };
@@ -102,32 +119,32 @@ namespace SilverBotDS.Commands
         [Description("SilverHosting best")]
         public async Task Dukt(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             await new DiscordMessageBuilder()
                                             .WithReply(ctx.Message.Id)
                                             .WithEmbed(new DiscordEmbedBuilder()
-                                                                                .WithTitle(lang.Silverhosting_joke_title)
-                                                                                .WithDescription(lang.Silverhosting_joke_description)
-                                                                                .WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+                                                                                .WithTitle(lang.SilverhostingJokeTitle)
+                                                                                .WithDescription(lang.SilverhostingJokeDescription)
+                                                                                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
                                                                                 .Build())
                                             .SendAsync(ctx.Channel);
         }
 
-        private async Task SimpleImageMeme(CommandContext ctx, string imageurl, string title = null, string content = null)
+        private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string title = null, string content = null)
         {
-            var EmbedBuilder = new DiscordEmbedBuilder().WithFooter(Language.GetLanguageFromCtx(ctx).Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithImageUrl(imageurl);
-            var MessageBuilder = new DiscordMessageBuilder();
+            var embedBuilder = new DiscordEmbedBuilder().WithFooter(Language.GetLanguageFromCtx(ctx).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithImageUrl(imageurl);
+            var messageBuilder = new DiscordMessageBuilder();
             if (title != null)
             {
-                EmbedBuilder.WithTitle(title);
+                embedBuilder.WithTitle(title);
             }
             if (content != null)
             {
-                MessageBuilder.WithContent(content);
+                messageBuilder.WithContent(content);
             }
-            await MessageBuilder
+            await messageBuilder
         .WithReply(ctx.Message.Id)
-        .WithEmbed(EmbedBuilder.Build())
+        .WithEmbed(embedBuilder.Build())
         .SendAsync(ctx.Channel);
         }
 
@@ -167,15 +184,15 @@ namespace SilverBotDS.Commands
         [Description("Wanna hear some useless fact? Just ask me")]
         public async Task UselessFact(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            System.Net.Http.HttpClient client = WebClient.Get();
-            HttpResponseMessage rm = await client.GetAsync("https://uselessfacts.jsph.pl/random.md?language=" + lang.Lang_code_for_useless_facts);
+            var lang = Language.GetLanguageFromCtx(ctx);
+            var client = WebClient.Get();
+            var rm = await client.GetAsync("https://uselessfacts.jsph.pl/random.md?language=" + lang.LangCodeForUselessFacts);
             await new DiscordMessageBuilder()
                                                  .WithReply(ctx.Message.Id)
                                                  .WithEmbed(new DiscordEmbedBuilder()
-                                                                                     .WithTitle(lang.Useless_fact)
+                                                                                     .WithTitle(lang.UselessFact)
                                                                                      .WithDescription(await rm.Content.ReadAsStringAsync())
-                                                                                     .WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                                                                                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                                                                                      .Build())
                                                  .SendAsync(ctx.Channel);
         }
@@ -185,26 +202,24 @@ namespace SilverBotDS.Commands
         [Description("Search up packages on the NuGet")]
         public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             try
             {
-                NuGetUtils.Datum[] data = await NuGetUtils.SearchAsync(query);
-                InteractivityExtension interactivity = ctx.Client.GetInteractivity();
-                List<Page> pages = new List<Page>();
-                DiscordEmbedBuilder tempbuilder;
-                for (int i = 0; i < data.Length; i++)
+                var data = await NuGetUtils.SearchAsync(query); 
+                var pages = new List<Page>();
+                for (var i = 0; i < data.Length; i++)
                 {
-                    tempbuilder = new DiscordEmbedBuilder();
+                    var tempbuilder = new DiscordEmbedBuilder();
                     tempbuilder.WithTitle(data[i].Title);
                     tempbuilder.WithUrl($"https://www.nuget.org/packages/{data[i].Id}");
-                    tempbuilder.WithAuthor(StringUtils.ArrayToString(data[i].Authors, ","), data[i].ProjectUrl);
-                    tempbuilder.WithFooter(lang.Requested_by + ctx.User.Username + " " + string.Format(lang.Page_Nuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
+                    tempbuilder.WithAuthor(ArrayToString(data[i].Authors, ","), data[i].ProjectUrl);
+                    tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + " " + string.Format(lang.PageNuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(data[i].IconUrl))
                     {
                         tempbuilder.WithThumbnail(data[i].IconUrl);
                     }
                     tempbuilder.WithDescription(data[i].Description);
-                    tempbuilder.AddField("NuGet verified", StringUtils.BoolToEmoteString(data[i].Verified), true);
+                    tempbuilder.AddField("NuGet verified", BoolToEmoteString(data[i].Verified), true);
                     if (!string.IsNullOrEmpty(data[i].Type))
                     {
                         tempbuilder.AddField("Type", data[i].Type, true);
@@ -219,37 +234,27 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+                var bob = new DiscordEmbedBuilder();
                 bob.WithTitle("Something went fucky wucky on my side");
                 bob.WithDescription("Try again a little later?");
                 await ctx.RespondAsync(embed: bob.Build());
-                await Program.SendLogAsync(e.Message, new());
+                await Program.SendLogAsync(e.Message, new List<DiscordEmbed>());
                 throw;
             }
         }
 
-        public static async Task<bool> Is_at_silvercraftAsync(CommandContext ctx, DiscordUser b)
+        private static async Task<bool> Is_at_silvercraftAsync(CommandContext ctx, DiscordUser b)
         {
-            bool is_at_silvercraft = false;
-
-            if ((await ctx.Client.GetGuildAsync(Convert.ToUInt64(Program.GetConfig().ServerId))).Members[b.Id] != null)
-            {
-                is_at_silvercraft = true;
-            }
-            return is_at_silvercraft;
+            return  (await ctx.Client.GetGuildAsync(Convert.ToUInt64(Program.GetConfig().ServerId))).Members[b.Id] != null;
         }
 
-        public static async Task<bool> Is_bot_adminAsync(CommandContext ctx, DiscordUser b)
+        private static async Task<bool> Is_bot_adminAsync(CommandContext ctx, DiscordUser b)
         {
-            bool isbotadmin = false;
-            DiscordMember socketGuildus = (await ctx.Client.GetGuildAsync(Convert.ToUInt64(Program.GetConfig().ServerId))).Members[b.Id];
-            foreach (DiscordRole role in socketGuildus.Roles)
-            {
-                if (role.Id == Convert.ToUInt64(Program.GetConfig().AdminRoleId))
-                {
+            var isbotadmin = false;
+            var socketGuildus = (await ctx.Client.GetGuildAsync(Convert.ToUInt64(Program.GetConfig().ServerId))).Members[b.Id];
+            foreach (var role in socketGuildus.Roles)
+                if (role is not null && role.Id == Convert.ToUInt64(Program.GetConfig().AdminRoleId))
                     isbotadmin = true;
-                }
-            }
             return isbotadmin;
         }
 
@@ -257,13 +262,13 @@ namespace SilverBotDS.Commands
         [Description("Don't know what some new bot your friends invited here but you dont want to google? just ask me ")]
         public async Task WhoIsBot(CommandContext ctx, [Description("the bot")] DiscordUser user)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            if (string.IsNullOrEmpty(Program.GetConfig().Topgg_Sid_Token) || Program.GetConfig().Topgg_Sid_Token.ToLower() == "none")
+            var lang = Language.GetLanguageFromCtx(ctx);
+            if (string.IsNullOrEmpty(Program.GetConfig().TopggSidToken) || Program.GetConfig().TopggSidToken.ToLower() == "none")
             {
                 await new DiscordMessageBuilder()
                                                  .WithReply(ctx.Message.Id)
                                                  .WithEmbed(new DiscordEmbedBuilder()
-                                                                                     .WithTitle(lang.Command_Is_Disabled)
+                                                                                     .WithTitle(lang.CommandIsDisabled)
                                                                                      .WithColor(color: await ColorUtils.GetSingleAsync()))
                                                  .SendAsync(ctx.Channel);
                 return;
@@ -273,14 +278,14 @@ namespace SilverBotDS.Commands
                 await new DiscordMessageBuilder()
                                                   .WithReply(ctx.Message.Id)
                                                   .WithEmbed(new DiscordEmbedBuilder()
-                                                                                      .WithTitle(lang.User_Isnt_Bot)
-                                                                                      .WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                                                                                      .WithTitle(lang.UserIsntBot)
+                                                                                      .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                                                                                       .Build())
                                                   .SendAsync(ctx.Channel);
                 return;
             }
 
-            DBLA.Client client = new(Program.GetConfig().Topgg_Sid_Token, true);
+            Dbla.Client client = new(Program.GetConfig().TopggSidToken, true);
             var bot = await client.GetViaIdAsync(user.Id);
 
             if (bot == null)
@@ -288,8 +293,8 @@ namespace SilverBotDS.Commands
                 await new DiscordMessageBuilder()
                                                   .WithReply(ctx.Message.Id)
                                                   .WithEmbed(new DiscordEmbedBuilder()
-                                                                                      .WithTitle(lang.DBLA_Returned_Null)
-                                                                                      .WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                                                                                      .WithTitle(lang.DblaReturnedNull)
+                                                                                      .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                                                                                       .Build())
                                                   .SendAsync(ctx.Channel);
             }
@@ -301,9 +306,9 @@ namespace SilverBotDS.Commands
                                                                                     .WithAuthor(user.Username, bot.Website, user.GetAvatarUrl(ImageFormat.Auto))
                                                                                     .WithThumbnail(user.GetAvatarUrl(ImageFormat.Auto))
                                                                                     .WithDescription(bot.Shortdesc)
-                                                                                    .AddField(lang.Prefix_Used_Topgg, "`" + bot.Prefix + "`")
+                                                                                    .AddField(lang.PrefixUsedTopgg, "`" + bot.Prefix + "`")
                                                                                     .WithUrl(bot.Website)
-                                                                                    .WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                                                                                    .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                                                                                     .Build())
                                                 .SendAsync(ctx.Channel);
             }
@@ -314,16 +319,16 @@ namespace SilverBotDS.Commands
         [Description("Get the info I know about a specified user")]
         public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
-                .WithTitle(lang.User + a.Username).WithDescription(lang.Information_About + a.Mention)
+                .WithTitle(lang.User + a.Username).WithDescription(lang.InformationAbout + a.Mention)
                 .AddField(lang.Userid, a.Id.ToString(), true)
-                .AddField(lang.Joined_SilverCraft, StringUtils.BoolToEmoteString(await Is_at_silvercraftAsync(ctx, a)), true)
-                .AddField(lang.Is_SilverBot_Admin, StringUtils.BoolToEmoteString(await Is_bot_adminAsync(ctx, a)), true)
-                .AddField(lang.Is_an_owner, StringUtils.BoolToEmoteString(Program.GetConfig().Botowners.Contains(a.Id)), true)
-                .AddField(lang.Is_a_bot, StringUtils.BoolToEmoteString(a.IsBot), true)
+                .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await Is_at_silvercraftAsync(ctx, a)), true)
+                .AddField(lang.IsSilverBotAdmin, BoolToEmoteString(await Is_bot_adminAsync(ctx, a)), true)
+                .AddField(lang.IsAnOwner, BoolToEmoteString(Program.GetConfig().Botowners.Contains(a.Id)), true)
+                .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
                 .WithColor(await ColorUtils.GetSingleAsync()).WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
-                .WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
 
 #pragma warning restore CA1822 // Mark members as static

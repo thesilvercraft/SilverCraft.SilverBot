@@ -1,15 +1,15 @@
-﻿using DSharpPlus;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
-using SteamStoreQuery;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using SilverBotDS.Objects;
 
-namespace SilverBotDS.Commands
+namespace SilverBotDS.Commands.Gamering
 {
     [Group("steam")]
     internal class SteamCommands : BaseCommandModule
@@ -20,31 +20,34 @@ namespace SilverBotDS.Commands
         [Description("Search about a game")]
         public async Task Search(CommandContext ctx, [RemainingText()][Description("The game")] string game)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            var lang = Language.GetLanguageFromCtx(ctx);
             try
             {
-                List<Listing> listings = Steam.Search(game);
-                InteractivityExtension interactivity = ctx.Client.GetInteractivity();
-                List<Page> pages = new List<Page>();
-                DiscordEmbedBuilder tempbuilder;
-                for (int i = 0; i < listings.Count; i++)
+                var listings = Steam.Search(game);
+                var pages = new List<Page>();
+                for (var i = 0; i < listings.Count; i++)
                 {
-                    tempbuilder = new DiscordEmbedBuilder();
+                    var tempbuilder = new DiscordEmbedBuilder();
                     tempbuilder.WithTitle(listings[i].Name);
                     tempbuilder.WithUrl(listings[i].StoreLink);
                     if (listings[i].Price == null)
                     {
-                        if (listings[i].SaleType == SteamStoreQuery.Enums.sType.FreeToPlay)
+                        switch (listings[i].SaleType)
                         {
-                            tempbuilder.WithAuthor("F2P");
-                        }
-                        else if (listings[i].SaleType == SteamStoreQuery.Enums.sType.NotAvailable)
-                        {
-                            tempbuilder.WithAuthor("Not Available");
-                        }
-                        else if (listings[i].SaleType == SteamStoreQuery.Enums.sType.CostsMoney)
-                        {
-                            tempbuilder.WithAuthor("It costs merica bucks but idk how much");
+                            case SteamStoreQuery.Enums.sType.FreeToPlay:
+                                tempbuilder.WithAuthor("F2P");
+                                break;
+
+                            case SteamStoreQuery.Enums.sType.NotAvailable:
+                                tempbuilder.WithAuthor("Not Available");
+                                break;
+
+                            case SteamStoreQuery.Enums.sType.CostsMoney:
+                                tempbuilder.WithAuthor("It costs merica bucks but idk how much");
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(SteamStoreQuery.Enums.sType));
                         }
                     }
                     else
@@ -52,7 +55,7 @@ namespace SilverBotDS.Commands
                         tempbuilder.WithAuthor(listings[i].Price + "merica bucks");
                     }
 
-                    tempbuilder.WithFooter(lang.Requested_by + ctx.User.Username + $" Page: {i + 1}/{listings.Count}", ctx.User.GetAvatarUrl(ImageFormat.Png));
+                    tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + $" Page: {i + 1}/{listings.Count}", ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(listings[i].ImageLink))
                     {
                         tempbuilder.WithThumbnail(listings[i].ImageLink);
@@ -65,7 +68,7 @@ namespace SilverBotDS.Commands
                 }
                 else
                 {
-                    DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+                    var bob = new DiscordEmbedBuilder();
                     bob.WithTitle("Something went fucky wucky on my side");
                     bob.WithDescription("Try again a little later?\n 0 Games were returned");
                     await ctx.RespondAsync(embed: bob.Build());
@@ -73,8 +76,8 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
-                bob.WithTitle(lang.Search_Fail);
+                var bob = new DiscordEmbedBuilder();
+                bob.WithTitle(lang.SearchFail);
                 bob.WithDescription("Try again a little later?\n" + e.Message);
                 await ctx.RespondAsync(embed: bob.Build());
                 throw;

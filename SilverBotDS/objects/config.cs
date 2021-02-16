@@ -1,6 +1,4 @@
-﻿using SilverBotDS.Commands;
-using SilverBotDS.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,8 +7,11 @@ using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
+using SilverBotDS.Commands;
+using SilverBotDS.Commands.Gamering;
+using SilverBotDS.Utils;
 
-namespace SilverBotDS
+namespace SilverBotDS.Objects
 {
     public class Config
     {
@@ -25,18 +26,18 @@ namespace SilverBotDS
         public List<ulong> Botowners { get; set; } = new List<ulong> { 264081339316305920 };
         public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
         public int MsInterval { get; set; } = 1800000;
-        public ulong? ConfigVer { get; set; } = null;
-        public readonly static ulong CurrentConfVer = 3;
+        public ulong? ConfigVer { get; init; } = null;
+        private const ulong CurrentConfVer = 4;
         public bool UseSplashConfig { get; set; } = true;
         public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
 
-        public string Topgg_Sid_Token { get; set; } = "None";
-        public bool Topgg_Is_Selfbot { get; set; } = true;
-        public int Browser_Type { get; set; } = 1;
-        public string Driver_Location { get; set; } = "";
+        public string TopggSidToken { get; set; } = "None";
+        public bool TopggIsSelfbot { get; set; } = true;
+        public int BrowserType { get; set; } = 1;
+        public string DriverLocation { get; set; } = "";
         public bool UseColorConfig { get; set; } = true;
 
-        public static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument, bool isexample = false)
+        private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument, bool isexample = false)
         {
             if (isexample)
             {
@@ -64,17 +65,17 @@ namespace SilverBotDS
 
         public static async System.Threading.Tasks.Task<Config> GetAsync()
         {
-            Config new_config = new Config
+            var newConfig = new Config
             {
                 ConfigVer = CurrentConfVer
             };
-            XmlSerializer serializer = new XmlSerializer(new_config.GetType());
+            var serializer = new XmlSerializer(newConfig.GetType());
 
             if (!File.Exists("silverbot.xml"))
             {
-                using (StreamWriter streamWriter = new StreamWriter("silverbot.xml"))
+                await using (var streamWriter = new StreamWriter("silverbot.xml"))
                 {
-                    MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(new_config)).Save(streamWriter);
+                    MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(newConfig)).Save(streamWriter);
                     streamWriter.Close();
                 }
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -102,83 +103,93 @@ namespace SilverBotDS
                 }
             }
 
-            using FileStream fs = File.Open("silverbot.xml", FileMode.Open);
-            Config readconfig = serializer.Deserialize(fs) as Config;
+            await using var fs = File.Open("silverbot.xml", FileMode.Open);
+            var readconfig = serializer.Deserialize(fs) as Config;
             fs.Close();
-            if (readconfig.ConfigVer == null || readconfig.ConfigVer != CurrentConfVer)
+            if (readconfig != null && (readconfig.ConfigVer == null || readconfig.ConfigVer != CurrentConfVer))
             {
             outdated:
                 Console.WriteLine("Outdated config detected. Would you like a new one to generate? (Y/n)");
-                string rl = Console.ReadLine();
-                switch (rl.ToLower())
-                {
-                    case "y":
-                        using (StreamReader streamReader = new StreamReader("silverbot.xml"))
-                        {
-                            using (StreamWriter streamWriter = new StreamWriter("silverbotold.xml", false))
+                var rl = Console.ReadLine();
+                if (rl != null)
+                    switch (rl.ToLower())
+                    {
+                        case "y":
+                            using (var streamReader = new StreamReader("silverbot.xml"))
                             {
-                                await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
+                                await using (var streamWriter = new StreamWriter("silverbotold.xml", false))
+                                {
+                                    await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
+                                    streamWriter.Close();
+                                }
+
+                                streamReader.Close();
+                            }
+
+                            await using (var streamWriter = new StreamWriter("silverbot.xml"))
+                            {
+                                MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(newConfig)).Save(streamWriter);
                                 streamWriter.Close();
                             }
-                            streamReader.Close();
-                        }
-                        using (StreamWriter streamWriter = new StreamWriter("silverbot.xml"))
-                        {
-                            MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(new_config)).Save(streamWriter);
-                            streamWriter.Close();
-                        }
-                        new Process
-                        {
-                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbot.xml")
+
+                            new Process
                             {
-                                UseShellExecute = true
-                            }
-                        }.Start();
-                        new Process
-                        {
-                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbotold.xml")
+                                StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbot.xml")
+                                {
+                                    UseShellExecute = true
+                                }
+                            }.Start();
+                            new Process
                             {
-                                UseShellExecute = true
-                            }
-                        }.Start();
-                        Console.WriteLine("Ok now transfer the values from silverbotold.xml to silverbot.xml and restart thx");
-                        Environment.Exit(420);
-                        break;
+                                StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbotold.xml")
+                                {
+                                    UseShellExecute = true
+                                }
+                            }.Start();
+                            Console.WriteLine(
+                                "Ok now transfer the values from silverbotold.xml to silverbot.xml and restart thx");
+                            Environment.Exit(420);
+                            break;
 
-                    case "n":
-                        Console.WriteLine("Outdated config detected. Would you like to try loading with the outdated config? (Y/n)");
-                        string nrl = Console.ReadLine();
-                        switch (nrl.ToLower())
-                        {
-                            case "y":
-                                break;
+                        case "n":
+                            Console.WriteLine(
+                                "Outdated config detected. Would you like to try loading with the outdated config? (Y/n)");
+                            var nrl = Console.ReadLine();
+                            if (nrl != null)
+                                switch (nrl.ToLower())
+                                {
+                                    case "y":
+                                        break;
 
-                            case "n":
-                                Environment.Exit(421);
-                                break;
+                                    case "n":
+                                        Environment.Exit(421);
+                                        break;
 
-                            default:
-                                goto outdated;
-                        }
-                        break;
+                                    default:
+                                        goto outdated;
+                                }
 
-                    default:
-                        goto outdated;
-                }
+                            break;
+
+                        default:
+                            goto outdated;
+                    }
             }
-            if (!string.IsNullOrEmpty(readconfig.ConnString))
+            if (readconfig != null && !string.IsNullOrEmpty(readconfig.ConnString))
             {
                 Database.Setconnstring(readconfig.ConnString);
             }
             else
             {
-                Uri tmp = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL"));
-                string[] usernameandpass = tmp.UserInfo.Split(":");
-                string ConnString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
-                Database.Setconnstring(ConnString);
+                var tmp = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
+                var usernameandpass = tmp.UserInfo.Split(":");
+                var connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
+                Database.Setconnstring(connString);
             }
-            Giphy.Set(readconfig.Gtoken);
-            Fortnite.Setapi(readconfig.FApiToken);
+            Xmlutils.SerializeToXmlDocument(readconfig).Save(Console.OpenStandardOutput());
+
+            Giphy.Set(readconfig?.Gtoken);
+            Fortnite.Setapi(readconfig?.FApiToken);
             return readconfig;
         }
     }

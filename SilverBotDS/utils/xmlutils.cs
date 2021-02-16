@@ -13,16 +13,13 @@ namespace SilverBotDS.Utils
      /// <returns>A string containing that object as xml</returns>
         public static async Task<string> SerializeToXmlAsync(object input)
         {
-            XmlSerializer ser = new XmlSerializer(input.GetType());
-            string result = string.Empty;
+            var ser = new XmlSerializer(input.GetType());
 
-            using (MemoryStream memStm = new MemoryStream())
-            {
-                ser.Serialize(memStm, input);
+            await using var memStm = new MemoryStream();
+            ser.Serialize(memStm, input);
 
-                memStm.Position = 0;
-                result = await new StreamReader(memStm).ReadToEndAsync();
-            }
+            memStm.Position = 0;
+            var result = await new StreamReader(memStm).ReadToEndAsync();
 
             return result;
         }
@@ -34,25 +31,21 @@ namespace SilverBotDS.Utils
         /// <returns>A XmlDocument containing the object as xml</returns>
         public static XmlDocument SerializeToXmlDocument(object input)
         {
-            XmlSerializer ser = new XmlSerializer(input.GetType());
+            var ser = new XmlSerializer(input.GetType());
 
-            XmlDocument xd = null;
+            using var memStm = new MemoryStream();
+            ser.Serialize(memStm, input);
 
-            using (MemoryStream memStm = new MemoryStream())
+            memStm.Position = 0;
+
+            var settings = new XmlReaderSettings
             {
-                ser.Serialize(memStm, input);
+                IgnoreWhitespace = true
+            };
 
-                memStm.Position = 0;
-
-                XmlReaderSettings settings = new XmlReaderSettings
-                {
-                    IgnoreWhitespace = true
-                };
-
-                using XmlReader xtr = XmlReader.Create(memStm, settings);
-                xd = new XmlDocument();
-                xd.Load(xtr);
-            }
+            using var xtr = XmlReader.Create(memStm, settings);
+            var xd = new XmlDocument();
+            xd.Load(xtr);
 
             return xd;
         }
@@ -66,10 +59,10 @@ namespace SilverBotDS.Utils
         /// <returns>A XmlDocument that has the comment before the xpath thingy</returns>
         public static XmlDocument CommentBeforeObject(XmlDocument inputdoc, string xpath, string comment)
         {
-            XmlNode elementToComment = inputdoc.SelectSingleNode(xpath);
-            XmlComment commentNode = inputdoc.CreateComment(comment);
-            XmlNode parentNode = elementToComment.ParentNode;
-            parentNode.InsertBefore(commentNode, elementToComment);
+            var elementToComment = inputdoc.SelectSingleNode(xpath);
+            var commentNode = inputdoc.CreateComment(comment);
+            var parentNode = elementToComment?.ParentNode;
+            parentNode?.InsertBefore(commentNode, elementToComment);
             return inputdoc;
         }
     }

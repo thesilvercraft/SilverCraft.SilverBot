@@ -4,36 +4,37 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using WebClient = SilverBotDS.Objects.WebClient;
 
 namespace SilverBotDS.Utils
 {
     internal class NuGetUtils
     {
         /// <summary>
-        /// Searches for a query on the nugetz
+        /// Searches for a query on the nuget
         /// </summary>
         /// <param name="query">The query to search</param>
         /// <returns>A list of packages</returns>
         /// <exception cref="Exception">given when the webserver didnt return a OK</exception>
         public static async Task<Datum[]> SearchAsync(string query)
         {
-            System.Net.Http.HttpClient httpClient = WebClient.Get();
-            UriBuilder uri = new UriBuilder("https://azuresearch-usnc.nuget.org/query")
+            var httpClient = WebClient.Get();
+            var uri = new UriBuilder("https://azuresearch-usnc.nuget.org/query")
             {
                 Query = $"?q={query}"
             };
-            HttpResponseMessage RM = await httpClient.GetAsync(uri.Uri);
-            if (RM.StatusCode == HttpStatusCode.OK)
+            var rm = await httpClient.GetAsync(uri.Uri);
+            if (rm.StatusCode == HttpStatusCode.OK)
             {
-                return JsonSerializer.Deserialize<Rootobject>(await RM.Content.ReadAsStringAsync()).Data;
+                return JsonSerializer.Deserialize<Rootobject>(await rm.Content.ReadAsStringAsync())?.Data;
             }
             else
             {
-                return await Task.FromException<Datum[]>(new Exception($"Request yielded a statuscode that isnt OK it is {RM.StatusCode}"));
+                return await Task.FromException<Datum[]>(new Exception($"Request yielded a status code that isn't OK it is {rm.StatusCode}"));
             }
         }
 
-        public class Rootobject
+        private class Rootobject
         {
             [JsonPropertyName("context")]
             public Context Context { get; set; }
@@ -60,46 +61,46 @@ namespace SilverBotDS.Utils
             public string Atid { get; set; }
 
             [JsonPropertyName("@type")]
-            public string Type { get; set; }
+            public string Type { get;  }
 
             [JsonPropertyName("registration")]
             public string Registration { get; set; }
 
             [JsonPropertyName("id")]
-            public string Id { get; set; }
+            public string Id { get;  }
 
             [JsonPropertyName("version")]
-            public string Version { get; set; }
+            public string Version { get;  }
 
             [JsonPropertyName("description")]
-            public string Description { get; set; }
+            public string Description { get;  }
 
             [JsonPropertyName("summary")]
             public string Summary { get; set; }
 
             [JsonPropertyName("title")]
-            public string Title { get; set; }
+            public string Title { get;  }
 
             [JsonPropertyName("iconUrl")]
-            public string IconUrl { get; set; }
+            public string IconUrl { get;  }
 
             [JsonPropertyName("licenseUrl")]
             public string LicenseUrl { get; set; }
 
             [JsonPropertyName("projectUrl")]
-            public string ProjectUrl { get; set; }
+            public string ProjectUrl { get;  }
 
             [JsonPropertyName("tags")]
             public string[] Tags { get; set; }
 
             [JsonPropertyName("authors")]
-            public string[] Authors { get; set; }
+            public string[] Authors { get;  }
 
             [JsonPropertyName("totalDownloads")]
-            public int TotalDownloads { get; set; }
+            public int TotalDownloads { get;  }
 
             [JsonPropertyName("verified")]
-            public bool Verified { get; set; }
+            public bool Verified { get;  }
 
             [JsonPropertyName("packageTypes")]
             public Packagetype[] PackageTypes { get; set; }

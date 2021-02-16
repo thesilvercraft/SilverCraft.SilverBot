@@ -5,13 +5,12 @@ using DSharpPlus.Entities;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.IO.Compression;
-using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SilverBotDS.Objects;
 
 namespace SilverBotDS.Commands
 {
@@ -28,13 +27,13 @@ namespace SilverBotDS.Commands
             await ctx.RespondAsync(e);
         }
 
-        private readonly string[] urls = { "https://silverdimond.tk", "https://yahoo.com", "https://bing.com", "https://vfl.gg", "https://discord.com", "https://github.com", "https://github.com/silverdimond" };
+        private readonly string[] _urls = { "https://silverdimond.tk", "https://yahoo.com", "https://bing.com", "https://vfl.gg", "https://discord.com", "https://github.com", "https://github.com/silverdimond" };
 
         [Command("stress")]
         [Description("less gooo baybae")]
         public Task Stress(CommandContext ctx)
         {
-            foreach (string url in urls)
+            foreach (var url in _urls)
             {
                 _ = Html(ctx, url);
             }
@@ -48,7 +47,7 @@ namespace SilverBotDS.Commands
         public async Task Category(CommandContext ctx, [Description("The role to set up a category for")] DiscordRole
          role)
         {
-            string name = Regex.Replace(role.Name, @"[^\w]", "");
+            var name = Regex.Replace(role.Name, @"[^\w]", "");
             List<DiscordOverwriteBuilder> builders = new();
             var builder = new DiscordOverwriteBuilder
             {
@@ -71,7 +70,7 @@ namespace SilverBotDS.Commands
             var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders, "Added by SilverBot as requested by" + ctx.User.Username);
             var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
             _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
-            Discord​Message​Builder discordMessage = new();
+            DiscordMessageBuilder discordMessage = new();
             discordMessage.Content = ctx.User.Mention + " there m8 that took some time to do";
 
             await channel.SendMessageAsync(discordMessage);
@@ -83,7 +82,7 @@ namespace SilverBotDS.Commands
         public async Task Category(CommandContext ctx, [Description("The person to set up a category for")] DiscordMember
              person)
         {
-            string name = Regex.Replace(person.Username, @"[^\w]", "");
+            var name = Regex.Replace(person.Username, @"[^\w]", "");
             List<DiscordOverwriteBuilder> builders = new();
             var builder = new DiscordOverwriteBuilder
             {
@@ -113,18 +112,18 @@ namespace SilverBotDS.Commands
         [Description("UHHHHHHHHHHHHH its a secret")]
         public async Task Runsql(CommandContext ctx, string sql)
         {
-            var thing = await Database.RunSQLAsync(sql);
+            var thing = await Database.RunSqlAsync(sql);
             if (thing.Item1 != null && thing.Item2 == null)
             {
                 await ctx.RespondAsync(thing.Item1);
             }
             if (thing.Item1 == null && thing.Item2 != null)
             {
-                DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+                var bob = new DiscordEmbedBuilder();
                 bob.WithImageUrl("attachment://html.png");
                 bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
 
-                MemoryStream image = new MemoryStream();
+                var image = new MemoryStream();
                 thing.Item2.Save(image, System.Drawing.Imaging.ImageFormat.Png);
                 image.Position = 0;
                 await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
@@ -137,10 +136,10 @@ namespace SilverBotDS.Commands
         [Description("UHHHHHHHHHHHHH its a secret")]
         public async Task Html(CommandContext ctx, string html)
         {
-            DiscordEmbedBuilder bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
+            var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
 
-            using MemoryStream image = new MemoryStream();
-            using Image e = await Browser.ScreenshotAsync(html);
+            await using var image = new MemoryStream();
+            using var e = await Browser.ScreenshotAsync(html);
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;
             await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
@@ -154,15 +153,15 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                Language lang = Language.GetLanguageFromCtx(ctx);
+                var lang = Language.GetLanguageFromCtx(ctx);
                 if (ctx.Message.Attachments.Count == 0)
                 {
-                    await ctx.RespondAsync(lang.No_Image_Generic);
+                    await ctx.RespondAsync(lang.NoImageGeneric);
                     return;
                 }
                 if (ctx.Message.Attachments.Count > 1)
                 {
-                    await ctx.RespondAsync(lang.More_Than_One_Image_Generic);
+                    await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
                     return;
                 }
                 if (FileUtils.GetFileExtensionFromUrl(ctx.Message.Attachments[0].Url) != ".zip")
@@ -170,9 +169,9 @@ namespace SilverBotDS.Commands
                     await ctx.RespondAsync("please use a zip");
                     return;
                 }
-                System.Net.Http.HttpClient client = WebClient.Get();
-                HttpResponseMessage rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
-                using (var fs = new FileStream(
+                var client = WebClient.Get();
+                var rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
+                await using (var fs = new FileStream(
         Environment.CurrentDirectory + "\\temp.zip",
         FileMode.CreateNew))
                 {
@@ -191,8 +190,8 @@ namespace SilverBotDS.Commands
                 StringBuilder status = new();
                 foreach (var file in Directory.GetFiles(Environment.CurrentDirectory + "\\temp"))
                 {
-                    using FileStream fileStream = new(file, FileMode.Open);
-                    using MemoryStream stream = new MemoryStream();
+                    await using FileStream fileStream = new(file, FileMode.Open);
+                    await using var stream = new MemoryStream();
                     fileStream.Position = 0;
                     await fileStream.CopyToAsync(stream);
                     if (stream.Length > 256 * 1000)
@@ -203,8 +202,9 @@ namespace SilverBotDS.Commands
                     else
                     {
                         Console.WriteLine(Path.GetFileName(file));
-                        DiscordGuildEmoji emote = await ctx.Guild.CreateEmojiAsync(name: Path.GetFileNameWithoutExtension(file), image: stream, reason: "Added via silverbot by " + ctx.User.Username);
-                        status.Append("\t " + emote.ToString() + ' ' + StringUtils.BoolToEmoteString(true));
+                        var emote = await ctx.Guild.CreateEmojiAsync(name: Path.GetFileNameWithoutExtension(file),
+                            image: stream, reason: "Added via silverbot by " + ctx.User.Username);
+                        status.Append("\t " + emote + ' ' + StringUtils.BoolToEmoteString(true));
                     }
                 }
                 await ctx.RespondAsync(status.ToString());
@@ -222,7 +222,7 @@ namespace SilverBotDS.Commands
         public async Task Reloadsplashes(CommandContext ctx)
         {
             await Splashes.GetAsync(true);
-            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+            var bob = new DiscordEmbedBuilder();
             bob.WithTitle("Reloaded splashes for ya.");
 
             bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
@@ -240,11 +240,11 @@ namespace SilverBotDS.Commands
         [Description("UHHHHHHHHHHHHH its a secret")]
         public async Task HtmlE(CommandContext ctx, string html)
         {
-            DiscordEmbedBuilder bob = new DiscordEmbedBuilder();
+            var bob = new DiscordEmbedBuilder();
             bob.WithImageUrl("attachment://html.png");
             bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-            Image e = await Browser.ScreenshotHtmlAsync(html);
-            MemoryStream image = new MemoryStream();
+            var e = await Browser.ScreenshotHtmlAsync(html);
+            var image = new MemoryStream();
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;
             await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);

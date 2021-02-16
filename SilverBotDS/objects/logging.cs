@@ -1,11 +1,11 @@
-﻿using DSharpPlus.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
 
-namespace SilverBotDS
+namespace SilverBotDS.Objects
 {
     internal class Logging
     {
@@ -19,7 +19,8 @@ namespace SilverBotDS
             {
                 Directory.CreateDirectory(Environment.CurrentDirectory + "\\Logging\\Messages");
             }
-            using StreamWriter sw = new StreamWriter(Environment.CurrentDirectory + $"\\Logging\\Messages\\{message.Channel.Id}.slvrlog", true);
+
+            await using var sw = new StreamWriter(Environment.CurrentDirectory + $"\\Logging\\Messages\\{message.Channel.Id}.slvrlog", true);
             var logmessage = new Logmessage
             {
                 Content = message.Content,

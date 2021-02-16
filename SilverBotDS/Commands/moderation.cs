@@ -3,6 +3,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System.Threading.Tasks;
+using SilverBotDS.Objects;
 
 namespace SilverBotDS.Commands
 {
@@ -16,21 +17,21 @@ namespace SilverBotDS.Commands
         [RequireUserPermissions(Permissions.KickMembers)]
         public async Task Kick(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The kick boot has spoken")
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            DiscordEmbedBuilder b = new DiscordEmbedBuilder();
-            string thing = "";
+            var lang = Language.GetLanguageFromCtx(ctx);
+            var b = new DiscordEmbedBuilder();
+            var thing = "";
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
             if (up < ap)
             {
-                thing += lang.User_has_lower_role + lang.Kick;
+                thing += lang.UserHasLowerRole + lang.Kick;
             }
             if (up == ap)
             {
-                thing += lang.User_has_lower_role + lang.Kick;
+                thing += lang.UserHasLowerRole + lang.Kick;
             }
             if (ap > bp)
             {
-                thing += lang.Bot_has_lower_role;
+                thing += lang.BotHasLowerRole;
             }
             if (up > bp && bp > ap)
             {
@@ -38,7 +39,7 @@ namespace SilverBotDS.Commands
                 thing += "The bot has attempted to kick the user";
             }
             b.WithDescription(thing);
-            b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
 
@@ -48,21 +49,21 @@ namespace SilverBotDS.Commands
         [RequireUserPermissions(Permissions.BanMembers)]
         public async Task Ban(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
-            DiscordEmbedBuilder b = new DiscordEmbedBuilder();
-            string thing = "";
+            var lang = Language.GetLanguageFromCtx(ctx);
+            var b = new DiscordEmbedBuilder();
+            var thing = "";
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
             if (up < ap)
             {
-                thing += lang.User_has_lower_role + lang.Ban;
+                thing += lang.UserHasLowerRole + lang.Ban;
             }
             if (up == ap)
             {
-                thing += lang.User_has_lower_role + lang.Ban;
+                thing += lang.UserHasLowerRole + lang.Ban;
             }
             if (ap > bp)
             {
-                thing += lang.Bot_has_lower_role;
+                thing += lang.BotHasLowerRole;
             }
             if (up > bp && bp > ap)
             {
@@ -70,7 +71,7 @@ namespace SilverBotDS.Commands
                 thing += "The bot has attempted to ban the user";
             }
             b.WithDescription(thing);
-            b.WithFooter(lang.Requested_by + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
     }

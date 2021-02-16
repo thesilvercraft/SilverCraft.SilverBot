@@ -7,12 +7,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using WebClient = SilverBotDS.Objects.WebClient;
 
 namespace SilverBotDS.Utils
 {
-    public class GitHubUtils
+    public abstract class GitHubUtils
     {
-        private static readonly Regex r = new Regex("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.IgnoreCase);
+        private static readonly Regex R = new Regex("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.IgnoreCase);
 
         public class Repo
         {
@@ -31,13 +32,13 @@ namespace SilverBotDS.Utils
 
             public static Optional<Repo> TryParseUrl(string url)
             {
-                Match m = r.Match(url);
-                var Repo = new Repo();
+                var m = R.Match(url);
+                var repo = new Repo();
                 if (m.Success)
                 {
-                    Repo.User = m.Groups["user"].Value;
-                    Repo.Reponame = m.Groups["repo"].Value;
-                    return Optional.FromValue(Repo);
+                    repo.User = m.Groups["user"].Value;
+                    repo.Reponame = m.Groups["repo"].Value;
+                    return Optional.FromValue(repo);
                 }
                 else
                 {
@@ -50,11 +51,11 @@ namespace SilverBotDS.Utils
         {
             public static async Task DownloadLatestAsync(Release release)
             {
-                HttpClient client = WebClient.Get();
-                using HttpResponseMessage rm = await client.GetAsync(release.Assets[0].Browser_download_url);
-                Uri uri = new Uri(release.Assets[0].Browser_download_url);
-                string filename = Path.GetFileName(uri.LocalPath);
-                using var fs = new FileStream(
+                var client = WebClient.Get();
+                using var rm = await client.GetAsync(release.Assets[0].BrowserDownloadUrl);
+                var uri = new Uri(release.Assets[0].BrowserDownloadUrl);
+                var filename = Path.GetFileName(uri.LocalPath);
+                await using var fs = new FileStream(
         Environment.CurrentDirectory + $"\\{filename}",
         FileMode.CreateNew);
                 await rm.Content.CopyToAsync(fs);
@@ -62,11 +63,11 @@ namespace SilverBotDS.Utils
 
             public async Task DownloadLatestAsync()
             {
-                HttpClient client = WebClient.Get();
-                using HttpResponseMessage rm = await client.GetAsync(Assets[0].Browser_download_url);
-                Uri uri = new Uri(Assets[0].Browser_download_url);
-                string filename = Path.GetFileName(uri.LocalPath);
-                using var fs = new FileStream(
+                var client = WebClient.Get();
+                using var rm = await client.GetAsync(Assets[0].BrowserDownloadUrl);
+                var uri = new Uri(Assets[0].BrowserDownloadUrl);
+                var filename = Path.GetFileName(uri.LocalPath);
+                await using var fs = new FileStream(
         Environment.CurrentDirectory + $"\\{filename}",
         FileMode.CreateNew);
                 await rm.Content.CopyToAsync(fs);
@@ -74,16 +75,18 @@ namespace SilverBotDS.Utils
 
             public static async Task<Release> GetLatestFromRepoAsync(Repo repo)
             {
-                HttpClient httpClient = WebClient.Get();
-                UriBuilder uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/releases/latest");
-                HttpResponseMessage RM = await httpClient.GetAsync(uri.Uri);
-                if (RM.StatusCode == HttpStatusCode.OK)
+                var httpClient = WebClient.Get();
+                var uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/releases/latest");
+                Console.Write($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/releases/latest");
+                var rm = await httpClient.GetAsync(uri.Uri);
+                if (rm.StatusCode == HttpStatusCode.OK)
                 {
-                    return JsonSerializer.Deserialize<Release>(await RM.Content.ReadAsStringAsync());
+                    return JsonSerializer.Deserialize<Release>(await rm.Content.ReadAsStringAsync());
                 }
                 else
                 {
-                    return await Task.FromException<Release>(new Exception($"Request yielded a statuscode that isnt OK it is {RM.StatusCode}"));
+                    Console.Write(await rm.Content.ReadAsStringAsync());
+                    return await Task.FromException<Release>(new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}"));
                 }
             }
 
@@ -91,13 +94,13 @@ namespace SilverBotDS.Utils
             public string Url { get; set; }
 
             [JsonPropertyName("assets_url")]
-            public string Assets_url { get; set; }
+            public string AssetsUrl { get; set; }
 
             [JsonPropertyName("upload_url")]
-            public string Upload_url { get; set; }
+            public string UploadUrl { get; set; }
 
             [JsonPropertyName("html_url")]
-            public string Html_url { get; set; }
+            public string HtmlUrl { get; set; }
 
             [JsonPropertyName("id")]
             public int Id { get; set; }
@@ -106,13 +109,13 @@ namespace SilverBotDS.Utils
             public Author Author { get; set; }
 
             [JsonPropertyName("node_id")]
-            public string Node_id { get; set; }
+            public string NodeId { get; set; }
 
             [JsonPropertyName("tag_name")]
-            public string Tag_name { get; set; }
+            public string TagName { get; set; }
 
             [JsonPropertyName("target_commitish")]
-            public string Target_commitish { get; set; }
+            public string TargetCommitish { get; set; }
 
             [JsonPropertyName("name")]
             public string Name { get; set; }
@@ -124,19 +127,19 @@ namespace SilverBotDS.Utils
             public bool Prerelease { get; set; }
 
             [JsonPropertyName("created_at")]
-            public DateTime Created_at { get; set; }
+            public DateTime CreatedAt { get; set; }
 
             [JsonPropertyName("published_at")]
-            public DateTime Published_at { get; set; }
+            public DateTime PublishedAt { get; set; }
 
             [JsonPropertyName("assets")]
             public Asset[] Assets { get; set; }
 
             [JsonPropertyName("tarball_url")]
-            public string Tarball_url { get; set; }
+            public string TarballUrl { get; set; }
 
             [JsonPropertyName("zipball_url")]
-            public string Zipball_url { get; set; }
+            public string ZipballUrl { get; set; }
 
             [JsonPropertyName("body")]
             public string Body { get; set; }
@@ -151,56 +154,58 @@ namespace SilverBotDS.Utils
             public int Id { get; set; }
 
             [JsonPropertyName("node_id")]
-            public string Node_id { get; set; }
+            public string NodeId { get; set; }
 
             [JsonPropertyName("avatar_url")]
-            public string Avatar_url { get; set; }
+            public string AvatarUrl { get; set; }
 
             [JsonPropertyName("gravatar_id")]
-            public string Gravatar_id { get; set; }
+            public string GravatarId { get; set; }
 
             [JsonPropertyName("url")]
             public string Url { get; set; }
 
             [JsonPropertyName("html_url")]
-            public string Html_url { get; set; }
+            public string HtmlUrl { get; set; }
 
             [JsonPropertyName("followers_url")]
-            public string Followers_url { get; set; }
+            public string FollowersUrl { get; set; }
 
             [JsonPropertyName("following_url")]
-            public string Following_url { get; set; }
+            public string FollowingUrl { get; set; }
 
             [JsonPropertyName("gists_url")]
-            public string Gists_url { get; set; }
+            public string GistsUrl { get; set; }
 
             [JsonPropertyName("starred_url")]
-            public string Starred_url { get; set; }
+            public string StarredUrl { get; set; }
 
             [JsonPropertyName("subscriptions_url")]
-            public string Subscriptions_url { get; set; }
+            public string SubscriptionsUrl { get; set; }
 
             [JsonPropertyName("organizations_url")]
-            public string Organizations_url { get; set; }
+            public string OrganizationsUrl { get; set; }
 
             [JsonPropertyName("repos_url")]
-            public string Repos_url { get; set; }
+            public string ReposUrl { get; set; }
 
             [JsonPropertyName("events_url")]
-            public string Events_url { get; set; }
+            public string EventsUrl { get; set; }
 
             [JsonPropertyName("received_events_url")]
-            public string Received_events_url { get; set; }
+            public string ReceivedEventsUrl { get; set; }
 
             [JsonPropertyName("type")]
             public string Type { get; set; }
 
             [JsonPropertyName("site_admin")]
-            public bool Site_admin { get; set; }
+            public bool SiteAdmin { get; set; }
         }
 
         public class Asset
         {
+         
+
             [JsonPropertyName("url")]
             public string Url { get; set; }
 
@@ -208,7 +213,7 @@ namespace SilverBotDS.Utils
             public int Id { get; set; }
 
             [JsonPropertyName("node_id")]
-            public string Node_id { get; set; }
+            public string NodeId { get; set; }
 
             [JsonPropertyName("name")]
             public string Name { get; set; }
@@ -220,7 +225,7 @@ namespace SilverBotDS.Utils
             public Uploader Uploader { get; set; }
 
             [JsonPropertyName("content_type")]
-            public string Content_type { get; set; }
+            public string ContentType { get; set; }
 
             [JsonPropertyName("state")]
             public string State { get; set; }
@@ -229,16 +234,16 @@ namespace SilverBotDS.Utils
             public int Size { get; set; }
 
             [JsonPropertyName("download_count")]
-            public int Download_count { get; set; }
+            public int DownloadCount { get; set; }
 
             [JsonPropertyName("created_at")]
-            public DateTime Created_at { get; set; }
+            public DateTime CreatedAt { get; set; }
 
             [JsonPropertyName("updated_at")]
-            public DateTime Updated_at { get; set; }
+            public DateTime UpdatedAt { get; set; }
 
             [JsonPropertyName("browser_download_url")]
-            public string Browser_download_url { get; set; }
+            public string BrowserDownloadUrl { get; set; }
         }
 
         public class Uploader
@@ -250,52 +255,52 @@ namespace SilverBotDS.Utils
             public int Id { get; set; }
 
             [JsonPropertyName("node_id")]
-            public string Node_id { get; set; }
+            public string NodeId { get; set; }
 
             [JsonPropertyName("avatar_url")]
-            public string Avatar_url { get; set; }
+            public string AvatarUrl { get; set; }
 
             [JsonPropertyName("gravatar_id")]
-            public string Gravatar_id { get; set; }
+            public string GravatarId { get; set; }
 
             [JsonPropertyName("url")]
             public string Url { get; set; }
 
             [JsonPropertyName("html_url")]
-            public string Html_url { get; set; }
+            public string HtmlUrl { get; set; }
 
             [JsonPropertyName("followers_url")]
-            public string Followers_url { get; set; }
+            public string FollowersUrl { get; set; }
 
             [JsonPropertyName("following_url")]
-            public string Following_url { get; set; }
+            public string FollowingUrl { get; set; }
 
             [JsonPropertyName("gists_url")]
-            public string Gists_url { get; set; }
+            public string GistsUrl { get; set; }
 
             [JsonPropertyName("starred_url")]
-            public string Starred_url { get; set; }
+            public string StarredUrl { get; set; }
 
             [JsonPropertyName("subscriptions_url")]
-            public string Subscriptions_url { get; set; }
+            public string SubscriptionsUrl { get; set; }
 
             [JsonPropertyName("organizations_url")]
-            public string Organizations_url { get; set; }
+            public string OrganizationsUrl { get; set; }
 
             [JsonPropertyName("repos_url")]
-            public string Repos_url { get; set; }
+            public string ReposUrl { get; set; }
 
             [JsonPropertyName("events_url")]
-            public string Events_url { get; set; }
+            public string EventsUrl { get; set; }
 
             [JsonPropertyName("received_events_url")]
-            public string Received_events_url { get; set; }
+            public string ReceivedEventsUrl { get; set; }
 
             [JsonPropertyName("type")]
             public string Type { get; set; }
 
             [JsonPropertyName("site_admin")]
-            public bool Site_admin { get; set; }
+            public bool SiteAdmin { get; set; }
         }
     }
 }

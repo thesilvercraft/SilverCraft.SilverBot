@@ -1,18 +1,25 @@
-﻿using RestSharp;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
+using RestSharp;
 
-namespace SilverBotDS
+namespace SilverBotDS.Objects
 {
-    internal class DBLA
+    public class Dbla
     {
+        public static Dbla CreateInstance()
+        {
+            return new Dbla();
+        }
+
         public class Client
         {
-            private readonly string token;
-            private readonly bool selfbot;
+            private readonly string _token;
+            private readonly bool _selfbot;
 
             /// <summary>
             /// Makes a new client
@@ -21,9 +28,8 @@ namespace SilverBotDS
             /// <param name="toselfbot">Set <see cref="true"/> for cookie auth, set <see cref="false"/> for auth auth</param>
             public Client(string tokentouse, bool toselfbot)
             {
-                token = tokentouse;
-                selfbot = toselfbot;
-                return;
+                _token = tokentouse;
+                _selfbot = toselfbot;
             }
 
             public async Task<Bot> GetViaIdAsync(ulong id)
@@ -35,21 +41,14 @@ namespace SilverBotDS
                         Timeout = -1
                     };
                     var request = new RestRequest(Method.GET);
-                    if (selfbot)
-                    {
-                        request.AddHeader("Cookie", token);
-                    }
-                    else
-                    {
-                        request.AddHeader("Authorization", token);
-                    }
+                    request.AddHeader(_selfbot ? "Cookie" : "Authorization", _token);
 
-                    IRestResponse response = await client.ExecuteAsync(request);
+                    var response = await client.ExecuteAsync(request);
 
                     var bot = JsonSerializer.Deserialize<Bot>(response.Content);
-                    if (!string.IsNullOrEmpty(bot.Error))
+                    if (bot != null && !string.IsNullOrEmpty(bot.Error))
                     {
-                        _ = Program.SendLogAsync(bot.Error, new());
+                        _ = Program.SendLogAsync(bot.Error, new List<DiscordEmbed>());
                         return null;
                     }
                     else
@@ -59,7 +58,7 @@ namespace SilverBotDS
                 }
                 catch (HttpRequestException ex)
                 {
-                    _ = Program.SendLogAsync(ex.StatusCode.ToString(), new());
+                    _ = Program.SendLogAsync(ex.StatusCode.ToString(), new List<DiscordEmbed>());
                     return null;
                 }
             }
@@ -70,6 +69,14 @@ namespace SilverBotDS
         /// </summary>
         public class Bot
         {
+            public Bot(string prefix, string shortdesc, string website, string error)
+            {
+                Prefix = prefix;
+                Shortdesc = shortdesc;
+                Website = website;
+                Error = error;
+            }
+
             [JsonPropertyName("error")]
             public string Error { get; set; }
 
@@ -119,10 +126,10 @@ namespace SilverBotDS
             public DateTime Date { get; set; }
 
             [JsonPropertyName("server_count")]
-            public ulong Server_count { get; set; }
+            public ulong ServerCount { get; set; }
 
             [JsonPropertyName("shard_count")]
-            public int Shard_count { get; set; }
+            public int ShardCount { get; set; }
 
             [JsonPropertyName("guilds")]
             public string[] Guilds { get; set; }

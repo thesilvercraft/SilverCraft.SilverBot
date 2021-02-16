@@ -11,12 +11,12 @@ namespace SDBrowser
 {
     public sealed class SeleniumBrowser : IBrowser
     {
-        private readonly IWebDriver WebDriver;
-        private bool IsLocked = false;
+        private readonly IWebDriver _webDriver;
+        private bool _isLocked = false;
 
         public SeleniumBrowser(IWebDriver driver)
         {
-            WebDriver = driver;
+            _webDriver = driver;
         }
 
         public static SeleniumBrowser FromBrowserType(Browsertype browsertype)
@@ -30,65 +30,66 @@ namespace SDBrowser
             {
                 location = Environment.CurrentDirectory;
             }
-            if (browsertype == Browsertype.Chrome)
+            switch (browsertype)
             {
-                var chromeOptions = new ChromeOptions();
-                chromeOptions.AddArguments("headless");
-
-                WebDriver = new ChromeDriver(location, chromeOptions);
-                WebDriver.Manage().Window.Size = new Size(1920, 1080);
-            }
-            else if (browsertype == Browsertype.Firefox)
-            {
-                var firefoxOptions = new FirefoxOptions();
-                firefoxOptions.AddArguments("--headless");
-
-                WebDriver = new FirefoxDriver(location, firefoxOptions);
-                WebDriver.Manage().Window.Size = new Size(1920, 1080);
-            }
-            else
-            {
-                throw new NotImplementedException();
+                case Browsertype.Chrome:
+                    {
+                        var chromeOptions = new ChromeOptions();
+                        chromeOptions.AddArguments("headless");
+                        _webDriver = new ChromeDriver(location, chromeOptions);
+                        _webDriver.Manage().Window.Size = new Size(1920, 1080);
+                        break;
+                    }
+                case Browsertype.Firefox:
+                    {
+                        var firefoxOptions = new FirefoxOptions();
+                        firefoxOptions.AddArguments("--headless");
+                        _webDriver = new FirefoxDriver(location, firefoxOptions);
+                        _webDriver.Manage().Window.Size = new Size(1920, 1080);
+                        break;
+                    }
+                default:
+                    throw new NotImplementedException();
             }
         }
 
         public async Task<Bitmap> RenderHtmlAsync(string html)
         {
-            while (IsLocked)
+            while (_isLocked)
             {
                 await Task.Delay(500);
             }
-            IsLocked = true;
-            string basehtml = Convert.ToBase64String(Encoding.UTF8.GetBytes(html));
-            WebDriver.Url = "data:html;base64," + html;
-            WebDriver.Navigate();
-            IWait<IWebDriver> wait = new WebDriverWait(WebDriver, TimeSpan.FromSeconds(30.00));
+            _isLocked = true;
+            var basehtml = Convert.ToBase64String(Encoding.UTF8.GetBytes(html));
+            _webDriver.Url = "data:html;base64," + html;
+            _webDriver.Navigate();
+            IWait<IWebDriver> wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(30.00));
 
-            wait.Until(driver1 => ((IJavaScriptExecutor)WebDriver).ExecuteScript("return document.readyState").Equals("complete")); Screenshot ss = ((ITakesScreenshot)WebDriver).GetScreenshot();
-            IsLocked = false;
+            wait.Until(driver1 => ((IJavaScriptExecutor)_webDriver).ExecuteScript("return document.readyState").Equals("complete")); var ss = ((ITakesScreenshot)_webDriver).GetScreenshot();
+            _isLocked = false;
             return Utils.ByteArrayToImage(ss.AsByteArray);
         }
 
         public async Task<Bitmap> RenderUrlAsync(string url)
         {
-            while (IsLocked)
+            while (_isLocked)
             {
                 await Task.Delay(500);
             }
-            IsLocked = true;
+            _isLocked = true;
             try
             {
-                WebDriver.Url = url;
-                WebDriver.Navigate();
-                IWait<IWebDriver> wait = new WebDriverWait(WebDriver, TimeSpan.FromSeconds(30.00));
+                _webDriver.Url = url;
+                _webDriver.Navigate();
+                IWait<IWebDriver> wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(30.00));
 
-                wait.Until(driver1 => ((IJavaScriptExecutor)WebDriver).ExecuteScript("return document.readyState").Equals("complete")); Screenshot ss = ((ITakesScreenshot)WebDriver).GetScreenshot();
-                IsLocked = false;
+                wait.Until(driver1 => ((IJavaScriptExecutor)_webDriver).ExecuteScript("return document.readyState").Equals("complete")); var ss = ((ITakesScreenshot)_webDriver).GetScreenshot();
+                _isLocked = false;
                 return Utils.ByteArrayToImage(ss.AsByteArray);
             }
             catch (Exception e)
             {
-                IsLocked = false;
+                _isLocked = false;
                 Console.WriteLine(e);
                 throw;
             }

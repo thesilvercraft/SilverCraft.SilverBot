@@ -2,18 +2,17 @@
 using System.Net.Http;
 using System.Text;
 
-namespace SilverBotDS
+namespace SilverBotDS.Objects
 {
     public static class WebClient
     {
-        private static readonly HttpClient HttpClient = NewhttpClientwithstrign();
+        private static readonly HttpClient HttpClient = NewhttpClientWithUserAgent();
 
-        public static HttpClient NewhttpClientwithstrign()
+        private static HttpClient NewhttpClientWithUserAgent()
         {
-            HttpClient e = new HttpClient();
+            var e = new HttpClient();
             e.DefaultRequestHeaders.UserAgent.TryParseAdd(UserAgent());
-            //Console.WriteLine(UserAgent());
-            //Console.WriteLine($"Mozilla/5.0 (compatible; SilverBot/{VersionInfo.VNumber}; {ThisAssembly.Git.RepositoryUrl})");
+            Console.Write(UserAgent());
             return e;
         }
 
@@ -25,18 +24,12 @@ namespace SilverBotDS
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Win32NT:
-                    builder.Append($"Windows NT {Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor};");
-                    if (Environment.Is64BitOperatingSystem)
-                    {
-                        builder.Append("Win64; x64");
-                    }
-                    else
-                    {
-                        builder.Append("Win32; x86");
-                    }
+                    builder.Append(
+                        $"Windows NT {Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor};");
+                    builder.Append(Environment.Is64BitOperatingSystem ? "Win64; x64" : "Win32; x86");
                     break;
-
                 case PlatformID.Unix:
+                {
                     builder.Append($"LiNUX ");
                     if (Environment.Is64BitOperatingSystem)
                     {
@@ -47,13 +40,14 @@ namespace SilverBotDS
                         builder.Append("x86");
                     }
                     break;
-
+                }
                 default:
                     break;
             }
+
             builder.Append(')');
             builder.Append(' ');
-            builder.Append($"SilverBot/{VersionInfo.VNumber};");
+            builder.Append($"SilverBot/{VersionInfo.VNumber}");
             return builder.ToString();
         }
 

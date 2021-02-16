@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [RequirePermissions(Permissions.Administrator)]
-    public sealed class AdminCommands : BaseCommandModule
+    public class AdminCommands : BaseCommandModule
     {
         private DiscordEmoji[] _pollEmojiCache;
 

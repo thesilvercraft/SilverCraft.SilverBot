@@ -8,10 +8,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Templates\adventure_time_template.png" />
+    <None Remove="Templates\happy_new_year_template.png" />
     <None Remove="Templates\motivator_template.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\adventure_time_template.png" />
+    <EmbeddedResource Include="Templates\happy_new_year_template.png" />
     <EmbeddedResource Include="Templates\motivator_template.png" />
   </ItemGroup>
   <ItemGroup>
@@ -46,7 +48,7 @@
 
   <ItemGroup>
     <None Update="application.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

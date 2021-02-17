@@ -7,7 +7,7 @@ jobs:
   build:
 
     runs-on: windows-2019
-
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
     - uses: actions/checkout@v2
     - name: Install 7Zip PowerShell Module
@@ -17,6 +17,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+    - name: Add dsharpplus slimget
+      run: dotnet nuget add source https://nuget.emzi0767.com/api/v3/index.json
     - name: Restore dependencies
       run: dotnet restore
     - name: Build

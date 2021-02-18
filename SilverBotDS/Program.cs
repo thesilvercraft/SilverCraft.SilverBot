@@ -55,13 +55,11 @@ namespace SilverBotDS
             {
                 case 1:
                     {
-                        Console.Write("chrome bitch");
                         Browser.SetBrowser(new SeleniumBrowser(Browsertype.Chrome, config.DriverLocation));
                         break;
                     }
                 case 2:
                     {
-                        Console.Write("firefox bitch");
                         Browser.SetBrowser(new SeleniumBrowser(Browsertype.Firefox, config.DriverLocation));
                         break;
                     }

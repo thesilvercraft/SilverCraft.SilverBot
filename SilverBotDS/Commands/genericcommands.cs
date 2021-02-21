@@ -15,6 +15,7 @@ using System.Text.Json;
 using SilverBotDS.Objects;
 using static SilverBotDS.Utils.StringUtils;
 using WebClient = SilverBotDS.Objects.WebClient;
+using System.Linq;
 
 namespace SilverBotDS.Commands
 {
@@ -47,7 +48,7 @@ namespace SilverBotDS.Commands
             if (rm.StatusCode == HttpStatusCode.OK)
             {
                 var asdf = JsonSerializer.Deserialize<Meme>(await rm.Content.ReadAsStringAsync());
-                if (asdf != null)
+                if (asdf != null && !asdf.Nsfw)
                 {
                     b.WithTitle(lang.Meme + asdf.Title)
                         .WithUrl(asdf.PostLink)
@@ -126,13 +127,14 @@ namespace SilverBotDS.Commands
                                                                                 .WithTitle(lang.SilverhostingJokeTitle)
                                                                                 .WithDescription(lang.SilverhostingJokeDescription)
                                                                                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+                                                                                .WithColor(await ColorUtils.GetSingleAsync())
                                                                                 .Build())
                                             .SendAsync(ctx.Channel);
         }
 
         private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string title = null, string content = null)
         {
-            var embedBuilder = new DiscordEmbedBuilder().WithFooter(Language.GetLanguageFromCtx(ctx).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithImageUrl(imageurl);
+            var embedBuilder = new DiscordEmbedBuilder().WithFooter(Language.GetLanguageFromCtx(ctx).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithImageUrl(imageurl).WithColor(await ColorUtils.GetSingleAsync());
             var messageBuilder = new DiscordMessageBuilder();
             if (title != null)
             {
@@ -193,6 +195,7 @@ namespace SilverBotDS.Commands
                                                                                      .WithTitle(lang.UselessFact)
                                                                                      .WithDescription(await rm.Content.ReadAsStringAsync())
                                                                                      .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                                                                                     .WithColor(await ColorUtils.GetSingleAsync())
                                                                                      .Build())
                                                  .SendAsync(ctx.Channel);
         }
@@ -209,9 +212,7 @@ namespace SilverBotDS.Commands
                 var pages = new List<Page>();
                 for (var i = 0; i < data.Length; i++)
                 {
-                    var tempbuilder = new DiscordEmbedBuilder();
-                    tempbuilder.WithTitle(data[i].Title);
-                    tempbuilder.WithUrl($"https://www.nuget.org/packages/{data[i].Id}");
+                    var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Title).WithUrl($"https://www.nuget.org/packages/{data[i].Id}").WithColor(await ColorUtils.GetSingleAsync());
                     if (data[i].Authors is null)
                     {
                         tempbuilder.WithAuthor(data[i].Title + "'s contributors", data[i].ProjectUrl);
@@ -255,28 +256,16 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                var bob = new DiscordEmbedBuilder();
-                bob.WithTitle("Something went fucky wucky on my side");
-                bob.WithDescription("Try again a little later?");
+                var bob = new DiscordEmbedBuilder().WithTitle("Something went fucky wucky on my side").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());
                 await Program.SendLogAsync(e.Message, new List<DiscordEmbed>());
                 throw;
             }
         }
 
-        private static async Task<bool> Is_at_silvercraftAsync(CommandContext ctx, DiscordUser b)
+        private static async Task<bool> IsAtSilverCraftAsync(CommandContext ctx, DiscordUser b)
         {
-            return (await ctx.Client.GetGuildAsync(Convert.ToUInt64(Program.GetConfig().ServerId))).Members[b.Id] != null;
-        }
-
-        private static async Task<bool> Is_bot_adminAsync(CommandContext ctx, DiscordUser b)
-        {
-            var isbotadmin = false;
-            var socketGuildus = (await ctx.Client.GetGuildAsync(Convert.ToUInt64(Program.GetConfig().ServerId))).Members[b.Id];
-            foreach (var role in socketGuildus.Roles)
-                if (role is not null && role.Id == Convert.ToUInt64(Program.GetConfig().AdminRoleId))
-                    isbotadmin = true;
-            return isbotadmin;
+            return (await ctx.Client.GetGuildAsync(Program.GetConfig().ServerId)).Members.ContainsKey(b.Id);
         }
 
         [Command("bot")]
@@ -301,6 +290,7 @@ namespace SilverBotDS.Commands
                                                   .WithEmbed(new DiscordEmbedBuilder()
                                                                                       .WithTitle(lang.UserIsntBot)
                                                                                       .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                                                                                      .WithColor(color: await ColorUtils.GetSingleAsync())
                                                                                       .Build())
                                                   .SendAsync(ctx.Channel);
                 return;
@@ -316,6 +306,7 @@ namespace SilverBotDS.Commands
                                                   .WithEmbed(new DiscordEmbedBuilder()
                                                                                       .WithTitle(lang.DblaReturnedNull)
                                                                                       .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                                                                                      .WithColor(color: await ColorUtils.GetSingleAsync())
                                                                                       .Build())
                                                   .SendAsync(ctx.Channel);
             }
@@ -330,6 +321,7 @@ namespace SilverBotDS.Commands
                                                                                     .AddField(lang.PrefixUsedTopgg, "`" + bot.Prefix + "`")
                                                                                     .WithUrl(bot.Website)
                                                                                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                                                                                    .WithColor(color: await ColorUtils.GetSingleAsync())
                                                                                     .Build())
                                                 .SendAsync(ctx.Channel);
             }
@@ -340,16 +332,25 @@ namespace SilverBotDS.Commands
         [Description("Get the info I know about a specified user")]
         public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
-            await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
-                .WithTitle(lang.User + a.Username).WithDescription(lang.InformationAbout + a.Mention)
-                .AddField(lang.Userid, a.Id.ToString(), true)
-                .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await Is_at_silvercraftAsync(ctx, a)), true)
-                .AddField(lang.IsSilverBotAdmin, BoolToEmoteString(await Is_bot_adminAsync(ctx, a)), true)
-                .AddField(lang.IsAnOwner, BoolToEmoteString(Program.GetConfig().Botowners.Contains(a.Id)), true)
-                .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
-                .WithColor(await ColorUtils.GetSingleAsync()).WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
-                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+            try
+            {
+                var lang = Language.GetLanguageFromCtx(ctx);
+                await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
+                    .WithTitle(lang.User + a.Username)
+                    .WithDescription(lang.InformationAbout + a.Mention)
+                    .AddField(lang.Userid, a.Id.ToString(), true)
+                    .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await IsAtSilverCraftAsync(ctx, a)), true)
+                    .AddField(lang.IsAnOwner, BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(ctx.User)), true)
+                    .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
+                    .WithColor(await ColorUtils.GetSingleAsync())
+                    .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
+                    .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+                    .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+            }
+            catch (Exception e)
+            {
+                await Program.SendLogAsync(e.ToString(), new());
+            }
         }
 
 #pragma warning restore CA1822 // Mark members as static

@@ -18,6 +18,7 @@ namespace SilverBotDS.Commands
         {
             return new Giphy();
         }
+
 #pragma warning disable CA1822 // Mark members as static
         private static GiphyDotNet.Manager.Giphy giphy = new GiphyDotNet.Manager.Giphy();
 
@@ -65,7 +66,7 @@ namespace SilverBotDS.Commands
 
         Wait:
             var interactivity = ctx.Client.GetInteractivity();
-            var msg = await interactivity.WaitForMessageAsync(xm => xm.Content.Contains("next"), TimeSpan.FromSeconds(60));
+            var msg = await interactivity.WaitForMessageAsync(xm => xm.Content.ToLower().Contains("next"), TimeSpan.FromSeconds(60));
             if (msg.Result != null)
             {
                 _ = msg.Result.DeleteAsync();

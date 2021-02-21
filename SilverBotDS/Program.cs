@@ -4,7 +4,6 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
-using DSharpPlus.Net;
 using SDBrowser;
 using SilverBotDS.Commands;
 using SilverBotDS.Utils;
@@ -164,9 +163,9 @@ namespace SilverBotDS
             _ = MainLogLineAsync("Making a node");
             audioService = new LavalinkNode(new LavalinkNodeOptions
             {
-                RestUri = "http://localhost:2333/",
-                WebSocketUri = "ws://localhost:2333/",
-                Password = "youshallnotpass"
+                RestUri = config.LavalinkRestUri,
+                WebSocketUri = config.LavalinkWebSocketUri,
+                Password = config.LavalinkPassword
             }, new DiscordClientWrapper(discord));
             //🥁🥁🥁 drumroll please
 

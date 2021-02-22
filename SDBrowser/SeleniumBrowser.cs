@@ -60,8 +60,7 @@ namespace SDBrowser
                 await Task.Delay(500);
             }
             _isLocked = true;
-            var basehtml = Convert.ToBase64String(Encoding.UTF8.GetBytes(html));
-            _webDriver.Url = "data:html;base64," + html;
+            _webDriver.Url = "data:text/html;base64," + Convert.ToBase64String(Encoding.UTF8.GetBytes(html));
             _webDriver.Navigate();
             IWait<IWebDriver> wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(30.00));
 

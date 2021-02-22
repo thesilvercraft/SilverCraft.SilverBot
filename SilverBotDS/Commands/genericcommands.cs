@@ -102,6 +102,9 @@ namespace SilverBotDS.Commands
                                              .SendAsync(ctx.Channel);
         }
 
+        [Command("ping")]
+        public async Task Ping(CommandContext ctx) => await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent($"🏓 Pong! {ctx.Client.Ping}ms").SendAsync(ctx.Channel);
+
         [Command("dump")]
         [Description("Dump a messages raw content (useful for emote walls)")]
         public async Task DumpMessage(CommandContext ctx, DiscordMessage message)
@@ -340,7 +343,7 @@ namespace SilverBotDS.Commands
                     .WithDescription(lang.InformationAbout + a.Mention)
                     .AddField(lang.Userid, a.Id.ToString(), true)
                     .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await IsAtSilverCraftAsync(ctx, a)), true)
-                    .AddField(lang.IsAnOwner, BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(ctx.User)), true)
+                    .AddField(lang.IsAnOwner, BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(a)), true)
                     .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
                     .WithColor(await ColorUtils.GetSingleAsync())
                     .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))

@@ -140,7 +140,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("jpeg")]
-        private static async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SdImage image)
+        public async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
             var lang = Language.GetLanguageFromCtx(ctx);
             await using var outStream = Make_jpegnised(await image.GetBytesAsync());

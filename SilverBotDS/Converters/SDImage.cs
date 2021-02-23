@@ -18,7 +18,8 @@ namespace SilverBotDS.Converters
 
         public static SdImage FromContext(CommandContext ctx)
         {
-            return FromAttachments(ctx.Message.Attachments);
+            var img = FromAttachments(ctx.Message.Attachments);
+            return img;
         }
 
         public static SdImage FromAttachments(IReadOnlyList<DiscordAttachment> attachments)
@@ -77,13 +78,18 @@ namespace SilverBotDS.Converters
     {
         private readonly Regex _expression = new Regex("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+");
 
-        public Task<Optional<SdImage>> ConvertAsync(string value, CommandContext ctx)
+        public async Task<Optional<SdImage>> ConvertAsync(string value, CommandContext ctx)
         {
             if (_expression.IsMatch(value))
             {
-                return Task.FromResult(Optional.FromValue(new SdImage(value)));
+                if (value == "https://silverdimond.tk/silvercraftbot/monika.png")
+                {
+                    await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent("i will not allow such behaviour..... It appears as SilverBot is having some **technical difficulties**, we will retry in a sec...").SendAsync(ctx.Channel);
+                    System.Threading.Thread.Sleep(250);
+                }
+                return Optional.FromValue(new SdImage(value));
             }
-            return Task.FromResult(Optional.FromNoValue<SdImage>());
+            return Optional.FromNoValue<SdImage>();
         }
     }
 }

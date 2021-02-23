@@ -174,7 +174,6 @@ namespace SilverBotDS
 
             _ = MainLogLineAsync("Connecting to discord");
             discord.Ready += Discord_Ready;
-            discord.MessageCreated += Discord_MessageCreated1;
             await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
             if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0))
             {
@@ -233,14 +232,6 @@ namespace SilverBotDS
             }
             await channel.SendMessageAsync("its friday");
             return;
-        }
-
-        private static async Task Discord_MessageCreated1(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
-        {
-            if (ProfanityFilter.ContainsProfanity(e.Message.Content.ToLowerInvariant()))
-            {
-                await e.Channel.SendMessageAsync("LANGUAGE");
-            }
         }
 
         private static async Task Discord_Ready(DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e)

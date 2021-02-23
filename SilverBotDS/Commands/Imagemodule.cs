@@ -86,11 +86,13 @@ namespace SilverBotDS.Commands
 
         private static async Task Send_img_plsAsync(CommandContext ctx, string e)
         {
-            var b = new DiscordEmbedBuilder();
-            b.WithTitle("Send **an** image my guy");
-            b.WithDescription(e);
-            b.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-            await ctx.RespondAsync(embed: b.Build());
+            Language lang = Language.GetLanguageFromCtx(ctx);
+            await new DiscordMessageBuilder()
+                                             .WithReply(ctx.Message.Id)
+                                             .WithEmbed(new DiscordEmbedBuilder()
+            .WithTitle("Send **an** image my guy").WithDescription(e)
+            .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)))
+                                             .SendAsync(ctx.Channel);
         }
 
         private static MemoryStream Tint(byte[] photoBytes, string color)
@@ -126,20 +128,6 @@ namespace SilverBotDS.Commands
         }
 
         [Command("jpeg")]
-        public async Task Jpegize(CommandContext ctx)
-        {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Jpegize(ctx, image);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
-        }
-
-        [Command("jpeg")]
         public async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
             var lang = Language.GetLanguageFromCtx(ctx);
@@ -154,18 +142,17 @@ namespace SilverBotDS.Commands
             }
         }
 
-        [Command("shet")]
-        public static async Task Shet(CommandContext ctx)
+        [Command("jpeg")]
+        public async Task Jpegize(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
             try
             {
                 var image = SdImage.FromContext(ctx);
-                await Shet(ctx, image);
+                await Jpegize(ctx, image);
             }
             catch (AttachmentCountIncorrectException acie)
             {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount, lang);
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
 
@@ -181,6 +168,21 @@ namespace SilverBotDS.Commands
             else
             {
                 await new DiscordMessageBuilder().WithContent("there is your masterpiece").WithFile("silverbotimage.jpeg", outStream).SendAsync(ctx.Channel);
+            }
+        }
+
+        [Command("shet")]
+        public static async Task Shet(CommandContext ctx)
+        {
+            var lang = Language.GetLanguageFromCtx(ctx);
+            try
+            {
+                var image = SdImage.FromContext(ctx);
+                await Shet(ctx, image);
+            }
+            catch (AttachmentCountIncorrectException acie)
+            {
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount, lang);
             }
         }
 
@@ -214,21 +216,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("tint")]
-        public async Task Tint(CommandContext ctx, [Description("color in hex like #fffff")] string color)
-        {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Tint(ctx, image, color);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
-        }
-
-        [Command("tint")]
-        private async Task Tint(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("color in hex like #fffff")] string color)
+        public async Task Tint(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("color in hex like #fffff")] string color)
         {
             var lang = Language.GetLanguageFromCtx(ctx);
             await using var outStream = Tint(await image.GetBytesAsync(), color);
@@ -239,6 +227,20 @@ namespace SilverBotDS.Commands
             else
             {
                 await new DiscordMessageBuilder().WithContent(lang.Imagethings.TintSuccess).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
+            }
+        }
+
+        [Command("tint")]
+        public async Task Tint(CommandContext ctx, [Description("color in hex like #fffff")] string color)
+        {
+            try
+            {
+                var image = SdImage.FromContext(ctx);
+                await Tint(ctx, image, color);
+            }
+            catch (AttachmentCountIncorrectException acie)
+            {
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
 
@@ -489,20 +491,6 @@ namespace SilverBotDS.Commands
         }
 
         [Command("motivate")]
-        public async Task Motivate(CommandContext ctx, [RemainingText] string text)
-        {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Motivate(ctx, image, text);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
-        }
-
-        [Command("motivate")]
         public async Task Motivate(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
             var lang = Language.GetLanguageFromCtx(ctx);
@@ -547,13 +535,13 @@ new Font(font.FontFamily, font.Size, font.Style)).Width)
             }
         }
 
-        [Command("caption")]
-        public async Task Caption(CommandContext ctx, [RemainingText] string text)
+        [Command("motivate")]
+        public async Task Motivate(CommandContext ctx, [RemainingText] string text)
         {
             try
             {
                 var image = SdImage.FromContext(ctx);
-                await Caption(ctx, image, text);
+                await Motivate(ctx, image, text);
             }
             catch (AttachmentCountIncorrectException acie)
             {
@@ -599,6 +587,20 @@ new Font(font.FontFamily, font.Size, font.Style)).Width)
             else
             {
                 await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("there").WithFile("silverbotimage.png", outStream));
+            }
+        }
+
+        [Command("caption")]
+        public async Task Caption(CommandContext ctx, [RemainingText] string text)
+        {
+            try
+            {
+                var image = SdImage.FromContext(ctx);
+                await Caption(ctx, image, text);
+            }
+            catch (AttachmentCountIncorrectException acie)
+            {
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
 

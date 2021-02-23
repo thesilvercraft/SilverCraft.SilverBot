@@ -17,6 +17,9 @@ using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using Lavalink4NET;
 using Lavalink4NET.DSharpPlus;
+using System.Threading;
+using Lavalink4NET.Player;
+using Lavalink4NET.Rest;
 
 namespace SilverBotDS
 {
@@ -171,12 +174,15 @@ namespace SilverBotDS
 
             _ = MainLogLineAsync("Connecting to discord");
             discord.Ready += Discord_Ready;
+            discord.MessageCreated += Discord_MessageCreated1;
             await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
-
+            if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0))
+            {
+                waitforfriday = new Thread(new ThreadStart(WaitForFridayAsync));
+            }
             //We have achived pog
             _ = MainLogLineAsync("Waiting 3s");
             await Task.Delay(3000);
-
             while (true)
             {
                 _ = MainLogLineAsync("Updating the status to a random one");
@@ -189,10 +195,59 @@ namespace SilverBotDS
             }
         }
 
+        private static Thread waitforfriday;
+        private const string FridayUrl = "https://youtu.be/akT0wxv9ON8";
+        private static int last_friday = 0;
+
+        public static async void WaitForFridayAsync()
+        {
+            while (true)
+            {
+                if (DayOfWeek.Friday == DateTime.Now.DayOfWeek && (last_friday == 0 || last_friday != DateTime.Now.DayOfYear))
+                {
+                    last_friday = DateTime.Now.DayOfYear;
+                    await ExecuteFridayAsync();
+                }
+                await Task.Delay(1000);
+            }
+        }
+
+        public static async Task ExecuteFridayAsync()
+        {
+            var channel = await discord.GetChannelAsync(config.FridayTextChannel);
+            var vchannel = await discord.GetChannelAsync(config.FridayVoiceChannel);
+            if (audioService.HasPlayer(vchannel.GuildId))
+            {
+                VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(vchannel.GuildId);
+                await player.DisconnectAsync();
+                await player.ConnectAsync(config.FridayVoiceChannel);
+                var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
+                await player.StopAsync();
+                await player.PlayAsync(track);
+            }
+            else
+            {
+                VoteLavalinkPlayer player = await audioService.JoinAsync<VoteLavalinkPlayer>(vchannel.GuildId, vchannel.Id, true);
+                var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
+                await player.PlayAsync(track);
+            }
+            await channel.SendMessageAsync("its friday");
+            return;
+        }
+
+        private static async Task Discord_MessageCreated1(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
+        {
+            if (ProfanityFilter.ContainsProfanity(e.Message.Content.ToLowerInvariant()))
+            {
+                await e.Channel.SendMessageAsync("LANGUAGE");
+            }
+        }
+
         private static async Task Discord_Ready(DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e)
         {
             await audioService.InitializeAsync();
             Audio.SetLavaLinkNode(audioService);
+            waitforfriday.Start();
         }
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)

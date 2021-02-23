@@ -43,7 +43,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, dont change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 5;
+        private const ulong CurrentConfVer = 6;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -71,6 +71,12 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("The Lavalink Node Password.")]
         public string LavalinkPassword { get; set; } = "youshallnotpass";
+
+        [XmlDescription("Friday text channel. leave none to disable")]
+        public ulong FridayTextChannel { get; set; }
+
+        [XmlDescription("Friday voice channel. leave none to disable")]
+        public ulong FridayVoiceChannel { get; set; }
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {

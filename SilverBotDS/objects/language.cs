@@ -154,6 +154,11 @@ namespace SilverBotDS.Objects
         public string LoopingQueue { get; set; } = "Now loopin queue 🔁";
 
         /// <summary>
+        /// Send **an** image my guy
+        /// </summary>
+        public string WrongImageCount { get; set; } = "Send **an** image my guy";
+
+        /// <summary>
         /// Now not loopin.
         /// </summary>
         public string NotLooping { get; set; } = "Now not loopin.";

@@ -86,12 +86,13 @@ namespace SilverBotDS.Commands
 
         private static async Task Send_img_plsAsync(CommandContext ctx, string e)
         {
+            //ToDo if possible make it not get the language 2 times
             Language lang = Language.GetLanguageFromCtx(ctx);
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
                                              .WithEmbed(new DiscordEmbedBuilder()
-            .WithTitle("Send **an** image my guy").WithDescription(e)
-            .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)))
+            .WithTitle(lang.WrongImageCount).WithDescription(e)
+            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)))
                                              .SendAsync(ctx.Channel);
         }
 

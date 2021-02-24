@@ -2,6 +2,8 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
 using Lavalink4NET;
 using Lavalink4NET.Player;
@@ -73,7 +75,20 @@ namespace SilverBotDS.Commands
 
         private TimeSpan TimeTillSongPlays(QueuedLavalinkPlayer player, int song)
         {
-            TimeSpan time = player.CurrentTrack.Duration - player.CurrentTrack.Position;
+            if (player.IsLooping)
+            {
+                return TimeSpan.MaxValue;
+            }
+            TimeSpan time;
+            if (player.CurrentTrack.IsLiveStream)
+            {
+                time = TimeSpan.FromHours(2) - player.CurrentTrack.Position;
+            }
+            else
+            {
+                time = player.CurrentTrack.Duration - player.CurrentTrack.Position;
+            }
+
             for (int i = 0; i < song - 1; i++)
             {
                 time += player.Queue[i].Duration;
@@ -164,6 +179,53 @@ namespace SilverBotDS.Commands
             }
             VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             await player.SetVolumeAsync(volume / 100f, true);
+        }
+
+        [Command("queue")]
+        [Description("check whats playing rn and whats next")]
+        [Aliases("np", "nowplaying")]
+        public async Task Queue(CommandContext ctx)
+        {
+            Language lang = Language.GetLanguageFromCtx(ctx);
+            if (!audioService.HasPlayer(ctx.Guild.Id))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected);
+                return;
+            }
+            var channel = ctx.Member?.VoiceState?.Channel;
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected);
+                return;
+            }
+
+            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            if (player.Queue.Count == 0 && player.State != PlayerState.Playing)
+            {
+                await SendSimpleMessage(ctx, lang.NothingInQueue);
+                return;
+            }
+
+            try
+            {
+                var pages = new List<Page>
+                {
+                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)))
+                };
+                for (var i = 0; i < player.Queue.Count; i++)
+                {
+                    pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title).WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync()).AddField(lang.TimeTillTrackPlays, TimeTillSongPlays(player, i + 1).Humanize(culture: lang.GetCultureInfo())).WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
+                }
+
+                await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+            }
+            catch (Exception e)
+            {
+                var bob = new DiscordEmbedBuilder().WithTitle("Something went fucky wucky on my side").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
+                await ctx.RespondAsync(embed: bob.Build());
+                await Program.SendLogAsync(e.Message, new List<DiscordEmbed>());
+                throw;
+            }
         }
 
         [Command("loop")]

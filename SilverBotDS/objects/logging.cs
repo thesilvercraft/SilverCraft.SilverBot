@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,13 +29,5 @@ namespace SilverBotDS.Objects
             };
             await sw.WriteAsync(System.Text.Json.JsonSerializer.Serialize(logmessage));
         }
-    }
-
-    public class Logmessage
-    {
-        public string Content { get; set; }
-        public string Jumplink { get; set; }
-        public DateTime Time { get; set; }
-        public List<DiscordAttachment> Attachments { get; set; }
     }
 }

@@ -6,7 +6,6 @@ namespace SilverBotDS.Objects
     {
         public Meme()
         {
-         
         }
 
         /// <summary>

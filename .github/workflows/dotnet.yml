@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release
-    - name: Zip 
+    - name: Zip
       shell: powershell
       run: Compress-7Zip "SilverBotDS\bin\Release\net5.0" -ArchiveFileName "silverbot.zip" -Format Zip
     - name: Make a random name

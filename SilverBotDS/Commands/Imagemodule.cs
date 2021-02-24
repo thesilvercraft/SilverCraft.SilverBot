@@ -515,8 +515,8 @@ namespace SilverBotDS.Commands
                 LineAlignment = StringAlignment.Center,
                 Alignment = StringAlignment.Center
             };
-            while (1041 < drawing.MeasureString(text,
-new Font(font.FontFamily, font.Size, font.Style)).Width)
+            while (drawing.MeasureString(text,
+new Font(font.FontFamily, font.Size, font.Style)).Width>1041)
             {
                 font = new Font(font.FontFamily, font.Size - 0.5f, font.Style);
             }

@@ -205,7 +205,6 @@ namespace SilverBotDS.Utils
         public class Asset
         {
          
-
             [JsonPropertyName("url")]
             public string Url { get; set; }
 

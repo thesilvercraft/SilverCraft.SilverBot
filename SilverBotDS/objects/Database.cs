@@ -168,16 +168,4 @@ namespace SilverBotDS.Objects
             }
         }
     }
-
-    public class Serverthing
-    {
-        public ulong ServerId { get; set; }
-        public ulong ChannelId { get; set; }
-    }
-
-    public class Serveroptin
-    {
-        public ulong ServerId { get; init; }
-        public bool Optedin { get; init; }
-    }
 }

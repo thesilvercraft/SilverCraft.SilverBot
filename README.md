@@ -15,6 +15,7 @@ You will also need:
 - A discord webhook for logging
 - A PostgresSQL server
 - And a topgg token that is a stored in the `connect.sid` cookie or an bot token
+- Optionaly a friday text and voice channel
 The config will be automaticly generated and should automagically open in your prefered editor (windows only) (also lol if it opens in internet explorer its not my fault).  
 The config should be self explanitory, just open it and enter the values there.
 I know my variable names are crap but if you can make em better make a pull request.  

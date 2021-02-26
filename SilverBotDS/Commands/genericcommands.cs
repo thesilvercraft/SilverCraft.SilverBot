@@ -4,18 +4,19 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
-using SilverBotDS.Objects;
-using System.Linq;
-using WebClient = SilverBotDS.Objects.WebClient;
+using System.Threading.Tasks;
 using static SilverBotDS.Utils.StringUtils;
+using WebClient = SilverBotDS.Objects.WebClient;
+
 namespace SilverBotDS.Commands
 {
     internal sealed class Genericcommands : BaseCommandModule
@@ -271,7 +272,7 @@ namespace SilverBotDS.Commands
             {
                 var bob = new DiscordEmbedBuilder().WithTitle("Something went fucky wucky on my side").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());
-                await Program.SendLogAsync(e.Message, new List<DiscordEmbed>());
+                Program.SendLog(e);
                 throw;
             }
         }
@@ -362,7 +363,31 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                await Program.SendLogAsync(e.ToString(), new());
+                Program.SendLog(e);
+            }
+        }
+
+        [Command("ver")]
+        [Description("Get the version info")]
+        public async Task Userinfo(CommandContext ctx)
+        {
+            try
+            {
+                var lang = Language.GetLanguageFromCtx(ctx);
+                await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
+                    .WithTitle(lang.VersionInfoTitle)
+                    .AddField("Version number", "`" + VersionInfo.VNumber + "`")
+                    .AddField("Git repo", ThisAssembly.Git.RepositoryUrl)
+                    .AddField("Git Commit hash", "`" + ThisAssembly.Git.Commit + "`")
+                    .AddField("Git Branch", "`" + ThisAssembly.Git.Branch + "`")
+                    .AddField("Is dirty", ThisAssembly.Git.IsDirtyString)
+                    .WithAuthor(ctx.Client.CurrentUser.Username + "#" + ctx.Client.CurrentUser.Discriminator, iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
+                    .WithColor(await ColorUtils.GetSingleAsync())
+                    .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+            }
+            catch (Exception e)
+            {
+                Program.SendLog(e);
             }
         }
 

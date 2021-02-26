@@ -13,16 +13,14 @@ namespace SilverBotDS
 
         private static void LogLine(string line)
         {
-            Console.WriteLine($"[VersionInfo]: {line}");
+            Program.SendLog($"[VersionInfo] {line}", true);
         }
 
         public static async void Checkforupdates()
         {
             try
             {
-                Console.ForegroundColor = ConsoleColor.Green;
                 LogLine("Running on " + Environment.OSVersion.VersionString);
-                Console.ResetColor();
                 var client = WebClient.Get();
                 LogLine("Getting latest version info from silverdimond.tk");
                 var rm = await client.GetAsync("https://silverdimond.tk/silvercraftbot/version-info.txt");
@@ -31,28 +29,21 @@ namespace SilverBotDS
                 var uptodate = true;
                 if (strings.Length != 3)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
                     LogLine($"Oh no, silverdimond.tk returned more than three lines, it returned {strings.Length} lines, this probably means its using a different format or someone made an error.");
-                    Console.ResetColor();
                 }
                 if (strings[0] != VNumber)
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkBlue;
                     LogLine($"You are running {VNumber} while the latest version is {strings[0]}, consider updating.");
-                    Console.ResetColor();
+
                     uptodate = false;
                 }
                 if (uptodate)
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkBlue;
                     LogLine($"You are currently running {VNumber}, which is the latest version (according to silverdimond.tk)");
-                    Console.ResetColor();
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
                     LogLine($"You should go to {strings[2]} to download a new version of SilverBot");
-                    Console.ResetColor();
                 }
 #if DEBUG
                 if (uptodate || (Environment.UserDomainName != "DESKTOP-QK1H9BG")) return;
@@ -70,9 +61,9 @@ namespace SilverBotDS
 
 #endif
             }
-            catch (WebException)
+            catch (WebException ex)
             {
-                LogLine("We got a WebException, canceling version check.");
+                Program.SendLog(ex);
             }
         }
     }

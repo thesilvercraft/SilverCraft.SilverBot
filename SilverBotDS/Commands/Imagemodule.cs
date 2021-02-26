@@ -1,9 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -13,6 +8,11 @@ using ImageProcessor.Imaging.Formats;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
@@ -73,7 +73,6 @@ namespace SilverBotDS.Commands
             ISupportedImageFormat format = new JpegFormat { Quality = 1 };
             using var inStream = new MemoryStream(photoBytes);
             var outStream = new MemoryStream();
-
             using var imageFactory = new ImageFactory();
             imageFactory.Load(inStream);
             int x = imageFactory.Image.Width, y = imageFactory.Image.Height;
@@ -356,7 +355,7 @@ namespace SilverBotDS.Commands
                     var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.happy_new_year_template.png");
                     if (myStream is null)
                     {
-                        Console.Write("FOCK");
+                        Program.SendLog("myAssembly.GetManifestResourceStream(SilverBotDS.Templates.happy_new_year_template.png) returned null");
                     }
                     cachednewyeartemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
                 }
@@ -389,7 +388,7 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                Console.Write(e);
+                Program.SendLog(e);
                 throw;
             }
         }
@@ -419,8 +418,6 @@ namespace SilverBotDS.Commands
             {
                 discordsize = 1024;
             }
-
-            Console.WriteLine(size);
             MemoryStream stream = new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordsize)).GetBytesAsync());
             Bitmap image = new(stream);
             if (image.Width == size || image.Height == size)
@@ -450,7 +447,7 @@ namespace SilverBotDS.Commands
                     var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png");
                     if (myStream is null)
                     {
-                        Console.Write("FOCK");
+                        Program.SendLog("myAssembly.GetManifestResourceStream(SilverBotDS.Templates.adventure_time_template.png) returned null");
                     }
                     cachedadventuretimetemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
                 }
@@ -486,7 +483,7 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                Console.Write(e);
+                Program.SendLog(e);
                 throw;
             }
         }
@@ -499,6 +496,10 @@ namespace SilverBotDS.Commands
             {
                 var myAssembly = Assembly.GetExecutingAssembly();
                 var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.motivator_template.png");
+                if (myStream is null)
+                {
+                    Program.SendLog("myAssembly.GetManifestResourceStream(SilverBotDS.Templates.motivator_template.png) returned null");
+                }
                 cachedmotivatetemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
             }
 
@@ -516,7 +517,7 @@ namespace SilverBotDS.Commands
                 Alignment = StringAlignment.Center
             };
             while (drawing.MeasureString(text,
-new Font(font.FontFamily, font.Size, font.Style)).Width>1041)
+new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
             {
                 font = new Font(font.FontFamily, font.Size - 0.5f, font.Style);
             }

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DSharpPlus.CommandsNext;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
-using DSharpPlus.CommandsNext;
 
 namespace SilverBotDS.Objects
 {
@@ -490,6 +490,7 @@ namespace SilverBotDS.Objects
         /// </summary>
         public string SearchFail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
 
+        public string VersionInfoTitle { get; set; } = "SilverBot Version info";
         public string CultureInfo { get; set; } = "en-GB";
 
         public CultureInfo GetCultureInfo()
@@ -510,32 +511,16 @@ namespace SilverBotDS.Objects
                 {
                     if (Logging)
                     {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("[LANGUAGES]");
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write(" huge success retriving ");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine(a);
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write(" from cache");
-                        Console.ResetColor();
+                        Program.SendLog($"[LANGUAGES] huge success retriving {a} from cache", true);
                     }
-
                     return CachedLanguages[a];
                 }
                 else
                 {
                     if (Logging)
                     {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("[LANGUAGES]");
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write($" huge fail loading ");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine(a);
-                        Console.ResetColor();
+                        Program.SendLog($"[LANGUAGES] huge fail loading {a} from cache", true);
                     }
-
                     return new Language();
                 }
             }
@@ -557,17 +542,8 @@ namespace SilverBotDS.Objects
                 }
                 if (Logging)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write("[LANGUAGES]");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(" done reading languages,");
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write(CachedLanguages.Count);
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(" languages loaded");
-                    Console.ResetColor();
+                    Program.SendLog($"[LANGUAGES] done reading languages, {CachedLanguages.Count} have been loaded into cache", true);
                 }
-
                 return await GetAsync(a);
             }
         }

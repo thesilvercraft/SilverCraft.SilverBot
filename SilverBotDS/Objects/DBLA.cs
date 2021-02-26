@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RestSharp;
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using DSharpPlus.Entities;
-using RestSharp;
 
 namespace SilverBotDS.Objects
 {
@@ -48,7 +46,7 @@ namespace SilverBotDS.Objects
                     var bot = JsonSerializer.Deserialize<Bot>(response.Content);
                     if (bot != null && !string.IsNullOrEmpty(bot.Error))
                     {
-                        _ = Program.SendLogAsync(bot.Error, new List<DiscordEmbed>());
+                        Program.SendLog(bot.Error);
                         return null;
                     }
                     else
@@ -58,7 +56,7 @@ namespace SilverBotDS.Objects
                 }
                 catch (HttpRequestException ex)
                 {
-                    _ = Program.SendLogAsync(ex.StatusCode.ToString(), new List<DiscordEmbed>());
+                    Program.SendLog(ex);
                     return null;
                 }
             }

@@ -13,8 +13,6 @@ using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
@@ -124,6 +122,10 @@ namespace SilverBotDS.Commands
                 }
 
                 VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+                if (song.Contains("velimirs favorite") || song.Contains("velimir's favorite"))
+                {
+                    song = "i got bitches";
+                }
 
                 var track = await audioService.GetTrackAsync(song, SearchMode.YouTube);
                 if (track is null)
@@ -152,7 +154,8 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Program.SendLog(e);
+                throw;
             }
         }
 
@@ -223,7 +226,7 @@ namespace SilverBotDS.Commands
             {
                 var bob = new DiscordEmbedBuilder().WithTitle("Something went fucky wucky on my side").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());
-                await Program.SendLogAsync(e.Message, new List<DiscordEmbed>());
+                Program.SendLog(e);
                 throw;
             }
         }
@@ -424,6 +427,7 @@ namespace SilverBotDS.Commands
         [Command("disconnect")]
         [Description("Tell me to leave your channel of the voice type")]
         [Aliases("fuckoff", "minecraftbedrockisbetter", "fockoff", "leave")]
+        [RequireDJ]
         public async Task Disconnect(CommandContext ctx)
         {
             Language lang = Language.GetLanguageFromCtx(ctx);

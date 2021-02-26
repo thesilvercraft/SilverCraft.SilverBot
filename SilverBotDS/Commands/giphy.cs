@@ -4,10 +4,10 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
 using GiphyDotNet.Model.Parameters;
-using System;
-using System.Threading.Tasks;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using System;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Text;
+﻿using System.Net.Http;
 
 namespace SilverBotDS.Objects
 {
@@ -12,7 +10,6 @@ namespace SilverBotDS.Objects
         {
             var e = new HttpClient();
             e.DefaultRequestHeaders.UserAgent.TryParseAdd(UserAgent());
-            Console.Write(UserAgent());
             return e;
         }
 

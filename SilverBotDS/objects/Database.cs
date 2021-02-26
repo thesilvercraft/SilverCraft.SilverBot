@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
-using Npgsql;
 
 namespace SilverBotDS.Objects
 {
@@ -53,8 +53,7 @@ namespace SilverBotDS.Objects
             }
             catch (Exception exep)
             {
-                Debug.WriteLine(exep);
-                Console.WriteLine(exep);
+                Program.SendLog(exep);
             }
 
             return e;
@@ -123,8 +122,7 @@ namespace SilverBotDS.Objects
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                await Program.SendLogAsync(e.ToString(), new List<DSharpPlus.Entities.DiscordEmbed>());
+                Program.SendLog(e);
                 return new Tuple<string, Image>("Error", null);
             }
         }

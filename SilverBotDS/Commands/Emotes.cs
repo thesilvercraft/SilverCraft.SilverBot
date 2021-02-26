@@ -4,6 +4,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SilverBotDS.Objects;
 
 namespace SilverBotDS.Commands
 {
@@ -21,6 +21,7 @@ namespace SilverBotDS.Commands
         {
             return new Emotes();
         }
+
 #pragma warning disable CA1822 // Mark members as static
 
         [Command("addemote")]
@@ -54,6 +55,7 @@ namespace SilverBotDS.Commands
                 case 0:
                     await ctx.RespondAsync(lang.NoImageGeneric);
                     return;
+
                 case > 1:
                     await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
                     return;
@@ -157,54 +159,55 @@ namespace SilverBotDS.Commands
             switch (emotes.Count)
             {
                 case 0:
-                {
-                    var b = new DiscordEmbedBuilder();
-                    b.WithTitle(lang.NoEmotesFound);
-                    b.WithDescription(string.Format(lang.SearchedFor, emote));
-                    b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                    await ctx.RespondAsync(embed: b.Build());
-                    break;
-                }
+                    {
+                        var b = new DiscordEmbedBuilder();
+                        b.WithTitle(lang.NoEmotesFound);
+                        b.WithDescription(string.Format(lang.SearchedFor, emote));
+                        b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+                        await ctx.RespondAsync(embed: b.Build());
+                        break;
+                    }
                 case 1 when emotes[0].IsAnimated:
                     await ctx.RespondAsync("<a:" + emotes[0].Name + ":" + emotes[0].Id + ">");
                     break;
+
                 case 1:
                     await ctx.RespondAsync("<:" + emotes[0].Name + ":" + emotes[0].Id + ">");
                     break;
+
                 case > 1:
-                {
-                    var b = new DiscordEmbedBuilder();
-                    b.WithTitle(lang.MultipleEmotesFound);
-                    var builder = new StringBuilder();
-                    foreach (var e in emotes)
                     {
-                        if (e.IsAnimated)
+                        var b = new DiscordEmbedBuilder();
+                        b.WithTitle(lang.MultipleEmotesFound);
+                        var builder = new StringBuilder();
+                        foreach (var e in emotes)
                         {
-                            builder.Append("<a:");
-                            builder.Append(e.Name);
-                            builder.Append(':');
-                            builder.Append(e.Id);
-                            builder.Append('>');
-                            builder.AppendLine();
+                            if (e.IsAnimated)
+                            {
+                                builder.Append("<a:");
+                                builder.Append(e.Name);
+                                builder.Append(':');
+                                builder.Append(e.Id);
+                                builder.Append('>');
+                                builder.AppendLine();
+                            }
+                            else
+                            {
+                                builder.Append("<:");
+                                builder.Append(e.Name);
+                                builder.Append(':');
+                                builder.Append(e.Id);
+                                builder.Append('>');
+                                builder.AppendLine();
+                            }
                         }
-                        else
-                        {
-                            builder.Append("<:");
-                            builder.Append(e.Name);
-                            builder.Append(':');
-                            builder.Append(e.Id);
-                            builder.Append('>');
-                            builder.AppendLine();
-                        }
+                        b.WithDescription(builder.ToString());
+                        b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+                        await ctx.RespondAsync(embed: b.Build());
+                        break;
                     }
-                    b.WithDescription(builder.ToString());
-                    b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                    await ctx.RespondAsync(embed: b.Build());
-                    break;
-                }
             }
         }
-        
 
         [Command("optintoemotes")]
         [RequireUserPermissions(Permissions.ManageGuild)]
@@ -217,21 +220,21 @@ namespace SilverBotDS.Commands
             switch (isoptedin)
             {
                 case true:
-                {
-                    var bob = new DiscordEmbedBuilder();
-                    bob.WithTitle(lang.AlreadyOptedIn);
-                    bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                    await ctx.RespondAsync(embed: bob.Build());
-                    return;
-                }
+                    {
+                        var bob = new DiscordEmbedBuilder();
+                        bob.WithTitle(lang.AlreadyOptedIn);
+                        bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+                        await ctx.RespondAsync(embed: bob.Build());
+                        return;
+                    }
                 case false:
-                {
-                    var bob = new DiscordEmbedBuilder();
-                    bob.WithTitle(lang.UserIsBannedFromSilversocial);
-                    bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                    await ctx.RespondAsync(embed: bob.Build());
-                    return;
-                }
+                    {
+                        var bob = new DiscordEmbedBuilder();
+                        bob.WithTitle(lang.UserIsBannedFromSilversocial);
+                        bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+                        await ctx.RespondAsync(embed: bob.Build());
+                        return;
+                    }
             }
 
             var newserverthing = new Serveroptin

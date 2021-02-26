@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using SDBrowser;
+using System.Drawing;
 using System.Threading.Tasks;
-using SDBrowser;
 
 namespace SilverBotDS.Objects
 {

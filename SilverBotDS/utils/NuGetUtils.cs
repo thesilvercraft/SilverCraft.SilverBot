@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -26,7 +25,6 @@ namespace SilverBotDS.Utils
             var rm = await httpClient.GetAsync(uri.Uri);
             if (rm.StatusCode == HttpStatusCode.OK)
             {
-                Console.WriteLine(await rm.Content.ReadAsStringAsync());
                 return JsonSerializer.Deserialize<Rootobject>(await rm.Content.ReadAsStringAsync())?.Data;
             }
             else

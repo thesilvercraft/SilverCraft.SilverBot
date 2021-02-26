@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ using System.IO.Compression;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SilverBotDS.Objects;
 
 namespace SilverBotDS.Commands
 {
@@ -201,7 +201,6 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        Console.WriteLine(Path.GetFileName(file));
                         var emote = await ctx.Guild.CreateEmojiAsync(name: Path.GetFileNameWithoutExtension(file),
                             image: stream, reason: "Added via silverbot by " + ctx.User.Username);
                         status.Append("\t " + emote + ' ' + StringUtils.BoolToEmoteString(true));
@@ -213,7 +212,8 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Program.SendLog(e);
+                throw;
             }
         }
 

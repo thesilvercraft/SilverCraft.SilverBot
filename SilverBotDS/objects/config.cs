@@ -1,5 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SilverBotDS.Attributes;
+using SilverBotDS.Commands;
+using SilverBotDS.Commands.Gamering;
+using SilverBotDS.Utils;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -7,10 +10,6 @@ using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
-using SilverBotDS.Attributes;
-using SilverBotDS.Commands;
-using SilverBotDS.Commands.Gamering;
-using SilverBotDS.Utils;
 
 namespace SilverBotDS.Objects
 {

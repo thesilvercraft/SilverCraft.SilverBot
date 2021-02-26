@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -13,7 +12,7 @@ namespace SilverBotDS.Utils
 {
     public abstract class GitHubUtils
     {
-        private static readonly Regex R = new Regex("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.IgnoreCase);
+        private static readonly Regex R = new Regex("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public class Repo
         {
@@ -51,33 +50,22 @@ namespace SilverBotDS.Utils
         {
             public static async Task DownloadLatestAsync(Release release)
             {
-                var client = WebClient.Get();
-                using var rm = await client.GetAsync(release.Assets[0].BrowserDownloadUrl);
-                var uri = new Uri(release.Assets[0].BrowserDownloadUrl);
-                var filename = Path.GetFileName(uri.LocalPath);
-                await using var fs = new FileStream(
+                System.Net.Http.HttpClient client = WebClient.Get();
+                using System.Net.Http.HttpResponseMessage rm = await client.GetAsync(release.Assets[0].BrowserDownloadUrl);
+                Uri uri = new Uri(release.Assets[0].BrowserDownloadUrl);
+                string filename = Path.GetFileName(uri.LocalPath);
+                await using FileStream fs = new FileStream(
         Environment.CurrentDirectory + $"\\{filename}",
         FileMode.CreateNew);
                 await rm.Content.CopyToAsync(fs);
             }
 
-            public async Task DownloadLatestAsync()
-            {
-                var client = WebClient.Get();
-                using var rm = await client.GetAsync(Assets[0].BrowserDownloadUrl);
-                var uri = new Uri(Assets[0].BrowserDownloadUrl);
-                var filename = Path.GetFileName(uri.LocalPath);
-                await using var fs = new FileStream(
-        Environment.CurrentDirectory + $"\\{filename}",
-        FileMode.CreateNew);
-                await rm.Content.CopyToAsync(fs);
-            }
+            public async Task DownloadLatestAsync() => await DownloadLatestAsync(this);
 
             public static async Task<Release> GetLatestFromRepoAsync(Repo repo)
             {
                 var httpClient = WebClient.Get();
                 var uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/releases/latest");
-                Console.Write($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/releases/latest");
                 var rm = await httpClient.GetAsync(uri.Uri);
                 if (rm.StatusCode == HttpStatusCode.OK)
                 {
@@ -85,7 +73,6 @@ namespace SilverBotDS.Utils
                 }
                 else
                 {
-                    Console.Write(await rm.Content.ReadAsStringAsync());
                     return await Task.FromException<Release>(new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}"));
                 }
             }
@@ -204,7 +191,6 @@ namespace SilverBotDS.Utils
 
         public class Asset
         {
-         
             [JsonPropertyName("url")]
             public string Url { get; set; }
 

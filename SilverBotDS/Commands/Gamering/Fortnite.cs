@@ -1,13 +1,13 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Fortnite_API;
 using Fortnite_API.Objects.V1;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using System;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands.Gamering
 {
@@ -17,6 +17,7 @@ namespace SilverBotDS.Commands.Gamering
         {
             return new Fortnite();
         }
+
 #pragma warning disable CA1822 // Mark members as static
         private static FortniteApiClient api;
         private static bool disabled;

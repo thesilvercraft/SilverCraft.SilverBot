@@ -6,11 +6,12 @@ using System.Xml.Serialization;
 namespace SilverBotDS.Utils
 {
     internal class Xmlutils
-    {/// <summary>
-     /// stolen from https://stackoverflow.com/questions/2548708/how-to-create-an-xml-document-from-a-net-object
-     /// </summary>
-     /// <param name="input">The object to serialize</param>
-     /// <returns>A string containing that object as xml</returns>
+    {
+        /// <summary>
+        /// stolen from https://stackoverflow.com/questions/2548708/how-to-create-an-xml-document-from-a-net-object
+        /// </summary>
+        /// <param name="input">The object to serialize</param>
+        /// <returns>A string containing that object as xml</returns>
         public static async Task<string> SerializeToXmlAsync(object input)
         {
             var ser = new XmlSerializer(input.GetType());

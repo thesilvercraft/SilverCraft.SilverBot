@@ -217,6 +217,17 @@ namespace SilverBotDS.Commands
             }
         }
 
+        [Command("guilds")]
+        public async Task Guilds(CommandContext ctx)
+        {
+            StringBuilder bob = new();
+            foreach (var guild in ctx.Client.Guilds.Values)
+            {
+                bob.AppendLine($"{guild.Name} | {guild.Owner.DisplayName} | {guild.MemberCount} | {guild.Id}");
+            }
+            await ctx.RespondAsync(bob.ToString());
+        }
+
         [Command("splashesreload")]
         [Description("reload the config for splashes")]
         public async Task Reloadsplashes(CommandContext ctx)

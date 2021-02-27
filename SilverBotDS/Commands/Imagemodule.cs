@@ -157,7 +157,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("shet")]
-        public static async Task Shet(CommandContext ctx, [Description("the url of the image")] SdImage image)
+        public async Task Shet(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
             var lang = Language.GetLanguageFromCtx(ctx);
             await using var outStream = Shet_On(await image.GetBytesAsync());
@@ -172,7 +172,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("shet")]
-        public static async Task Shet(CommandContext ctx)
+        public async Task Shet(CommandContext ctx)
         {
             var lang = Language.GetLanguageFromCtx(ctx);
             try

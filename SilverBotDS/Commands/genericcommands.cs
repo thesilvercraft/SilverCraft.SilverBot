@@ -113,6 +113,14 @@ namespace SilverBotDS.Commands
                                              .SendAsync(ctx.Channel);
         }
 
+        [Command("monika")]
+        [Description("JUST MONIKA")]
+        [Hidden]
+        public async Task Monika(CommandContext ctx)
+        {
+            await SimpleImageMeme(ctx, "https://static.wikia.nocookie.net/doki-doki-literature-club/images/e/ef/Monika_Illustration.png/revision/latest?cb=20190319051314", "Monika", "Just monika");
+        }
+
         [Command("ping")]
         public async Task Ping(CommandContext ctx) => await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent($"🏓 Pong! {ctx.Client.Ping}ms").SendAsync(ctx.Channel);
 
@@ -310,7 +318,7 @@ namespace SilverBotDS.Commands
                 return;
             }
 
-            Dbla.Client client = new(Program.GetConfig().TopggSidToken, true);
+            Dbla.Client client = new(Program.GetConfig().TopggSidToken, Program.GetConfig().TopggIsSelfbot);
             var bot = await client.GetViaIdAsync(user.Id);
 
             if (bot == null)

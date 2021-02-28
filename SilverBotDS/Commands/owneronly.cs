@@ -2,15 +2,20 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using Humanizer;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace SilverBotDS.Commands
 {
@@ -108,11 +113,114 @@ namespace SilverBotDS.Commands
             await channel.SendMessageAsync(person.Mention + " there m8 that took some time to do");
         }
 
+        private readonly string[] references = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler" };
+
+        private string RemoveCodeBraces(string str)
+        {
+            if (str.StartsWith("```csharp"))
+            {
+                str = str.Remove(0, 9);
+            }
+            if (str.StartsWith("```cs"))
+            {
+                str = str.Remove(0, 5);
+            }
+            if (str.StartsWith("```"))
+            {
+                str = str.Remove(0, 3);
+            }
+            if (str.EndsWith("```"))
+            {
+                str = str.Remove(str.Length - 3, 3);
+            }
+            return str;
+        }
+
+        private string GetBestRepresentation(object ob)
+        {
+            try
+            {
+                if (ob.GetType() == typeof(string))
+                {
+                    return RemoveCodeBraces((string)ob);
+                }
+                if (ob.GetType() == typeof(int))
+                {
+                    return ((int)ob).ToString();
+                }
+                if (ob.ToString().Length > 100)
+                {
+                    return "```" + ob.ToString() + "```";
+                }
+                if (ob.GetType().IsSerializable)
+                {
+                    return "```json\n" + JsonSerializer.Serialize(ob, options) + "```";
+                }
+                if (ob.GetType().IsArray)
+                {
+                    return "```json\n" + JsonSerializer.Serialize(ob, options) + "```";
+                }
+
+                return ob.ToString();
+            }
+            catch (Exception e)
+            {
+                Program.SendLog(e);
+                return ob.ToString();
+            }
+        }
+
+        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+
+        /// <summary>
+        /// Stolen idea from https://github.com/Voxel-Fox-Ltd/VoxelBotUtils/blob/master/voxelbotutils/cogs/owner_only.py#L172-L252
+        /// </summary>
+        [Command("eval")]
+        [Description("UHHHHHHHHHHHHH its a secret")]
+        [Aliases("ev")]
+        public async Task Eval(CommandContext ctx, [RemainingText] string code)
+        {
+            TextWriter console = Console.Out;
+            try
+            {
+                Program.SendLog("Evaling a peace of code, wish me luck", true);
+                var timer = new Stopwatch();
+                timer.Start();
+
+                using StringWriter sw = new StringWriter();
+                Console.SetOut(sw);
+                var result = await CSharpScript.RunAsync(RemoveCodeBraces(code),
+           ScriptOptions.Default.WithReferences(references).WithImports(references), globals: ctx);
+
+                timer.Stop();
+                if (result.ReturnValue is not null)
+                {
+                    await new DiscordMessageBuilder().WithContent(result.ReturnValue.GetType().FullName + " " + GetBestRepresentation(result.ReturnValue)).SendAsync(ctx.Channel);
+                }
+                if (!string.IsNullOrEmpty(sw.ToString()))
+                {
+                    await new DiscordMessageBuilder().WithContent("Console Output" + " ```" + sw.ToString() + "```").SendAsync(ctx.Channel);
+                }
+                sw.Close();
+                Console.SetOut(console);
+                await new DiscordMessageBuilder().WithContent($"Executed the code in {timer.Elapsed.Humanize(6)}").SendAsync(ctx.Channel);
+            }
+            catch (Exception e)
+            {
+                Console.SetOut(console);
+                Program.SendLog(e);
+                throw;
+            }
+        }
+
         [Command("runsql")]
         [Description("UHHHHHHHHHHHHH its a secret")]
         public async Task Runsql(CommandContext ctx, string sql)
         {
-            var thing = await Database.RunSqlAsync(sql);
+            var thing = await Program.GetDatabase().RunSqlAsync(sql);
             if (thing.Item1 != null && thing.Item2 == null)
             {
                 await ctx.RespondAsync(thing.Item1);

@@ -10,6 +10,7 @@ using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects
 {
@@ -33,16 +34,13 @@ namespace SilverBotDS.Objects
         [XmlDescription("(ulong)Id of main server")]
         public ulong ServerId { get; set; } = 679353407667961877;
 
-        [XmlDescription("PostgresSQL conection string make null if stored in ENV")]
-        public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
-
         [XmlDescription("Interval to use so discord dont ban us, in ms, is int32 so use -1 if you want no splash changes, defaults to 30m as kae kinda was like hey you know discord has probably put you on a watchlist")]
         public int MsInterval { get; set; } = 1800000;
 
-        [XmlDescription("The current config version, dont change unless told by the bot or silverdimond")]
+        [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 6;
+        private const ulong CurrentConfVer = 7;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -77,6 +75,12 @@ namespace SilverBotDS.Objects
         [XmlDescription("Friday voice channel. leave none to disable")]
         public ulong FridayVoiceChannel { get; set; }
 
+        [XmlDescription("What kind of database to use, 1 for postgres, 2 for litedb (recommended)")]
+        public int DatabaseType { get; set; } = 1;
+
+        [XmlDescription("Conection string for database, Unused if using litedb, make null if stored in DATABASE_URL")]
+        public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
+
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {
             foreach (var i in typeof(Config).GetMembers())
@@ -93,7 +97,79 @@ namespace SilverBotDS.Objects
             return xmlDocument;
         }
 
-        public static async System.Threading.Tasks.Task<Config> GetAsync()
+        public static async Task OutdatedConfigTask(Config readconfig)
+        {
+            Console.WriteLine("Outdated config detected. Would you like a new one to generate? (Y/n)");
+            var rl = Console.ReadLine();
+            if (rl != null)
+                switch (rl.ToLower())
+                {
+                    case "y":
+                        using (var streamReader = new StreamReader("silverbot.xml"))
+                        {
+                            await using (var streamWriter = new StreamWriter("silverbotold.xml", false))
+                            {
+                                await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
+                                streamWriter.Close();
+                            }
+
+                            streamReader.Close();
+                        }
+
+                        await using (var streamWriter = new StreamWriter("silverbot.xml"))
+                        {
+                            readconfig.ConfigVer = CurrentConfVer;
+                            MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(readconfig)).Save(streamWriter);
+                            streamWriter.Close();
+                        }
+
+                        new Process
+                        {
+                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbot.xml")
+                            {
+                                UseShellExecute = true
+                            }
+                        }.Start();
+                        new Process
+                        {
+                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbotold.xml")
+                            {
+                                UseShellExecute = true
+                            }
+                        }.Start();
+                        Console.WriteLine(
+                            "Ok now transfer the values from silverbotold.xml to silverbot.xml and restart thx");
+                        Environment.Exit(420);
+                        break;
+
+                    case "n":
+                        Console.WriteLine(
+                            "Outdated config detected. Would you like to try loading with the outdated config? (Y/n)");
+                        var nrl = Console.ReadLine();
+                        if (nrl != null)
+                            switch (nrl.ToLower())
+                            {
+                                case "y":
+                                    break;
+
+                                case "n":
+                                    Environment.Exit(421);
+                                    break;
+
+                                default:
+                                    await OutdatedConfigTask(readconfig);
+                                    break;
+                            }
+
+                        break;
+
+                    default:
+                        await OutdatedConfigTask(readconfig);
+                        break;
+                }
+        }
+
+        public static async Task<Config> GetAsync()
         {
             var serializer = new XmlSerializer(typeof(Config));
 
@@ -137,89 +213,50 @@ namespace SilverBotDS.Objects
             fs.Close();
             if (readconfig != null && (readconfig.ConfigVer == null || readconfig.ConfigVer != CurrentConfVer))
             {
-            outdated:
-                Console.WriteLine("Outdated config detected. Would you like a new one to generate? (Y/n)");
-                var rl = Console.ReadLine();
-                if (rl != null)
-                    switch (rl.ToLower())
-                    {
-                        case "y":
-                            using (var streamReader = new StreamReader("silverbot.xml"))
-                            {
-                                await using (var streamWriter = new StreamWriter("silverbotold.xml", false))
-                                {
-                                    await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
-                                    streamWriter.Close();
-                                }
-
-                                streamReader.Close();
-                            }
-
-                            await using (var streamWriter = new StreamWriter("silverbot.xml"))
-                            {
-                                readconfig.ConfigVer = CurrentConfVer;
-                                MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(readconfig)).Save(streamWriter);
-                                streamWriter.Close();
-                            }
-
-                            new Process
-                            {
-                                StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbot.xml")
-                                {
-                                    UseShellExecute = true
-                                }
-                            }.Start();
-                            new Process
-                            {
-                                StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbotold.xml")
-                                {
-                                    UseShellExecute = true
-                                }
-                            }.Start();
-                            Console.WriteLine(
-                                "Ok now transfer the values from silverbotold.xml to silverbot.xml and restart thx");
-                            Environment.Exit(420);
-                            break;
-
-                        case "n":
-                            Console.WriteLine(
-                                "Outdated config detected. Would you like to try loading with the outdated config? (Y/n)");
-                            var nrl = Console.ReadLine();
-                            if (nrl != null)
-                                switch (nrl.ToLower())
-                                {
-                                    case "y":
-                                        break;
-
-                                    case "n":
-                                        Environment.Exit(421);
-                                        break;
-
-                                    default:
-                                        goto outdated;
-                                }
-
-                            break;
-
-                        default:
-                            goto outdated;
-                    }
+                await OutdatedConfigTask(readconfig);
             }
-            if (readconfig != null && !string.IsNullOrEmpty(readconfig.ConnString))
-            {
-                Database.Setconnstring(readconfig.ConnString);
-            }
-            else
-            {
-                var tmp = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
-                var usernameandpass = tmp.UserInfo.Split(":");
-                var connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
-                Database.Setconnstring(connString);
-            }
-
+            SetDatabase(readconfig);
             Giphy.Set(readconfig?.Gtoken);
             Fortnite.Setapi(readconfig?.FApiToken);
             return readconfig;
+        }
+
+        public static void SetDatabase(Config config)
+        {
+            switch (config.DatabaseType)
+            {
+                case 1:
+                    {
+                        //postgres
+                        PostgreDatabase postgre;
+                        if (config != null && !string.IsNullOrEmpty(config.ConnString))
+                        {
+                            postgre = new(config.ConnString);
+                        }
+                        else
+                        {
+                            var tmp = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
+                            var usernameandpass = tmp.UserInfo.Split(":");
+                            var connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
+                            postgre = new(connString);
+                        }
+                        Console.WriteLine("Using a postgre database");
+                        Program.SetDatabase(postgre);
+                        break;
+                    }
+                case 2:
+                    {
+                        //postgres
+
+                        Console.WriteLine("Using a litedb database");
+                        Program.SetDatabase(new LiteDBDatabase());
+                        break;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
+                    }
+            }
         }
     }
 }

@@ -29,7 +29,6 @@ namespace SilverBotDS
     internal static class Program
     {
         private static Config config;
-        private static readonly bool Shitlog = false;
 
         private static Config GetNewConfig()
         {
@@ -91,6 +90,16 @@ namespace SilverBotDS
             log.Error(text);
         }
 
+        public static void SetDatabase(ISBDatabase newdb)
+        {
+            Database = newdb;
+        }
+
+        public static ISBDatabase GetDatabase()
+        {
+            return Database;
+        }
+
         public static void SendLog(string text, bool info)
         {
             if (info)
@@ -111,6 +120,7 @@ namespace SilverBotDS
         private static DiscordClient discord;
         private static LavalinkNode audioService;
         private static Serilog.Core.Logger log;
+        private static ISBDatabase Database;
 
         private static async Task MainAsync()
         {
@@ -132,11 +142,9 @@ namespace SilverBotDS
                 Timeout = TimeSpan.FromSeconds(30)
             });
             //set up logging?
-            if (Shitlog)
-            {
-                log.Information("Setup unimplemented message tracking:tm:");
-                discord.MessageCreated += Discord_MessageCreated;
-            }
+
+            discord.MessageCreated += Discord_MessageCreated;
+
             //Tell our cute client to use commands or in other words become a working class member of society
             log.Information("Initialising Commands");
             var commands = discord.UseCommandsNext(new CommandsNextConfiguration()
@@ -257,7 +265,6 @@ namespace SilverBotDS
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
-            await Logging.Log(e.Message).ConfigureAwait(false);
         }
     }
 }

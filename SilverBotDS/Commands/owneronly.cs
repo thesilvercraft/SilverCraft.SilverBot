@@ -160,7 +160,14 @@ namespace SilverBotDS.Commands
                 {
                     return "```json\n" + JsonSerializer.Serialize(ob, options) + "```";
                 }
-
+                if (ob.GetType().IsEnum)
+                {
+                    return "```json\n" + JsonSerializer.Serialize(ob, options) + "```";
+                }
+                if (ob.GetType().FullName == ob.ToString())
+                {
+                    return "```json\n" + JsonSerializer.Serialize(ob, options) + "```";
+                }
                 return ob.ToString();
             }
             catch (Exception e)
@@ -189,12 +196,10 @@ namespace SilverBotDS.Commands
                 Program.SendLog("Evaling a peace of code, wish me luck", true);
                 var timer = new Stopwatch();
                 timer.Start();
-
                 using StringWriter sw = new StringWriter();
                 Console.SetOut(sw);
                 var result = await CSharpScript.RunAsync(RemoveCodeBraces(code),
-           ScriptOptions.Default.WithReferences(references).WithImports(references), globals: ctx);
-
+           ScriptOptions.Default.WithReferences(references).WithImports(references), globals: new CodeEnv(ctx));
                 timer.Stop();
                 if (result.ReturnValue is not null)
                 {

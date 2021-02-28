@@ -10,9 +10,9 @@ using WebClient = SilverBotDS.Objects.WebClient;
 
 namespace SilverBotDS.Utils
 {
-    public abstract class GitHubUtils
+    public class GitHubUtils
     {
-        private static readonly Regex R = new Regex("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex R = new Regex("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         public class Repo
         {

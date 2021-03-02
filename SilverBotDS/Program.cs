@@ -70,10 +70,10 @@ namespace SilverBotDS
                         break;
                     }
             }
-            log.Information("Checking for updates");
+            log.Information("NOT Checking for updates (silver has a new idea that will be implemented soon)");
 
             //Check for updates
-            VersionInfo.Checkforupdates();
+            //VersionInfo.Checkforupdates();
             log.Information("Starting MainAsync");
 
             //Start the main async task
@@ -158,7 +158,7 @@ namespace SilverBotDS
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<Moderation>();
             commands.RegisterCommands<Giphy>();
-            commands.RegisterCommands<Imagemodule>();
+            commands.RegisterCommands<ImageModule>();
             commands.RegisterCommands<AdminCommands>();
             commands.RegisterCommands<OwnerOnly>();
             commands.RegisterCommands<SteamCommands>();
@@ -166,7 +166,11 @@ namespace SilverBotDS
             commands.RegisterCommands<Audio>();
             commands.RegisterCommands<MiscCommands>();
             commands.RegisterCommands<MinecraftModule>();
-            //commands.RegisterCommands<CalculatorCommands>();//kinda useless
+            commands.CommandErrored += Commands_CommandErrored;
+            if (config.UseNodeJs)
+            {
+                commands.RegisterCommands<CalculatorCommands>();
+            }
             if (config.UseAimlBot)
             {
                 commands.RegisterCommands<AICommands>();
@@ -224,6 +228,16 @@ namespace SilverBotDS
             }
         }
 
+        private static Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
+        {
+            if (e.Exception.GetType() == typeof(DSharpPlus.CommandsNext.Exceptions.CommandNotFoundException))
+            {
+                return Task.CompletedTask;
+            }
+            SendLog(e.Exception);
+            return Task.CompletedTask;
+        }
+
         private static Thread waitforfriday;
         private const string FridayUrl = "https://youtu.be/akT0wxv9ON8";
         private static int last_friday = 0;
@@ -272,6 +286,22 @@ namespace SilverBotDS
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
+            if (e.Author.IsBot)
+            {
+                return;
+            }
+            if (e.Message.Content == "anime")
+            {
+                await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                             .WithContent("anime")
+                                             .SendAsync(e.Channel);
+            }
+            if (e.Message.Content == "canada")
+            {
+                await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                             .WithContent("canada")
+                                             .SendAsync(e.Channel);
+            }
         }
     }
 }

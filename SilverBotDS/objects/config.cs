@@ -41,7 +41,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 8;
+        private const ulong CurrentConfVer = 9;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -84,6 +84,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Do we even try to load the aiml bot")]
         public bool UseAimlBot { get; set; } = false;
+
+        [XmlDescription("OUR GOD IS AN AWSOME GOD, uses Jering.Javascript.NodeJS")]
+        public bool UseNodeJs { get; set; } = false;
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {

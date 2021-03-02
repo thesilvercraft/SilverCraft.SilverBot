@@ -10,6 +10,7 @@ using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -17,13 +18,8 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [Cooldown(1, 2, CooldownBucketType.User)]
-    public class Imagemodule : BaseCommandModule
+    public class ImageModule : BaseCommandModule
     {
-        public static Imagemodule CreateInstance()
-        {
-            return new Imagemodule();
-        }
-
 #pragma warning disable CA1822 // Mark members as static
 
         private const int MaxBytes = 8388246;
@@ -335,6 +331,97 @@ namespace SilverBotDS.Commands
         private static Bitmap cachedmotivatetemplate;
         private static Bitmap cachedadventuretimetemplate;
         private static Bitmap cachednewyeartemplate;
+        private static Bitmap cachedweebreliabletemplate;
+
+        [Command("reliable")]
+        public async Task Reliable(CommandContext ctx)
+        {
+            await Reliable(ctx, ctx.User, ctx.Client.CurrentUser);
+        }
+
+        [Command("reliable")]
+        public async Task Reliable(CommandContext ctx, DiscordUser koichi)
+        {
+            await Reliable(ctx, ctx.User, koichi);
+        }
+
+        [Command("reliable")]
+        public async Task Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)
+        {
+            var lang = Language.GetLanguageFromCtx(ctx);
+            try
+            {
+                if (cachedweebreliabletemplate == null)
+                {
+                    var myAssembly = Assembly.GetExecutingAssembly();
+                    var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.weeb_reliable_template.png");
+                    if (myStream is null)
+                    {
+                        Program.SendLog("myAssembly.GetManifestResourceStream(SilverBotDS.Templates.weeb_reliable_template.png) returned null");
+                    }
+                    cachedweebreliabletemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
+                }
+                await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(koichi, 256));
+                await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(jotaro, 256));
+                using var copythingy = new Bitmap(cachedweebreliabletemplate.Width, cachedweebreliabletemplate.Height);
+                var drawing = Graphics.FromImage(copythingy);
+                drawing.DrawImageUnscaled(cachedweebreliabletemplate, new Point(0, 0));
+                using (Bitmap internalimage = new(resizedstreama))
+                {
+                    drawing.DrawImageUnscaled(internalimage, new Point(276, 92));
+                }
+                using (Bitmap internalimage = new(resizedstreamb))
+                {
+                    drawing.DrawImageUnscaled(internalimage, new Point(1138, 369));
+                }
+                var text = (ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username) + ", you truly are a reliable guy.";
+                var font = new Font("Trebuchet MS", 100);
+                var sf = new StringFormat
+                {
+                    LineAlignment = StringAlignment.Center,
+                };
+                while (drawing.MeasureString(text,
+new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
+                {
+                    font = new Font(font.FontFamily, font.Size - 1f, font.Style);
+                }
+
+                GraphicsPath p = new GraphicsPath();
+                var rectangle = new Rectangle(267, 894, 1370, 186);
+                p.AddString(
+                    text,
+                    font.FontFamily,
+                    (int)font.Style,
+                    drawing.DpiY * font.Size / 72,
+                    new Rectangle(267, 894, 1370, 186),
+                    sf);
+                //drawing.FillRectangle(new SolidBrush(Color.Black), p.GetBounds());// make big black box
+                /* drawing.DrawString(text,
+                                    font,
+                                    new SolidBrush(Color.White),
+                                    new Rectangle(267, 894, 1370, 186), sf);*/
+                drawing.DrawPath(new Pen(new SolidBrush(Color.Black), 2), p);
+                drawing.FillPath(new SolidBrush(Color.White), p);
+                drawing.Save();
+                await using MemoryStream outStream = new();
+                outStream.Position = 0;
+                copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
+                outStream.Position = 0;
+                if (outStream.Length > MaxBytes)
+                {
+                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                }
+                else
+                {
+                    await ctx.RespondAsync(new DiscordMessageBuilder().WithContent($"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.").WithFile("silverbotimage.png", outStream));
+                }
+            }
+            catch (Exception e)
+            {
+                Program.SendLog(e);
+                throw;
+            }
+        }
 
         [Command("happynewyear")]
         public async Task HappyNewYear(CommandContext ctx)

@@ -10,11 +10,13 @@
     <None Remove="Templates\adventure_time_template.png" />
     <None Remove="Templates\happy_new_year_template.png" />
     <None Remove="Templates\motivator_template.png" />
+    <None Remove="Templates\weeb_reliable_template.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\adventure_time_template.png" />
     <EmbeddedResource Include="Templates\happy_new_year_template.png" />
     <EmbeddedResource Include="Templates\motivator_template.png" />
+    <EmbeddedResource Include="Templates\weeb_reliable_template.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
@@ -35,6 +37,7 @@
     </PackageReference>
     <PackageReference Include="Humanizer" Version="2.8.26" />
     <PackageReference Include="ImageProcessor.Core" Version="1.1.0" />
+    <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.0-beta.2" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.6.2" />
     <PackageReference Include="LiteDB" Version="5.0.10" />
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
@@ -56,6 +59,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SDBrowser\SDBrowser.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Templates\weeb_reliable_template.png" />
   </ItemGroup>
 
   <ItemGroup>

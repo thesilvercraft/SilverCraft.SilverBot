@@ -21,7 +21,7 @@ namespace SilverBotDS.Commands
 {
     [RequireOwner]
     [Hidden]
-    internal class OwnerOnly : BaseCommandModule
+    internal partial class OwnerOnly : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
 

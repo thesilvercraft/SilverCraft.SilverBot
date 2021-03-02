@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SilverBotDS.Utils
 {
-    internal static class StringUtils
+    public static class StringUtils
     {
         /// <summary>
         /// A random string from an array of strings

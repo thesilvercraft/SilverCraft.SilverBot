@@ -15,7 +15,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static SilverBotDS.Utils.StringUtils;
-using WebClient = SilverBotDS.Objects.WebClient;
+using NetClient = SilverBotDS.Objects.NetClient;
 
 namespace SilverBotDS.Commands
 {
@@ -43,7 +43,7 @@ namespace SilverBotDS.Commands
         {
             var lang = Language.GetLanguageFromCtx(ctx);
             var b = new DiscordEmbedBuilder();
-            var client = WebClient.Get();
+            var client = NetClient.Get();
             var rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
             if (rm.StatusCode == HttpStatusCode.OK)
             {
@@ -209,7 +209,7 @@ namespace SilverBotDS.Commands
         public async Task UselessFact(CommandContext ctx)
         {
             var lang = Language.GetLanguageFromCtx(ctx);
-            var client = WebClient.Get();
+            var client = NetClient.Get();
             var rm = await client.GetAsync("https://uselessfacts.jsph.pl/random.md?language=" + lang.LangCodeForUselessFacts);
             await new DiscordMessageBuilder()
                                                  .WithReply(ctx.Message.Id)
@@ -220,69 +220,6 @@ namespace SilverBotDS.Commands
                                                                                      .WithColor(await ColorUtils.GetSingleAsync())
                                                                                      .Build())
                                                  .SendAsync(ctx.Channel);
-        }
-
-        //TODO make it better
-        [Command("nuget"), Aliases("nu")]
-        [Description("Search up packages on the NuGet")]
-        public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)
-        {
-            var lang = Language.GetLanguageFromCtx(ctx);
-            try
-            {
-                var data = await NuGetUtils.SearchAsync(query);
-                var pages = new List<Page>();
-                for (var i = 0; i < data.Length; i++)
-                {
-                    var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Title).WithUrl($"https://www.nuget.org/packages/{data[i].Id}").WithColor(await ColorUtils.GetSingleAsync());
-                    if (data[i].Authors is null)
-                    {
-                        tempbuilder.WithAuthor(data[i].Title + "'s contributors", data[i].ProjectUrl);
-                    }
-                    else
-                    {
-                        tempbuilder.WithAuthor(ArrayToString(data[i].Authors, ","), data[i].ProjectUrl);
-                    }
-                    tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + " " + string.Format(lang.PageNuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
-                    if (!string.IsNullOrEmpty(data[i].IconUrl))
-                    {
-                        tempbuilder.WithThumbnail(data[i].IconUrl);
-                    }
-                    if (!string.IsNullOrEmpty(data[i].Description))
-                    {
-                        tempbuilder.WithDescription(data[i].Description);
-                    }
-
-                    if (data[i].Verified is not null)
-                    {
-                        tempbuilder.AddField("NuGet verified", BoolToEmoteString(data[i].Verified == true), true);
-                    }
-
-                    if (!string.IsNullOrEmpty(data[i].Type))
-                    {
-                        tempbuilder.AddField("Type", data[i].Type, true);
-                    }
-                    if (data[i].TotalDownloads is not null)
-                    {
-                        tempbuilder.AddField("<:green_download_icon:805051604797227038>", data[i].TotalDownloads.ToString(), true);
-                    }
-                    if (!string.IsNullOrEmpty(data[i].Version))
-                    {
-                        tempbuilder.AddField("V", data[i].Version, true);
-                    }
-
-                    pages.Add(new Page(embed: tempbuilder));
-                }
-
-                await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
-            }
-            catch (Exception e)
-            {
-                var bob = new DiscordEmbedBuilder().WithTitle("Something went fucky wucky on my side").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
-                await ctx.RespondAsync(embed: bob.Build());
-                Program.SendLog(e);
-                throw;
-            }
         }
 
         private static async Task<bool> IsAtSilverCraftAsync(CommandContext ctx, DiscordUser b)
@@ -367,30 +304,6 @@ namespace SilverBotDS.Commands
                     .WithColor(await ColorUtils.GetSingleAsync())
                     .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                    .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
-            }
-            catch (Exception e)
-            {
-                Program.SendLog(e);
-            }
-        }
-
-        [Command("ver")]
-        [Description("Get the version info")]
-        public async Task Userinfo(CommandContext ctx)
-        {
-            try
-            {
-                var lang = Language.GetLanguageFromCtx(ctx);
-                await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
-                    .WithTitle(lang.VersionInfoTitle)
-                    .AddField("Version number", "`" + VersionInfo.VNumber + "`")
-                    .AddField("Git repo", ThisAssembly.Git.RepositoryUrl)
-                    .AddField("Git Commit hash", "`" + ThisAssembly.Git.Commit + "`")
-                    .AddField("Git Branch", "`" + ThisAssembly.Git.Branch + "`")
-                    .AddField("Is dirty", ThisAssembly.Git.IsDirtyString)
-                    .WithAuthor(ctx.Client.CurrentUser.Username + "#" + ctx.Client.CurrentUser.Discriminator, iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
-                    .WithColor(await ColorUtils.GetSingleAsync())
                     .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
             }
             catch (Exception e)

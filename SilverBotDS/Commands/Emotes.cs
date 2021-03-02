@@ -31,7 +31,7 @@ namespace SilverBotDS.Commands
         public async Task UselessFact(CommandContext ctx, [Description("Name like `Kappa`")] string name, [Description("url of emote")] string url)
         {
             var lang = Language.GetLanguageFromCtx(ctx);
-            var client = WebClient.Get();
+            var client = NetClient.Get();
             var rm = await client.GetAsync(url);
             var st = await rm.Content.ReadAsStreamAsync();
             if (st.Length > 256 * 1000)
@@ -61,7 +61,7 @@ namespace SilverBotDS.Commands
                     return;
             }
 
-            var client = WebClient.Get();
+            var client = NetClient.Get();
             var rm = await client.GetAsync(ctx.Message.Attachments[0].ProxyUrl);
             var st = await rm.Content.ReadAsStreamAsync();
             if (st.Length > 256 * 1000)

@@ -3,7 +3,7 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using WebClient = SilverBotDS.Objects.WebClient;
+using NetClient = SilverBotDS.Objects.NetClient;
 
 namespace SilverBotDS.Utils
 {
@@ -11,7 +11,7 @@ namespace SilverBotDS.Utils
     {
         public static async Task<CurrentSong> SearchAsync(string url = "https://api.onlyhit.us/fingerprinting/onlyhit.json")
         {
-            var httpClient = WebClient.Get();
+            var httpClient = NetClient.Get();
             var uri = new UriBuilder(url);
             var rm = await httpClient.GetAsync(uri.Uri);
             if (rm.StatusCode == HttpStatusCode.OK)

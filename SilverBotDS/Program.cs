@@ -164,6 +164,13 @@ namespace SilverBotDS
             commands.RegisterCommands<SteamCommands>();
             commands.RegisterCommands<Fortnite>();
             commands.RegisterCommands<Audio>();
+            commands.RegisterCommands<MiscCommands>();
+            commands.RegisterCommands<MinecraftModule>();
+            //commands.RegisterCommands<CalculatorCommands>();//kinda useless
+            if (config.UseAimlBot)
+            {
+                commands.RegisterCommands<AICommands>();
+            }
 
             //Launch lavalink
             if (!File.Exists("Lavalink.jar"))

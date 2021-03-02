@@ -187,6 +187,7 @@ new ("THE CAKE IS A LIE",ActivityType.Playing),
 new ("ThE CaKe Is A lIe",ActivityType.Playing),
 new ("Developers",ActivityType.Playing),
 new ("GREAT SUCCESS!",ActivityType.Playing),
+new ("Doki Doki literature club",ActivityType.Playing),
         };
 
         private static DiscordActivity[] cache;

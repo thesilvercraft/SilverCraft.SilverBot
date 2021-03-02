@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using WebClient = SilverBotDS.Objects.WebClient;
+using NetClient = SilverBotDS.Objects.NetClient;
 
 namespace SilverBotDS
 {
@@ -21,7 +21,7 @@ namespace SilverBotDS
             try
             {
                 LogLine("Running on " + Environment.OSVersion.VersionString);
-                var client = WebClient.Get();
+                var client = NetClient.Get();
                 LogLine("Getting latest version info from silverdimond.tk");
                 var rm = await client.GetAsync("https://silverdimond.tk/silvercraftbot/version-info.txt");
                 var content = await rm.Content.ReadAsStringAsync();

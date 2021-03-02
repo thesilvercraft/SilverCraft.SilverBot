@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects
 {
+    [Serializable]
     public class Config
     {
         [XmlDescription("Array of prefixes the bot will respond to")]
@@ -40,7 +41,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 7;
+        private const ulong CurrentConfVer = 8;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -80,6 +81,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Conection string for database, Unused if using litedb, make null if stored in DATABASE_URL")]
         public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
+
+        [XmlDescription("Do we even try to load the aiml bot")]
+        public bool UseAimlBot { get; set; } = false;
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {
@@ -246,7 +250,7 @@ namespace SilverBotDS.Objects
                     }
                 case 2:
                     {
-                        //postgres
+                        //litedb
 
                         Console.WriteLine("Using a litedb database");
                         Program.SetDatabase(new LiteDBDatabase());

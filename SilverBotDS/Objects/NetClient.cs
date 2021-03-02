@@ -2,7 +2,7 @@
 
 namespace SilverBotDS.Objects
 {
-    public static class WebClient
+    public static class NetClient
     {
         private static readonly HttpClient HttpClient = NewhttpClientWithUserAgent();
 

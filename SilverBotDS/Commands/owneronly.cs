@@ -27,10 +27,7 @@ namespace SilverBotDS.Commands
 
         [Command("repeat")]
         [Description("Repeats the message content")]
-        public async Task Repeat(CommandContext ctx, [RemainingText()][Description("The thing to repeat")] string e)
-        {
-            await ctx.RespondAsync(e);
-        }
+        public async Task Repeat(CommandContext ctx, [RemainingText()][Description("The thing to repeat")] string e) => await ctx.RespondAsync(e);
 
         private readonly string[] _urls = { "https://silverdimond.tk", "https://yahoo.com", "https://bing.com", "https://vfl.gg", "https://discord.com", "https://github.com", "https://github.com/silverdimond" };
 
@@ -42,7 +39,6 @@ namespace SilverBotDS.Commands
             {
                 _ = Html(ctx, url);
             }
-
             return Task.CompletedTask;
         }
 
@@ -113,9 +109,11 @@ namespace SilverBotDS.Commands
             await channel.SendMessageAsync(person.Mention + " there m8 that took some time to do");
         }
 
-        private readonly string[] references = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler" };
+        private readonly string[] references = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "MathParser.org-mXparser" };
 
-        private string RemoveCodeBraces(string str)
+        private readonly string[] imports = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer" };
+
+        public static string RemoveCodeBraces(string str)
         {
             if (str.StartsWith("```csharp"))
             {
@@ -136,48 +134,69 @@ namespace SilverBotDS.Commands
             return str;
         }
 
-        private string GetBestRepresentation(object ob)
+        private static async Task SendStringFileWithContent(CommandContext ctx, string title, string file, string filename = "message.txt")
+        {
+            await new DiscordMessageBuilder().WithContent(title).WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+        }
+
+        public static async Task SendBestRepresentationAsync(object ob, CommandContext ctx)
         {
             try
             {
-                if (ob.GetType() == typeof(string))
+                string str = ob.ToString();
+                if (ob.GetType() == typeof(TimeSpan))
                 {
-                    return RemoveCodeBraces((string)ob);
+                    str = ((TimeSpan)ob).Humanize(999);
                 }
-                if (ob.GetType() == typeof(int))
+                else if (ob.GetType() == typeof(DateTime))
                 {
-                    return ((int)ob).ToString();
+                    str = ((DateTime)ob).Humanize();
                 }
-                if (ob.ToString().Length > 100)
+                else if (ob.GetType() == typeof(string))
                 {
-                    return "```" + ob.ToString() + "```";
+                    str = RemoveCodeBraces((string)ob);
                 }
-                if (ob.GetType().IsSerializable)
+                else if (ob.GetType() == typeof(int))
                 {
-                    return "```json\n" + JsonSerializer.Serialize(ob, options) + "```";
+                    str = ((int)ob).ToString();
                 }
-                if (ob.GetType().IsArray)
+                else if (ob.GetType() == typeof(double))
                 {
-                    return "```json\n" + JsonSerializer.Serialize(ob, options) + "```";
+                    str = ((double)ob).ToString();
                 }
-                if (ob.GetType().IsEnum)
+                else if (ob.GetType().IsSerializable || ob.GetType().IsArray || ob.GetType().IsEnum || ob.GetType().FullName == ob.ToString())
                 {
-                    return "```json\n" + JsonSerializer.Serialize(ob, options) + "```";
+                    str = JsonSerializer.Serialize(ob, options);
+                    if (str.Length > 2000)
+                    {
+                        await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
+                        return;
+                    }
+                    else
+                    {
+                        str = "```json\n" + str + "```";
+                    }
+                    if (str.Length > 100)
+                    {
+                        str = "```" + str + "```";
+                    }
                 }
-                if (ob.GetType().FullName == ob.ToString())
+                if (ob.ToString().Length > 2000)
                 {
-                    return "```json\n" + JsonSerializer.Serialize(ob, options) + "```";
+                    await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
+                    return;
                 }
-                return ob.ToString();
+                await new DiscordMessageBuilder().WithContent(ob.GetType().FullName + " " + str).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
             }
             catch (Exception e)
             {
+                //abort ship
                 Program.SendLog(e);
-                return ob.ToString();
+                await new DiscordMessageBuilder().WithContent($"Failed to parse {ob.GetType().FullName} as a string, using the generic ToString. " + ob.ToString()).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
             }
         }
 
-        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        public static readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
             WriteIndented = true
         };
@@ -199,19 +218,41 @@ namespace SilverBotDS.Commands
                 using StringWriter sw = new StringWriter();
                 Console.SetOut(sw);
                 var result = await CSharpScript.RunAsync(RemoveCodeBraces(code),
-           ScriptOptions.Default.WithReferences(references).WithImports(references), globals: new CodeEnv(ctx));
+           ScriptOptions.Default.WithReferences(references).WithImports(imports), globals: new CodeEnv(ctx));
                 timer.Stop();
                 if (result.ReturnValue is not null)
                 {
-                    await new DiscordMessageBuilder().WithContent(result.ReturnValue.GetType().FullName + " " + GetBestRepresentation(result.ReturnValue)).SendAsync(ctx.Channel);
+                    await SendBestRepresentationAsync(result.ReturnValue, ctx);
                 }
                 if (!string.IsNullOrEmpty(sw.ToString()))
                 {
-                    await new DiscordMessageBuilder().WithContent("Console Output" + " ```" + sw.ToString() + "```").SendAsync(ctx.Channel);
+                    if (sw.ToString().Length > 2000)
+                    {
+                        //sending as a file to not get a 400
+                        await SendStringFileWithContent(ctx, "Console Output", sw.ToString(), "console.txt");
+                    }
+                    else
+                    {
+                        await new DiscordMessageBuilder().WithContent("Console Output" + " ```" + sw.ToString() + "```").SendAsync(ctx.Channel);
+                    }
                 }
                 sw.Close();
                 Console.SetOut(console);
                 await new DiscordMessageBuilder().WithContent($"Executed the code in {timer.Elapsed.Humanize(6)}").SendAsync(ctx.Channel);
+            }
+            catch (CompilationErrorException e)
+            {
+                Console.SetOut(console);
+                Program.SendLog(e);
+                if (e.Message.Length > 2000)
+                {
+                    await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Message, "error.txt");
+                }
+                else
+                {
+                    await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: ```csharp\n" + RemoveCodeBraces(e.Message) + "```").SendAsync(ctx.Channel);
+                }
+                throw;
             }
             catch (Exception e)
             {
@@ -282,7 +323,7 @@ namespace SilverBotDS.Commands
                     await ctx.RespondAsync("please use a zip");
                     return;
                 }
-                var client = WebClient.Get();
+                var client = NetClient.Get();
                 var rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
                 await using (var fs = new FileStream(
         Environment.CurrentDirectory + "\\temp.zip",

@@ -1,8 +1,10 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
+using SilverBotDS.Commands;
 using SilverBotDS.Objects;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -62,9 +64,21 @@ namespace SilverBotDS.Converters
 
         public async Task<Optional<SdImage>> ConvertAsync(string value, CommandContext ctx)
         {
+            if (ctx.Client.Guilds.Values.Any())
+            {
+                foreach (var guild in ctx.Client.Guilds.Values)
+                {
+                    var emoji = guild.Emojis.Values.FirstOrDefault(x => x.ToString() == value);
+                    if (emoji != default)
+                    {
+                        return Optional.FromValue(new SdImage(emoji.Url));
+                    }
+                }
+            }
+
             if (_expression.IsMatch(value))
             {
-                if (value == "https://silverdimond.tk/silvercraftbot/monika.png")
+                if (CodeEnv.Monika.Contains(value))
                 {
                     await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent("i will not allow such behaviour..... It appears as SilverBot is having some **technical difficulties**, we will retry in a sec...").SendAsync(ctx.Channel);
                     System.Threading.Thread.Sleep(250);

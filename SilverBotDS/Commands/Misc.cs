@@ -60,7 +60,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        tempbuilder.WithAuthor(StringUtils.ArrayToString(data[i].Authors, ","), data[i].ProjectUrl);
+                        tempbuilder.WithAuthor(StringUtils.ArrayToString(data[i].Authors, seperator: ", "), data[i].ProjectUrl);
                     }
                     tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + " " + string.Format(lang.PageNuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(data[i].IconUrl))
@@ -163,7 +163,7 @@ namespace SilverBotDS.Commands
             }
             if (FsharpError)
             {
-                link = "Your using f# lmao so the docs kinda suck you should google the error sorry man https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/" + error;
+                link = "https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/" + error;
             }
             if (VbError)
             {

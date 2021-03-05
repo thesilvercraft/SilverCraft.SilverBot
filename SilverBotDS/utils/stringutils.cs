@@ -75,7 +75,6 @@ namespace SilverBotDS.Utils
                 return string.Empty;
             }
             var sb = new StringBuilder();
-
             if (string.IsNullOrEmpty(seperator))
             {
                 foreach (var item in arr)
@@ -85,12 +84,10 @@ namespace SilverBotDS.Utils
             }
             else
             {
-                var e = 0;
-                foreach (var item in arr)
+                for (int e = 0; e < arr.Length; e++)
                 {
-                    e++;
-                    sb.Append(item);
-                    if (e != arr.Length)
+                    sb.Append(arr[e]);
+                    if (e != arr.Length - 1)
                     {
                         sb.Append(seperator);
                     }

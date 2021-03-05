@@ -14,8 +14,7 @@ namespace SilverBotDS.Commands
         [Description("Calculate a math expression using MathParser.org-mXparser")]
         public async Task CalculateOld(CommandContext ctx, [RemainingText] string input)
         {
-            Expression e = new Expression(input);
-            await OwnerOnly.SendBestRepresentationAsync(e.calculate(), ctx);
+            await new DiscordMessageBuilder().WithContent("Result: ```json\n" + new Expression(input).calculate() + "```").SendAsync(ctx.Channel);
         }
 
         private const string JSCODE = "module.exports = (callback, x) => { const mathsteps = require('mathsteps'); const steps = mathsteps.solveEquation(x); class MathStep { constructor(oldval,step, newval ) { this.oldval = oldval; this.step = step; this.newval = newval;  }} var mySteps = []; steps.forEach(step => {mySteps.push(new MathStep(step.oldEquation.ascii(), step.changeType, step.newEquation.ascii()));}); callback(null, mySteps);}";
@@ -27,6 +26,11 @@ namespace SilverBotDS.Commands
             foreach (MathStep step in await StaticNodeJSService.InvokeFromStringAsync<MathStep[]>(moduleString: JSCODE, args: new object[] { input }))
             {
                 builder.AppendLine($"{step.OldVal} {step.Step} {step.NewVal}");
+            }
+            if (string.IsNullOrEmpty(builder.ToString()))
+            {
+                await CalculateOld(ctx, input);
+                return;
             }
             await new DiscordMessageBuilder().WithContent("Math steps" + " ```" + builder.ToString() + "```").SendAsync(ctx.Channel);
         }

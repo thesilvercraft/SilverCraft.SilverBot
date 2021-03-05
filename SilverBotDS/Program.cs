@@ -156,7 +156,7 @@ namespace SilverBotDS
             commands.RegisterConverter(new SdImageConverter());
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
-            commands.RegisterCommands<Moderation>();
+            commands.RegisterCommands<ModCommands>();
             commands.RegisterCommands<Giphy>();
             commands.RegisterCommands<ImageModule>();
             commands.RegisterCommands<AdminCommands>();
@@ -259,20 +259,17 @@ namespace SilverBotDS
         {
             var channel = await discord.GetChannelAsync(config.FridayTextChannel);
             var vchannel = await discord.GetChannelAsync(config.FridayVoiceChannel);
+            var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
             if (audioService.HasPlayer(vchannel.GuildId))
             {
                 VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(vchannel.GuildId);
                 await player.DisconnectAsync();
-                player = await audioService.JoinAsync<VoteLavalinkPlayer>(vchannel.GuildId, vchannel.Id, true);
-                var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
-                await player.PlayAsync(track);
             }
-            else
-            {
-                VoteLavalinkPlayer player = await audioService.JoinAsync<VoteLavalinkPlayer>(vchannel.GuildId, vchannel.Id, true);
-                var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
-                await player.PlayAsync(track);
-            }
+
+            VoteLavalinkPlayer playere = await audioService.JoinAsync<VoteLavalinkPlayer>(vchannel.GuildId, vchannel.Id, true);
+
+            await playere.PlayAsync(track);
+
             await channel.SendMessageAsync("its friday");
             return;
         }

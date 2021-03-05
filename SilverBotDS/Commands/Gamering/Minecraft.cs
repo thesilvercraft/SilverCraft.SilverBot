@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands.Gamering
 {
     [Group("minecraft")]
+    [Aliases("mc")]
     internal class MinecraftModule : BaseCommandModule
     {
         //HEY LOIS IM PLAYING MINECRAFT
         [Command("getfromusername")]
         [Description("Get a minecraft players UUID from their username")]
+        [Aliases("username")]
         public async Task Calculate(CommandContext ctx, string input)
         {
             try

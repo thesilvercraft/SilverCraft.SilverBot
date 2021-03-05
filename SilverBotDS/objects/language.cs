@@ -12,6 +12,11 @@ namespace SilverBotDS.Objects
     internal class Language
     {
         /// <summary>
+        /// Default(EN)
+        /// </summary>
+        public string LangName { get; set; } = "Default(EN)";
+
+        /// <summary>
         /// <b>Hi </b>@max<b>!</b>
         /// <para/>
         /// <b>Hi␣</b>{0}<b>!</b>
@@ -51,11 +56,6 @@ namespace SilverBotDS.Objects
         /// </summary>
 
         public string DblaReturnedNull { get; set; } = "Something went wrong, it's probably on my end.";
-
-        /// <summary>
-        /// Default(EN)
-        /// </summary>
-        public string LangName { get; set; } = "Default(EN)";
 
         /// <summary>
         /// must be en or de for useless facts
@@ -113,45 +113,12 @@ namespace SilverBotDS.Objects
         /// </remarks>
         public string SongByAuthor { get; set; } = " by ";
 
-        /// <summary>
-        /// Tip: A Role Named ***DJ*** Will Restrict Access To Members With The Role.
-        /// </summary>
-        public string UseDjMessage { get; set; } = "Tip: A Role Named ***DJ*** Will Restrict Access To Members With The Role.";
-
-        /// <summary>
-        /// That track doesnt exist my dude
-        /// </summary>
-        public string TrackNotExist { get; set; } = "That track doesnt exist my dude";
-
         public string RemovedFront { get; set; } = "Removed: "; //"Removed: "Never gonna give you up by Rick Astley
-        public string PausedFront { get; set; } = "Paused: "; //"Paused: "Never gonna give you up by Rick Astley
-        public string ResumedFront { get; set; } = "Resumed: "; //"Resumed: "Never gonna give you up by Rick Astley
-
-        /// <summary>
-        /// Please provide a search term.
-        /// </summary>
-        public string NoSearchTerm { get; set; } = "Please provide a search term.";
-
-        /// <summary>
-        /// Not sure which voice channel to disconnect from.
-        /// </summary>
-        public string NotSureWhichChannel { get; set; } = "Not sure which voice channel to disconnect from.";
-
-        public string SeekedFront { get; set; } = "I've seeked: `"; //"I've seeked: `"Never gonna give you up by Rick Astley to 00:00:00.
-        public string SeekedMiddle { get; set; } = "` to "; //I've seeked: `Never gonna give you up"` to "00:00:00.
-        public string SeekedBack { get; set; } = "."; //I've seeked: `Never gonna give you up` to 00:00:00"."
-        public string NoLyricsFound { get; set; } = "No lyrics found for "; //"No lyrics found for Never gonna give you up
-        public string NoLongerPlaying { get; set; } = "No longer playing anything.";
-        public string AlreadyStoped { get; set; } = "Woaaah there, I can't stop the stopped forced.";
-        public string VotingIsBelow85Percent { get; set; } = "You need more than 85% votes to skip this song.";
-        public string UserDoesntHaveDj { get; set; } = "You must have a role named `dj`!";
 
         /// <summary>
         /// Now loopin song 🔂
         /// </summary>
         public string LoopingSong { get; set; } = "Now loopin song 🔂";
-
-        public string LoopingQueue { get; set; } = "Now loopin queue 🔁";
 
         /// <summary>
         /// Send **an** image my guy
@@ -171,19 +138,10 @@ namespace SilverBotDS.Objects
         /// </remarks>
         public string NoResults { get; set; } = "I wasn't able to find anything for `{0}`"; //I wasn't able to find anything for `"Never gonna give you up`.
 
-        public string NooneInVc { get; set; } = "Noone is in voice chat. 😥";
-        public string NextItemNotTrack { get; set; } = "Next item in queue is not a track. 😥";
-        public string QueueCompleted { get; set; } = "Queue completed! Please add more tracks to continue!";
-
         /// <summary>
         /// I've left {0}!
         /// </summary>
         public string Left { get; set; } = "I've left {0}!";
-
-        public string Goodbye { get; set; } = "Goodbye";
-
-        //Commands
-        public string Test { get; set; } = "test";
 
         /// <summary>
         /// Information about␣
@@ -194,11 +152,6 @@ namespace SilverBotDS.Objects
         /// Has joined the SilverCraft Discord
         /// </summary>
         public string JoinedSilverCraft { get; set; } = "Has joined the SilverCraft Discord";
-
-        /// <summary>
-        /// Is a SilverCraft bot admin
-        /// </summary>
-        public string IsSilverBotAdmin { get; set; } = "Is a SilverCraft bot admin";
 
         /// <summary>
         /// Prefix used
@@ -216,21 +169,6 @@ namespace SilverBotDS.Objects
         public string Userid { get; set; } = "ID";
 
         /// <summary>
-        /// Has joined the SilverCraft Server
-        /// </summary>
-        public string HasJoinedSupport { get; set; } = "Has joined the SilverCraft Server";
-
-        /// <summary>
-        /// Is a SilverCraft bot admin
-        /// </summary>
-        public string IsAdmin { get; set; } = "Is a SilverCraft bot admin";
-
-        /// <summary>
-        /// Is a DJ
-        /// </summary>
-        public string IsADj { get; set; } = "Is a DJ";
-
-        /// <summary>
         /// Is a SilverCraft bot owner
         /// </summary>
         public string IsAnOwner { get; set; } = "Is a SilverCraft bot owner";
@@ -239,9 +177,6 @@ namespace SilverBotDS.Objects
         /// Is a bot
         /// </summary>
         public string IsABot { get; set; } = "Is a bot";
-
-        public string Error { get; set; } = "Error";
-        public string ErrorSentToLogs { get; set; } = "Complete error sent to Bot logs";
 
         /// <summary>
         ///SilverBot sponsored by SilverHosting
@@ -255,12 +190,10 @@ namespace SilverBotDS.Objects
 
         public string PurgeNumberNegative { get; set; } = "The amount of messages to remove must be positive.";
         public string PurgeNothingToDelete { get; set; } = "Nothing to delete.";
-        public string BotGuilds { get; set; } = "Bot guilds";
+
         public string PurgeRemovedFront { get; set; } = "Done. Removed "; //"Done. Removed "69 messages
         public string PurgeRemovedSingle { get; set; } = " message"; //Done. Removed 1" message"
         public string PurgeRemovedPlural { get; set; } = " messages"; //Done. Removed 69" messages"
-        public string InviteTitle { get; set; } = "SilverCraftBot invite link";
-        public string InviteDescription { get; set; } = "SilverCraftBot is in open beta https://discord.com/api/oauth2/authorize?client_id=702445582559739976&permissions=2147483639&scope=bot";
 
         /// <summary>
         /// **No emote found**
@@ -302,44 +235,8 @@ namespace SilverBotDS.Objects
         /// </summary>
         public string UserIsBannedFromSilversocial { get; set; } = "You are banned from using the silversocial features";
 
-        /// <summary>
-        /// This server/server owner is banned from using the silversocial features
-        /// </summary>
-        public string GuildIsBannedFromSilversocial { get; set; } = "This server/server owner is banned from using the silversocial features";
-
-        public string UserIsNotBannedFromSilversocial { get; set; } = "You are not banned POG";
         public string TimeFormat { get; set; } = "G"; //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?redirectedfrom=MSDN
-        public string UnableToSendDm { get; set; } = "I was unable to send a message to this person";
 
-        public string[] Banstrings { get; set; } = new[]
-                {
-                 "was yeeted off this server by",
-                 "was sniped off this server by",
-                 "walked into a cactus whilst trying to escape",
-                 "was pummeled by",
-                 "experienced kinetic energy whilst trying to escape",
-                 "told someone to buy the bedrock edition infront of"
-                };
-
-        public string BanDmFront { get; set; } = "You have been banned from ";
-        public string KickDmFront { get; set; } = "You have been banned from ";
-        public string SupportWarningTitle { get; set; } = "This feature is experimental if you really need support join [here](https://discord.gg/ZT4gZCyReB)";
-        public string SupportWhatKind { get; set; } = "What kind of support do you need?";
-        public string SupportWhatKindNumbers { get; set; } = "1.Add an command" + Environment.NewLine + "2.Add an splash" + Environment.NewLine + "You should [Click here](https://discord.gg/ZT4gZCyReB) for anything else";
-        public string SupportCommandName { get; set; } = "What will this command be like? (e.g. meme)";
-        public string SupportCommandAction { get; set; } = "What will this command do? (e.g. show help information about the bot)";
-        public string NullInQueue { get; set; } = "Null in queue please report to [here](https://discord.gg/ZT4gZCyReB) thanks";
-        public string WarnTitle { get; set; } = "Oh boy";
-        public string WarnDescMiddle { get; set; } = " has been warned by "; //Max" has been warned by "SilverDimond
-        public string WarnFieldReason { get; set; } = "Reason"; //Reason : posting memes in general
-        public string WarnFieldId { get; set; } = "Id"; //Id : 6969
-        public string AllServerWarns { get; set; } = "All server warnings";
-        public string InfWarned { get; set; } = " warned "; //SilverDimond warned max at 00:69
-        public string InfAt { get; set; } = " at "; //SilverDimond warned max at 00:69
-        public string NoInfOnServer { get; set; } = "No infraction data on this server";
-        public string MemeIsNsfw { get; set; } = "The meme was NSFW";
-        public string Credits { get; set; } = "Programming by SilverDimond#1691, Most things by SilverDimond#1691, 69% of splashes by ThePajamaSlime#9391, Useless questining by TheNewRicardo#4935, Microsoft for c#, The c# community for their solutions i didnt use, All the 69 NuGet packeges im using, 362700421191565322 the wierd dog that uses python, And most importantly thank you for using the bot.";
-        public string BotName { get; set; } = "SilverBot";
         public string UselessFact { get; set; } = "Useless fact";
 
         /// <summary>
@@ -350,20 +247,12 @@ namespace SilverBotDS.Objects
         public string Ban { get; set; } = "ban";
         public string Kick { get; set; } = "kick";
         public string BotHasLowerRole { get; set; } = "I must have a higher role than the person you are trying to ";
-        public string AvailableLanguages { get; set; } = "Available languages:";
         public string RandomGif { get; set; } = "Random GIF:";
 
         /// <summary>
         /// Powered by GIPHY
         /// </summary>
         public string PoweredByGiphy { get; set; } = "Powered by GIPHY";
-
-        public string SilverBotCommands { get; set; } = "SilverBot Commands";
-        public string AllemotesGuild { get; set; } = "Guild: ";
-        public string UserDoesntHaveBanMembers { get; set; } = "You must have BanMembers permission";
-        public string UserDoesntHaveKickMembers { get; set; } = "You must have kickmembers permission";
-        public string SupportTitle { get; set; } = "Add a command or splash to SilverCraftBot";
-        public string SupportDescription { get; set; } = "Splashes https://forms.gle/vYfaKFmqfsZJGc2e8 Commands https://forms.gle/HR3AhCA6yg4LfULU8 Or join https://discord.gg/ZT4gZCyReB";
 
         /// <summary>
         /// Meme:␣
@@ -379,9 +268,9 @@ namespace SilverBotDS.Objects
         public string NoImageGeneric { get; set; } = "You didnt attach a image";
 
         /// <summary>
-        /// Bruh discord no likey you need something less than 256kb you sent {0}
+        /// Bruv discord no likey you need something less than 256kb you sent {0}
         /// </summary>
-        public string EmoteWasLargerThan256K { get; set; } = "Bruh discord no likey you need something less than 256kb you sent {0}";
+        public string EmoteWasLargerThan256K { get; set; } = "Bruv discord no likey you need something less than 256kb you sent {0}";
 
         /// <summary>
         /// You attached more than one image
@@ -398,12 +287,6 @@ namespace SilverBotDS.Objects
         /// Ment to be used when there isnt a more better term
         /// </remarks>
         public string OutputFileLargerThan8M { get; set; } = "The output file is larger than 8mb, its {0}";
-
-        /// <summary>
-        ///Search results for the term `{0}`
-        /// </summary>
-        [Obsolete("Use Searched_For")]
-        public string SearchResultsForTerm { get; set; } = "Search results for the term `{0}`";
 
         /// <summary>
         /// Page {0}/{1} Use `next` in the next 5 min to see the next page
@@ -424,21 +307,6 @@ namespace SilverBotDS.Objects
         /// Hey that isn't a bot, i think.
         /// </summary>
         public string UserIsntBot { get; set; } = "Hey that isn't a bot, i think.";
-
-        /// <summary>
-        /// Requested by: |loopbot|
-        /// </summary>
-        public string Loopbot { get; set; } = "loopbot";
-
-        /// <summary>
-        /// Requested by: |queuebot|
-        /// </summary>
-        public string Queuebot { get; set; } = "queuebot";
-
-        /// <summary>
-        /// Now playing: {0} 🔂
-        /// </summary>
-        public string NowPlayingLoop { get; set; } = "Now playing: {0} 🔂";
 
         /// <summary>
         /// Now playing: {0}
@@ -481,16 +349,16 @@ namespace SilverBotDS.Objects
         public string TimeTillTrackPlays { get; set; } = "Estimated time till it plays:";
 
         /// <summary>
-        /// {0}\nNow playing: {1}
-        /// </summary>
-        public string ReasonNowPlaying { get; set; } = "{0}\nNow playing: {1}";
-
-        /// <summary>
         /// Uh oh something went wrong. Please try again a little bit later.
         /// </summary>
         public string SearchFail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
 
+        public string SongLength { get; set; } = "Length";
+        public string SongTimePosition { get; set; } = "Position";
+        public string SongTimeLeft { get; set; } = "Time left:";
+        public string SongNotExist { get; set; } = "That song does not exist my dude";
         public string VersionInfoTitle { get; set; } = "SilverBot Version info";
+        public string PurgedBySilverBotReason { get; set; } = "Purged by SilverBot for {0}";
         public string CultureInfo { get; set; } = "en-GB";
 
         public CultureInfo GetCultureInfo()

@@ -80,11 +80,11 @@ namespace SilverBotDS.Commands
             TimeSpan time;
             if (player.CurrentTrack.IsLiveStream)
             {
-                time = TimeSpan.FromHours(2) - player.CurrentTrack.Position;
+                time = TimeSpan.FromHours(2) - player.TrackPosition;
             }
             else
             {
-                time = player.CurrentTrack.Duration - player.CurrentTrack.Position;
+                time = player.CurrentTrack.Duration - player.TrackPosition;
             }
 
             for (int i = 0; i < song - 1; i++)
@@ -120,9 +120,8 @@ namespace SilverBotDS.Commands
                         await Join(ctx);
                     }
                 }
-
                 VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
-                if (song.Contains("velimirs favorite") || song.Contains("velimir's favorite"))
+                if (song.Contains("velimirs") || song.Contains("velimir's"))
                 {
                     song = "i got bitches";
                 }
@@ -184,6 +183,33 @@ namespace SilverBotDS.Commands
             await player.SetVolumeAsync(volume / 100f, true);
         }
 
+        [Command("remove")]
+        [Description("Remove song X from the queue. 0 < songindex > 10000000000")]
+        public async Task Remove(CommandContext ctx, int songindex)
+        {
+            Language lang = Language.GetLanguageFromCtx(ctx);
+            if (!audioService.HasPlayer(ctx.Guild.Id))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected);
+                return;
+            }
+            var channel = ctx.Member?.VoiceState?.Channel;
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected);
+                return;
+            }
+            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            if (songindex < 0 || songindex > player.Queue.Count)
+            {
+                await SendSimpleMessage(ctx, lang.SongNotExist);
+                return;
+            }
+            var thingy = player.Queue[songindex - 1];
+            player.Queue.RemoveAt(songindex - 1);
+            await SendSimpleMessage(ctx, lang.RemovedFront + thingy.Title + lang.SongByAuthor + thingy.Author);
+        }
+
         [Command("queue")]
         [Description("check whats playing rn and whats next")]
         [Aliases("np", "nowplaying")]
@@ -213,7 +239,7 @@ namespace SilverBotDS.Commands
             {
                 var pages = new List<Page>
                 {
-                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)))
+                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,(player.CurrentTrack.Duration).ToString()).AddField(lang.SongTimePosition,(player.TrackPosition).ToString()).AddField(lang.SongTimeLeft,(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
                 };
                 for (var i = 0; i < player.Queue.Count; i++)
                 {

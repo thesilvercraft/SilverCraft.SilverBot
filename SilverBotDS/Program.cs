@@ -171,31 +171,29 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<CalculatorCommands>();
             }
-            if (config.UseAimlBot)
-            {
-                commands.RegisterCommands<AICommands>();
-            }
 
             //Launch lavalink
-            if (!File.Exists("Lavalink.jar"))
+            if (config.AutoDownloadAndStartLavalink)
             {
-                log.Information("Downloading lavalink");
-                GitHubUtils.Repo repo = new("Frederikam", "Lavalink");
-                var release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo);
-                await release.DownloadLatestAsync();
-            }
-            log.Information("Launching lavalink");
-            var proStart = new Process
-            {
-                StartInfo = new ProcessStartInfo
+                if (!File.Exists("Lavalink.jar"))
                 {
-                    FileName = config.JavaLoc,
-                    Arguments = " -jar Lavalink.jar",
-                    UseShellExecute = true
+                    log.Information("Downloading lavalink");
+                    GitHubUtils.Repo repo = new("Frederikam", "Lavalink");
+                    var release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo);
+                    await release.DownloadLatestAsync();
                 }
-            };
+                log.Information("Launching lavalink");
+                var proStart = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = config.JavaLoc,
+                        Arguments = " -jar Lavalink.jar",
+                        UseShellExecute = true
+                    }
+                }.Start();
+            }
 
-            proStart.Start();
             log.Information("Waiting 6s");
             await Task.Delay(6000);
             log.Information("Making a node");

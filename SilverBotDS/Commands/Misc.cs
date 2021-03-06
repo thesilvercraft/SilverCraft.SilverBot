@@ -42,6 +42,45 @@ namespace SilverBotDS.Commands
         }
 
         //TODO make it better
+        [Command("urbandictionary"), Aliases("urbandict", "urban")]
+        [Description("Search up definitions for words on urban dictionary, pls dont kill me urban")]
+        public async Task Urban(CommandContext ctx, [Description("the name of the package")][RemainingText] string query)
+        {
+            var lang = Language.GetLanguageFromCtx(ctx);
+            try
+            {
+                var data = await UrbanDictUtils.GetDefenition(query);
+                if (data is null)
+                {
+                    var bob = new DiscordEmbedBuilder().WithTitle("Something went wrong.").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
+                    await ctx.RespondAsync(embed: bob.Build());
+
+                    return;
+                }
+                var pages = new List<Page>();
+                for (var i = 0; i < data.Length; i++)
+                {
+                    var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Word).WithUrl(data[i].Permalink).WithColor(await ColorUtils.GetSingleAsync());
+                    if (!string.IsNullOrEmpty(data[i].Example))
+                    {
+                        tempbuilder.AddField("Example", data[i].Example);
+                    }
+                    tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + " " + string.Format(lang.PageNuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
+                    pages.Add(new Page(embed: tempbuilder));
+                }
+
+                await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+            }
+            catch (Exception e)
+            {
+                var bob = new DiscordEmbedBuilder().WithTitle("Something went wrong.").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
+                await ctx.RespondAsync(embed: bob.Build());
+                Program.SendLog(e);
+                throw;
+            }
+        }
+
+        //TODO make it better
         [Command("nuget"), Aliases("nu")]
         [Description("Search up packages on the NuGet")]
         public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)

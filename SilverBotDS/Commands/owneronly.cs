@@ -16,6 +16,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Text.Json;
+using Xabe.FFmpeg;
+using System.Collections;
+using System.Linq;
+using Xabe.FFmpeg.Downloader;
 
 namespace SilverBotDS.Commands
 {
@@ -30,6 +34,43 @@ namespace SilverBotDS.Commands
         public async Task Repeat(CommandContext ctx, [RemainingText()][Description("The thing to repeat")] string e) => await ctx.RespondAsync(e);
 
         private readonly string[] _urls = { "https://silverdimond.tk", "https://yahoo.com", "https://bing.com", "https://vfl.gg", "https://discord.com", "https://github.com", "https://github.com/silverdimond" };
+
+        private static IEnumerable GetFilesToConvert(string directoryPath)
+        {
+            return new DirectoryInfo(directoryPath).GetFiles();
+        }
+
+        [Command("riprandomframes")]
+        [Description("less gooo baybae")]
+        public async Task RipRandomFrames(CommandContext ctx, int times, string loc)
+        {
+            var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
+            await ctx.RespondAsync($"its {info.Duration.Humanize()} ({info.Duration}) long");
+
+            RandomGenerator random = new();
+
+            string name = Path.GetFileName(loc);
+            IVideoStream videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
+            for (int i = 0; i < times; i++)
+            {
+                IConversionResult conversionResult = await FFmpeg.Conversions.New()
+                .AddStream(videoStream)
+                .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (number) => { return "Extracts\\" + name + i + ".png"; })
+                .UseHardwareAcceleration(HardwareAccelerator.auto, VideoCodec.hevc, VideoCodec.png)
+                .Start();
+            }
+
+            await ctx.RespondAsync($"done?");
+        }
+
+        [Command("downloadffmpeg")]
+        [Description("less gooo baybae")]
+        public async Task Downloadffmpeg(CommandContext ctx)
+        {
+            await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
+            await ctx.RespondAsync($"done?");
+            //await FFmpeg.GetLatestVersion();
+        }
 
         [Command("stress")]
         [Description("less gooo baybae")]

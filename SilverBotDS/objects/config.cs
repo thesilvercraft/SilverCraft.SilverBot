@@ -41,7 +41,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 9;
+        private const ulong CurrentConfVer = 10;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -82,11 +82,11 @@ namespace SilverBotDS.Objects
         [XmlDescription("Conection string for database, Unused if using litedb, make null if stored in DATABASE_URL")]
         public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
 
-        [XmlDescription("Do we even try to load the aiml bot")]
-        public bool UseAimlBot { get; set; } = false;
-
-        [XmlDescription("OUR GOD IS AN AWSOME GOD, uses Jering.Javascript.NodeJS")]
+        [XmlDescription("Uses Jering.Javascript.NodeJS to execute some javascript code")]
         public bool UseNodeJs { get; set; } = false;
+
+        [XmlDescription("Allow silverbot to download and start Lavalink, if you disable this your responsible for launching lavalink")]
+        public bool AutoDownloadAndStartLavalink { get; set; } = true;
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {
@@ -254,7 +254,6 @@ namespace SilverBotDS.Objects
                 case 2:
                     {
                         //litedb
-
                         Console.WriteLine("Using a litedb database");
                         Program.SetDatabase(new LiteDBDatabase());
                         break;

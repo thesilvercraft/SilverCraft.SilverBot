@@ -239,7 +239,7 @@ namespace SilverBotDS.Commands
             {
                 var pages = new List<Page>
                 {
-                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,(player.CurrentTrack.Duration).ToString()).AddField(lang.SongTimePosition,(player.TrackPosition).ToString()).AddField(lang.SongTimeLeft,(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
+                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
                 };
                 for (var i = 0; i < player.Queue.Count; i++)
                 {

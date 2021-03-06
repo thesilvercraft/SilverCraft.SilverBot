@@ -28,7 +28,6 @@
     <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00799" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00799" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00799" />
-    <PackageReference Include="ELIZA.NET" Version="1.2.0" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.0" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
@@ -55,6 +54,8 @@
     <PackageReference Include="System.Text.Json" Version="5.0.1" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="Wbubbler" Version="1.0.2" />
+    <PackageReference Include="Xabe.FFmpeg" Version="4.4.0" />
+    <PackageReference Include="Xabe.FFmpeg.Downloader" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>

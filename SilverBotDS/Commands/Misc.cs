@@ -4,6 +4,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using Humanizer;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -41,6 +42,37 @@ namespace SilverBotDS.Commands
             }
         }
 
+        [Command("translateunknown")]
+        [Description("translate from an unknown language")]
+        public async Task TranlateUnknown(CommandContext ctx, [RemainingText] string text)
+        {
+            var lang = Language.GetLanguageFromCtx(ctx);
+            Translator translator = new(NetClient.Get());
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                             .WithContent(await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate))
+                                             .SendAsync(ctx.Channel);
+        }
+
+        [Command("translateunknownto")]
+        [Description("translate from an unknown language to a specified one")]
+        public async Task TranlateUnknown(CommandContext ctx, string LanguageTo, [RemainingText] string text)
+        {
+            var lang = Language.GetLanguageFromCtx(ctx);
+            LanguageTo = LanguageTo.Humanize(casing: LetterCasing.Sentence);
+            Translator translator = new(NetClient.Get());
+
+            if (!Translator.ContainsKeyOrVal(LanguageTo))
+            {
+                await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                           .WithContent(string.Format(lang.NotValidLanguage, StringUtils.ArrayToString(Translator.Languages.ToArray(), ", ")))
+                                           .SendAsync(ctx.Channel);
+                return;
+            }
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                         .WithContent(await translator.TranslateAsync(text, "auto", LanguageTo))
+                                         .SendAsync(ctx.Channel);
+        }
+
         //TODO make it better
         [Command("urbandictionary"), Aliases("urbandict", "urban")]
         [Description("Search up definitions for words on urban dictionary, pls dont kill me urban")]
@@ -50,21 +82,15 @@ namespace SilverBotDS.Commands
             try
             {
                 var data = await UrbanDictUtils.GetDefenition(query);
-                if (data is null)
-                {
-                    var bob = new DiscordEmbedBuilder().WithTitle("Something went wrong.").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
-                    await ctx.RespondAsync(embed: bob.Build());
-
-                    return;
-                }
                 var pages = new List<Page>();
                 for (var i = 0; i < data.Length; i++)
                 {
-                    var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Word).WithUrl(data[i].Permalink).WithColor(await ColorUtils.GetSingleAsync());
+                    var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Word).WithUrl(data[i].Permalink).WithColor(await ColorUtils.GetSingleAsync()).WithDescription(data[i].Definition);
                     if (!string.IsNullOrEmpty(data[i].Example))
                     {
                         tempbuilder.AddField("Example", data[i].Example);
                     }
+
                     tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + " " + string.Format(lang.PageNuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
                     pages.Add(new Page(embed: tempbuilder));
                 }
@@ -73,7 +99,7 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                var bob = new DiscordEmbedBuilder().WithTitle("Something went wrong.").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
+                var bob = new DiscordEmbedBuilder().WithTitle(lang.SearchFailTitle).WithDescription(lang.SearchFailDescription).WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());
                 Program.SendLog(e);
                 throw;

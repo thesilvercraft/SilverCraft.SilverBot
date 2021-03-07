@@ -33,12 +33,7 @@ namespace SilverBotDS.Commands
         [Description("Repeats the message content")]
         public async Task Repeat(CommandContext ctx, [RemainingText()][Description("The thing to repeat")] string e) => await ctx.RespondAsync(e);
 
-        private readonly string[] _urls = { "https://silverdimond.tk", "https://yahoo.com", "https://bing.com", "https://vfl.gg", "https://discord.com", "https://github.com", "https://github.com/silverdimond" };
-
-        private static IEnumerable GetFilesToConvert(string directoryPath)
-        {
-            return new DirectoryInfo(directoryPath).GetFiles();
-        }
+        private readonly string[] _urls = { "https://silverdimond.tk", "https://vfl.gg", "https://github.com/silverdimond" };
 
         [Command("riprandomframes")]
         [Description("less gooo baybae")]

@@ -17,6 +17,11 @@ namespace SilverBotDS.Objects
         public string LangName { get; set; } = "Default(EN)";
 
         /// <summary>
+        /// A 2-4 alphanumeric code
+        /// </summary>
+        public string LangCodeGoogleTranslate { get; set; } = "en";
+
+        /// <summary>
         /// <b>Hi </b>@max<b>!</b>
         /// <para/>
         /// <b>Hi␣</b>{0}<b>!</b>
@@ -352,13 +357,21 @@ namespace SilverBotDS.Objects
         /// Uh oh something went wrong. Please try again a little bit later.
         /// </summary>
         public string SearchFail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
-
+        /// <summary>
+        /// Uh oh something went wrong.
+        /// </summary>
+        public string SearchFailTitle { get; set; } = "Uh oh something went wrong.";
+        /// <summary>
+        /// Please try again a little bit later.
+        /// </summary>
+        public string SearchFailDescription { get; set; } = "Please try again a little bit later.";
         public string SongLength { get; set; } = "Length";
         public string SongTimePosition { get; set; } = "Position";
         public string SongTimeLeft { get; set; } = "Time left:";
         public string SongNotExist { get; set; } = "That song does not exist my dude";
         public string VersionInfoTitle { get; set; } = "SilverBot Version info";
         public string PurgedBySilverBotReason { get; set; } = "Purged by SilverBot for {0}";
+        public string NotValidLanguage { get; set; } = "That isn't a valid language, valid languages are:{0}";
         public string CultureInfo { get; set; } = "en-GB";
 
         public CultureInfo GetCultureInfo()

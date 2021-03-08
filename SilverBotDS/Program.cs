@@ -70,10 +70,10 @@ namespace SilverBotDS
                         break;
                     }
             }
-            log.Information("NOT Checking for updates (silver has a new idea that will be implemented soon)");
+            log.Information("Checking for updates");
 
             //Check for updates
-            //VersionInfo.Checkforupdates();
+            VersionInfo.Checkforupdates();
             log.Information("Starting MainAsync");
 
             //Start the main async task

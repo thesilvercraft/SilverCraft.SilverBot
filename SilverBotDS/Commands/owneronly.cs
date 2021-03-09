@@ -187,23 +187,23 @@ namespace SilverBotDS.Commands
                 string str = ob.ToString();
                 if (ob.GetType() == typeof(TimeSpan))
                 {
-                    str = AddBraces(((TimeSpan)ob).Humanize(999));
+                    str = ((TimeSpan)ob).Humanize(999);
                 }
                 else if (ob.GetType() == typeof(DateTime))
                 {
-                    str = AddBraces(((DateTime)ob).Humanize());
+                    str = ((DateTime)ob).Humanize();
                 }
                 else if (ob.GetType() == typeof(string))
                 {
-                    str = AddBraces(RemoveCodeBraces((string)ob));
+                    str = RemoveCodeBraces((string)ob);
                 }
                 else if (ob.GetType() == typeof(int))
                 {
-                    str = AddBraces(((int)ob).ToString());
+                    str = ((int)ob).ToString();
                 }
                 else if (ob.GetType() == typeof(double))
                 {
-                    str = AddBraces(((double)ob).ToString());
+                    str = ((double)ob).ToString();
                 }
                 else if (ob.GetType().IsSerializable || ob.GetType().IsArray || ob.GetType().IsEnum || ob.GetType().FullName == ob.ToString())
                 {

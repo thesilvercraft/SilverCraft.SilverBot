@@ -175,6 +175,11 @@ namespace SilverBotDS.Commands
             await new DiscordMessageBuilder().WithContent(title).WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }
 
+        private static string AddBraces(string a)
+        {
+            return "```" + a + "```";
+        }
+
         public static async Task SendBestRepresentationAsync(object ob, CommandContext ctx)
         {
             try
@@ -182,28 +187,28 @@ namespace SilverBotDS.Commands
                 string str = ob.ToString();
                 if (ob.GetType() == typeof(TimeSpan))
                 {
-                    str = ((TimeSpan)ob).Humanize(999);
+                    str = AddBraces(((TimeSpan)ob).Humanize(999));
                 }
                 else if (ob.GetType() == typeof(DateTime))
                 {
-                    str = ((DateTime)ob).Humanize();
+                    str = AddBraces(((DateTime)ob).Humanize());
                 }
                 else if (ob.GetType() == typeof(string))
                 {
-                    str = RemoveCodeBraces((string)ob);
+                    str = AddBraces(RemoveCodeBraces((string)ob));
                 }
                 else if (ob.GetType() == typeof(int))
                 {
-                    str = ((int)ob).ToString();
+                    str = AddBraces(((int)ob).ToString());
                 }
                 else if (ob.GetType() == typeof(double))
                 {
-                    str = ((double)ob).ToString();
+                    str = AddBraces(((double)ob).ToString());
                 }
                 else if (ob.GetType().IsSerializable || ob.GetType().IsArray || ob.GetType().IsEnum || ob.GetType().FullName == ob.ToString())
                 {
                     str = JsonSerializer.Serialize(ob, options);
-                    if (str.Length > 2000)
+                    if (str.Length >= 2000)
                     {
                         await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
                         return;
@@ -212,17 +217,14 @@ namespace SilverBotDS.Commands
                     {
                         str = "```json\n" + str + "```";
                     }
-                    if (str.Length > 100)
-                    {
-                        str = "```" + str + "```";
-                    }
                 }
-                if (ob.ToString().Length > 2000)
+
+                if (ob.ToString().Length >= 2000)
                 {
                     await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
                     return;
                 }
-                await new DiscordMessageBuilder().WithContent(ob.GetType().FullName + " " + str).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent(ob.GetType().FullName + " " + AddBraces(str)).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
             }
             catch (Exception e)
             {
@@ -240,9 +242,9 @@ namespace SilverBotDS.Commands
         /// <summary>
         /// Stolen idea from https://github.com/Voxel-Fox-Ltd/VoxelBotUtils/blob/master/voxelbotutils/cogs/owner_only.py#L172-L252
         /// </summary>
-        [Command("eval")]
+        [Command("evaluate")]
         [Description("UHHHHHHHHHHHHH its a secret")]
-        [Aliases("ev")]
+        [Aliases("eval", "ev")]
         public async Task Eval(CommandContext ctx, [RemainingText] string code)
         {
             TextWriter console = Console.Out;
@@ -262,14 +264,14 @@ namespace SilverBotDS.Commands
                 }
                 if (!string.IsNullOrEmpty(sw.ToString()))
                 {
-                    if (sw.ToString().Length > 2000)
+                    if (sw.ToString().Length > 1979)
                     {
                         //sending as a file to not get a 400
                         await SendStringFileWithContent(ctx, "Console Output", sw.ToString(), "console.txt");
                     }
                     else
                     {
-                        await new DiscordMessageBuilder().WithContent("Console Output" + " ```" + sw.ToString() + "```").SendAsync(ctx.Channel);
+                        await new DiscordMessageBuilder().WithContent("Console Output" + AddBraces(sw.ToString())).SendAsync(ctx.Channel);
                     }
                 }
                 sw.Close();
@@ -280,7 +282,7 @@ namespace SilverBotDS.Commands
             {
                 Console.SetOut(console);
                 Program.SendLog(e);
-                if (e.Message.Length > 2000)
+                if (e.Message.Length > 1958)
                 {
                     await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Message, "error.txt");
                 }

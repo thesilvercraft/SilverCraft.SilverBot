@@ -18,9 +18,10 @@ namespace SilverBotDS.Commands
 {
     internal class MiscCommands : BaseCommandModule
     {
-        [Command("ver")]
+        [Command("version")]
         [Description("Get the version info")]
-        public async Task Userinfo(CommandContext ctx)
+        [Aliases("ver", "verinfo", "versioninfo")]
+        public async Task VersionInfoCmd(CommandContext ctx)
         {
             try
             {
@@ -32,6 +33,7 @@ namespace SilverBotDS.Commands
                     .AddField("Git Commit hash", "`" + ThisAssembly.Git.Commit + "`")
                     .AddField("Git Branch", "`" + ThisAssembly.Git.Branch + "`")
                     .AddField("Is dirty", StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
+                    .AddField("CLR ", "`" + (ctx.Client.CurrentApplication.Owners.Contains(ctx.User) && ctx.Channel.IsPrivate ? System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription : "REDACTED") + "`")
                     .WithAuthor(ctx.Client.CurrentUser.Username + "#" + ctx.Client.CurrentUser.Discriminator, iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
                     .WithColor(await ColorUtils.GetSingleAsync())
                     .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);

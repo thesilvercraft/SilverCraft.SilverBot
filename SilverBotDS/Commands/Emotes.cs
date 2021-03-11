@@ -4,10 +4,12 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -47,23 +49,38 @@ namespace SilverBotDS.Commands
         [Description("Wanna add a emote but discord is too complicated to navigate. You need to add attachment here ")]
         [RequireGuild()]
         [RequirePermissions(Permissions.ManageEmojis)]
-        public async Task UselessFact(CommandContext ctx, [Description("Name like `Kappa`")] string name)
+        public async Task AddEmote(CommandContext ctx, [Description("Name like `Kappa`")] string name)
         {
             var lang = Language.GetLanguageFromCtx(ctx);
-            switch (ctx.Message.Attachments.Count)
+
+            try
             {
-                case 0:
-                    await ctx.RespondAsync(lang.NoImageGeneric);
-                    return;
-
-                case > 1:
-                    await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
-                    return;
+                var image = SdImage.FromContext(ctx);
+                await AddEmote(ctx, image, name);
             }
+            catch (AttachmentCountIncorrectException acie)
+            {
+                switch (acie.AttachmentCount)
+                {
+                    case AttachmentCountIncorrect.TooLittleAttachments:
+                        await ctx.RespondAsync(lang.NoImageGeneric);
+                        return;
 
-            var client = NetClient.Get();
-            var rm = await client.GetAsync(ctx.Message.Attachments[0].ProxyUrl);
-            var st = await rm.Content.ReadAsStreamAsync();
+                    case AttachmentCountIncorrect.TooMuchAttachments:
+                        await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
+                        return;
+                }
+            }
+        }
+
+        [Command("addemote")]
+        [Description("Wanna add a emote but discord is too complicated to navigate. You need to add attachment here ")]
+        [RequireGuild()]
+        [RequirePermissions(Permissions.ManageEmojis)]
+        public async Task AddEmote(CommandContext ctx, [Description("Url of the thing")] SdImage url, [Description("Name like `Kappa`")] string name)
+        {
+            var lang = Language.GetLanguageFromCtx(ctx);
+            await using var st = new MemoryStream(await url.GetBytesAsync());
             if (st.Length > 256 * 1000)
             {
                 await ctx.RespondAsync(string.Format(lang.EmoteWasLargerThan256K, FileSizeUtils.FormatSize(st.Length)));

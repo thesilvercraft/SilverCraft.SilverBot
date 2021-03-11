@@ -60,20 +60,16 @@ namespace SilverBotDS.Converters
 
     public class SdImageConverter : IArgumentConverter<SdImage>
     {
-        private readonly Regex _expression = new Regex("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+");
+        private readonly Regex _expression = new Regex("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex _emote = new Regex("<(a)?:(?<name>.+?):(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         public async Task<Optional<SdImage>> ConvertAsync(string value, CommandContext ctx)
         {
-            if (ctx.Client.Guilds.Values.Any())
+            var m = _emote.Match(value);
+
+            if (m.Success)
             {
-                foreach (var guild in ctx.Client.Guilds.Values)
-                {
-                    var emoji = guild.Emojis.Values.FirstOrDefault(x => x.ToString() == value);
-                    if (emoji != default)
-                    {
-                        return Optional.FromValue(new SdImage(emoji.Url));
-                    }
-                }
+                return Optional.FromValue(new SdImage($"https://cdn.discordapp.com/emojis/{m.Groups["id"].Value}"));
             }
 
             if (_expression.IsMatch(value))

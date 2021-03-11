@@ -31,7 +31,7 @@ namespace SilverBotDS.Commands
                     .AddField("Git repo", ThisAssembly.Git.RepositoryUrl)
                     .AddField("Git Commit hash", "`" + ThisAssembly.Git.Commit + "`")
                     .AddField("Git Branch", "`" + ThisAssembly.Git.Branch + "`")
-                    .AddField("Is dirty", ThisAssembly.Git.IsDirtyString)
+                    .AddField("Is dirty", StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
                     .WithAuthor(ctx.Client.CurrentUser.Username + "#" + ctx.Client.CurrentUser.Discriminator, iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
                     .WithColor(await ColorUtils.GetSingleAsync())
                     .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
@@ -162,7 +162,7 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                var bob = new DiscordEmbedBuilder().WithTitle("Something went wrong.").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
+                var bob = new DiscordEmbedBuilder().WithTitle(lang.SearchFailTitle).WithDescription(lang.SearchFailDescription).WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());
                 Program.SendLog(e);
                 throw;

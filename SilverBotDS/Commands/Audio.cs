@@ -121,6 +121,10 @@ namespace SilverBotDS.Commands
                     }
                 }
                 VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+                if (song.Contains("we will fock you"))
+                {
+                    song = "https://youtu.be/lLN3caSQI1w";
+                }
                 if (song.Contains("velimirs") || song.Contains("velimir's"))
                 {
                     song = "i got bitches";

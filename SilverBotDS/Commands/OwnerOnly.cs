@@ -282,13 +282,13 @@ namespace SilverBotDS.Commands
             {
                 Console.SetOut(console);
                 Program.SendLog(e);
-                if (e.Message.Length > 1958)
+                if (e.Diagnostics.Humanize().Length > 1958)
                 {
-                    await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Message, "error.txt");
+                    await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Diagnostics.Humanize(), "error.txt");
                 }
                 else
                 {
-                    await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: ```csharp\n" + RemoveCodeBraces(e.Message) + "```").SendAsync(ctx.Channel);
+                    await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: ```csharp\n" + RemoveCodeBraces(e.Diagnostics.Humanize()) + "```").SendAsync(ctx.Channel);
                 }
                 throw;
             }

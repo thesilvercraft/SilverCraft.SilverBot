@@ -13,12 +13,9 @@ namespace SilverBotDS.Utils
         /// <returns>A random string from the array</returns>
         public static string RandomFromArray(string[] vs)
         {
-            var randomGenerator = new RandomGenerator();
-            if (vs.Length == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(vs.Length), "Array lenght must be above 0");
-            }
-            return vs[randomGenerator.Next(0, vs.Length - 1)];
+            return vs.Length == 0
+                ? throw new ArgumentOutOfRangeException(nameof(vs.Length), "Array length must be above 0")
+                : vs[new RandomGenerator().Next(0, vs.Length - 1)];
         }
 
         /// <summary>
@@ -39,7 +36,7 @@ namespace SilverBotDS.Utils
                 throw new ArgumentException("Part length has to be positive.", nameof(partLength));
             }
 
-            for (var i = 0; i < s.Length; i += partLength)
+            for (int i = 0; i < s.Length; i += partLength)
             {
                 yield return s.Substring(i, Math.Min(partLength, s.Length - i));
             }
@@ -52,14 +49,7 @@ namespace SilverBotDS.Utils
         /// <returns>A string containing the fancy discord emote</returns>
         public static string BoolToEmoteString(bool b)
         {
-            if (b)
-            {
-                return ":white_check_mark:";
-            }
-            else
-            {
-                return ":x:";
-            }
+            return b ? ":white_check_mark:" : ":x:";
         }
 
         /// <summary>
@@ -75,14 +65,7 @@ namespace SilverBotDS.Utils
                 return string.Empty;
             }
             var sb = new StringBuilder();
-            if (string.IsNullOrEmpty(seperator))
-            {
-                foreach (var item in arr)
-                {
-                    sb.Append(item);
-                }
-            }
-            else
+            if (!string.IsNullOrEmpty(seperator))
             {
                 for (int e = 0; e < arr.Length; e++)
                 {
@@ -91,6 +74,13 @@ namespace SilverBotDS.Utils
                     {
                         sb.Append(seperator);
                     }
+                }
+            }
+            else
+            {
+                foreach (var item in arr)
+                {
+                    sb.Append(item);
                 }
             }
             return sb.ToString();

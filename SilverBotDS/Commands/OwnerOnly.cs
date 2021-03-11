@@ -20,6 +20,7 @@ using Xabe.FFmpeg;
 using System.Collections;
 using System.Linq;
 using Xabe.FFmpeg.Downloader;
+using DSharpPlus.Interactivity.Extensions;
 
 namespace SilverBotDS.Commands
 {
@@ -76,6 +77,36 @@ namespace SilverBotDS.Commands
                 _ = Html(ctx, url);
             }
             return Task.CompletedTask;
+        }
+
+        [Command("plot")]
+        [Description("plot a thingy")]
+        public async Task Plot(CommandContext ctx)
+        {
+            var interactivity = ctx.Client.GetInteractivity();
+            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("send x data"));
+            var msg = await interactivity.WaitForMessageAsync((a) => { return a.Author.Id == ctx.User.Id; });
+            if (msg.TimedOut)
+            {
+                await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("nvm your too slow"));
+                return;
+            }
+            double[] xdata = Array.ConvertAll(msg.Result.Content.Split(','), double.Parse);
+            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("send y data"));
+            msg = await interactivity.WaitForMessageAsync((a) => { return a.Author.Id == ctx.User.Id; });
+            if (msg.TimedOut)
+            {
+                await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("nvm your too slow"));
+                return;
+            }
+            double[] ydata = Array.ConvertAll(msg.Result.Content.Split(','), double.Parse);
+            var plt = new ScottPlot.Plot(1920, 1080);
+            plt.AddScatter(xdata, ydata);
+            var bitmap = plt.Render();
+            await using var outStream = new MemoryStream();
+            bitmap.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
+            outStream.Position = 0;
+            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("plotted that").WithFile("silverbotimage.png", outStream));
         }
 
         [Command("setupcategory")]
@@ -145,7 +176,7 @@ namespace SilverBotDS.Commands
             await channel.SendMessageAsync(person.Mention + " there m8 that took some time to do");
         }
 
-        private readonly string[] references = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "MathParser.org-mXparser" };
+        private readonly string[] references = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "MathParser.org-mXparser", "ScottPlot", "SilverBotDS" };
 
         private readonly string[] imports = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer" };
 
@@ -197,14 +228,6 @@ namespace SilverBotDS.Commands
                 {
                     str = RemoveCodeBraces((string)ob);
                 }
-                else if (ob.GetType() == typeof(int))
-                {
-                    str = ((int)ob).ToString();
-                }
-                else if (ob.GetType() == typeof(double))
-                {
-                    str = ((double)ob).ToString();
-                }
                 else if (ob.GetType().IsSerializable || ob.GetType().IsArray || ob.GetType().IsEnum || ob.GetType().FullName == ob.ToString())
                 {
                     str = JsonSerializer.Serialize(ob, options);
@@ -218,13 +241,16 @@ namespace SilverBotDS.Commands
                         str = "```json\n" + str + "```";
                     }
                 }
-
+                else
+                {
+                    str = AddBraces(str);
+                }
                 if (ob.ToString().Length >= 2000)
                 {
                     await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
                     return;
                 }
-                await new DiscordMessageBuilder().WithContent(ob.GetType().FullName + " " + AddBraces(str)).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent(ob.GetType().FullName + ' ' + str).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
             }
             catch (Exception e)
             {

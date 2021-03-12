@@ -14,7 +14,22 @@ namespace SilverBotDS.Utils
             return new ColorUtils();
         }
 
-        private static DiscordColor[] Internal { get; } = { DiscordColor.Red, DiscordColor.Green, DiscordColor.Blue };
+        private static DiscordColor[] Internal { get; } = {
+            DiscordColor.Red,
+            DiscordColor.Green,
+            DiscordColor.Blue,
+            //miku colors
+            new DiscordColor(149, 207, 208),
+            new DiscordColor(208, 236, 244),
+            //popular colors
+            new DiscordColor(127,255,212),
+            new DiscordColor(138,43,226),
+            new DiscordColor(255,69,0),
+            new DiscordColor(0,128,0),
+            //monika
+            new DiscordColor(206, 138, 128),
+        };
+
         private static DiscordColor[] cache;
 
         /// <summary>
@@ -68,9 +83,20 @@ namespace SilverBotDS.Utils
                 return new SdColor { R = color.R, G = color.G, B = color.B };
             }
 
-            private byte R { get; init; }
-            private byte G { get; init; }
-            private byte B { get; init; }
+            public byte R { get; init; }
+            public byte G { get; init; }
+            public byte B { get; init; }
+        }
+
+        /// <summary>
+        /// Gets a single (random) <see cref="DiscordColor"/> with no parameters
+        /// </summary>
+        /// <returns>a single (random) <see cref="DiscordColor"/></returns>
+        public static async Task<DiscordColor> GetSingleAsync() => await GetSingleAsync(useinternal: !Program.GetConfig().ColorConfig);
+
+        public static async Task ReloadConfig()
+        {
+            await GetAsync(true, useinternal: !Program.GetConfig().ColorConfig);
         }
 
         /// <summary>

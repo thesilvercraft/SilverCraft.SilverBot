@@ -41,7 +41,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 10;
+        private const ulong CurrentConfVer = 11;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -64,7 +64,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The Lavalink Node restful HTTP api URI.")]
         public string LavalinkRestUri { get; set; } = "http://localhost:2333/";
 
-        [XmlDescription("The Lavalink Node WebSocket host(name).")]
+        [XmlDescription("The Lavalink Node WebSocket URI.")]
         public string LavalinkWebSocketUri { get; set; } = "ws://localhost:2333/";
 
         [XmlDescription("The Lavalink Node Password.")]
@@ -76,7 +76,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("Friday voice channel. leave none to disable")]
         public ulong FridayVoiceChannel { get; set; }
 
-        [XmlDescription("What kind of database to use, 1 for postgres, 2 for litedb (recommended)")]
+        [XmlDescription("What kind of database to use, 1 for postgres (slower but a traditional database), 2 for litedb (faster if your local disk is fast, not really a database))")]
         public int DatabaseType { get; set; } = 1;
 
         [XmlDescription("Conection string for database, Unused if using litedb, make null if stored in DATABASE_URL")]
@@ -87,6 +87,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Allow silverbot to download and start Lavalink, if you disable this your responsible for launching lavalink")]
         public bool AutoDownloadAndStartLavalink { get; set; } = true;
+
+        [XmlDescription("Allow silverbot to load (or make) a colors config, useful if you plan on adding colors")]
+        public bool ColorConfig { get; set; } = true;
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {

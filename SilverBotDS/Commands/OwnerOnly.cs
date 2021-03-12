@@ -68,6 +68,18 @@ namespace SilverBotDS.Commands
             //await FFmpeg.GetLatestVersion();
         }
 
+        [Command("reloadcolors")]
+        [Description("reloads the colors.json")]
+        public async Task ReloadColors(CommandContext ctx)
+        {
+            if (!Program.GetConfig().ColorConfig)
+            {
+                await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder().WithTitle("Reloading does nothing lololol").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+            }
+            await ColorUtils.ReloadConfig();
+            await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder().WithTitle("Reloaded the colors").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(await ColorUtils.GetSingleAsync()).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+        }
+
         [Command("stress")]
         [Description("less gooo baybae")]
         public Task Stress(CommandContext ctx)

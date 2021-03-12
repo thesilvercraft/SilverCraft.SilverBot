@@ -94,6 +94,10 @@ namespace SilverBotDS.Utils
         /// <returns>a single (random) <see cref="DiscordColor"/></returns>
         public static async Task<DiscordColor> GetSingleAsync() => await GetSingleAsync(useinternal: !Program.GetConfig().ColorConfig);
 
+        /// <summary>
+        /// Reloads the config
+        /// </summary>
+        /// <returns>Nothing</returns>
         public static async Task ReloadConfig()
         {
             await GetAsync(true, useinternal: !Program.GetConfig().ColorConfig);

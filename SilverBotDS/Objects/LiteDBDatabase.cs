@@ -49,34 +49,9 @@ namespace SilverBotDS.Objects
             try
             {
                 using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
-
                 var da = db.Execute(sql);
-
-                StringBuilder thing = new("<html>" +
-                    "<head>" +
-                    "<style>" +
-                    "table, th, td {" +
-                    "border: 2px solid white;" +
-                    "border-collapse: collapse;" +
-                    "}" +
-                    "table{" +
-                    "width: 100%;" +
-                    "height: 100%;" +
-                    "}" +
-                    "th,tr{" +
-                    "color:#ffffff;" +
-                    "font-size: 25px;" +
-                    "}" +
-                    "body{" +
-                    "background-color:2C2F33;" +
-                    "}" +
-                    "</style>" +
-                    "</head>" +
-                    "<body>" +
-                    "<table style=\"width: 100 % \">");
-
-                var index = 0;
-
+                StringBuilder thing = new(ISBDatabase.HtmlStart);
+                ulong index = 0;
                 while (da.Read())
                 {
                     if (index++ <= RESULT_LIMIT)
@@ -126,6 +101,49 @@ namespace SilverBotDS.Objects
                 Program.SendLog(exep);
             }
             return await Task.FromResult<List<Serveroptin>>(new());
+        }
+
+        public Task<string> GetLangCodeGuild(ulong id) => GetLangCodeGeneric(id, "GuildLang");
+
+        public Task<string> GetLangCodeUser(ulong id) => GetLangCodeGeneric(id, "UserLang");
+
+        public Task InserOrUpdateLangCodeUser(DbLang l) => InserOrUpdateLangCodeGeneric(l, "UserLang");
+
+        public Task InserOrUpdateLangCodeGuild(DbLang l) => InserOrUpdateLangCodeGeneric(l, "GuildLang");
+
+        public Task InserOrUpdateLangCodeGeneric(DbLang l, string dbname)
+        {
+            try
+            {
+                using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
+                ILiteCollection<DbLang> col = db.GetCollection<DbLang>(dbname);
+
+                col.Upsert(l);
+
+                return Task.CompletedTask;
+            }
+            catch (Exception exep)
+            {
+                Program.SendLog(exep);
+                return Task.FromException(exep);
+            }
+        }
+
+        public Task<string> GetLangCodeGeneric(ulong id, string dbname)
+        {
+            try
+            {
+                using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
+                ILiteCollection<DbLang> col = db.GetCollection<DbLang>(dbname);
+                col.EnsureIndex(x => x.DId);
+                return Task.FromResult(col.FindAll()
+                          .First(x => x.DId == id)?.Name);
+            }
+            catch (Exception exep)
+            {
+                Program.SendLog(exep);
+            }
+            return Task.FromResult("en");
         }
     }
 }

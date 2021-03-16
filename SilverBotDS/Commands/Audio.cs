@@ -29,7 +29,7 @@ namespace SilverBotDS.Commands
 
         private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "", string imageurl = "", string url = "")
         {
-            var embedBuilder = new DiscordEmbedBuilder().WithFooter(Language.GetLanguageFromCtx(ctx).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithColor(await ColorUtils.GetSingleAsync());
+            var embedBuilder = new DiscordEmbedBuilder().WithFooter((await Language.GetLanguageFromCtxAsync(ctx)).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithColor(await ColorUtils.GetSingleAsync());
             var messageBuilder = new DiscordMessageBuilder();
             if (!string.IsNullOrEmpty(message))
             {
@@ -55,7 +55,7 @@ namespace SilverBotDS.Commands
 
         private static async Task SendSimpleMessage(CommandContext ctx, string title = "", string message = "")
         {
-            var embedBuilder = new DiscordEmbedBuilder().WithFooter(Language.GetLanguageFromCtx(ctx).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithColor(await ColorUtils.GetSingleAsync());
+            var embedBuilder = new DiscordEmbedBuilder().WithFooter((await Language.GetLanguageFromCtxAsync(ctx)).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithColor(await ColorUtils.GetSingleAsync());
             var messageBuilder = new DiscordMessageBuilder();
             if (!string.IsNullOrEmpty(message))
             {
@@ -106,7 +106,7 @@ namespace SilverBotDS.Commands
             }
             try
             {
-                Language lang = Language.GetLanguageFromCtx(ctx);
+                Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
 
                 if (!audioService.HasPlayer(ctx.Guild.Id))
                 {
@@ -125,16 +125,28 @@ namespace SilverBotDS.Commands
                 {
                     song = "https://youtu.be/lLN3caSQI1w";
                 }
+                if (song.Contains("special for bub"))
+                {
+                    song = "https://www.youtube.com/watch?v=y1TJBgpGrd8";
+                }
                 if (song.Contains("velimirs") || song.Contains("velimir's"))
                 {
                     song = "i got bitches";
                 }
 
-                var track = await audioService.GetTrackAsync(song, SearchMode.YouTube);
+                var track = await audioService.GetTrackAsync(song, SearchMode.None);
                 if (track is null)
                 {
-                    await SendSimpleMessage(ctx, string.Format(lang.NoResults, song));
-                    return;
+                    track = await audioService.GetTrackAsync(song, SearchMode.YouTube);
+                    if (track is null)
+                    {
+                        track = await audioService.GetTrackAsync(song, SearchMode.SoundCloud);
+                        if (track is null)
+                        {
+                            await SendSimpleMessage(ctx, string.Format(lang.NoResults, song));
+                            return;
+                        }
+                    }
                 }
                 else
                 {
@@ -145,7 +157,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        var embedBuilder = new DiscordEmbedBuilder().WithFooter(Language.GetLanguageFromCtx(ctx).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithTitle(string.Format(lang.Enqueued, track.Title + lang.SongByAuthor + track.Author)).WithUrl(track.Source).AddField(lang.TimeTillTrackPlays, TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()));
+                        var embedBuilder = new DiscordEmbedBuilder().WithFooter((await Language.GetLanguageFromCtxAsync(ctx)).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithTitle(string.Format(lang.Enqueued, track.Title + lang.SongByAuthor + track.Author)).WithUrl(track.Source).AddField(lang.TimeTillTrackPlays, TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()));
                         var messageBuilder = new DiscordMessageBuilder();
 
                         await messageBuilder
@@ -163,10 +175,11 @@ namespace SilverBotDS.Commands
         }
 
         [Command("volume")]
+        [Aliases("vol")]
         [Description("Change the volume 1-100%")]
         public async Task Volume(CommandContext ctx, ushort volume)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
             if (!audioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
@@ -191,7 +204,7 @@ namespace SilverBotDS.Commands
         [Description("Remove song X from the queue. 0 < songindex > 10000000000")]
         public async Task Remove(CommandContext ctx, int songindex)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
             if (!audioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
@@ -219,7 +232,7 @@ namespace SilverBotDS.Commands
         [Aliases("np", "nowplaying")]
         public async Task Queue(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
             if (!audioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
@@ -265,7 +278,7 @@ namespace SilverBotDS.Commands
         [Description("Loop or unloop the current song")]
         public async Task Loop(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
             if (!audioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
@@ -296,7 +309,7 @@ namespace SilverBotDS.Commands
         [Description("pause the current song")]
         public async Task Pause(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
 
             var channel = ctx.Member?.VoiceState?.Channel;
 
@@ -324,7 +337,7 @@ namespace SilverBotDS.Commands
         [Description("resume the current song")]
         public async Task Resume(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
 
             var channel = ctx.Member?.VoiceState?.Channel;
 
@@ -352,7 +365,7 @@ namespace SilverBotDS.Commands
         [Description("Tell me to join your channel of the voice type")]
         public async Task Join(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
             if (audioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.AlreadyConnected);
@@ -373,7 +386,7 @@ namespace SilverBotDS.Commands
         [Aliases("fs")]
         public async Task Skip(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
 
             var channel = ctx.Member?.VoiceState?.Channel;
 
@@ -410,7 +423,7 @@ namespace SilverBotDS.Commands
         [Aliases("skip")]
         public async Task VoteSkip(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
             if (!audioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
@@ -460,7 +473,7 @@ namespace SilverBotDS.Commands
         [RequireDJ]
         public async Task Disconnect(CommandContext ctx)
         {
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
 
             var channel = ctx.Member?.VoiceState?.Channel;
 

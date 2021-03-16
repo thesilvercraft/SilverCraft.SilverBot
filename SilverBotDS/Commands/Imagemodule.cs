@@ -28,7 +28,7 @@ namespace SilverBotDS.Commands
 
         private static async Task Sendcorrectamountofimages(CommandContext ctx, AttachmentCountIncorrect e, Language lang = null)
         {
-            lang ??= Language.GetLanguageFromCtx(ctx);
+            lang ??= (await Language.GetLanguageFromCtxAsync(ctx));
             if (e == AttachmentCountIncorrect.TooLittleAttachments)
             {
                 await Send_img_plsAsync(ctx, lang.NoImageGeneric).ConfigureAwait(false);
@@ -82,7 +82,7 @@ namespace SilverBotDS.Commands
         private static async Task Send_img_plsAsync(CommandContext ctx, string e)
         {
             //ToDo if possible make it not get the language 2 times
-            Language lang = Language.GetLanguageFromCtx(ctx);
+            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
                                              .WithEmbed(new DiscordEmbedBuilder()
@@ -126,7 +126,7 @@ namespace SilverBotDS.Commands
         [Command("jpeg")]
         public async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var outStream = Make_jpegnised(await image.GetBytesAsync());
             if (outStream.Length > MaxBytes)
             {
@@ -155,7 +155,7 @@ namespace SilverBotDS.Commands
         [Command("shet")]
         public async Task Shet(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var outStream = Shet_On(await image.GetBytesAsync());
             if (outStream.Length > MaxBytes)
             {
@@ -170,7 +170,7 @@ namespace SilverBotDS.Commands
         [Command("shet")]
         public async Task Shet(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
                 var image = SdImage.FromContext(ctx);
@@ -185,7 +185,7 @@ namespace SilverBotDS.Commands
         [Command("resize")]
         public async Task Resize(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("Width")] int x, [Description("Height")] int y)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var outStream = Resize(await image.GetBytesAsync(), new Size(x, y));
             if (outStream.Length > MaxBytes)
             {
@@ -214,7 +214,7 @@ namespace SilverBotDS.Commands
         [Command("tint")]
         public async Task Tint(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("color in hex like #fffff")] string color)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var outStream = Tint(await image.GetBytesAsync(), color);
             if (outStream.Length > MaxBytes)
             {
@@ -243,7 +243,7 @@ namespace SilverBotDS.Commands
         [Command("silver")]
         public async Task Grayscale(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
                 var image = SdImage.FromContext(ctx);
@@ -258,7 +258,7 @@ namespace SilverBotDS.Commands
         [Command("silver")]
         public async Task Grayscale(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.GreyScale);
             if (outStream.Length > MaxBytes)
             {
@@ -273,7 +273,7 @@ namespace SilverBotDS.Commands
         [Command("comic")]
         public async Task Comic(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
                 var image = SdImage.FromContext(ctx);
@@ -288,7 +288,7 @@ namespace SilverBotDS.Commands
         [Command("comic")]
         public async Task Comic(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.Comic);
             if (outStream.Length > MaxBytes)
             {
@@ -348,7 +348,7 @@ namespace SilverBotDS.Commands
         [Command("reliable")]
         public async Task Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
                 if (cachedweebreliabletemplate == null)
@@ -432,7 +432,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
         [Command("happynewyear")]
         public async Task HappyNewYear(CommandContext ctx, DiscordUser person)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
                 if (cachednewyeartemplate == null)
@@ -524,7 +524,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
         [Command("adventuretime")]
         public async Task AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
                 if (cachedadventuretimetemplate == null)
@@ -578,7 +578,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
         [Command("motivate")]
         public async Task Motivate(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             if (cachedmotivatetemplate == null)
             {
                 var myAssembly = Assembly.GetExecutingAssembly();
@@ -641,7 +641,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
         [Command("caption")]
         public async Task Caption(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var inStream = new MemoryStream(await image.GetBytesAsync());
             var bitmap = new Bitmap(inStream);
             int x = bitmap.Width, y = bitmap.Height;

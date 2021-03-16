@@ -37,7 +37,7 @@ namespace SilverBotDS.Commands.Gamering
 
         private static async Task SendDisabledMessage(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(new DiscordEmbedBuilder().WithTitle(lang.CommandIsDisabled).WithColor(color: await ColorUtils.GetSingleAsync())).SendAsync(ctx.Channel);
         }
 
@@ -50,7 +50,7 @@ namespace SilverBotDS.Commands.Gamering
                 await SendDisabledMessage(ctx);
                 return;
             }
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var statsV2V1 = await api.V1.Stats.GetBrV2Async(x =>
             {
                 x.Name = name;

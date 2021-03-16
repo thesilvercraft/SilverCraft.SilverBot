@@ -32,7 +32,7 @@ namespace SilverBotDS.Commands
         [Description("Hello fellow human! beep boop")]
         public async Task GreetCommand(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithContent(string.Format(lang.Hi, ctx.Member.Mention))
                                              .SendAsync(ctx.Channel);
@@ -41,7 +41,7 @@ namespace SilverBotDS.Commands
         [Command("meme")]
         public async Task Kindsffeefdfdfergergrgfdfdsgfdfg(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var b = new DiscordEmbedBuilder();
             var client = NetClient.Get();
             var rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
@@ -85,7 +85,7 @@ namespace SilverBotDS.Commands
         [Description("Get the time in UTC")]
         public async Task Time(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
                                              .WithContent(string.Format(lang.TimeInUtc, DateTime.UtcNow.ToString(lang.TimeFormat)))
@@ -142,7 +142,7 @@ namespace SilverBotDS.Commands
         [Description("SilverHosting best")]
         public async Task Dukt(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await new DiscordMessageBuilder()
                                             .WithReply(ctx.Message.Id)
                                             .WithEmbed(new DiscordEmbedBuilder()
@@ -156,7 +156,7 @@ namespace SilverBotDS.Commands
 
         private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string title = null, string content = null)
         {
-            var embedBuilder = new DiscordEmbedBuilder().WithFooter(Language.GetLanguageFromCtx(ctx).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithImageUrl(imageurl).WithColor(await ColorUtils.GetSingleAsync());
+            var embedBuilder = new DiscordEmbedBuilder().WithFooter((await Language.GetLanguageFromCtxAsync(ctx)).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithImageUrl(imageurl).WithColor(await ColorUtils.GetSingleAsync());
             var messageBuilder = new DiscordMessageBuilder();
             if (title != null)
             {
@@ -208,7 +208,7 @@ namespace SilverBotDS.Commands
         [Description("Wanna hear some useless fact? Just ask me")]
         public async Task UselessFact(CommandContext ctx)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var client = NetClient.Get();
             var rm = await client.GetAsync("https://uselessfacts.jsph.pl/random.md?language=" + lang.LangCodeForUselessFacts);
             await new DiscordMessageBuilder()
@@ -231,7 +231,7 @@ namespace SilverBotDS.Commands
         [Description("Don't know what some new bot your friends invited here but you dont want to google? just ask me ")]
         public async Task WhoIsBot(CommandContext ctx, [Description("the bot")] DiscordUser user)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             if (string.IsNullOrEmpty(Program.GetConfig().TopggSidToken) || Program.GetConfig().TopggSidToken.ToLower() == "none")
             {
                 await new DiscordMessageBuilder()
@@ -293,7 +293,7 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                var lang = Language.GetLanguageFromCtx(ctx);
+                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
                 await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
                     .WithTitle(lang.User + a.Username)
                     .WithDescription(lang.InformationAbout + a.Mention)

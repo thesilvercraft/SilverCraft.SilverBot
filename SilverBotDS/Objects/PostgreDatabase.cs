@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using LiteDB;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,6 +27,18 @@ namespace SilverBotDS.Objects
         public PostgreDatabase(string conn)
         {
             connstring = conn;
+            using NpgsqlConnection db = NewConnection();
+            db.Open();
+
+            var cmd = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS serveroptin ( ServerId BIGINT PRIMARY KEY, optedin BOOL)", db);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            cmd = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS GuildLang( DId BIGINT PRIMARY KEY, Name CHAR(5) )", db);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            cmd = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS UserLang( DId BIGINT PRIMARY KEY, Name CHAR(5) )", db);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
         }
 
         public NpgsqlConnection NewConnection()
@@ -78,33 +91,10 @@ namespace SilverBotDS.Objects
                 await conn.OpenAsync();
                 await using var cmd = new NpgsqlCommand(sql, conn);
                 var dataTable = new DataTable();
-                // create data adapter
                 var da = new NpgsqlDataAdapter(cmd);
-                // this will query your database and return the result to your datatable
                 da.Fill(dataTable);
                 await conn.CloseAsync();
-                StringBuilder thing = new("<html>" +
-                    "<head>" +
-                    "<style>" +
-                    "table, th, td {" +
-                    "border: 2px solid white;" +
-                    "border-collapse: collapse;" +
-                    "}" +
-                    "table{" +
-                    "width: 100%;" +
-                    "height: 100%;" +
-                    "}" +
-                    "th,tr{" +
-                    "color:#ffffff;" +
-                    "font-size: 25px;" +
-                    "}" +
-                    "body{" +
-                    "background-color:2C2F33;" +
-                    "}" +
-                    "</style>" +
-                    "</head>" +
-                    "<body>" +
-                    "<table style=\"width: 100 % \">");
+                StringBuilder thing = new(ISBDatabase.HtmlStart);
                 if (dataTable.Rows.Count == 0)
                 {
                     return new Tuple<string, Image>("nodata", null);
@@ -140,6 +130,57 @@ namespace SilverBotDS.Objects
             cmd.Parameters.AddWithValue("p2", e.Optedin);
             await cmd.ExecuteNonQueryAsync();
             await conn.CloseAsync();
+        }
+
+        public Task<string> GetLangCodeUser(ulong id) => GetLangCodeGeneric(id, false);
+
+        public Task<string> GetLangCodeGuild(ulong id) => GetLangCodeGeneric(id, true);
+
+        public async Task<string> GetLangCodeGeneric(ulong id, bool guild)
+        {
+            string e = "en";
+            await using var conn = NewConnection();
+            try
+            {
+                await conn.OpenAsync();
+                await using var cmd = new NpgsqlCommand($"SELECT Name FROM {(guild ? "Guild" : "User")}Lang WHERE DId = @id", conn);
+                cmd.Parameters.AddWithValue("id", Convert.ToInt64(id));
+                await using var reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    e = reader.GetString(0);
+                }
+                await conn.CloseAsync();
+            }
+            catch (Exception exep)
+            {
+                Program.SendLog(exep);
+            }
+
+            return e;
+        }
+
+        public Task InserOrUpdateLangCodeUser(DbLang l) => InserOrUpdateLangCodeGeneric(l, false);
+
+        public Task InserOrUpdateLangCodeGuild(DbLang l) => InserOrUpdateLangCodeGeneric(l, true);
+
+        public async Task InserOrUpdateLangCodeGeneric(DbLang l, bool guild)
+        {
+            try
+            {
+                await using var conn = NewConnection();
+                await conn.OpenAsync();
+                await using var cmd = new NpgsqlCommand($"INSERT INTO {(guild ? "Guild" : "User")}Lang (DId, Name) VALUES (@p1, @p2) ON CONFLICT (DId) DO UPDATE SET Name = EXCLUDED.Name", conn);
+                cmd.Parameters.AddWithValue("p1", Convert.ToInt64(l.DId));
+                cmd.Parameters.AddWithValue("p2", l.Name);
+                await cmd.ExecuteNonQueryAsync();
+                await conn.CloseAsync();
+            }
+            catch (Exception exep)
+            {
+                Program.SendLog(exep);
+                throw;
+            }
         }
 
         public async Task<List<Serveroptin>> ServersOptedInEmotesAsync()

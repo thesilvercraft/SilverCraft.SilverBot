@@ -20,7 +20,7 @@ namespace SilverBotDS.Commands.Gamering
         [Description("Search about a game")]
         public async Task Search(CommandContext ctx, [RemainingText()][Description("The game")] string game)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
                 var listings = Steam.Search(game);

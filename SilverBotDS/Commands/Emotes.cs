@@ -32,7 +32,7 @@ namespace SilverBotDS.Commands
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task UselessFact(CommandContext ctx, [Description("Name like `Kappa`")] string name, [Description("url of emote")] string url)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var client = NetClient.Get();
             var rm = await client.GetAsync(url);
             var st = await rm.Content.ReadAsStreamAsync();
@@ -51,7 +51,7 @@ namespace SilverBotDS.Commands
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task AddEmote(CommandContext ctx, [Description("Name like `Kappa`")] string name)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
 
             try
             {
@@ -79,7 +79,7 @@ namespace SilverBotDS.Commands
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task AddEmote(CommandContext ctx, [Description("Url of the thing")] SdImage url, [Description("Name like `Kappa`")] string name)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var st = new MemoryStream(await url.GetBytesAsync());
             if (st.Length > 256 * 1000)
             {
@@ -96,7 +96,7 @@ namespace SilverBotDS.Commands
             try
             {
                 var builder = new StringBuilder();
-                var lang = Language.GetLanguageFromCtx(ctx);
+                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
                 var serverthatareoptedin = await Program.GetDatabase().ServersOptedInEmotesAsync();
                 var pages = new List<Page>();
                 var b = new DiscordEmbedBuilder();
@@ -171,7 +171,7 @@ namespace SilverBotDS.Commands
         [Description("Get an emote from the SilverSocial enabled servers")]
         public async Task GetEmotes(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var emotes = new List<DiscordEmoji>();
             var serverthatareoptedin = await Program.GetDatabase().ServersOptedInEmotesAsync();
 
@@ -240,7 +240,7 @@ namespace SilverBotDS.Commands
         public async Task Optin(CommandContext ctx)
         {
             var isoptedin = await Program.GetDatabase().IsOptedInEmotes(ctx.Guild.Id);
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
 
             switch (isoptedin)
             {

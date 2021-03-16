@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
+using System.Linq;
 
 namespace SilverBotDS.Objects
 {
@@ -357,14 +358,19 @@ namespace SilverBotDS.Objects
         /// Uh oh something went wrong. Please try again a little bit later.
         /// </summary>
         public string SearchFail { get; set; } = "Uh oh something went wrong. Please try again a little bit later.";
+
         /// <summary>
         /// Uh oh something went wrong.
         /// </summary>
         public string SearchFailTitle { get; set; } = "Uh oh something went wrong.";
+
         /// <summary>
         /// Please try again a little bit later.
         /// </summary>
         public string SearchFailDescription { get; set; } = "Please try again a little bit later.";
+
+        public string Success { get; set; } = "GREAT SUCCESS! HIGH FIVE EPIC GAMERS";
+
         public string SongLength { get; set; } = "Length";
         public string SongTimePosition { get; set; } = "Position";
         public string SongTimeLeft { get; set; } = "Time left:";
@@ -384,8 +390,20 @@ namespace SilverBotDS.Objects
         private static readonly Dictionary<string, Language> CachedLanguages = new Dictionary<string, Language>();
         private static readonly bool Logging = true;
 
+        public static string[] LoadedLanguages()
+        {
+            if (CachedLanguages.Count == 0)
+            {
+                var t = GetAsync("en");
+
+                t.Wait();
+            }
+            return CachedLanguages.Keys.ToArray();
+        }
+
         public static async System.Threading.Tasks.Task<Language> GetAsync(string a)
         {
+            a = a.Trim();
             if (CachedLanguages.Count != 0)
             {
                 if (CachedLanguages.ContainsKey(a))
@@ -421,6 +439,16 @@ namespace SilverBotDS.Objects
                         CachedLanguages.Add(name, asdf);
                     }
                 }
+                else
+                {
+                    Directory.CreateDirectory(Environment.CurrentDirectory + @"\languages\");
+                    using StreamWriter streamWriter = new StreamWriter(Environment.CurrentDirectory + @"\languages\en.json");
+                    var options = new JsonSerializerOptions
+                    {
+                        WriteIndented = true
+                    };
+                    streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
+                }
                 if (Logging)
                 {
                     Program.SendLog($"[LANGUAGES] done reading languages, {CachedLanguages.Count} have been loaded into cache", true);
@@ -429,28 +457,20 @@ namespace SilverBotDS.Objects
             }
         }
 
-        public static Language GetLanguageFromCtx(CommandContext ctx)
+        public static async System.Threading.Tasks.Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
         {
-            return GetLanguageFromId(ctx.Guild?.Id);
+            var db = Program.GetDatabase();
+            return await GetAsync(ctx.Channel.IsPrivate ? await db.GetLangCodeUser(ctx.User.Id) : await db.GetLangCodeGuild(ctx.Guild.Id));
         }
 
-        public static Language GetLanguageFromId(ulong? id)
+        public static async System.Threading.Tasks.Task<Language> GetLanguageFromIdAsync(ulong? id)
         {
             if (id is null)
             {
                 return new Language();
             }
             //TODO: IMPLEMENT THE THING LOL
-            return new Language();
+            return await GetAsync("en");
         }
-    }
-
-    public class ImageThings
-    {
-        public string JpegSuccess { get; set; } = "There ya go a jpegnized image";
-        public string SilverSuccess { get; set; } = "There ya go a silver image";
-        public string ComicSuccess { get; set; } = "There ya go a image with the comic filter";
-        public string ResizeSuccess { get; set; } = "There ya go a resized image";
-        public string TintSuccess { get; set; } = "There ya go a tinted image";
     }
 }

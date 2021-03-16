@@ -9,8 +9,10 @@ using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -25,7 +27,7 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                var lang = Language.GetLanguageFromCtx(ctx);
+                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
                 await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
                     .WithTitle(lang.VersionInfoTitle)
                     .AddField("Version number", "`" + VersionInfo.VNumber + "`")
@@ -44,11 +46,53 @@ namespace SilverBotDS.Commands
             }
         }
 
+        [Command("generatelangtemplate")]
+        [Description("make a template for localisation")]
+        public async Task GenerateLanguageTemplate(CommandContext ctx)
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize((await Language.GetLanguageFromCtxAsync(ctx)), options)));
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                             .WithFile("language.json", stream)
+                                             .SendAsync(ctx.Channel);
+        }
+
+        [Command("setlang")]
+        [Description("set your language")]
+        public async Task SetLanguage(CommandContext ctx, string LangName)
+        {
+            if (Language.LoadedLanguages().ToList().FirstOrDefault(x => x.ToLower() == LangName.ToLower()) != null)
+            {
+                var db = Program.GetDatabase();
+                if (ctx.Channel.IsPrivate)
+                {
+                    await db.InserOrUpdateLangCodeUser(new DbLang { DId = ctx.User.Id, Name = LangName.ToLower() });
+                }
+                else
+                {
+                    await db.InserOrUpdateLangCodeGuild(new DbLang { DId = ctx.Guild.Id, Name = LangName.ToLower() });
+                }
+                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+                await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                         .WithContent(lang.Success)
+                                         .SendAsync(ctx.Channel);
+            }
+            else
+            {
+                await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                          .WithContent("Unknown language. Valid choices are:```" + Language.LoadedLanguages().Humanize(",\n") + "```")
+                                          .SendAsync(ctx.Channel);
+            }
+        }
+
         [Command("translateunknown")]
         [Description("translate from an unknown language")]
         public async Task TranlateUnknown(CommandContext ctx, [RemainingText] string text)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             Translator translator = new(NetClient.Get());
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithContent(await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate))
@@ -59,7 +103,7 @@ namespace SilverBotDS.Commands
         [Description("translate from an unknown language to a specified one")]
         public async Task TranlateUnknown(CommandContext ctx, string LanguageTo, [RemainingText] string text)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             LanguageTo = LanguageTo.Humanize(casing: LetterCasing.Sentence);
             Translator translator = new(NetClient.Get());
 
@@ -80,7 +124,7 @@ namespace SilverBotDS.Commands
         [Description("Search up definitions for words on urban dictionary, pls dont kill me urban")]
         public async Task Urban(CommandContext ctx, [Description("the name of the package")][RemainingText] string query)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
                 var data = await UrbanDictUtils.GetDefenition(query);
@@ -113,7 +157,7 @@ namespace SilverBotDS.Commands
         [Description("Search up packages on the NuGet")]
         public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)
         {
-            var lang = Language.GetLanguageFromCtx(ctx);
+            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
                 var data = await NuGetUtils.SearchAsync(query);

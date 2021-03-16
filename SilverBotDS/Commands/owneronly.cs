@@ -383,7 +383,7 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                var lang = Language.GetLanguageFromCtx(ctx);
+                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
                 if (ctx.Message.Attachments.Count == 0)
                 {
                     await ctx.RespondAsync(lang.NoImageGeneric);

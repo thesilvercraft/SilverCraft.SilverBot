@@ -47,7 +47,7 @@ namespace SilverBotDS.Commands.Gamering
                                 break;
 
                             default:
-                                throw new ArgumentOutOfRangeException(nameof(SteamStoreQuery.Enums.sType));
+                                throw new Exception($"WHAT THE ACTUAL FUCK. Steam.Search(game) RETURNED {listings[i].SaleType}");
                         }
                     }
                     else

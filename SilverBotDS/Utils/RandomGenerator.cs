@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace SilverBotDS.Utils
 {
-    public class RandomGenerator
+    public class RandomGenerator : IDisposable
     {
         private readonly RNGCryptoServiceProvider _csp;
 
@@ -66,6 +66,12 @@ namespace SilverBotDS.Utils
             {
                 return string.Empty;
             }
+        }
+
+        void IDisposable.Dispose()
+        {
+            _csp.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

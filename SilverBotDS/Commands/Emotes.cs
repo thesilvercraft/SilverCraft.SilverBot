@@ -19,11 +19,6 @@ namespace SilverBotDS.Commands
 {
     internal class Emotes : BaseCommandModule
     {
-        public static Emotes CreateInstance()
-        {
-            return new Emotes();
-        }
-
 #pragma warning disable CA1822 // Mark members as static
 
         [Command("addemote")]
@@ -161,7 +156,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private static bool CheckIfGuildIsIn(List<Serveroptin> serverthatareoptedin, ulong id)
+        private static bool CheckIfGuildIsIn(List<ServerOptin> serverthatareoptedin, ulong id)
         {
             var thing = serverthatareoptedin.Find(x => x.ServerId == id);
             return thing != null && thing.Optedin;
@@ -262,7 +257,7 @@ namespace SilverBotDS.Commands
                     }
             }
 
-            var newserverthing = new Serveroptin
+            var newserverthing = new ServerOptin
             {
                 ServerId = ctx.Guild.Id,
                 Optedin = true

@@ -1,8 +1,6 @@
-﻿using Npgsql;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -26,7 +24,7 @@ namespace SilverBotDS.Objects
             try
             {
                 using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
-                ILiteCollection<Serveroptin> col = db.GetCollection<Serveroptin>();
+                ILiteCollection<ServerOptin> col = db.GetCollection<ServerOptin>();
                 col.EnsureIndex(x => x.ServerId);
                 return Task.FromResult(col.FindOne(x => x.ServerId == serverid)?.Optedin);
             }
@@ -79,20 +77,20 @@ namespace SilverBotDS.Objects
             }
         }
 
-        public Task InsertEmoteOptinAsync(Serveroptin e)
+        public Task InsertEmoteOptinAsync(ServerOptin e)
         {
             using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
-            ILiteCollection<Serveroptin> col = db.GetCollection<Serveroptin>();
+            ILiteCollection<ServerOptin> col = db.GetCollection<ServerOptin>();
             col.Insert(e);
             return Task.CompletedTask;
         }
 
-        public async Task<List<Serveroptin>> ServersOptedInEmotesAsync()
+        public async Task<List<ServerOptin>> ServersOptedInEmotesAsync()
         {
             try
             {
                 using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
-                ILiteCollection<Serveroptin> col = db.GetCollection<Serveroptin>();
+                ILiteCollection<ServerOptin> col = db.GetCollection<ServerOptin>();
                 col.EnsureIndex(x => x.ServerId);
                 return col.FindAll().Where(x => x.Optedin == true).ToList();
             }
@@ -100,7 +98,7 @@ namespace SilverBotDS.Objects
             {
                 Program.SendLog(exep);
             }
-            return await Task.FromResult<List<Serveroptin>>(new());
+            return await Task.FromResult<List<ServerOptin>>(new());
         }
 
         public Task<string> GetLangCodeGuild(ulong id) => GetLangCodeGeneric(id, "GuildLang");

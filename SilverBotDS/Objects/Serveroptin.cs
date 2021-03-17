@@ -1,6 +1,6 @@
 ﻿namespace SilverBotDS.Objects
 {
-    public class Serveroptin
+    public class ServerOptin
     {
         public ulong ServerId { get; init; }
         public bool Optedin { get; init; }

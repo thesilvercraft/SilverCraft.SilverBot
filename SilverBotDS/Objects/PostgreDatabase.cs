@@ -121,7 +121,7 @@ namespace SilverBotDS.Objects
             }
         }
 
-        public async Task InsertEmoteOptinAsync(Serveroptin e)
+        public async Task InsertEmoteOptinAsync(ServerOptin e)
         {
             await using var conn = NewConnection();
             await conn.OpenAsync();
@@ -183,9 +183,9 @@ namespace SilverBotDS.Objects
             }
         }
 
-        public async Task<List<Serveroptin>> ServersOptedInEmotesAsync()
+        public async Task<List<ServerOptin>> ServersOptedInEmotesAsync()
         {
-            List<Serveroptin> enuma = new();
+            List<ServerOptin> enuma = new();
             try
             {
                 await using var conn = NewConnection();
@@ -195,7 +195,7 @@ namespace SilverBotDS.Objects
 
                 while (await reader.ReadAsync())
                 {
-                    enuma.Add(new Serveroptin
+                    enuma.Add(new ServerOptin
                     {
                         ServerId = Convert.ToUInt64(reader.GetInt64(0)),
                         Optedin = reader.GetBoolean(1)

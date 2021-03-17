@@ -21,11 +21,6 @@ namespace SilverBotDS.Commands
 {
     internal sealed class Genericcommands : BaseCommandModule
     {
-        public static Genericcommands CreateInstance()
-        {
-            return new Genericcommands();
-        }
-
 #pragma warning disable CA1822 // Mark members as static
 
         [Command("hi")]

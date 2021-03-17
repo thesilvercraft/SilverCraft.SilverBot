@@ -54,13 +54,13 @@ namespace SilverBotDS.Objects
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        Task InsertEmoteOptinAsync(Serveroptin e);
+        Task InsertEmoteOptinAsync(ServerOptin e);
 
         /// <summary>
         /// Get all the servers opted in to emotes
         /// </summary>
         /// <returns></returns>
-        Task<List<Serveroptin>> ServersOptedInEmotesAsync();
+        Task<List<ServerOptin>> ServersOptedInEmotesAsync();
 
         Task<string> GetLangCodeGuild(ulong id);
 

@@ -39,6 +39,13 @@ namespace SilverBotDS.Commands
             }
         }
 
+        private static async Task SendImageStream(CommandContext ctx, Stream outstream, string filename = "sbimg.png", string content = null, Language lang = null)
+        {
+            lang ??= (await Language.GetLanguageFromCtxAsync(ctx));
+            content ??= lang.Success;
+            await new DiscordMessageBuilder().WithContent(content).WithFile(filename, outstream).WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+        }
+
         private static MemoryStream Resize(byte[] photoBytes, Size size)
         {
             ISupportedImageFormat format = new PngFormat { Quality = Quality };
@@ -134,7 +141,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await new DiscordMessageBuilder().WithContent(lang.Imagethings.JpegSuccess).WithFile("silverbotimage.jpeg", outStream).SendAsync(ctx.Channel);
+                await SendImageStream(ctx, outStream, "silverbotimage.jpeg", lang.Imagethings.JpegSuccess, lang);
             }
         }
 
@@ -163,7 +170,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await new DiscordMessageBuilder().WithContent("there is your masterpiece").WithFile("silverbotimage.jpeg", outStream).SendAsync(ctx.Channel);
+                await SendImageStream(ctx, outStream, "silverbotimage.jpeg", lang.Imagethings.JpegSuccess, lang);
             }
         }
 
@@ -193,7 +200,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await new DiscordMessageBuilder().WithContent(lang.Imagethings.ResizeSuccess).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
+                await SendImageStream(ctx, outStream, content: lang.Imagethings.ResizeSuccess, lang: lang);
             }
         }
 
@@ -222,7 +229,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await new DiscordMessageBuilder().WithContent(lang.Imagethings.TintSuccess).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
+                await SendImageStream(ctx, outStream, content: lang.Imagethings.TintSuccess, lang: lang);
             }
         }
 
@@ -266,7 +273,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await new DiscordMessageBuilder().WithContent(lang.Imagethings.SilverSuccess).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
+                await SendImageStream(ctx, outStream, content: lang.Imagethings.SilverSuccess, lang: lang);
             }
         }
 
@@ -296,7 +303,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await new DiscordMessageBuilder().WithContent(lang.Imagethings.ComicSuccess).WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
+                await SendImageStream(ctx, outStream, content: lang.Imagethings.ComicSuccess, lang: lang);
             }
         }
 
@@ -325,7 +332,7 @@ namespace SilverBotDS.Commands
             await using var outStream = new MemoryStream();
             img.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
             outStream.Position = 0;
-            await new DiscordMessageBuilder().WithContent("there").WithFile("silverbotimage.png", outStream).SendAsync(ctx.Channel);
+            await SendImageStream(ctx, outStream);
         }
 
         private static Bitmap cachedmotivatetemplate;
@@ -413,7 +420,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 }
                 else
                 {
-                    await ctx.RespondAsync(new DiscordMessageBuilder().WithContent($"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.").WithFile("silverbotimage.png", outStream));
+                    await SendImageStream(ctx, outStream, content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.", lang: lang);
                 }
             }
             catch (Exception e)
@@ -470,7 +477,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 }
                 else
                 {
-                    await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("happy new year!").WithFile("silverbotimage.png", outStream));
+                    await SendImageStream(ctx, outStream, content: "happy new year!", lang: lang);
                 }
             }
             catch (Exception e)
@@ -565,7 +572,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 }
                 else
                 {
-                    await ctx.RespondAsync(new DiscordMessageBuilder().WithContent($"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!").WithFile("silverbotimage.png", outStream));
+                    await SendImageStream(ctx, outStream, content: $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!", lang: lang);
                 }
             }
             catch (Exception e)
@@ -620,7 +627,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
             }
             else
             {
-                await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("there").WithFile("silverbotimage.png", outStream));
+                await SendImageStream(ctx, outStream, content: "there", lang: lang);
             }
         }
 
@@ -675,7 +682,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
             }
             else
             {
-                await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("there").WithFile("silverbotimage.png", outStream));
+                await SendImageStream(ctx, outStream, content: "there", lang: lang);
             }
         }
 

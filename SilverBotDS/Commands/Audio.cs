@@ -148,23 +148,20 @@ namespace SilverBotDS.Commands
                         }
                     }
                 }
+                int pos = await player.PlayAsync(track, true);
+                if (pos == 0)
+                {
+                    await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, track.Title + lang.SongByAuthor + track.Author), url: track.Source);
+                }
                 else
                 {
-                    int pos = await player.PlayAsync(track, true);
-                    if (pos == 0)
-                    {
-                        await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, track.Title + lang.SongByAuthor + track.Author), url: track.Source);
-                    }
-                    else
-                    {
-                        var embedBuilder = new DiscordEmbedBuilder().WithFooter((await Language.GetLanguageFromCtxAsync(ctx)).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithTitle(string.Format(lang.Enqueued, track.Title + lang.SongByAuthor + track.Author)).WithUrl(track.Source).AddField(lang.TimeTillTrackPlays, TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()));
-                        var messageBuilder = new DiscordMessageBuilder();
+                    var embedBuilder = new DiscordEmbedBuilder().WithFooter((await Language.GetLanguageFromCtxAsync(ctx)).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithTitle(string.Format(lang.Enqueued, track.Title + lang.SongByAuthor + track.Author)).WithUrl(track.Source).AddField(lang.TimeTillTrackPlays, TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()));
+                    var messageBuilder = new DiscordMessageBuilder();
 
-                        await messageBuilder
-                    .WithReply(ctx.Message.Id)
-                    .WithEmbed(embedBuilder.Build())
-                    .SendAsync(ctx.Channel);
-                    }
+                    await messageBuilder
+                .WithReply(ctx.Message.Id)
+                .WithEmbed(embedBuilder.Build())
+                .SendAsync(ctx.Channel);
                 }
             }
             catch (Exception e)

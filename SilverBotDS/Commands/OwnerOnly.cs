@@ -384,7 +384,7 @@ namespace SilverBotDS.Commands
             }
             var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
             await using var image = new MemoryStream();
-            using var e = await Browser.ScreenshotAsync(html);
+            using var e = await Program.GetBrowser().RenderUrlAsync(html);
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;
             await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithReply(ctx.Message.Id).WithFile("html.png", image).SendAsync(ctx.Channel);
@@ -503,7 +503,7 @@ namespace SilverBotDS.Commands
             var bob = new DiscordEmbedBuilder();
             bob.WithImageUrl("attachment://html.png");
             bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-            var e = await Browser.ScreenshotHtmlAsync(html);
+            var e = await Program.GetBrowser().RenderHtmlAsync(html);
             var image = new MemoryStream();
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;

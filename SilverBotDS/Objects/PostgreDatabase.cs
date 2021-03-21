@@ -126,7 +126,7 @@ namespace SilverBotDS.Objects
                             thing.AppendLine("</tr>");
                         }
                         thing.AppendLine("</table></body></html>");
-                        return new Tuple<string, Image>(null, await Browser.ScreenshotHtmlAsync(thing.ToString()));
+                        return new Tuple<string, Image>(null, await Program.GetBrowser().RenderHtmlAsync(thing.ToString()));
                     }
                 }
             }

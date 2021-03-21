@@ -88,7 +88,7 @@ namespace SilverBotDS.Objects
                         return new Tuple<string, Image>("nodata", null);
                     }
 
-                    return new Tuple<string, Image>(null, await Browser.ScreenshotHtmlAsync(thing.ToString()));
+                    return new Tuple<string, Image>(null, await Program.GetBrowser().RenderHtmlAsync(thing.ToString()));
                 }
             }
             catch (Exception e)

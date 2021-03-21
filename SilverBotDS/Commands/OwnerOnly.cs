@@ -21,6 +21,7 @@ using System.Collections;
 using System.Linq;
 using Xabe.FFmpeg.Downloader;
 using DSharpPlus.Interactivity.Extensions;
+using System.Net.Http;
 
 namespace SilverBotDS.Commands
 {
@@ -29,6 +30,9 @@ namespace SilverBotDS.Commands
     internal partial class OwnerOnly : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
+        public ISBDatabase Database { private get; set; }
+        public Config Config { private get; set; }
+        public HttpClient HttpClient { private get; set; }
 
         [Command("repeat")]
         [Description("Repeats the message content")]
@@ -72,7 +76,7 @@ namespace SilverBotDS.Commands
         [Description("reloads the colors.json")]
         public async Task ReloadColors(CommandContext ctx)
         {
-            if (!Program.GetConfig().ColorConfig)
+            if (!Config.ColorConfig)
             {
                 await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder().WithTitle("Reloading does nothing lololol").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
             }
@@ -342,37 +346,48 @@ namespace SilverBotDS.Commands
         [Description("UHHHHHHHHHHHHH its a secret")]
         public async Task Runsql(CommandContext ctx, string sql)
         {
-            var thing = await Program.GetDatabase().RunSqlAsync(sql);
+            var thing = await Database.RunSqlAsync(sql);
             if (thing.Item1 != null && thing.Item2 == null)
             {
-                await ctx.RespondAsync(thing.Item1);
+                await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent(thing.Item1).SendAsync(ctx.Channel);
+                return;
             }
             if (thing.Item1 == null && thing.Item2 != null)
             {
                 var bob = new DiscordEmbedBuilder();
-                bob.WithImageUrl("attachment://html.png");
-                bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-
+                bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
                 var image = new MemoryStream();
                 thing.Item2.Save(image, System.Drawing.Imaging.ImageFormat.Png);
                 image.Position = 0;
                 await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
-
                 thing.Item2.Dispose();
             }
+        }
+
+        private async Task<bool> IsBrowserNotSpecifed(CommandContext ctx)
+        {
+            bool a = Config.BrowserType == 0;
+            if (a)
+            {
+                await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent("no browser specified").SendAsync(ctx.Channel);
+            }
+            return a;
         }
 
         [Command("html")]
         [Description("UHHHHHHHHHHHHH its a secret")]
         public async Task Html(CommandContext ctx, string html)
         {
+            if (await IsBrowserNotSpecifed(ctx))
+            {
+                return;
+            }
             var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
-
             await using var image = new MemoryStream();
             using var e = await Browser.ScreenshotAsync(html);
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;
-            await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
+            await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithReply(ctx.Message.Id).WithFile("html.png", image).SendAsync(ctx.Channel);
         }
 
         [Command("addemotes")]
@@ -399,7 +414,7 @@ namespace SilverBotDS.Commands
                     await ctx.RespondAsync("please use a zip");
                     return;
                 }
-                var client = NetClient.Get();
+                var client = HttpClient;
                 var rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
                 await using (var fs = new FileStream(
         Environment.CurrentDirectory + "\\temp.zip",
@@ -467,7 +482,7 @@ namespace SilverBotDS.Commands
             bob.WithTitle("Reloaded splashes for ya.");
 
             bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-            if (Program.GetConfig().UseSplashConfig == false)
+            if (Config.UseSplashConfig == false)
             {
                 await ctx.RespondAsync("ps that did nothing as splash config is set false", embed: bob.Build());
             }
@@ -481,6 +496,10 @@ namespace SilverBotDS.Commands
         [Description("UHHHHHHHHHHHHH its a secret")]
         public async Task HtmlE(CommandContext ctx, string html)
         {
+            if (await IsBrowserNotSpecifed(ctx))
+            {
+                return;
+            }
             var bob = new DiscordEmbedBuilder();
             bob.WithImageUrl("attachment://html.png");
             bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));

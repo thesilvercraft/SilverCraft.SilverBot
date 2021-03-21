@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using NetClient = SilverBotDS.Objects.NetClient;
 
 namespace SilverBotDS.Utils
 {
@@ -55,7 +54,7 @@ namespace SilverBotDS.Utils
 
             public static async Task<CommitInfo> GetLatestFromRepoAsync(Repo repo, string branch)
             {
-                var httpClient = NetClient.Get();
+                var httpClient = Program.GetHttpClient();
                 var uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/commits/{branch}");
                 var rm = await httpClient.GetAsync(uri.Uri);
                 if (rm.StatusCode == HttpStatusCode.OK)
@@ -349,7 +348,7 @@ namespace SilverBotDS.Utils
         {
             public static async Task DownloadLatestAsync(Release release)
             {
-                System.Net.Http.HttpClient client = NetClient.Get();
+                System.Net.Http.HttpClient client = Program.GetHttpClient();
                 using System.Net.Http.HttpResponseMessage rm = await client.GetAsync(release.Assets[0].BrowserDownloadUrl);
                 Uri uri = new Uri(release.Assets[0].BrowserDownloadUrl);
                 string filename = Path.GetFileName(uri.LocalPath);
@@ -363,7 +362,7 @@ namespace SilverBotDS.Utils
 
             public static async Task<Release> GetLatestFromRepoAsync(Repo repo)
             {
-                var httpClient = NetClient.Get();
+                var httpClient = Program.GetHttpClient();
                 var uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/releases/latest");
                 var rm = await httpClient.GetAsync(uri.Uri);
                 if (rm.StatusCode == HttpStatusCode.OK)

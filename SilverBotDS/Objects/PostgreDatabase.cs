@@ -101,18 +101,34 @@ namespace SilverBotDS.Objects
                 }
                 else
                 {
-                    foreach (DataRow dataRow in dataTable.Rows)
+                    if (Program.GetConfig().BrowserType == 0)
                     {
-                        thing.AppendLine("<tr>");
-                        foreach (var item in dataRow.ItemArray)
+                        StringBuilder builder = new("```" + Environment.NewLine);
+                        foreach (DataRow dataRow in dataTable.Rows)
                         {
-                            thing.AppendLine("<td>" + item + "</td>");
+                            foreach (var item in dataRow.ItemArray)
+                            {
+                                builder.Append($"|{item,5}");
+                            }
+                            builder.AppendLine();
                         }
-                        thing.AppendLine("</tr>");
+                        return new Tuple<string, Image>(builder.Append("```").ToString(), null);
                     }
-                    thing.AppendLine("</table></body></html>");
+                    else
+                    {
+                        foreach (DataRow dataRow in dataTable.Rows)
+                        {
+                            thing.AppendLine("<tr>");
+                            foreach (var item in dataRow.ItemArray)
+                            {
+                                thing.AppendLine("<td>" + item + "</td>");
+                            }
+                            thing.AppendLine("</tr>");
+                        }
+                        thing.AppendLine("</table></body></html>");
+                        return new Tuple<string, Image>(null, await Browser.ScreenshotHtmlAsync(thing.ToString()));
+                    }
                 }
-                return new Tuple<string, Image>(null, await Browser.ScreenshotHtmlAsync(thing.ToString()));
             }
             catch (Exception e)
             {

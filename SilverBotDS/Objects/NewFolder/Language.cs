@@ -10,12 +10,12 @@ namespace SilverBotDS.Objects
 {
     //TODO finish the summaries and shiz
     //I know i promised language support but im kinda of an idiot so yeah
-    internal class Language
+    internal partial class Language
     {
         /// <summary>
         /// Default(EN)
         /// </summary>
-        public string LangName { get; set; } = "Default(EN)";
+        public string LangName { get; set; } = "English(EN)";
 
         /// <summary>
         /// A 2-4 alphanumeric code
@@ -370,7 +370,7 @@ namespace SilverBotDS.Objects
         public string SearchFailDescription { get; set; } = "Please try again a little bit later.";
 
         public string Success { get; set; } = "GREAT SUCCESS! HIGH FIVE EPIC GAMERS";
-
+        public string UrbanExample { get; set; } = "Example";
         public string SongLength { get; set; } = "Length";
         public string SongTimePosition { get; set; } = "Position";
         public string SongTimeLeft { get; set; } = "Time left:";
@@ -379,6 +379,11 @@ namespace SilverBotDS.Objects
         public string PurgedBySilverBotReason { get; set; } = "Purged by SilverBot for {0}";
         public string NotValidLanguage { get; set; } = "That isn't a valid language, valid languages are:{0}";
         public string CultureInfo { get; set; } = "en-GB";
+        public VersioninfoCommand VersionInfoCommand { get; set; } = new();
+        public NugetCommand NuGetCommand { get; set; } = new();
+        public MathCommands Mathcommands { get; set; } = new();
+        public string BotBannedUser { get; set; } = "The bot has attempted to ban the user";
+        public string BotKickedUser { get; set; } = "The bot has attempted to kick the user";
 
         public CultureInfo GetCultureInfo()
         {

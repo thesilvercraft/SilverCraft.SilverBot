@@ -1,9 +1,5 @@
-﻿using SilverBotDS.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -16,7 +12,7 @@ namespace SilverBotDS.Utils
 
         public static async Task<Player> GetPlayerAsync(string name)
         {
-            var httpClient = NetClient.Get();
+            var httpClient = Program.GetHttpClient();
             var uri = new UriBuilder(string.Format(GetProfileUrl, name));
             var rm = await httpClient.GetAsync(uri.Uri);
             if (rm.StatusCode == HttpStatusCode.OK)

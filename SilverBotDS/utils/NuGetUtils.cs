@@ -3,7 +3,6 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using NetClient = SilverBotDS.Objects.NetClient;
 
 namespace SilverBotDS.Utils
 {
@@ -17,7 +16,7 @@ namespace SilverBotDS.Utils
         /// <exception cref="Exception">given when the webserver didnt return a OK</exception>
         public static async Task<Datum[]> SearchAsync(string query)
         {
-            var httpClient = NetClient.Get();
+            var httpClient = Program.GetHttpClient();
             var uri = new UriBuilder("https://azuresearch-usnc.nuget.org/query")
             {
                 Query = $"?q={query}"

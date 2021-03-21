@@ -26,24 +26,22 @@ namespace SilverBotDS.Commands
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
             if (up < ap)
             {
-                thing += lang.UserHasLowerRole + lang.Kick;
+                thing = lang.UserHasLowerRole + lang.Kick;
             }
-            if (up == ap)
+            else if (up == ap)
             {
-                thing += lang.UserHasLowerRole + lang.Kick;
+                thing = lang.UserHasLowerRole + lang.Kick;
             }
-            if (ap > bp)
+            else if (ap > bp)
             {
-                thing += lang.BotHasLowerRole;
+                thing = lang.BotHasLowerRole + lang.Kick;
             }
-            if (up > bp && bp > ap)
+            else if (up > bp && bp > ap)
             {
                 await a.RemoveAsync(reason);
-                thing += "The bot has attempted to kick the user";
+                thing = lang.BotKickedUser;
             }
-            b.WithDescription(thing);
-            b.WithColor(await ColorUtils.GetSingleAsync());
-            b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync()).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
 
@@ -58,24 +56,22 @@ namespace SilverBotDS.Commands
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
             if (up < ap)
             {
-                thing += lang.UserHasLowerRole + lang.Ban;
+                thing = lang.UserHasLowerRole + lang.Ban;
             }
-            if (up == ap)
+            else if (up == ap)
             {
-                thing += lang.UserHasLowerRole + lang.Ban;
+                thing = lang.UserHasLowerRole + lang.Ban;
             }
-            if (ap > bp)
+            else if (ap > bp)
             {
-                thing += lang.BotHasLowerRole;
+                thing = lang.BotHasLowerRole + lang.Ban;
             }
-            if (up > bp && bp > ap)
+            else if (up > bp && bp > ap)
             {
                 await a.BanAsync(reason: reason);
-                thing += "The bot has attempted to ban the user";
+                thing = lang.BotBannedUser;
             }
-            b.WithDescription(thing);
-            b.WithColor(await ColorUtils.GetSingleAsync());
-            b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync()).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
 

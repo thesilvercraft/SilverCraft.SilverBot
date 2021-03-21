@@ -41,7 +41,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 11;
+        private const ulong CurrentConfVer = 12;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -90,6 +90,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Allow silverbot to load (or make) a colors config, useful if you plan on adding colors")]
         public bool ColorConfig { get; set; } = true;
+
+        [XmlDescription("Allow silverbot to connect to lavalink and use audio commands, useful if you have lavalink installed or if you allowed silverbot to install and run lavalink (requires java)")]
+        public bool UseLavaLink { get; set; } = true;
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {
@@ -225,47 +228,9 @@ namespace SilverBotDS.Objects
             {
                 await OutdatedConfigTask(readconfig);
             }
-            SetDatabase(readconfig);
             Giphy.Set(readconfig?.Gtoken);
             Fortnite.Setapi(readconfig?.FApiToken);
             return readconfig;
-        }
-
-        public static void SetDatabase(Config config)
-        {
-            switch (config.DatabaseType)
-            {
-                case 1:
-                    {
-                        //postgres
-                        PostgreDatabase postgre;
-                        if (config != null && !string.IsNullOrEmpty(config.ConnString))
-                        {
-                            postgre = new(config.ConnString);
-                        }
-                        else
-                        {
-                            var tmp = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
-                            var usernameandpass = tmp.UserInfo.Split(":");
-                            var connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
-                            postgre = new(connString);
-                        }
-                        Console.WriteLine("Using a postgre database");
-                        Program.SetDatabase(postgre);
-                        break;
-                    }
-                case 2:
-                    {
-                        //litedb
-                        Console.WriteLine("Using a litedb database");
-                        Program.SetDatabase(new LiteDBDatabase());
-                        break;
-                    }
-                default:
-                    {
-                        throw new NotImplementedException();
-                    }
-            }
         }
     }
 }

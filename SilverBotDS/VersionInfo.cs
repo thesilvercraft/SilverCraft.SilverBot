@@ -1,11 +1,6 @@
-﻿using CodenameGenerator;
-using SilverBotDS.Utils;
-using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System;
 using System.Net;
 using static SilverBotDS.Utils.GitHubUtils;
-using NetClient = SilverBotDS.Objects.NetClient;
 
 namespace SilverBotDS
 {
@@ -23,7 +18,7 @@ namespace SilverBotDS
             try
             {
                 LogLine("Running on " + Environment.OSVersion.VersionString);
-                var client = NetClient.Get();
+                var client = Program.GetHttpClient();
                 LogLine("Getting latest version info from GitHub");
                 Repo repo = new("thesilvercraft", "silverbot");
                 var info = await CommitInfo.GetLatestFromRepoAsync(repo);

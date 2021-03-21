@@ -20,12 +20,7 @@ namespace SilverBotDS.Commands
     [RequireGuild]
     internal class Audio : BaseCommandModule
     {
-        private static LavalinkNode audioService;
-
-        public static void SetLavaLinkNode(LavalinkNode _audioService)
-        {
-            audioService = _audioService;
-        }
+        public LavalinkNode AudioService { private get; set; }
 
         private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "", string imageurl = "", string url = "")
         {
@@ -108,7 +103,7 @@ namespace SilverBotDS.Commands
             {
                 Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
 
-                if (!audioService.HasPlayer(ctx.Guild.Id))
+                if (!AudioService.HasPlayer(ctx.Guild.Id))
                 {
                     if (ctx.Member?.VoiceState?.Channel == null)
                     {
@@ -120,7 +115,7 @@ namespace SilverBotDS.Commands
                         await Join(ctx);
                     }
                 }
-                VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+                VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
                 if (song.Contains("we will fock you"))
                 {
                     song = "https://youtu.be/lLN3caSQI1w";
@@ -134,13 +129,13 @@ namespace SilverBotDS.Commands
                     song = "i got bitches";
                 }
 
-                var track = await audioService.GetTrackAsync(song, SearchMode.None);
+                var track = await AudioService.GetTrackAsync(song, SearchMode.None);
                 if (track is null)
                 {
-                    track = await audioService.GetTrackAsync(song, SearchMode.YouTube);
+                    track = await AudioService.GetTrackAsync(song, SearchMode.YouTube);
                     if (track is null)
                     {
-                        track = await audioService.GetTrackAsync(song, SearchMode.SoundCloud);
+                        track = await AudioService.GetTrackAsync(song, SearchMode.SoundCloud);
                         if (track is null)
                         {
                             await SendSimpleMessage(ctx, string.Format(lang.NoResults, song));
@@ -177,7 +172,7 @@ namespace SilverBotDS.Commands
         public async Task Volume(CommandContext ctx, ushort volume)
         {
             Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            if (!audioService.HasPlayer(ctx.Guild.Id))
+            if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
@@ -193,7 +188,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.VolumeNotCorrect);
                 return;
             }
-            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             await player.SetVolumeAsync(volume / 100f, true);
         }
 
@@ -202,7 +197,7 @@ namespace SilverBotDS.Commands
         public async Task Remove(CommandContext ctx, int songindex)
         {
             Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            if (!audioService.HasPlayer(ctx.Guild.Id))
+            if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
@@ -213,7 +208,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected);
                 return;
             }
-            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             if (songindex < 0 || songindex > player.Queue.Count)
             {
                 await SendSimpleMessage(ctx, lang.SongNotExist);
@@ -230,7 +225,7 @@ namespace SilverBotDS.Commands
         public async Task Queue(CommandContext ctx)
         {
             Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            if (!audioService.HasPlayer(ctx.Guild.Id))
+            if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
@@ -242,7 +237,7 @@ namespace SilverBotDS.Commands
                 return;
             }
 
-            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.Queue.Count == 0 && player.State != PlayerState.Playing)
             {
                 await SendSimpleMessage(ctx, lang.NothingInQueue);
@@ -264,7 +259,7 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                var bob = new DiscordEmbedBuilder().WithTitle("Something went fucky wucky on my side").WithDescription("Try again a little later?").WithColor(await ColorUtils.GetSingleAsync());
+                var bob = new DiscordEmbedBuilder().WithTitle(lang.SearchFailTitle).WithDescription(lang.SearchFailDescription).WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());
                 Program.SendLog(e);
                 throw;
@@ -276,7 +271,7 @@ namespace SilverBotDS.Commands
         public async Task Loop(CommandContext ctx)
         {
             Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            if (!audioService.HasPlayer(ctx.Guild.Id))
+            if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
@@ -289,7 +284,7 @@ namespace SilverBotDS.Commands
                 return;
             }
 
-            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.IsLooping)
             {
                 player.IsLooping = false;
@@ -310,7 +305,7 @@ namespace SilverBotDS.Commands
 
             var channel = ctx.Member?.VoiceState?.Channel;
 
-            if (!audioService.HasPlayer(ctx.Guild.Id))
+            if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
@@ -320,7 +315,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected);
                 return;
             }
-            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Playing)
             {
                 await SendSimpleMessage(ctx, lang.NotPlaying);
@@ -338,7 +333,7 @@ namespace SilverBotDS.Commands
 
             var channel = ctx.Member?.VoiceState?.Channel;
 
-            if (!audioService.HasPlayer(ctx.Guild.Id))
+            if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
@@ -348,7 +343,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected);
                 return;
             }
-            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Paused)
             {
                 await SendSimpleMessage(ctx, lang.NotPaused);
@@ -363,7 +358,7 @@ namespace SilverBotDS.Commands
         public async Task Join(CommandContext ctx)
         {
             Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            if (audioService.HasPlayer(ctx.Guild.Id))
+            if (AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.AlreadyConnected);
                 return;
@@ -373,7 +368,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected);
                 return;
             }
-            await audioService.JoinAsync<VoteLavalinkPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
+            await AudioService.JoinAsync<VoteLavalinkPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
             await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name));
         }
 
@@ -387,7 +382,7 @@ namespace SilverBotDS.Commands
 
             var channel = ctx.Member?.VoiceState?.Channel;
 
-            if (!audioService.HasPlayer(ctx.Guild.Id))
+            if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
@@ -397,7 +392,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected);
                 return;
             }
-            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Playing)
             {
                 await SendSimpleMessage(ctx, lang.NotPlaying);
@@ -421,7 +416,7 @@ namespace SilverBotDS.Commands
         public async Task VoteSkip(CommandContext ctx)
         {
             Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            if (!audioService.HasPlayer(ctx.Guild.Id))
+            if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
@@ -433,7 +428,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected);
                 return;
             }
-            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Playing)
             {
                 await SendSimpleMessage(ctx, lang.NotPlaying);
@@ -474,7 +469,7 @@ namespace SilverBotDS.Commands
 
             var channel = ctx.Member?.VoiceState?.Channel;
 
-            if (!audioService.HasPlayer(ctx.Guild.Id))
+            if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
                 return;
@@ -485,7 +480,7 @@ namespace SilverBotDS.Commands
                 return;
             }
 
-            VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             await player.DisconnectAsync();
 
             await SendSimpleMessage(ctx, string.Format(lang.Left, channel.Name), "Goodbye!👋");

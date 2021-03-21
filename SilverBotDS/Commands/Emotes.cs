@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace SilverBotDS.Commands
     internal class Emotes : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
+        public ISBDatabase Database { private get; set; }
+        public Config Config { private get; set; }
+        public HttpClient HttpClient { private get; set; }
 
         [Command("addemote")]
         [Description("Wanna add a emote but discord is too complicated to navigate")]
@@ -28,7 +32,7 @@ namespace SilverBotDS.Commands
         public async Task UselessFact(CommandContext ctx, [Description("Name like `Kappa`")] string name, [Description("url of emote")] string url)
         {
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            var client = NetClient.Get();
+            var client = HttpClient;
             var rm = await client.GetAsync(url);
             var st = await rm.Content.ReadAsStreamAsync();
             if (st.Length > 256 * 1000)
@@ -92,7 +96,7 @@ namespace SilverBotDS.Commands
             {
                 var builder = new StringBuilder();
                 var lang = (await Language.GetLanguageFromCtxAsync(ctx));
-                var serverthatareoptedin = await Program.GetDatabase().ServersOptedInEmotesAsync();
+                var serverthatareoptedin = await Database.ServersOptedInEmotesAsync();
                 var pages = new List<Page>();
                 var b = new DiscordEmbedBuilder();
                 b.WithTitle(lang.AllAvailibleEmotes);
@@ -168,7 +172,7 @@ namespace SilverBotDS.Commands
         {
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var emotes = new List<DiscordEmoji>();
-            var serverthatareoptedin = await Program.GetDatabase().ServersOptedInEmotesAsync();
+            var serverthatareoptedin = await Database.ServersOptedInEmotesAsync();
 
             foreach (var a in ctx.Client.Guilds.Values.Where(e => CheckIfGuildIsIn(serverthatareoptedin, e.Id)))
             {
@@ -234,7 +238,7 @@ namespace SilverBotDS.Commands
         [RequireGuild()]
         public async Task Optin(CommandContext ctx)
         {
-            var isoptedin = await Program.GetDatabase().IsOptedInEmotes(ctx.Guild.Id);
+            var isoptedin = await Database.IsOptedInEmotes(ctx.Guild.Id);
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
 
             switch (isoptedin)
@@ -262,7 +266,7 @@ namespace SilverBotDS.Commands
                 ServerId = ctx.Guild.Id,
                 Optedin = true
             };
-            await Program.GetDatabase().InsertEmoteOptinAsync(newserverthing);
+            await Database.InsertEmoteOptinAsync(newserverthing);
             var b = new DiscordEmbedBuilder();
             b.WithTitle(lang.OptedIn);
             b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));

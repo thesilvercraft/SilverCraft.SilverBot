@@ -48,27 +48,48 @@ namespace SilverBotDS.Objects
             {
                 using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 var da = db.Execute(sql);
-                StringBuilder thing = new(ISBDatabase.HtmlStart);
                 ulong index = 0;
-                while (da.Read())
+                if (Program.GetConfig().BrowserType == 0)
                 {
-                    if (index++ <= RESULT_LIMIT)
+                    StringBuilder builder = new("```" + Environment.NewLine);
+                    while (da.Read())
                     {
-                        thing.AppendLine("<td>" + da.Current.RawValue + "</td>");
+                        if (index++ <= RESULT_LIMIT)
+                        {
+                            builder.Append($"|{da.Current.RawValue,5}");
+                        }
+                        else
+                        {
+                            builder.Append($"|{"&MORE",5}");
+                        }
                     }
-                    else
-                    {
-                        thing.AppendLine("<td>AND MORE</td>");
-                    }
+                    return new Tuple<string, Image>(index == 0 ? "nodata" : builder.Append("```").ToString(), null);
                 }
-
-                thing.AppendLine("</table></body></html>");
-
-                if (index == 0)
+                else
                 {
-                    return new Tuple<string, Image>("nodata", null);
+                    StringBuilder thing = new(ISBDatabase.HtmlStart);
+
+                    while (da.Read())
+                    {
+                        if (index++ <= RESULT_LIMIT)
+                        {
+                            thing.AppendLine("<td>" + da.Current.RawValue + "</td>");
+                        }
+                        else
+                        {
+                            thing.AppendLine("<td>AND MORE</td>");
+                        }
+                    }
+
+                    thing.AppendLine("</table></body></html>");
+
+                    if (index == 0)
+                    {
+                        return new Tuple<string, Image>("nodata", null);
+                    }
+
+                    return new Tuple<string, Image>(null, await Browser.ScreenshotHtmlAsync(thing.ToString()));
                 }
-                return new Tuple<string, Image>(null, await Browser.ScreenshotHtmlAsync(thing.ToString()));
             }
             catch (Exception e)
             {

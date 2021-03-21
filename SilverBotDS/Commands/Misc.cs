@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -20,6 +21,10 @@ namespace SilverBotDS.Commands
 {
     internal class MiscCommands : BaseCommandModule
     {
+        public ISBDatabase Database { private get; set; }
+        public Config Config { private get; set; }
+        public HttpClient HttpClient { private get; set; }
+
         [Command("version")]
         [Description("Get the version info")]
         [Aliases("ver", "verinfo", "versioninfo")]
@@ -30,12 +35,12 @@ namespace SilverBotDS.Commands
                 var lang = (await Language.GetLanguageFromCtxAsync(ctx));
                 await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
                     .WithTitle(lang.VersionInfoTitle)
-                    .AddField("Version number", "`" + VersionInfo.VNumber + "`")
-                    .AddField("Git repo", ThisAssembly.Git.RepositoryUrl)
-                    .AddField("Git Commit hash", "`" + ThisAssembly.Git.Commit + "`")
-                    .AddField("Git Branch", "`" + ThisAssembly.Git.Branch + "`")
-                    .AddField("Is dirty", StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
-                    .AddField("CLR ", "`" + (ctx.Client.CurrentApplication.Owners.Contains(ctx.User) && ctx.Channel.IsPrivate ? System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription : "REDACTED") + "`")
+                    .AddField(lang.VersionInfoCommand.VersionNumber, "`" + VersionInfo.VNumber + "`")
+                    .AddField(lang.VersionInfoCommand.GitRepo, ThisAssembly.Git.RepositoryUrl)
+                    .AddField(lang.VersionInfoCommand.GitCommitHash, "`" + ThisAssembly.Git.Commit + "`")
+                    .AddField(lang.VersionInfoCommand.GitBranch, "`" + ThisAssembly.Git.Branch + "`")
+                    .AddField(lang.VersionInfoCommand.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
+                    .AddField(lang.VersionInfoCommand.CLR, "`" + (ctx.Client.CurrentApplication.Owners.Contains(ctx.User) && ctx.Channel.IsPrivate ? System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription : "REDACTED") + "`")
                     .WithAuthor(ctx.Client.CurrentUser.Username + "#" + ctx.Client.CurrentUser.Discriminator, iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
                     .WithColor(await ColorUtils.GetSingleAsync())
                     .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
@@ -62,11 +67,12 @@ namespace SilverBotDS.Commands
 
         [Command("setlang")]
         [Description("set your language")]
+        [RequireUserPermissions(Permissions.ManageGuild)]
         public async Task SetLanguage(CommandContext ctx, string LangName)
         {
             if (Language.LoadedLanguages().ToList().FirstOrDefault(x => x.ToLower() == LangName.ToLower()) != null)
             {
-                var db = Program.GetDatabase();
+                var db = Database;
                 if (ctx.Channel.IsPrivate)
                 {
                     await db.InserOrUpdateLangCodeUser(new DbLang { DId = ctx.User.Id, Name = LangName.ToLower() });
@@ -83,7 +89,7 @@ namespace SilverBotDS.Commands
             else
             {
                 await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                          .WithContent("Unknown language. Valid choices are:```" + Language.LoadedLanguages().Humanize(",\n") + "```")
+                                          .WithContent("Unknown language. Valid choices are:```" + Language.LoadedLanguages().Humanize() + "```")
                                           .SendAsync(ctx.Channel);
             }
         }
@@ -93,7 +99,7 @@ namespace SilverBotDS.Commands
         public async Task TranlateUnknown(CommandContext ctx, [RemainingText] string text)
         {
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            Translator translator = new(NetClient.Get());
+            Translator translator = new(HttpClient);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithContent(await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate))
                                              .SendAsync(ctx.Channel);
@@ -105,7 +111,7 @@ namespace SilverBotDS.Commands
         {
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             LanguageTo = LanguageTo.Humanize(casing: LetterCasing.Sentence);
-            Translator translator = new(NetClient.Get());
+            Translator translator = new(HttpClient);
 
             if (!Translator.ContainsKeyOrVal(LanguageTo))
             {
@@ -134,7 +140,7 @@ namespace SilverBotDS.Commands
                     var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Word).WithUrl(data[i].Permalink).WithColor(await ColorUtils.GetSingleAsync()).WithDescription(data[i].Definition);
                     if (!string.IsNullOrEmpty(data[i].Example))
                     {
-                        tempbuilder.AddField("Example", data[i].Example);
+                        tempbuilder.AddField(lang.UrbanExample, data[i].Example);
                     }
 
                     tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + " " + string.Format(lang.PageNuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
@@ -167,7 +173,7 @@ namespace SilverBotDS.Commands
                     var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Title).WithUrl($"https://www.nuget.org/packages/{data[i].Id}").WithColor(await ColorUtils.GetSingleAsync());
                     if (data[i].Authors is null)
                     {
-                        tempbuilder.WithAuthor(data[i].Title + "'s contributors", data[i].ProjectUrl);
+                        tempbuilder.WithAuthor(data[i].Title + lang.NuGetCommand.SomethingsContributors, data[i].ProjectUrl);
                     }
                     else
                     {
@@ -185,20 +191,20 @@ namespace SilverBotDS.Commands
 
                     if (data[i].Verified is not null)
                     {
-                        tempbuilder.AddField("NuGet verified", StringUtils.BoolToEmoteString(data[i].Verified == true), true);
+                        tempbuilder.AddField(lang.NuGetCommand.NuGetVerified, StringUtils.BoolToEmoteString(data[i].Verified == true), true);
                     }
 
                     if (!string.IsNullOrEmpty(data[i].Type))
                     {
-                        tempbuilder.AddField("Type", data[i].Type, true);
+                        tempbuilder.AddField(lang.NuGetCommand.Type, data[i].Type, true);
                     }
                     if (data[i].TotalDownloads is not null)
                     {
-                        tempbuilder.AddField("<:green_download_icon:805051604797227038>", data[i].TotalDownloads.ToString(), true);
+                        tempbuilder.AddField(lang.NuGetCommand.Downloads, data[i].TotalDownloads.ToString(), true);
                     }
                     if (!string.IsNullOrEmpty(data[i].Version))
                     {
-                        tempbuilder.AddField("V", data[i].Version, true);
+                        tempbuilder.AddField(lang.NuGetCommand.Version, data[i].Version, true);
                     }
 
                     pages.Add(new Page(embed: tempbuilder));

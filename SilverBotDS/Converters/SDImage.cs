@@ -46,7 +46,7 @@ namespace SilverBotDS.Converters
         {
             if (_bytes == null)
             {
-                _bytes = await NetClient.Get().GetByteArrayAsync(Url);
+                _bytes = await Program.GetHttpClient().GetByteArrayAsync(Url);
             }
             return _bytes;
         }

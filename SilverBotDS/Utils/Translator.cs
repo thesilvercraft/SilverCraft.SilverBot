@@ -11,7 +11,7 @@ namespace SilverBotDS.Utils
         public Translator()
         {
             var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("SilverBotTranslate");
+            _ = httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("SilverBotTranslate");
             this.httpClient = httpClient;
         }
 
@@ -20,13 +20,7 @@ namespace SilverBotDS.Utils
             this.httpClient = httpClient;
         }
 
-        public static IEnumerable<string> Languages
-        {
-            get
-            {
-                return LanguageModeMap.Keys.OrderBy(p => p);
-            }
-        }
+        public static IEnumerable<string> Languages => LanguageModeMap.Keys.OrderBy(p => p);
 
         public string TranslationSpeechUrl
         {
@@ -43,16 +37,13 @@ namespace SilverBotDS.Utils
         {
             string translation = string.Empty;
 
-            string url = string.Format("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
-                                        LanguageEnumToIdentifier(sourceLanguage),
-                                        LanguageEnumToIdentifier(targetLanguage),
-                                        HttpUtility.UrlEncode(sourceText));
-
+            string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={LanguageEnumToIdentifier(sourceLanguage)}&tl={LanguageEnumToIdentifier(targetLanguage)}&dt=t&q={HttpUtility.UrlEncode(sourceText)}";
             using (HttpResponseMessage response = await httpClient.GetAsync(url))
             {
                 string text = await response.Content.ReadAsStringAsync();
 
-                int index = text.IndexOf(string.Format(",,\"{0}\"", LanguageEnumToIdentifier(sourceLanguage)));
+                int index = text.IndexOf($",,\"{LanguageEnumToIdentifier(sourceLanguage)}\"",
+                                         comparisonType: StringComparison.InvariantCulture);
                 if (index == -1)
                 {
                     int startQuote = text.IndexOf('\"');
@@ -68,7 +59,8 @@ namespace SilverBotDS.Utils
                 else
                 {
                     text = text.Substring(0, index);
-                    text = text.Replace("],[", ",").Replace("]", string.Empty).Replace("[", string.Empty).Replace("\",\"", "\"");
+                    text = text.Replace("],[",
+                                        ",").Replace("]", string.Empty).Replace("[", string.Empty).Replace("\",\"", "\"");
                     string[] phrases = text.Split(new[] { '\"' }, StringSplitOptions.RemoveEmptyEntries);
                     for (int i = 0; (i < phrases.Length); i += 2)
                     {
@@ -82,8 +74,7 @@ namespace SilverBotDS.Utils
                     }
                 }
             }
-            translation = translation.Trim();
-            translation = translation.Replace(" ?", "?").Replace(" !", "!").Replace(" ,", ",").Replace(" .", ".").Replace(" ;", ";");
+            translation = translation.Trim().Replace(" ?", "?").Replace(" !", "!").Replace(" ,", ",").Replace(" .", ".").Replace(" ;", ";");
             TranslationSpeechUrl = string.Format("https://translate.googleapis.com/translate_tts?ie=UTF-8&q={0}&tl={1}&total=1&idx=0&textlen={2}&client=gtx",
             HttpUtility.UrlEncode(translation), LanguageEnumToIdentifier(targetLanguage), translation.Length);
             return translation;
@@ -93,13 +84,13 @@ namespace SilverBotDS.Utils
 
         private static string LanguageEnumToIdentifier(string language)
         {
-            if (LanguageModeMap.ContainsValue(language))
+            if (!LanguageModeMap.ContainsValue(language))
             {
-                //no need to search for a value when it is one
-                return language;
+                LanguageModeMap.TryGetValue(language, out string mode);
+                return mode;
             }
-            LanguageModeMap.TryGetValue(language, out string mode);
-            return mode;
+            //no need to search for a value when it is one
+            return language;
         }
 
         private static readonly Dictionary<string, string> LanguageModeMap = new Dictionary<string, string>

@@ -10,6 +10,7 @@ using Lavalink4NET;
 using Lavalink4NET.DSharpPlus;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SDBrowser;
 using Serilog;
@@ -21,8 +22,10 @@ using SilverBotDS.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace SilverBotDS
 {
@@ -33,9 +36,9 @@ namespace SilverBotDS
         private static Config GetNewConfig()
         {
             MainLogLine("Loading config");
-            var task = Config.GetAsync();
+            using Task<Config> task = Config.GetAsync();
             task.Wait();
-            var res = task.Result;
+            Config res = task.Result;
             MainLogLine("GREAT SUCCESS LOADING CONFIG");
             return res;
         }
@@ -56,20 +59,7 @@ namespace SilverBotDS
   .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true)
  .WriteTo.Discord(new DiscordWebhookMessenger(id, token))
  .CreateLogger();
-            log.Information("Connect to selinum??");
-            switch (config.BrowserType)
-            {
-                case 1:
-                    {
-                        Browser.SetBrowser(new SeleniumBrowser(Browsertype.Chrome, config.DriverLocation));
-                        break;
-                    }
-                case 2:
-                    {
-                        Browser.SetBrowser(new SeleniumBrowser(Browsertype.Firefox, config.DriverLocation));
-                        break;
-                    }
-            }
+
             log.Information("Checking for updates");
 
             //Check for updates
@@ -80,24 +70,19 @@ namespace SilverBotDS
             MainAsync().GetAwaiter().GetResult();
         }
 
-        public static Config GetConfig()
-        {
-            return config;
-        }
-
         public static void SendLog(string text)
         {
             log.Error(text);
         }
 
-        public static void SetDatabase(ISBDatabase newdb)
-        {
-            Database = newdb;
-        }
-
         public static ISBDatabase GetDatabase()
         {
-            return Database;
+            return serviceProvider.GetService<ISBDatabase>();
+        }
+
+        public static Config GetConfig()
+        {
+            return serviceProvider.GetService<Config>();
         }
 
         public static void SendLog(string text, bool info)
@@ -120,7 +105,17 @@ namespace SilverBotDS
         private static DiscordClient discord;
         private static LavalinkNode audioService;
         private static Serilog.Core.Logger log;
-        private static ISBDatabase Database;
+        private static ServiceProvider serviceProvider;
+        private static readonly HttpClient httpClient = NewhttpClientWithUserAgent();
+
+        public static HttpClient GetHttpClient() => httpClient;
+
+        private static HttpClient NewhttpClientWithUserAgent()
+        {
+            var e = new HttpClient();
+            e.DefaultRequestHeaders.UserAgent.TryParseAdd("SilverBot");
+            return e;
+        }
 
         private static async Task MainAsync()
         {
@@ -147,31 +142,58 @@ namespace SilverBotDS
 
             //Tell our cute client to use commands or in other words become a working class member of society
             log.Information("Initialising Commands");
-            var commands = discord.UseCommandsNext(new CommandsNextConfiguration()
-            {
-                StringPrefixes = config.Prefix
-            });
-            //Register our commands
-            log.Information("Regisitring Commands&Converters");
-            commands.RegisterConverter(new SdImageConverter());
-            commands.RegisterCommands<Genericcommands>();
-            commands.RegisterCommands<Emotes>();
-            commands.RegisterCommands<ModCommands>();
-            commands.RegisterCommands<Giphy>();
-            commands.RegisterCommands<ImageModule>();
-            commands.RegisterCommands<AdminCommands>();
-            commands.RegisterCommands<OwnerOnly>();
-            commands.RegisterCommands<SteamCommands>();
-            commands.RegisterCommands<Fortnite>();
-            commands.RegisterCommands<Audio>();
-            commands.RegisterCommands<MiscCommands>();
-            commands.RegisterCommands<MinecraftModule>();
-            commands.CommandErrored += Commands_CommandErrored;
-            if (config.UseNodeJs)
-            {
-                commands.RegisterCommands<CalculatorCommands>();
-            }
+            ServiceCollection services = new ServiceCollection();
 
+            switch (config.BrowserType)
+            {
+                case 1:
+                    {
+                        log.Information("Launching chrome");
+                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Chrome, config.DriverLocation));
+                        break;
+                    }
+                case 2:
+                    {
+                        log.Information("Launching firefox");
+                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Firefox, config.DriverLocation));
+                        break;
+                    }
+            }
+            switch (config.DatabaseType)
+            {
+                case 1:
+                    {
+                        //postgres
+                        PostgreDatabase postgre;
+                        if (config != null && !string.IsNullOrEmpty(config.ConnString))
+                        {
+                            postgre = new(config.ConnString);
+                        }
+                        else
+                        {
+                            var tmp = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
+                            var usernameandpass = tmp.UserInfo.Split(":");
+                            var connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
+                            postgre = new(connString);
+                        }
+                        log.Information("Using Postgre");
+                        services.AddSingleton<ISBDatabase>(postgre);
+                        break;
+                    }
+                case 2:
+                    {
+                        //litedb
+                        log.Information("Using LiteDB");
+                        services.AddSingleton<ISBDatabase>(new LiteDBDatabase());
+                        break;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
+                    }
+            }
+            services.AddSingleton(config);
+            services.AddSingleton(httpClient);
             //Launch lavalink
             if (config.AutoDownloadAndStartLavalink)
             {
@@ -196,18 +218,57 @@ namespace SilverBotDS
 
             log.Information("Waiting 6s");
             await Task.Delay(6000);
-            log.Information("Making a node");
+            log.Information("Making a lavalinknode");
             audioService = new LavalinkNode(new LavalinkNodeOptions
             {
                 RestUri = config.LavalinkRestUri,
                 WebSocketUri = config.LavalinkWebSocketUri,
                 Password = config.LavalinkPassword
             }, new DiscordClientWrapper(discord));
+            services.AddSingleton(audioService);
+            serviceProvider = services.BuildServiceProvider();
+            var commands = discord.UseCommandsNext(new CommandsNextConfiguration()
+            {
+                StringPrefixes = config.Prefix,
+                Services = serviceProvider
+            });
+            //Register our commands
+            log.Information("Regisitring Commands&Converters");
+            commands.RegisterConverter(new SdImageConverter());
+            commands.RegisterCommands<Genericcommands>();
+            commands.RegisterCommands<Emotes>();
+            commands.RegisterCommands<ModCommands>();
+            commands.RegisterCommands<Giphy>();
+            commands.RegisterCommands<ImageModule>();
+            commands.RegisterCommands<AdminCommands>();
+            commands.RegisterCommands<OwnerOnly>();
+            commands.RegisterCommands<SteamCommands>();
+            commands.RegisterCommands<Fortnite>();
+            if (config.UseLavaLink)
+            {
+                commands.RegisterCommands<Audio>();
+            }
+            commands.RegisterCommands<MiscCommands>();
+            commands.RegisterCommands<MinecraftModule>();
+            commands.CommandErrored += Commands_CommandErrored;
+            if (config.UseNodeJs)
+            {
+                commands.RegisterCommands<CalculatorCommands>();
+            }
+
             //🥁🥁🥁 drumroll please
             log.Information("Connecting to discord");
-            discord.Ready += Discord_Ready;
+            if (config.UseLavaLink)
+            {
+                discord.Ready += async (DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e) =>
+                {
+                    await audioService.InitializeAsync();
+                    waitforfriday.Start();
+                };
+            }
             await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
-            if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0))
+
+            if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0) && config.UseLavaLink)
             {
                 waitforfriday = new Thread(new ThreadStart(WaitForFridayAsync));
             }
@@ -218,7 +279,7 @@ namespace SilverBotDS
             {
                 log.Information("Updating the status to a random one");
                 //update the status to some random one
-                await discord.UpdateStatusAsync(await Splashes.GetSingleAsync(useinternal: config.UseSplashConfig));
+                await discord.UpdateStatusAsync(await Splashes.GetSingleAsync(useinternal: !config.UseSplashConfig));
                 //wait the specified time
                 log.Information($"Waiting {new TimeSpan(0, 0, 0, 0, config.MsInterval).Humanize(precision: 5)}");
                 await Task.Delay(config.MsInterval);
@@ -270,13 +331,6 @@ namespace SilverBotDS
 
             await channel.SendMessageAsync("its friday");
             return;
-        }
-
-        private static async Task Discord_Ready(DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e)
-        {
-            await audioService.InitializeAsync();
-            Audio.SetLavaLinkNode(audioService);
-            waitforfriday.Start();
         }
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)

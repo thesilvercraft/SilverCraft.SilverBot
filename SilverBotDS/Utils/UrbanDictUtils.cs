@@ -15,7 +15,7 @@ namespace SilverBotDS.Utils
     {
         public static async Task<Defenition[]> GetDefenition(string word)
         {
-            var httpClient = NetClient.Get();
+            var httpClient = Program.GetHttpClient();
             var uri = new UriBuilder($"http://api.urbandictionary.com/v0/define?term={HttpUtility.UrlEncode(word)}");
             var rm = await httpClient.GetAsync(uri.Uri);
             if (rm.StatusCode == HttpStatusCode.OK)

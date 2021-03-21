@@ -2,26 +2,26 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.Interactivity;
-using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static SilverBotDS.Utils.StringUtils;
-using NetClient = SilverBotDS.Objects.NetClient;
 
 namespace SilverBotDS.Commands
 {
     internal sealed class Genericcommands : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
+        public ISBDatabase Database { private get; set; }
+        public Config Config { private get; set; }
+        public HttpClient HttpClient { private get; set; }
 
         [Command("hi")]
         [Description("Hello fellow human! beep boop")]
@@ -38,7 +38,7 @@ namespace SilverBotDS.Commands
         {
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var b = new DiscordEmbedBuilder();
-            var client = NetClient.Get();
+            var client = HttpClient;
             var rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
             if (rm.StatusCode == HttpStatusCode.OK)
             {
@@ -204,7 +204,7 @@ namespace SilverBotDS.Commands
         public async Task UselessFact(CommandContext ctx)
         {
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            var client = NetClient.Get();
+            var client = HttpClient;
             var rm = await client.GetAsync("https://uselessfacts.jsph.pl/random.md?language=" + lang.LangCodeForUselessFacts);
             await new DiscordMessageBuilder()
                                                  .WithReply(ctx.Message.Id)
@@ -217,9 +217,9 @@ namespace SilverBotDS.Commands
                                                  .SendAsync(ctx.Channel);
         }
 
-        private static async Task<bool> IsAtSilverCraftAsync(CommandContext ctx, DiscordUser b)
+        private async Task<bool> IsAtSilverCraftAsync(CommandContext ctx, DiscordUser b)
         {
-            return (await ctx.Client.GetGuildAsync(Program.GetConfig().ServerId)).Members.ContainsKey(b.Id);
+            return (await ctx.Client.GetGuildAsync(Config.ServerId)).Members.ContainsKey(b.Id);
         }
 
         [Command("bot")]
@@ -227,7 +227,7 @@ namespace SilverBotDS.Commands
         public async Task WhoIsBot(CommandContext ctx, [Description("the bot")] DiscordUser user)
         {
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
-            if (string.IsNullOrEmpty(Program.GetConfig().TopggSidToken) || Program.GetConfig().TopggSidToken.ToLower() == "none")
+            if (string.IsNullOrEmpty(Config.TopggSidToken) || Config.TopggSidToken.ToLower() == "none")
             {
                 await new DiscordMessageBuilder()
                                                  .WithReply(ctx.Message.Id)
@@ -250,7 +250,7 @@ namespace SilverBotDS.Commands
                 return;
             }
 
-            Dbla.Client client = new(Program.GetConfig().TopggSidToken, Program.GetConfig().TopggIsSelfbot);
+            Dbla.Client client = new(Config.TopggSidToken, Config.TopggIsSelfbot);
             var bot = await client.GetViaIdAsync(user.Id);
 
             if (bot == null)

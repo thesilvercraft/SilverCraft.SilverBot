@@ -16,7 +16,6 @@ namespace SilverBotDS.Commands
             Guild = ctx.Guild;
             VerString = VersionInfo.VNumber;
             Client = ctx.Client;
-            Config = Program.GetConfig();
         }
 
         public CommandContext ctx;
@@ -34,6 +33,5 @@ namespace SilverBotDS.Commands
         }
 
         public bool IsMaxABitch = true;
-        public Config Config;
     }
 }

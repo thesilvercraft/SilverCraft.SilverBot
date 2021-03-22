@@ -30,7 +30,7 @@ namespace SilverBotDS.Commands
             {
                 builder.AppendLine($"{step.OldVal} {step.Step} {step.NewVal}");
             }
-            if (string.IsNullOrEmpty(builder.ToString()))
+            if (string.IsNullOrEmpty(builder.ToString()) || builder.ToString() == "```")
             {
                 await CalculateOld(ctx, input);
                 return;

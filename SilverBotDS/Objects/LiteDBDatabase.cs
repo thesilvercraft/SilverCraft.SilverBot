@@ -23,7 +23,7 @@ namespace SilverBotDS.Objects
         {
             try
             {
-                using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
+                using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 ILiteCollection<ServerOptin> col = db.GetCollection<ServerOptin>();
                 col.EnsureIndex(x => x.ServerId);
                 return Task.FromResult(col.FindOne(x => x.ServerId == serverid)?.Optedin);
@@ -46,7 +46,7 @@ namespace SilverBotDS.Objects
         {
             try
             {
-                using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
+                using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 var da = db.Execute(sql);
                 ulong index = 0;
                 if (Program.GetConfig().BrowserType == 0)
@@ -100,7 +100,7 @@ namespace SilverBotDS.Objects
 
         public Task InsertEmoteOptinAsync(ServerOptin e)
         {
-            using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
+            using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
             ILiteCollection<ServerOptin> col = db.GetCollection<ServerOptin>();
             col.Insert(e);
             return Task.CompletedTask;
@@ -110,7 +110,7 @@ namespace SilverBotDS.Objects
         {
             try
             {
-                using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
+                using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 ILiteCollection<ServerOptin> col = db.GetCollection<ServerOptin>();
                 col.EnsureIndex(x => x.ServerId);
                 return col.FindAll().Where(x => x.Optedin == true).ToList();
@@ -134,7 +134,7 @@ namespace SilverBotDS.Objects
         {
             try
             {
-                using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
+                using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 ILiteCollection<DbLang> col = db.GetCollection<DbLang>(dbname);
 
                 col.Upsert(l);
@@ -152,7 +152,7 @@ namespace SilverBotDS.Objects
         {
             try
             {
-                using LiteDatabase db = new LiteDatabase(@"Filename=database.db; Connection=shared");
+                using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 ILiteCollection<DbLang> col = db.GetCollection<DbLang>(dbname);
                 col.EnsureIndex(x => x.DId);
                 return Task.FromResult(col.FindAll()

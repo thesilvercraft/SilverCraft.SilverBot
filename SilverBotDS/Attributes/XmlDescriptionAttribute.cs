@@ -7,9 +7,6 @@ namespace SilverBotDS.Attributes
     {
         public string description;
 
-        public XmlDescriptionAttribute(string des)
-        {
-            description = des;
-        }
+        public XmlDescriptionAttribute(string des) => description = des;
     }
 }

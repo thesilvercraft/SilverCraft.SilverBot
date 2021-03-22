@@ -210,9 +210,17 @@ namespace SilverBotDS.Commands
             {
                 str = str.Remove(0, 3);
             }
+            if (str.StartsWith("`"))
+            {
+                str = str.Remove(0, 1);
+            }
             if (str.EndsWith("```"))
             {
                 str = str.Remove(str.Length - 3, 3);
+            }
+            if (str.EndsWith("`"))
+            {
+                str = str.Remove(str.Length - 1, 1);
             }
             return str;
         }
@@ -295,7 +303,7 @@ namespace SilverBotDS.Commands
                 Program.SendLog("Evaling a peace of code, wish me luck", true);
                 var timer = new Stopwatch();
                 timer.Start();
-                using StringWriter sw = new StringWriter();
+                using var sw = new StringWriter();
                 Console.SetOut(sw);
                 var result = await CSharpScript.RunAsync(RemoveCodeBraces(code),
            ScriptOptions.Default.WithReferences(references).WithImports(imports), globals: new CodeEnv(ctx));

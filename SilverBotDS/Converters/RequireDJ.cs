@@ -11,6 +11,6 @@ namespace SilverBotDS.Converters
         {
         }
 
-        public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help) => Task.FromResult(ctx.Member.Roles.Any(e => e.CheckPermission(DSharpPlus.Permissions.ManageChannels) == DSharpPlus.PermissionLevel.Allowed || e.Name.ToLower().Contains("dj")));
+        public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help) => Task.FromResult(!ctx.Channel.IsPrivate && (ctx.Member.Roles.Any(e => e.CheckPermission(DSharpPlus.Permissions.ManageChannels) == DSharpPlus.PermissionLevel.Allowed || e.Name.ToLower().Contains("dj")) || ctx.Member.VoiceState.Channel.Users.Where(x => !x.IsBot).LongCount() == 1));
     }
 }

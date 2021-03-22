@@ -41,7 +41,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 12;
+        private const ulong CurrentConfVer = 13;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -93,6 +93,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Allow silverbot to connect to lavalink and use audio commands, useful if you have lavalink installed or if you allowed silverbot to install and run lavalink (requires java)")]
         public bool UseLavaLink { get; set; } = true;
+
+        [XmlDescription("Allow silverbot to emulate bubot (enables bibi picture commands and other stuff)")]
+        public bool EmulateBubot { get; set; } = false;
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {
@@ -207,7 +210,7 @@ namespace SilverBotDS.Objects
                     }.Start();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("silverbot.xml should have opened in the default app, edit it, save it and press enter");
-                    Thread.Sleep(1000);
+
                     Console.WriteLine("Press any key WHEN READY to continue...");
                     Console.ReadKey();
                 }

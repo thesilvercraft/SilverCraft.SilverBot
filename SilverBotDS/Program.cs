@@ -22,6 +22,7 @@ using SilverBotDS.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -131,8 +132,7 @@ namespace SilverBotDS
             {
                 LoggerFactory = logFactory,
                 Token = config.Token,
-                TokenType = TokenType.Bot,
-                Intents = DiscordIntents.All
+                TokenType = TokenType.Bot
             });
             //Tell our client to initialize interactivity
             log.Information("Initialising interactivity");
@@ -147,7 +147,7 @@ namespace SilverBotDS
 
             //Tell our cute client to use commands or in other words become a working class member of society
             log.Information("Initialising Commands");
-            ServiceCollection services = new ServiceCollection();
+            var services = new ServiceCollection();
 
             switch (config.BrowserType)
             {
@@ -249,6 +249,11 @@ namespace SilverBotDS
             commands.RegisterCommands<OwnerOnly>();
             commands.RegisterCommands<SteamCommands>();
             commands.RegisterCommands<Fortnite>();
+            if (config.EmulateBubot)
+            {
+                commands.RegisterCommands<Bubot>();
+            }
+
             if (config.UseLavaLink)
             {
                 commands.RegisterCommands<Audio>();
@@ -338,22 +343,18 @@ namespace SilverBotDS
             return;
         }
 
+        private static readonly string[] repeatstrings = { "anime", "canada", "silverbot is gay", "fuck", "fock" };
+
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
             if (e.Author.IsBot)
             {
                 return;
             }
-            if (e.Message.Content == "anime")
+            if (repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
             {
                 await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                             .WithContent("anime")
-                                             .SendAsync(e.Channel);
-            }
-            if (e.Message.Content == "canada")
-            {
-                await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                             .WithContent("canada")
+                                             .WithContent(e.Message.Content)
                                              .SendAsync(e.Channel);
             }
         }

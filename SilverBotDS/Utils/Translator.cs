@@ -15,10 +15,7 @@ namespace SilverBotDS.Utils
             this.httpClient = httpClient;
         }
 
-        public Translator(HttpClient httpClient)
-        {
-            this.httpClient = httpClient;
-        }
+        public Translator(HttpClient httpClient) => this.httpClient = httpClient;
 
         public static IEnumerable<string> Languages => LanguageModeMap.Keys.OrderBy(p => p);
 
@@ -38,7 +35,7 @@ namespace SilverBotDS.Utils
             string translation = string.Empty;
 
             string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={LanguageEnumToIdentifier(sourceLanguage)}&tl={LanguageEnumToIdentifier(targetLanguage)}&dt=t&q={HttpUtility.UrlEncode(sourceText)}";
-            using (HttpResponseMessage response = await httpClient.GetAsync(url))
+            using (var response = await httpClient.GetAsync(url))
             {
                 string text = await response.Content.ReadAsStringAsync();
 

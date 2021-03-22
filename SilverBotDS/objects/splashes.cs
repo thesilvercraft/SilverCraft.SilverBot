@@ -219,7 +219,7 @@ new ("Doki Doki literature club",ActivityType.Playing),
                         WriteIndented = true
                     };
                     await using StreamWriter writer = new("splashes.json");
-                    writer.Write(JsonSerializer.Serialize(Internal, options));
+                    await writer.WriteAsync(JsonSerializer.Serialize(Internal, options));
                     return Internal;
                 }
             }

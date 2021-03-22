@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace SilverBotDS.Utils
 {
-    internal class Xmlutils
+    public class Xmlutils
     {
         /// <summary>
         /// stolen from https://stackoverflow.com/questions/2548708/how-to-create-an-xml-document-from-a-net-object

@@ -59,7 +59,7 @@ namespace SilverBotDS.Commands
             {
                 WriteIndented = true
             };
-            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize((await Language.GetLanguageFromCtxAsync(ctx)), options)));
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize((await Language.GetLanguageFromCtxAsync(ctx)), options)));
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithFile("language.json", stream)
                                              .SendAsync(ctx.Channel);
@@ -137,7 +137,8 @@ namespace SilverBotDS.Commands
                 var pages = new List<Page>();
                 for (var i = 0; i < data.Length; i++)
                 {
-                    var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Word).WithUrl(data[i].Permalink).WithColor(await ColorUtils.GetSingleAsync()).WithDescription(data[i].Definition);
+                    Console.WriteLine(data[i].Definition.Length);
+                    var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Word).WithUrl(data[i].Permalink).WithColor(await ColorUtils.GetSingleAsync()).WithDescription(data[i].Definition.Length > 2048 ? data[i].Definition.Remove(2045, data[i].Definition.Length - 2045) + "..." : data[i].Definition);
                     if (!string.IsNullOrEmpty(data[i].Example))
                     {
                         tempbuilder.AddField(lang.UrbanExample, data[i].Example);

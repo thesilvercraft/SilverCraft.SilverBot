@@ -350,9 +350,9 @@ namespace SilverBotDS.Utils
             {
                 System.Net.Http.HttpClient client = Program.GetHttpClient();
                 using System.Net.Http.HttpResponseMessage rm = await client.GetAsync(release.Assets[0].BrowserDownloadUrl);
-                Uri uri = new Uri(release.Assets[0].BrowserDownloadUrl);
+                var uri = new Uri(release.Assets[0].BrowserDownloadUrl);
                 string filename = Path.GetFileName(uri.LocalPath);
-                await using FileStream fs = new FileStream(
+                await using var fs = new FileStream(
         Environment.CurrentDirectory + $"\\{filename}",
         FileMode.CreateNew);
                 await rm.Content.CopyToAsync(fs);

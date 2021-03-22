@@ -39,7 +39,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private static async Task SendImageStream(CommandContext ctx, Stream outstream, string filename = "sbimg.png", string content = null, Language lang = null)
+        public static async Task SendImageStream(CommandContext ctx, Stream outstream, string filename = "sbimg.png", string content = null, Language lang = null)
         {
             lang ??= (await Language.GetLanguageFromCtxAsync(ctx));
             content ??= lang.Success;
@@ -393,7 +393,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                     font = new Font(font.FontFamily, font.Size - 1f, font.Style);
                 }
 
-                GraphicsPath p = new GraphicsPath();
+                var p = new GraphicsPath();
                 var rectangle = new Rectangle(267, 894, 1370, 186);
                 p.AddString(
                     text,

@@ -2,7 +2,6 @@
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using SilverBotDS.Commands;
-using SilverBotDS.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -77,7 +76,7 @@ namespace SilverBotDS.Converters
                 if (CodeEnv.Monika.Contains(value))
                 {
                     await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent("i will not allow such behaviour..... It appears as SilverBot is having some **technical difficulties**, we will retry in a sec...").SendAsync(ctx.Channel);
-                    System.Threading.Thread.Sleep(250);
+                    await Task.Delay(250);
                 }
                 return Optional.FromValue(new SdImage(value));
             }

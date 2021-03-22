@@ -10,7 +10,7 @@ namespace SilverBotDS.Objects
 {
     //TODO finish the summaries and shiz
     //I know i promised language support but im kinda of an idiot so yeah
-    internal partial class Language
+    public partial class Language
     {
         /// <summary>
         /// Default(EN)
@@ -449,12 +449,12 @@ namespace SilverBotDS.Objects
                 else
                 {
                     Directory.CreateDirectory(Environment.CurrentDirectory + DirSlash + "languages" + DirSlash);
-                    using StreamWriter streamWriter = new StreamWriter(Environment.CurrentDirectory + $"{DirSlash}languages{DirSlash}en.json");
+                    using var streamWriter = new StreamWriter(Environment.CurrentDirectory + $"{DirSlash}languages{DirSlash}en.json");
                     var options = new JsonSerializerOptions
                     {
                         WriteIndented = true
                     };
-                    streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
+                    await streamWriter.WriteAsync(JsonSerializer.Serialize(new Language(), options));
                 }
                 if (Logging)
                 {

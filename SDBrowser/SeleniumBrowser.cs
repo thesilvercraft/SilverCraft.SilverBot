@@ -14,10 +14,7 @@ namespace SDBrowser
         private readonly IWebDriver _webDriver;
         private bool _isLocked = false;
 
-        public SeleniumBrowser(IWebDriver driver)
-        {
-            _webDriver = driver;
-        }
+        public SeleniumBrowser(IWebDriver driver) => _webDriver = driver;
 
         public static SeleniumBrowser FromBrowserType(Browsertype browsertype)
         {

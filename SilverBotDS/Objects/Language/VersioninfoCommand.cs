@@ -1,6 +1,6 @@
 ﻿namespace SilverBotDS.Objects
 {
-    internal partial class Language
+    public partial class Language
     {
         public class VersioninfoCommand
         {

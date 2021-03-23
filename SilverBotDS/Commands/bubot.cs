@@ -49,7 +49,7 @@ namespace SilverBotDS.Commands
             var myAssembly = Assembly.GetExecutingAssembly();
             var myStream = myAssembly.GetManifestResourceStream($"SilverBotDS.Templates.Bibi.{randomnumber}.png");
             float size = BibiFont.Size;
-            using var picture = new Bitmap(myStream ?? throw new InvalidOperationException());
+            using var picture = new Bitmap(new Bitmap(myStream ?? throw new InvalidOperationException()));
             using (Graphics g = Graphics.FromImage(picture))
             {
                 while (g.MeasureString(input, new Font(BibiFont.FontFamily, size, BibiFont.Style)).Width > picture.Width)

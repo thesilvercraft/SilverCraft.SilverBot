@@ -133,6 +133,7 @@ namespace SilverBotDS.Commands
         [Command("jpeg")]
         public async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var outStream = Make_jpegnised(await image.GetBytesAsync());
             if (outStream.Length > MaxBytes)
@@ -162,6 +163,7 @@ namespace SilverBotDS.Commands
         [Command("shet")]
         public async Task Shet(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var outStream = Shet_On(await image.GetBytesAsync());
             if (outStream.Length > MaxBytes)
@@ -192,6 +194,7 @@ namespace SilverBotDS.Commands
         [Command("resize")]
         public async Task Resize(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("Width")] int x, [Description("Height")] int y)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var outStream = Resize(await image.GetBytesAsync(), new Size(x, y));
             if (outStream.Length > MaxBytes)
@@ -221,6 +224,7 @@ namespace SilverBotDS.Commands
         [Command("tint")]
         public async Task Tint(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("color in hex like #fffff")] string color)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var outStream = Tint(await image.GetBytesAsync(), color);
             if (outStream.Length > MaxBytes)
@@ -265,6 +269,7 @@ namespace SilverBotDS.Commands
         [Command("silver")]
         public async Task Grayscale(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.GreyScale);
             if (outStream.Length > MaxBytes)
@@ -295,6 +300,7 @@ namespace SilverBotDS.Commands
         [Command("comic")]
         public async Task Comic(CommandContext ctx, [Description("the url of the image")] SdImage image)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.Comic);
             if (outStream.Length > MaxBytes)
@@ -328,6 +334,7 @@ namespace SilverBotDS.Commands
         [Command("text")]
         public async Task Text(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light")
         {
+            await ctx.TriggerTypingAsync();
             var img = DrawText(text, new Font(font, 30.0f), Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255));
             await using var outStream = new MemoryStream();
             img.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
@@ -355,6 +362,7 @@ namespace SilverBotDS.Commands
         [Command("reliable")]
         public async Task Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
@@ -439,6 +447,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
         [Command("happynewyear")]
         public async Task HappyNewYear(CommandContext ctx, DiscordUser person)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
@@ -531,6 +540,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
         [Command("adventuretime")]
         public async Task AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             try
             {
@@ -585,6 +595,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
         [Command("motivate")]
         public async Task Motivate(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             if (cachedmotivatetemplate == null)
             {
@@ -648,6 +659,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
         [Command("caption")]
         public async Task Caption(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
+            await ctx.TriggerTypingAsync();
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             await using var inStream = new MemoryStream(await image.GetBytesAsync());
             var bitmap = new Bitmap(inStream);
@@ -703,6 +715,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
         [Command("usertest")]
         public async Task Usertest(CommandContext ctx)
         {
+            await ctx.TriggerTypingAsync();
             var img = DrawText(ctx.User.Username + "#" + ctx.User.Discriminator, new Font("Diavlo Light", 30.0f), Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
 
             SdImage image = new(ctx.User.GetAvatarUrl(ImageFormat.Png));

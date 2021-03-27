@@ -8,11 +8,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
+using PostSharp.Patterns.Caching;
 
 namespace SilverBotDS.Utils
 {
     internal class UrbanDictUtils
     {
+        [Cache]
         public static async Task<Defenition[]> GetDefenition(string word)
         {
             var httpClient = Program.GetHttpClient();

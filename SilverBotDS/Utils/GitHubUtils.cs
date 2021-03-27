@@ -11,7 +11,7 @@ namespace SilverBotDS.Utils
 {
     public class GitHubUtils
     {
-        private static readonly Regex R = new Regex("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private static readonly Regex R = new("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         public class Repo
         {

@@ -10,8 +10,11 @@ using Lavalink4NET;
 using Lavalink4NET.DSharpPlus;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PostSharp.Patterns.Caching;
+using PostSharp.Patterns.Caching.Backends;
 using SDBrowser;
 using Serilog;
 using SilverBotDS.Commands;
@@ -114,18 +117,23 @@ namespace SilverBotDS
         private static ServiceProvider serviceProvider;
         private static readonly HttpClient httpClient = NewhttpClientWithUserAgent();
 
-        public static HttpClient GetHttpClient() => httpClient;
+        public static HttpClient GetHttpClient()
+        {
+            return httpClient;
+        }
 
         private static HttpClient NewhttpClientWithUserAgent()
         {
-            var e = new HttpClient();
+            HttpClient e = new();
             e.DefaultRequestHeaders.UserAgent.TryParseAdd("SilverBot");
             return e;
         }
 
         private static async Task MainAsync()
         {
-            var logFactory = new LoggerFactory().AddSerilog();
+            ILoggerFactory logFactory = new LoggerFactory().AddSerilog();
+            IMemoryCache cache = new MemoryCache(new MemoryCacheOptions());
+            CachingServices.DefaultBackend = new MemoryCacheBackend(cache);
             //Make us a little cute client
             log.Information("Creating the discord client");
             discord = new DiscordClient(new DiscordConfiguration()
@@ -147,7 +155,7 @@ namespace SilverBotDS
 
             //Tell our cute client to use commands or in other words become a working class member of society
             log.Information("Initialising Commands");
-            var services = new ServiceCollection();
+            ServiceCollection services = new();
 
             switch (config.BrowserType)
             {
@@ -176,9 +184,9 @@ namespace SilverBotDS
                         }
                         else
                         {
-                            var tmp = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
-                            var usernameandpass = tmp.UserInfo.Split(":");
-                            var connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
+                            Uri tmp = new(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
+                            string[] usernameandpass = tmp.UserInfo.Split(":");
+                            string connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
                             postgre = new(connString);
                         }
                         log.Information("Using Postgre");
@@ -206,11 +214,11 @@ namespace SilverBotDS
                 {
                     log.Information("Downloading lavalink");
                     GitHubUtils.Repo repo = new("Frederikam", "Lavalink");
-                    var release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo);
+                    GitHubUtils.Release release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo);
                     await release.DownloadLatestAsync();
                 }
                 log.Information("Launching lavalink");
-                var proStart = new Process
+                bool proStart = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
@@ -232,7 +240,7 @@ namespace SilverBotDS
             }, new DiscordClientWrapper(discord));
             services.AddSingleton(audioService);
             serviceProvider = services.BuildServiceProvider();
-            var commands = discord.UseCommandsNext(new CommandsNextConfiguration()
+            CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration()
             {
                 StringPrefixes = config.Prefix,
                 Services = serviceProvider
@@ -246,7 +254,10 @@ namespace SilverBotDS
             commands.RegisterCommands<Giphy>();
             commands.RegisterCommands<ImageModule>();
             commands.RegisterCommands<AdminCommands>();
-            commands.RegisterCommands<OwnerOnly>();
+            if (config.AllowOwnerOnlyCommands)
+            {
+                commands.RegisterCommands<OwnerOnly>();
+            }
             commands.RegisterCommands<SteamCommands>();
             commands.RegisterCommands<Fortnite>();
             if (config.EmulateBubot)
@@ -326,9 +337,7 @@ namespace SilverBotDS
 
         public static async Task ExecuteFridayAsync()
         {
-            var channel = await discord.GetChannelAsync(config.FridayTextChannel);
             var vchannel = await discord.GetChannelAsync(config.FridayVoiceChannel);
-            var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
             if (audioService.HasPlayer(vchannel.GuildId))
             {
                 VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(vchannel.GuildId);
@@ -337,13 +346,15 @@ namespace SilverBotDS
 
             VoteLavalinkPlayer playere = await audioService.JoinAsync<VoteLavalinkPlayer>(vchannel.GuildId, vchannel.Id, true);
 
+            var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
             await playere.PlayAsync(track);
 
+            var channel = await discord.GetChannelAsync(config.FridayTextChannel);
             await channel.SendMessageAsync("its friday");
             return;
         }
 
-        private static readonly string[] repeatstrings = { "anime", "canada", "silverbot is gay", "fuck", "fock" };
+        private static readonly string[] repeatstrings = { "anime", "canada", "silverbot is gay", "fuck", "fock", "e" };
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
@@ -351,7 +362,7 @@ namespace SilverBotDS
             {
                 return;
             }
-            if (repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
+            if ((e.Channel.IsPrivate || e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages)) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
             {
                 await new DiscordMessageBuilder().WithReply(e.Message.Id)
                                              .WithContent(e.Message.Content)

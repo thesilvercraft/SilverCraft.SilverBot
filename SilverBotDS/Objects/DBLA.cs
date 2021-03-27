@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using PostSharp.Patterns.Caching;
 
 namespace SilverBotDS.Objects
 {
@@ -30,6 +31,7 @@ namespace SilverBotDS.Objects
                 _selfbot = toselfbot;
             }
 
+            [Cache]
             public async Task<Bot> GetViaIdAsync(ulong id)
             {
                 try

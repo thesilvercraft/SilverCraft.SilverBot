@@ -94,6 +94,7 @@ namespace SilverBotDS.Commands
         [Aliases("p")]
         public async Task Play(CommandContext ctx, [RemainingText] string song)
         {
+            await ctx.TriggerTypingAsync();
             if (string.IsNullOrEmpty(song))
             {
                 await Resume(ctx);

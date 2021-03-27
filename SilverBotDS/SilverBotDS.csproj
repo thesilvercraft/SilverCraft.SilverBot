@@ -6,6 +6,10 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+
+    <DebugType>Full</DebugType>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="Templates\adventure_time_template.png" />
     <None Remove="Templates\Bibi\1.png" />
@@ -66,6 +70,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.10.0-1.final" />
     <PackageReference Include="Npgsql" Version="6.0.0-preview2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview2" />
+    <PackageReference Include="PostSharp.Patterns.Caching" Version="6.9.3" />
+    <PackageReference Include="PostSharp.Patterns.Caching.IMemoryCache" Version="6.9.3" />
     <PackageReference Include="ScottPlot" Version="4.1.9-beta" />
     <PackageReference Include="Serilog" Version="2.10.1-dev-01285" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10284" />

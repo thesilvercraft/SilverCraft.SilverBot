@@ -392,7 +392,7 @@ namespace SilverBotDS.Objects
 
         public ImageThings Imagethings { get; set; } = new();
 
-        private static readonly Dictionary<string, Language> CachedLanguages = new Dictionary<string, Language>();
+        private static readonly Dictionary<string, Language> CachedLanguages = new();
         private static readonly bool Logging = true;
 
         public static string[] LoadedLanguages()
@@ -400,7 +400,6 @@ namespace SilverBotDS.Objects
             if (CachedLanguages.Count == 0)
             {
                 var t = GetAsync("en");
-
                 t.Wait();
             }
             return CachedLanguages.Keys.ToArray();

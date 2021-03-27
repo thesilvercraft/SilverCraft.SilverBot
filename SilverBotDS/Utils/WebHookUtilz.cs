@@ -6,7 +6,7 @@ namespace SilverBotDS.Utils
 {
     internal class WebHookUtilz
     {
-        private static readonly Regex WebhookUrlRegex = new Regex(@"^.*(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-z0-9_-]+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private static readonly Regex WebhookUrlRegex = new(@"^.*(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-z0-9_-]+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         public static void ParseWebhookUrl(string webhookUrl, out ulong webhookId, out string webhookToken)
         {
@@ -16,7 +16,7 @@ namespace SilverBotDS.Utils
 
             // thrown when groups are not populated/valid, or when there is no match
             ArgumentException ex(string reason = null)
-                => new ArgumentException(paramName: nameof(webhookUrl), message:
+                => new(paramName: nameof(webhookUrl), message:
                 $"The given webhook Url was not in a valid format. {reason}");
             var match = WebhookUrlRegex.Match(webhookUrl);
             if (match != null)

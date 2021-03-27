@@ -78,9 +78,9 @@ namespace SilverBotDS.Commands
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task AddEmote(CommandContext ctx, [Description("Url of the thing")] SdImage url, [Description("Name like `Kappa`")] string name)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await using var st = new MemoryStream(await url.GetBytesAsync());
-            if (st.Length > 256 * 1000)
+            if (st.Length > 256000)
             {
                 await ctx.RespondAsync(string.Format(lang.EmoteWasLargerThan256K, FileSizeUtils.FormatSize(st.Length)));
             }
@@ -95,7 +95,7 @@ namespace SilverBotDS.Commands
             try
             {
                 var builder = new StringBuilder();
-                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+                var lang = await Language.GetLanguageFromCtxAsync(ctx);
                 var serverthatareoptedin = await Database.ServersOptedInEmotesAsync();
                 var pages = new List<Page>();
                 var b = new DiscordEmbedBuilder();
@@ -106,7 +106,6 @@ namespace SilverBotDS.Commands
                     var thing = serverthatareoptedin.Find(x => x.ServerId == a.Id);
                     if (thing == null || thing.Optedin != true) continue;
 
-                    Console.WriteLine(builder.Length);
                     builder.AppendLine(string.Format(lang.Server, a.Name));
                     foreach (var emote in a.Emojis.Values.ToList())
                     {
@@ -173,22 +172,17 @@ namespace SilverBotDS.Commands
             var lang = (await Language.GetLanguageFromCtxAsync(ctx));
             var emotes = new List<DiscordEmoji>();
             var serverthatareoptedin = await Database.ServersOptedInEmotesAsync();
-
-            foreach (var a in ctx.Client.Guilds.Values.Where(e => CheckIfGuildIsIn(serverthatareoptedin, e.Id)))
+            foreach (var emojis in from a in ctx.Client.Guilds.Values.Where(e => CheckIfGuildIsIn(serverthatareoptedin, e.Id))
+                                   let emojis = a.Emojis.Values.Where(x => (":" + x.Name + ":") == emote || x.Name == emote || (Regex.IsMatch(emote, @"^\d+$") && x.Id == Convert.ToUInt64(emote)))
+                                   select emojis)
             {
-                var emojis = a.Emojis.Values.Where(x => (":" + x.Name + ":") == emote || x.Name == emote || (Regex.IsMatch(emote, @"^\d+$") && x.Id == Convert.ToUInt64(emote)));
                 emotes.AddRange(emojis);
             }
-
             switch (emotes.Count)
             {
                 case 0:
                     {
-                        var b = new DiscordEmbedBuilder();
-                        b.WithTitle(lang.NoEmotesFound);
-                        b.WithDescription(string.Format(lang.SearchedFor, emote));
-                        b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                        await ctx.RespondAsync(embed: b.Build());
+                        await ctx.RespondAsync(embed: new DiscordEmbedBuilder().WithTitle(lang.NoEmotesFound).WithDescription(string.Format(lang.SearchedFor, emote)).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).Build());
                         break;
                     }
                 case 1 when emotes[0].IsAnimated:
@@ -202,7 +196,6 @@ namespace SilverBotDS.Commands
                 case > 1:
                     {
                         var b = new DiscordEmbedBuilder();
-                        b.WithTitle(lang.MultipleEmotesFound);
                         var builder = new StringBuilder();
                         foreach (var e in emotes)
                         {
@@ -225,8 +218,7 @@ namespace SilverBotDS.Commands
                                 builder.AppendLine();
                             }
                         }
-                        b.WithDescription(builder.ToString());
-                        b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+                        b.WithTitle(lang.MultipleEmotesFound).WithDescription(builder.ToString()).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
                         await ctx.RespondAsync(embed: b.Build());
                         break;
                     }
@@ -268,8 +260,7 @@ namespace SilverBotDS.Commands
             };
             await Database.InsertEmoteOptinAsync(newserverthing);
             var b = new DiscordEmbedBuilder();
-            b.WithTitle(lang.OptedIn);
-            b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            b.WithTitle(lang.OptedIn).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
     }

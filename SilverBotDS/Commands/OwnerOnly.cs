@@ -47,19 +47,19 @@ namespace SilverBotDS.Commands
             var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
             await ctx.RespondAsync($"its {info.Duration.Humanize()} ({info.Duration}) long");
 
-            RandomGenerator random = new();
-
-            string name = Path.GetFileName(loc);
-            IVideoStream videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
-            for (int i = 0; i < times; i++)
+            using (RandomGenerator random = new())
             {
-                IConversionResult conversionResult = await FFmpeg.Conversions.New()
-                .AddStream(videoStream)
-                .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (number) => { return "Extracts\\" + name + i + ".png"; })
-                .UseHardwareAcceleration(HardwareAccelerator.auto, VideoCodec.hevc, VideoCodec.png)
-                .Start();
+                string name = Path.GetFileName(loc);
+                IVideoStream videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
+                for (int i = 0; i < times; i++)
+                {
+                    IConversionResult conversionResult = await FFmpeg.Conversions.New()
+                    .AddStream(videoStream)
+                    .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (number) => { return "Extracts\\" + name + i + ".png"; })
+                    .UseHardwareAcceleration(HardwareAccelerator.auto, VideoCodec.hevc, VideoCodec.png)
+                    .Start();
+                }
             }
-
             await ctx.RespondAsync($"done?");
         }
 
@@ -210,6 +210,10 @@ namespace SilverBotDS.Commands
             {
                 str = str.Remove(0, 3);
             }
+            if (str.StartsWith("``"))
+            {
+                str = str.Remove(0, 2);
+            }
             if (str.StartsWith("`"))
             {
                 str = str.Remove(0, 1);
@@ -217,6 +221,10 @@ namespace SilverBotDS.Commands
             if (str.EndsWith("```"))
             {
                 str = str.Remove(str.Length - 3, 3);
+            }
+            if (str.EndsWith("``"))
+            {
+                str = str.Remove(str.Length - 2, 2);
             }
             if (str.EndsWith("`"))
             {
@@ -284,7 +292,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        public static readonly JsonSerializerOptions options = new JsonSerializerOptions
+        public static readonly JsonSerializerOptions options = new()
         {
             WriteIndented = true
         };
@@ -364,11 +372,12 @@ namespace SilverBotDS.Commands
             {
                 var bob = new DiscordEmbedBuilder();
                 bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                var image = new MemoryStream();
+                await using var image = new MemoryStream();
                 thing.Item2.Save(image, System.Drawing.Imaging.ImageFormat.Png);
                 image.Position = 0;
                 await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
                 thing.Item2.Dispose();
+                await image.DisposeAsync();
             }
         }
 
@@ -406,7 +415,7 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+                var lang = await Language.GetLanguageFromCtxAsync(ctx);
                 if (ctx.Message.Attachments.Count == 0)
                 {
                     await ctx.RespondAsync(lang.NoImageGeneric);
@@ -487,9 +496,7 @@ namespace SilverBotDS.Commands
         {
             await Splashes.GetAsync(true);
             var bob = new DiscordEmbedBuilder();
-            bob.WithTitle("Reloaded splashes for ya.");
-
-            bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            bob.WithTitle("Reloaded splashes for ya.").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             if (Config.UseSplashConfig == false)
             {
                 await ctx.RespondAsync("ps that did nothing as splash config is set false", embed: bob.Build());
@@ -509,10 +516,9 @@ namespace SilverBotDS.Commands
                 return;
             }
             var bob = new DiscordEmbedBuilder();
-            bob.WithImageUrl("attachment://html.png");
-            bob.WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-            var e = await Program.GetBrowser().RenderHtmlAsync(html);
-            var image = new MemoryStream();
+            bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            using var e = await Program.GetBrowser().RenderHtmlAsync(html);
+            await using var image = new MemoryStream();
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;
             await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);

@@ -6,8 +6,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
@@ -41,7 +39,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 13;
+        private const ulong CurrentConfVer = 14;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -96,6 +94,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Allow silverbot to emulate bubot (enables bibi picture commands and other stuff)")]
         public bool EmulateBubot { get; set; } = false;
+
+        [XmlDescription("Allow silverbot owner only commands (may allow the bot owner to kill pc)")]
+        public bool AllowOwnerOnlyCommands { get; set; } = true;
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {

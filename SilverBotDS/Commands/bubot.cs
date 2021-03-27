@@ -3,12 +3,9 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Utils;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
@@ -40,11 +37,12 @@ namespace SilverBotDS.Commands
         [Description("Makes a image with Bibi.")]
         public async Task Bibi(CommandContext ctx, [RemainingText][Description("bibi is")] string input)
         {
+            await ctx.TriggerTypingAsync();
             input = "bibi is " + input;
             int randomnumber;
             using (var random = new RandomGenerator())
             {
-                randomnumber = random.Next(0, 12);
+                randomnumber = random.Next(1, 12);
             }
             var myAssembly = Assembly.GetExecutingAssembly();
             var myStream = myAssembly.GetManifestResourceStream($"SilverBotDS.Templates.Bibi.{randomnumber}.png");
@@ -56,7 +54,6 @@ namespace SilverBotDS.Commands
                 {
                     size -= 0.05f;
                 }
-                Console.WriteLine(size);
                 g.DrawString(input, new Font(BibiFont.FontFamily, size, BibiFont.Style), randomnumber == 10 || randomnumber == 9 ? GrayBrush : WhiteBrush, new PointF(4, 230));
                 g.Save();
             }

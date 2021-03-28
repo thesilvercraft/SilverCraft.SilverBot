@@ -3,13 +3,11 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using PostSharp.Patterns.Caching;
 
 namespace SilverBotDS.Utils
 {
     internal class OnlyHitUtils
     {
-        [Cache(AbsoluteExpiration = 1)]
         public static async Task<CurrentSong> SearchAsync(string url = "https://api.onlyhit.us/fingerprinting/onlyhit.json")
         {
             var httpClient = Program.GetHttpClient();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
-using PostSharp.Patterns.Caching;
 
 namespace SilverBotDS.Utils
 {
@@ -28,7 +27,6 @@ namespace SilverBotDS.Utils
 
         private readonly HttpClient httpClient;
 
-        [Cache]
         public async System.Threading.Tasks.Task<string> TranslateAsync
             (string sourceText,
              string sourceLanguage,

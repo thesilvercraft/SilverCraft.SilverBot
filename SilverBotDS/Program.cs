@@ -10,11 +10,8 @@ using Lavalink4NET;
 using Lavalink4NET.DSharpPlus;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PostSharp.Patterns.Caching;
-using PostSharp.Patterns.Caching.Backends;
 using SDBrowser;
 using Serilog;
 using SilverBotDS.Commands;
@@ -132,8 +129,6 @@ namespace SilverBotDS
         private static async Task MainAsync()
         {
             ILoggerFactory logFactory = new LoggerFactory().AddSerilog();
-            IMemoryCache cache = new MemoryCache(new MemoryCacheOptions());
-            CachingServices.DefaultBackend = new MemoryCacheBackend(cache);
             //Make us a little cute client
             log.Information("Creating the discord client");
             discord = new DiscordClient(new DiscordConfiguration()

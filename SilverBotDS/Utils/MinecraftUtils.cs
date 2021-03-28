@@ -3,7 +3,6 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using PostSharp.Patterns.Caching;
 
 namespace SilverBotDS.Utils
 {
@@ -11,7 +10,6 @@ namespace SilverBotDS.Utils
     {
         private const string GetProfileUrl = "https://api.mojang.com/users/profiles/minecraft/{0}";
 
-        [Cache]
         public static async Task<Player> GetPlayerAsync(string name)
         {
             var httpClient = Program.GetHttpClient();

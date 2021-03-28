@@ -94,7 +94,6 @@ namespace SilverBotDS.Commands
         [Aliases("p")]
         public async Task Play(CommandContext ctx, [RemainingText] string song)
         {
-            await ctx.TriggerTypingAsync();
             if (string.IsNullOrEmpty(song))
             {
                 await Resume(ctx);
@@ -102,8 +101,8 @@ namespace SilverBotDS.Commands
             }
             try
             {
-                Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
-
+                Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+                await ctx.TriggerTypingAsync();
                 if (!AudioService.HasPlayer(ctx.Guild.Id))
                 {
                     if (ctx.Member?.VoiceState?.Channel == null)
@@ -114,6 +113,7 @@ namespace SilverBotDS.Commands
                     else
                     {
                         await Join(ctx);
+                        await ctx.TriggerTypingAsync();
                     }
                 }
                 VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
@@ -172,7 +172,7 @@ namespace SilverBotDS.Commands
         [Description("Change the volume 1-100%")]
         public async Task Volume(CommandContext ctx, ushort volume)
         {
-            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
@@ -197,7 +197,7 @@ namespace SilverBotDS.Commands
         [Description("Remove song X from the queue. 0 < songindex > 10000000000")]
         public async Task Remove(CommandContext ctx, int songindex)
         {
-            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
@@ -225,7 +225,7 @@ namespace SilverBotDS.Commands
         [Aliases("np", "nowplaying")]
         public async Task Queue(CommandContext ctx)
         {
-            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);
@@ -249,11 +249,12 @@ namespace SilverBotDS.Commands
             {
                 var pages = new List<Page>
                 {
-                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
+                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.IsLooping ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
                 };
                 for (var i = 0; i < player.Queue.Count; i++)
                 {
-                    pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title).WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync()).AddField(lang.TimeTillTrackPlays, TimeTillSongPlays(player, i + 1).Humanize(culture: lang.GetCultureInfo())).WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
+                    var timetillsongplays = TimeTillSongPlays(player, i + 1);
+                    pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title).WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync()).AddField(lang.TimeTillTrackPlays, timetillsongplays == TimeSpan.MaxValue ? lang.SongTimeLeftSongLooping : timetillsongplays.Humanize(culture: lang.GetCultureInfo())).WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
                 }
 
                 await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
@@ -271,7 +272,7 @@ namespace SilverBotDS.Commands
         [Description("Loop or unloop the current song")]
         public async Task Loop(CommandContext ctx)
         {
-            Language lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!AudioService.HasPlayer(ctx.Guild.Id))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected);

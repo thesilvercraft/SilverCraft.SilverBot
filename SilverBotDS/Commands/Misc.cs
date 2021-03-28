@@ -174,7 +174,7 @@ namespace SilverBotDS.Commands
                     var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Title).WithUrl($"https://www.nuget.org/packages/{data[i].Id}").WithColor(await ColorUtils.GetSingleAsync());
                     if (data[i].Authors is null)
                     {
-                        tempbuilder.WithAuthor(data[i].Title + lang.NuGetCommand.SomethingsContributors, data[i].ProjectUrl);
+                        tempbuilder.WithAuthor(string.Format(lang.NuGetCommand.SomethingsContributors, data[i].Title), data[i].ProjectUrl);
                     }
                     else
                     {

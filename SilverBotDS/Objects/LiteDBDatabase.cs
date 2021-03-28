@@ -25,7 +25,6 @@ namespace SilverBotDS.Objects
             {
                 using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 ILiteCollection<ServerOptin> col = db.GetCollection<ServerOptin>();
-                col.EnsureIndex(x => x.ServerId);
                 return Task.FromResult(col.FindOne(x => x.ServerId == serverid)?.Optedin);
             }
             catch (Exception exep)
@@ -112,7 +111,7 @@ namespace SilverBotDS.Objects
             {
                 using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 ILiteCollection<ServerOptin> col = db.GetCollection<ServerOptin>();
-                col.EnsureIndex(x => x.ServerId);
+
                 return col.FindAll().Where(x => x.Optedin == true).ToList();
             }
             catch (Exception exep)
@@ -155,6 +154,10 @@ namespace SilverBotDS.Objects
                 using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 ILiteCollection<DbLang> col = db.GetCollection<DbLang>(dbname);
                 col.EnsureIndex(x => x.DId);
+                if (col.Count() == 0)
+                {
+                    return Task.FromResult("en");
+                }
                 return Task.FromResult(col.FindAll()
                           .First(x => x.DId == id)?.Name);
             }

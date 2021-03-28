@@ -224,7 +224,7 @@ namespace SilverBotDS.Objects
         /// <summary>
         /// Server :{0}
         /// </summary>
-        public string Server { get; set; } = "Server :{0}";
+        public string Server { get; set; } = "Server: {0}";
 
         /// <summary>
         /// Opted into SilverBot emotes
@@ -374,6 +374,8 @@ namespace SilverBotDS.Objects
         public string SongLength { get; set; } = "Length";
         public string SongTimePosition { get; set; } = "Position";
         public string SongTimeLeft { get; set; } = "Time left:";
+        public string SongTimeLeftSongLoopingCurrent { get; set; } = "Never (song is looping)";
+        public string SongTimeLeftSongLooping { get; set; } = "Never (current song is looping)";
         public string SongNotExist { get; set; } = "That song does not exist my dude";
         public string VersionInfoTitle { get; set; } = "SilverBot Version info";
         public string PurgedBySilverBotReason { get; set; } = "Purged by SilverBot for {0}";

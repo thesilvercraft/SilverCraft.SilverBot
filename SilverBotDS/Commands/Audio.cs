@@ -14,6 +14,7 @@ using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SilverBotDS.Commands
 {
@@ -127,37 +128,49 @@ namespace SilverBotDS.Commands
                 }
                 if (song.Contains("velimirs") || song.Contains("velimir's"))
                 {
-                    song = "i got bitches";
+                    song = "https://www.youtube.com/watch?v=mdqU6Erw3kk";
                 }
-
-                var track = await AudioService.GetTrackAsync(song, SearchMode.None);
-                if (track is null)
+                var track = await AudioService.GetTracksAsync(song, SearchMode.None);
+                if (track is null || track.ToArray().Length == 0)
                 {
-                    track = await AudioService.GetTrackAsync(song, SearchMode.YouTube);
-                    if (track is null)
+                    track = await AudioService.GetTracksAsync(song, SearchMode.YouTube);
+                    if (track is null || track.ToArray().Length == 0)
                     {
-                        track = await AudioService.GetTrackAsync(song, SearchMode.SoundCloud);
-                        if (track is null)
+                        track = await AudioService.GetTracksAsync(song, SearchMode.SoundCloud);
+                        if (track is null || track.ToArray().Length == 0)
                         {
                             await SendSimpleMessage(ctx, string.Format(lang.NoResults, song));
                             return;
                         }
                     }
                 }
-                int pos = await player.PlayAsync(track, true);
-                if (pos == 0)
+                var list = track.ToArray();
+                if (list.Length == 1)
                 {
-                    await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, track.Title + lang.SongByAuthor + track.Author), url: track.Source);
+                    int pos = await player.PlayAsync(list[0], true);
+                    if (pos == 0)
+                    {
+                        await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, list[0].Title + lang.SongByAuthor + list[0].Author), url: list[0].Source);
+                    }
+                    else
+                    {
+                        await new DiscordMessageBuilder()
+                    .WithReply(ctx.Message.Id)
+                    .WithEmbed(new DiscordEmbedBuilder().WithFooter((await Language.GetLanguageFromCtxAsync(ctx)).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                    .WithTitle(string.Format(lang.Enqueued, list[0].Title + lang.SongByAuthor + list[0].Author))
+                    .WithUrl(list[0].Source)
+                    .AddField(lang.TimeTillTrackPlays, TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
+                    .Build())
+                    .SendAsync(ctx.Channel);
+                    }
                 }
                 else
                 {
-                    var embedBuilder = new DiscordEmbedBuilder().WithFooter((await Language.GetLanguageFromCtxAsync(ctx)).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithTitle(string.Format(lang.Enqueued, track.Title + lang.SongByAuthor + track.Author)).WithUrl(track.Source).AddField(lang.TimeTillTrackPlays, TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()));
-                    var messageBuilder = new DiscordMessageBuilder();
-
-                    await messageBuilder
-                .WithReply(ctx.Message.Id)
-                .WithEmbed(embedBuilder.Build())
-                .SendAsync(ctx.Channel);
+                    foreach (var t in list)
+                    {
+                        await player.PlayAsync(t, true);
+                    }
+                    await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, list[0].Title + lang.SongByAuthor + list[0].Author), message: string.Format(lang.AddedXAmountOfSongs, list.Length), url: list[0].Source);
                 }
             }
             catch (Exception e)

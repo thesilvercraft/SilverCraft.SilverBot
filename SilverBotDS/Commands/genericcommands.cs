@@ -27,9 +27,18 @@ namespace SilverBotDS.Commands
         [Description("Hello fellow human! beep boop")]
         public async Task GreetCommand(CommandContext ctx)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithContent(string.Format(lang.Hi, ctx.Member.Mention))
+                                             .SendAsync(ctx.Channel);
+        }
+
+        [Command("spinningfox")]
+        [Description("fox go brrrrrrrr")]
+        public async Task Fox(CommandContext ctx)
+        {
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                             .WithContent("https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif")
                                              .SendAsync(ctx.Channel);
         }
 

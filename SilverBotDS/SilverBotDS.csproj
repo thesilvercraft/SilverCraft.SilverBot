@@ -51,9 +51,9 @@
   <ItemGroup>
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
     <PackageReference Include="CXuesong.Uel.Serilog.Sinks.Discord" Version="0.5.0" />
-    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00813" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00813" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00813" />
+    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00822" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00822" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00822" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.0" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
@@ -70,7 +70,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.10.0-1.final" />
     <PackageReference Include="Npgsql" Version="6.0.0-preview2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview2" />
-    <PackageReference Include="ScottPlot" Version="4.1.9-beta" />
+    <PackageReference Include="ScottPlot" Version="4.1.10-beta" />
     <PackageReference Include="Serilog" Version="2.10.1-dev-01285" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10284" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
@@ -78,6 +78,7 @@
     <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0-preview.2.21154.6" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
     <PackageReference Include="System.Text.Json" Version="6.0.0-preview.2.21154.6" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="Wbubbler" Version="1.0.2" />

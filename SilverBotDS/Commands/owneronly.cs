@@ -233,7 +233,7 @@ namespace SilverBotDS.Commands
             return str;
         }
 
-        private static async Task SendStringFileWithContent(CommandContext ctx, string title, string file, string filename = "message.txt")
+        public static async Task SendStringFileWithContent(CommandContext ctx, string title, string file, string filename = "message.txt")
         {
             await new DiscordMessageBuilder().WithContent(title).WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }

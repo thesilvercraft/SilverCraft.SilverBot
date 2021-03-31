@@ -290,7 +290,6 @@ namespace SilverBotDS.Commands
             }
         }
 
-        //TODO make strings in language file
         [Command("user")]
         [Description("Get the info I know about a specified user")]
         public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)

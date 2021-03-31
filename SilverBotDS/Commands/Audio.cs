@@ -133,10 +133,11 @@ namespace SilverBotDS.Commands
                 var track = await AudioService.GetTracksAsync(song, SearchMode.None);
                 if (track is null || track.ToArray().Length == 0)
                 {
-                    track = await AudioService.GetTracksAsync(song, SearchMode.YouTube);
+                    track = new LavalinkTrack[] { await AudioService.GetTrackAsync(song, SearchMode.YouTube) };
+
                     if (track is null || track.ToArray().Length == 0)
                     {
-                        track = await AudioService.GetTracksAsync(song, SearchMode.SoundCloud);
+                        track = new LavalinkTrack[] { await AudioService.GetTrackAsync(song, SearchMode.SoundCloud) };
                         if (track is null || track.ToArray().Length == 0)
                         {
                             await SendSimpleMessage(ctx, string.Format(lang.NoResults, song));

@@ -25,6 +25,7 @@
     <None Remove="Templates\Bibi\9.png" />
     <None Remove="Templates\happy_new_year_template.png" />
     <None Remove="Templates\motivator_template.png" />
+    <None Remove="Templates\paint_template.png" />
     <None Remove="Templates\weeb_reliable_template.png" />
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +43,7 @@
     <EmbeddedResource Include="Templates\Bibi\9.png" />
     <EmbeddedResource Include="Templates\happy_new_year_template.png" />
     <EmbeddedResource Include="Templates\motivator_template.png" />
+    <EmbeddedResource Include="Templates\paint_template.png" />
     <EmbeddedResource Include="Templates\weeb_reliable_template.png" />
   </ItemGroup>
   <ItemGroup>

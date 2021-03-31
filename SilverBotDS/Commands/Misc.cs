@@ -191,7 +191,6 @@ namespace SilverBotDS.Commands
                                          .SendAsync(ctx.Channel);
         }
 
-        //TODO make it better
         [Command("urbandictionary"), Aliases("urbandict", "urban")]
         [Description("Search up definitions for words on urban dictionary, pls dont kill me urban")]
         public async Task Urban(CommandContext ctx, [Description("the name of the package")][RemainingText] string query)
@@ -225,7 +224,6 @@ namespace SilverBotDS.Commands
             }
         }
 
-        //TODO make it better
         [Command("nuget"), Aliases("nu")]
         [Description("Search up packages on the NuGet")]
         public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)

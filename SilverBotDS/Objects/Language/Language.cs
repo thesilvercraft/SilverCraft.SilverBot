@@ -472,14 +472,6 @@ namespace SilverBotDS.Objects
             return await GetAsync(ctx.Channel.IsPrivate ? await db.GetLangCodeUser(ctx.User.Id) : await db.GetLangCodeGuild(ctx.Guild.Id));
         }
 
-        public static async System.Threading.Tasks.Task<Language> GetLanguageFromIdAsync(ulong? id)
-        {
-            if (id is null)
-            {
-                return new Language();
-            }
-            //TODO: IMPLEMENT THE THING LOL
-            return await GetAsync("en");
-        }
+      
     }
 }

@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using SilverBotDS.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,11 +10,14 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Converters
 {
-    public class SdImage
+    public class SdImage : IDisposable
     {
         public string Url;
         private byte[] _bytes;
-
+        private bool disposedValue;
+        public SdImage()
+            {
+            }
         public SdImage(string url) => Url = url;
 
         public static SdImage FromContext(CommandContext ctx)
@@ -48,6 +52,37 @@ namespace SilverBotDS.Converters
                 _bytes = await Program.GetHttpClient().GetByteArrayAsync(Url);
             }
             return _bytes;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                Url = null;
+                _bytes = null;
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~SdImage()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 

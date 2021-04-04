@@ -28,24 +28,6 @@ namespace SilverBotDS.Commands
         public HttpClient HttpClient { private get; set; }
         private readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-        private struct SDEmote : IEquatable<SDEmote>
-        {
-            public string Raw;
-            public string Name;
-            public ulong Id;
-            public DateTimeOffset Timestamp;
-
-            public bool Equals(SDEmote other)
-            {
-                return other.Id == Id;
-            }
-
-            public override bool Equals(object obj)
-            {
-                return obj is SDEmote emote && Equals(emote);
-            }
-        }
-
         [Command("emoteanalyse")]
         [Description("analyse emote usage in a specified channel")]
         [Cooldown(1, 60 * 60, CooldownBucketType.Guild)]
@@ -98,7 +80,7 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+                var lang = await Language.GetLanguageFromCtxAsync(ctx);
                 await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
                     .WithTitle(lang.VersionInfoTitle)
                     .AddField(lang.VersionInfoCommand.VersionNumber, "`" + VersionInfo.VNumber + "`")
@@ -125,7 +107,7 @@ namespace SilverBotDS.Commands
             {
                 WriteIndented = true
             };
-            var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize((await Language.GetLanguageFromCtxAsync(ctx)), options)));
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(await Language.GetLanguageFromCtxAsync(ctx), options)));
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithFile("language.json", stream)
                                              .SendAsync(ctx.Channel);
@@ -147,7 +129,7 @@ namespace SilverBotDS.Commands
                 {
                     await db.InserOrUpdateLangCodeGuild(new DbLang { DId = ctx.Guild.Id, Name = LangName.ToLower() });
                 }
-                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+                var lang = await Language.GetLanguageFromCtxAsync(ctx);
                 await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                          .WithContent(lang.Success)
                                          .SendAsync(ctx.Channel);
@@ -164,7 +146,7 @@ namespace SilverBotDS.Commands
         [Description("translate from an unknown language")]
         public async Task TranlateUnknown(CommandContext ctx, [RemainingText] string text)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             Translator translator = new(HttpClient);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithContent(await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate))
@@ -175,7 +157,7 @@ namespace SilverBotDS.Commands
         [Description("translate from an unknown language to a specified one")]
         public async Task TranlateUnknown(CommandContext ctx, string LanguageTo, [RemainingText] string text)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             LanguageTo = LanguageTo.Humanize(casing: LetterCasing.Sentence);
             Translator translator = new(HttpClient);
 
@@ -195,7 +177,7 @@ namespace SilverBotDS.Commands
         [Description("Search up definitions for words on urban dictionary, pls dont kill me urban")]
         public async Task Urban(CommandContext ctx, [Description("the name of the package")][RemainingText] string query)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             try
             {
                 var data = await UrbanDictUtils.GetDefenition(query);
@@ -228,7 +210,7 @@ namespace SilverBotDS.Commands
         [Description("Search up packages on the NuGet")]
         public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             try
             {
                 var data = await NuGetUtils.SearchAsync(query);

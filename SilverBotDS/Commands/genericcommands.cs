@@ -45,7 +45,7 @@ namespace SilverBotDS.Commands
         [Command("meme")]
         public async Task Kindsffeefdfdfergergrgfdfdsgfdfg(CommandContext ctx)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var b = new DiscordEmbedBuilder();
             var client = HttpClient;
             var rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
@@ -89,7 +89,7 @@ namespace SilverBotDS.Commands
         [Description("Get the time in UTC")]
         public async Task Time(CommandContext ctx)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
                                              .WithContent(string.Format(lang.TimeInUtc, DateTime.UtcNow.ToString(lang.TimeFormat)))
@@ -146,7 +146,7 @@ namespace SilverBotDS.Commands
         [Description("SilverHosting best")]
         public async Task Dukt(CommandContext ctx)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder()
                                             .WithReply(ctx.Message.Id)
                                             .WithEmbed(new DiscordEmbedBuilder()
@@ -158,9 +158,10 @@ namespace SilverBotDS.Commands
                                             .SendAsync(ctx.Channel);
         }
 
-        private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string title = null, string content = null)
+        private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string title = null, string content = null, Language language=null)
         {
-            var embedBuilder = new DiscordEmbedBuilder().WithFooter((await Language.GetLanguageFromCtxAsync(ctx)).RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithImageUrl(imageurl).WithColor(await ColorUtils.GetSingleAsync());
+            language ??= await Language.GetLanguageFromCtxAsync(ctx);
+            var embedBuilder = new DiscordEmbedBuilder().WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithImageUrl(imageurl).WithColor(await ColorUtils.GetSingleAsync());
             var messageBuilder = new DiscordMessageBuilder();
             if (title != null)
             {
@@ -212,7 +213,7 @@ namespace SilverBotDS.Commands
         [Description("Wanna hear some useless fact? Just ask me")]
         public async Task UselessFact(CommandContext ctx)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var client = HttpClient;
             var rm = await client.GetAsync("https://uselessfacts.jsph.pl/random.md?language=" + lang.LangCodeForUselessFacts);
             await new DiscordMessageBuilder()
@@ -235,7 +236,7 @@ namespace SilverBotDS.Commands
         [Description("Don't know what some new bot your friends invited here but you dont want to google? just ask me ")]
         public async Task WhoIsBot(CommandContext ctx, [Description("the bot")] DiscordUser user)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (string.IsNullOrEmpty(Config.TopggSidToken) || Config.TopggSidToken.ToLower() == "none")
             {
                 await new DiscordMessageBuilder()
@@ -296,7 +297,7 @@ namespace SilverBotDS.Commands
         {
             try
             {
-                var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+                var lang = await Language.GetLanguageFromCtxAsync(ctx);
                 await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
                     .WithTitle(lang.User + a.Username)
                     .WithDescription(lang.InformationAbout + a.Mention)

@@ -10,6 +10,8 @@ using Lavalink4NET;
 using Lavalink4NET.DSharpPlus;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
+using Lavalink4NET.Tracking;
+using Lavalink4NET.Lyrics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SDBrowser;
@@ -64,7 +66,7 @@ namespace SilverBotDS
             log.Information("Checking for updates");
 
             //Check for updates
-            VersionInfo.Checkforupdates();
+            VersionInfo.Checkforupdates(httpClient);
             log.Information("Starting MainAsync");
 
             //Start the main async task
@@ -110,6 +112,7 @@ namespace SilverBotDS
 
         private static DiscordClient discord;
         private static LavalinkNode audioService;
+        private static InactivityTrackingService trackingService;
         private static Serilog.Core.Logger log;
         private static ServiceProvider serviceProvider;
         private static readonly HttpClient httpClient = NewhttpClientWithUserAgent();
@@ -135,7 +138,8 @@ namespace SilverBotDS
             {
                 LoggerFactory = logFactory,
                 Token = config.Token,
-                TokenType = TokenType.Bot
+                TokenType = TokenType.Bot,
+                Intents = DiscordIntents.All
             });
             //Tell our client to initialize interactivity
             log.Information("Initialising interactivity");
@@ -226,14 +230,25 @@ namespace SilverBotDS
 
             log.Information("Waiting 6s");
             await Task.Delay(6000);
-            log.Information("Making a lavalinknode");
-            audioService = new LavalinkNode(new LavalinkNodeOptions
+            if(config.UseLavaLink)
             {
-                RestUri = config.LavalinkRestUri,
-                WebSocketUri = config.LavalinkWebSocketUri,
-                Password = config.LavalinkPassword
-            }, new DiscordClientWrapper(discord));
-            services.AddSingleton(audioService);
+                log.Information("Making a lavalinknode");
+                var discordclientwrapper = new DiscordClientWrapper(discord);
+                audioService = new LavalinkNode(new LavalinkNodeOptions
+                {
+                    RestUri = config.LavalinkRestUri,
+                    WebSocketUri = config.LavalinkWebSocketUri,
+                    Password = config.LavalinkPassword
+                }, discordclientwrapper);
+                trackingService = new InactivityTrackingService(
+    audioService, 
+    discordclientwrapper, 
+    new InactivityTrackingOptions ());
+                services.AddSingleton(audioService)
+                        .AddSingleton(trackingService)
+                        .AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
+            }
+            
             serviceProvider = services.BuildServiceProvider();
             CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration()
             {
@@ -279,9 +294,11 @@ namespace SilverBotDS
                 discord.Ready += async (DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e) =>
                 {
                     await audioService.InitializeAsync();
+                    trackingService.BeginTracking();
                     waitforfriday.Start();
                 };
             }
+          
             await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
 
             if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0) && config.UseLavaLink)

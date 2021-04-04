@@ -20,7 +20,7 @@ namespace SilverBotDS.Commands
         }
 
 #pragma warning disable CA1822 // Mark members as static
-        private static GiphyDotNet.Manager.Giphy giphy = new GiphyDotNet.Manager.Giphy();
+        private static GiphyDotNet.Manager.Giphy giphy = new();
 
         public static void Set(string token)
         {
@@ -37,7 +37,7 @@ namespace SilverBotDS.Commands
         [Command("random")]
         public async Task Kindsffeefergergrgfdfdsgfdfg(CommandContext ctx)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var b = new DiscordEmbedBuilder();
             var gifresult = await giphy.RandomGif(new RandomParameter
             {
@@ -51,7 +51,7 @@ namespace SilverBotDS.Commands
         [Command("search"), Aliases("s")]
         public async Task Kindsffeefergergrgfdfdsgfdgfdsfgdfgfdfdghdfg(CommandContext ctx, [RemainingText] string term)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var page = 0;
             var b = new DiscordEmbedBuilder();
             var searchParameter = new SearchParameter

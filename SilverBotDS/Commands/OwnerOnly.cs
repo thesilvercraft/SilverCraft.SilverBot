@@ -309,16 +309,24 @@ namespace SilverBotDS.Commands
             try
             {
                 Program.SendLog("Evaling a peace of code, wish me luck", true);
-                var timer = new Stopwatch();
-                timer.Start();
                 using var sw = new StringWriter();
                 Console.SetOut(sw);
-                var result = await CSharpScript.RunAsync(RemoveCodeBraces(code),
-           ScriptOptions.Default.WithReferences(references).WithImports(imports), globals: new CodeEnv(ctx));
-                timer.Stop();
+                DateTime start = DateTime.Now;
+                var script =  CSharpScript.Create(RemoveCodeBraces(code),
+           ScriptOptions.Default.WithReferences(references).WithImports(imports),typeof(CodeEnv));
+                script.Compile();
+                DateTime aftercompile = DateTime.Now;
+                await new DiscordMessageBuilder().WithContent($"Compiled the code in {(aftercompile-start).Humanize(6)}").SendAsync(ctx.Channel);
+                var result = await script.RunAsync(new CodeEnv(ctx));
+                DateTime afterrun = DateTime.Now;
+
                 if (result.ReturnValue is not null)
                 {
                     await SendBestRepresentationAsync(result.ReturnValue, ctx);
+                }
+                else
+                {
+                    await new DiscordMessageBuilder().WithContent($"Got a `null`").SendAsync(ctx.Channel);
                 }
                 if (!string.IsNullOrEmpty(sw.ToString()))
                 {
@@ -332,9 +340,13 @@ namespace SilverBotDS.Commands
                         await new DiscordMessageBuilder().WithContent("Console Output" + AddBraces(sw.ToString())).SendAsync(ctx.Channel);
                     }
                 }
+               
                 sw.Close();
                 Console.SetOut(console);
-                await new DiscordMessageBuilder().WithContent($"Executed the code in {timer.Elapsed.Humanize(6)}").SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent($"Executed the code in {(afterrun-aftercompile).Humanize(6)} excluding compile time or {(afterrun-start).Humanize(6)} including it").SendAsync(ctx.Channel);
+                result=null;
+                script = null;
+                GC.Collect();
             }
             catch (CompilationErrorException e)
             {

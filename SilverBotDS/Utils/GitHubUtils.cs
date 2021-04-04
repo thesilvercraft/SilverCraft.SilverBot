@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -47,16 +48,15 @@ namespace SilverBotDS.Utils
 
         public class CommitInfo
         {
-            public static async Task<CommitInfo> GetLatestFromRepoAsync(Repo repo)
+            public static async Task<CommitInfo> GetLatestFromRepoAsync(Repo repo, HttpClient client)
             {
-                return await GetLatestFromRepoAsync(repo, "master");
+                return await GetLatestFromRepoAsync(repo, "master",client);
             }
 
-            public static async Task<CommitInfo> GetLatestFromRepoAsync(Repo repo, string branch)
+            public static async Task<CommitInfo> GetLatestFromRepoAsync(Repo repo, string branch,HttpClient client)
             {
-                var httpClient = Program.GetHttpClient();
                 var uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/commits/{branch}");
-                var rm = await httpClient.GetAsync(uri.Uri);
+                var rm = await client.GetAsync(uri.Uri);
                 if (rm.StatusCode == HttpStatusCode.OK)
                 {
                     return JsonSerializer.Deserialize<CommitInfo>(await rm.Content.ReadAsStringAsync());

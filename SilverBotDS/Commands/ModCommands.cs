@@ -20,7 +20,7 @@ namespace SilverBotDS.Commands
         [RequirePermissions(Permissions.KickMembers)]
         public async Task Kick(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The kick boot has spoken")
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var b = new DiscordEmbedBuilder();
             var thing = "";
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
@@ -50,7 +50,7 @@ namespace SilverBotDS.Commands
         [RequirePermissions(Permissions.BanMembers)]
         public async Task Ban(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var b = new DiscordEmbedBuilder();
             var thing = "";
             int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
@@ -81,7 +81,7 @@ namespace SilverBotDS.Commands
         [RequirePermissions(Permissions.ManageMessages)]
         public async Task Ban(CommandContext ctx, [Description("number of messages")] int amount)
         {
-            var lang = (await Language.GetLanguageFromCtxAsync(ctx));
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (amount is < 0 or 0)
             {
                 await new DiscordMessageBuilder()

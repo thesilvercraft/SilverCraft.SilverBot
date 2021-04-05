@@ -158,7 +158,7 @@ namespace SilverBotDS.Commands
                                             .SendAsync(ctx.Channel);
         }
 
-        private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string title = null, string content = null, Language language=null)
+        private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string title = null, string content = null, Language language = null)
         {
             language ??= await Language.GetLanguageFromCtxAsync(ctx);
             var embedBuilder = new DiscordEmbedBuilder().WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithImageUrl(imageurl).WithColor(await ColorUtils.GetSingleAsync());

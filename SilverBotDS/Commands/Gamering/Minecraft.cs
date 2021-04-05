@@ -32,7 +32,7 @@ namespace SilverBotDS.Commands.Gamering
             catch (Exception e)
             {
                 Program.SendLog(e);
-                await new DiscordMessageBuilder().WithContent("Error occured: ```csharp\n" + e.Message + "```").SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent("Error occured").SendAsync(ctx.Channel);
                 throw;
             }
         }

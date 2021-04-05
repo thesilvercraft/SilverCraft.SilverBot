@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using static SilverBotDS.Utils.GitHubUtils;
 
 namespace SilverBotDS
@@ -14,14 +15,14 @@ namespace SilverBotDS
             Program.SendLog($"[VersionInfo] {line}", true);
         }
 
-        public static async void Checkforupdates(HttpClient client)
+        public static async Task Checkforupdates(HttpClient client)
         {
             try
             {
                 LogLine("Running on " + Environment.OSVersion.VersionString);
                 LogLine("Getting latest version info from GitHub");
                 Repo repo = new("thesilvercraft", "silverbot");
-                var info = await CommitInfo.GetLatestFromRepoAsync(repo,client);
+                var info = await CommitInfo.GetLatestFromRepoAsync(repo, client);
                 if (info.Sha == ThisAssembly.Git.Sha)
                 {
                     LogLine($"You are running {VNumber} which has the same Sha as the newest commit on master.");

@@ -15,9 +15,11 @@ namespace SilverBotDS.Converters
         public string Url;
         private byte[] _bytes;
         private bool disposedValue;
+
         public SdImage()
-            {
-            }
+        {
+        }
+
         public SdImage(string url) => Url = url;
 
         public static SdImage FromContext(CommandContext ctx)
@@ -72,11 +74,11 @@ namespace SilverBotDS.Converters
         }
 
         // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~SdImage()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
+        ~SdImage()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
 
         public void Dispose()
         {

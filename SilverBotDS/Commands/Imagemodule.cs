@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -31,6 +30,7 @@ namespace SilverBotDS.Commands
 
         private const int Quality = 70;
         public HttpClient HttpClient { private get; set; }
+
         private static async Task Sendcorrectamountofimages(CommandContext ctx, AttachmentCountIncorrect e, Language lang = null)
         {
             lang ??= await Language.GetLanguageFromCtxAsync(ctx);
@@ -51,7 +51,7 @@ namespace SilverBotDS.Commands
             await new DiscordMessageBuilder().WithContent(content).WithFile(filename, outstream).WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }
 
-        public static MemoryStream Resize(byte[] photoBytes, Size size, bool centered=true)
+        public static MemoryStream Resize(byte[] photoBytes, Size size, bool centered = true)
         {
             ISupportedImageFormat format = new PngFormat { Quality = Quality };
             using var inStream = new MemoryStream(photoBytes);
@@ -134,6 +134,7 @@ namespace SilverBotDS.Commands
                 .Save(outStream);
             return outStream;
         }
+
         [Command("template")]
         public async Task Template(CommandContext ctx)
         {
@@ -151,17 +152,16 @@ namespace SilverBotDS.Commands
                     }
                     else if (step is PictureStep step1)
                     {
-                        if(step1.isPfp)
+                        if (step1.isPfp)
                         {
-                           
-                            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent($"Ping or send an id of the person you want in the photo step({steps.Count+1} out of {e.steps.Length} steps)"));
+                            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent($"Ping or send an id of the person you want in the photo step({steps.Count + 1} out of {e.steps.Length} steps)"));
                             var msg = await interactivity.WaitForMessageAsync((a) => { return a.Author.Id == ctx.User.Id; });
                             if (msg.TimedOut)
                             {
                                 await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("Timed out"));
                                 return;
                             }
-                            if(msg.Result.MentionedUsers.Count==1)
+                            if (msg.Result.MentionedUsers.Count == 1)
                             {
                                 steps.Add(new PictureStep(step1.x, step1.y, step1.xSize, step1.ySize, msg.Result.MentionedUsers[0].GetAvatarUrl(ImageFormat.Png), true));
                                 continue;
@@ -189,7 +189,6 @@ namespace SilverBotDS.Commands
                                 continue;
                             }
                         }
-
                     }
                     else
                     {
@@ -208,7 +207,6 @@ namespace SilverBotDS.Commands
                 outStream.Position = 0;
                 await SendImageStream(ctx, outStream, "silverbotimage.png");
                 Console.WriteLine("eeeee");
-
             }
             else
             {
@@ -217,13 +215,10 @@ namespace SilverBotDS.Commands
                     await Sendcorrectamountofimages(ctx, AttachmentCountIncorrect.TooLittleAttachments);
                 }
                 else
-                { 
+                {
                     await Sendcorrectamountofimages(ctx, AttachmentCountIncorrect.TooMuchAttachments);
                 }
             }
-            
-          
-            
         }
 
         [Command("jpeg")]
@@ -443,6 +438,7 @@ namespace SilverBotDS.Commands
         private static Bitmap cachednewyeartemplate;
         private static Bitmap cachedweebreliabletemplate;
         private static Bitmap cachedpaintreliabletemplate;
+
         [Command("reliable")]
         public async Task Reliable(CommandContext ctx)
         {
@@ -687,6 +683,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 throw;
             }
         }
+
         [Command("mspaint")]
         public async Task Paint(CommandContext ctx, SdImage image)
         {
@@ -709,7 +706,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
             {
                 drawing.DrawImageUnscaled(internalimage, new Point(132, 95));
             }
-     
+
             drawing.Save();
             await using MemoryStream outStream = new();
             copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
@@ -737,6 +734,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
+
         [Command("motivate")]
         public async Task Motivate(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
@@ -800,11 +798,12 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
             }
         }
 
-        readonly StringFormat stringFormat = new()
+        private readonly StringFormat stringFormat = new()
         {
             LineAlignment = StringAlignment.Center,
             Alignment = StringAlignment.Center
         };
+
         [Command("caption")]
         public async Task Caption(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
@@ -817,10 +816,8 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
             SizeF textSize;
             using (Image img = new Bitmap(1, 1))
             {
-
                 using var draw = Graphics.FromImage(img);
                 textSize = draw.MeasureString(text, font, x);
-
             }
             using (var img2 = new Bitmap(x, y + (int)textSize.Height))
             {

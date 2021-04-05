@@ -8,14 +8,15 @@ using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
 using Lavalink4NET;
 using Lavalink4NET.DSharpPlus;
+using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
 using Lavalink4NET.Tracking;
-using Lavalink4NET.Lyrics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SDBrowser;
 using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
 using SilverBotDS.Converters;
@@ -36,39 +37,8 @@ namespace SilverBotDS
     {
         private static Config config;
 
-        private static Config GetNewConfig()
-        {
-            MainLogLine("Loading config");
-            using Task<Config> task = Config.GetAsync();
-            task.Wait();
-            Config res = task.Result;
-            MainLogLine("GREAT SUCCESS LOADING CONFIG");
-            return res;
-        }
-
-        private static void MainLogLine(string line)
-        {
-            Console.WriteLine($"(OLD)[Main]: {line}");
-        }
-
         private static void Main()
         {
-            MainLogLine("Load config");
-            config = GetNewConfig();
-            MainLogLine("Making new logger");
-            WebHookUtilz.ParseWebhookUrl(config.LogWebhook, out ulong id, out string token);
-            log = new LoggerConfiguration()
-  .WriteTo.Console()
-  .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true)
- .WriteTo.Discord(new DiscordWebhookMessenger(id, token))
- .CreateLogger();
-
-            log.Information("Checking for updates");
-
-            //Check for updates
-            VersionInfo.Checkforupdates(httpClient);
-            log.Information("Starting MainAsync");
-
             //Start the main async task
             MainAsync().GetAwaiter().GetResult();
         }
@@ -131,9 +101,21 @@ namespace SilverBotDS
 
         private static async Task MainAsync()
         {
+            config = await Config.GetAsync();
+            WebHookUtilz.ParseWebhookUrl(config.LogWebhook, out ulong id, out string token);
+            log = new LoggerConfiguration()
+                         .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                         .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true)
+                         .WriteTo.Discord(new DiscordWebhookMessenger(id, token))
+                         .CreateLogger();
+
+            log.Information("Checking for updates");
+            //Check for updates
+            await VersionInfo.Checkforupdates(httpClient);
+
             ILoggerFactory logFactory = new LoggerFactory().AddSerilog();
             //Make us a little cute client
-            log.Information("Creating the discord client");
+            log.Verbose("Creating the discord client");
             discord = new DiscordClient(new DiscordConfiguration()
             {
                 LoggerFactory = logFactory,
@@ -142,31 +124,29 @@ namespace SilverBotDS
                 Intents = DiscordIntents.All
             });
             //Tell our client to initialize interactivity
-            log.Information("Initialising interactivity");
+            log.Verbose("Initialising interactivity");
             discord.UseInteractivity(new InteractivityConfiguration()
             {
                 PollBehaviour = PollBehaviour.KeepEmojis,
                 Timeout = TimeSpan.FromSeconds(30)
             });
             //set up logging?
-
             discord.MessageCreated += Discord_MessageCreated;
-
             //Tell our cute client to use commands or in other words become a working class member of society
-            log.Information("Initialising Commands");
+            log.Verbose("Initialising Commands");
             ServiceCollection services = new();
-
+            //add a browser
             switch (config.BrowserType)
             {
                 case 1:
                     {
-                        log.Information("Launching chrome");
+                        log.Verbose("Launching chrome");
                         services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Chrome, config.DriverLocation));
                         break;
                     }
                 case 2:
                     {
-                        log.Information("Launching firefox");
+                        log.Verbose("Launching firefox");
                         services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Firefox, config.DriverLocation));
                         break;
                     }
@@ -188,14 +168,14 @@ namespace SilverBotDS
                             string connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
                             postgre = new(connString);
                         }
-                        log.Information("Using Postgre");
+                        log.Verbose("Using Postgre");
                         services.AddSingleton<ISBDatabase>(postgre);
                         break;
                     }
                 case 2:
                     {
                         //litedb
-                        log.Information("Using LiteDB");
+                        log.Verbose("Using LiteDB");
                         services.AddSingleton<ISBDatabase>(new LiteDBDatabase());
                         break;
                     }
@@ -206,11 +186,12 @@ namespace SilverBotDS
             }
             services.AddSingleton(config);
             services.AddSingleton(httpClient);
-            //Launch lavalink
             if (config.AutoDownloadAndStartLavalink)
             {
+                //Launch lavalink
                 if (!File.Exists("Lavalink.jar"))
                 {
+                    //file not found time to download lavalink
                     log.Information("Downloading lavalink");
                     GitHubUtils.Repo repo = new("Frederikam", "Lavalink");
                     GitHubUtils.Release release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo);
@@ -227,10 +208,9 @@ namespace SilverBotDS
                     }
                 }.Start();
             }
-
-            log.Information("Waiting 6s");
+            log.Verbose("Waiting 6s");
             await Task.Delay(6000);
-            if(config.UseLavaLink)
+            if (config.UseLavaLink)
             {
                 log.Information("Making a lavalinknode");
                 var discordclientwrapper = new DiscordClientWrapper(discord);
@@ -240,15 +220,12 @@ namespace SilverBotDS
                     WebSocketUri = config.LavalinkWebSocketUri,
                     Password = config.LavalinkPassword
                 }, discordclientwrapper);
-                trackingService = new InactivityTrackingService(
-    audioService, 
-    discordclientwrapper, 
-    new InactivityTrackingOptions ());
+                trackingService = new InactivityTrackingService(audioService, discordclientwrapper,
+                                                                new InactivityTrackingOptions());
                 services.AddSingleton(audioService)
                         .AddSingleton(trackingService)
                         .AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
             }
-            
             serviceProvider = services.BuildServiceProvider();
             CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration()
             {
@@ -256,7 +233,7 @@ namespace SilverBotDS
                 Services = serviceProvider
             });
             //Register our commands
-            log.Information("Regisitring Commands&Converters");
+            log.Verbose("Regisitring Commands&Converters");
             commands.RegisterConverter(new SdImageConverter());
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
@@ -274,7 +251,6 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<Bubot>();
             }
-
             if (config.UseLavaLink)
             {
                 commands.RegisterCommands<Audio>();
@@ -286,8 +262,7 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<CalculatorCommands>();
             }
-
-            //🥁🥁🥁 drumroll please
+            //🥁🥁🥁 drumroll
             log.Information("Connecting to discord");
             if (config.UseLavaLink)
             {
@@ -298,23 +273,21 @@ namespace SilverBotDS
                     waitforfriday.Start();
                 };
             }
-          
             await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
-
             if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0) && config.UseLavaLink)
             {
                 waitforfriday = new Thread(new ThreadStart(WaitForFridayAsync));
             }
-            //We have achived pog
+
             log.Information("Waiting 3s");
             await Task.Delay(3000);
             while (true)
             {
-                log.Information("Updating the status to a random one");
+                log.Verbose("Updating the status to a random one");
                 //update the status to some random one
                 await discord.UpdateStatusAsync(await Splashes.GetSingleAsync(useinternal: !config.UseSplashConfig));
                 //wait the specified time
-                log.Information($"Waiting {new TimeSpan(0, 0, 0, 0, config.MsInterval).Humanize(precision: 5)}");
+                log.Verbose($"Waiting {new TimeSpan(0, 0, 0, 0, config.MsInterval).Humanize(precision: 5)}");
                 await Task.Delay(config.MsInterval);
                 //repeat🔁
             }
@@ -355,23 +328,21 @@ namespace SilverBotDS
                 VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(vchannel.GuildId);
                 await player.DisconnectAsync();
             }
-
             VoteLavalinkPlayer playere = await audioService.JoinAsync<VoteLavalinkPlayer>(vchannel.GuildId, vchannel.Id, true);
-
             var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
             await playere.PlayAsync(track);
-
             var channel = await discord.GetChannelAsync(config.FridayTextChannel);
             await channel.SendMessageAsync("its friday");
             return;
         }
 
-        private static readonly string[] repeatstrings = { "anime", "canada", "silverbot is gay", "fuck", "fock", "e" };
+        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "fock", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming" };
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
             if (e.Author.IsBot)
             {
+                //haha nice try
                 return;
             }
             if ((e.Channel.IsPrivate || e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages)) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))

@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text.Json;
 using System.Linq;
+using System.Text.Json;
 
 namespace SilverBotDS.Objects
 {
@@ -374,8 +374,17 @@ namespace SilverBotDS.Objects
         public string SongLength { get; set; } = "Length";
         public string SongTimePosition { get; set; } = "Position";
         public string SongTimeLeft { get; set; } = "Time left:";
-        public string SongTimeLeftSongLoopingCurrent { get; set; } = "Never (song is looping)";
-        public string SongTimeLeftSongLooping { get; set; } = "Never (current song is looping)";
+
+        /// <summary>
+        /// Never (song is looping)
+        /// </summary>
+        public string SongTimeLeftSongLoopingCurrent { get; set; } = "Never (current song is looping)";
+
+        /// <summary>
+        /// Never (current song is looping)
+        /// </summary>
+        public string SongTimeLeftSongLooping { get; set; } = "Never (song is looping)";
+
         public string SongNotExist { get; set; } = "That song does not exist my dude";
         public string VersionInfoTitle { get; set; } = "SilverBot Version info";
         public string PurgedBySilverBotReason { get; set; } = "Purged by SilverBot for {0}";
@@ -471,7 +480,5 @@ namespace SilverBotDS.Objects
             var db = Program.GetDatabase();
             return await GetAsync(ctx.Channel.IsPrivate ? await db.GetLangCodeUser(ctx.User.Id) : await db.GetLangCodeGuild(ctx.Guild.Id));
         }
-
-      
     }
 }

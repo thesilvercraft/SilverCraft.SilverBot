@@ -6,9 +6,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects
 {

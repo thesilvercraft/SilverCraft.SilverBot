@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
@@ -9,19 +10,16 @@ using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Text.Json;
 using Xabe.FFmpeg;
-using System.Collections;
-using System.Linq;
 using Xabe.FFmpeg.Downloader;
-using DSharpPlus.Interactivity.Extensions;
-using System.Net.Http;
 
 namespace SilverBotDS.Commands
 {
@@ -107,7 +105,7 @@ namespace SilverBotDS.Commands
                 await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("nvm your too slow"));
                 return;
             }
-            double[] xdata = Array.ConvertAll(msg.Result.Content.Split(','), double.Parse);
+            double[] xdata = Array.ConvertAll(msg.Result.Content.Split(' '), double.Parse);
             await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("send y data"));
             msg = await interactivity.WaitForMessageAsync((a) => { return a.Author.Id == ctx.User.Id; });
             if (msg.TimedOut)
@@ -115,7 +113,7 @@ namespace SilverBotDS.Commands
                 await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("nvm your too slow"));
                 return;
             }
-            double[] ydata = Array.ConvertAll(msg.Result.Content.Split(','), double.Parse);
+            double[] ydata = Array.ConvertAll(msg.Result.Content.Split(' '), double.Parse);
             var plt = new ScottPlot.Plot(1920, 1080);
             plt.AddScatter(xdata, ydata);
             var bitmap = plt.Render();
@@ -156,7 +154,6 @@ namespace SilverBotDS.Commands
             _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
             DiscordMessageBuilder discordMessage = new();
             discordMessage.Content = ctx.User.Mention + " there m8 that took some time to do";
-
             await channel.SendMessageAsync(discordMessage);
         }
 
@@ -238,10 +235,7 @@ namespace SilverBotDS.Commands
             await new DiscordMessageBuilder().WithContent(title).WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }
 
-        private static string AddBraces(string a)
-        {
-            return "```" + a + "```";
-        }
+        private static string AddBraces(string a) => "```" + a + "```";
 
         public static async Task SendBestRepresentationAsync(object ob, CommandContext ctx)
         {
@@ -312,11 +306,11 @@ namespace SilverBotDS.Commands
                 using var sw = new StringWriter();
                 Console.SetOut(sw);
                 DateTime start = DateTime.Now;
-                var script =  CSharpScript.Create(RemoveCodeBraces(code),
-           ScriptOptions.Default.WithReferences(references).WithImports(imports),typeof(CodeEnv));
+                var script = CSharpScript.Create(RemoveCodeBraces(code),
+           ScriptOptions.Default.WithReferences(references).WithImports(imports), typeof(CodeEnv));
                 script.Compile();
                 DateTime aftercompile = DateTime.Now;
-                await new DiscordMessageBuilder().WithContent($"Compiled the code in {(aftercompile-start).Humanize(6)}").SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent($"Compiled the code in {(aftercompile - start).Humanize(6)}").SendAsync(ctx.Channel);
                 var result = await script.RunAsync(new CodeEnv(ctx));
                 DateTime afterrun = DateTime.Now;
 
@@ -340,11 +334,10 @@ namespace SilverBotDS.Commands
                         await new DiscordMessageBuilder().WithContent("Console Output" + AddBraces(sw.ToString())).SendAsync(ctx.Channel);
                     }
                 }
-               
                 sw.Close();
                 Console.SetOut(console);
-                await new DiscordMessageBuilder().WithContent($"Executed the code in {(afterrun-aftercompile).Humanize(6)} excluding compile time or {(afterrun-start).Humanize(6)} including it").SendAsync(ctx.Channel);
-                result=null;
+                await new DiscordMessageBuilder().WithContent($"Executed the code in {(afterrun - aftercompile).Humanize(6)} excluding compile time or {(afterrun - start).Humanize(6)} including it").SendAsync(ctx.Channel);
+                result = null;
                 script = null;
                 GC.Collect();
             }

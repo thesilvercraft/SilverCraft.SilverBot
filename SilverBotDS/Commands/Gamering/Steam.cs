@@ -54,8 +54,7 @@ namespace SilverBotDS.Commands.Gamering
                     {
                         tempbuilder.WithAuthor(listings[i].Price + "merica bucks");
                     }
-
-                    tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + $" Page: {i + 1}/{listings.Count}", ctx.User.GetAvatarUrl(ImageFormat.Png));
+                    tempbuilder.WithFooter($"{lang.RequestedBy}{ctx.User.Username} {string.Format(lang.PageNuget, i + 1, listings.Count)}", ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(listings[i].ImageLink))
                     {
                         tempbuilder.WithThumbnail(listings[i].ImageLink);
@@ -69,16 +68,16 @@ namespace SilverBotDS.Commands.Gamering
                 else
                 {
                     var bob = new DiscordEmbedBuilder();
-                    bob.WithTitle("Something went fucky wucky on my side");
-                    bob.WithDescription("Try again a little later?\n 0 Games were returned");
+                    bob.WithTitle("0 Games were returned");
+                    bob.WithDescription("Try again later, or try changing your search term");
                     await ctx.RespondAsync(embed: bob.Build());
                 }
             }
             catch (Exception e)
             {
                 var bob = new DiscordEmbedBuilder();
-                bob.WithTitle(lang.SearchFail);
-                bob.WithDescription("Try again a little later?\n" + e.Message);
+                bob.WithTitle(lang.SearchFailTitle);
+                bob.WithDescription(lang.SearchFailDescription + "\n" + e.Message);
                 await ctx.RespondAsync(embed: bob.Build());
                 throw;
             }

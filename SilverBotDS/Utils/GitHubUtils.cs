@@ -50,10 +50,10 @@ namespace SilverBotDS.Utils
         {
             public static async Task<CommitInfo> GetLatestFromRepoAsync(Repo repo, HttpClient client)
             {
-                return await GetLatestFromRepoAsync(repo, "master",client);
+                return await GetLatestFromRepoAsync(repo, "master", client);
             }
 
-            public static async Task<CommitInfo> GetLatestFromRepoAsync(Repo repo, string branch,HttpClient client)
+            public static async Task<CommitInfo> GetLatestFromRepoAsync(Repo repo, string branch, HttpClient client)
             {
                 var uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/commits/{branch}");
                 var rm = await client.GetAsync(uri.Uri);

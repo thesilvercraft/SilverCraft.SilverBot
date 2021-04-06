@@ -97,6 +97,14 @@ namespace SilverBotDS.Commands
             return time;
         }
 
+        private readonly IReadOnlyDictionary<string, string> aliases = new Dictionary<string, string>
+        {
+           { "we will fock you", "https://youtu.be/lLN3caSQI1w" },
+           { "special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8" },
+           { "velimir's favourite","https://www.youtube.com/watch?v=mdqU6Erw3kk"},
+           { "cmpc music","https://www.youtube.com/playlist?list=PLgeUxNS5wZ89J7tzjHCMxfArAr4o-eaux" }
+        };
+
         [Command("play")]
         [Description("Tell me to play a song")]
         [Aliases("p")]
@@ -125,17 +133,9 @@ namespace SilverBotDS.Commands
                     }
                 }
                 VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
-                if (song.Contains("we will fock you"))
+                if (aliases.ContainsKey(song))
                 {
-                    song = "https://youtu.be/lLN3caSQI1w";
-                }
-                if (song.Contains("special for bub"))
-                {
-                    song = "https://www.youtube.com/watch?v=y1TJBgpGrd8";
-                }
-                if (song.Contains("velimirs") || song.Contains("velimir's"))
-                {
-                    song = "https://www.youtube.com/watch?v=mdqU6Erw3kk";
+                    song = aliases[song];
                 }
                 var track = await AudioService.GetTracksAsync(song, SearchMode.None);
                 if (track is null || track.ToArray().Length == 0)

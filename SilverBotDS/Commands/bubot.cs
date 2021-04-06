@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
-    [Group("bubot")]
-    [Aliases("bb")]
-    [Description("stolen commands from bubot")]
+    //[Group("bubot")]
+    //[Aliases("bb")]
+    // [Description("stolen commands from bubot")]
     internal class Bubot : BaseCommandModule
     {
         private readonly Font BibiFont = new("Arial", 30, FontStyle.Bold);

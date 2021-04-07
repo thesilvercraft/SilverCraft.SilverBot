@@ -15,6 +15,6 @@ To run this you will need to install:
   - A FortniteAPI token (https://dash.fortnite-api.com/)
   - A topgg token that is a stored in the `connect.sid` cookie or an bot token
   - A friday text and voice channel (it will attempt to connect there and play fryday every friday)
-  - A Node.JS install to run some node code
+  - A Node.JS install to run some node code  
 When you compile the code or download it from the releases just do:  
 `dotnet SilverBotDS.dll`

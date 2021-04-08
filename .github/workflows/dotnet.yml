@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Clean
-      run: dotnet clean "SilverBotDS\SilverBotDS.sln" --configuration Release && dotnet nuget locals all --clear
+      run: dotnet clean --configuration Release && dotnet nuget locals all --clear
     - name: Add dsharpplus slimget
       run: dotnet nuget add source https://nuget.emzi0767.com/api/v3/index.json
     - name: Restore dependencies

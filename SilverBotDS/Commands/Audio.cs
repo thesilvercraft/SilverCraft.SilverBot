@@ -25,7 +25,7 @@ namespace SilverBotDS.Commands
     {
         public LavalinkNode AudioService { private get; set; }
         public LyricsService LyricsService { private get; set; }
-        public static InactivityTrackingService TrackingService { private get; set; }
+        public InactivityTrackingService TrackingService { private get; set; }
 
         private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
                                                                                                                                                                     || AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);

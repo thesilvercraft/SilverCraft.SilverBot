@@ -39,7 +39,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 15;
+        private const ulong CurrentConfVer = 16;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -100,6 +100,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Allow commands that someone might find distasteful like the fake nsfw commands that just expose everyone that try's to run them")]
         public bool AllowTrollCommands { get; set; } = false;
+
+        [XmlDescription("People in these guilds can use the 24/7 command")]
+        public ulong[] TwentyFourSevenGuilds { get; set; } = new ulong[] { 699361201586438235, 714154158969716780 };
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {

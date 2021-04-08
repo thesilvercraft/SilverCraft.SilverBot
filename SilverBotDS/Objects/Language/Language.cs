@@ -396,6 +396,8 @@ namespace SilverBotDS.Objects
         public string BotBannedUser { get; set; } = "The bot has attempted to ban the user";
         public string BotKickedUser { get; set; } = "The bot has attempted to kick the user";
         public string AddedXAmountOfSongs { get; set; } = "Added {0} songs to the queue";
+        public string TrackingStarted { get; set; } = "This isn't implemented.";
+        public string TrackingStopped { get; set; } = "Enabled 24/7 mode";
 
         public CultureInfo GetCultureInfo()
         {

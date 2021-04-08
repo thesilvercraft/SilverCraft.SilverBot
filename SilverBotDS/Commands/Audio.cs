@@ -9,6 +9,7 @@ using Lavalink4NET;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
+using Lavalink4NET.Tracking;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
@@ -24,6 +25,7 @@ namespace SilverBotDS.Commands
     {
         public LavalinkNode AudioService { private get; set; }
         public LyricsService LyricsService { private get; set; }
+        public static InactivityTrackingService TrackingService { private get; set; }
 
         private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
                                                                                                                                                                     || AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
@@ -213,6 +215,38 @@ namespace SilverBotDS.Commands
             }
             VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
             await player.SetVolumeAsync(volume / 100f, true);
+        }
+
+        [Command("24/7")]
+        [Description("Tells me to stay in vc unless something breaks")]
+        [RequireTwentySeven]
+        public async Task TwentyFourSeven(CommandContext ctx)
+        {
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+            if (!IsInVc(ctx))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+                return;
+            }
+            var channel = ctx.Member?.VoiceState?.Channel;
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                return;
+            }
+            await ctx.TriggerTypingAsync();
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            var status = TrackingService.GetStatus(player);
+
+            if (status is InactivityTrackingStatus.Tracked)
+            {
+                await TrackingService.UntrackPlayerAsync(player);
+                await SendSimpleMessage(ctx, title: lang.TrackingStopped, language: lang);
+            }
+            else if (status is InactivityTrackingStatus.Untracked)
+            {
+                await SendSimpleMessage(ctx, title: lang.TrackingStarted, language: lang);
+            }
         }
 
         [Command("remove")]

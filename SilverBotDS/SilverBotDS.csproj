@@ -23,10 +23,15 @@
     <None Remove="Templates\Bibi\7.png" />
     <None Remove="Templates\Bibi\8.png" />
     <None Remove="Templates\Bibi\9.png" />
+    <None Remove="Templates\fock.mp3" />
     <None Remove="Templates\happy_new_year_template.png" />
     <None Remove="Templates\motivator_template.png" />
     <None Remove="Templates\paint_template.png" />
+    <None Remove="Templates\quality_fock.mp3" />
     <None Remove="Templates\weeb_reliable_template.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\quality_fock.mp3" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\adventure_time_template.png" />
@@ -41,6 +46,7 @@
     <EmbeddedResource Include="Templates\Bibi\7.png" />
     <EmbeddedResource Include="Templates\Bibi\8.png" />
     <EmbeddedResource Include="Templates\Bibi\9.png" />
+    <EmbeddedResource Include="Templates\fock.mp3" />
     <EmbeddedResource Include="Templates\happy_new_year_template.png" />
     <EmbeddedResource Include="Templates\motivator_template.png" />
     <EmbeddedResource Include="Templates\paint_template.png" />

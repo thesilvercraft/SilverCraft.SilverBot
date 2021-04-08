@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -343,7 +344,7 @@ namespace SilverBotDS
             return;
         }
 
-        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "fock", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming" };
+        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "fock", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "quality fock" };
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
@@ -354,9 +355,35 @@ namespace SilverBotDS
             }
             if ((e.Channel.IsPrivate || e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages)) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
             {
+                if (config.EmulateBubot)
+                {
+                    switch (e.Message.Content)
+                    {
+                        case "fock":
+                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                     .WithContent(e.Message.Content)
+                                     .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.fock.mp3") ?? throw new InvalidOperationException())
+                                     .SendAsync(e.Channel);
+                            return;
+
+                        case "quality fock":
+                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                             .WithContent(e.Message.Content)
+                             .WithFile("quality_fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.quality_fock.mp3") ?? throw new InvalidOperationException())
+                             .SendAsync(e.Channel);
+                            return;
+
+                        case "we will fock you":
+                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                             .WithContent("https://www.youtube.com/watch?v=lLN3caSQI1w")
+                             .SendAsync(e.Channel);
+                            return;
+                    }
+                }
                 await new DiscordMessageBuilder().WithReply(e.Message.Id)
                                              .WithContent(e.Message.Content)
                                              .SendAsync(e.Channel);
+                return;
             }
         }
     }

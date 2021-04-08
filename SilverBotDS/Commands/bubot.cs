@@ -21,17 +21,11 @@ namespace SilverBotDS.Commands
 
         [Command("silveryeet")]
         [Description("Sends SilverYeet.gif")]
-        public async Task Silveryeet(CommandContext ctx)
-        {
-            await new DiscordMessageBuilder().WithContent("https://cdn.discordapp.com/attachments/751246248102592567/823475242822533120/SilverYeet.gif").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
-        }
+        public async Task Silveryeet(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://cdn.discordapp.com/attachments/751246248102592567/823475242822533120/SilverYeet.gif").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
 
         [Command("WeWillFockYou")]
         [Description("Gives a Youtube link for the We Will Fock You video.")]
-        public async Task WeWillFockYou(CommandContext ctx)
-        {
-            await new DiscordMessageBuilder().WithContent("https://youtu.be/lLN3caSQI1w").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
-        }
+        public async Task WeWillFockYou(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://youtu.be/lLN3caSQI1w").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
 
         [Command("bibi")]
         [Description("Makes a image with Bibi.")]
@@ -45,22 +39,21 @@ namespace SilverBotDS.Commands
             {
                 randomnumber = random.Next(1, 12);
             }
-            var myAssembly = Assembly.GetExecutingAssembly();
-            var myStream = myAssembly.GetManifestResourceStream($"SilverBotDS.Templates.Bibi.{randomnumber}.png");
-            float size = BibiFont.Size;
-            using var picture = new Bitmap(new Bitmap(myStream ?? throw new InvalidOperationException()));
+            using var picture = new Bitmap(new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.Bibi.{randomnumber}.png") ?? throw new InvalidOperationException()));
             using (Graphics g = Graphics.FromImage(picture))
             {
+                float size = BibiFont.Size;
                 while (g.MeasureString(input, new Font(BibiFont.FontFamily, size, BibiFont.Style)).Width > picture.Width)
                 {
                     size -= 0.05f;
                 }
-                g.DrawString(input, new Font(BibiFont.FontFamily, size, BibiFont.Style), randomnumber == 10 || randomnumber == 9 ? GrayBrush : WhiteBrush, new PointF(4, 230));
+                g.DrawString(input, new Font(BibiFont.FontFamily, size, BibiFont.Style), randomnumber is 10 or 9 ? GrayBrush : WhiteBrush, new PointF(4, 230));
                 g.Save();
             }
             await using var outStream = new MemoryStream();
             picture.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
             outStream.Position = 0;
+            randomnumber = 0;
             await ImageModule.SendImageStream(ctx, outStream, content: input);
         }
     }

@@ -39,7 +39,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 14;
+        private const ulong CurrentConfVer = 15;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -97,6 +97,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Allow silverbot owner only commands (may allow the bot owner to kill pc)")]
         public bool AllowOwnerOnlyCommands { get; set; } = true;
+
+        [XmlDescription("Allow commands that someone might find distasteful like the fake nsfw commands that just expose everyone that try's to run them")]
+        public bool AllowTrollCommands { get; set; } = false;
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {

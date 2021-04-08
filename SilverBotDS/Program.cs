@@ -262,6 +262,10 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<CalculatorCommands>();
             }
+            if (config.AllowTrollCommands)
+            {
+                commands.RegisterCommands<NsfwCommands>();
+            }
             //🥁🥁🥁 drumroll
             log.Information("Connecting to discord");
             if (config.UseLavaLink)
@@ -270,7 +274,10 @@ namespace SilverBotDS
                 {
                     await audioService.InitializeAsync();
                     trackingService.BeginTracking();
-                    waitforfriday.Start();
+                    if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0) && config.UseLavaLink)
+                    {
+                        waitforfriday.Start();
+                    }
                 };
             }
             await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));

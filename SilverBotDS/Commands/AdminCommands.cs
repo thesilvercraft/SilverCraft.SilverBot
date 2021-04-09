@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
-    [RequirePermissions(Permissions.Administrator)]
+    [RequireUserPermissions(Permissions.Administrator)]
     public class AdminCommands : BaseCommandModule
     {
         private DiscordEmoji[] _pollEmojiCache;

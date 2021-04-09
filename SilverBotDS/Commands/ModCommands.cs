@@ -38,7 +38,7 @@ namespace SilverBotDS.Commands
             }
             else if (up > bp && bp > ap)
             {
-                await a.RemoveAsync(reason);
+                await a.RemoveAsync(reason: reason);
                 thing = lang.BotKickedUser;
             }
             b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync()).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
@@ -48,29 +48,33 @@ namespace SilverBotDS.Commands
         [Command("ban")]
         [Description("bans a specified user")]
         [RequirePermissions(Permissions.BanMembers)]
-        public async Task Ban(CommandContext ctx, [Description("the user like duh")] DiscordMember a, [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
+        public async Task Ban(CommandContext ctx, [Description("the user like duh")] DiscordUser a, [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var b = new DiscordEmbedBuilder();
             var thing = "";
-            int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = a.Hierarchy;
-            if (up < ap)
+            if (ctx.Guild.Members.ContainsKey(a.Id))
             {
-                thing = lang.UserHasLowerRole + lang.Ban;
+                int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy, up = ctx.Member.Hierarchy, ap = (await ctx.Guild.GetMemberAsync(a.Id)).Hierarchy;
+                if (up < ap)
+                {
+                    thing = lang.UserHasLowerRole + lang.Ban;
+                }
+                else if (up == ap)
+                {
+                    thing = lang.UserHasLowerRole + lang.Ban;
+                }
+                else if (ap > bp)
+                {
+                    thing = lang.BotHasLowerRole + lang.Ban;
+                }
             }
-            else if (up == ap)
+            if (string.IsNullOrEmpty(thing))
             {
-                thing = lang.UserHasLowerRole + lang.Ban;
-            }
-            else if (ap > bp)
-            {
-                thing = lang.BotHasLowerRole + lang.Ban;
-            }
-            else if (up > bp && bp > ap)
-            {
-                await a.BanAsync(reason: reason);
+                await ctx.Guild.BanMemberAsync(a.Id, reason: reason);
                 thing = lang.BotBannedUser;
             }
+
             b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync()).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }

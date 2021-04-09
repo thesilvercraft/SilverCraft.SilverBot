@@ -101,7 +101,7 @@ namespace SilverBotDS.Utils
         /// Gets a single (random) <see cref="DiscordColor"/> with no parameters
         /// </summary>
         /// <returns>a single (random) <see cref="DiscordColor"/></returns>
-        public static async Task<DiscordColor> GetSingleAsync() => await GetSingleAsync(useinternal: !Program.GetConfig().ColorConfig);
+        public static async Task<DiscordColor> GetSingleAsync() => await GetSingleAsyncInternal(useinternal: !Program.GetConfig().ColorConfig);
 
         /// <summary>
         /// Gets a single (random) <see cref="DiscordColor"/>
@@ -109,7 +109,7 @@ namespace SilverBotDS.Utils
         /// <param name="ignorecache">Should it reload the colors.json</param>
         /// <param name="useinternal">Should it ignore colors.json altogether</param>
         /// <returns>a single (random) <see cref="DiscordColor"/></returns>
-        internal static async Task<DiscordColor> GetSingleAsync(bool ignorecache = false, bool useinternal = false)
+        internal static async Task<DiscordColor> GetSingleAsyncInternal(bool ignorecache = false, bool useinternal = false)
         {
             RandomGenerator rg = new();
             var arr = await GetAsync(ignorecache, useinternal);

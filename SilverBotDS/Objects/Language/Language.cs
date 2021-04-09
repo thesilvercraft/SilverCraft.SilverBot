@@ -396,6 +396,7 @@ namespace SilverBotDS.Objects
         public string AddedXAmountOfSongs { get; set; } = "Added {0} songs to the queue";
         public string TrackingStarted { get; set; } = "This isn't implemented.";
         public string TrackingStopped { get; set; } = "Enabled 24/7 mode";
+        public string TrackCanNotBeSeeked { get; set; } = "This track can not be seeked";
 
         public CultureInfo GetCultureInfo()
         {

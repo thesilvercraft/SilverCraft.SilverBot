@@ -217,6 +217,35 @@ namespace SilverBotDS.Commands
             await player.SetVolumeAsync(volume / 100f, true);
         }
 
+        [Command("seek")]
+        [RequireDJ]
+        [Description("Seeks to the specified time")]
+        public async Task Seek(CommandContext ctx, TimeSpan time)
+        {
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+            if (!IsInVc(ctx))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+                return;
+            }
+            var channel = ctx.Member?.VoiceState?.Channel;
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                return;
+            }
+
+            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            try
+            {
+                await player.SeekPositionAsync(time);
+            }
+            catch (NotSupportedException)
+            {
+                await SendSimpleMessage(ctx, lang.TrackCanNotBeSeeked, language: lang);
+            }
+        }
+
         [Command("24/7")]
         [Description("Tells me to stay in vc unless something breaks")]
         [RequireTwentySeven]

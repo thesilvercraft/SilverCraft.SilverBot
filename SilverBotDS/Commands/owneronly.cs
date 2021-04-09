@@ -51,7 +51,7 @@ namespace SilverBotDS.Commands
                 IVideoStream videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
                 for (int i = 0; i < times; i++)
                 {
-                    IConversionResult conversionResult = await FFmpeg.Conversions.New()
+                    await FFmpeg.Conversions.New()
                     .AddStream(videoStream)
                     .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (number) => { return "Extracts\\" + name + i + ".png"; })
                     .UseHardwareAcceleration(HardwareAccelerator.auto, VideoCodec.hevc, VideoCodec.png)
@@ -67,7 +67,6 @@ namespace SilverBotDS.Commands
         {
             await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
             await ctx.RespondAsync($"done?");
-            //await FFmpeg.GetLatestVersion();
         }
 
         [Command("reloadcolors")]
@@ -242,17 +241,17 @@ namespace SilverBotDS.Commands
             try
             {
                 string str = ob.ToString();
-                if (ob.GetType() == typeof(TimeSpan))
+                if (ob is TimeSpan span)
                 {
-                    str = ((TimeSpan)ob).Humanize(999);
+                    str = span.Humanize(999);
                 }
-                else if (ob.GetType() == typeof(DateTime))
+                else if (ob is DateTime time)
                 {
-                    str = ((DateTime)ob).Humanize();
+                    str = time.Humanize();
                 }
-                else if (ob.GetType() == typeof(string))
+                else if (ob is string @string)
                 {
-                    str = RemoveCodeBraces((string)ob);
+                    str = RemoveCodeBraces(@string);
                 }
                 else if (ob.GetType().IsSerializable || ob.GetType().IsArray || ob.GetType().IsEnum || ob.GetType().FullName == ob.ToString())
                 {
@@ -376,7 +375,9 @@ namespace SilverBotDS.Commands
             if (thing.Item1 == null && thing.Item2 != null)
             {
                 var bob = new DiscordEmbedBuilder();
+#pragma warning disable S1075 // URIs should not be hardcoded
                 bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+#pragma warning restore S1075 // URIs should not be hardcoded
                 await using var image = new MemoryStream();
                 thing.Item2.Save(image, System.Drawing.Imaging.ImageFormat.Png);
                 image.Position = 0;
@@ -404,7 +405,9 @@ namespace SilverBotDS.Commands
             {
                 return;
             }
+#pragma warning disable S1075 // URIs should not be hardcoded
             var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
+#pragma warning restore S1075 // URIs should not be hardcoded
             await using var image = new MemoryStream();
             using var e = await Program.GetBrowser().RenderUrlAsync(html);
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
@@ -502,9 +505,9 @@ namespace SilverBotDS.Commands
             await Splashes.GetAsync(true);
             var bob = new DiscordEmbedBuilder();
             bob.WithTitle("Reloaded splashes for ya.").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-            if (Config.UseSplashConfig == false)
+            if (!Config.UseSplashConfig)
             {
-                await ctx.RespondAsync("ps that did nothing as splash config is set false", embed: bob.Build());
+                await ctx.RespondAsync("That did not do anything", embed: bob.Build());
             }
             else
             {
@@ -521,13 +524,14 @@ namespace SilverBotDS.Commands
                 return;
             }
             var bob = new DiscordEmbedBuilder();
+#pragma warning disable S1075 // URIs should not be hardcoded
             bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+#pragma warning restore S1075 // URIs should not be hardcoded
             using var e = await Program.GetBrowser().RenderHtmlAsync(html);
             await using var image = new MemoryStream();
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;
             await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
-            e.Dispose();
         }
     }
 }

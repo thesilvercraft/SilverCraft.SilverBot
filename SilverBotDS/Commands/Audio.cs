@@ -103,7 +103,7 @@ namespace SilverBotDS.Commands
         {
            { "we will fock you", "https://youtu.be/lLN3caSQI1w" },
            { "special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8" },
-           { "velimir's favourite","https://www.youtube.com/watch?v=mdqU6Erw3kk"},
+           { "velimir's favorite","https://www.youtube.com/watch?v=mdqU6Erw3kk"},
            { "cmpc music","https://www.youtube.com/playlist?list=PLgeUxNS5wZ89J7tzjHCMxfArAr4o-eaux" }
         };
 

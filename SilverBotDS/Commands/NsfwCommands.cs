@@ -2067,15 +2067,10 @@
 //
 //
 //jk lol all of these commands are traps that rickroll anyone and everyone that uses them
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
@@ -2096,7 +2091,7 @@ namespace SilverBotDS.Commands
                 await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
                                              .WithEmbed(new DiscordEmbedBuilder()
-                                                                                 .WithTitle("You have to mark the channel nsfw")
+                                                                                 .WithTitle("You have to mark the channel NSFW")
                                                                                  .WithColor(DiscordColor.Red)
                                                                                  .WithImageUrl("https://cdn.discordapp.com/attachments/773606229926084639/829400371310362684/2755upcIlv.gif"))
                                              .SendAsync(ctx.Channel);

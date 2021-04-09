@@ -112,7 +112,7 @@ namespace SilverBotDS.Objects
                 using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 ILiteCollection<ServerOptin> col = db.GetCollection<ServerOptin>();
 
-                return col.FindAll().Where(x => x.Optedin == true).ToList();
+                return col.FindAll().Where(x => x.Optedin).ToList();
             }
             catch (Exception exep)
             {

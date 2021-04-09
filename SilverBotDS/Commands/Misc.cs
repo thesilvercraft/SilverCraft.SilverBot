@@ -51,16 +51,7 @@ namespace SilverBotDS.Commands
                     {
                         foreach (Match match in m.ToArray())
                         {
-                            try
-                            {
-                                bob.AppendLine($"{match.Groups["name"].Value},{Convert.ToUInt64(match.Groups["id"].Value)},{ (DateTimeOffset)(message.EditedTimestamp != null ? message.EditedTimestamp : message.Timestamp):yyyy-MM-dd HH:mm:ss}");
-                            }
-                            catch (FormatException)
-                            {
-                            }
-                            catch (OverflowException)
-                            {
-                            }
+                            bob.AppendLine($"{match.Groups["name"].Value},{Convert.ToUInt64(match.Groups["id"].Value)},{ (DateTimeOffset)(message.EditedTimestamp != null ? message.EditedTimestamp : message.Timestamp):yyyy-MM-dd HH:mm:ss}");
                         }
                     }
                 }
@@ -68,6 +59,7 @@ namespace SilverBotDS.Commands
             }
             await OwnerOnly.SendStringFileWithContent(ctx, $"i went through {messages.Count}messages in {(DateTime.Now - start).Humanize(2)}(including download) {(DateTime.Now - startproc).Humanize(2)}(excluding download), now im done with collecting that time to yeet it in a csv\nEmote usage data:", bob.ToString(), "emotes.csv");
             bob.Clear();
+            bob = null;
             GC.Collect();
         }
 
@@ -116,7 +108,7 @@ namespace SilverBotDS.Commands
         [RequireUserPermissions(Permissions.ManageGuild)]
         public async Task SetLanguage(CommandContext ctx, string LangName)
         {
-            if (Language.LoadedLanguages().ToList().FirstOrDefault(x => x.ToLower() == LangName.ToLower()) != null)
+            if (Language.LoadedLanguages().AsEnumerable().FirstOrDefault(x => x.ToLower() == LangName.ToLower()) != null)
             {
                 var db = Database;
                 if (ctx.Channel.IsPrivate)
@@ -269,47 +261,15 @@ namespace SilverBotDS.Commands
         [Command("cserrcode")]
         public async Task Csharperror(CommandContext ctx, string error)
         {
-            bool NuGetError = false;
-            bool DotNetError = false;
-            bool CsharpError = false;
-            bool FsharpError = false;
-            bool VbError = false;
-            try
-            {
-                NuGetError = Regex.IsMatch(error, @"NU[0-9][0-9][0-9][0-9]");
-            }
-            catch (RegexMatchTimeoutException)
-            {
-            }
-            try
-            {
-                DotNetError = Regex.IsMatch(error, @"CA[0-9][0-9][0-9][0-9]");
-            }
-            catch (RegexMatchTimeoutException)
-            {
-            }
-            try
-            {
-                CsharpError = Regex.IsMatch(error, @"CS[0-9][0-9][0-9][0-9]");
-            }
-            catch (RegexMatchTimeoutException)
-            {
-            }
-            try
-            {
-                FsharpError = Regex.IsMatch(error, @"FS[0-9][0-9][0-9][0-9]");
-            }
-            catch (RegexMatchTimeoutException)
-            {
-            }
-            try
-            {
-                VbError = Regex.IsMatch(error, @"BC[0-9][0-9][0-9][0-9][0-9]");
-            }
-            catch (RegexMatchTimeoutException)
-            {
-            }
+            bool NuGetError = Regex.IsMatch(error, @"NU[0-9][0-9][0-9][0-9]");
 
+            bool DotNetError = Regex.IsMatch(error, @"CA[0-9][0-9][0-9][0-9]");
+
+            bool CsharpError = Regex.IsMatch(error, @"CS[0-9][0-9][0-9][0-9]");
+
+            bool FsharpError = Regex.IsMatch(error, @"FS[0-9][0-9][0-9][0-9]");
+
+            bool VbError = Regex.IsMatch(error, @"BC[0-9][0-9][0-9][0-9][0-9]");
             string link = "Not Found";
             if (NuGetError)
             {

@@ -104,7 +104,7 @@ namespace SilverBotDS.Commands
                 foreach (var a in ctx.Client.Guilds.Values)
                 {
                     var thing = serverthatareoptedin.Find(x => x.ServerId == a.Id);
-                    if (thing == null || thing.Optedin != true) continue;
+                    if (thing == null || !thing.Optedin) continue;
 
                     builder.AppendLine(string.Format(lang.Server, a.Name));
                     foreach (var emote in a.Emojis.Values.ToList())

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Converters
 {
-    public class RequireTwentySeven : CheckBaseAttribute
+    public class RequireTwentySevenAttribute : CheckBaseAttribute
     {
-        public RequireTwentySeven()
+        public RequireTwentySevenAttribute()
         {
         }
 

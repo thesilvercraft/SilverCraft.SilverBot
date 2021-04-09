@@ -36,11 +36,11 @@ namespace SilverBotDS.Commands
             lang ??= await Language.GetLanguageFromCtxAsync(ctx);
             if (e == AttachmentCountIncorrect.TooLittleAttachments)
             {
-                await Send_img_plsAsync(ctx, lang.NoImageGeneric).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, lang.NoImageGeneric, lang).ConfigureAwait(false);
             }
             else
             {
-                await Send_img_plsAsync(ctx, lang.MoreThanOneImageGeneric).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, lang.MoreThanOneImageGeneric, lang).ConfigureAwait(false);
             }
         }
 
@@ -91,10 +91,9 @@ namespace SilverBotDS.Commands
             return outStream;
         }
 
-        private static async Task Send_img_plsAsync(CommandContext ctx, string e)
+        private static async Task Send_img_plsAsync(CommandContext ctx, string e, Language lang = null)
         {
-            //ToDo if possible make it not get the language 2 times
-            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+            lang ??= await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
                                              .WithEmbed(new DiscordEmbedBuilder()
@@ -170,7 +169,6 @@ namespace SilverBotDS.Commands
                             if (user != null)
                             {
                                 steps.Add(new PictureStep(step1.x, step1.y, step1.xSize, step1.ySize, user.GetAvatarUrl(ImageFormat.Png), true));
-                                continue;
                             }
                         }
                         else
@@ -186,7 +184,6 @@ namespace SilverBotDS.Commands
                             if (Sdimg != null)
                             {
                                 steps.Add(new PictureStep(step1.x, step1.y, step1.xSize, step1.ySize, Sdimg.Url, false));
-                                continue;
                             }
                         }
                     }
@@ -229,7 +226,7 @@ namespace SilverBotDS.Commands
             await using var outStream = Make_jpegnised(await image.GetBytesAsync());
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
             }
             else
             {
@@ -259,7 +256,7 @@ namespace SilverBotDS.Commands
             await using var outStream = Shet_On(await image.GetBytesAsync());
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
             }
             else
             {
@@ -290,7 +287,7 @@ namespace SilverBotDS.Commands
             await using var outStream = Resize(await image.GetBytesAsync(), new Size(x, y));
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
             }
             else
             {
@@ -320,7 +317,7 @@ namespace SilverBotDS.Commands
             await using var outStream = Tint(await image.GetBytesAsync(), color);
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
             }
             else
             {
@@ -365,7 +362,7 @@ namespace SilverBotDS.Commands
             await using var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.GreyScale);
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
             }
             else
             {
@@ -396,7 +393,7 @@ namespace SilverBotDS.Commands
             await using var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.Comic);
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
             }
             else
             {
@@ -433,11 +430,11 @@ namespace SilverBotDS.Commands
             await SendImageStream(ctx, outStream);
         }
 
-        private static Bitmap cachedmotivatetemplate;
-        private static Bitmap cachedadventuretimetemplate;
-        private static Bitmap cachednewyeartemplate;
-        private static Bitmap cachedweebreliabletemplate;
-        private static Bitmap cachedpaintreliabletemplate;
+        private Bitmap cachedmotivatetemplate;
+        private Bitmap cachedadventuretimetemplate;
+        private Bitmap cachednewyeartemplate;
+        private Bitmap cachedweebreliabletemplate;
+        private Bitmap cachedpaintreliabletemplate;
 
         [Command("reliable")]
         public async Task Reliable(CommandContext ctx)
@@ -494,7 +491,6 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 }
 
                 var p = new GraphicsPath();
-                var rectangle = new Rectangle(267, 894, 1370, 186);
                 p.AddString(
                     text,
                     font.FontFamily,
@@ -502,11 +498,6 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                     drawing.DpiY * font.Size / 72,
                     new Rectangle(267, 894, 1370, 186),
                     sf);
-                //drawing.FillRectangle(new SolidBrush(Color.Black), p.GetBounds());// make big black box
-                /* drawing.DrawString(text,
-                                    font,
-                                    new SolidBrush(Color.White),
-                                    new Rectangle(267, 894, 1370, 186), sf);*/
                 drawing.DrawPath(new Pen(new SolidBrush(Color.Black), 2), p);
                 drawing.FillPath(new SolidBrush(Color.White), p);
                 drawing.Save();
@@ -516,7 +507,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 outStream.Position = 0;
                 if (outStream.Length > MaxBytes)
                 {
-                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
                 }
                 else
                 {
@@ -574,7 +565,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 outStream.Position = 0;
                 if (outStream.Length > MaxBytes)
                 {
-                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
                 }
                 else
                 {
@@ -599,34 +590,6 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
         public async Task AdventureTime(CommandContext ctx, DiscordUser friendo)
         {
             await AdventureTime(ctx, ctx.Member, friendo);
-        }
-
-        /// <summary>
-        /// Gets the profile picture of a discord user in a 256x256 bitmap saved to a byte array
-        /// </summary>
-        /// <param name="user">the user</param>
-        /// <returns>a 256x256 bitmap in byte[] format</returns>
-        private async Task<byte[]> GetProfilePictureAsync(DiscordUser user, ushort size = 256)
-        {
-            var discordsize = size;
-            if (discordsize == 0 || (discordsize & (discordsize - 1)) != 0)
-            {
-                discordsize = 1024;
-            }
-            await using MemoryStream stream = new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordsize)).GetBytesAsync());
-            using Bitmap image = new(stream);
-            if (image.Width == size || image.Height == size)
-            {
-                stream.Position = 0;
-                return stream.ToArray();
-            }
-            else
-            {
-                stream.Position = 0;
-                await using var resizedstream = Resize(stream.ToArray(), new(size, size));
-                resizedstream.Position = 0;
-                return resizedstream.ToArray();
-            }
         }
 
         [Command("adventuretime")]
@@ -670,7 +633,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 outStream.Position = 0;
                 if (outStream.Length > MaxBytes)
                 {
-                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
                 }
                 else
                 {
@@ -681,6 +644,34 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
             {
                 Program.SendLog(e);
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Gets the profile picture of a discord user in a 256x256 bitmap saved to a byte array
+        /// </summary>
+        /// <param name="user">the user</param>
+        /// <returns>a 256x256 bitmap in byte[] format</returns>
+        private async Task<byte[]> GetProfilePictureAsync(DiscordUser user, ushort size = 256)
+        {
+            var discordsize = size;
+            if (discordsize == 0 || (discordsize & (discordsize - 1)) != 0)
+            {
+                discordsize = 1024;
+            }
+            await using MemoryStream stream = new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordsize)).GetBytesAsync());
+            using Bitmap image = new(stream);
+            if (image.Width == size || image.Height == size)
+            {
+                stream.Position = 0;
+                return stream.ToArray();
+            }
+            else
+            {
+                stream.Position = 0;
+                await using var resizedstream = Resize(stream.ToArray(), new(size, size));
+                resizedstream.Position = 0;
+                return resizedstream.ToArray();
             }
         }
 
@@ -713,7 +704,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
             outStream.Position = 0;
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
             }
             else
             {
@@ -776,7 +767,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
             outStream.Position = 0;
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
             }
             else
             {
@@ -834,7 +825,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))).ConfigureAwait(false);
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
             }
             else
             {

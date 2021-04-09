@@ -48,7 +48,9 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var b = new DiscordEmbedBuilder();
             var client = HttpClient;
+#pragma warning disable S1075 // URIs should not be hardcoded
             var rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
+#pragma warning restore S1075 // URIs should not be hardcoded
             if (rm.StatusCode == HttpStatusCode.OK)
             {
                 var asdf = JsonSerializer.Deserialize<Meme>(await rm.Content.ReadAsStringAsync());
@@ -66,7 +68,7 @@ namespace SilverBotDS.Commands
                 }
                 else
                 {
-                    b.WithTitle("meme returned null")
+                    b.WithTitle("Meme returned null")
                         .WithColor(await ColorUtils.GetSingleAsync());
                 }
 
@@ -199,7 +201,7 @@ namespace SilverBotDS.Commands
         [Hidden]
         public async Task Booty(CommandContext ctx)
         {
-            await SimpleImageMeme(ctx, "https://media1.tenor.com/images/ce2e9a0a24f384a9486acfac9bf7f5c1/tenor.gif?itemid=17561816", content: "picture📸my🙋‍♂️booty🍑up🆙in 3D🤩i'll 🙋‍♂️shake🤝 my🙋‍♂️ booty🍑in my🙋‍♂️own movie");
+            await SimpleImageMeme(ctx, "https://media1.tenor.com/images/ce2e9a0a24f384a9486acfac9bf7f5c1/tenor.gif?itemid=17561816", content: "picture📸my🙋‍♂️booty🍑up🆙in 3D🤩I'll 🙋‍♂️shake🤝 my🙋‍♂️ booty🍑in my🙋‍♂️own movie");
         }
 
         [Command("monke"), Aliases(":monkey:", "🐒", "🐵", ":monkey_face:")]
@@ -215,7 +217,7 @@ namespace SilverBotDS.Commands
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var client = HttpClient;
-            var rm = await client.GetAsync("https://uselessfacts.jsph.pl/random.md?language=" + lang.LangCodeForUselessFacts);
+            var rm = await client.GetAsync($"https://uselessfacts.jsph.pl/random.md?language={lang.LangCodeForUselessFacts}");
             await new DiscordMessageBuilder()
                                                  .WithReply(ctx.Message.Id)
                                                  .WithEmbed(new DiscordEmbedBuilder()

@@ -49,21 +49,6 @@ namespace SilverBotDS
             log.Error(text);
         }
 
-        public static ISBDatabase GetDatabase()
-        {
-            return serviceProvider.GetService<ISBDatabase>();
-        }
-
-        public static IBrowser GetBrowser()
-        {
-            return serviceProvider.GetService<IBrowser>();
-        }
-
-        public static Config GetConfig()
-        {
-            return serviceProvider.GetService<Config>();
-        }
-
         public static void SendLog(string text, bool info)
         {
             if (info)
@@ -78,7 +63,22 @@ namespace SilverBotDS
 
         public static void SendLog(Exception exception)
         {
-            log.Error(exception: exception, "An exception occured");
+            log.Error(exception: exception, "An exception occurred");
+        }
+
+        public static ISBDatabase GetDatabase()
+        {
+            return serviceProvider.GetService<ISBDatabase>();
+        }
+
+        public static IBrowser GetBrowser()
+        {
+            return serviceProvider.GetService<IBrowser>();
+        }
+
+        public static Config GetConfig()
+        {
+            return serviceProvider.GetService<Config>();
         }
 
         private static DiscordClient discord;
@@ -125,7 +125,7 @@ namespace SilverBotDS
                 Intents = DiscordIntents.All
             });
             //Tell our client to initialize interactivity
-            log.Verbose("Initialising interactivity");
+            log.Verbose("Initializing interactivity");
             discord.UseInteractivity(new InteractivityConfiguration()
             {
                 PollBehaviour = PollBehaviour.KeepEmojis,
@@ -134,7 +134,7 @@ namespace SilverBotDS
             //set up logging?
             discord.MessageCreated += Discord_MessageCreated;
             //Tell our cute client to use commands or in other words become a working class member of society
-            log.Verbose("Initialising Commands");
+            log.Verbose("Initializing Commands");
             ServiceCollection services = new();
             //add a browser
             switch (config.BrowserType)
@@ -156,7 +156,6 @@ namespace SilverBotDS
             {
                 case 1:
                     {
-                        //postgres
                         PostgreDatabase postgre;
                         if (config != null && !string.IsNullOrEmpty(config.ConnString))
                         {
@@ -175,7 +174,6 @@ namespace SilverBotDS
                     }
                 case 2:
                     {
-                        //litedb
                         log.Verbose("Using LiteDB");
                         services.AddSingleton<ISBDatabase>(new LiteDBDatabase());
                         break;
@@ -199,7 +197,7 @@ namespace SilverBotDS
                     await release.DownloadLatestAsync();
                 }
                 log.Information("Launching lavalink");
-                bool proStart = new Process
+                new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
@@ -234,7 +232,7 @@ namespace SilverBotDS
                 Services = serviceProvider
             });
             //Register our commands
-            log.Verbose("Regisitring Commands&Converters");
+            log.Verbose("Registering Commands&Converters");
             commands.RegisterConverter(new SdImageConverter());
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
@@ -284,7 +282,7 @@ namespace SilverBotDS
             await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
             if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0) && config.UseLavaLink)
             {
-                waitforfriday = new Thread(new ThreadStart(WaitForFridayAsync));
+                waitforfriday = new Thread(new ThreadStart(WaitForFriday));
             }
 
             log.Information("Waiting 3s");
@@ -312,10 +310,17 @@ namespace SilverBotDS
         }
 
         private static Thread waitforfriday;
+#pragma warning disable S1075 // URIs should not be hardcoded
         private const string FridayUrl = "https://youtu.be/akT0wxv9ON8";
+#pragma warning restore S1075 // URIs should not be hardcoded
         private static int last_friday = 0;
 
-        public static async void WaitForFridayAsync()
+        public static void WaitForFriday()
+        {
+            Task.Run(WaitForFridayAsync);
+        }
+
+        public static async Task WaitForFridayAsync()
         {
             while (true)
             {
@@ -340,8 +345,7 @@ namespace SilverBotDS
             var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
             await playere.PlayAsync(track);
             var channel = await discord.GetChannelAsync(config.FridayTextChannel);
-            await channel.SendMessageAsync("its friday");
-            return;
+            await channel.SendMessageAsync("It is Friday");
         }
 
         private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "fock", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "quality fock" };
@@ -383,7 +387,6 @@ namespace SilverBotDS
                 await new DiscordMessageBuilder().WithReply(e.Message.Id)
                                              .WithContent(e.Message.Content)
                                              .SendAsync(e.Channel);
-                return;
             }
         }
     }

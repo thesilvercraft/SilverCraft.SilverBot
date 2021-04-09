@@ -28,7 +28,7 @@ namespace SilverBotDS.Objects
             }
             else
             {
-                throw new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}");
+                throw new Exception($"Request yielded a status code that isn't OK it is {rm.StatusCode}");
             }
             return ist;
         }
@@ -73,7 +73,6 @@ namespace SilverBotDS.Objects
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
                     for (int i = 0; i < steps.Length; i++)
                     {
                         if (steps[i] is TemplateStep step)
@@ -87,13 +86,10 @@ namespace SilverBotDS.Objects
                     }
                 }
                 steps = null;
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         ~ImageSteps()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
@@ -117,7 +113,7 @@ namespace SilverBotDS.Objects
     {
         public Step()
         {
-            //leave for xml serialization
+            //leave for XML serialization
         }
 
         public Step(ulong x, ulong y)
@@ -134,7 +130,7 @@ namespace SilverBotDS.Objects
     {
         public TemplateStep()
         {
-            //leave for xml serialization
+            //leave for XML serialization
         }
 
         public TemplateStep(ulong x, ulong y, string template, bool isUrl)
@@ -172,8 +168,22 @@ namespace SilverBotDS.Objects
 
         public void Dispose()
         {
-            ((IDisposable)_image).Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        ~TemplateStep()
+        {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                ((IDisposable)_image).Dispose();
+            }
+            template = null;
         }
     }
 
@@ -211,11 +221,25 @@ namespace SilverBotDS.Objects
         public ulong xSize;
         public ulong ySize;
 
+        ~PictureStep()
+        {
+            Dispose(false);
+        }
+
         public void Dispose()
         {
-            _image.Dispose();
-            url = null;
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _image.Dispose();
+            }
+            url = null;
+            // Cleanup
         }
     }
 }

@@ -43,7 +43,9 @@ namespace SilverBotDS.Commands
             {
                 Rating = Rating.Pg
             });
+#pragma warning disable S1075 // URIs should not be hardcoded
             b.WithDescription(lang.RandomGif + gifresult.Data.Url).WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/", "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifresult.Data.ImageUrl).WithColor(color: await ColorUtils.GetSingleAsync());
+#pragma warning restore S1075 // URIs should not be hardcoded
 
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
         }
@@ -61,7 +63,11 @@ namespace SilverBotDS.Commands
             };
             var gifResult = await giphy.GifSearch(searchParameter);
             var formated = string.Format(lang.SearchedFor, term);
-            b.WithDescription(formated + " : " + gifResult.Data[0].Url + string.Format(lang.PageGif, 1, gifResult.Data.Length)).WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/", "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifResult.Data[0].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
+            b.WithDescription(formated + " : " + gifResult.Data[0].Url + string.Format(lang.PageGif, 1, gifResult.Data.Length)).WithAuthor(
+#pragma warning disable S1075 // URIs should not be hardcoded
+                lang.PoweredByGiphy, "https://developers.giphy.com/",
+                "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifResult.Data[0].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
+#pragma warning restore S1075 // URIs should not be hardcoded
             var amIthisDumb = await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
 
         Wait:
@@ -76,7 +82,9 @@ namespace SilverBotDS.Commands
                     page = 0;
                 }
 
+#pragma warning disable S1075 // URIs should not be hardcoded
                 b.WithDescription(formated + " : " + gifResult.Data[page].Url + string.Format(lang.PageGif, page + 1, gifResult.Data.Length)).WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/", "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
+#pragma warning restore S1075 // URIs should not be hardcoded
                 await amIthisDumb.ModifyAsync(embed: b.Build());
                 goto Wait;
             }

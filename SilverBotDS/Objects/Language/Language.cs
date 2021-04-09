@@ -8,8 +8,6 @@ using System.Text.Json;
 
 namespace SilverBotDS.Objects
 {
-    //TODO finish the summaries and shiz
-    //I know i promised language support but im kinda of an idiot so yeah
     public partial class Language
     {
         /// <summary>
@@ -64,7 +62,7 @@ namespace SilverBotDS.Objects
         public string DblaReturnedNull { get; set; } = "Something went wrong, it's probably on my end.";
 
         /// <summary>
-        /// must be en or de for useless facts
+        /// must be EN or DE for useless facts
         /// </summary>
         public string LangCodeForUselessFacts { get; set; } = "en";
 
@@ -100,14 +98,14 @@ namespace SilverBotDS.Objects
         public string NotConnected { get; set; } = "I'm not connected to a voice channel.";
 
         /// <summary>
-        /// Woaaah there, I'm not playing any tracks.
+        /// Whoa there, I'm not playing any tracks.
         /// </summary>
-        public string NotPlaying { get; set; } = "Woah there, I'm not playing any tracks.";
+        public string NotPlaying { get; set; } = "Whoa there, I'm not playing any tracks.";
 
         /// <summary>
-        /// Woah there, there is nothing queued next.
+        /// Whoa there, there is nothing queued next.
         /// </summary>
-        public string NothingInQueue { get; set; } = "Woah there, there is nothing queued next.";
+        public string NothingInQueue { get; set; } = "Whoa there, there is nothing queued next.";
 
         /// <summary>
         /// Never gonna give you up<b> by </b>Rick Astley
@@ -122,9 +120,9 @@ namespace SilverBotDS.Objects
         public string RemovedFront { get; set; } = "Removed: "; //"Removed: "Never gonna give you up by Rick Astley
 
         /// <summary>
-        /// Now loopin song 🔂
+        /// Now looping song 🔂
         /// </summary>
-        public string LoopingSong { get; set; } = "Now loopin song 🔂";
+        public string LoopingSong { get; set; } = "Now looping song 🔂";
 
         /// <summary>
         /// Send **an** image my guy
@@ -132,9 +130,9 @@ namespace SilverBotDS.Objects
         public string WrongImageCount { get; set; } = "Send **an** image my guy";
 
         /// <summary>
-        /// Now not loopin.
+        /// Now not looping.
         /// </summary>
-        public string NotLooping { get; set; } = "Now not loopin.";
+        public string NotLooping { get; set; } = "Now not looping.";
 
         /// <summary>
         /// I wasn't able to find anything for `Never gonna give you up`.
@@ -237,9 +235,9 @@ namespace SilverBotDS.Objects
         public string AllAvailibleEmotes { get; set; } = "**All available emotes**";
 
         /// <summary>
-        /// You are banned from using the silversocial features
+        /// You are banned from using the SilverSocial features
         /// </summary>
-        public string UserIsBannedFromSilversocial { get; set; } = "You are banned from using the silversocial features";
+        public string UserIsBannedFromSilversocial { get; set; } = "You are banned from using the SilverSocial features";
 
         public string TimeFormat { get; set; } = "G"; //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?redirectedfrom=MSDN
 
@@ -266,12 +264,12 @@ namespace SilverBotDS.Objects
         public string Meme { get; set; } = "Meme: ";
 
         /// <summary>
-        /// You didnt attach a image
+        /// You didn't attach a image
         /// </summary>
         /// <remarks>
-        /// Ment to be used when there isnt a more better term
+        /// Ment to be used when there isn't a more better term
         /// </remarks>
-        public string NoImageGeneric { get; set; } = "You didnt attach a image";
+        public string NoImageGeneric { get; set; } = "You didn't attach a image";
 
         /// <summary>
         /// Bruv discord no likey you need something less than 256kb you sent {0}
@@ -282,7 +280,7 @@ namespace SilverBotDS.Objects
         /// You attached more than one image
         /// </summary>
         /// <remarks>
-        /// Ment to be used when there isnt a more better term
+        /// Ment to be used when there isn't a more better term
         /// </remarks>
         public string MoreThanOneImageGeneric { get; set; } = "You attached more than one image";
 
@@ -290,7 +288,7 @@ namespace SilverBotDS.Objects
         /// The output file is larger than 8mb, its {0}
         /// </summary>
         /// <remarks>
-        /// Ment to be used when there isnt a more better term
+        /// Ment to be used when there isn't a more better term
         /// </remarks>
         public string OutputFileLargerThan8M { get; set; } = "The output file is larger than 8mb, its {0}";
 
@@ -430,7 +428,7 @@ namespace SilverBotDS.Objects
                 {
                     if (Logging)
                     {
-                        Program.SendLog($"[LANGUAGES] huge success retriving {a} from cache", true);
+                        Program.SendLog($"[LANGUAGES] huge success retrieving {a} from cache", true);
                     }
                     return CachedLanguages[a];
                 }

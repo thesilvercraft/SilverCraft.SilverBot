@@ -15,6 +15,9 @@
     <None Remove="Templates\Bibi\1.png" />
     <None Remove="Templates\Bibi\10.png" />
     <None Remove="Templates\Bibi\11.png" />
+    <None Remove="Templates\Bibi\12.png" />
+    <None Remove="Templates\Bibi\13.png" />
+    <None Remove="Templates\Bibi\14.png" />
     <None Remove="Templates\Bibi\2.png" />
     <None Remove="Templates\Bibi\3.png" />
     <None Remove="Templates\Bibi\4.png" />
@@ -31,6 +34,9 @@
     <None Remove="Templates\weeb_reliable_template.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Templates\Bibi\12.png" />
+    <EmbeddedResource Include="Templates\Bibi\13.png" />
+    <EmbeddedResource Include="Templates\Bibi\14.png" />
     <EmbeddedResource Include="Templates\quality_fock.mp3" />
   </ItemGroup>
   <ItemGroup>

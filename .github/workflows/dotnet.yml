@@ -57,5 +57,5 @@ jobs:
       with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
          asset_path: .\SilverBotDS\bin\Release\net5.0\SilverBotDS.dll
-         asset_name: silverbot.dll
+         asset_name: SilverBotDS.dll
          asset_content_type: application/octet-stream

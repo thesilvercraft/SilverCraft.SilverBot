@@ -45,9 +45,6 @@ namespace SilverBotDS.Commands.Gamering
                             case SteamStoreQuery.Enums.sType.CostsMoney:
                                 tempbuilder.WithAuthor("It costs merica bucks but idk how much");
                                 break;
-
-                            default:
-                                throw new Exception($"WHAT THE ACTUAL FUCK. Steam.Search(game) RETURNED {listings[i].SaleType}");
                         }
                     }
                     else

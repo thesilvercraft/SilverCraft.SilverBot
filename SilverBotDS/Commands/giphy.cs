@@ -2,8 +2,10 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using GiphyDotNet.Model.Parameters;
+using GiphyDotNet.Model.Results;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -38,15 +40,13 @@ namespace SilverBotDS.Commands
         public async Task Kindsffeefergergrgfdfdsgfdfg(CommandContext ctx)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            var b = new DiscordEmbedBuilder();
             var gifresult = await giphy.RandomGif(new RandomParameter
             {
                 Rating = Rating.Pg
             });
 #pragma warning disable S1075 // URIs should not be hardcoded
-            b.WithDescription(lang.RandomGif + gifresult.Data.Url).WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/", "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifresult.Data.ImageUrl).WithColor(color: await ColorUtils.GetSingleAsync());
+            var b = new DiscordEmbedBuilder().WithDescription(lang.RandomGif + gifresult.Data.Url).WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/", "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifresult.Data.ImageUrl).WithColor(color: await ColorUtils.GetSingleAsync());
 #pragma warning restore S1075 // URIs should not be hardcoded
-
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
         }
 
@@ -68,10 +68,13 @@ namespace SilverBotDS.Commands
                 lang.PoweredByGiphy, "https://developers.giphy.com/",
                 "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifResult.Data[0].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
 #pragma warning restore S1075 // URIs should not be hardcoded
-            var amIthisDumb = await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
+            await WaitForNextMessage(ctx, await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, page, formated, gifResult, b);
+        }
 
-        Wait:
-            var interactivity = ctx.Client.GetInteractivity();
+        private async Task WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage, InteractivityExtension interactivity, Language lang, int page, string formated, GiphySearchResult gifResult, DiscordEmbedBuilder b = null)
+
+        {
+            b ??= new DiscordEmbedBuilder();
             var msg = await interactivity.WaitForMessageAsync(xm => xm.Content.ToLower().Contains("next"), TimeSpan.FromSeconds(60));
             if (msg.Result != null)
             {
@@ -85,12 +88,12 @@ namespace SilverBotDS.Commands
 #pragma warning disable S1075 // URIs should not be hardcoded
                 b.WithDescription(formated + " : " + gifResult.Data[page].Url + string.Format(lang.PageGif, page + 1, gifResult.Data.Length)).WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/", "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
 #pragma warning restore S1075 // URIs should not be hardcoded
-                await amIthisDumb.ModifyAsync(embed: b.Build());
-                goto Wait;
+                await oldmessage.ModifyAsync(embed: b.Build());
+                await WaitForNextMessage(ctx, oldmessage, interactivity, lang, page, formated, gifResult, b);
             }
             else
             {
-                await amIthisDumb.ModifyAsync(lang.PeriodExpired);
+                await oldmessage.ModifyAsync(lang.PeriodExpired);
             }
         }
     }

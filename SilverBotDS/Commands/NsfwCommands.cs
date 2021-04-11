@@ -2093,7 +2093,9 @@ namespace SilverBotDS.Commands
                                              .WithEmbed(new DiscordEmbedBuilder()
                                                                                  .WithTitle("You have to mark the channel NSFW")
                                                                                  .WithColor(DiscordColor.Red)
+#pragma warning disable S1075 // URIs should not be hardcoded
                                                                                  .WithImageUrl("https://cdn.discordapp.com/attachments/773606229926084639/829400371310362684/2755upcIlv.gif"))
+#pragma warning restore S1075 // URIs should not be hardcoded
                                              .SendAsync(ctx.Channel);
                 return false;
             }

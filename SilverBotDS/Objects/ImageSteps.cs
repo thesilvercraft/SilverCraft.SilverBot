@@ -21,15 +21,9 @@ namespace SilverBotDS.Objects
             var serializer = new XmlSerializer(typeof(Step[]), "SilverBotDS.Objects");
             var rm = await client.GetAsync(url);
             var ist = new ImageSteps();
-            if (rm.StatusCode == HttpStatusCode.OK)
-            {
-                using StringReader stringReader = new(await rm.Content.ReadAsStringAsync());
-                ist.steps = (Step[])serializer.Deserialize(stringReader);
-            }
-            else
-            {
-                throw new Exception($"Request yielded a status code that isn't OK it is {rm.StatusCode}");
-            }
+
+            using StringReader stringReader = new(await rm.Content.ReadAsStringAsync());
+            ist.steps = (Step[])serializer.Deserialize(stringReader);
             return ist;
         }
 

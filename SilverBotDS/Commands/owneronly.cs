@@ -25,7 +25,7 @@ namespace SilverBotDS.Commands
 {
     [RequireOwner]
     [Hidden]
-    internal partial class OwnerOnly : BaseCommandModule
+    internal class OwnerOnly : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
         public ISBDatabase Database { private get; set; }
@@ -34,7 +34,7 @@ namespace SilverBotDS.Commands
 
         [Command("repeat")]
         [Description("Repeats the message content")]
-        public async Task Repeat(CommandContext ctx, [RemainingText()][Description("The thing to repeat")] string e) => await ctx.RespondAsync(e);
+        public async Task Repeat(CommandContext ctx, [RemainingText][Description("The thing to repeat")] string e) => await ctx.RespondAsync(e);
 
         private readonly string[] _urls = { "https://silverdimond.tk", "https://vfl.gg", "https://github.com/silverdimond" };
 
@@ -417,7 +417,7 @@ namespace SilverBotDS.Commands
 
         [Command("addemotes")]
         [Description("testing shiz")]
-        [RequireGuild()]
+        [RequireGuild]
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task Addemotez(CommandContext ctx)
         {

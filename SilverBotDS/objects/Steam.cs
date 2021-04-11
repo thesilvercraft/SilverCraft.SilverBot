@@ -5,6 +5,10 @@ namespace SilverBotDS.Objects
 {
     internal class Steam
     {
+        protected Steam()
+        {
+        }
+
         /// <summary>
         /// Search for something on steam
         /// </summary>

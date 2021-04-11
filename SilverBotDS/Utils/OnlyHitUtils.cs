@@ -13,19 +13,12 @@ namespace SilverBotDS.Utils
             var httpClient = Program.GetHttpClient();
             var uri = new UriBuilder(url);
             var rm = await httpClient.GetAsync(uri.Uri);
-            if (rm.StatusCode == HttpStatusCode.OK)
+            var cursong = JsonSerializer.Deserialize<CurrentSong>(await rm.Content.ReadAsStringAsync());
+            if (cursong is not null && cursong.Status.Msg == "Success")
             {
-                var cursong = JsonSerializer.Deserialize<CurrentSong>(await rm.Content.ReadAsStringAsync());
-                if (cursong is not null && cursong.Status.Msg == "Success")
-                {
-                    return cursong;
-                }
-                return await Task.FromException<CurrentSong>(new Exception($"Requested yielded a message that isn't Success it is {cursong.Status.Msg}"));
+                return cursong;
             }
-            else
-            {
-                return await Task.FromException<CurrentSong>(new Exception($"Request yielded a status code that isn't OK it is {rm.StatusCode}"));
-            }
+            throw new($"Requested yielded a message that isn't Success it is {cursong.Status.Msg}");
         }
 
         public class CurrentSong

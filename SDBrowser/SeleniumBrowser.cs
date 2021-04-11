@@ -12,13 +12,11 @@ namespace SDBrowser
     public sealed class SeleniumBrowser : IBrowser
     {
         private readonly IWebDriver _webDriver;
-        private bool _isLocked = false;
+        private bool _isLocked;
 
-        public SeleniumBrowser(IWebDriver driver) => _webDriver = driver;
-
-        public static SeleniumBrowser FromBrowserType(Browsertype browsertype)
+        public SeleniumBrowser(IWebDriver driver)
         {
-            return new SeleniumBrowser(browsertype, Environment.CurrentDirectory);
+            _webDriver = driver;
         }
 
         public SeleniumBrowser(Browsertype browsertype, string location)
@@ -48,6 +46,11 @@ namespace SDBrowser
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        public static SeleniumBrowser FromBrowserType(Browsertype browsertype)
+        {
+            return new SeleniumBrowser(browsertype, Environment.CurrentDirectory);
         }
 
         public async Task<Bitmap> RenderHtmlAsync(string html)
@@ -83,10 +86,9 @@ namespace SDBrowser
                 _isLocked = false;
                 return Utils.ByteArrayToImage(ss.AsByteArray);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 _isLocked = false;
-                Console.WriteLine(e);
                 throw;
             }
         }

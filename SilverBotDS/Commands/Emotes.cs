@@ -27,7 +27,7 @@ namespace SilverBotDS.Commands
 
         [Command("addemote")]
         [Description("Wanna add a emote but discord is too complicated to navigate")]
-        [RequireGuild()]
+        [RequireGuild]
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task UselessFact(CommandContext ctx, [Description("Name like `Kappa`")] string name, [Description("url of emote")] string url)
         {
@@ -46,7 +46,7 @@ namespace SilverBotDS.Commands
 
         [Command("addemote")]
         [Description("Wanna add a emote but discord is too complicated to navigate. You need to add attachment here ")]
-        [RequireGuild()]
+        [RequireGuild]
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task AddEmote(CommandContext ctx, [Description("Name like `Kappa`")] string name)
         {
@@ -74,7 +74,7 @@ namespace SilverBotDS.Commands
 
         [Command("addemote")]
         [Description("Wanna add a emote but discord is too complicated to navigate. You need to add attachment here ")]
-        [RequireGuild()]
+        [RequireGuild]
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task AddEmote(CommandContext ctx, [Description("Url of the thing")] SdImage url, [Description("Name like `Kappa`")] string name)
         {
@@ -227,7 +227,7 @@ namespace SilverBotDS.Commands
 
         [Command("optintoemotes")]
         [RequireUserPermissions(Permissions.ManageGuild)]
-        [RequireGuild()]
+        [RequireGuild]
         public async Task Optin(CommandContext ctx)
         {
             var isoptedin = await Database.IsOptedInEmotes(ctx.Guild.Id);

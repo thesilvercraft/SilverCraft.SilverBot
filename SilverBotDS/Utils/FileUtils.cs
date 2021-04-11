@@ -4,6 +4,10 @@ namespace SilverBotDS.Utils
 {
     internal class FileUtils
     {
+        protected FileUtils()
+        {
+        }
+
         /// <summary>
         /// https://stackoverflow.com/questions/23228378/is-there-any-way-to-get-the-file-extension-from-a-url
         /// </summary>

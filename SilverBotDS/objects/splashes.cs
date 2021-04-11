@@ -8,6 +8,10 @@ namespace SilverBotDS.Objects
 {
     internal class Splashes
     {
+        protected Splashes()
+        {
+        }
+
         private static readonly DiscordActivity[] @internal = {
       new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),
       new(".NET gang", ActivityType.Watching),

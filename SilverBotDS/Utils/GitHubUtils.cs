@@ -16,8 +16,9 @@ namespace SilverBotDS.Utils
 
         public class Repo
         {
-            public string User;
-            public string Reponame;
+            public string User { get; set; }
+
+            public string Reponame { get; set; }
 
             public Repo(string user, string reponame)
             {

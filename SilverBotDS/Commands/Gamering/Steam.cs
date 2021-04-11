@@ -18,7 +18,7 @@ namespace SilverBotDS.Commands.Gamering
 
         [Command("search"), Aliases("s")]
         [Description("Search about a game")]
-        public async Task Search(CommandContext ctx, [RemainingText()][Description("The game")] string game)
+        public async Task Search(CommandContext ctx, [RemainingText][Description("The game")] string game)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             try
@@ -45,6 +45,9 @@ namespace SilverBotDS.Commands.Gamering
                             case SteamStoreQuery.Enums.sType.CostsMoney:
                                 tempbuilder.WithAuthor("It costs merica bucks but idk how much");
                                 break;
+
+                            default:
+                                throw new InvalidOperationException($"Unexpected value listings[i].SaleType = {listings[i].SaleType}");
                         }
                     }
                     else

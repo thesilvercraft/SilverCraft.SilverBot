@@ -17,7 +17,6 @@ using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace SilverBotDS.Commands
 {
@@ -190,18 +189,13 @@ namespace SilverBotDS.Commands
                         //bug oh no
                     }
                 }
-
-                Console.WriteLine("e");
                 using var outStream = new MemoryStream();
                 using (var exec = await e.ExecuteStepsAsync(steps.ToArray()))
                 {
                     exec.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
-                    Console.WriteLine("eee");
                 }
-                Console.WriteLine("eeee");
                 outStream.Position = 0;
                 await SendImageStream(ctx, outStream, "silverbotimage.png");
-                Console.WriteLine("eeeee");
             }
             else
             {

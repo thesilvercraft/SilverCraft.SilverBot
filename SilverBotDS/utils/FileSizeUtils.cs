@@ -4,6 +4,10 @@ namespace SilverBotDS.Utils
 {
     internal class FileSizeUtils
     {
+        protected FileSizeUtils()
+        {
+        }
+
         public static string FormatSize(long bytes)
         {
             var counter = 0;

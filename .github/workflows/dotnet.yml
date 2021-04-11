@@ -17,10 +17,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Clean
-      run: dotnet clean --configuration Release && dotnet nuget locals all --clear
-    - name: Restore dependencies
-      run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release
     - name: Zip
@@ -53,3 +49,13 @@ jobs:
          asset_path: ./silverbot.zip
          asset_name: silverbot.zip
          asset_content_type: application/zip
+    - name: Upload Release Dll
+      id: upload-release-dll
+      uses: actions/upload-release-asset@v1
+      env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: .\SilverBotDS\bin\Release\net5.0\SilverBotDS.dll
+         asset_name: SilverBotDS.dll
+         asset_content_type: application/octet-stream

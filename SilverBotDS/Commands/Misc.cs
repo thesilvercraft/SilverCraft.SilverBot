@@ -57,7 +57,7 @@ namespace SilverBotDS.Commands
                 }
                 e++;
             }
-            await OwnerOnly.SendStringFileWithContent(ctx, $"i went through {messages.Count}messages in {(DateTime.Now - start).Humanize(2)}(including download) {(DateTime.Now - startproc).Humanize(2)}(excluding download), now im done with collecting that time to yeet it in a csv\nEmote usage data:", bob.ToString(), "emotes.csv");
+            await OwnerOnly.SendStringFileWithContent(ctx, $"i went through {messages.Count}messages in {(DateTime.Now - start).Humanize(2)}(including download) {(DateTime.Now - startproc).Humanize(2)}(excluding download)\nEmote usage data:", bob.ToString(), "emotes.csv");
             bob.Clear();
             bob = null;
             messages = null;
@@ -91,7 +91,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("generatelangtemplate")]
-        [Description("make a template for localisation")]
+        [Description("make a template for translation")]
         public async Task GenerateLanguageTemplate(CommandContext ctx)
         {
             var options = new JsonSerializerOptions
@@ -134,6 +134,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("translateunknown")]
+        [Aliases("tranlsate")]
         [Description("translate from an unknown language")]
         public async Task TranlateUnknown(CommandContext ctx, [RemainingText] string text)
         {
@@ -145,6 +146,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("translateunknownto")]
+        [Aliases("tranlsateto")]
         [Description("translate from an unknown language to a specified one")]
         public async Task TranlateUnknown(CommandContext ctx, string LanguageTo, [RemainingText] string text)
         {
@@ -204,7 +206,7 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             try
             {
-                var data = await NuGetUtils.SearchAsync(query);
+                var data = await NuGetUtils.SearchAsync(query, HttpClient);
                 var pages = new List<Page>();
                 for (var i = 0; i < data.Length; i++)
                 {
@@ -271,26 +273,31 @@ namespace SilverBotDS.Commands
             bool FsharpError = Regex.IsMatch(error, @"FS[0-9][0-9][0-9][0-9]");
 
             bool VbError = Regex.IsMatch(error, @"BC[0-9][0-9][0-9][0-9][0-9]");
+            bool SonarError = Regex.IsMatch(error, @"S[0-9][0-9][0-9][0-9]");
             string link = "Not Found";
             if (NuGetError)
             {
-                link = "https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/" + error;
+                link = $"https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/{error}";
             }
-            if (DotNetError)
+            else if (DotNetError)
             {
-                link = "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/" + error;
+                link = $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/{error}";
             }
-            if (CsharpError)
+            else if (CsharpError)
             {
                 link = $"https://docs.microsoft.com/en-us/dotnet/csharp/misc/{error} or https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/{error}";
             }
-            if (FsharpError)
+            else if (FsharpError)
             {
-                link = "https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/" + error;
+                link = $"https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/{error}";
             }
-            if (VbError)
+            else if (VbError)
             {
-                link = "https://docs.microsoft.com/en-us/dotnet/visual-basic/misc/" + error;
+                link = $"https://docs.microsoft.com/en-us/dotnet/visual-basic/misc/{error}";
+            }
+            else if (SonarError)
+            {
+                link = $"https://rules.sonarsource.com/csharp/RSPEC-{error}";
             }
             await new DiscordMessageBuilder()
                                             .WithReply(ctx.Message.Id)

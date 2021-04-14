@@ -347,25 +347,23 @@ namespace SilverBotDS.Utils
 
         public class Release
         {
-            public static async Task DownloadLatestAsync(Release release)
+            public static async Task DownloadLatestAsync(Release release, HttpClient client)
             {
-                System.Net.Http.HttpClient client = Program.GetHttpClient();
-                using System.Net.Http.HttpResponseMessage rm = await client.GetAsync(release.Assets[0].BrowserDownloadUrl);
+                using HttpResponseMessage rm = await client.GetAsync(release.Assets[0].BrowserDownloadUrl);
                 var uri = new Uri(release.Assets[0].BrowserDownloadUrl);
                 string filename = Path.GetFileName(uri.LocalPath);
                 await using var fs = new FileStream(
-        Environment.CurrentDirectory + $"\\{filename}",
+        Environment.CurrentDirectory + $"{Program.DirSlash}{filename}",
         FileMode.CreateNew);
                 await rm.Content.CopyToAsync(fs);
             }
 
-            public async Task DownloadLatestAsync() => await DownloadLatestAsync(this);
+            public async Task DownloadLatestAsync(HttpClient client) => await DownloadLatestAsync(this, client);
 
-            public static async Task<Release> GetLatestFromRepoAsync(Repo repo)
+            public static async Task<Release> GetLatestFromRepoAsync(Repo repo, HttpClient client)
             {
-                var httpClient = Program.GetHttpClient();
                 var uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/releases/latest");
-                var rm = await httpClient.GetAsync(uri.Uri);
+                var rm = await client.GetAsync(uri.Uri);
                 if (rm.StatusCode == HttpStatusCode.OK)
                 {
                     return JsonSerializer.Deserialize<Release>(await rm.Content.ReadAsStringAsync());

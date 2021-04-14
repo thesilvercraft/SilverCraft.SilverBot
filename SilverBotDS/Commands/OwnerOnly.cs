@@ -53,7 +53,7 @@ namespace SilverBotDS.Commands
                 {
                     await FFmpeg.Conversions.New()
                     .AddStream(videoStream)
-                    .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (number) => { return "Extracts\\" + name + i + ".png"; })
+                    .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (number) => { return $"Extracts{Program.DirSlash}{name}{i}.png"; })
                     .UseHardwareAcceleration(HardwareAccelerator.auto, VideoCodec.hevc, VideoCodec.png)
                     .Start();
                 }
@@ -440,25 +440,27 @@ namespace SilverBotDS.Commands
                     return;
                 }
                 var client = HttpClient;
+                var ziploc = $"{Environment.CurrentDirectory}{Program.DirSlash}temp.zip";
                 var rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
                 await using (var fs = new FileStream(
-        Environment.CurrentDirectory + "\\temp.zip",
+        ziploc,
         FileMode.CreateNew))
                 {
                     await rm.Content.CopyToAsync(fs);
                 }
-                if (!Directory.Exists(Environment.CurrentDirectory + "\\temp"))
+                var foldername = ($"{Environment.CurrentDirectory}{Program.DirSlash}temp");
+                if (!Directory.Exists(foldername))
                 {
-                    Directory.CreateDirectory(Environment.CurrentDirectory + "\\temp");
+                    Directory.CreateDirectory(foldername);
                 }
-                else if (Directory.GetFiles(Environment.CurrentDirectory + "\\temp").Length != 0)
+                else if (Directory.GetFiles(foldername).Length != 0)
                 {
-                    Directory.Delete(Environment.CurrentDirectory + "\\temp", true);
-                    Directory.CreateDirectory(Environment.CurrentDirectory + "\\temp");
+                    Directory.Delete(foldername, true);
+                    Directory.CreateDirectory(foldername);
                 }
-                ZipFile.ExtractToDirectory(Environment.CurrentDirectory + "\\temp.zip", Environment.CurrentDirectory + "\\temp");
+                ZipFile.ExtractToDirectory(ziploc, foldername);
                 StringBuilder status = new();
-                foreach (var file in Directory.GetFiles(Environment.CurrentDirectory + "\\temp"))
+                foreach (var file in Directory.GetFiles(foldername))
                 {
                     await using FileStream fileStream = new(file, FileMode.Open);
                     await using var stream = new MemoryStream();
@@ -477,8 +479,8 @@ namespace SilverBotDS.Commands
                     }
                 }
                 await ctx.RespondAsync(status.ToString());
-                Directory.Delete(Environment.CurrentDirectory + "\\temp", true);
-                File.Delete(Environment.CurrentDirectory + "\\temp.zip");
+                Directory.Delete(foldername, true);
+                File.Delete(ziploc);
             }
             catch (Exception e)
             {

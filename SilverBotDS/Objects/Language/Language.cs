@@ -418,8 +418,6 @@ namespace SilverBotDS.Objects
             return CachedLanguages.Keys.ToArray();
         }
 
-        private static readonly char DirSlash = Environment.OSVersion.Platform == PlatformID.Win32NT ? '\\' : '/';
-
         public static async System.Threading.Tasks.Task<Language> GetAsync(string a)
         {
             a = a.Trim();
@@ -444,9 +442,10 @@ namespace SilverBotDS.Objects
             }
             else
             {
-                if (Directory.Exists(Environment.CurrentDirectory + DirSlash + "languages" + DirSlash))
+                var folloc = $"{Environment.CurrentDirectory}{Program.DirSlash}languages{Program.DirSlash}";
+                if (Directory.Exists(folloc))
                 {
-                    foreach (var u in Directory.GetFiles(Environment.CurrentDirectory + DirSlash + "languages" + DirSlash))
+                    foreach (var u in Directory.GetFiles(folloc))
                     {
                         await using Stream stream = File.OpenRead(u);
                         var reader = new StreamReader(stream);
@@ -460,8 +459,8 @@ namespace SilverBotDS.Objects
                 }
                 else
                 {
-                    Directory.CreateDirectory(Environment.CurrentDirectory + DirSlash + "languages" + DirSlash);
-                    using var streamWriter = new StreamWriter(Environment.CurrentDirectory + $"{DirSlash}languages{DirSlash}en.json");
+                    Directory.CreateDirectory(folloc);
+                    using var streamWriter = new StreamWriter(Environment.CurrentDirectory + $"{Program.DirSlash}languages{Program.DirSlash}en.json");
                     var options = new JsonSerializerOptions
                     {
                         WriteIndented = true

@@ -14,7 +14,7 @@ namespace SilverBotDS.Utils
         public static string RandomFromArray(string[] vs)
         {
             return vs.Length == 0
-                ? throw new ArgumentOutOfRangeException(nameof(vs.Length), "Array length must be above 0")
+                ? throw new ArgumentOutOfRangeException(nameof(vs), "Array must not be empty")
                 : vs[new RandomGenerator().Next(0, vs.Length - 1)];
         }
 
@@ -36,6 +36,11 @@ namespace SilverBotDS.Utils
                 throw new ArgumentException("Part length has to be positive.", nameof(partLength));
             }
 
+            return SplitInPartsIterator(s, partLength);
+        }
+
+        public static IEnumerable<string> SplitInPartsIterator(string s, int partLength)
+        {
             for (int i = 0; i < s.Length; i += partLength)
             {
                 yield return s.Substring(i, Math.Min(partLength, s.Length - i));

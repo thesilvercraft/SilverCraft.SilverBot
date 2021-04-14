@@ -13,9 +13,11 @@ using Lavalink4NET.Tracking;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
@@ -25,7 +27,10 @@ namespace SilverBotDS.Commands
     {
         public LavalinkNode AudioService { private get; set; }
         public LyricsService LyricsService { private get; set; }
-        public InactivityTrackingService TrackingService { private get; set; }
+
+        public Config Config { private get; set; }
+
+        public SpotifyClient SpotifyClient { private get; set; }
 
         private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
                                                                                                                                                                     || AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
@@ -107,6 +112,52 @@ namespace SilverBotDS.Commands
            { "cmpc music","https://www.youtube.com/playlist?list=PLgeUxNS5wZ89J7tzjHCMxfArAr4o-eaux" }
         };
 
+        private static readonly Regex PlaylistRegex =
+            new(
+                @"^(https:\/\/open\.spotify\.com\/user\/spotify\/playlist\/|https:\/\/open\.spotify\.com\/playlist\/|spotify:user:spotify:playlist:|spotify:playlist:)([a-zA-Z0-9]+)(.*)$", RegexOptions.Compiled);
+
+        private static readonly Regex TrackRegex =
+            new(
+                @"^(https:\/\/open\.spotify\.com\/user\/spotify\/track\/|https:\/\/open\.spotify\.com\/track\/|spotify:user:spotify:track:|spotify:track:)([a-zA-Z0-9]+)(.*)$", RegexOptions.Compiled);
+
+        private static readonly Regex AlbumRegex = new(@"^(https:\/\/open\.spotify\.com\/album\/|spotify:album:)([a-zA-Z0-9]+)(.*)$", RegexOptions.Compiled);
+
+        private async IAsyncEnumerable<LavalinkTrack> SearchSpotifyAsync(string t)
+        {
+            var m = TrackRegex.Match(t);
+
+            if (m.Success)
+            {
+                var song = await SpotifyClient.Tracks.Get(m.Groups[2].Value);
+                yield return await AudioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube);
+                yield break;
+            }
+
+            m = AlbumRegex.Match(t);
+            if (m.Success)
+            {
+                var album = await SpotifyClient.Albums.Get(m.Groups[2].Value);
+
+                foreach (var song in album.Tracks.Items)
+                {
+                    yield return await AudioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube);
+                }
+                yield break;
+            }
+            m = PlaylistRegex.Match(t);
+            if (m.Success)
+            {
+                var playlist = await SpotifyClient.Playlists.Get(m.Groups[2].Value);
+                foreach (var song in playlist.Tracks.Items)
+                {
+                    if (song.Track is FullTrack track)
+                    {
+                        yield return await AudioService.GetTrackAsync($"{track.Name} {track.Artists[0].Name}", SearchMode.YouTube);
+                    }
+                }
+            }
+        }
+
         [Command("play")]
         [Description("Tell me to play a song")]
         [Aliases("p")]
@@ -139,21 +190,31 @@ namespace SilverBotDS.Commands
                 {
                     song = aliases[song];
                 }
-                var track = await AudioService.GetTracksAsync(song, SearchMode.None);
+
+                IEnumerable<LavalinkTrack> track = null;
+                if (SpotifyClient is not null)
+                {
+                    track = SearchSpotifyAsync(song).ToEnumerable();
+                }
                 if (track is null || track.ToArray().Length == 0)
                 {
-                    track = new LavalinkTrack[] { await AudioService.GetTrackAsync(song, SearchMode.YouTube) };
-
+                    track = await AudioService.GetTracksAsync(song, SearchMode.None);
                     if (track is null || track.ToArray().Length == 0)
                     {
-                        track = new LavalinkTrack[] { await AudioService.GetTrackAsync(song, SearchMode.SoundCloud) };
+                        track = new LavalinkTrack[] { await AudioService.GetTrackAsync(song, SearchMode.YouTube) };
+
                         if (track is null || track.ToArray().Length == 0)
                         {
-                            await SendSimpleMessage(ctx, string.Format(lang.NoResults, song), language: lang);
-                            return;
+                            track = new LavalinkTrack[] { await AudioService.GetTrackAsync(song, SearchMode.SoundCloud) };
+                            if (track is null || track.ToArray().Length == 0)
+                            {
+                                await SendSimpleMessage(ctx, string.Format(lang.NoResults, song), language: lang);
+                                return;
+                            }
                         }
                     }
                 }
+
                 var list = track.ToArray();
                 if (list.Length == 1)
                 {
@@ -180,8 +241,8 @@ namespace SilverBotDS.Commands
                     {
                         await player.PlayAsync(t, true);
                     }
-                    await SendNowPlayingMessage(ctx, string.Format(
-                        lang.NowPlaying, $"{list[0].Title}{lang.SongByAuthor}{list[0].Author}"), message: string.Format(lang.AddedXAmountOfSongs, list.Length), url: list[0].Source);
+
+                    await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, list.Length), url: list[0].Source);
                 }
             }
             catch (Exception e)
@@ -243,38 +304,6 @@ namespace SilverBotDS.Commands
             catch (NotSupportedException)
             {
                 await SendSimpleMessage(ctx, lang.TrackCanNotBeSeeked, language: lang);
-            }
-        }
-
-        [Command("24/7")]
-        [Description("Tells me to stay in vc unless something breaks")]
-        [RequireTwentySeven]
-        public async Task TwentyFourSeven(CommandContext ctx)
-        {
-            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-            if (!IsInVc(ctx))
-            {
-                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                return;
-            }
-            var channel = ctx.Member?.VoiceState?.Channel;
-            if (channel == null)
-            {
-                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                return;
-            }
-            await ctx.TriggerTypingAsync();
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
-            var status = TrackingService.GetStatus(player);
-
-            if (status is InactivityTrackingStatus.Tracked)
-            {
-                await TrackingService.UntrackPlayerAsync(player);
-                await SendSimpleMessage(ctx, title: lang.TrackingStopped, language: lang);
-            }
-            else if (status is InactivityTrackingStatus.Untracked)
-            {
-                await SendSimpleMessage(ctx, title: lang.TrackingStarted, language: lang);
             }
         }
 

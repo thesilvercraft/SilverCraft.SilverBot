@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -14,10 +15,11 @@ namespace SilverBotDS.Utils
         /// <param name="query">The query to search</param>
         /// <returns>A list of packages</returns>
         /// <exception cref="Exception">given when the webserver didnt return a OK</exception>
-        public static async Task<Datum[]> SearchAsync(string query)
+        public static async Task<Datum[]> SearchAsync(string query, HttpClient httpClient)
         {
-            var httpClient = Program.GetHttpClient();
+#pragma warning disable S1075 // URIs should not be hardcoded
             var uri = new UriBuilder("https://azuresearch-usnc.nuget.org/query")
+#pragma warning restore S1075 // URIs should not be hardcoded
             {
                 Query = $"?q={query}"
             };

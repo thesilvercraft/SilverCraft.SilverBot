@@ -39,7 +39,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 16;
+        private const ulong CurrentConfVer = 19;
 
         [XmlDescription("Does the bot use the: True-Config or False-Internal splashes")]
         public bool UseSplashConfig { get; set; } = true;
@@ -101,8 +101,16 @@ namespace SilverBotDS.Objects
         [XmlDescription("Allow commands that someone might find distasteful like the fake nsfw commands that just expose everyone that try's to run them")]
         public bool AllowTrollCommands { get; set; } = false;
 
-        [XmlDescription("People in these guilds can use the 24/7 command")]
-        public ulong[] TwentyFourSevenGuilds { get; set; } = new ulong[] { 699361201586438235, 714154158969716780 };
+        [XmlDescription("A temporary way to disable the interactivity tracker")]
+        public bool SitInVc { get; set; } = false;
+
+        [XmlDescription("Stuff to log into microsoft, leave as is while i am developing calendar stuff")]
+        public string MicrosoftGraphClientId { get; set; } = "Graph-Client-Id-Here";
+
+        [XmlDescription("Stuff to use spotify with, leave as is if you are too bored to make a spotify app if you arent go to https://developer.spotify.com/dashboard")]
+        public string SpotifyClientId { get; set; } = "Spotify_CLIENT_ID";
+
+        public string SpotifyClientSecret { get; set; } = "Spotify_CLIENT_SECRET";
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
         {
@@ -148,14 +156,14 @@ namespace SilverBotDS.Objects
 
                         new Process
                         {
-                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbot.xml")
+                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + Program.DirSlash + "silverbot.xml")
                             {
                                 UseShellExecute = true
                             }
                         }.Start();
                         new Process
                         {
-                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbotold.xml")
+                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + Program.DirSlash + "silverbotold.xml")
                             {
                                 UseShellExecute = true
                             }
@@ -210,7 +218,7 @@ namespace SilverBotDS.Objects
                 {
                     new Process
                     {
-                        StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "\\silverbot.xml")
+                        StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + Program.DirSlash + "silverbot.xml")
                         {
                             UseShellExecute = true
                         }

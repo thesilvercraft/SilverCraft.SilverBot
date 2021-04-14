@@ -19,9 +19,11 @@ using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
+using SilverBotDS.Commands.SBCalendar;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using SpotifyAPI.Web;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -36,6 +38,7 @@ namespace SilverBotDS
 {
     internal static class Program
     {
+        public static readonly char DirSlash = Environment.OSVersion.Platform == PlatformID.Win32NT ? '\\' : '/';
         private static Config config;
 
         private static void Main()
@@ -100,6 +103,11 @@ namespace SilverBotDS
             return e;
         }
 
+        private static bool IsNotNullAndIsNotB(string a, string b)
+        {
+            return !(string.IsNullOrEmpty(a) || a == b);
+        }
+
         private static async Task MainAsync()
         {
             config = await Config.GetAsync();
@@ -139,6 +147,11 @@ namespace SilverBotDS
             //add a browser
             switch (config.BrowserType)
             {
+                case 0:
+                    {
+                        log.Verbose("Not using a browser");
+                        break;
+                    }
                 case 1:
                     {
                         log.Verbose("Launching chrome");
@@ -150,6 +163,10 @@ namespace SilverBotDS
                         log.Verbose("Launching firefox");
                         services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Firefox, config.DriverLocation));
                         break;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
                     }
             }
             switch (config.DatabaseType)
@@ -185,6 +202,7 @@ namespace SilverBotDS
             }
             services.AddSingleton(config);
             services.AddSingleton(httpClient);
+
             if (config.AutoDownloadAndStartLavalink)
             {
                 //Launch lavalink
@@ -192,9 +210,9 @@ namespace SilverBotDS
                 {
                     //file not found time to download lavalink
                     log.Information("Downloading lavalink");
-                    GitHubUtils.Repo repo = new("Frederikam", "Lavalink");
-                    GitHubUtils.Release release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo);
-                    await release.DownloadLatestAsync();
+                    GitHubUtils.Repo repo = new("freyacodes", "Lavalink");
+                    GitHubUtils.Release release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo, httpClient);
+                    await release.DownloadLatestAsync(httpClient);
                 }
                 log.Information("Launching lavalink");
                 new Process
@@ -221,10 +239,20 @@ namespace SilverBotDS
                 }, discordclientwrapper);
                 trackingService = new InactivityTrackingService(audioService, discordclientwrapper,
                                                                 new InactivityTrackingOptions());
-                services.AddSingleton(audioService)
-                        .AddSingleton(trackingService)
-                        .AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
+                services.AddSingleton(audioService);
+                if(!config.SitInVc)
+                        {
+                    services.AddSingleton(trackingService);
+                }
+               
+                      services.AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
             }
+            if (IsNotNullAndIsNotB(config.SpotifyClientId, "Spotify_CLIENT_ID") && IsNotNullAndIsNotB(config.SpotifyClientSecret, "Spotify_CLIENT_SECRET"))
+            {
+                var sconfig = SpotifyClientConfig.CreateDefault();
+                services.AddSingleton(new SpotifyClient(sconfig.WithToken((await new OAuthClient(sconfig).RequestToken(new ClientCredentialsRequest(config.SpotifyClientId, config.SpotifyClientSecret))).AccessToken)));
+            }
+
             serviceProvider = services.BuildServiceProvider();
             CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration()
             {
@@ -256,6 +284,11 @@ namespace SilverBotDS
             }
             commands.RegisterCommands<MiscCommands>();
             commands.RegisterCommands<MinecraftModule>();
+            if (IsNotNullAndIsNotB(config.MicrosoftGraphClientId, "Graph-Client-Id-Here"))
+            {
+                commands.RegisterCommands<CalendarCommands>();
+            }
+
             commands.CommandErrored += Commands_CommandErrored;
             if (config.UseNodeJs)
             {
@@ -265,14 +298,17 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<NsfwCommands>();
             }
-            //🥁🥁🥁 drumroll
+            //🥁🥁🥁 drum-roll
             log.Information("Connecting to discord");
             if (config.UseLavaLink)
             {
                 discord.Ready += async (DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e) =>
                 {
                     await audioService.InitializeAsync();
-                    trackingService.BeginTracking();
+                    if (!config.SitInVc)
+                    {
+                        trackingService.BeginTracking();
+                    }
                     if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0) && config.UseLavaLink)
                     {
                         waitforfriday.Start();
@@ -285,7 +321,7 @@ namespace SilverBotDS
                 waitforfriday = new Thread(new ThreadStart(WaitForFriday));
             }
 
-            log.Information("Waiting 3s");
+            log.Verbose("Waiting 3s");
             await Task.Delay(3000);
             while (true)
             {
@@ -374,6 +410,13 @@ namespace SilverBotDS
                             await new DiscordMessageBuilder().WithReply(e.Message.Id)
                              .WithContent(e.Message.Content)
                              .WithFile("quality_fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.quality_fock.mp3") ?? throw new InvalidOperationException())
+                             .SendAsync(e.Channel);
+                            return;
+
+                        case "fock you":
+                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                             .WithContent("fock you too")
+                             .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.fock.mp3") ?? throw new InvalidOperationException())
                              .SendAsync(e.Channel);
                             return;
 

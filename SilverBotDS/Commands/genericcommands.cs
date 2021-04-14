@@ -201,7 +201,7 @@ namespace SilverBotDS.Commands
         [Hidden]
         public async Task Booty(CommandContext ctx)
         {
-            await SimpleImageMeme(ctx, "https://media1.tenor.com/images/ce2e9a0a24f384a9486acfac9bf7f5c1/tenor.gif?itemid=17561816", content: "picture📸my🙋‍♂️booty🍑up🆙in 3D🤩I'll 🙋‍♂️shake🤝 my🙋‍♂️ booty🍑in my🙋‍♂️own movie");
+            await SimpleImageMeme(ctx, "https://media1.tenor.com/images/ce2e9a0a24f384a9486acfac9bf7f5c1/tenor.gif?itemid=17561816", content: "picture📸my🙋\u200D♂️booty🍑up🆙in 3D🤩I'll 🙋\u2000♂️shake🤝 my🙋\u200D♂️ booty🍑in my🙋\u200D♂️own movie");
         }
 
         [Command("monke"), Aliases(":monkey:", "🐒", "🐵", ":monkey_face:")]

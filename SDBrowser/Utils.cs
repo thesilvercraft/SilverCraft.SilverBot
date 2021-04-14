@@ -4,7 +4,12 @@ using System.IO;
 namespace SDBrowser
 {
     internal class Utils
+
     {
+        protected Utils()
+        {
+        }
+
         public static byte[] ImageToByteArray(Image imageIn)
         {
             using var ms = new MemoryStream();

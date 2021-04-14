@@ -7,6 +7,7 @@ namespace SilverBotDS.Utils
     public class RandomGenerator : IDisposable
     {
         private readonly RNGCryptoServiceProvider _csp;
+        private bool disposedValue;
 
         public RandomGenerator() => _csp = new RNGCryptoServiceProvider();
 
@@ -68,9 +69,22 @@ namespace SilverBotDS.Utils
             }
         }
 
-        void IDisposable.Dispose()
+        protected virtual void Dispose(bool disposing)
         {
-            _csp.Dispose();
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _csp.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
     }

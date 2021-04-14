@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 
 namespace SilverBotDS.Utils
@@ -10,9 +11,9 @@ namespace SilverBotDS.Utils
     {
         public Translator()
         {
-            var httpClient = new HttpClient();
-            _ = httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("SilverBotTranslate");
-            this.httpClient = httpClient;
+            var nhttpClient = new HttpClient();
+            _ = nhttpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("SilverBotTranslate");
+            httpClient = nhttpClient;
         }
 
         public Translator(HttpClient httpClient) => this.httpClient = httpClient;
@@ -32,7 +33,7 @@ namespace SilverBotDS.Utils
              string sourceLanguage,
              string targetLanguage)
         {
-            string translation = string.Empty;
+            StringBuilder translation = new();
 
             string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={LanguageEnumToIdentifier(sourceLanguage)}&tl={LanguageEnumToIdentifier(targetLanguage)}&dt=t&q={HttpUtility.UrlEncode(sourceText)}";
             using (var response = await httpClient.GetAsync(url))
@@ -49,7 +50,7 @@ namespace SilverBotDS.Utils
                         int endQuote = text.IndexOf('\"', startQuote + 1);
                         if (endQuote != -1)
                         {
-                            translation = text.Substring(startQuote + 1, endQuote - startQuote - 1);
+                            translation = new(text.Substring(startQuote + 1, endQuote - startQuote - 1));
                         }
                     }
                 }
@@ -67,14 +68,16 @@ namespace SilverBotDS.Utils
                             i--;
                             continue;
                         }
-                        translation += translatedPhrase + "  ";
+                        translation.Append(translatedPhrase);
+                        translation.Append("  ");
                     }
                 }
             }
-            translation = translation.Trim().Replace(" ?", "?").Replace(" !", "!").Replace(" ,", ",").Replace(" .", ".").Replace(" ;", ";");
-            TranslationSpeechUrl = string.Format("https://translate.googleapis.com/translate_tts?ie=UTF-8&q={0}&tl={1}&total=1&idx=0&textlen={2}&client=gtx",
-            HttpUtility.UrlEncode(translation), LanguageEnumToIdentifier(targetLanguage), translation.Length);
-            return translation;
+            var translationstring = translation.ToString().Trim().Replace(" ?", "?").Replace(" !", "!").Replace(" ,", ",").Replace(" .", ".").Replace(" ;", ";");
+            TranslationSpeechUrl = $"https://translate.googleapis.com/translate_tts?ie=UTF-8&q={HttpUtility.UrlEncode(translationstring)}&tl={LanguageEnumToIdentifier(targetLanguage)}&total=1&idx=0&textlen={translation.Length}&client=gtx";
+            translation.Clear();
+
+            return translationstring;
         }
 
         public static bool ContainsKeyOrVal(string language) => LanguageModeMap.ContainsValue(language) || LanguageModeMap.ContainsKey(language);

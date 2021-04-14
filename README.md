@@ -13,7 +13,7 @@ To run this you will need to install:
 - A discord webhook for logging  
 - A PostgresSQL server / Space for a database  
 - A way to run some version of lavalink  
-- Optionally:  
+- Optionally:    
   - A giphy api token (https://developers.giphy.com/)  
   - A FortniteAPI token (https://dash.fortnite-api.com/)  
   - A topgg token that is a stored in the `connect.sid` cookie or an bot token  

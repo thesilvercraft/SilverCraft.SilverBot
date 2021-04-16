@@ -163,6 +163,11 @@ namespace SilverBotDS.Objects
         public string PrefixUsedTopgg { get; set; } = "Prefix used";
 
         /// <summary>
+        /// The playlist has been shuffled
+        /// </summary>
+        public string ShuffledSuccess { get; set; } = "The playlist has been shuffled";
+
+        /// <summary>
         /// User:␣
         /// </summary>
         public string User { get; set; } = "User: ";

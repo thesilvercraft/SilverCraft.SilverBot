@@ -75,7 +75,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Humanizer" Version="2.8.26" />
-    <PackageReference Include="Ical.Net" Version="4.2.0" />
     <PackageReference Include="ImageProcessor.Core" Version="1.1.0" />
     <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.0-beta.2" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.6.3" />
@@ -103,6 +102,7 @@
     <PackageReference Include="System.Runtime" Version="4.3.1" />
     <PackageReference Include="System.Text.Json" Version="6.0.0-preview.2.21154.6" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="TimeSpanParserUtil" Version="1.2.0" />
     <PackageReference Include="Wbubbler" Version="1.0.2" />
     <PackageReference Include="Xabe.FFmpeg" Version="4.4.0" />
     <PackageReference Include="Xabe.FFmpeg.Downloader" Version="4.4.0" />
@@ -126,8 +126,7 @@
     <Resource Include="Templates\Bibi\9.png" />
     <Resource Include="Templates\weeb_reliable_template.png" />
   </ItemGroup>
-  <Target Name="AddAssemblyAliasToReactiveAsync"
-            AfterTargets="ResolveAssemblyReferences">
+  <Target Name="AddAssemblyAliasToReactiveAsync" AfterTargets="ResolveAssemblyReferences">
     <ItemGroup>
       <ReferencePath Condition=" '%(FileName)' == 'System.Interactive.Async' ">
         <Aliases>reactive</Aliases>

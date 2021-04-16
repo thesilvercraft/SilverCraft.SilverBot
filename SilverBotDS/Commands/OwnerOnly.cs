@@ -188,9 +188,9 @@ namespace SilverBotDS.Commands
             await channel.SendMessageAsync(person.Mention + " there m8 that took some time to do");
         }
 
-        private readonly string[] references = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "MathParser.org-mXparser", "ScottPlot", "SilverBotDS" };
+        private readonly string[] references = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "MathParser.org-mXparser", "ScottPlot", "SilverBotDS", "Markdig.Signed", "Xabe.FFmpeg", "TimeSpanParserUtil" };
 
-        private readonly string[] imports = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer" };
+        private readonly string[] imports = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "TimeSpanParserUtil", "Xabe.FFmpeg", "ScottPlot" };
 
         public static string RemoveCodeBraces(string str)
         {
@@ -275,13 +275,13 @@ namespace SilverBotDS.Commands
                     await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
                     return;
                 }
-                await new DiscordMessageBuilder().WithContent(ob.GetType().FullName + ' ' + str).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent($"{ob.GetType().FullName} {AddBraces(str)}").WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
             }
             catch (Exception e)
             {
                 //abort ship
                 Program.SendLog(e);
-                await new DiscordMessageBuilder().WithContent($"Failed to parse {ob.GetType().FullName} as a string, using the generic ToString. " + ob.ToString()).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent($"Failed to parse {ob.GetType().FullName} as a string, using the generic ToString. {ob}").WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
             }
         }
 

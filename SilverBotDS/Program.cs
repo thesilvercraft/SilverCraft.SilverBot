@@ -240,12 +240,12 @@ namespace SilverBotDS
                 trackingService = new InactivityTrackingService(audioService, discordclientwrapper,
                                                                 new InactivityTrackingOptions());
                 services.AddSingleton(audioService);
-                if(!config.SitInVc)
-                        {
+                if (!config.SitInVc)
+                {
                     services.AddSingleton(trackingService);
                 }
-               
-                      services.AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
+
+                services.AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
             }
             if (IsNotNullAndIsNotB(config.SpotifyClientId, "Spotify_CLIENT_ID") && IsNotNullAndIsNotB(config.SpotifyClientSecret, "Spotify_CLIENT_SECRET"))
             {
@@ -384,7 +384,7 @@ namespace SilverBotDS
             await channel.SendMessageAsync("It is Friday");
         }
 
-        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "fock", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "quality fock" };
+        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "fock", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "quality fock", "fock you", "we will fock you" };
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {

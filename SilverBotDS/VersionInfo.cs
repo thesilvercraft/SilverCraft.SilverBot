@@ -31,6 +31,12 @@ namespace SilverBotDS
                 {
                     LogLine($"You are running {VNumber} which DOES NOT HAVE the same Sha as the newest commit on master. ({info.Sha} | {ThisAssembly.Git.Sha})");
                 }
+                if (ThisAssembly.Git.IsDirty)
+                {
+#pragma warning disable CS0162 // Unreachable code detected
+                    LogLine($"You are running a dirty version of silverbot");
+#pragma warning restore CS0162 // Unreachable code detected
+                }
             }
             catch (WebException ex)
             {

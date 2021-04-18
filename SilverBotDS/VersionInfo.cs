@@ -33,8 +33,11 @@ namespace SilverBotDS
                 }
                 if (ThisAssembly.Git.IsDirty)
                 {
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CS0162 // Unreachable code detected
+                    //At least one of these will warn lmao
                     LogLine($"You are running a dirty version of silverbot");
+#pragma warning restore IDE0079 // Remove unnecessary suppression
 #pragma warning restore CS0162 // Unreachable code detected
                 }
             }

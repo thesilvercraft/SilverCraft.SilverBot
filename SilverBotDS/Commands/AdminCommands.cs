@@ -5,6 +5,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,21 +37,15 @@ namespace SilverBotDS.Commands
                         DiscordEmoji.FromName(client, ":nobodyvotes:")
                     };
                 }
-
-                // Creating the poll message
+                var bob = new DiscordEmbedBuilder();
                 var pollStartText = new StringBuilder();
-                pollStartText.Append("**").Append("Poll started for:").AppendLine("**");
-                pollStartText.Append(question);
-                var pollStartMessage = await commandContext.RespondAsync(pollStartText.ToString());
-
-                // DoPollAsync adds automatically emojis out from an emoji array to a special message and waits for the "duration" of time to calculate results.
-                var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache, PollBehaviour.DeleteEmojis, duration);
-                var yesVotes = pollResult[0].Total;
-                var noVotes = pollResult[1].Total;
-
-                // Printing out the result
+                bob.WithTitle(question);
+                bob.WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username, iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png));
+                var pollStartMessage = await commandContext.RespondAsync(bob.Build());
+                var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache, PollBehaviour.KeepEmojis, duration);
+                var yesVotes = pollResult.First(x => x.Emoji.Name == "everybodyvotes").Total;
+                var noVotes = pollResult.First(x => x.Emoji.Name == "nobodyvotes").Total;
                 var pollResultText = new StringBuilder();
-                pollResultText.AppendLine(question);
                 pollResultText.Append("Poll result: ");
                 pollResultText.Append("**");
                 if (yesVotes > noVotes)
@@ -67,7 +62,8 @@ namespace SilverBotDS.Commands
                 }
                 pollResultText.Append("**");
                 pollResultText.Append($"\nYes:{yesVotes} No:{noVotes} Undecided: {commandContext.Guild.MemberCount - (yesVotes + noVotes)} (server total-people that voted)");
-                await pollStartMessage.ModifyAsync(pollResultText.ToString());
+                bob.WithDescription(pollResultText.ToString());
+                await pollStartMessage.ModifyAsync(embed: bob.Build());
             }
             else
             {

@@ -173,7 +173,7 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             try
             {
-                var data = await UrbanDictUtils.GetDefenition(query);
+                var data = await UrbanDictUtils.GetDefenition(query, HttpClient);
                 var pages = new List<Page>();
                 for (var i = 0; i < data.Length; i++)
                 {
@@ -261,43 +261,58 @@ namespace SilverBotDS.Commands
             }
         }
 
+        private readonly Regex NuGetErrorR = new("NU[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex DotNetErrorR = new("CA[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex CsharpErrorR = new("CA[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex FsharpErrorR = new("FS[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex VbErrorR = new("BC[0-9][0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex SerilogErrorR = new("Serilog[0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex SonarErrorR = new("S([0-9][0-9][0-9][0-9])", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex IdeErrorR = new("IDE[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
         [Command("cserrcode")]
         public async Task Csharperror(CommandContext ctx, string error)
         {
-            bool NuGetError = Regex.IsMatch(error, @"NU[0-9][0-9][0-9][0-9]");
-
-            bool DotNetError = Regex.IsMatch(error, @"CA[0-9][0-9][0-9][0-9]");
-
-            bool CsharpError = Regex.IsMatch(error, @"CS[0-9][0-9][0-9][0-9]");
-
-            bool FsharpError = Regex.IsMatch(error, @"FS[0-9][0-9][0-9][0-9]");
-
-            bool VbError = Regex.IsMatch(error, @"BC[0-9][0-9][0-9][0-9][0-9]");
-            bool SonarError = Regex.IsMatch(error, @"S[0-9][0-9][0-9][0-9]");
+            var NuGetError = NuGetErrorR.Match(error);
+            var DotNetError = DotNetErrorR.Match(error);
+            var CsharpError = CsharpErrorR.Match(error);
+            var FsharpError = FsharpErrorR.Match(error);
+            var VbError = VbErrorR.Match(error);
+            var SerilogError = SerilogErrorR.Match(error);
+            var SonarError = SonarErrorR.Match(error);
+            var IdeError = IdeErrorR.Match(error);
             string link = "Not Found";
-            if (NuGetError)
+            if (NuGetError.Success)
             {
-                link = $"https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/{error}";
+                link = $"https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/{NuGetError.Groups[0]}";
             }
-            else if (DotNetError)
+            else if (DotNetError.Success)
             {
-                link = $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/{error}";
+                link = $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/{DotNetError.Groups[0]}";
             }
-            else if (CsharpError)
+            else if (CsharpError.Success)
             {
-                link = $"https://docs.microsoft.com/en-us/dotnet/csharp/misc/{error} or https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/{error}";
+                link = $"https://docs.microsoft.com/en-us/dotnet/csharp/misc/{CsharpError.Groups[0]} or https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/{CsharpError.Groups[0]}";
             }
-            else if (FsharpError)
+            else if (FsharpError.Success)
             {
-                link = $"https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/{error}";
+                link = $"https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/{FsharpError.Groups[0]}";
             }
-            else if (VbError)
+            else if (VbError.Success)
             {
-                link = $"https://docs.microsoft.com/en-us/dotnet/visual-basic/misc/{error}";
+                link = $"https://docs.microsoft.com/en-us/dotnet/visual-basic/misc/{VbError.Groups[0]}";
             }
-            else if (SonarError)
+            else if (SonarError.Success)
             {
-                link = $"https://rules.sonarsource.com/csharp/RSPEC-{error}";
+                link = $"https://rules.sonarsource.com/csharp/RSPEC-{SonarError.Groups[1]}";
+            }
+            else if (SerilogError.Success)
+            {
+                link = $"https://github.com/Suchiman/SerilogAnalyzer/blob/master/README.md#:~:text={(SerilogError.Groups[0]).Value.ToLower()} note: text fragments may not work for you if so search for `{(SerilogError.Groups[0]).Value.ToLower()}` in the site";
+            }
+            else if (IdeError.Success)
+            {
+                link = $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/{IdeError.Groups[0]}";
             }
             await new DiscordMessageBuilder()
                                             .WithReply(ctx.Message.Id)

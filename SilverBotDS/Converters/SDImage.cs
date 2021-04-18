@@ -5,6 +5,7 @@ using SilverBotDS.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -47,11 +48,11 @@ namespace SilverBotDS.Converters
             }
         }
 
-        public async Task<byte[]> GetBytesAsync()
+        public async Task<byte[]> GetBytesAsync(HttpClient httpClient)
         {
             if (_bytes == null)
             {
-                _bytes = await Program.GetHttpClient().GetByteArrayAsync(Url);
+                _bytes = await httpClient.GetByteArrayAsync(Url);
             }
             return _bytes;
         }
@@ -66,10 +67,7 @@ namespace SilverBotDS.Converters
             }
         }
 
-        ~SdImage()
-        {
-            Dispose(disposing: false);
-        }
+        ~SdImage() => Dispose(disposing: false);
 
         public void Dispose()
         {

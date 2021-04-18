@@ -215,7 +215,7 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Make_jpegnised(await image.GetBytesAsync());
+            await using var outStream = Make_jpegnised(await image.GetBytesAsync(HttpClient));
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -245,7 +245,7 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Shet_On(await image.GetBytesAsync());
+            await using var outStream = Shet_On(await image.GetBytesAsync(HttpClient));
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -276,7 +276,7 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Resize(await image.GetBytesAsync(), new Size(x, y));
+            await using var outStream = Resize(await image.GetBytesAsync(HttpClient), new Size(x, y));
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -306,7 +306,7 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Tint(await image.GetBytesAsync(), color);
+            await using var outStream = Tint(await image.GetBytesAsync(HttpClient), color);
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -351,7 +351,7 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.GreyScale);
+            await using var outStream = Filter(await image.GetBytesAsync(HttpClient), MatrixFilters.GreyScale);
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -382,7 +382,7 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Filter(await image.GetBytesAsync(), MatrixFilters.Comic);
+            await using var outStream = Filter(await image.GetBytesAsync(HttpClient), MatrixFilters.Comic);
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -651,7 +651,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
             {
                 discordsize = 1024;
             }
-            await using MemoryStream stream = new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordsize)).GetBytesAsync());
+            await using MemoryStream stream = new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordsize)).GetBytesAsync(HttpClient));
             using Bitmap image = new(stream);
             if (image.Width == size || image.Height == size)
             {
@@ -682,7 +682,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 }
                 cachedpaintreliabletemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
             }
-            await using var resizedstream = Resize(await image.GetBytesAsync(), new Size(1771, 984), true);
+            await using var resizedstream = Resize(await image.GetBytesAsync(HttpClient), new Size(1771, 984), true);
             using var copythingy = new Bitmap(cachedpaintreliabletemplate);
             var drawing = Graphics.FromImage(copythingy);
             using (Bitmap internalimage = new(resizedstream))
@@ -734,7 +734,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 cachedmotivatetemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
             }
             var font = new Font("Times New Roman", 100);
-            await using var resizedstream = Resize(await image.GetBytesAsync(), new Size(1027, 684));
+            await using var resizedstream = Resize(await image.GetBytesAsync(HttpClient), new Size(1027, 684));
             using var copythingy = new Bitmap(cachedmotivatetemplate);
             var drawing = Graphics.FromImage(copythingy);
             using (Bitmap internalimage = new(resizedstream))
@@ -791,7 +791,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
         public async Task Caption(CommandContext ctx, SdImage image, [RemainingText] string text)
         {
             await ctx.TriggerTypingAsync();
-            await using var inStream = new MemoryStream(await image.GetBytesAsync());
+            await using var inStream = new MemoryStream(await image.GetBytesAsync(HttpClient));
             using var bitmap = new Bitmap(inStream);
             int x = bitmap.Width, y = bitmap.Height;
             var font = new Font("Impact", x / 10);
@@ -846,7 +846,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
             SdImage image = new(ctx.User.GetAvatarUrl(ImageFormat.Png));
             ISupportedImageFormat format = new PngFormat { Quality = Quality };
             var size = new Size(200, 200);
-            await using var inStream = new MemoryStream(await image.GetBytesAsync());
+            await using var inStream = new MemoryStream(await image.GetBytesAsync(HttpClient));
             await using var avatarStream = new MemoryStream();
             await using var outStream = new MemoryStream();
             using (var imageFactory = new ImageFactory())

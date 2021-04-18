@@ -3,6 +3,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Utils;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands.Gamering
@@ -12,6 +13,8 @@ namespace SilverBotDS.Commands.Gamering
     internal class MinecraftModule : BaseCommandModule
     {
         //HEY LOIS IM PLAYING MINECRAFT
+        public HttpClient HttpClient { private get; set; }
+
         [Command("getfromusername")]
         [Description("Get a minecraft players UUID from their username")]
         [Aliases("username")]
@@ -19,7 +22,7 @@ namespace SilverBotDS.Commands.Gamering
         {
             try
             {
-                var player = await MinecraftUtils.GetPlayerAsync(input);
+                var player = await MinecraftUtils.GetPlayerAsync(input, HttpClient);
                 var b = new DiscordEmbedBuilder();
                 b.WithThumbnail(player.GetAvatarUrl())
                       .WithImageUrl(player.GetBodyUrl())

@@ -91,11 +91,6 @@ namespace SilverBotDS
         private static ServiceProvider serviceProvider;
         private static readonly HttpClient httpClient = NewhttpClientWithUserAgent();
 
-        public static HttpClient GetHttpClient()
-        {
-            return httpClient;
-        }
-
         private static HttpClient NewhttpClientWithUserAgent()
         {
             HttpClient e = new();
@@ -329,7 +324,7 @@ namespace SilverBotDS
                 //update the status to some random one
                 await discord.UpdateStatusAsync(await Splashes.GetSingleAsync(useinternal: !config.UseSplashConfig));
                 //wait the specified time
-                log.Verbose($"Waiting {new TimeSpan(0, 0, 0, 0, config.MsInterval).Humanize(precision: 5)}");
+                log.Verbose("Waiting {V}", new TimeSpan(0, 0, 0, 0, config.MsInterval).Humanize(precision: 5));
                 await Task.Delay(config.MsInterval);
                 //repeat🔁
             }

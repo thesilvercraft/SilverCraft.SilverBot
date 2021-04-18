@@ -20,7 +20,6 @@ namespace SilverBotDS.Commands
 {
     internal class Emotes : BaseCommandModule
     {
-#pragma warning disable CA1822 // Mark members as static
         public ISBDatabase Database { private get; set; }
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
@@ -79,7 +78,7 @@ namespace SilverBotDS.Commands
         public async Task AddEmote(CommandContext ctx, [Description("Url of the thing")] SdImage url, [Description("Name like `Kappa`")] string name)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var st = new MemoryStream(await url.GetBytesAsync());
+            await using var st = new MemoryStream(await url.GetBytesAsync(HttpClient));
             if (st.Length > 256000)
             {
                 await ctx.RespondAsync(string.Format(lang.EmoteWasLargerThan256K, FileSizeUtils.FormatSize(st.Length)));

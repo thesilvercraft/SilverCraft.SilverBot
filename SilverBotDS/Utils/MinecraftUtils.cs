@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -12,9 +13,8 @@ namespace SilverBotDS.Utils
         private const string GetProfileUrl = "https://api.mojang.com/users/profiles/minecraft/{0}";
 #pragma warning restore S1075 // URIs should not be hardcoded
 
-        public static async Task<Player> GetPlayerAsync(string name)
+        public static async Task<Player> GetPlayerAsync(string name, HttpClient httpClient)
         {
-            var httpClient = Program.GetHttpClient();
             var uri = new UriBuilder(string.Format(GetProfileUrl, name));
             var rm = await httpClient.GetAsync(uri.Uri);
             if (rm.StatusCode == HttpStatusCode.OK)

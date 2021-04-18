@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -9,9 +10,8 @@ namespace SilverBotDS.Utils
 {
     internal class UrbanDictUtils
     {
-        public static async Task<Defenition[]> GetDefenition(string word)
+        public static async Task<Defenition[]> GetDefenition(string word, HttpClient httpClient)
         {
-            var httpClient = Program.GetHttpClient();
             var uri = new UriBuilder($"http://api.urbandictionary.com/v0/define?term={HttpUtility.UrlEncode(word)}");
             var rm = await httpClient.GetAsync(uri.Uri);
             if (rm.StatusCode == HttpStatusCode.OK)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -8,11 +9,9 @@ namespace SilverBotDS.Utils
 {
     internal class OnlyHitUtils
     {
-        public static async Task<CurrentSong> SearchAsync(string url = "https://api.onlyhit.us/fingerprinting/onlyhit.json")
+        public static async Task<CurrentSong> SearchAsync(HttpClient httpClient, string url = "https://api.onlyhit.us/fingerprinting/onlyhit.json")
         {
-            var httpClient = Program.GetHttpClient();
-            var uri = new UriBuilder(url);
-            var rm = await httpClient.GetAsync(uri.Uri);
+            var rm = await httpClient.GetAsync(url);
             var cursong = JsonSerializer.Deserialize<CurrentSong>(await rm.Content.ReadAsStringAsync());
             if (cursong is not null && cursong.Status.Msg == "Success")
             {

@@ -15,15 +15,22 @@ namespace SilverBotDS.Objects
     {
         public Step[] steps;
         private bool disposedValue;
+        private HttpClient client;
 
-        public static async Task<ImageSteps> Create(string url, HttpClient client)
+        public void SetClient(HttpClient c)
+        {
+            client = c;
+        }
+
+        public static async Task<ImageSteps> Create(string url, HttpClient c)
         {
             var serializer = new XmlSerializer(typeof(Step[]), "SilverBotDS.Objects");
-            var rm = await client.GetAsync(url);
+            var rm = await c.GetAsync(url);
             var ist = new ImageSteps();
 
             using StringReader stringReader = new(await rm.Content.ReadAsStringAsync());
             ist.steps = (Step[])serializer.Deserialize(stringReader);
+            ist.SetClient(c);
             return ist;
         }
 
@@ -37,17 +44,17 @@ namespace SilverBotDS.Objects
                 {
                     if (Bitmap is null)
                     {
-                        Bitmap = new Bitmap(step2.Image());
+                        Bitmap = new Bitmap(step2.Image(client));
                         graphics = Graphics.FromImage(Bitmap);
                     }
                     else
                     {
-                        graphics.DrawImage(step2.Image(), new Point(0, 0));
+                        graphics.DrawImage(step2.Image(client), new Point(0, 0));
                     }
                 }
                 else if (step is PictureStep step1)
                 {
-                    using var resizedbytes = ImageModule.Resize(await step1.Image().GetBytesAsync(), new Size((int)step1.xSize, (int)step1.ySize));
+                    using var resizedbytes = ImageModule.Resize(await step1.Image().GetBytesAsync(client), new Size((int)step1.xSize, (int)step1.ySize));
                     using var resizedimg = new Bitmap(resizedbytes);
                     graphics.DrawImage(resizedimg, new Point((int)step.x, (int)step.y));
                 }
@@ -80,15 +87,12 @@ namespace SilverBotDS.Objects
                     }
                 }
                 steps = null;
+                client = null;
                 disposedValue = true;
             }
         }
 
-        ~ImageSteps()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: false);
-        }
+        ~ImageSteps() => Dispose(disposing: false);
 
         public void Dispose()
         {
@@ -139,13 +143,14 @@ namespace SilverBotDS.Objects
         [XmlIgnore]
         private Bitmap _image = null;
 
-        public Bitmap Image()
+        public Bitmap Image(HttpClient e = null)
         {
+            e ??= new HttpClient();
             if (_image is null)
             {
                 if (isUrl)
                 {
-                    using var memorystream = new MemoryStream(new SdImage(template).GetBytesAsync().GetAwaiter().GetResult());
+                    using var memorystream = new MemoryStream(new SdImage(template).GetBytesAsync(e).GetAwaiter().GetResult());
                     _image = new(memorystream);
                 }
                 else
@@ -166,10 +171,7 @@ namespace SilverBotDS.Objects
             GC.SuppressFinalize(this);
         }
 
-        ~TemplateStep()
-        {
-            Dispose(false);
-        }
+        ~TemplateStep() => Dispose(false);
 
         protected virtual void Dispose(bool disposing)
         {

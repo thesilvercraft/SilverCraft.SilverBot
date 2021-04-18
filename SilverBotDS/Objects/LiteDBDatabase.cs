@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using SDBrowser;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -41,14 +42,14 @@ namespace SilverBotDS.Objects
         /// </summary>
         /// <param name="sql">the sql to run</param>
         /// <returns>A string and a image one of them is a null</returns>
-        public async Task<Tuple<string, Image>> RunSqlAsync(string sql)
+        public async Task<Tuple<string, Image>> RunSqlAsync(string sql, IBrowser browser)
         {
             try
             {
                 using var db = new LiteDatabase(@"Filename=database.db; Connection=shared");
                 var da = db.Execute(sql);
                 ulong index = 0;
-                if (Program.GetConfig().BrowserType == 0)
+                if (browser is null)
                 {
                     StringBuilder builder = new("```" + Environment.NewLine);
                     while (da.Read())
@@ -87,7 +88,7 @@ namespace SilverBotDS.Objects
                         return new Tuple<string, Image>("nodata", null);
                     }
 
-                    return new Tuple<string, Image>(null, await Program.GetBrowser().RenderHtmlAsync(thing.ToString()));
+                    return new Tuple<string, Image>(null, await browser.RenderHtmlAsync(thing.ToString()));
                 }
             }
             catch (Exception e)

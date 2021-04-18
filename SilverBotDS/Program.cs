@@ -74,11 +74,6 @@ namespace SilverBotDS
             return serviceProvider.GetService<ISBDatabase>();
         }
 
-        public static IBrowser GetBrowser()
-        {
-            return serviceProvider.GetService<IBrowser>();
-        }
-
         public static Config GetConfig()
         {
             return serviceProvider.GetService<Config>();

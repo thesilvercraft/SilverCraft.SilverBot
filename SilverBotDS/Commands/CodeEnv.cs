@@ -8,7 +8,7 @@ namespace SilverBotDS.Commands
 {
     public class CodeEnv
     {
-        public CodeEnv(CommandContext context)
+        public CodeEnv(CommandContext context, Config config)
         {
             ctx = context;
             Member = ctx.Member;
@@ -16,7 +16,7 @@ namespace SilverBotDS.Commands
             Guild = ctx.Guild;
             VerString = VersionInfo.VNumber;
             Client = ctx.Client;
-            Config = Program.GetConfig();
+            Config = config;
             ExConfig = new Config();
         }
 

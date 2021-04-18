@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using SDBrowser;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -80,7 +81,7 @@ namespace SilverBotDS.Objects
         /// </summary>
         /// <param name="sql">the sql to run</param>
         /// <returns>A string and a image one of them is a null</returns>
-        public async Task<Tuple<string, Image>> RunSqlAsync(string sql)
+        public async Task<Tuple<string, Image>> RunSqlAsync(string sql, IBrowser browser)
         {
             try
             {
@@ -98,7 +99,7 @@ namespace SilverBotDS.Objects
                 }
                 else
                 {
-                    if (Program.GetConfig().BrowserType == 0)
+                    if (browser is null)
                     {
                         StringBuilder builder = new("```" + Environment.NewLine);
                         foreach (DataRow dataRow in dataTable.Rows)
@@ -123,7 +124,7 @@ namespace SilverBotDS.Objects
                             thing.AppendLine("</tr>");
                         }
                         thing.AppendLine("</table></body></html>");
-                        return new Tuple<string, Image>(null, await Program.GetBrowser().RenderHtmlAsync(thing.ToString()));
+                        return new Tuple<string, Image>(null, await browser.RenderHtmlAsync(thing.ToString()));
                     }
                 }
             }

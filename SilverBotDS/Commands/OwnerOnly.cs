@@ -6,6 +6,7 @@ using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using SDBrowser;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -29,6 +30,7 @@ namespace SilverBotDS.Commands
     {
 #pragma warning disable CA1822 // Mark members as static
         public ISBDatabase Database { private get; set; }
+        public IBrowser Browser { private get; set; }
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
 
@@ -310,7 +312,7 @@ namespace SilverBotDS.Commands
                 script.Compile();
                 DateTime aftercompile = DateTime.Now;
                 await new DiscordMessageBuilder().WithContent($"Compiled the code in {(aftercompile - start).Humanize(6)}").SendAsync(ctx.Channel);
-                var result = await script.RunAsync(new CodeEnv(ctx));
+                var result = await script.RunAsync(new CodeEnv(ctx, Config));
                 DateTime afterrun = DateTime.Now;
 
                 if (result.ReturnValue is not null)
@@ -366,7 +368,7 @@ namespace SilverBotDS.Commands
         [Description("UHHHHHHHHHHHHH its a secret")]
         public async Task Runsql(CommandContext ctx, string sql)
         {
-            var thing = await Database.RunSqlAsync(sql);
+            var thing = await Database.RunSqlAsync(sql, Browser);
             if (thing.Item1 != null && thing.Item2 == null)
             {
                 await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent(thing.Item1).SendAsync(ctx.Channel);
@@ -397,9 +399,9 @@ namespace SilverBotDS.Commands
             return a;
         }
 
-        [Command("html")]
-        [Description("UHHHHHHHHHHHHH its a secret")]
-        public async Task Html(CommandContext ctx, string html)
+        [Command("webshot")]
+        [Description("screenshots a webpage")]
+        public async Task Webshot(CommandContext ctx, string html)
         {
             if (await IsBrowserNotSpecifed(ctx))
             {
@@ -409,7 +411,7 @@ namespace SilverBotDS.Commands
             var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
 #pragma warning restore S1075 // URIs should not be hardcoded
             await using var image = new MemoryStream();
-            using var e = await Program.GetBrowser().RenderUrlAsync(html);
+            using var e = await Browser.RenderUrlAsync(html);
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;
             await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithReply(ctx.Message.Id).WithFile("html.png", image).SendAsync(ctx.Channel);
@@ -517,9 +519,9 @@ namespace SilverBotDS.Commands
             }
         }
 
-        [Command("htmle")]
+        [Command("screenshothtml")]
         [Description("UHHHHHHHHHHHHH its a secret")]
-        public async Task HtmlE(CommandContext ctx, string html)
+        public async Task Html(CommandContext ctx, string html)
         {
             if (await IsBrowserNotSpecifed(ctx))
             {
@@ -529,7 +531,7 @@ namespace SilverBotDS.Commands
 #pragma warning disable S1075 // URIs should not be hardcoded
             bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
 #pragma warning restore S1075 // URIs should not be hardcoded
-            using var e = await Program.GetBrowser().RenderHtmlAsync(html);
+            using var e = await Browser.RenderHtmlAsync(html);
             await using var image = new MemoryStream();
             e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
             image.Position = 0;

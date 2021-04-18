@@ -38,16 +38,13 @@ namespace SilverBotDS.Commands
                     };
                 }
                 var bob = new DiscordEmbedBuilder();
-                var pollStartText = new StringBuilder();
-                bob.WithTitle(question);
-                bob.WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username, iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png));
+                bob.WithTitle(question).WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username, iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png));
                 var pollStartMessage = await commandContext.RespondAsync(bob.Build());
                 var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache, PollBehaviour.KeepEmojis, duration);
                 var yesVotes = pollResult.First(x => x.Emoji.Name == "everybodyvotes").Total;
                 var noVotes = pollResult.First(x => x.Emoji.Name == "nobodyvotes").Total;
                 var pollResultText = new StringBuilder();
-                pollResultText.Append("Poll result: ");
-                pollResultText.Append("**");
+                pollResultText.Append("Poll result: **");
                 if (yesVotes > noVotes)
                 {
                     pollResultText.Append("Yes");
@@ -60,8 +57,7 @@ namespace SilverBotDS.Commands
                 {
                     pollResultText.Append("No");
                 }
-                pollResultText.Append("**");
-                pollResultText.Append($"\nYes:{yesVotes} No:{noVotes} Undecided: {commandContext.Guild.MemberCount - (yesVotes + noVotes)} (server total-people that voted)");
+                pollResultText.Append($"**\nYes:{yesVotes} No:{noVotes} Undecided: {commandContext.Guild.MemberCount - (yesVotes + noVotes)} (server total-people that voted)");
                 bob.WithDescription(pollResultText.ToString());
                 await pollStartMessage.ModifyAsync(embed: bob.Build());
             }

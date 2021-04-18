@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDBrowser;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace SilverBotDS.Objects
         /// </summary>
         /// <param name="sql"></param>
         /// <returns>a tuple with an image or a string, one will be null</returns>
-        Task<Tuple<string, Image>> RunSqlAsync(string sql);
+        Task<Tuple<string, Image>> RunSqlAsync(string sql, IBrowser browser);
 
         /// <summary>
         /// Opt in a guild

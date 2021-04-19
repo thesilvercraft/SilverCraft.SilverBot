@@ -4,10 +4,6 @@ namespace SilverBotDS.Objects
 {
     public class Meme
     {
-        public Meme()
-        {
-        }
-
         /// <summary>
         /// the link of the post
         /// </summary>

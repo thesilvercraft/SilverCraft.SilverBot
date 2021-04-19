@@ -103,8 +103,10 @@ namespace SilverBotDS.Commands
                 foreach (var a in ctx.Client.Guilds.Values)
                 {
                     var thing = serverthatareoptedin.Find(x => x.ServerId == a.Id);
-                    if (thing == null || !thing.Optedin) continue;
-
+                    if (thing == null || !thing.Optedin)
+                    {
+                        continue;
+                    }
                     builder.AppendLine(string.Format(lang.Server, a.Name));
                     foreach (var emote in a.Emojis.Values.ToList())
                     {
@@ -185,12 +187,16 @@ namespace SilverBotDS.Commands
                         break;
                     }
                 case 1 when emotes[0].IsAnimated:
-                    await ctx.RespondAsync("<a:" + emotes[0].Name + ":" + emotes[0].Id + ">");
-                    break;
+                    {
+                        await ctx.RespondAsync("<a:" + emotes[0].Name + ":" + emotes[0].Id + ">");
+                        break;
+                    }
 
                 case 1:
-                    await ctx.RespondAsync("<:" + emotes[0].Name + ":" + emotes[0].Id + ">");
-                    break;
+                    {
+                        await ctx.RespondAsync("<:" + emotes[0].Name + ":" + emotes[0].Id + ">");
+                        break;
+                    }
 
                 case > 1:
                     {
@@ -221,6 +227,10 @@ namespace SilverBotDS.Commands
                         await ctx.RespondAsync(embed: b.Build());
                         break;
                     }
+                default:
+                    {
+                        throw new InvalidOperationException("emote switch statement went to default");
+                    }
             }
         }
 
@@ -232,26 +242,22 @@ namespace SilverBotDS.Commands
             var isoptedin = await Database.IsOptedInEmotes(ctx.Guild.Id);
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
 
-            switch (isoptedin)
+            if (isoptedin == true)
             {
-                case true:
-                    {
-                        var bob = new DiscordEmbedBuilder();
-                        bob.WithTitle(lang.AlreadyOptedIn);
-                        bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                        await ctx.RespondAsync(embed: bob.Build());
-                        return;
-                    }
-                case false:
-                    {
-                        var bob = new DiscordEmbedBuilder();
-                        bob.WithTitle(lang.UserIsBannedFromSilversocial);
-                        bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                        await ctx.RespondAsync(embed: bob.Build());
-                        return;
-                    }
+                var bob = new DiscordEmbedBuilder();
+                bob.WithTitle(lang.AlreadyOptedIn);
+                bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+                await ctx.RespondAsync(embed: bob.Build());
+                return;
             }
-
+            else if (isoptedin is not null)
+            {
+                var bob = new DiscordEmbedBuilder();
+                bob.WithTitle(lang.UserIsBannedFromSilversocial);
+                bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+                await ctx.RespondAsync(embed: bob.Build());
+                return;
+            }
             var newserverthing = new ServerOptin
             {
                 ServerId = ctx.Guild.Id,

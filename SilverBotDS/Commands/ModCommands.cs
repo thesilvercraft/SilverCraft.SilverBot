@@ -13,8 +13,6 @@ namespace SilverBotDS.Commands
 {
     internal class ModCommands : BaseCommandModule
     {
-#pragma warning disable CA1822 // Mark members as static
-
         [Command("kick")]
         [Description("Kick a specified user")]
         [RequirePermissions(Permissions.KickMembers)]

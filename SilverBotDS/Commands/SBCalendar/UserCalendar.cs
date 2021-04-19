@@ -16,7 +16,7 @@ namespace SilverBotDS.Commands.SBCalendar
 
         public async Task<UserCalendar> GetCalendar(Objects.Config config, System.Func<DeviceCodeResult, Task> deviceCodeReadyCallback)
         {
-            var scopes = new string[] { "Calendars.ReadWrite"/*, "Calendars.ReadWrite.Shared"*/, "email", "User.Read" };
+            var scopes = new[] { "Calendars.ReadWrite"/*, "Calendars.ReadWrite.Shared"*/, "email", "User.Read" };
 
             IPublicClientApplication publicClientApplication = PublicClientApplicationBuilder
               .Create(config.MicrosoftGraphClientId)
@@ -31,7 +31,7 @@ namespace SilverBotDS.Commands.SBCalendar
         }
 
         private readonly List<Event[]> Pages = new();
-        private uint page = 0;
+        private uint page;
 
         public string UserName()
         {
@@ -52,7 +52,7 @@ namespace SilverBotDS.Commands.SBCalendar
         {
             if (calendar.CalendarView is null)
             {
-                var queryOptions = new List<QueryOption>()
+                var queryOptions = new List<QueryOption>
 {
     new QueryOption("startDateTime",( DateTime.UtcNow- TimeSpan.FromDays(365)).ToString("o")),
     new QueryOption("endDateTime", DateTime.UtcNow.ToString("o"))

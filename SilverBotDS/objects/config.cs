@@ -133,7 +133,7 @@ namespace SilverBotDS.Objects
             Console.WriteLine("Outdated config detected. Would you like a new one to generate? (Y/n)");
             var rl = Console.ReadLine();
             if (rl != null)
-                switch (rl.ToLower())
+                switch (rl.ToLowerInvariant())
                 {
                     case "y":
                         using (var streamReader = new StreamReader("silverbot.xml"))
@@ -178,19 +178,25 @@ namespace SilverBotDS.Objects
                             "Outdated config detected. Would you like to try loading with the outdated config? (Y/n)");
                         var nrl = Console.ReadLine();
                         if (nrl != null)
-                            switch (nrl.ToLower())
+                        {
+                            switch (nrl.ToLowerInvariant())
                             {
                                 case "y":
-                                    break;
-
+                                    {
+                                        break;
+                                    }
                                 case "n":
-                                    Environment.Exit(421);
-                                    break;
-
+                                    {
+                                        Environment.Exit(421);
+                                        break;
+                                    }
                                 default:
-                                    await OutdatedConfigTask(readconfig);
-                                    break;
+                                    {
+                                        await OutdatedConfigTask(readconfig);
+                                        break;
+                                    }
                             }
+                        }
 
                         break;
 

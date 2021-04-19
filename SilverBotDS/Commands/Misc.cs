@@ -263,7 +263,7 @@ namespace SilverBotDS.Commands
 
         private readonly Regex NuGetErrorR = new("NU[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         private readonly Regex DotNetErrorR = new("CA[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        private readonly Regex CsharpErrorR = new("CA[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex CsharpErrorR = new("CS[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         private readonly Regex FsharpErrorR = new("FS[0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         private readonly Regex VbErrorR = new("BC[0-9][0-9][0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         private readonly Regex SerilogErrorR = new("Serilog[0-9][0-9][0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);

@@ -326,7 +326,7 @@ namespace SilverBotDS
 #pragma warning disable S1075 // URIs should not be hardcoded
         private const string FridayUrl = "https://youtu.be/akT0wxv9ON8";
 #pragma warning restore S1075 // URIs should not be hardcoded
-        private static int last_friday = 0;
+        private static int last_friday;
 
         public static void WaitForFriday()
         {
@@ -402,6 +402,9 @@ namespace SilverBotDS
                              .WithContent("https://www.youtube.com/watch?v=lLN3caSQI1w")
                              .SendAsync(e.Channel);
                             return;
+
+                        default:
+                            break;
                     }
                 }
                 await new DiscordMessageBuilder().WithReply(e.Message.Id)

@@ -4,6 +4,10 @@ namespace SilverBotDS.Utils
 {
     public class ProfanityFilter
     {
+        protected ProfanityFilter()
+        {
+        }
+
         public static bool ContainsProfanity(string checkStr) => ProfanityArray().Any(x => checkStr.Contains(x));
 
         private static string[] ProfanityArray()

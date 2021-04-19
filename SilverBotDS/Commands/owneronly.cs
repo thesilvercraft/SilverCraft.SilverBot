@@ -192,9 +192,9 @@ namespace SilverBotDS.Commands
             await channel.SendMessageAsync(person.Mention + " there m8 that took some time to do");
         }
 
-        private readonly string[] references = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "MathParser.org-mXparser", "ScottPlot", "SilverBotDS", "Markdig.Signed", "Xabe.FFmpeg", "TimeSpanParserUtil" };
+        private readonly string[] references = new[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "MathParser.org-mXparser", "ScottPlot", "SilverBotDS", "Markdig.Signed", "Xabe.FFmpeg", "TimeSpanParserUtil" };
 
-        private readonly string[] imports = new string[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "TimeSpanParserUtil", "Xabe.FFmpeg", "ScottPlot" };
+        private readonly string[] imports = new[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "TimeSpanParserUtil", "Xabe.FFmpeg", "ScottPlot" };
 
         public static string RemoveCodeBraces(string str)
         {

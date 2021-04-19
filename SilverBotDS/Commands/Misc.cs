@@ -134,7 +134,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("translateunknown")]
-        [Aliases("tranlsate")]
+        [Aliases("translate")]
         [Description("translate from an unknown language")]
         public async Task TranlateUnknown(CommandContext ctx, [RemainingText] string text)
         {
@@ -146,7 +146,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("translateunknownto")]
-        [Aliases("tranlsateto")]
+        [Aliases("translateto")]
         [Description("translate from an unknown language to a specified one")]
         public async Task TranlateUnknown(CommandContext ctx, string LanguageTo, [RemainingText] string text)
         {

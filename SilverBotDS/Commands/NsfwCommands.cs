@@ -2066,7 +2066,7 @@
 //
 //
 //
-//jk lol all of these commands are traps that rickroll anyone and everyone that uses them
+//jk lol all of these commands are traps that expose anyone and everyone that uses them
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -2076,10 +2076,6 @@ namespace SilverBotDS.Commands
 {
     public class RequireNsfwAttribute : CheckBaseAttribute
     {
-        public RequireNsfwAttribute()
-        {
-        }
-
         public override async Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
         {
             if (help)
@@ -2110,7 +2106,7 @@ namespace SilverBotDS.Commands
     internal class NsfwCommands : BaseCommandModule
     {
         [Command("4k")]
-        [SilverBotDS.Commands.RequireNsfw()]
+        [RequireNsfw]
         //they dont know they will get their asses caught in 4k
         public Task Fourk(CommandContext ctx)
         {
@@ -2119,7 +2115,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("anal")]
-        [SilverBotDS.Commands.RequireNsfw()]
+        [RequireNsfw]
         public Task A(CommandContext ctx)
         {
             Program.SendLog($"{ctx.User.Username}#{ctx.User.Discriminator} ({ctx.User.Id}) expected nsfw but it was me {ctx.Message.JumpLink}");
@@ -2127,7 +2123,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("ass")]
-        [SilverBotDS.Commands.RequireNsfw()]
+        [RequireNsfw]
         public Task TheOtherA(CommandContext ctx)
         {
             Program.SendLog($"{ctx.User.Username}#{ctx.User.Discriminator} ({ctx.User.Id}) expected an ass picture but it was me {ctx.Message.JumpLink}");
@@ -2135,7 +2131,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("hentai")]
-        [SilverBotDS.Commands.RequireNsfw()]
+        [RequireNsfw]
         public Task HWord(CommandContext ctx)
         {
             Program.SendLog($"{ctx.User.Username}#{ctx.User.Discriminator} ({ctx.User.Id}) expected anime porn but it was me {ctx.Message.JumpLink}");

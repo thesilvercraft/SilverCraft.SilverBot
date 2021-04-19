@@ -4,8 +4,10 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
+using Jering.Javascript.NodeJS;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.Extensions.Logging;
 using SDBrowser;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
@@ -204,6 +206,14 @@ namespace SilverBotDS.Commands
             {
                 str = str.Remove(0, 5);
             }
+            if (str.StartsWith("```js"))
+            {
+                str = str.Remove(0, 5);
+            }
+            if (str.StartsWith("```javascript"))
+            {
+                str = str.Remove(0, 5);
+            }
             if (str.StartsWith("```"))
             {
                 str = str.Remove(0, 3);
@@ -277,7 +287,7 @@ namespace SilverBotDS.Commands
                     await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
                     return;
                 }
-                await new DiscordMessageBuilder().WithContent($"{ob.GetType().FullName} {AddBraces(str)}").WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent($"{ob.GetType().FullName} {str}").WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
             }
             catch (Exception e)
             {
@@ -303,18 +313,16 @@ namespace SilverBotDS.Commands
             TextWriter console = Console.Out;
             try
             {
-                Program.SendLog("Evaling a peace of code, wish me luck", true);
                 using var sw = new StringWriter();
                 Console.SetOut(sw);
                 DateTime start = DateTime.Now;
                 var script = CSharpScript.Create(RemoveCodeBraces(code),
-           ScriptOptions.Default.WithReferences(references).WithImports(imports), typeof(CodeEnv));
+                ScriptOptions.Default.WithReferences(references).WithImports(imports), typeof(CodeEnv));
                 script.Compile();
                 DateTime aftercompile = DateTime.Now;
                 await new DiscordMessageBuilder().WithContent($"Compiled the code in {(aftercompile - start).Humanize(6)}").SendAsync(ctx.Channel);
                 var result = await script.RunAsync(new CodeEnv(ctx, Config));
                 DateTime afterrun = DateTime.Now;
-
                 if (result.ReturnValue is not null)
                 {
                     await SendBestRepresentationAsync(result.ReturnValue, ctx);
@@ -361,6 +369,69 @@ namespace SilverBotDS.Commands
                 Console.SetOut(console);
                 Program.SendLog(e);
                 throw;
+            }
+        }
+
+        [Command("jsevaluate")]
+        [Description("evaluates some js code")]
+        [Aliases("jseval", "jsev")]
+        public async Task JSEval(CommandContext ctx, [RemainingText] string code)
+        {
+            if (Config.UseNodeJs)
+            {
+                TextWriter console = Console.Out;
+                try
+                {
+                    using var sw = new StringWriter();
+                    Console.SetOut(sw);
+                    DateTime start = DateTime.Now;
+                    var script = await StaticNodeJSService.InvokeFromStringAsync<object>(RemoveCodeBraces(code));
+                    DateTime aftercompile = DateTime.Now;
+                    await new DiscordMessageBuilder().WithContent($"Ran the code in {(aftercompile - start).Humanize(6)}").SendAsync(ctx.Channel);
+                    if (script is not null)
+                    {
+                        await SendBestRepresentationAsync(script, ctx);
+                    }
+                    else
+                    {
+                        await new DiscordMessageBuilder().WithContent($"Got a `null`").SendAsync(ctx.Channel);
+                    }
+                    if (!string.IsNullOrEmpty(sw.ToString()))
+                    {
+                        if (sw.ToString().Length > 1979)
+                        {
+                            await SendStringFileWithContent(ctx, "Console Output", sw.ToString(), "console.txt");
+                        }
+                        else
+                        {
+                            await new DiscordMessageBuilder().WithContent("Console Output" + AddBraces(sw.ToString())).SendAsync(ctx.Channel);
+                        }
+                    }
+                    sw.Close();
+                    Console.SetOut(console);
+                    script = null;
+                    GC.Collect();
+                }
+                catch (CompilationErrorException e)
+                {
+                    Console.SetOut(console);
+                    Program.SendLog(e);
+                    if (e.Diagnostics.Humanize().Length > 1958)
+                    {
+                        await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Diagnostics.Humanize(), "error.txt");
+                    }
+                    else
+                    {
+                        await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: ```csharp\n" + RemoveCodeBraces(e.Diagnostics.Humanize()) + "```").SendAsync(ctx.Channel);
+                    }
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    Console.SetOut(console);
+                    Program.SendLog(e);
+                    throw;
+                }
             }
         }
 

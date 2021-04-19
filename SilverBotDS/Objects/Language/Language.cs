@@ -411,7 +411,6 @@ namespace SilverBotDS.Objects
         public ImageThings Imagethings { get; set; } = new();
 
         private static readonly Dictionary<string, Language> CachedLanguages = new();
-        private static readonly bool Logging = true;
 
         public static string[] LoadedLanguages()
         {
@@ -430,18 +429,10 @@ namespace SilverBotDS.Objects
             {
                 if (CachedLanguages.ContainsKey(a))
                 {
-                    if (Logging)
-                    {
-                        Program.SendLog($"[LANGUAGES] huge success retrieving {a} from cache", true);
-                    }
                     return CachedLanguages[a];
                 }
                 else
                 {
-                    if (Logging)
-                    {
-                        Program.SendLog($"[LANGUAGES] huge fail loading {a} from cache", true);
-                    }
                     return new Language();
                 }
             }
@@ -472,17 +463,13 @@ namespace SilverBotDS.Objects
                     };
                     await streamWriter.WriteAsync(JsonSerializer.Serialize(new Language(), options));
                 }
-                if (Logging)
-                {
-                    Program.SendLog($"[LANGUAGES] done reading languages, {CachedLanguages.Count} have been loaded into cache", true);
-                }
                 return await GetAsync(a);
             }
         }
 
         public static async System.Threading.Tasks.Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
         {
-            var db = Program.GetDatabase();
+            var db = (ISBDatabase)ctx.CommandsNext.Services.GetService(typeof(ISBDatabase));
             return await GetAsync(ctx.Channel.IsPrivate ? await db.GetLangCodeUser(ctx.User.Id) : await db.GetLangCodeGuild(ctx.Guild.Id));
         }
     }

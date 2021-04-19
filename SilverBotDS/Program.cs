@@ -52,18 +52,6 @@ namespace SilverBotDS
             log.Error(text);
         }
 
-        public static void SendLog(string text, bool info)
-        {
-            if (info)
-            {
-                log.Information(text);
-            }
-            else
-            {
-                log.Error(text);
-            }
-        }
-
         public static void SendLog(Exception exception)
         {
             log.Error(exception: exception, "An exception occurred");
@@ -110,8 +98,7 @@ namespace SilverBotDS
 
             log.Information("Checking for updates");
             //Check for updates
-            await VersionInfo.Checkforupdates(httpClient);
-
+            await VersionInfo.Checkforupdates(httpClient, log);
             ILoggerFactory logFactory = new LoggerFactory().AddSerilog();
             //Make us a little cute client
             log.Verbose("Creating the discord client");

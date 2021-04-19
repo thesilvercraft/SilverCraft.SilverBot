@@ -10,35 +10,30 @@ namespace SilverBotDS
     {
         public const string VNumber = ThisAssembly.Git.Commit + "-" + ThisAssembly.Git.Branch + "-" + ThisAssembly.Git.CommitDate;
 
-        private static void LogLine(string line)
-        {
-            Program.SendLog($"[VersionInfo] {line}", true);
-        }
-
-        public static async Task Checkforupdates(HttpClient client)
+        public static async Task Checkforupdates(HttpClient client, Serilog.Core.Logger log)
         {
             try
             {
-                LogLine("Running on " + Environment.OSVersion.VersionString);
-                LogLine("Getting latest version info from GitHub");
+                log.Information("Running on {OS}", Environment.OSVersion.VersionString);
+                log.Information("Getting latest version info from {Source}", "GitHub");
                 Repo repo = new("thesilvercraft", "silverbot");
                 var info = await CommitInfo.GetLatestFromRepoAsync(repo, client);
                 if (info.Sha == ThisAssembly.Git.Sha)
                 {
-                    LogLine($"You are running {VNumber} which has the same Sha as the newest commit on master.");
+                    log.Information("You are running {VNumber} which has the same Sha as the newest commit on master.", VNumber);
                 }
                 else
                 {
-                    LogLine($"You are running {VNumber} which DOES NOT HAVE the same Sha as the newest commit on master. ({info.Sha} | {ThisAssembly.Git.Sha})");
+                    log.Information("You are running {VNumber} which DOES NOT HAVE the same Sha as the newest commit on master. ({Sha1} | {Sha2})", VNumber, info.Sha, ThisAssembly.Git.Sha);
                 }
                 if (ThisAssembly.Git.IsDirty)
                 {
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CS0162 // Unreachable code detected
                     //At least one of these will warn lmao
-                    LogLine($"You are running a dirty version of silverbot");
-#pragma warning restore IDE0079 // Remove unnecessary suppression
+                    log.Information("You are running a {Dirty} version of silverbot", "dirty");
 #pragma warning restore CS0162 // Unreachable code detected
+#pragma warning restore IDE0079 // Remove unnecessary suppression
                 }
             }
             catch (WebException ex)

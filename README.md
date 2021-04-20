@@ -1,7 +1,10 @@
-# SilverBotDS
+# SilverBot
+A multipurpose discord bot written in DSharpPlus using Lavalink4Net for audio.  
+You can invite my instance [here](https://discord.com/api/oauth2/authorize?client_id=702445582559739976&permissions=2147483639&scope=bot), most of the permissions are not necessary.  
+(<https://thesilvercraft.github.io/silverbot)  
+<!--| :exclamation: This guide is not finished|
+|-----------------------------------------|
 
-This is the hosting guide and not the end user guide.
-Warning: This guide isn't finished at all.
 To run this you will need to install:
 
 -   .net 5 runtime (<https://dotnet.microsoft.com/download/dotnet/5.0>)
@@ -33,4 +36,4 @@ To run this you will need to install:
     -   A Node.JS install to run some node code
 
 When you compile the code or download it from the releases just do:
-`dotnet SilverBotDS.dll`
+`dotnet SilverBotDS.dll` --->

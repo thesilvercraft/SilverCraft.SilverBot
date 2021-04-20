@@ -1,7 +1,7 @@
 # SilverBot
 A multipurpose discord bot written in DSharpPlus using Lavalink4Net for audio.  
 You can invite my instance [here](https://discord.com/api/oauth2/authorize?client_id=702445582559739976&permissions=2147483639&scope=bot), most of the permissions are not necessary.  
-(<https://thesilvercraft.github.io/silverbot>)  
+(<https://silverbot.cf>)  
 <!--| :exclamation: This guide is not finished|
 |-----------------------------------------|
 

@@ -58,7 +58,7 @@ namespace SilverBotDS.Utils
         {
             try
             {
-                return Regex.Replace(RandomString(length), @"[^\w]", "",
+                return Regex.Replace(RandomString(length), @"[^\w]", string.Empty,
                                        RegexOptions.None, TimeSpan.FromSeconds(timespan));
             }
             // If we timeout when replacing invalid characters,

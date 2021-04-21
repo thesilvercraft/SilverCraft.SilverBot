@@ -25,6 +25,7 @@ using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using SpotifyAPI.Web;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -55,11 +56,6 @@ namespace SilverBotDS
         public static void SendLog(Exception exception)
         {
             log.Error(exception: exception, "An exception occurred");
-        }
-
-        public static ISBDatabase GetDatabase()
-        {
-            return serviceProvider.GetService<ISBDatabase>();
         }
 
         public static Config GetConfig()
@@ -250,7 +246,10 @@ namespace SilverBotDS
                 commands.RegisterCommands<OwnerOnly>();
             }
             commands.RegisterCommands<SteamCommands>();
-            commands.RegisterCommands<Fortnite>();
+            if (IsNotNullAndIsNotB(config.FApiToken, "Fortnite_Token_Here"))
+            {
+                commands.RegisterCommands<Fortnite>();
+            }
             if (config.EmulateBubot)
             {
                 commands.RegisterCommands<Bubot>();
@@ -265,7 +264,6 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<CalendarCommands>();
             }
-
             commands.CommandErrored += Commands_CommandErrored;
             if (config.UseNodeJs)
             {
@@ -297,7 +295,6 @@ namespace SilverBotDS
             {
                 waitforfriday = new Thread(new ThreadStart(WaitForFriday));
             }
-
             log.Verbose("Waiting 3s");
             await Task.Delay(3000);
             while (true)
@@ -312,14 +309,53 @@ namespace SilverBotDS
             }
         }
 
-        private static Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
+        private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
-            if (e.Exception.GetType() == typeof(DSharpPlus.CommandsNext.Exceptions.CommandNotFoundException))
+            if (e.Context.Channel.PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id)).HasPermission(Permissions.SendMessages))
             {
-                return Task.CompletedTask;
+                //inform user
+                if (e.Exception is DSharpPlus.CommandsNext.Exceptions.CommandNotFoundException)
+                {
+                    return;
+                }
+                else if (e.Exception is DSharpPlus.CommandsNext.Exceptions.ChecksFailedException cfe)
+                {
+                    if (cfe.FailedChecks.Count is 1)
+                    {
+                        await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
+                                 .WithContent($"Check `{cfe.FailedChecks[0].GetType()}` Failed")
+                                 .SendAsync(e.Context.Channel);
+                    }
+                    else
+                    {
+                        var pages = new List<Page>();
+                        var tempbuilder = new DiscordEmbedBuilder();
+                        tempbuilder.WithTitle("Checks failed");
+                        for (var i = 0; i < cfe.FailedChecks.Count; i++)
+                        {
+                            tempbuilder.WithFooter($"{ i + 1} / {cfe.FailedChecks.Count}");
+                            tempbuilder.WithDescription(cfe.FailedChecks[i].GetType().Name);
+                            pages.Add(new Page(embed: tempbuilder));
+                        }
+
+                        await e.Context.Channel.SendPaginatedMessageAsync(e.Context.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+                    }
+                }
+                if (e.Exception is DSharpPlus.CommandsNext.Exceptions.InvalidOverloadException || e.Exception is ArgumentException a && a.Message == "Could not find a suitable overload for the command.")
+                {
+                    await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
+                                .WithContent($"Invalid overload for `{e.Command.Name}`")
+                                .SendAsync(e.Context.Channel);
+                }
+                if (e.Exception is InvalidOperationException ioe && ioe.Message == "No matching subcommands were found, and this group is not executable.")
+                {
+                    await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
+                                .WithContent(ioe.Message)
+                                .SendAsync(e.Context.Channel);
+                }
             }
+
             SendLog(e.Exception);
-            return Task.CompletedTask;
         }
 
         private static Thread waitforfriday;

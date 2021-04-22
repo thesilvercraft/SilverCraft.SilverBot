@@ -1,4 +1,7 @@
 # SilverBot
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f1f2a69af2b341238cd40b2f54684095)](https://app.codacy.com/gh/thesilvercraft/SilverBot?utm_source=github.com&utm_medium=referral&utm_content=thesilvercraft/SilverBot&utm_campaign=Badge_Grade_Settings)
+
 A multipurpose discord bot written in DSharpPlus using Lavalink4Net for audio.  
 You can invite my instance [here](https://discord.com/api/oauth2/authorize?client_id=702445582559739976&permissions=2147483639&scope=bot), most of the permissions are not necessary.  
 (<https://silverbot.cf>)  

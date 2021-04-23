@@ -85,7 +85,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.10.0-1.final" />
     <PackageReference Include="Microsoft.Graph" Version="3.30.0" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.29.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.30.0" />
     <PackageReference Include="Npgsql" Version="6.0.0-preview2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview2" />
     <PackageReference Include="ScottPlot" Version="4.1.10-beta" />

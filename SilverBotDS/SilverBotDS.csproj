@@ -65,7 +65,7 @@
   <ItemGroup>
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
     <PackageReference Include="CXuesong.Uel.Serilog.Sinks.Discord" Version="0.5.0" />
-    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00822" />
+    <PackageReference Include="DSharpPlus" Version="4.0.0" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00822" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00822" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.1" />

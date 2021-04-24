@@ -68,7 +68,7 @@
     <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00822" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00822" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00822" />
-    <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.0" />
+    <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
       <PrivateAssets>all</PrivateAssets>
@@ -83,10 +83,10 @@
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.17.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.10.0-1.final" />
-    <PackageReference Include="Microsoft.Graph" Version="3.29.0" />
+    <PackageReference Include="Microsoft.Graph" Version="3.30.0" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.29.0" />
-    <PackageReference Include="Npgsql" Version="6.0.0-preview2" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.30.0" />
+    <PackageReference Include="Npgsql" Version="6.0.0-preview3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview2" />
     <PackageReference Include="ScottPlot" Version="4.1.10-beta" />
     <PackageReference Include="Serilog" Version="2.10.1-dev-01285" />

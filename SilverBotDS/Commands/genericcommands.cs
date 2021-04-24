@@ -5,6 +5,7 @@ using DSharpPlus.Entities;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -60,8 +61,8 @@ namespace SilverBotDS.Commands
                         .WithUrl(asdf.PostLink)
                         .WithAuthor("👍 " + asdf.Ups + " | r/" + asdf.Subreddit)
                         .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                        .AddField("NSFW", asdf.Nsfw.ToString(), true)
-                        .AddField("Spoiler", asdf.Spoiler.ToString(), true)
+                        .AddField("NSFW", BoolToEmoteString(asdf.Nsfw), true)
+                        .AddField("Spoiler", BoolToEmoteString(asdf.Spoiler), true)
                         .AddField("Author", asdf.Author, true)
                         .WithImageUrl(asdf.Url)
                         .WithColor(await ColorUtils.GetSingleAsync());
@@ -94,7 +95,7 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
-                                             .WithContent(string.Format(lang.TimeInUtc, DateTime.UtcNow.ToString(lang.TimeFormat)))
+                                             .WithContent(string.Format(lang.TimeInUtc, DateTime.UtcNow.ToString(lang.GetCultureInfo())))
                                              .SendAsync(ctx.Channel);
         }
 
@@ -300,6 +301,7 @@ namespace SilverBotDS.Commands
             try
             {
                 var lang = await Language.GetLanguageFromCtxAsync(ctx);
+                var cultureinfo = lang.GetCultureInfo();
                 await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
                     .WithTitle(lang.User + a.Username)
                     .WithDescription(lang.InformationAbout + a.Mention)
@@ -307,6 +309,8 @@ namespace SilverBotDS.Commands
                     .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await IsAtSilverCraftAsync(ctx, a)), true)
                     .AddField(lang.IsAnOwner, BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(a)), true)
                     .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
+                    .AddField(lang.AccountCreationDate, a.CreationTimestamp.ToString(cultureinfo), true)
+                    .AddField(lang.AccountJoinDate, ctx.Guild?.Members.ContainsKey(a.Id) == true ? ctx.Guild?.Members[a.Id].JoinedAt.ToString(cultureinfo) : "NA", true)
                     .WithColor(await ColorUtils.GetSingleAsync())
                     .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))

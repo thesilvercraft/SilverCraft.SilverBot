@@ -35,7 +35,7 @@ namespace SilverBotDS.Objects
         /// See if a guild is opted in to emotes
         /// </summary>
         /// <param name="serverid">the guild id</param>
-        /// <returns>a nullable bool, true if opted in, false if manualy disabled, null if no info</returns>
+        /// <returns>a nullable bool, true if opted in, false if manually disabled, null if no info</returns>
         async Task<bool?> IsOptedInEmotes(ulong serverid) => (await ServersOptedInEmotesAsync()).Find(x => x.ServerId == serverid)?.Optedin;
 
         /// <summary>

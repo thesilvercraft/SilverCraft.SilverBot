@@ -187,6 +187,9 @@ namespace SilverBotDS.Objects
         /// </summary>
         public string IsABot { get; set; } = "Is a bot";
 
+        public string AccountCreationDate { get; set; } = "Joined discord on";
+        public string AccountJoinDate { get; set; } = "Joined this server on";
+
         /// <summary>
         ///SilverBot sponsored by SilverHosting
         /// </summary>
@@ -243,8 +246,6 @@ namespace SilverBotDS.Objects
         /// You are banned from using the SilverSocial features
         /// </summary>
         public string UserIsBannedFromSilversocial { get; set; } = "You are banned from using the SilverSocial features";
-
-        public string TimeFormat { get; set; } = "G"; //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?redirectedfrom=MSDN
 
         public string UselessFact { get; set; } = "Useless fact";
 

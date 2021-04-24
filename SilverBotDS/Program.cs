@@ -95,7 +95,7 @@ namespace SilverBotDS
             log.Information("Checking for updates");
             //Check for updates
             await VersionInfo.Checkforupdates(httpClient, log);
-            ILoggerFactory logFactory = new LoggerFactory().AddSerilog();
+            ILoggerFactory logFactory = new LoggerFactory().AddSerilog(logger: log);
             //Make us a little cute client
             log.Verbose("Creating the discord client");
             discord = new DiscordClient(new DiscordConfiguration()

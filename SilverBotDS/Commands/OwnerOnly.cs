@@ -7,7 +7,6 @@ using Humanizer;
 using Jering.Javascript.NodeJS;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using Microsoft.Extensions.Logging;
 using SDBrowser;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;

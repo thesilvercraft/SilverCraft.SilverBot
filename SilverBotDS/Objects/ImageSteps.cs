@@ -3,7 +3,6 @@ using SilverBotDS.Converters;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;

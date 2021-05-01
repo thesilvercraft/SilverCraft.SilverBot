@@ -2,16 +2,12 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
-using Humanizer;
 using Markdig;
 using Microsoft.Graph;
 using Microsoft.Identity.Client;
 using SilverBotDS.Objects;
-using SilverBotDS.Utils;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 

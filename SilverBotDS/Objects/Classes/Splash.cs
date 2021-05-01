@@ -31,8 +31,8 @@ namespace SilverBotDS.Objects
             StreamUrl = StreamUrl
         };
 
-        public string Name;
-        public ActivityType Type;
-        public string StreamUrl;
+        public string Name { get; set; }
+        public ActivityType Type { get; set; }
+        public string StreamUrl { get; set; }
     }
 }

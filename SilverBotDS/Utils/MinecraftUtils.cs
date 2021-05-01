@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SilverBotDS.Exceptions;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -17,19 +18,12 @@ namespace SilverBotDS.Utils
         {
             var uri = new UriBuilder(string.Format(GetProfileUrl, name));
             var rm = await httpClient.GetAsync(uri.Uri);
-            if (rm.StatusCode == HttpStatusCode.OK)
+            var player = JsonSerializer.Deserialize<Player>(await rm.Content.ReadAsStringAsync());
+            if (!string.IsNullOrEmpty(player.Error))
             {
-                var player = JsonSerializer.Deserialize<Player>(await rm.Content.ReadAsStringAsync());
-                if (!string.IsNullOrEmpty(player.Error))
-                {
-                    return await Task.FromException<Player>(new Exception($"Mojang returned an error: {player.Error} {player.ErrorMessage}"));
-                }
-                return player;
+                throw new MojangException(player.Error, player.ErrorMessage);
             }
-            else
-            {
-                return await Task.FromException<Player>(new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}"));
-            }
+            return player;
         }
 
         public class Player

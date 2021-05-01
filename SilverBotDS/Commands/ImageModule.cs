@@ -7,6 +7,7 @@ using ImageProcessor;
 using ImageProcessor.Imaging.Filters.Photo;
 using ImageProcessor.Imaging.Formats;
 using SilverBotDS.Converters;
+using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -451,11 +452,7 @@ namespace SilverBotDS.Commands
                 {
                     var myAssembly = Assembly.GetExecutingAssembly();
                     await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.weeb_reliable_template.png");
-                    if (myStream is null)
-                    {
-                        Program.SendLog("myAssembly.GetManifestResourceStream(SilverBotDS.Templates.weeb_reliable_template.png) returned null");
-                    }
-                    cachedweebreliabletemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
+                    cachedweebreliabletemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.weeb_reliable_template.png"));
                 }
                 await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(koichi, 256));
                 await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(jotaro, 256));
@@ -529,13 +526,8 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 if (cachednewyeartemplate == null)
                 {
                     var myAssembly = Assembly.GetExecutingAssembly();
-
                     await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.happy_new_year_template.png");
-                    if (myStream is null)
-                    {
-                        Program.SendLog("myAssembly.GetManifestResourceStream(SilverBotDS.Templates.happy_new_year_template.png) returned null");
-                    }
-                    cachednewyeartemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
+                    cachednewyeartemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.happy_new_year_template.png"));
                 }
 
                 await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person, 350));
@@ -596,11 +588,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                     var myAssembly = Assembly.GetExecutingAssembly();
 
                     await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png");
-                    if (myStream is null)
-                    {
-                        Program.SendLog("myAssembly.GetManifestResourceStream(SilverBotDS.Templates.adventure_time_template.png) returned null");
-                    }
-                    cachedadventuretimetemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
+                    cachedadventuretimetemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.adventure_time_template.png"));
                 }
 
                 await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person));
@@ -676,11 +664,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
             {
                 var myAssembly = Assembly.GetExecutingAssembly();
                 await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.paint_template.png");
-                if (myStream is null)
-                {
-                    Program.SendLog("myAssembly.GetManifestResourceStream(SilverBotDS.Templates.paint_template.png) returned null");
-                }
-                cachedpaintreliabletemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
+                cachedpaintreliabletemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.paint_template.png"));
             }
             await using var resizedstream = Resize(await image.GetBytesAsync(HttpClient), new Size(1771, 984), true);
             using var copythingy = new Bitmap(cachedpaintreliabletemplate);
@@ -727,11 +711,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
             {
                 var myAssembly = Assembly.GetExecutingAssembly();
                 await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.motivator_template.png");
-                if (myStream is null)
-                {
-                    Program.SendLog("myAssembly.GetManifestResourceStream(SilverBotDS.Templates.motivator_template.png) returned null");
-                }
-                cachedmotivatetemplate = new Bitmap(myStream ?? throw new InvalidOperationException());
+                cachedmotivatetemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.motivator_template.png"));
             }
             var font = new Font("Times New Roman", 100);
             await using var resizedstream = Resize(await image.GetBytesAsync(HttpClient), new Size(1027, 684));

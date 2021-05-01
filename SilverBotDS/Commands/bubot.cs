@@ -1,6 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using SilverBotDS.Exceptions;
 using SilverBotDS.Utils;
 using System;
 using System.Drawing;
@@ -39,7 +40,7 @@ namespace SilverBotDS.Commands
             {
                 randomnumber = random.Next(1, 15);
             }
-            using var picture = new Bitmap(new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.Bibi.{randomnumber}.png") ?? throw new InvalidOperationException()));
+            using var picture = new Bitmap(new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.Bibi.{randomnumber}.png") ?? throw new TemplateReturningNullException($"SilverBotDS.Templates.Bibi.{randomnumber}.png")));
             using (Graphics g = Graphics.FromImage(picture))
             {
                 float size = BibiFont.Size;

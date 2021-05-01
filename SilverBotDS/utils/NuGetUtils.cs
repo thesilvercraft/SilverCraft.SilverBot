@@ -24,14 +24,7 @@ namespace SilverBotDS.Utils
                 Query = $"?q={query}"
             };
             var rm = await httpClient.GetAsync(uri.Uri);
-            if (rm.StatusCode == HttpStatusCode.OK)
-            {
-                return JsonSerializer.Deserialize<Rootobject>(await rm.Content.ReadAsStringAsync())?.Data;
-            }
-            else
-            {
-                return await Task.FromException<Datum[]>(new Exception($"Request yielded a status code that isn't OK it is {rm.StatusCode}"));
-            }
+            return JsonSerializer.Deserialize<Rootobject>(await rm.Content.ReadAsStringAsync())?.Data;
         }
 
         public class Rootobject

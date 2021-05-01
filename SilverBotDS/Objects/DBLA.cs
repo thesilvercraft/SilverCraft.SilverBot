@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using SilverBotDS.Exceptions;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -46,8 +47,7 @@ namespace SilverBotDS.Objects
                     var bot = JsonSerializer.Deserialize<Bot>(response.Content);
                     if (bot != null && !string.IsNullOrEmpty(bot.Error))
                     {
-                        Program.SendLog(bot.Error);
-                        return null;
+                        throw new DBLAException(bot.Error);
                     }
                     else
                     {

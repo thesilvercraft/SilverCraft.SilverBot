@@ -338,7 +338,7 @@ namespace SilverBotDS
                         tempbuilder.WithTitle("Checks failed");
                         for (var i = 0; i < cfe.FailedChecks.Count; i++)
                         {
-                            tempbuilder.WithFooter($"{ i + 1} / {cfe.FailedChecks.Count}");
+                            tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}");
                             tempbuilder.WithDescription(cfe.FailedChecks[i].GetType().Name);
                             pages.Add(new Page(embed: tempbuilder));
                         }
@@ -408,7 +408,7 @@ namespace SilverBotDS
         {
             if (e.Author.IsBot)
             {
-                //haha nice try
+                //ha nice try
                 return;
             }
             if ((e.Channel.IsPrivate || e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages)) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))

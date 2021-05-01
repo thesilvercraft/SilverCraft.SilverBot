@@ -59,8 +59,6 @@ namespace SilverBotDS.Commands
             }
             await OwnerOnly.SendStringFileWithContent(ctx, $"i went through {messages.Count}messages in {(DateTime.Now - start).Humanize(2)}(including download) {(DateTime.Now - startproc).Humanize(2)}(excluding download)\nEmote usage data:", bob.ToString(), "emotes.csv");
             bob.Clear();
-            bob = null;
-            messages = null;
             GC.Collect();
         }
 

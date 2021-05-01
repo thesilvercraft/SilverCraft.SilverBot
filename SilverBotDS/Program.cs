@@ -301,12 +301,17 @@ namespace SilverBotDS
             {
                 log.Verbose("Updating the status to a random one");
                 //update the status to some random one
-                await discord.UpdateStatusAsync(await Splashes.GetSingleAsync(useinternal: !config.UseSplashConfig));
+                await discord.UpdateStatusAsync(ArrayUtils.RandomFromArray(config.Splashes).GetDiscordActivity(GetStringDictionary(discord)));
                 //wait the specified time
                 log.Verbose("Waiting {V}", new TimeSpan(0, 0, 0, 0, config.MsInterval).Humanize(precision: 5));
                 await Task.Delay(config.MsInterval);
                 //repeat🔁
             }
+        }
+
+        private static Dictionary<string, string> GetStringDictionary(DiscordClient client)
+        {
+            return new Dictionary<string, string> { ["GuildCount"] = client.Guilds.Values.LongCount().ToString(), ["Platform"] = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() };
         }
 
         private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)

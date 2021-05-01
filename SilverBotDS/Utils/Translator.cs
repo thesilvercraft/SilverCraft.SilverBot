@@ -73,10 +73,9 @@ namespace SilverBotDS.Utils
                     }
                 }
             }
-            var translationstring = translation.ToString().Trim().Replace(" ?", "?").Replace(" !", "!").Replace(" ,", ",").Replace(" .", ".").Replace(" ;", ";");
+            var translationstring = translation.ToString().Trim().Replace(" ?", "?").Replace(" !", "!").Replace(" ,", ",").Replace(" .", ".").Replace(" ;", ";").Replace("\n", Environment.NewLine).Replace("\\n", Environment.NewLine);
             TranslationSpeechUrl = $"https://translate.googleapis.com/translate_tts?ie=UTF-8&q={HttpUtility.UrlEncode(translationstring)}&tl={LanguageEnumToIdentifier(targetLanguage)}&total=1&idx=0&textlen={translation.Length}&client=gtx";
             translation.Clear();
-
             return translationstring;
         }
 

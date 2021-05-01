@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SilverBotDS.Utils
@@ -13,9 +14,21 @@ namespace SilverBotDS.Utils
         /// <returns>A random string from the array</returns>
         public static string RandomFromArray(string[] vs)
         {
-            return vs.Length == 0
-                ? throw new ArgumentOutOfRangeException(nameof(vs), "Array must not be empty")
-                : vs[new RandomGenerator().Next(0, vs.Length - 1)];
+            return ArrayUtils.RandomFromArray(vs);
+        }
+
+        public static string FormatFromDictionary(string formatString, Dictionary<string, string> valueDict)
+        {
+            ulong i = 0;
+            StringBuilder newFormatString = new(formatString);
+            Dictionary<string, ulong> keyToInt = new();
+            foreach (var tuple in valueDict)
+            {
+                newFormatString = newFormatString.Replace($"{{{tuple.Key}}}", $"{{{i}}}");
+                keyToInt.Add(tuple.Key, i);
+                i++;
+            }
+            return string.Format(newFormatString.ToString(), valueDict.OrderBy(x => keyToInt[x.Key]).Select(x => x.Value).ToArray());
         }
 
         /// <summary>

@@ -573,21 +573,12 @@ namespace SilverBotDS.Commands
             await ctx.RespondAsync(bob.ToString());
         }
 
-        [Command("splashesreload")]
-        [Description("reload the config for splashes")]
+        [Command("shutdown")]
+        [Description("kill the bot")]
         public async Task Reloadsplashes(CommandContext ctx)
         {
-            await Splashes.GetAsync(true);
-            var bob = new DiscordEmbedBuilder();
-            bob.WithTitle("Reloaded splashes for ya.").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-            if (!Config.UseSplashConfig)
-            {
-                await ctx.RespondAsync("That did not do anything", embed: bob.Build());
-            }
-            else
-            {
-                await ctx.RespondAsync(embed: bob.Build());
-            }
+            await ctx.RespondAsync("bye");
+            Environment.Exit(469);
         }
 
         [Command("screenshothtml")]

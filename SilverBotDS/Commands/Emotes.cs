@@ -24,22 +24,19 @@ namespace SilverBotDS.Commands
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
 
-        [Command("addemote")]
-        [Description("Wanna add a emote but discord is too complicated to navigate")]
+        [Command("addemotee")]
+        [Description("Wanna add a emote but discord is too complicated to navigate. You need to add attachment here ")]
         [RequireGuild]
         [RequirePermissions(Permissions.ManageEmojis)]
-        public async Task UselessFact(CommandContext ctx, [Description("Name like `Kappa`")] string name, [Description("url of emote")] string url)
+        public async Task AddEmote(CommandContext ctx, [Description("Name like `Kappa`")] string name, [Description("Url of the thing")] SdImage url)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            var client = HttpClient;
-            var rm = await client.GetAsync(url);
-            var st = await rm.Content.ReadAsStreamAsync();
-            if (st.Length > 256 * 1000)
+            await using var st = new MemoryStream(await url.GetBytesAsync(HttpClient));
+            if (st.Length > 256000)
             {
                 await ctx.RespondAsync(string.Format(lang.EmoteWasLargerThan256K, FileSizeUtils.FormatSize(st.Length)));
             }
             var emote = await ctx.Guild.CreateEmojiAsync(name: name, image: st, reason: "Added via silverbot by " + ctx.User.Username);
-
             await ctx.RespondAsync(emote.ToString());
         }
 
@@ -54,7 +51,7 @@ namespace SilverBotDS.Commands
             try
             {
                 var image = SdImage.FromContext(ctx);
-                await AddEmote(ctx, image, name);
+                await AddEmote(ctx, name, image);
             }
             catch (AttachmentCountIncorrectException acie)
             {
@@ -69,22 +66,6 @@ namespace SilverBotDS.Commands
                         return;
                 }
             }
-        }
-
-        [Command("addemote")]
-        [Description("Wanna add a emote but discord is too complicated to navigate. You need to add attachment here ")]
-        [RequireGuild]
-        [RequirePermissions(Permissions.ManageEmojis)]
-        public async Task AddEmote(CommandContext ctx, [Description("Url of the thing")] SdImage url, [Description("Name like `Kappa`")] string name)
-        {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var st = new MemoryStream(await url.GetBytesAsync(HttpClient));
-            if (st.Length > 256000)
-            {
-                await ctx.RespondAsync(string.Format(lang.EmoteWasLargerThan256K, FileSizeUtils.FormatSize(st.Length)));
-            }
-            var emote = await ctx.Guild.CreateEmojiAsync(name: name, image: st, reason: "Added via silverbot by " + ctx.User.Username);
-            await ctx.RespondAsync(emote.ToString());
         }
 
         [Command("allemotes")]

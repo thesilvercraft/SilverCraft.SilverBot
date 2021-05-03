@@ -65,29 +65,35 @@
   <ItemGroup>
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
     <PackageReference Include="CXuesong.Uel.Serilog.Sinks.Discord" Version="0.5.0" />
-    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00822" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00822" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00822" />
+    <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00855" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00857" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00855" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Humanizer" Version="2.8.26" />
+    <PackageReference Include="Humanizer" Version="2.9.9" />
     <PackageReference Include="ImageProcessor.Core" Version="1.1.0" />
-    <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.0-beta.2" />
+    <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.0-beta.3" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.6.3" />
-    <PackageReference Include="LiteDB" Version="5.0.10" />
     <PackageReference Include="Markdig.Signed" Version="0.24.0" />
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.17.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.10.0-1.final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.3.21201.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.3.21201.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0-preview.3.21201.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-preview.3.21201.2" />
     <PackageReference Include="Microsoft.Graph" Version="3.30.0" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.30.0" />
     <PackageReference Include="Npgsql" Version="6.0.0-preview3" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview3" />
     <PackageReference Include="ScottPlot" Version="4.1.10-beta" />
     <PackageReference Include="Serilog" Version="2.10.1-dev-01285" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10284" />
@@ -100,7 +106,7 @@
     <PackageReference Include="System.Globalization.Calendars" Version="4.3.0" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Text.Json" Version="6.0.0-preview.2.21154.6" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0-preview.3.21201.4" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="TimeSpanParserUtil" Version="1.2.0" />
     <PackageReference Include="Wbubbler" Version="1.0.2" />

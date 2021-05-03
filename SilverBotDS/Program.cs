@@ -22,6 +22,7 @@ using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
 using SilverBotDS.Commands.SBCalendar;
 using SilverBotDS.Converters;
+using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using SpotifyAPI.Web;
@@ -416,21 +417,21 @@ namespace SilverBotDS
                         case "fock":
                             await new DiscordMessageBuilder().WithReply(e.Message.Id)
                                      .WithContent(e.Message.Content)
-                                     .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.fock.mp3") ?? throw new InvalidOperationException())
+                                     .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
                                      .SendAsync(e.Channel);
                             return;
 
                         case "quality fock":
                             await new DiscordMessageBuilder().WithReply(e.Message.Id)
                              .WithContent(e.Message.Content)
-                             .WithFile("quality_fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.quality_fock.mp3") ?? throw new InvalidOperationException())
+                             .WithFile("quality_fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.quality_fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.quality_fock.mp3"))
                              .SendAsync(e.Channel);
                             return;
 
                         case "fock you":
                             await new DiscordMessageBuilder().WithReply(e.Message.Id)
                              .WithContent("fock you too")
-                             .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.fock.mp3") ?? throw new InvalidOperationException())
+                             .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
                              .SendAsync(e.Channel);
                             return;
 

@@ -235,7 +235,7 @@ namespace SilverBotDS.Commands
             await new DiscordMessageBuilder().WithContent(title).WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }
 
-        private static string AddBraces(string a) => "```" + a + "```";
+        private static string AddBraces(string a) => "```\n" + a + "```";
 
         public static async Task SendBestRepresentationAsync(object ob, CommandContext ctx)
         {

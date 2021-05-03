@@ -79,10 +79,7 @@ namespace SilverBotDS
             return e;
         }
 
-        private static bool IsNotNullAndIsNotB(string a, string b)
-        {
-            return !(string.IsNullOrEmpty(a) || a == b);
-        }
+        private static bool IsNotNullAndIsNotB(string a, string b) => !(string.IsNullOrEmpty(a) || a == b);
 
         private static async Task MainAsync()
         {

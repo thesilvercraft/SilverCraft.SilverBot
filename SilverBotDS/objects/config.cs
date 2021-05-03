@@ -42,7 +42,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 20;
+        private const ulong CurrentConfVer = 21;
 
         [XmlDescription("Webhook for logging")]
         public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
@@ -111,6 +111,9 @@ namespace SilverBotDS.Objects
         public string SpotifyClientId { get; set; } = "Spotify_CLIENT_ID";
 
         public string SpotifyClientSecret { get; set; } = "Spotify_CLIENT_SECRET";
+
+        [XmlDescription("Do we enable the shitty server statistics")]
+        public bool EnableServerStatistics { get; set; } = true;
 
         public Splash[] Splashes { get; set; } = {
       new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),

@@ -12,6 +12,7 @@ using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
 using Lavalink4NET.Tracking;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SDBrowser;
@@ -91,7 +92,6 @@ namespace SilverBotDS
                          .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true)
                          .WriteTo.Discord(new DiscordWebhookMessenger(id, token))
                          .CreateLogger();
-
             log.Information("Checking for updates");
             //Check for updates
             await VersionInfo.Checkforupdates(httpClient, log);
@@ -142,30 +142,26 @@ namespace SilverBotDS
                         throw new NotImplementedException();
                     }
             }
+
             switch (config.DatabaseType)
             {
                 case 1:
                     {
-                        PostgreDatabase postgre;
                         if (config != null && !string.IsNullOrEmpty(config.ConnString))
                         {
-                            postgre = new(config.ConnString);
+                            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(config.ConnString));
                         }
                         else
                         {
                             Uri tmp = new(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
                             string[] usernameandpass = tmp.UserInfo.Split(":");
-                            string connString = $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}";
-                            postgre = new(connString);
+                            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql($"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}"));
                         }
-                        log.Verbose("Using Postgre");
-                        services.AddSingleton<ISBDatabase>(postgre);
                         break;
                     }
                 case 2:
                     {
-                        log.Verbose("Using LiteDB");
-                        services.AddSingleton<ISBDatabase>(new LiteDBDatabase());
+                        services.AddDbContext<DatabaseContext>(options => options.UseSqlite("Filename=./silverbotdatabasev2.db"));
                         break;
                     }
                 default:
@@ -175,7 +171,6 @@ namespace SilverBotDS
             }
             services.AddSingleton(config);
             services.AddSingleton(httpClient);
-
             if (config.AutoDownloadAndStartLavalink)
             {
                 //Launch lavalink
@@ -227,6 +222,7 @@ namespace SilverBotDS
             }
 
             serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetRequiredService<DatabaseContext>().Database.EnsureCreated();
             CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration()
             {
                 StringPrefixes = config.Prefix,
@@ -390,12 +386,12 @@ namespace SilverBotDS
         public static async Task ExecuteFridayAsync()
         {
             var vchannel = await discord.GetChannelAsync(config.FridayVoiceChannel);
-            if (audioService.HasPlayer(vchannel.GuildId))
+            if (audioService.HasPlayer((ulong)vchannel.GuildId))
             {
-                VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>(vchannel.GuildId);
+                VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>((ulong)vchannel.GuildId);
                 await player.DisconnectAsync();
             }
-            VoteLavalinkPlayer playere = await audioService.JoinAsync<VoteLavalinkPlayer>(vchannel.GuildId, vchannel.Id, true);
+            VoteLavalinkPlayer playere = await audioService.JoinAsync<VoteLavalinkPlayer>((ulong)vchannel.GuildId, vchannel.Id, true);
             var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
             await playere.PlayAsync(track);
             var channel = await discord.GetChannelAsync(config.FridayTextChannel);

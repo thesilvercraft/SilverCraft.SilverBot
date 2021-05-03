@@ -470,8 +470,8 @@ namespace SilverBotDS.Objects
 
         public static async System.Threading.Tasks.Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
         {
-            var db = (ISBDatabase)ctx.CommandsNext.Services.GetService(typeof(ISBDatabase));
-            return await GetAsync(ctx.Channel.IsPrivate ? await db.GetLangCodeUser(ctx.User.Id) : await db.GetLangCodeGuild(ctx.Guild.Id));
+            DatabaseContext db = (DatabaseContext)ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));
+            return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
         }
     }
 }

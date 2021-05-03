@@ -19,7 +19,7 @@ namespace SilverBotDS.Commands
     internal sealed class Genericcommands : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
-        public ISBDatabase Database { private get; set; }
+
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
 

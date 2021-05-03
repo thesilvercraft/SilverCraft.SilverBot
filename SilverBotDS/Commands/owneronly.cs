@@ -30,7 +30,7 @@ namespace SilverBotDS.Commands
     internal class OwnerOnly : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
-        public ISBDatabase Database { private get; set; }
+        public DatabaseContext Database { private get; set; }
         public IBrowser Browser { private get; set; }
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
@@ -132,25 +132,20 @@ namespace SilverBotDS.Commands
          role)
         {
             var name = Regex.Replace(role.Name, @"[^\w]", "");
-            List<DiscordOverwriteBuilder> builders = new();
-            var builder = new DiscordOverwriteBuilder
+            DiscordOverwriteBuilder[] builders = new[]
+            {
+            new DiscordOverwriteBuilder(ctx.Guild.CurrentMember)
             {
                 Allowed = Permissions.All
-            };
-            builder.For(ctx.Guild.CurrentMember);
-            builders.Add(builder);
-            builder = new DiscordOverwriteBuilder
+            },
+            new DiscordOverwriteBuilder(ctx.Guild.EveryoneRole)
             {
                 Denied = Permissions.All
-            };
-            builder.For(ctx.Guild.EveryoneRole);
-            builders.Add(builder);
-            builder = new DiscordOverwriteBuilder
+            },
+            new DiscordOverwriteBuilder(role)
             {
                 Allowed = Permissions.AccessChannels | Permissions.AddReactions | Permissions.AttachFiles | Permissions.ChangeNickname | Permissions.DeafenMembers | Permissions.EmbedLinks | Permissions.ManageChannels | Permissions.ManageMessages | Permissions.MoveMembers | Permissions.ReadMessageHistory | Permissions.SendMessages | Permissions.Speak | Permissions.Stream | Permissions.UseVoice | Permissions.UseVoiceDetection | Permissions.ManageRoles
-            };
-            builder.For(role);
-            builders.Add(builder);
+            }};
             var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders, "Added by SilverBot as requested by" + ctx.User.Username);
             var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
             _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
@@ -166,25 +161,20 @@ namespace SilverBotDS.Commands
              person)
         {
             var name = Regex.Replace(person.Username, @"[^\w]", "");
-            List<DiscordOverwriteBuilder> builders = new();
-            var builder = new DiscordOverwriteBuilder
+            DiscordOverwriteBuilder[] builders = new[]
+            {
+            new DiscordOverwriteBuilder(ctx.Guild.CurrentMember)
             {
                 Allowed = Permissions.All
-            };
-            builder.For(ctx.Guild.CurrentMember);
-            builders.Add(builder);
-            builder = new DiscordOverwriteBuilder
+            },
+            new DiscordOverwriteBuilder(ctx.Guild.EveryoneRole)
             {
                 Denied = Permissions.All
-            };
-            builder.For(ctx.Guild.EveryoneRole);
-            builders.Add(builder);
-            builder = new DiscordOverwriteBuilder
+            },
+            new DiscordOverwriteBuilder(person)
             {
                 Allowed = Permissions.AccessChannels | Permissions.AddReactions | Permissions.AttachFiles | Permissions.ChangeNickname | Permissions.DeafenMembers | Permissions.EmbedLinks | Permissions.ManageChannels | Permissions.ManageMessages | Permissions.MoveMembers | Permissions.ReadMessageHistory | Permissions.SendMessages | Permissions.Speak | Permissions.Stream | Permissions.UseVoice | Permissions.UseVoiceDetection | Permissions.ManageRoles
-            };
-            builder.For(person);
-            builders.Add(builder);
+            }};
             var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders, "Added by SilverBot as requested by" + ctx.User.Username);
             var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
             _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);

@@ -20,7 +20,7 @@ namespace SilverBotDS.Commands
 {
     internal class Emotes : BaseCommandModule
     {
-        public ISBDatabase Database { private get; set; }
+        public DatabaseContext Database { private get; set; }
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
 
@@ -95,15 +95,15 @@ namespace SilverBotDS.Commands
             {
                 var builder = new StringBuilder();
                 var lang = await Language.GetLanguageFromCtxAsync(ctx);
-                var serverthatareoptedin = await Database.ServersOptedInEmotesAsync();
+                var serverthatareoptedin = Database.GetIdsOfEmoteOptedInServers();
                 var pages = new List<Page>();
                 var b = new DiscordEmbedBuilder();
                 b.WithTitle(lang.AllAvailibleEmotes);
                 b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
                 foreach (var a in ctx.Client.Guilds.Values)
                 {
-                    var thing = serverthatareoptedin.Find(x => x.ServerId == a.Id);
-                    if (thing == null || !thing.Optedin)
+                    var thing = serverthatareoptedin.Contains(a.Id);
+                    if (!thing)
                     {
                         continue;
                     }
@@ -160,20 +160,14 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private static bool CheckIfGuildIsIn(List<ServerOptin> serverthatareoptedin, ulong id)
-        {
-            var thing = serverthatareoptedin.Find(x => x.ServerId == id);
-            return thing != null && thing.Optedin;
-        }
-
         [Command("emote")]
         [Description("Get an emote from the SilverSocial enabled servers")]
         public async Task GetEmotes(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var emotes = new List<DiscordEmoji>();
-            var serverthatareoptedin = await Database.ServersOptedInEmotesAsync();
-            foreach (var emojis in from a in ctx.Client.Guilds.Values.Where(e => CheckIfGuildIsIn(serverthatareoptedin, e.Id))
+            var serverthatareoptedin = Database.GetIdsOfEmoteOptedInServers();
+            foreach (var emojis in from a in ctx.Client.Guilds.Values.Where(e => serverthatareoptedin.Contains(e.Id))
                                    let emojis = a.Emojis.Values.Where(x => (":" + x.Name + ":") == emote || x.Name == emote || (Regex.IsMatch(emote, @"^\d+$") && x.Id == Convert.ToUInt64(emote)))
                                    select emojis)
             {
@@ -239,10 +233,10 @@ namespace SilverBotDS.Commands
         [RequireGuild]
         public async Task Optin(CommandContext ctx)
         {
-            var isoptedin = await Database.IsOptedInEmotes(ctx.Guild.Id);
+            var isoptedin = Database.IsOptedInEmotes(ctx.Guild.Id);
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
 
-            if (isoptedin == true)
+            if (isoptedin)
             {
                 var bob = new DiscordEmbedBuilder();
                 bob.WithTitle(lang.AlreadyOptedIn);
@@ -250,7 +244,7 @@ namespace SilverBotDS.Commands
                 await ctx.RespondAsync(embed: bob.Build());
                 return;
             }
-            else if (isoptedin is not null)
+            else if (Database.IsBanned(ctx.User.Id) || Database.IsBanned(ctx.Guild.OwnerId))
             {
                 var bob = new DiscordEmbedBuilder();
                 bob.WithTitle(lang.UserIsBannedFromSilversocial);
@@ -258,12 +252,7 @@ namespace SilverBotDS.Commands
                 await ctx.RespondAsync(embed: bob.Build());
                 return;
             }
-            var newserverthing = new ServerOptin
-            {
-                ServerId = ctx.Guild.Id,
-                Optedin = true
-            };
-            await Database.InsertEmoteOptinAsync(newserverthing);
+            Database.OptIntoEmotes(ctx.Guild.Id);
             var b = new DiscordEmbedBuilder();
             b.WithTitle(lang.OptedIn).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());

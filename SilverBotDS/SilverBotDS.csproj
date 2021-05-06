@@ -74,7 +74,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Humanizer" Version="2.9.9" />
+    <PackageReference Include="Humanizer" Version="2.10.1" />
     <PackageReference Include="ImageProcessor.Core" Version="1.1.0" />
     <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.0-beta.3" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.7.2" />

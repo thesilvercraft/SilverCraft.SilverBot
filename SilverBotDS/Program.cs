@@ -400,20 +400,20 @@ namespace SilverBotDS
                     log.Verbose("Got the settings about statistics");
                     await foreach (var thing in things)
                     {
-                        log.Verbose("Getting the guild with the id {id}", thing.Item1);
+                        log.Verbose("Getting the guild with the id {Id}", thing.Item1);
                         try
                         {
                             var server = await discord.GetGuildAsync(thing.Item1);
-                            log.Verbose("Got the guild with the id {id}", thing.Item1);
-                            log.Verbose("Getting the channel with the id {id}", thing.Item2);
+                            log.Verbose("Got the guild with the id {Id}", thing.Item1);
+                            log.Verbose("Getting the channel with the id {Id}", thing.Item2);
                             try
                             {
                                 var category = server.Channels[(ulong)thing.Item2];
-                                log.Verbose("Got the channel with the id {id}", thing.Item2);
+                                log.Verbose("Got the channel with the id {Id}", thing.Item2);
                                 if (category.Type is ChannelType.Category)
                                 {
                                     int e = 0;
-                                    log.Verbose("Getting the children of the channel {id}", thing.Item2);
+                                    log.Verbose("Getting the children of the channel {Id}", thing.Item2);
                                     foreach (var child in category.Children)
                                     {
                                         if (thing.Item3.Count > e)

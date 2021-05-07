@@ -2,6 +2,10 @@
 {
     internal class NumberUtils
     {
+        protected NumberUtils()
+        {
+        }
+
         private static readonly string[] divisors = new string[]
         {
           "",

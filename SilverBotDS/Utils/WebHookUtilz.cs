@@ -12,6 +12,20 @@ namespace SilverBotDS.Utils
         {
         }
 
+        public static void ParseWebhookUrlNullable(string webhookUrl, out ulong? webhookIdnullable, out string webhookToken)
+        {
+            try
+            {
+                ParseWebhookUrl(webhookUrl, out ulong webhookId, out webhookToken);
+                webhookIdnullable = (ulong?)webhookId;
+            }
+            catch (Exception)
+            {
+                webhookIdnullable = null;
+                webhookToken = null;
+            }
+        }
+
         public static void ParseWebhookUrl(string webhookUrl, out ulong webhookId, out string webhookToken)
         {
             if (string.IsNullOrWhiteSpace(webhookUrl))

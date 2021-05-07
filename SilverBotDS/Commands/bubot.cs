@@ -3,7 +3,6 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Utils;
-using System;
 using System.Drawing;
 using System.IO;
 using System.Reflection;

@@ -1,7 +1,10 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Humanizer;
+using SilverBotDS.Objects;
+using SilverBotDS.Objects.Database.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +17,7 @@ namespace SilverBotDS.Commands
     internal class ServerStatsCommands : BaseCommandModule
     {
         private readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        public DatabaseContext Database { private get; set; }
 
         [Command("emoteanalyse")]
         [Description("analyse emote usage in a specified channel")]
@@ -49,6 +53,60 @@ namespace SilverBotDS.Commands
             await OwnerOnly.SendStringFileWithContent(ctx, $"i went through {messages.Count}messages in {(DateTime.Now - start).Humanize(2)}(including download) {(DateTime.Now - startproc).Humanize(2)}(excluding download)\nEmote usage data:", bob.ToString(), "emotes.csv");
             bob.Clear();
             GC.Collect();
+        }
+
+        [Command("setcategory")]
+        [RequireUserPermissions(Permissions.ManageGuild)]
+        [RequireBotPermissions(Permissions.ManageChannels)]
+        public async Task SetCategory(CommandContext ctx, DiscordChannel category)
+        {
+            if (category.Type == ChannelType.Category)
+            {
+                if (category.PermissionsFor(ctx.Guild.CurrentMember).HasPermission(Permissions.ManageChannels))
+                {
+                    Database.SetServerStatsCategory(ctx.Guild.Id, category.Id);
+                    await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                              .WithContent($"Set the category to {category.Name}, you might want to add atleast 4 channels of any kind in it and then run the `setstatstrings` command")
+                                              .WithAllowedMentions(Mentions.None)
+                                              .SendAsync(ctx.Channel);
+                }
+                else
+                {
+                    await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                           .WithContent($"Please give me permission to manage channels in the category")
+                                           .WithAllowedMentions(Mentions.None)
+                                           .SendAsync(ctx.Channel);
+                }
+            }
+        }
+
+        [Command("setstatstrings")]
+        [RequireUserPermissions(Permissions.ManageGuild)]
+        [RequireBotPermissions(Permissions.ManageChannels)]
+        public async Task SetStatisticStrings(CommandContext ctx)
+        {
+            Database.SetServerStatStrings(ctx.Guild.Id, null);
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                      .WithContent($"Set them to the default strings")
+                                      .WithAllowedMentions(Mentions.None)
+                                      .SendAsync(ctx.Channel);
+        }
+
+        [Command("setstatstrings")]
+        [RequireUserPermissions(Permissions.ManageGuild)]
+        [RequireBotPermissions(Permissions.ManageChannels)]
+        public async Task SetStatisticStrings(CommandContext ctx, params string[] cake)
+        {
+            List<ServerStatString> e = new();
+            foreach (var peace in cake)
+            {
+                e.Add(new(peace));
+            }
+            Database.SetServerStatStrings(ctx.Guild.Id, e);
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                      .WithContent($"Set them to the provided things")
+                                      .WithAllowedMentions(Mentions.None)
+                                      .SendAsync(ctx.Channel);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SilverBotDS.Objects.Database.Classes;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SilverBotDS.Objects
 {
@@ -10,5 +12,7 @@ namespace SilverBotDS.Objects
         public string LangName { get; set; }
         public bool EmotesOptin { get; set; }
         public ulong? ServerStatsCategoryId { get; set; }
+        public List<ServerStatString> ServerStatsTemplates { get; set; }
+        //TODO: UNCOMMENT THING AND IMPLEMENT THING THAT BLASTS EARS public bool? EarBlaster9000 { get; set; }
     }
 }

@@ -1,15 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using SDBrowser;
+using SilverBotDS.Objects.Database.Classes;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace SilverBotDS.Objects
 {
@@ -56,6 +54,11 @@ namespace SilverBotDS.Objects
             return userSettings.FirstOrDefault(x => x.Id == id)?.LangName ?? "en";
         }
 
+        public IAsyncEnumerable<Tuple<ulong, ulong?, List<ServerStatString>>> GetStatisticSettings()
+        {
+            return serverSettings.Where(x => x.ServerStatsCategoryId != null).Select(x => new Tuple<ulong, ulong?, List<ServerStatString>>(x.ServerId, x.ServerStatsCategoryId, x.ServerStatsTemplates)).ToAsyncEnumerable();
+        }
+
         public string GetLangCodeGuild(ulong id)
         {
             return serverSettings.FirstOrDefault(x => x.ServerId == id)?.LangName ?? "en";
@@ -87,6 +90,52 @@ namespace SilverBotDS.Objects
                     LangName = "en",
                     ServerId = id,
                     ServerStatsCategoryId = null
+                });
+            }
+            SaveChanges();
+        }
+
+        public void SetServerStatsCategory(ulong sid, ulong? id)
+        {
+            var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
+            if (serversettings is not null)
+            {
+                serversettings.ServerStatsCategoryId = id;
+                serverSettings.Update(serversettings);
+            }
+            else
+            {
+                serverSettings.Add(new()
+                {
+                    EmotesOptin = true,
+                    LangName = "en",
+                    ServerId = sid,
+                    ServerStatsCategoryId = id
+                });
+            }
+            SaveChanges();
+        }
+
+        private readonly List<ServerStatString> StatsTemplates = new() { new("All Members: {AllMembersCount}"), new("Members: {MemberCount}"), new("Bots: {BotsCount}"), new("Boosts: {BoostCount}") };
+
+        public void SetServerStatStrings(ulong sid, List<ServerStatString> id)
+        {
+            id ??= StatsTemplates;
+            var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
+            if (serversettings is not null)
+            {
+                serversettings.ServerStatsTemplates = id;
+                serverSettings.Update(serversettings);
+            }
+            else
+            {
+                serverSettings.Add(new()
+                {
+                    EmotesOptin = true,
+                    LangName = "en",
+                    ServerId = sid,
+                    ServerStatsCategoryId = null,
+                    ServerStatsTemplates = id
                 });
             }
             SaveChanges();

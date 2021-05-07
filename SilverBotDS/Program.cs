@@ -79,17 +79,27 @@ namespace SilverBotDS
             return e;
         }
 
-        private static bool IsNotNullAndIsNotB(string a, string b) => !(string.IsNullOrEmpty(a) || a == b);
+        private static bool IsNotNullAndIsNotB(object a, object b)
+        {
+            if (a is string ea && b is string ba)
+            {
+                return !(string.IsNullOrEmpty(ea) || ea == ba);
+            }
+            return !(a is null || a == b);
+        }
 
         private static async Task MainAsync()
         {
             config = await Config.GetAsync();
-            WebHookUtilz.ParseWebhookUrl(config.LogWebhook, out ulong id, out string token);
-            log = new LoggerConfiguration()
+            WebHookUtilz.ParseWebhookUrlNullable(config.LogWebhook, out ulong? id, out string token);
+            var logfactory = new LoggerConfiguration()
                          .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-                         .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true)
-                         .WriteTo.Discord(new DiscordWebhookMessenger(id, token))
-                         .CreateLogger();
+                         .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
+            if (id != null && string.IsNullOrEmpty(token))
+            {
+                logfactory.WriteTo.Discord(new DiscordWebhookMessenger((ulong)id, token));
+            }
+            log = logfactory.CreateLogger();
             log.Information("Checking for updates");
             //Check for updates
             await VersionInfo.Checkforupdates(httpClient, log);
@@ -267,30 +277,45 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<NsfwCommands>();
             }
+            if (config.EnableServerStatistics)
+            {
+                commands.RegisterCommands<ServerStatsCommands>();
+            }
             //🥁🥁🥁 drum-roll
             log.Information("Connecting to discord");
+            bool isconnected = false;
+            discord.Ready += (DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e) =>
+            {
+                isconnected = true;
+                return Task.CompletedTask;
+            };
+            await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
+            log.Verbose("Waiting for client to connect");
+            while (isconnected)
+            {
+                //intentional empty statement
+            }
+            await Task.Delay(2000);
             if (config.UseLavaLink)
             {
-                discord.Ready += async (DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e) =>
+                await audioService.InitializeAsync();
+                if (!config.SitInVc)
                 {
-                    await audioService.InitializeAsync();
-                    if (!config.SitInVc)
-                    {
-                        trackingService.BeginTracking();
-                    }
-                    if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0) && config.UseLavaLink)
-                    {
-                        waitforfriday.Start();
-                    }
-                };
+                    trackingService.BeginTracking();
+                }
+                if (IsNotNullAndIsNotB(config.FridayTextChannel, 0) && IsNotNullAndIsNotB(config.FridayVoiceChannel, 0) && config.UseLavaLink)
+                {
+                    _ = Task.Run(WaitForFridayAsync);
+                }
             }
-            await discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
-            if (!(config.FridayTextChannel == 0 || config.FridayVoiceChannel == 0) && config.UseLavaLink)
+            if (config.EnableServerStatistics)
             {
-                waitforfriday = new Thread(new ThreadStart(WaitForFriday));
+                _ = Task.Run(() =>
+                {
+                    return StatisticsMainAsync(discord);
+                });
             }
-            log.Verbose("Waiting 3s");
-            await Task.Delay(3000);
+
             while (true)
             {
                 log.Verbose("Updating the status to a random one");
@@ -357,15 +382,72 @@ namespace SilverBotDS
             SendLog(e.Exception);
         }
 
-        private static Thread waitforfriday;
 #pragma warning disable S1075 // URIs should not be hardcoded
         private const string FridayUrl = "https://youtu.be/akT0wxv9ON8";
 #pragma warning restore S1075 // URIs should not be hardcoded
         private static int last_friday;
 
-        public static void WaitForFriday()
+        public static async Task StatisticsMainAsync(DiscordClient client)
         {
-            Task.Run(WaitForFridayAsync);
+            try
+            {
+                log.Verbose("Entered statistics method");
+                while (true)
+                {
+                    var dbctx = serviceProvider.GetRequiredService<DatabaseContext>();
+                    log.Verbose("Getting the settings about statistics");
+                    var things = dbctx.GetStatisticSettings();
+                    log.Verbose("Got the settings about statistics");
+                    await foreach (var thing in things)
+                    {
+                        log.Verbose("Getting the guild with the id {id}", thing.Item1);
+                        try
+                        {
+                            var server = await discord.GetGuildAsync(thing.Item1);
+                            log.Verbose("Got the guild with the id {id}", thing.Item1);
+                            log.Verbose("Getting the channel with the id {id}", thing.Item2);
+                            try
+                            {
+                                var category = server.Channels[(ulong)thing.Item2];
+                                log.Verbose("Got the channel with the id {id}", thing.Item2);
+                                if (category.Type is ChannelType.Category)
+                                {
+                                    int e = 0;
+                                    log.Verbose("Getting the children of the channel {id}", thing.Item2);
+                                    foreach (var child in category.Children)
+                                    {
+                                        if (thing.Item3.Count > e)
+                                        {
+                                            log.Verbose("Updating {Id}", child.Id);
+                                            await child.ModifyAsync(a => a.Name = thing.Item3[e].Serialize(server));
+                                        }
+                                        e++;
+                                    }
+                                }
+                                else
+                                {
+                                    log.Error("uhhhhhh awkward category.type is {CategoryType} and not Category for channel {ChannelId}", category.Type, thing.Item2);
+                                }
+                            }
+                            catch (DSharpPlus.Exceptions.NotFoundException)
+                            {
+                                var dmchannel = await server.Owner.CreateDmChannelAsync();
+                                await dmchannel.SendMessageAsync($"Hello silverbot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work.");
+                                dbctx.SetServerStatsCategory(thing.Item1, null);
+                            }
+                        }
+                        catch (DSharpPlus.Exceptions.NotFoundException)
+                        {
+                            // TODO: ADD TRACKING OF STUFF AND DELETE SERVER SETTINGS IF THIS FAILS 3 TIMES
+                        }
+                    }
+                    await Task.Delay(1800000);
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "FOCK exception happened in stats thread");
+            }
         }
 
         public static async Task WaitForFridayAsync()

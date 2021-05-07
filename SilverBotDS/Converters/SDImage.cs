@@ -23,6 +23,11 @@ namespace SilverBotDS.Converters
 
         public SdImage(string url) => Url = url;
 
+        public SdImage(DiscordUser user)
+        {
+            Url = user.GetAvatarUrl(DSharpPlus.ImageFormat.Png, 2048);
+        }
+
         public static SdImage FromContext(CommandContext ctx)
         {
             var img = FromAttachments(ctx.Message.Attachments);
@@ -86,6 +91,7 @@ namespace SilverBotDS.Converters
     {
         private readonly Regex _expression = new("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         private readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private readonly Regex _user = new("<@!(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         public async Task<Optional<SdImage>> ConvertAsync(string value, CommandContext ctx)
         {
@@ -95,12 +101,16 @@ namespace SilverBotDS.Converters
             {
                 return Optional.FromValue(new SdImage($"https://cdn.discordapp.com/emojis/{m.Groups["id"].Value}"));
             }
-
+            var u = _user.Match(value);
+            if (u.Success)
+            {
+                return Optional.FromValue(new SdImage(await ctx.Client.GetUserAsync(Convert.ToUInt64(u.Groups["id"].Value))));
+            }
             if (_expression.IsMatch(value))
             {
                 if (CodeEnv.Monika.Contains(value))
                 {
-                    await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent("i will not allow such behaviour..... It appears as SilverBot is having some **technical difficulties**, we will retry in a sec...").SendAsync(ctx.Channel);
+                    await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent("i will not allow such behavior..... It appears as SilverBot is having some **technical difficulties**, we will retry in a sec...").SendAsync(ctx.Channel);
                     await Task.Delay(250);
                 }
                 return Optional.FromValue(new SdImage(value));

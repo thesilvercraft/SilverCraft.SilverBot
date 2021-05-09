@@ -312,7 +312,7 @@ namespace SilverBotDS
             {
                 _ = Task.Run(() =>
                 {
-                    return StatisticsMainAsync(discord);
+                    return StatisticsMainAsync();
                 });
             }
 
@@ -387,7 +387,7 @@ namespace SilverBotDS
 #pragma warning restore S1075 // URIs should not be hardcoded
         private static int last_friday;
 
-        public static async Task StatisticsMainAsync(DiscordClient client)
+        public static async Task StatisticsMainAsync()
         {
             try
             {

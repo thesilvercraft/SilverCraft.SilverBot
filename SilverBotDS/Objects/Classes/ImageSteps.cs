@@ -53,7 +53,7 @@ namespace SilverBotDS.Objects
                 }
                 else if (step is PictureStep step1)
                 {
-                    using var resizedbytes = ImageModule.Resize(await step1.Image().GetBytesAsync(client), new Size((int)step1.xSize, (int)step1.ySize));
+                    using var resizedbytes = await ImageModule.ResizeAsync(await step1.Image().GetBytesAsync(client), new SixLabors.ImageSharp.Size((int)step1.xSize, (int)step1.ySize));
                     using var resizedimg = new Bitmap(resizedbytes);
                     graphics.DrawImage(resizedimg, new Point((int)step.x, (int)step.y));
                 }

@@ -3,9 +3,6 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
-using ImageProcessor;
-using ImageProcessor.Imaging.Filters.Photo;
-using ImageProcessor.Imaging.Formats;
 using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
@@ -18,6 +15,25 @@ using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using Size = SixLabors.ImageSharp.Size;
+using SImage = SixLabors.ImageSharp.Image;
+using SColor = SixLabors.ImageSharp.Color;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Drawing.Processing;
+using Point = System.Drawing.Point;
+using SolidBrush = System.Drawing.SolidBrush;
+using Color = System.Drawing.Color;
+using Image = System.Drawing.Image;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using static SilverBotDS.Commands.ImageModule;
+using RectangleF = System.Drawing.RectangleF;
+using PointF = System.Drawing.PointF;
+using SizeF = System.Drawing.SizeF;
+using System.Drawing.Imaging;
+using Rectangle = System.Drawing.Rectangle;
+using ImageFormat = DSharpPlus.ImageFormat;
 
 namespace SilverBotDS.Commands
 {
@@ -28,7 +44,6 @@ namespace SilverBotDS.Commands
 
         private const int MaxBytes = 8388246;
 
-        private const int Quality = 70;
         public HttpClient HttpClient { private get; set; }
 
         private static async Task Sendcorrectamountofimages(CommandContext ctx, AttachmentCountIncorrect e, Language lang = null)
@@ -51,44 +66,29 @@ namespace SilverBotDS.Commands
             await new DiscordMessageBuilder().WithContent(content).WithFile(filename, outstream).WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }
 
-        public static MemoryStream Resize(byte[] photoBytes, Size size, bool centered = true)
+        public static async Task<MemoryStream> ResizeAsync(byte[] photoBytes, Size size)
         {
-            ISupportedImageFormat format = new PngFormat { Quality = Quality };
-            using var inStream = new MemoryStream(photoBytes);
-            var outStream = new MemoryStream();
-            using var imageFactory = new ImageFactory();
-            imageFactory.Load(inStream)
-                .Format(format)
-                .Resize(new ImageProcessor.Imaging.ResizeLayer(size, anchorPosition: centered ? ImageProcessor.Imaging.AnchorPosition.Center : ImageProcessor.Imaging.AnchorPosition.TopLeft))
-                .Save(outStream);
-            return outStream;
+            using SImage img = SImage.Load(photoBytes);
+            img.Mutate(x => x.Resize(size));
+            MemoryStream stream = new();
+            await img.SaveAsPngAsync(stream);
+            stream.Position = 0;
+            return stream;
         }
 
-        private static MemoryStream Make_jpegnised(byte[] photoBytes)
+        private static readonly JpegEncoder BadJpegEncoder = new()
         {
-            ISupportedImageFormat format = new JpegFormat { Quality = 1 };
-            using var inStream = new MemoryStream(photoBytes);
-            var outStream = new MemoryStream();
-            using var imageFactory = new ImageFactory();
-            imageFactory.Load(inStream)
-                .Format(format)
-                .Save(outStream);
-            return outStream;
-        }
+            Quality = 1
+        };
 
-        private static MemoryStream Shet_On(byte[] photoBytes)
+        private static async Task<MemoryStream> Make_jpegnisedAsync(byte[] photoBytes)
         {
-            ISupportedImageFormat format = new JpegFormat { Quality = 1 };
-            using var inStream = new MemoryStream(photoBytes);
-            var outStream = new MemoryStream();
-            using var imageFactory = new ImageFactory();
-            imageFactory.Load(inStream);
-            int x = imageFactory.Image.Width, y = imageFactory.Image.Height;
-            imageFactory.Format(format)
-                .Resize(new Size(imageFactory.Image.Width / 4, imageFactory.Image.Height / 4))
-                .Resize(new Size(x, y))
-                .Save(outStream);
-            return outStream;
+            using SImage img = SImage.Load(photoBytes);
+            img.Mutate(x => x.Grayscale());
+            MemoryStream stream = new();
+            await img.SaveAsJpegAsync(stream, BadJpegEncoder);
+            stream.Position = 0;
+            return stream;
         }
 
         private static async Task Send_img_plsAsync(CommandContext ctx, string e, Language lang = null)
@@ -102,17 +102,47 @@ namespace SilverBotDS.Commands
                                              .SendAsync(ctx.Channel);
         }
 
-        private static MemoryStream Tint(byte[] photoBytes, string color)
+        private static async Task<MemoryStream> TintAsync(byte[] photoBytes, string color)
         {
-            ISupportedImageFormat format = new PngFormat { Quality = Quality };
-            using var inStream = new MemoryStream(photoBytes);
-            var outStream = new MemoryStream();
-            using var imageFactory = new ImageFactory();
-            imageFactory.Load(inStream)
-                .Tint(ColorTranslator.FromHtml(color))
-                .Format(format)
-                .Save(outStream);
-            return outStream;
+            bool v = SColor.TryParse(color, out SColor tintcolor);
+            if (!v)
+            {
+                throw new DivideByZeroException("Color not found");
+            }
+            var instream = new MemoryStream(photoBytes);
+            using var img = Image.FromStream(instream);
+            await instream.DisposeAsync();
+            var pixel = tintcolor.ToPixel<Rgba32>();
+            using var newImage = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppPArgb);
+            newImage.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+            float[][] colorMatrixElements =
+                     {
+                        new[] { pixel.R / 255f, 0, 0, 0, 0 }, // Red
+                        new[] { 0, pixel.G / 255f, 0, 0, 0 }, // Green
+                        new[] { 0, 0, pixel.B / 255f, 0, 0 }, // Blue
+                        new[] { 0, 0, 0, pixel.A / 255f, 0 }, // Alpha
+                        new float[] { 0, 0, 0, 0, 1 }
+                    };
+            using (var graphics = Graphics.FromImage(newImage))
+            {
+                using var attributes = new ImageAttributes();
+                var colorMatrix = new System.Drawing.Imaging.ColorMatrix(colorMatrixElements);
+                attributes.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                graphics.DrawImage(img, new Rectangle(0, 0, img.Width, img.Height), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, attributes);
+            }
+            instream = new MemoryStream
+            {
+                Position = 0
+            };
+            newImage.Save(instream, System.Drawing.Imaging.ImageFormat.Png);
+            instream.Position = 0;
+            return instream;
+        }
+
+        public enum EFilter
+        {
+            Grayscale,
+            Comic
         }
 
         /// <summary>
@@ -121,17 +151,16 @@ namespace SilverBotDS.Commands
         /// <param name="photoBytes">The <see cref="byte"/> of the original picture</param>
         /// <param name="filter">The <see cref="IMatrixFilter"/> to use</param>
         /// <returns>A ,<see cref="MemoryStream"/> with a <see cref="PngFormat"/> of 70 Quality</returns>
-        private static MemoryStream Filter(byte[] photoBytes, IMatrixFilter filter)
+        private static MemoryStream Filter(byte[] photoBytes, EFilter filter)
         {
-            ISupportedImageFormat format = new PngFormat { Quality = Quality };
-            using var inStream = new MemoryStream(photoBytes);
-            var outStream = new MemoryStream();
-            using var imageFactory = new ImageFactory();
-            imageFactory.Load(inStream)
-                .Filter(filter)
-                .Format(format)
-                .Save(outStream);
-            return outStream;
+            using SImage img = SImage.Load(photoBytes);
+            if (filter == EFilter.Grayscale)
+            {
+                img.Mutate(x => x.Grayscale());
+            }
+            MemoryStream stream = new();
+            img.SaveAsPngAsync(stream);
+            return stream;
         }
 
         [Command("template")]
@@ -216,7 +245,7 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Make_jpegnised(await image.GetBytesAsync(HttpClient));
+            await using var outStream = await Make_jpegnisedAsync(await image.GetBytesAsync(HttpClient));
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -241,43 +270,12 @@ namespace SilverBotDS.Commands
             }
         }
 
-        [Command("shet")]
-        public async Task Shet(CommandContext ctx, [Description("the url of the image")] SdImage image)
-        {
-            await ctx.TriggerTypingAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Shet_On(await image.GetBytesAsync(HttpClient));
-            if (outStream.Length > MaxBytes)
-            {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
-            }
-            else
-            {
-                await SendImageStream(ctx, outStream, "silverbotimage.jpeg", lang.Imagethings.JpegSuccess, lang);
-            }
-        }
-
-        [Command("shet")]
-        public async Task Shet(CommandContext ctx)
-        {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Shet(ctx, image);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount, lang);
-            }
-        }
-
         [Command("resize")]
         public async Task Resize(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("Width")] int x, [Description("Height")] int y)
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Resize(await image.GetBytesAsync(HttpClient), new Size(x, y));
+            await using var outStream = await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(x, y));
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -307,7 +305,8 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Tint(await image.GetBytesAsync(HttpClient), color);
+            await using var outStream = await TintAsync(await image.GetBytesAsync(HttpClient), color);
+            outStream.Position = 0;
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -352,7 +351,8 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Filter(await image.GetBytesAsync(HttpClient), MatrixFilters.GreyScale);
+            await using var outStream = Filter(await image.GetBytesAsync(HttpClient), EFilter.Grayscale);
+            outStream.Position = 0;
             if (outStream.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
@@ -363,37 +363,14 @@ namespace SilverBotDS.Commands
             }
         }
 
-        [Command("comic")]
-        public async Task Comic(CommandContext ctx)
-        {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Comic(ctx, image);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount, lang);
-            }
-        }
-
-        [Command("comic")]
-        public async Task Comic(CommandContext ctx, [Description("the url of the image")] SdImage image)
-        {
-            await ctx.TriggerTypingAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Filter(await image.GetBytesAsync(HttpClient), MatrixFilters.Comic);
-            if (outStream.Length > MaxBytes)
-            {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
-            }
-            else
-            {
-                await SendImageStream(ctx, outStream, content: lang.Imagethings.ComicSuccess, lang: lang);
-            }
-        }
-
+        /// <summary>
+        /// Renders some text
+        /// </summary>
+        /// <param name="text">the text to render</param>
+        /// <param name="font">the font to use</param>
+        /// <param name="textColor">the color to use while rendering the text</param>
+        /// <param name="backColor">the background color to use</param>
+        /// <returns>An <see cref="Image"/></returns>
         private static Image DrawText(string text, Font font, Color textColor, Color backColor)
         {
             Image img = new Bitmap(1, 1);
@@ -413,10 +390,10 @@ namespace SilverBotDS.Commands
         }
 
         [Command("text")]
-        public async Task Text(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light")
+        public async Task Text(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light", float size = 30.0f)
         {
             await ctx.TriggerTypingAsync();
-            var img = DrawText(text, new Font(font, 30.0f), Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255));
+            var img = DrawText(text, new Font(font, size), Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255));
             await using var outStream = new MemoryStream();
             img.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
             outStream.Position = 0;
@@ -474,7 +451,7 @@ namespace SilverBotDS.Commands
                     LineAlignment = StringAlignment.Center,
                 };
                 while (drawing.MeasureString(text,
-new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
+        new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 {
                     font = new Font(font.FontFamily, font.Size - 1f, font.Style);
                 }
@@ -487,7 +464,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                     drawing.DpiY * font.Size / 72,
                     new Rectangle(267, 894, 1370, 186),
                     sf);
-                drawing.DrawPath(new Pen(new SolidBrush(Color.Black), 2), p);
+                drawing.DrawPath(new System.Drawing.Pen(new SolidBrush(Color.Black), 2), p);
                 drawing.FillPath(new SolidBrush(Color.White), p);
                 drawing.Save();
                 await using MemoryStream outStream = new();
@@ -529,19 +506,14 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                     await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.happy_new_year_template.png");
                     cachednewyeartemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.happy_new_year_template.png"));
                 }
-
                 await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person, 350));
-
                 using var copythingy = new Bitmap(cachednewyeartemplate.Width, cachednewyeartemplate.Height);
                 var drawing = Graphics.FromImage(copythingy);
-
                 using (Bitmap internalimage = new(resizedstreama))
                 {
                     drawing.DrawImageUnscaled(internalimage, new Point(19, 70));
                 }
-
                 drawing.DrawImageUnscaled(cachednewyeartemplate, new Point(0, 0));
-
                 drawing.Save();
                 await using MemoryStream outStream = new();
                 outStream.Position = 0;
@@ -605,10 +577,8 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 {
                     drawing.DrawImageUnscaled(internalimage, new Point(557, 699));
                 }
-
                 drawing.Save();
                 await using MemoryStream outStream = new();
-                outStream.Position = 0;
                 copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
                 outStream.Position = 0;
                 if (outStream.Length > MaxBytes)
@@ -649,7 +619,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
             else
             {
                 stream.Position = 0;
-                await using var resizedstream = Resize(stream.ToArray(), new(size, size));
+                await using var resizedstream = await ResizeAsync(stream.ToArray(), new(size, size));
                 resizedstream.Position = 0;
                 return resizedstream.ToArray();
             }
@@ -666,7 +636,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.paint_template.png");
                 cachedpaintreliabletemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.paint_template.png"));
             }
-            await using var resizedstream = Resize(await image.GetBytesAsync(HttpClient), new Size(1771, 984), true);
+            await using var resizedstream = await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(1771, 984));
             using var copythingy = new Bitmap(cachedpaintreliabletemplate);
             var drawing = Graphics.FromImage(copythingy);
             using (Bitmap internalimage = new(resizedstream))
@@ -714,7 +684,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 cachedmotivatetemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.motivator_template.png"));
             }
             var font = new Font("Times New Roman", 100);
-            await using var resizedstream = Resize(await image.GetBytesAsync(HttpClient), new Size(1027, 684));
+            await using var resizedstream = await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(1027, 684));
             using var copythingy = new Bitmap(cachedmotivatetemplate);
             var drawing = Graphics.FromImage(copythingy);
             using (Bitmap internalimage = new(resizedstream))
@@ -727,7 +697,7 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
                 Alignment = StringAlignment.Center
             };
             while (drawing.MeasureString(text,
-new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
+        new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
             {
                 font = new Font(font.FontFamily, font.Size - 0.5f, font.Style);
             }
@@ -823,21 +793,9 @@ new Font(font.FontFamily, font.Size, font.Style)).Width > 1041)
         public async Task Usertest(CommandContext ctx)
         {
             await ctx.TriggerTypingAsync();
+            var outStream = new MemoryStream();
             SdImage image = new(ctx.User.GetAvatarUrl(ImageFormat.Png));
-            ISupportedImageFormat format = new PngFormat { Quality = Quality };
-            var size = new Size(200, 200);
-            await using var inStream = new MemoryStream(await image.GetBytesAsync(HttpClient));
-            await using var avatarStream = new MemoryStream();
-            await using var outStream = new MemoryStream();
-            using (var imageFactory = new ImageFactory())
-            {
-                imageFactory.Load(inStream)
-                            .Resize(size)
-                            .Format(format)
-                            .Save(avatarStream);
-            }
-            avatarStream.Position = 0;
-            using (var imanidiot = Image.FromStream(avatarStream))
+            using (var imanidiot = Image.FromStream(await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(200, 200))))
             {
                 Image imge = new Bitmap(800, 240);
                 using (var gr = Graphics.FromImage(imge))

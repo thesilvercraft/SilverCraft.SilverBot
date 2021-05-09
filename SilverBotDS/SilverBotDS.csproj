@@ -75,7 +75,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Humanizer" Version="2.10.1" />
-    <PackageReference Include="ImageProcessor.Core" Version="1.1.0" />
     <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.0-beta.3" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.7.2" />
     <PackageReference Include="Markdig.Signed" Version="0.24.0" />
@@ -99,6 +98,8 @@
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10286" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00909" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4-alpha.0.15" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11.8" />
     <PackageReference Include="SpotifyAPI.Web" Version="6.2.0" />
     <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0-preview.3.21201.4" />

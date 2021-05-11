@@ -24,13 +24,14 @@ namespace SilverBotDS.Commands
         [Cooldown(1, 60 * 60, CooldownBucketType.Guild)]
         public async Task EmoteAnalytics(CommandContext ctx, DiscordChannel channel, int limit = 10000)
         {
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithContent($"starting emoji getter bot dot exe 69696969696969969696\nDownloading at most {limit} messages which will take around {new TimeSpan(0, 0, limit / 100).Humanize(2)} cause of discord ratelimit")
+                                             .WithContent(string.Format(lang.StatisticCommand.EmojiMessageDownloadStart, limit, new TimeSpan(0, 0, limit / 100).Humanize(2)))
                                              .SendAsync(ctx.Channel);
             DateTime start = DateTime.Now;
             var messages = await channel.GetMessagesAsync(limit);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                            .WithContent($"Downloaded {messages.Count} while expecting {limit}, estimated time was: {new TimeSpan(0, 0, limit / 100).Humanize(2)} actual time was {(DateTime.Now - start).Humanize(2)} expected time if provided correct limit would be {new TimeSpan(0, 0, messages.Count / 100).Humanize(2)}\nWell anyways processing messages")
+                                            .WithContent(string.Format(lang.StatisticCommand.EmojiMessageDownloadEnd, messages.Count, limit, new TimeSpan(0, 0, limit / 100).Humanize(2), (DateTime.Now - start).Humanize(2), new TimeSpan(0, 0, messages.Count / 100).Humanize(2)))
                                             .SendAsync(ctx.Channel);
             DateTime startproc = DateTime.Now;
             StringBuilder bob = new("Name,Id,Timestamp\n");
@@ -44,13 +45,13 @@ namespace SilverBotDS.Commands
                     {
                         foreach (Match match in m.ToArray())
                         {
-                            bob.AppendLine($"{match.Groups["name"].Value},{Convert.ToUInt64(match.Groups["id"].Value)},{ (DateTimeOffset)(message.EditedTimestamp != null ? message.EditedTimestamp : message.Timestamp):yyyy-MM-dd HH:mm:ss}");
+                            bob.AppendLine($"{match.Groups["name"].Value},{Convert.ToUInt64(match.Groups["id"].Value)},{(DateTimeOffset)(message.EditedTimestamp != null ? message.EditedTimestamp : message.Timestamp):yyyy-MM-dd HH:mm:ss}");
                         }
                     }
                 }
                 e++;
             }
-            await OwnerOnly.SendStringFileWithContent(ctx, $"i went through {messages.Count}messages in {(DateTime.Now - start).Humanize(2)}(including download) {(DateTime.Now - startproc).Humanize(2)}(excluding download)\nEmote usage data:", bob.ToString(), "emotes.csv");
+            await OwnerOnly.SendStringFileWithContent(ctx, string.Format(lang.StatisticCommand.EmojiEnd, messages.Count, (DateTime.Now - start).Humanize(2), (DateTime.Now - startproc).Humanize(2)), bob.ToString(), "emotes.csv");
             bob.Clear();
             GC.Collect();
         }
@@ -62,18 +63,19 @@ namespace SilverBotDS.Commands
         {
             if (category.Type == ChannelType.Category)
             {
+                var lang = await Language.GetLanguageFromCtxAsync(ctx);
                 if (category.PermissionsFor(ctx.Guild.CurrentMember).HasPermission(Permissions.ManageChannels))
                 {
                     Database.SetServerStatsCategory(ctx.Guild.Id, category.Id);
                     await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                              .WithContent($"Set the category to {category.Name}, you might want to add atleast 4 channels of any kind in it and then run the `setstatstrings` command")
+                                              .WithContent(string.Format(lang.StatisticCommand.CategorySetSuccess, category.Name))
                                               .WithAllowedMentions(Mentions.None)
                                               .SendAsync(ctx.Channel);
                 }
                 else
                 {
                     await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                           .WithContent($"Please give me permission to manage channels in the category")
+                                           .WithContent(lang.StatisticCommand.NoPerm)
                                            .WithAllowedMentions(Mentions.None)
                                            .SendAsync(ctx.Channel);
                 }
@@ -85,9 +87,10 @@ namespace SilverBotDS.Commands
         [RequireBotPermissions(Permissions.ManageChannels)]
         public async Task SetStatisticStrings(CommandContext ctx)
         {
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             Database.SetServerStatStrings(ctx.Guild.Id, null);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                      .WithContent($"Set them to the default strings")
+                                      .WithContent(lang.StatisticCommand.SetToDefaultStrings)
                                       .WithAllowedMentions(Mentions.None)
                                       .SendAsync(ctx.Channel);
         }
@@ -97,6 +100,7 @@ namespace SilverBotDS.Commands
         [RequireBotPermissions(Permissions.ManageChannels)]
         public async Task SetStatisticStrings(CommandContext ctx, params string[] cake)
         {
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             List<ServerStatString> e = new();
             foreach (var peace in cake)
             {
@@ -104,7 +108,7 @@ namespace SilverBotDS.Commands
             }
             Database.SetServerStatStrings(ctx.Guild.Id, e);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                      .WithContent($"Set them to the provided things")
+                                      .WithContent(lang.StatisticCommand.SetToProvidedStrings)
                                       .WithAllowedMentions(Mentions.None)
                                       .SendAsync(ctx.Channel);
         }

@@ -35,15 +35,15 @@ namespace SilverBotDS.Commands.Gamering
                         switch (listings[i].SaleType)
                         {
                             case SteamStoreQuery.Enums.sType.FreeToPlay:
-                                tempbuilder.WithAuthor("F2P");
+                                tempbuilder.WithAuthor(lang.SteamCommand.FreeToPlayGameType);
                                 break;
 
                             case SteamStoreQuery.Enums.sType.NotAvailable:
-                                tempbuilder.WithAuthor("Not Available");
+                                tempbuilder.WithAuthor(lang.SteamCommand.NotAvailableGameType);
                                 break;
 
                             case SteamStoreQuery.Enums.sType.CostsMoney:
-                                tempbuilder.WithAuthor("It costs merica bucks but idk how much");
+                                tempbuilder.WithAuthor(lang.SteamCommand.CostsMoneyGameTypeBug);
                                 break;
 
                             default:
@@ -52,7 +52,7 @@ namespace SilverBotDS.Commands.Gamering
                     }
                     else
                     {
-                        tempbuilder.WithAuthor(listings[i].Price + "merica bucks");
+                        tempbuilder.WithAuthor(string.Format(lang.SteamCommand.AmericanMoney, listings[i].Price));
                     }
                     tempbuilder.WithFooter($"{lang.RequestedBy}{ctx.User.Username} {string.Format(lang.PageNuget, i + 1, listings.Count)}", ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(listings[i].ImageLink))
@@ -68,8 +68,8 @@ namespace SilverBotDS.Commands.Gamering
                 else
                 {
                     var bob = new DiscordEmbedBuilder();
-                    bob.WithTitle("0 Games were returned");
-                    bob.WithDescription("Try again later, or try changing your search term");
+                    bob.WithTitle(lang.SteamCommand.NoGamesWereReturned);
+                    bob.WithDescription(lang.SteamCommand.NoGamesWereReturnedDescription);
                     await ctx.RespondAsync(embed: bob.Build());
                 }
             }

@@ -397,6 +397,8 @@ namespace SilverBotDS.Objects
         public VersioninfoCommand VersionInfoCommand { get; set; } = new();
         public NugetCommand NuGetCommand { get; set; } = new();
         public MathCommands Mathcommands { get; set; } = new();
+        public SteamCommands SteamCommand { get; set; } = new();
+        public StatisticCommands StatisticCommand { get; set; } = new();
         public string BotBannedUser { get; set; } = "The bot has attempted to ban the user";
         public string BotKickedUser { get; set; } = "The bot has attempted to kick the user";
         public string AddedXAmountOfSongs { get; set; } = "Added {0} songs to the queue";

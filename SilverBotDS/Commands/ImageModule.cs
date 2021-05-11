@@ -102,17 +102,12 @@ namespace SilverBotDS.Commands
                                              .SendAsync(ctx.Channel);
         }
 
-        private static async Task<MemoryStream> TintAsync(byte[] photoBytes, string color)
+        private static async Task<MemoryStream> TintAsync(byte[] photoBytes, SColor color)
         {
-            bool v = SColor.TryParse(color, out SColor tintcolor);
-            if (!v)
-            {
-                throw new DivideByZeroException("Color not found");
-            }
             var instream = new MemoryStream(photoBytes);
             using var img = Image.FromStream(instream);
             await instream.DisposeAsync();
-            var pixel = tintcolor.ToPixel<Rgba32>();
+            var pixel = color.ToPixel<Rgba32>();
             using var newImage = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppPArgb);
             newImage.SetResolution(img.HorizontalResolution, img.VerticalResolution);
             float[][] colorMatrixElements =
@@ -301,7 +296,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("tint")]
-        public async Task Tint(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("color in hex like #fffff")] string color)
+        public async Task Tint(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Color.html#SixLabors_ImageSharp_Color_TryParse_System_String_SixLabors_ImageSharp_Color__")] SColor color)
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -318,7 +313,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("tint")]
-        public async Task Tint(CommandContext ctx, [Description("color in hex like #fffff")] string color)
+        public async Task Tint(CommandContext ctx, [Description("https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Color.html#SixLabors_ImageSharp_Color_TryParse_System_String_SixLabors_ImageSharp_Color__")] SColor color)
         {
             try
             {

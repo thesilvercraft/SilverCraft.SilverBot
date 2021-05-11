@@ -1,5 +1,4 @@
-﻿using CXuesong.Uel.Serilog.Sinks.Discord;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
@@ -36,6 +35,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using SDiscordSink;
 
 namespace SilverBotDS
 {
@@ -95,9 +95,9 @@ namespace SilverBotDS
             var logfactory = new LoggerConfiguration()
                          .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                          .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
-            if (id != null && string.IsNullOrEmpty(token))
+            if (!(id == null || string.IsNullOrEmpty(token)))
             {
-                logfactory.WriteTo.Discord(new DiscordWebhookMessenger((ulong)id, token));
+                logfactory.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
             log = logfactory.CreateLogger();
             log.Information("Checking for updates");
@@ -239,6 +239,7 @@ namespace SilverBotDS
             //Register our commands
             log.Verbose("Registering Commands&Converters");
             commands.RegisterConverter(new SdImageConverter());
+            commands.RegisterConverter(new SColorConverter());
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<ModCommands>();
@@ -365,17 +366,23 @@ namespace SilverBotDS
                         await e.Context.Channel.SendPaginatedMessageAsync(e.Context.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
                     }
                 }
-                if (e.Exception is DSharpPlus.CommandsNext.Exceptions.InvalidOverloadException || e.Exception is ArgumentException a && a.Message == "Could not find a suitable overload for the command.")
+                else if (e.Exception is DSharpPlus.CommandsNext.Exceptions.InvalidOverloadException || e.Exception is ArgumentException a && a.Message == "Could not find a suitable overload for the command.")
                 {
                     await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
                                 .WithContent($"Invalid overload for `{e.Command.Name}`")
                                 .SendAsync(e.Context.Channel);
                 }
-                if (e.Exception is InvalidOperationException ioe && ioe.Message == "No matching subcommands were found, and this group is not executable.")
+                else if (e.Exception is InvalidOperationException ioe && ioe.Message == "No matching subcommands were found, and this group is not executable.")
                 {
                     await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
                                 .WithContent(ioe.Message)
                                 .SendAsync(e.Context.Channel);
+                }
+                else
+                {
+                    await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
+                                   .WithContent("⚠An error occurred, more information has been sent to the bot owner's log.")
+                                   .SendAsync(e.Context.Channel);
                 }
             }
 
@@ -432,7 +439,7 @@ namespace SilverBotDS
                             catch (DSharpPlus.Exceptions.NotFoundException)
                             {
                                 var dmchannel = await server.Owner.CreateDmChannelAsync();
-                                await dmchannel.SendMessageAsync($"Hello silverbot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work.");
+                                await dmchannel.SendMessageAsync($"Hello silverbot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work as something broke.");
                                 dbctx.SetServerStatsCategory(thing.Item1, null);
                             }
                         }

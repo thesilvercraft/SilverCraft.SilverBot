@@ -366,7 +366,7 @@ namespace SilverBotDS.Commands
         /// <param name="textColor">the color to use while rendering the text</param>
         /// <param name="backColor">the background color to use</param>
         /// <returns>An <see cref="Image"/></returns>
-        private static Image DrawText(string text, Font font, Color textColor, Color backColor)
+        public static Image DrawText(string text, Font font, Color textColor, Color backColor)
         {
             Image img = new Bitmap(1, 1);
             var drawing = Graphics.FromImage(img);
@@ -782,28 +782,6 @@ namespace SilverBotDS.Commands
             {
                 await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
-        }
-
-        [Command("usertest")]
-        public async Task Usertest(CommandContext ctx)
-        {
-            await ctx.TriggerTypingAsync();
-            var outStream = new MemoryStream();
-            SdImage image = new(ctx.User.GetAvatarUrl(ImageFormat.Png));
-            using (var imanidiot = Image.FromStream(await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(200, 200))))
-            {
-                Image imge = new Bitmap(800, 240);
-                using (var gr = Graphics.FromImage(imge))
-                {
-                    gr.Clear(Color.White);
-                    gr.DrawImage(imanidiot, new Point(13, 20));
-                    using var img = DrawText(ctx.User.Username + "#" + ctx.User.Discriminator, new Font("Diavlo Light", 30.0f), Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
-                    gr.DrawImage(img, new Point(229, 25));
-                }
-                imge.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
-            }
-            outStream.Position = 0;
-            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("there").WithFile("silverbotimage.png", outStream));
         }
     }
 }

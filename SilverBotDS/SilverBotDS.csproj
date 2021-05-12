@@ -87,6 +87,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0-preview.3.21201.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-preview.3.21201.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0-preview.3.21201.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Graph" Version="4.0.0-preview.4" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.7" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.30.1" />

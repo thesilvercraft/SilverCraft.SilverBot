@@ -24,7 +24,7 @@ namespace SilverBotDS.Commands
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
 
-        [Command("addemotee")]
+        [Command("addemote")]
         [Description("Wanna add a emote but discord is too complicated to navigate. You need to add attachment here ")]
         [RequireGuild]
         [RequirePermissions(Permissions.ManageEmojis)]

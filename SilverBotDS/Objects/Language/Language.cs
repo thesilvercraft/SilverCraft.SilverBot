@@ -405,6 +405,13 @@ namespace SilverBotDS.Objects
         public string TrackingStarted { get; set; } = "This isn't implemented.";
         public string TrackingStopped { get; set; } = "Enabled 24/7 mode";
         public string TrackCanNotBeSeeked { get; set; } = "This track can not be seeked";
+        public string XPCommandSelf { get; set; } = "You have {0} XP, which are into {1} {2}";
+        public string XPCommandOther { get; set; } = "They have {0} XP, which are into {1} {2}";
+        public string XPCommandGeneralFail { get; set; } = "Ooops the database broke, please dm an SilverBot admin";
+        public string XPCommandLevel { get; set; } = "level";
+        public string XPCommandLevels { get; set; } = "levels";
+        public string XPCommandFailSelf { get; set; } = "It appears that something either went wrong or you do not have any xp.";
+        public string XPCommandFailOther { get; set; } = "It appears that something either went wrong or they do not have any xp.";
 
         public CultureInfo GetCultureInfo()
         {

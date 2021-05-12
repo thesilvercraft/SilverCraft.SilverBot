@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects
 {
-    internal class DatabaseContext : DbContext
+    public class DatabaseContext : DbContext
     {
         public readonly static string HtmlStart = "<html>" +
                       "<head>" +
@@ -38,9 +38,9 @@ namespace SilverBotDS.Objects
 
         public DbSet<ServerSettings> serverSettings { get; set; }
         public DbSet<UserSettings> userSettings { get; set; }
+        public DbSet<UserExperience> userExperiences { get; set; }
 
-        public DatabaseContext(DbContextOptions<DatabaseContext> options)
-       : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
 

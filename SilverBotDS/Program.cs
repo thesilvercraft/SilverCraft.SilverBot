@@ -36,6 +36,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using SDiscordSink;
+using SilverBotDS.Objects.Database.Classes;
 
 namespace SilverBotDS
 {
@@ -157,26 +158,26 @@ namespace SilverBotDS
                     {
                         if (config != null && !string.IsNullOrEmpty(config.ConnString))
                         {
-                            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(config.ConnString));
+                            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(config.ConnString), ServiceLifetime.Transient);
                         }
                         else
                         {
                             Uri tmp = new(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
                             string[] usernameandpass = tmp.UserInfo.Split(":");
-                            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql($"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}"));
+                            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql($"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}"), ServiceLifetime.Transient);
                         }
                         break;
                     }
                 case 2:
                     {
-                        services.AddDbContext<DatabaseContext>(options => options.UseSqlite("Filename=./silverbotdatabasev2.db"));
+                        services.AddDbContext<DatabaseContext>(options => options.UseSqlite("Filename=./silverbotdatabasev2.db"), ServiceLifetime.Transient);
                         break;
                     }
+
                 default:
-                    {
-                        throw new NotImplementedException();
-                    }
+                    break;
             }
+
             services.AddSingleton(config);
             services.AddSingleton(httpClient);
             if (config.AutoDownloadAndStartLavalink)
@@ -186,9 +187,7 @@ namespace SilverBotDS
                 {
                     //file not found time to download lavalink
                     log.Information("Downloading lavalink");
-                    GitHubUtils.Repo repo = new("freyacodes", "Lavalink");
-                    GitHubUtils.Release release = await GitHubUtils.Release.GetLatestFromRepoAsync(repo, httpClient);
-                    await release.DownloadLatestAsync(httpClient);
+                    await (await GitHubUtils.Release.GetLatestFromRepoAsync(new("freyacodes", "Lavalink"), httpClient)).DownloadLatestAsync(httpClient);
                 }
                 log.Information("Launching lavalink");
                 new Process
@@ -230,7 +229,8 @@ namespace SilverBotDS
             }
 
             serviceProvider = services.BuildServiceProvider();
-            serviceProvider.GetRequiredService<DatabaseContext>().Database.EnsureCreated();
+            var context = serviceProvider.GetService<DatabaseContext>();
+            context.Database.Migrate();
             CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration()
             {
                 StringPrefixes = config.Prefix,
@@ -246,6 +246,7 @@ namespace SilverBotDS
             commands.RegisterCommands<Giphy>();
             commands.RegisterCommands<ImageModule>();
             commands.RegisterCommands<AdminCommands>();
+            commands.RegisterCommands<Experience>();
             if (config.AllowOwnerOnlyCommands)
             {
                 commands.RegisterCommands<OwnerOnly>();
@@ -486,6 +487,27 @@ namespace SilverBotDS
         }
 
         private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "fock", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "quality fock", "fock you", "we will fock you" };
+        private static Dictionary<ulong, DateTime> levellimit = new();
+        private static TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
+
+        private static async Task IncreaseXP(ulong id, ulong count = 1)
+        {
+            var context = serviceProvider.GetService<DatabaseContext>();
+
+            var o = await context.userExperiences.FirstOrDefaultAsync(x => x.Id == id);
+            if (o is not null)
+            {
+                o.Increase(count);
+                context.userExperiences.Update(o);
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                o = new UserExperience { Id = id, XP = 1 };
+                context.userExperiences.Add(o);
+                await context.SaveChangesAsync();
+            }
+        }
 
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
@@ -494,46 +516,68 @@ namespace SilverBotDS
                 //ha nice try
                 return;
             }
-            if ((e.Channel.IsPrivate || e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages)) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
+            if (!e.Channel.IsPrivate)
             {
-                if (config.EmulateBubot)
+                if (levellimit.ContainsKey(e.Author.Id))
                 {
-                    switch (e.Message.Content)
+                    var prev = levellimit[e.Author.Id];
+                    if ((DateTime.UtcNow - prev) > MessageLimit)
                     {
-                        case "fock":
-                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                     .WithContent(e.Message.Content)
-                                     .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
-                                     .SendAsync(e.Channel);
-                            return;
-
-                        case "quality fock":
-                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                             .WithContent(e.Message.Content)
-                             .WithFile("quality_fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.quality_fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.quality_fock.mp3"))
-                             .SendAsync(e.Channel);
-                            return;
-
-                        case "fock you":
-                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                             .WithContent("fock you too")
-                             .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
-                             .SendAsync(e.Channel);
-                            return;
-
-                        case "we will fock you":
-                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                             .WithContent("https://www.youtube.com/watch?v=lLN3caSQI1w")
-                             .SendAsync(e.Channel);
-                            return;
-
-                        default:
-                            break;
+                        await IncreaseXP(e.Author.Id);
                     }
                 }
-                await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                             .WithContent(e.Message.Content)
-                                             .SendAsync(e.Channel);
+                else
+                {
+                    levellimit.Add(e.Author.Id, DateTime.UtcNow);
+                    await IncreaseXP(e.Author.Id);
+                }
+            }
+
+            if ((e.Channel.IsPrivate || e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages))
+              )
+            {
+                //TODO: possibly send a xp thing
+                if (repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
+                {
+                    if (config.EmulateBubot)
+                    {
+                        switch (e.Message.Content)
+                        {
+                            case "fock":
+                                await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                         .WithContent(e.Message.Content)
+                                         .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
+                                         .SendAsync(e.Channel);
+                                return;
+
+                            case "quality fock":
+                                await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                 .WithContent(e.Message.Content)
+                                 .WithFile("quality_fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.quality_fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.quality_fock.mp3"))
+                                 .SendAsync(e.Channel);
+                                return;
+
+                            case "fock you":
+                                await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                 .WithContent("fock you too")
+                                 .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
+                                 .SendAsync(e.Channel);
+                                return;
+
+                            case "we will fock you":
+                                await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                 .WithContent("https://www.youtube.com/watch?v=lLN3caSQI1w")
+                                 .SendAsync(e.Channel);
+                                return;
+
+                            default:
+                                break;
+                        }
+                    }
+                    await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                                 .WithContent(e.Message.Content)
+                                                 .SendAsync(e.Channel);
+                }
             }
         }
     }

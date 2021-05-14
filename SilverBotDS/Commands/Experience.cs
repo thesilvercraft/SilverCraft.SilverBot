@@ -76,10 +76,8 @@ namespace SilverBotDS.Commands
                 DiscordEmbedBuilder bob = new();
                 StringBuilder stringBuilder = new();
                 List<Page> pages = new();
-                bob.WithTitle("XP leaderboard:");
-                bob.WithDescription("the xp is global across discord");
+                bob.WithTitle(lang.XPCommandLeaderBoardTitle);
                 bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-
                 foreach (var person in o)
                 {
                     if (range.Contains(stringBuilder.Length))
@@ -95,14 +93,15 @@ namespace SilverBotDS.Commands
                 }
                 bob.WithDescription(stringBuilder.ToString());
                 pages.Add(new Page(embed: bob));
-
-                for (int a = 0; a < pages.Count; a++)
+                Page[] pages1 = pages.ToArray();
+                pages.Clear();
+                for (ulong a = 0; a < (ulong)pages1.LongCount(); a++)
                 {
-                    var embedbuilder = new DiscordEmbedBuilder(pages[a].Embed);
-                    embedbuilder.WithAuthor(string.Format(lang.PageNuget, (a + 1), pages.Count));
-                    pages[a].Embed = embedbuilder.Build();
+                    var embedbuilder = new DiscordEmbedBuilder(pages1[a].Embed);
+                    embedbuilder.WithAuthor(string.Format(lang.PageNuget, (a + 1), pages.LongCount()));
+                    pages1[a].Embed = embedbuilder.Build();
                 }
-                await ctx.Channel.SendPaginatedMessageAsync(ctx.User, pages);
+                await ctx.Channel.SendPaginatedMessageAsync(ctx.User, pages1);
             }
             else
             {
@@ -110,8 +109,8 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private System.Drawing.Pen BlackPen = new(new SolidBrush(Color.Black));
-        private System.Drawing.SolidBrush GreenBrush = new SolidBrush(Color.LightGreen);
+        private Pen BlackPen = new(new SolidBrush(Color.Black));
+        private SolidBrush GreenBrush = new(Color.LightGreen);
         private Font DiavloLight = new("Diavlo Light", 30.0f);
         private SolidBrush BlackBrush = new(Color.Black);
 

@@ -412,6 +412,8 @@ namespace SilverBotDS.Objects
         public string XPCommandLevels { get; set; } = "levels";
         public string XPCommandFailSelf { get; set; } = "It appears that something either went wrong or you do not have any xp.";
         public string XPCommandFailOther { get; set; } = "It appears that something either went wrong or they do not have any xp.";
+        public string XPCommandLeaderBoardTitle { get; set; } = "XP leaderboard:";
+        public string XPCommandLeaderBoardPerson { get; set; } = "{0} has {1}XP";
 
         public CultureInfo GetCultureInfo()
         {

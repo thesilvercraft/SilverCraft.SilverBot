@@ -84,7 +84,6 @@ namespace SilverBotDS.Commands
         private static async Task<MemoryStream> Make_jpegnisedAsync(byte[] photoBytes)
         {
             using SImage img = SImage.Load(photoBytes);
-            img.Mutate(x => x.Grayscale());
             MemoryStream stream = new();
             await img.SaveAsJpegAsync(stream, BadJpegEncoder);
             stream.Position = 0;

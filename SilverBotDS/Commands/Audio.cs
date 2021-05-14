@@ -97,7 +97,7 @@ namespace SilverBotDS.Commands
                 time = player.CurrentTrack.Duration - player.TrackPosition;
             }
 
-            for (int i = 0; i < song - 1; i++)
+            for (int i = 0; i <= song - 1; i++)
             {
                 time += player.Queue[i].Duration;
             }
@@ -190,11 +190,6 @@ namespace SilverBotDS.Commands
         [Aliases("pn")]
         public async Task PlayNext(CommandContext ctx, [RemainingText] string song)
         {
-            if (string.IsNullOrEmpty(song))
-            {
-                await Resume(ctx);
-                return;
-            }
             try
             {
                 Language lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -230,6 +225,14 @@ namespace SilverBotDS.Commands
                 if (list.Length == 1)
                 {
                     await player.PlayTopAsync(list[0]);
+                    await new DiscordMessageBuilder()
+                   .WithReply(ctx.Message.Id)
+                   .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                   .WithTitle(string.Format(lang.Enqueued, list[0].Title + lang.SongByAuthor + list[0].Author))
+                   .WithUrl(list[0].Source)
+                   .AddField(lang.TimeTillTrackPlays, player.IsLooping ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
+                   .Build())
+                   .SendAsync(ctx.Channel);
                 }
                 else
                 {

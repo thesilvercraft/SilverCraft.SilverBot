@@ -69,7 +69,11 @@ namespace SilverBotDS.Commands
         public static async Task<MemoryStream> ResizeAsync(byte[] photoBytes, Size size)
         {
             using SImage img = SImage.Load(photoBytes);
-            img.Mutate(x => x.Resize(size));
+            img.Mutate(x => x.Resize(new ResizeOptions()
+            {
+                Mode = ResizeMode.Max,
+                Size = size
+            }));
             MemoryStream stream = new();
             await img.SaveAsPngAsync(stream);
             stream.Position = 0;

@@ -30,10 +30,32 @@ namespace SilverBotDS.Converters
 
         public static SdImage FromContext(CommandContext ctx)
         {
-            var img = FromAttachments(ctx.Message.Attachments);
-            return img;
+            if (ctx.Message.Attachments.Count == 1)
+            {
+                return FromAttachments(ctx.Message.Attachments);
+            }
+            if (ctx.Message.ReferencedMessage is not null)
+            {
+                if (ctx.Message.ReferencedMessage.Attachments.Count == 1)
+                {
+                    return FromAttachments(ctx.Message.ReferencedMessage.Attachments);
+                }
+                else
+                {
+                    //TODO: implement getting the image as a link
+                }
+            }
+            if (ctx.Message.Attachments.Count == 0)
+            {
+                throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooLittleAttachments);
+            }
+            else
+            {
+                throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooMuchAttachments);
+            }
         }
 
+        //TODO: implement gifs and stickers
         public static SdImage FromAttachments(IReadOnlyList<DiscordAttachment> attachments)
         {
             if (attachments.Count == 1)

@@ -109,18 +109,18 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private Pen BlackPen = new(new SolidBrush(Color.Black));
-        private SolidBrush GreenBrush = new(Color.LightGreen);
-        private Font DiavloLight = new("Diavlo Light", 30.0f);
-        private SolidBrush BlackBrush = new(Color.Black);
+        private readonly Pen BlackPen = new(new SolidBrush(Color.Black));
+        private readonly SolidBrush GreenBrush = new(Color.LightGreen);
+        private readonly Font DiavloLight = new("Diavlo Light", 30.0f);
+        private readonly SolidBrush BlackBrush = new(Color.Black);
 
         [Command("xpcard")]
-        public async Task XpCard(CommandContext ctx)
+        public async Task XpCard(CommandContext ctx, DiscordUser user)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await ctx.TriggerTypingAsync();
             var outStream = new MemoryStream();
-            SdImage image = new(ctx.User.GetAvatarUrl(ImageFormat.Png));
+            SdImage image = new(user.GetAvatarUrl(ImageFormat.Png));
             using (var imanidiot = Image.FromStream(await ImageModule.ResizeAsync(await image.GetBytesAsync(HttpClient), new SixLabors.ImageSharp.Size(200, 200))))
             {
                 Image imge = new Bitmap(800, 240);
@@ -128,10 +128,10 @@ namespace SilverBotDS.Commands
                 {
                     gr.Clear(Color.White);
                     gr.DrawImage(imanidiot, new Point(13, 20));
-                    using var img = ImageModule.DrawText($"{ctx.User.Username}#{ctx.User.Discriminator}", DiavloLight, Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
+                    using var img = ImageModule.DrawText($"{user.Username}#{ctx.User.Discriminator}", DiavloLight, Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
                     gr.DrawImage(img, new Point(229, 25));
                     gr.DrawRectangle(BlackPen, new Rectangle(new(233, 83), new Size(478, 30)));
-                    var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == ctx.Member.Id);
+                    var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == user.Id);
                     if (o is not null)
                     {
                         var levelcount = GetLevel(o.XP);
@@ -145,7 +145,13 @@ namespace SilverBotDS.Commands
                 imge.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
             }
             outStream.Position = 0;
-            await ctx.RespondAsync(new DiscordMessageBuilder().WithFile("silverbotimage.png", outStream));
+            await ImageModule.SendImageStream(ctx, outStream);
+        }
+
+        [Command("xpcard")]
+        public async Task XpCard(CommandContext ctx)
+        {
+            await XpCard(ctx, ctx.User);
         }
 
         private BigInteger GetNeededXpForNextLevel(BigInteger xp)

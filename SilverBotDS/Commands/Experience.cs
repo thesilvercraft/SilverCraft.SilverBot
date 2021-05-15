@@ -95,10 +95,10 @@ namespace SilverBotDS.Commands
                 pages.Add(new Page(embed: bob));
                 Page[] pages1 = pages.ToArray();
                 pages.Clear();
-                for (ulong a = 0; a < (ulong)pages1.LongCount(); a++)
+                for (ulong a = 0; a < (ulong)pages1.Length; a++)
                 {
                     var embedbuilder = new DiscordEmbedBuilder(pages1[a].Embed);
-                    embedbuilder.WithAuthor(string.Format(lang.PageNuget, (a + 1), pages.LongCount()));
+                    embedbuilder.WithAuthor(string.Format(lang.PageNuget, (a + 1), pages.Count));
                     pages1[a].Embed = embedbuilder.Build();
                 }
                 await ctx.Channel.SendPaginatedMessageAsync(ctx.User, pages1);
@@ -117,7 +117,6 @@ namespace SilverBotDS.Commands
         [Command("xpcard")]
         public async Task XpCard(CommandContext ctx, DiscordUser user)
         {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await ctx.TriggerTypingAsync();
             var outStream = new MemoryStream();
             SdImage image = new(user.GetAvatarUrl(ImageFormat.Png));

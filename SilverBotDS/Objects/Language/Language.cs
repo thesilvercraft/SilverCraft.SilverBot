@@ -125,6 +125,11 @@ namespace SilverBotDS.Objects
         public string LoopingSong { get; set; } = "Now looping song 🔂";
 
         /// <summary>
+        /// Now looping queue 🔁
+        /// </summary>
+        public string LoopingQueue { get; set; } = "Now looping queue 🔁";
+
+        /// <summary>
         /// Send **an** image my guy
         /// </summary>
         public string WrongImageCount { get; set; } = "Send **an** image my guy";

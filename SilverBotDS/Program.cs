@@ -37,6 +37,7 @@ using System.Threading.Tasks;
 using System.Web;
 using SDiscordSink;
 using SilverBotDS.Objects.Database.Classes;
+using SilverBotDS.Objects.Classes;
 
 namespace SilverBotDS
 {
@@ -240,6 +241,7 @@ namespace SilverBotDS
             log.Verbose("Registering Commands&Converters");
             commands.RegisterConverter(new SdImageConverter());
             commands.RegisterConverter(new SColorConverter());
+            commands.RegisterConverter(new VoteSettingsConverter());
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<ModCommands>();
@@ -476,10 +478,10 @@ namespace SilverBotDS
             var vchannel = await discord.GetChannelAsync(config.FridayVoiceChannel);
             if (audioService.HasPlayer((ulong)vchannel.GuildId))
             {
-                VoteLavalinkPlayer player = audioService.GetPlayer<VoteLavalinkPlayer>((ulong)vchannel.GuildId);
+                BetterVoteLavalinkPlayer player = audioService.GetPlayer<BetterVoteLavalinkPlayer>((ulong)vchannel.GuildId);
                 await player.DisconnectAsync();
             }
-            VoteLavalinkPlayer playere = await audioService.JoinAsync<VoteLavalinkPlayer>((ulong)vchannel.GuildId, vchannel.Id, true);
+            BetterVoteLavalinkPlayer playere = await audioService.JoinAsync<BetterVoteLavalinkPlayer>((ulong)vchannel.GuildId, vchannel.Id, true);
             var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
             await playere.PlayAsync(track);
             var channel = await discord.GetChannelAsync(config.FridayTextChannel);
@@ -487,8 +489,8 @@ namespace SilverBotDS
         }
 
         private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "fock", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "quality fock", "fock you", "we will fock you" };
-        private static Dictionary<ulong, DateTime> levellimit = new();
-        private static TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
+        private static readonly Dictionary<ulong, DateTime> levellimit = new();
+        private static readonly TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
 
         private static async Task IncreaseXP(ulong id, ulong count = 1)
         {

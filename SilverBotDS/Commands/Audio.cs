@@ -11,6 +11,7 @@ using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using SpotifyAPI.Web;
 using System;
@@ -32,8 +33,8 @@ namespace SilverBotDS.Commands
 
         public SpotifyClient SpotifyClient { private get; set; }
 
-        private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
-                                                                                                                                                                    || AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
+        private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
+                                                                                                                                                                    || AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
 
         private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "", string imageurl = "", string url = "", Language language = null)
         {
@@ -210,7 +211,7 @@ namespace SilverBotDS.Commands
                         await ctx.TriggerTypingAsync();
                     }
                 }
-                VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+                BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
 
                 if (aliases.ContainsKey(song))
                 {
@@ -233,7 +234,7 @@ namespace SilverBotDS.Commands
                    .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                    .WithTitle(string.Format(lang.Enqueued, list[0].Title + lang.SongByAuthor + list[0].Author))
                    .WithUrl(list[0].Source)
-                   .AddField(lang.TimeTillTrackPlays, player.IsLooping ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
+                   .AddField(lang.TimeTillTrackPlays, player.LoopSettings == VoteSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
                    .Build())
                    .SendAsync(ctx.Channel);
                 }
@@ -281,7 +282,7 @@ namespace SilverBotDS.Commands
                         await ctx.TriggerTypingAsync();
                     }
                 }
-                VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+                BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
 
                 if (aliases.ContainsKey(song))
                 {
@@ -310,7 +311,7 @@ namespace SilverBotDS.Commands
                     .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                     .WithTitle(string.Format(lang.Enqueued, list[0].Title + lang.SongByAuthor + list[0].Author))
                     .WithUrl(list[0].Source)
-                    .AddField(lang.TimeTillTrackPlays, player.IsLooping ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
+                    .AddField(lang.TimeTillTrackPlays, player.LoopSettings == VoteSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
                     .Build())
                     .SendAsync(ctx.Channel);
                     }
@@ -354,7 +355,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.VolumeNotCorrect, language: lang);
                 return;
             }
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             await player.SetVolumeAsync(volume / 100f, true);
         }
 
@@ -376,7 +377,7 @@ namespace SilverBotDS.Commands
                 return;
             }
             var timespan = TimeSpanParser.Parse(time, new TimeSpanParserOptions { ColonedDefault = Units.Minutes, UncolonedDefault = Units.Seconds });
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             try
             {
                 await player.SeekPositionAsync(timespan);
@@ -405,7 +406,7 @@ namespace SilverBotDS.Commands
                 return;
             }
 
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
 
             player.Queue.Shuffle();
 
@@ -428,7 +429,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
 
             if (songindex < 0 || songindex > player.Queue.Count)
             {
@@ -458,7 +459,7 @@ namespace SilverBotDS.Commands
                 return;
             }
 
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.Queue.Count == 0 && player.State != PlayerState.Playing)
             {
                 await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
@@ -469,14 +470,14 @@ namespace SilverBotDS.Commands
             {
                 var pages = new List<Page>
                 {
-                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.IsLooping ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
+                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == VoteSettings.LoopingSong  ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
                 };
                 for (var i = 0; i < player.Queue.Count; i++)
                 {
                     var timetillsongplays = TimeTillSongPlays(player, i + 1);
                     pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title)
                         .WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync())
-                        .AddField(lang.TimeTillTrackPlays, player.IsLooping ? lang.SongTimeLeftSongLooping : timetillsongplays.Humanize(culture: lang.GetCultureInfo()))
+                        .AddField(lang.TimeTillTrackPlays, player.LoopSettings == VoteSettings.LoopingSong ? lang.SongTimeLeftSongLooping : timetillsongplays.Humanize(culture: lang.GetCultureInfo()))
                         .WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
                 }
 
@@ -493,7 +494,7 @@ namespace SilverBotDS.Commands
 
         [Command("loop")]
         [Description("Loop or unloop the current song")]
-        public async Task Loop(CommandContext ctx)
+        public async Task Loop(CommandContext ctx, VoteSettings settings)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!IsInVc(ctx))
@@ -509,16 +510,24 @@ namespace SilverBotDS.Commands
                 return;
             }
 
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
-            if (player.IsLooping)
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
+            player.LoopSettings = settings;
+            switch (settings)
             {
-                player.IsLooping = false;
-                await SendSimpleMessage(ctx, lang.NotLooping, language: lang);
-            }
-            else
-            {
-                player.IsLooping = true;
-                await SendSimpleMessage(ctx, lang.LoopingSong, language: lang);
+                case VoteSettings.NotLooping:
+                    await SendSimpleMessage(ctx, lang.NotLooping, language: lang);
+                    break;
+
+                case VoteSettings.LoopingSong:
+                    await SendSimpleMessage(ctx, lang.LoopingSong, language: lang);
+                    break;
+
+                case VoteSettings.LoopingQueue:
+                    await SendSimpleMessage(ctx, lang.LoopingQueue, language: lang);
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -540,7 +549,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Playing)
             {
                 await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
@@ -578,7 +587,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Paused)
             {
                 await SendSimpleMessage(ctx, lang.NotPaused, language: lang);
@@ -592,7 +601,7 @@ namespace SilverBotDS.Commands
         public async Task Join(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-            if (AudioService.HasPlayer(ctx.Guild.Id) && (AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id) is not null || AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id).State is PlayerState.NotConnected or PlayerState.Destroyed))
+            if (AudioService.HasPlayer(ctx.Guild.Id) && (AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null || AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State is PlayerState.NotConnected or PlayerState.Destroyed))
             {
                 await SendSimpleMessage(ctx, lang.AlreadyConnected, language: lang);
                 return;
@@ -602,7 +611,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            await AudioService.JoinAsync<VoteLavalinkPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
+            await AudioService.JoinAsync<BetterVoteLavalinkPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
             await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name), language: lang);
         }
 
@@ -624,7 +633,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
 
             if (player.State != PlayerState.Playing)
             {
@@ -632,15 +641,9 @@ namespace SilverBotDS.Commands
                 return;
             }
             var trackbefore = player.CurrentTrack;
-            if (player.Queue.Count == 0)
-            {
-                await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
-                return;
-            }
-            await player.SkipAsync();
-            player.ClearVotes();
+            await player.SkipAsync(1);
             var trackafter = player.CurrentTrack;
-            await SendSimpleMessage(ctx, string.Format(lang.SkippedNP, trackbefore.Title, trackafter.Title), language: lang);
+            await SendSimpleMessage(ctx, string.Format(lang.SkippedNP, trackbefore.Title, trackafter == null ? "Nothing" : trackafter?.Title), language: lang);
         }
 
         [Command("voteskip")]
@@ -660,18 +663,13 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Playing)
             {
                 await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
                 return;
             }
             var trackbefore = player.CurrentTrack;
-            if (player.Queue.Count == 0)
-            {
-                await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
-                return;
-            }
             if (await new RequireDJAttribute().ExecuteCheckAsync(ctx, false))
             {
                 await SendSimpleMessage(ctx, lang.CanForceSkip, language: lang);
@@ -679,7 +677,7 @@ namespace SilverBotDS.Commands
             var thing = await player.VoteAsync(ctx.Member.Id);
             if (thing.WasSkipped)
             {
-                await SendSimpleMessage(ctx, string.Format(lang.SkippedNP, trackbefore.Title, player.CurrentTrack.Title), language: lang);
+                await SendSimpleMessage(ctx, string.Format(lang.SkippedNP, trackbefore.Title, player.CurrentTrack == null ? "Nothing" : player.CurrentTrack.Title), language: lang);
             }
             else if (thing.WasAdded)
             {
@@ -706,7 +704,7 @@ namespace SilverBotDS.Commands
                     await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                     return;
                 }
-                VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+                BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
                 await player.DisconnectAsync();
                 await player.DestroyAsync();
                 player.Dispose();
@@ -737,7 +735,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            VoteLavalinkPlayer player = AudioService.GetPlayer<VoteLavalinkPlayer>(ctx.Guild.Id);
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             await player.DisconnectAsync();
             await SendSimpleMessage(ctx, string.Format(lang.Left, channel.Name), language: lang);
         }

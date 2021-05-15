@@ -545,25 +545,19 @@ namespace SilverBotDS.Commands
                 }
             }
 
-            using (MemoryStream memoryStream = new())
+            using MemoryStream memoryStream = new();
+            using (ZipArchive zip = new(memoryStream, ZipArchiveMode.Create, true))
             {
-                using (ZipArchive zip = new(memoryStream, ZipArchiveMode.Create, true))
+                foreach (SourceFile f in sourceFiles)
                 {
-                    foreach (SourceFile f in sourceFiles)
-                    {
-                        ZipArchiveEntry zipItem = zip.CreateEntry($"{f.Name}.{f.Extension}");
-                        using (MemoryStream originalFileMemoryStream = new(f.FileBytes))
-                        {
-                            using (Stream entryStream = zipItem.Open())
-                            {
-                                originalFileMemoryStream.CopyTo(entryStream);
-                            }
-                        }
-                    }
+                    ZipArchiveEntry zipItem = zip.CreateEntry($"{f.Name}.{f.Extension}");
+                    using MemoryStream originalFileMemoryStream = new(f.FileBytes);
+                    using Stream entryStream = zipItem.Open();
+                    originalFileMemoryStream.CopyTo(entryStream);
                 }
-                memoryStream.Position = 0;
-                await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithFile("emojis.zip", memoryStream).SendAsync(ctx.Channel);
             }
+            memoryStream.Position = 0;
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithFile("emojis.zip", memoryStream).SendAsync(ctx.Channel);
         }
 
         [Command("addemotes")]

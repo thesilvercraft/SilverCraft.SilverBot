@@ -5,6 +5,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Converters;
+using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -72,73 +73,65 @@ namespace SilverBotDS.Commands
         [Description("Get all the emotes from the SilverSocial enabled servers")]
         public async Task Allemotes(CommandContext ctx)
         {
-            try
+            var builder = new StringBuilder();
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var serverthatareoptedin = Database.GetIdsOfEmoteOptedInServers();
+            var pages = new List<Page>();
+            var b = new DiscordEmbedBuilder();
+            b.WithTitle(lang.AllAvailibleEmotes);
+            b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            foreach (var a in ctx.Client.Guilds.Values)
             {
-                var builder = new StringBuilder();
-                var lang = await Language.GetLanguageFromCtxAsync(ctx);
-                var serverthatareoptedin = Database.GetIdsOfEmoteOptedInServers();
-                var pages = new List<Page>();
-                var b = new DiscordEmbedBuilder();
-                b.WithTitle(lang.AllAvailibleEmotes);
-                b.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-                foreach (var a in ctx.Client.Guilds.Values)
+                var thing = serverthatareoptedin.Contains(a.Id);
+                if (!thing)
                 {
-                    var thing = serverthatareoptedin.Contains(a.Id);
-                    if (!thing)
-                    {
-                        continue;
-                    }
-                    builder.AppendLine(string.Format(lang.Server, a.Name));
-                    foreach (var emote in a.Emojis.Values.ToList())
-                    {
-                        if (emote.IsAnimated)
-                        {
-                            builder.Append("<a:");
-                            builder.Append(emote.Name);
-                            builder.Append(':');
-                            builder.Append(emote.Id);
-                            builder.Append('>');
-                        }
-                        else
-                        {
-                            builder.Append("<:");
-                            builder.Append(emote.Name);
-                            builder.Append(':');
-                            builder.Append(emote.Id);
-                            builder.Append('>');
-                        }
-                        builder.Append('\t');
-                        if (builder.Length is > 1900 and < 2000)
-                        {
-                            b.WithDescription(builder.ToString());
-                            pages.Add(new Page(embed: b));
-                            builder.Clear();
-                        }
-                    }
-                    builder.AppendLine();
+                    continue;
                 }
-                if (builder.Length != 0)
+                builder.AppendLine(string.Format(lang.Server, a.Name));
+                foreach (var emote in a.Emojis.Values.ToList())
                 {
-                    b.WithDescription(builder.ToString());
-                    pages.Add(new Page(embed: b));
-                    builder.Clear();
+                    if (emote.IsAnimated)
+                    {
+                        builder.Append("<a:");
+                        builder.Append(emote.Name);
+                        builder.Append(':');
+                        builder.Append(emote.Id);
+                        builder.Append('>');
+                    }
+                    else
+                    {
+                        builder.Append("<:");
+                        builder.Append(emote.Name);
+                        builder.Append(':');
+                        builder.Append(emote.Id);
+                        builder.Append('>');
+                    }
+                    builder.Append('\t');
+                    if (builder.Length is > 1900 and < 2000)
+                    {
+                        b.WithDescription(builder.ToString());
+                        pages.Add(new Page(embed: b));
+                        builder.Clear();
+                    }
                 }
+                builder.AppendLine();
+            }
+            if (builder.Length != 0)
+            {
+                b.WithDescription(builder.ToString());
+                pages.Add(new Page(embed: b));
+                builder.Clear();
+            }
 
-                for (var indx = 0; indx < pages.Count; indx++)
-                {
-                    var page = pages[indx];
-                    var discordEmbed = new DiscordEmbedBuilder(page.Embed);
-                    discordEmbed.WithAuthor(string.Format(lang.PageNuget, indx + 1, pages.Count));
-                    pages[indx].Embed = discordEmbed.Build();
-                }
-                var interactivity = ctx.Client.GetInteractivity();
-                await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages);
-            }
-            catch (Exception e)
+            for (var indx = 0; indx < pages.Count; indx++)
             {
-                Program.SendLog(e);
-                throw;
+                var page = pages[indx];
+                var discordEmbed = new DiscordEmbedBuilder(page.Embed);
+                discordEmbed.WithAuthor(string.Format(lang.PageNuget, indx + 1, pages.Count));
+                pages[indx].Embed = discordEmbed.Build();
             }
+            var interactivity = ctx.Client.GetInteractivity();
+            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages);
         }
 
         [Command("emote")]

@@ -242,6 +242,7 @@ namespace SilverBotDS
             commands.RegisterConverter(new SdImageConverter());
             commands.RegisterConverter(new SColorConverter());
             commands.RegisterConverter(new VoteSettingsConverter());
+            commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<ModCommands>();
@@ -388,8 +389,7 @@ namespace SilverBotDS
                                    .SendAsync(e.Context.Channel);
                 }
             }
-
-            SendLog(e.Exception);
+            log.Error(exception: e.Exception, "An exception occurred while trying to run {Command} with the raw arguments as {Raw}", e.Command.Name, e.Context.RawArgumentString);
         }
 
 #pragma warning disable S1075 // URIs should not be hardcoded

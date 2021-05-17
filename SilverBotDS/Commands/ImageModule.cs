@@ -421,67 +421,60 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            try
-            {
-                if (cachedweebreliabletemplate == null)
-                {
-                    var myAssembly = Assembly.GetExecutingAssembly();
-                    await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.weeb_reliable_template.png");
-                    cachedweebreliabletemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.weeb_reliable_template.png"));
-                }
-                await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(koichi, 256));
-                await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(jotaro, 256));
-                using var copythingy = new Bitmap(cachedweebreliabletemplate.Width, cachedweebreliabletemplate.Height);
-                var drawing = Graphics.FromImage(copythingy);
-                drawing.DrawImageUnscaled(cachedweebreliabletemplate, new Point(0, 0));
-                using (Bitmap internalimage = new(resizedstreama))
-                {
-                    drawing.DrawImageUnscaled(internalimage, new Point(276, 92));
-                }
-                using (Bitmap internalimage = new(resizedstreamb))
-                {
-                    drawing.DrawImageUnscaled(internalimage, new Point(1138, 369));
-                }
-                var text = (ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username) + ", you truly are a reliable guy.";
-                var font = new Font("Trebuchet MS", 100);
-                var sf = new StringFormat
-                {
-                    LineAlignment = StringAlignment.Center,
-                };
-                while (drawing.MeasureString(text,
-        new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
-                {
-                    font = new Font(font.FontFamily, font.Size - 1f, font.Style);
-                }
 
-                var p = new GraphicsPath();
-                p.AddString(
-                    text,
-                    font.FontFamily,
-                    (int)font.Style,
-                    drawing.DpiY * font.Size / 72,
-                    new Rectangle(267, 894, 1370, 186),
-                    sf);
-                drawing.DrawPath(new System.Drawing.Pen(new SolidBrush(Color.Black), 2), p);
-                drawing.FillPath(new SolidBrush(Color.White), p);
-                drawing.Save();
-                await using MemoryStream outStream = new();
-                outStream.Position = 0;
-                copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
-                outStream.Position = 0;
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
-                }
-                else
-                {
-                    await SendImageStream(ctx, outStream, content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.", lang: lang);
-                }
-            }
-            catch (Exception e)
+            if (cachedweebreliabletemplate == null)
             {
-                Program.SendLog(e);
-                throw;
+                var myAssembly = Assembly.GetExecutingAssembly();
+                await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.weeb_reliable_template.png");
+                cachedweebreliabletemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.weeb_reliable_template.png"));
+            }
+            await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(koichi, 256));
+            await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(jotaro, 256));
+            using var copythingy = new Bitmap(cachedweebreliabletemplate.Width, cachedweebreliabletemplate.Height);
+            var drawing = Graphics.FromImage(copythingy);
+            drawing.DrawImageUnscaled(cachedweebreliabletemplate, new Point(0, 0));
+            using (Bitmap internalimage = new(resizedstreama))
+            {
+                drawing.DrawImageUnscaled(internalimage, new Point(276, 92));
+            }
+            using (Bitmap internalimage = new(resizedstreamb))
+            {
+                drawing.DrawImageUnscaled(internalimage, new Point(1138, 369));
+            }
+            var text = (ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username) + ", you truly are a reliable guy.";
+            var font = new Font("Trebuchet MS", 100);
+            var sf = new StringFormat
+            {
+                LineAlignment = StringAlignment.Center,
+            };
+            while (drawing.MeasureString(text,
+    new Font(font.FontFamily, font.Size, font.Style)).Width > 1300)
+            {
+                font = new Font(font.FontFamily, font.Size - 1f, font.Style);
+            }
+
+            var p = new GraphicsPath();
+            p.AddString(
+                text,
+                font.FontFamily,
+                (int)font.Style,
+                drawing.DpiY * font.Size / 72,
+                new Rectangle(267, 894, 1370, 186),
+                sf);
+            drawing.DrawPath(new System.Drawing.Pen(new SolidBrush(Color.Black), 2), p);
+            drawing.FillPath(new SolidBrush(Color.White), p);
+            drawing.Save();
+            await using MemoryStream outStream = new();
+            outStream.Position = 0;
+            copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
+            outStream.Position = 0;
+            if (outStream.Length > MaxBytes)
+            {
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
+            }
+            else
+            {
+                await SendImageStream(ctx, outStream, content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.", lang: lang);
             }
         }
 
@@ -496,40 +489,33 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            try
+
+            if (cachednewyeartemplate == null)
             {
-                if (cachednewyeartemplate == null)
-                {
-                    var myAssembly = Assembly.GetExecutingAssembly();
-                    await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.happy_new_year_template.png");
-                    cachednewyeartemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.happy_new_year_template.png"));
-                }
-                await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person, 350));
-                using var copythingy = new Bitmap(cachednewyeartemplate.Width, cachednewyeartemplate.Height);
-                var drawing = Graphics.FromImage(copythingy);
-                using (Bitmap internalimage = new(resizedstreama))
-                {
-                    drawing.DrawImageUnscaled(internalimage, new Point(19, 70));
-                }
-                drawing.DrawImageUnscaled(cachednewyeartemplate, new Point(0, 0));
-                drawing.Save();
-                await using MemoryStream outStream = new();
-                outStream.Position = 0;
-                copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
-                outStream.Position = 0;
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
-                }
-                else
-                {
-                    await SendImageStream(ctx, outStream, content: "happy new year!", lang: lang);
-                }
+                var myAssembly = Assembly.GetExecutingAssembly();
+                await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.happy_new_year_template.png");
+                cachednewyeartemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.happy_new_year_template.png"));
             }
-            catch (Exception e)
+            await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person, 350));
+            using var copythingy = new Bitmap(cachednewyeartemplate.Width, cachednewyeartemplate.Height);
+            var drawing = Graphics.FromImage(copythingy);
+            using (Bitmap internalimage = new(resizedstreama))
             {
-                Program.SendLog(e);
-                throw;
+                drawing.DrawImageUnscaled(internalimage, new Point(19, 70));
+            }
+            drawing.DrawImageUnscaled(cachednewyeartemplate, new Point(0, 0));
+            drawing.Save();
+            await using MemoryStream outStream = new();
+            outStream.Position = 0;
+            copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
+            outStream.Position = 0;
+            if (outStream.Length > MaxBytes)
+            {
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
+            }
+            else
+            {
+                await SendImageStream(ctx, outStream, content: "happy new year!", lang: lang);
             }
         }
 
@@ -551,47 +537,39 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            try
+            if (cachedadventuretimetemplate == null)
             {
-                if (cachedadventuretimetemplate == null)
-                {
-                    var myAssembly = Assembly.GetExecutingAssembly();
+                var myAssembly = Assembly.GetExecutingAssembly();
 
-                    await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png");
-                    cachedadventuretimetemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.adventure_time_template.png"));
-                }
-
-                await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person));
-                await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(friendo));
-                using var copythingy = new Bitmap(cachedadventuretimetemplate);
-                var drawing = Graphics.FromImage(copythingy);
-
-                using (Bitmap internalimage = new(resizedstreamb))
-                {
-                    drawing.DrawImageUnscaled(internalimage, new Point(22, 948));
-                }
-
-                using (Bitmap internalimage = new(resizedstreama))
-                {
-                    drawing.DrawImageUnscaled(internalimage, new Point(557, 699));
-                }
-                drawing.Save();
-                await using MemoryStream outStream = new();
-                copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
-                outStream.Position = 0;
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
-                }
-                else
-                {
-                    await SendImageStream(ctx, outStream, content: $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!", lang: lang);
-                }
+                await using var myStream = myAssembly.GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png");
+                cachedadventuretimetemplate = new Bitmap(myStream ?? throw new TemplateReturningNullException("SilverBotDS.Templates.adventure_time_template.png"));
             }
-            catch (Exception e)
+
+            await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person));
+            await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(friendo));
+            using var copythingy = new Bitmap(cachedadventuretimetemplate);
+            var drawing = Graphics.FromImage(copythingy);
+
+            using (Bitmap internalimage = new(resizedstreamb))
             {
-                Program.SendLog(e);
-                throw;
+                drawing.DrawImageUnscaled(internalimage, new Point(22, 948));
+            }
+
+            using (Bitmap internalimage = new(resizedstreama))
+            {
+                drawing.DrawImageUnscaled(internalimage, new Point(557, 699));
+            }
+            drawing.Save();
+            await using MemoryStream outStream = new();
+            copythingy.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
+            outStream.Position = 0;
+            if (outStream.Length > MaxBytes)
+            {
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
+            }
+            else
+            {
+                await SendImageStream(ctx, outStream, content: $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!", lang: lang);
             }
         }
 

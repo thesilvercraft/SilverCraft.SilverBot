@@ -1,6 +1,7 @@
-﻿using System;
+﻿using SilverBotDS.Converters;
+using System;
 
-namespace SilverBotDS.Converters
+namespace SilverBotDS.Exceptions
 {
     [Serializable]
     public class AttachmentCountIncorrectException : Exception

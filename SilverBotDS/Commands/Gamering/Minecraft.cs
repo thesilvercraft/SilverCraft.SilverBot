@@ -20,24 +20,15 @@ namespace SilverBotDS.Commands.Gamering
         [Aliases("username")]
         public async Task Calculate(CommandContext ctx, string input)
         {
-            try
-            {
-                var player = await MinecraftUtils.GetPlayerAsync(input, HttpClient);
-                var b = new DiscordEmbedBuilder();
-                b.WithThumbnail(player.GetAvatarUrl())
-                      .WithImageUrl(player.GetBodyUrl())
-                      .AddField("uuid", "`" + player.Id + "`")
-                        .WithColor(await ColorUtils.GetSingleAsync());
-                await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithEmbed(b.Build())
-                                             .SendAsync(ctx.Channel);
-            }
-            catch (Exception e)
-            {
-                Program.SendLog(e);
-                await new DiscordMessageBuilder().WithContent("Error occured").SendAsync(ctx.Channel);
-                throw;
-            }
+            var player = await MinecraftUtils.GetPlayerAsync(input, HttpClient);
+            var b = new DiscordEmbedBuilder();
+            b.WithThumbnail(player.GetAvatarUrl())
+                  .WithImageUrl(player.GetBodyUrl())
+                  .AddField("uuid", "`" + player.Id + "`")
+                    .WithColor(await ColorUtils.GetSingleAsync());
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                         .WithEmbed(b.Build())
+                                         .SendAsync(ctx.Channel);
         }
     }
 }

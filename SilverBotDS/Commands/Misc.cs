@@ -30,25 +30,18 @@ namespace SilverBotDS.Commands
         [Aliases("ver", "verinfo", "versioninfo")]
         public async Task VersionInfoCmd(CommandContext ctx)
         {
-            try
-            {
-                var lang = await Language.GetLanguageFromCtxAsync(ctx);
-                await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
-                    .WithTitle(lang.VersionInfoTitle)
-                    .AddField(lang.VersionInfoCommand.VersionNumber, "`" + VersionInfo.VNumber + "`")
-                    .AddField(lang.VersionInfoCommand.GitRepo, ThisAssembly.Git.RepositoryUrl)
-                    .AddField(lang.VersionInfoCommand.GitCommitHash, "`" + ThisAssembly.Git.Commit + "`")
-                    .AddField(lang.VersionInfoCommand.GitBranch, "`" + ThisAssembly.Git.Branch + "`")
-                    .AddField(lang.VersionInfoCommand.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
-                    .AddField(lang.VersionInfoCommand.CLR, "`" + (ctx.Client.CurrentApplication.Owners.Contains(ctx.User) && ctx.Channel.IsPrivate ? System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription : "REDACTED") + "`")
-                    .WithAuthor(ctx.Client.CurrentUser.Username + "#" + ctx.Client.CurrentUser.Discriminator, iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
-                    .WithColor(await ColorUtils.GetSingleAsync())
-                    .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
-            }
-            catch (Exception e)
-            {
-                Program.SendLog(e);
-            }
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
+                .WithTitle(lang.VersionInfoTitle)
+                .AddField(lang.VersionInfoCommand.VersionNumber, "`" + VersionInfo.VNumber + "`")
+                .AddField(lang.VersionInfoCommand.GitRepo, ThisAssembly.Git.RepositoryUrl)
+                .AddField(lang.VersionInfoCommand.GitCommitHash, "`" + ThisAssembly.Git.Commit + "`")
+                .AddField(lang.VersionInfoCommand.GitBranch, "`" + ThisAssembly.Git.Branch + "`")
+                .AddField(lang.VersionInfoCommand.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
+                .AddField(lang.VersionInfoCommand.CLR, "`" + (ctx.Client.CurrentApplication.Owners.Contains(ctx.User) && ctx.Channel.IsPrivate ? System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription : "REDACTED") + "`")
+                .WithAuthor(ctx.Client.CurrentUser.Username + "#" + ctx.Client.CurrentUser.Discriminator, iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
+                .WithColor(await ColorUtils.GetSingleAsync())
+                .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
 
         [Command("generatelangtemplate")]
@@ -154,7 +147,6 @@ namespace SilverBotDS.Commands
             {
                 var bob = new DiscordEmbedBuilder().WithTitle(lang.SearchFailTitle).WithDescription(lang.SearchFailDescription).WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());
-                Program.SendLog(e);
                 throw;
             }
         }
@@ -216,7 +208,6 @@ namespace SilverBotDS.Commands
             {
                 var bob = new DiscordEmbedBuilder().WithTitle(lang.SearchFailTitle).WithDescription(lang.SearchFailDescription).WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());
-                Program.SendLog(e);
                 throw;
             }
         }

@@ -297,28 +297,21 @@ namespace SilverBotDS.Commands
         [Description("Get the info I know about a specified user")]
         public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
         {
-            try
-            {
-                var lang = await Language.GetLanguageFromCtxAsync(ctx);
-                var cultureinfo = lang.GetCultureInfo();
-                await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
-                    .WithTitle(lang.User + a.Username)
-                    .WithDescription(lang.InformationAbout + a.Mention)
-                    .AddField(lang.Userid, a.Id.ToString(), true)
-                    .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await IsAtSilverCraftAsync(ctx, a)), true)
-                    .AddField(lang.IsAnOwner, BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(a)), true)
-                    .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
-                    .AddField(lang.AccountCreationDate, a.CreationTimestamp.ToString(cultureinfo), true)
-                    .AddField(lang.AccountJoinDate, ctx.Guild?.Members.ContainsKey(a.Id) == true ? ctx.Guild?.Members[a.Id].JoinedAt.ToString(cultureinfo) : "NA", true)
-                    .WithColor(await ColorUtils.GetSingleAsync())
-                    .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
-                    .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                    .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
-            }
-            catch (Exception e)
-            {
-                Program.SendLog(e);
-            }
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var cultureinfo = lang.GetCultureInfo();
+            await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
+                .WithTitle(lang.User + a.Username)
+                .WithDescription(lang.InformationAbout + a.Mention)
+                .AddField(lang.Userid, a.Id.ToString(), true)
+                .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await IsAtSilverCraftAsync(ctx, a)), true)
+                .AddField(lang.IsAnOwner, BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(a)), true)
+                .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
+                .AddField(lang.AccountCreationDate, a.CreationTimestamp.ToString(cultureinfo), true)
+                .AddField(lang.AccountJoinDate, ctx.Guild?.Members.ContainsKey(a.Id) == true ? ctx.Guild?.Members[a.Id].JoinedAt.ToString(cultureinfo) : "NA", true)
+                .WithColor(await ColorUtils.GetSingleAsync())
+                .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
+                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+                .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
 
 #pragma warning restore CA1822 // Mark members as static

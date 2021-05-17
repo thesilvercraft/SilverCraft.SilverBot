@@ -281,7 +281,6 @@ namespace SilverBotDS.Commands
             }
             catch (Exception e)
             {
-                //abort ship
                 Program.SendLog(e);
                 await new DiscordMessageBuilder().WithContent($"Failed to parse {ob.GetType().FullName} as a string, using the generic ToString. {ob}").WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
             }
@@ -343,7 +342,6 @@ namespace SilverBotDS.Commands
             catch (CompilationErrorException e)
             {
                 Console.SetOut(console);
-                Program.SendLog(e);
                 if (e.Diagnostics.Humanize().Length > 1958)
                 {
                     await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Diagnostics.Humanize(), "error.txt");
@@ -354,10 +352,9 @@ namespace SilverBotDS.Commands
                 }
                 throw;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.SetOut(console);
-                Program.SendLog(e);
                 throw;
             }
         }
@@ -405,7 +402,6 @@ namespace SilverBotDS.Commands
                 catch (CompilationErrorException e)
                 {
                     Console.SetOut(console);
-                    Program.SendLog(e);
                     if (e.Diagnostics.Humanize().Length > 1958)
                     {
                         await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Diagnostics.Humanize(), "error.txt");
@@ -419,7 +415,6 @@ namespace SilverBotDS.Commands
                 catch (Exception e)
                 {
                     Console.SetOut(console);
-                    Program.SendLog(e);
                     throw;
                 }
             }
@@ -566,72 +561,64 @@ namespace SilverBotDS.Commands
         [RequirePermissions(Permissions.ManageEmojis)]
         public async Task Addemotez(CommandContext ctx)
         {
-            try
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            if (ctx.Message.Attachments.Count == 0)
             {
-                var lang = await Language.GetLanguageFromCtxAsync(ctx);
-                if (ctx.Message.Attachments.Count == 0)
-                {
-                    await ctx.RespondAsync(lang.NoImageGeneric);
-                    return;
-                }
-                if (ctx.Message.Attachments.Count > 1)
-                {
-                    await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
-                    return;
-                }
-                if (FileUtils.GetFileExtensionFromUrl(ctx.Message.Attachments[0].Url) != ".zip")
-                {
-                    await ctx.RespondAsync("please use a zip");
-                    return;
-                }
-                var client = HttpClient;
-                var ziploc = $"{Environment.CurrentDirectory}{Program.DirSlash}temp.zip";
-                var rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
-                await using (var fs = new FileStream(
-        ziploc,
-        FileMode.CreateNew))
-                {
-                    await rm.Content.CopyToAsync(fs);
-                }
-                var foldername = ($"{Environment.CurrentDirectory}{Program.DirSlash}temp");
-                if (!Directory.Exists(foldername))
-                {
-                    Directory.CreateDirectory(foldername);
-                }
-                else if (Directory.GetFiles(foldername).Length != 0)
-                {
-                    Directory.Delete(foldername, true);
-                    Directory.CreateDirectory(foldername);
-                }
-                ZipFile.ExtractToDirectory(ziploc, foldername);
-                StringBuilder status = new();
-                foreach (var file in Directory.GetFiles(foldername))
-                {
-                    await using FileStream fileStream = new(file, FileMode.Open);
-                    await using var stream = new MemoryStream();
-                    fileStream.Position = 0;
-                    await fileStream.CopyToAsync(stream);
-                    if (stream.Length > 256 * 1000)
-                    {
-                        status.Append(Path.GetFileName(file));
-                        status.Append("\t " + StringUtils.BoolToEmoteString(false) + " Bigger than 256kb");
-                    }
-                    else
-                    {
-                        var emote = await ctx.Guild.CreateEmojiAsync(name: Path.GetFileNameWithoutExtension(file),
-                            image: stream, reason: "Added via silverbot by " + ctx.User.Username);
-                        status.Append("\t " + emote + ' ' + StringUtils.BoolToEmoteString(true));
-                    }
-                }
-                await ctx.RespondAsync(status.ToString());
+                await ctx.RespondAsync(lang.NoImageGeneric);
+                return;
+            }
+            if (ctx.Message.Attachments.Count > 1)
+            {
+                await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
+                return;
+            }
+            if (FileUtils.GetFileExtensionFromUrl(ctx.Message.Attachments[0].Url) != ".zip")
+            {
+                await ctx.RespondAsync("please use a zip");
+                return;
+            }
+            var client = HttpClient;
+            var ziploc = $"{Environment.CurrentDirectory}{Program.DirSlash}temp.zip";
+            var rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
+            await using (var fs = new FileStream(
+    ziploc,
+    FileMode.CreateNew))
+            {
+                await rm.Content.CopyToAsync(fs);
+            }
+            var foldername = ($"{Environment.CurrentDirectory}{Program.DirSlash}temp");
+            if (!Directory.Exists(foldername))
+            {
+                Directory.CreateDirectory(foldername);
+            }
+            else if (Directory.GetFiles(foldername).Length != 0)
+            {
                 Directory.Delete(foldername, true);
-                File.Delete(ziploc);
+                Directory.CreateDirectory(foldername);
             }
-            catch (Exception e)
+            ZipFile.ExtractToDirectory(ziploc, foldername);
+            StringBuilder status = new();
+            foreach (var file in Directory.GetFiles(foldername))
             {
-                Program.SendLog(e);
-                throw;
+                await using FileStream fileStream = new(file, FileMode.Open);
+                await using var stream = new MemoryStream();
+                fileStream.Position = 0;
+                await fileStream.CopyToAsync(stream);
+                if (stream.Length > 256 * 1000)
+                {
+                    status.Append(Path.GetFileName(file));
+                    status.Append("\t " + StringUtils.BoolToEmoteString(false) + " Bigger than 256kb");
+                }
+                else
+                {
+                    var emote = await ctx.Guild.CreateEmojiAsync(name: Path.GetFileNameWithoutExtension(file),
+                        image: stream, reason: "Added via silverbot by " + ctx.User.Username);
+                    status.Append("\t " + emote + ' ' + StringUtils.BoolToEmoteString(true));
+                }
             }
+            await ctx.RespondAsync(status.ToString());
+            Directory.Delete(foldername, true);
+            File.Delete(ziploc);
         }
 
         [Command("guilds")]

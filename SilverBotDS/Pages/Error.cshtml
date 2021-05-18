@@ -1,0 +1,31 @@
+﻿@page
+@model SilverBotDS.Pages.ErrorModel
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Error</title>
+    <link href="~/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/app.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="main">
+        <div class="content px-4">
+            <h1 class="text-danger">FOCK</h1>
+            <h2 class="text-danger">an ewwow has occuwed. the admin has bewn notified</h2>
+           <img src="https://static.wikia.nocookie.net/doki-doki-literature-club/images/a/af/Mon7.png/revision/latest/scale-to-width-down/960?cb=20171209195545" style="display: none;" alt="Just Monika."/> 
+            @if (Model.ShowRequestId)
+            {
+                <p>
+                    <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                </p>
+            }
+        </div>
+    </div>
+</body>
+
+</html>

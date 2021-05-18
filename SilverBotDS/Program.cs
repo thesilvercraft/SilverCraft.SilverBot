@@ -38,6 +38,8 @@ using System.Web;
 using SDiscordSink;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Objects.Classes;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace SilverBotDS
 {
@@ -45,11 +47,18 @@ namespace SilverBotDS
     {
         public static readonly char DirSlash = Environment.OSVersion.Platform == PlatformID.Win32NT ? '\\' : '/';
         private static Config config;
+        private static IHost host;
 
-        private static void Main()
+        private static void Main(string[] args)
         {
             //Start the main async task
-            MainAsync().GetAwaiter().GetResult();
+
+            if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net5.0"))
+            {
+                Environment.CurrentDirectory += "\\bin\\Debug\\net5.0";
+            }
+
+            MainAsync(args).GetAwaiter().GetResult();
         }
 
         public static void SendLog(string text)
@@ -90,7 +99,7 @@ namespace SilverBotDS
             return !(a is null || a == b);
         }
 
-        private static async Task MainAsync()
+        private static async Task MainAsync(string[] args)
         {
             config = await Config.GetAsync();
             WebHookUtilz.ParseWebhookUrlNullable(config.LogWebhook, out ulong? id, out string token);
@@ -138,13 +147,13 @@ namespace SilverBotDS
                 case 1:
                     {
                         log.Verbose("Launching chrome");
-                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Chrome, config.DriverLocation));
+                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Chrome, string.IsNullOrEmpty(config.DriverLocation) ? Environment.CurrentDirectory : config.DriverLocation));
                         break;
                     }
                 case 2:
                     {
                         log.Verbose("Launching firefox");
-                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Firefox, config.DriverLocation));
+                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Firefox, string.IsNullOrEmpty(config.DriverLocation) ? Environment.CurrentDirectory : config.DriverLocation));
                         break;
                     }
                 default:
@@ -180,6 +189,7 @@ namespace SilverBotDS
             }
 
             services.AddSingleton(config);
+
             services.AddSingleton(httpClient);
             if (config.AutoDownloadAndStartLavalink)
             {
@@ -241,7 +251,7 @@ namespace SilverBotDS
             log.Verbose("Registering Commands&Converters");
             commands.RegisterConverter(new SdImageConverter());
             commands.RegisterConverter(new SColorConverter());
-            commands.RegisterConverter(new VoteSettingsConverter());
+            commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
@@ -320,7 +330,41 @@ namespace SilverBotDS
                     return StatisticsMainAsync();
                 });
             }
+            host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
+            {
+                s.AddSingleton(config);
+                s.AddSingleton(discord);
+                switch (config.DatabaseType)
+                {
+                    case 1:
+                        {
+                            if (config != null && !string.IsNullOrEmpty(config.ConnString))
+                            {
+                                s.AddDbContext<DatabaseContext>(options => options.UseNpgsql(config.ConnString), ServiceLifetime.Transient);
+                            }
+                            else
+                            {
+                                Uri tmp = new(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
+                                string[] usernameandpass = tmp.UserInfo.Split(":");
+                                s.AddDbContext<DatabaseContext>(options => options.UseNpgsql($"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}"), ServiceLifetime.Transient);
+                            }
+                            break;
+                        }
+                    case 2:
+                        {
+                            s.AddDbContext<DatabaseContext>(options => options.UseSqlite("Filename=./silverbotdatabasev2.db"), ServiceLifetime.Transient);
+                            break;
+                        }
 
+                    default:
+                        break;
+                }
+            })
+             .ConfigureWebHostDefaults(webBuilder =>
+             {
+                 webBuilder.UseStartup<WebpageStartup>();
+             }).Build();
+            _ = Task.Run(async () => await host.RunAsync());
             while (true)
             {
                 log.Verbose("Updating the status to a random one");

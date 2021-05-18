@@ -1,0 +1,19 @@
+﻿#mydiv {
+    position: absolute;
+}
+
+.title-bar {
+    cursor: move;
+}
+
+.title-bar-text {
+    cursor: move;
+}
+
+body {
+    background: linear-gradient(137deg,rgba(255,255,255,1) 0%, rgba(0,0,0,1) 100%);
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden;
+}

@@ -1,0 +1,42 @@
+﻿@page "/login"
+@using System.Net
+@using System.Text
+@using System.IO
+@using Microsoft.AspNetCore.Http
+@using SilverBotDS.Objects
+@using DSharpPlus
+@using System.Diagnostics
+@using SilverBotDS.WebHelpers
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Config config
+
+@{
+    ViewData["Title"] = "e";
+    string code = Request.Query["code"].ToString();
+    if (string.IsNullOrEmpty(code) || !string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")) )
+    {
+        Response.Redirect(config.LoginPageDiscordRedirectUrl);
+    }
+    else
+    {
+        Debug.WriteLine(Request.Host);
+        //stolen from https://www.yogihosting.com/discord-api-asp-net/
+        string redirect_url = $"https://{Request.Host}/login";
+        HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create("https://discordapp.com/api/oauth2/token");
+        webRequest.Method = "POST";
+        string parameters = $"client_id={config.LoginPageDiscordClientId}&client_secret={config.LoginPageDiscordClientSecret}&grant_type=authorization_code&code={code}&redirect_uri={redirect_url}";
+        byte[] byteArray = Encoding.UTF8.GetBytes(parameters);
+        webRequest.ContentType = "application/x-www-form-urlencoded";
+        webRequest.ContentLength = byteArray.Length;
+        Stream postStream = webRequest.GetRequestStream();
+        postStream.Write(byteArray, 0, byteArray.Length);
+        postStream.Close();
+        WebResponse response = webRequest.GetResponse();
+        postStream = response.GetResponseStream();
+        StreamReader reader = new StreamReader(postStream);
+        string responseFromServer = reader.ReadToEnd();
+        var token = System.Text.Json.JsonSerializer.Deserialize<SilverBotDS.Objects.Classes.Oauth.Token>(responseFromServer);
+
+        SessionHelper.SetObjectAsJson(HttpContext.Session, "accessToken", token.AccessToken);
+    }
+}

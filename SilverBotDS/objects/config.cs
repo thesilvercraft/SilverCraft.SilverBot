@@ -42,7 +42,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
 
-        private const ulong CurrentConfVer = 21;
+        private const ulong CurrentConfVer = 22;
 
         [XmlDescription("Webhook for logging")]
         public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
@@ -114,6 +114,12 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Do we enable the shitty server statistics")]
         public bool EnableServerStatistics { get; set; } = true;
+
+        [XmlDescription("RedirectUrl for the page")]
+        public string LoginPageDiscordRedirectUrl { get; set; } = "https://discord.com/api/oauth2/authorize?client_id=702445582559739976&redirect_uri=https%3A%2F%2Flocalhost%3A44319%2Flogin&response_type=code&scope=identify%20guilds%20guilds.join";
+
+        public ulong LoginPageDiscordClientId { get; set; } = 702445582559739976;
+        public string LoginPageDiscordClientSecret { get; set; } = "lol no";
 
         public Splash[] Splashes { get; set; } = {
       new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),
@@ -318,92 +324,34 @@ namespace SilverBotDS.Objects
 
         public static async Task OutdatedConfigTask(Config readconfig)
         {
-            Console.WriteLine("Outdated config detected. Would you like a new one to generate? (Y/n)");
-            var rl = Console.ReadLine();
-            if (rl != null)
-                switch (rl.ToLowerInvariant())
+            using (var streamReader = new StreamReader("silverbot.xml"))
+            {
+                await using (var streamWriter = new StreamWriter("silverbotold.xml", false))
                 {
-                    case "y":
-                        using (var streamReader = new StreamReader("silverbot.xml"))
-                        {
-                            await using (var streamWriter = new StreamWriter("silverbotold.xml", false))
-                            {
-                                await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
-                                streamWriter.Close();
-                            }
-
-                            streamReader.Close();
-                        }
-
-                        await using (var streamWriter = new StreamWriter("silverbot.xml"))
-                        {
-                            if (readconfig.ConfigVer < 20 && File.Exists("splashes.json"))
-                            {
-                                using StreamReader reader = new("splashes.json");
-                                readconfig.Splashes = JsonSerializer.Deserialize<DiscordActivity[]>(json: await reader.ReadToEndAsync()).Select(item => Splash.GetFromDiscordActivity(item)).ToArray();
-                            }
-                            readconfig.ConfigVer = CurrentConfVer;
-
-                            MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(readconfig)).Save(streamWriter);
-                            streamWriter.Close();
-                        }
-
-                        new Process
-                        {
-                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + Program.DirSlash + "silverbot.xml")
-                            {
-                                UseShellExecute = true
-                            }
-                        }.Start();
-                        new Process
-                        {
-                            StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + Program.DirSlash + "silverbotold.xml")
-                            {
-                                UseShellExecute = true
-                            }
-                        }.Start();
-                        Console.WriteLine(
-                            "Ok now transfer the values from silverbotold.xml to silverbot.xml and restart thx");
-                        Environment.Exit(420);
-                        break;
-
-                    case "n":
-                        Console.WriteLine(
-                            "Outdated config detected. Would you like to try loading with the outdated config? (Y/n)");
-                        var nrl = Console.ReadLine();
-                        if (nrl != null)
-                        {
-                            switch (nrl.ToLowerInvariant())
-                            {
-                                case "y":
-                                    {
-                                        break;
-                                    }
-                                case "n":
-                                    {
-                                        Environment.Exit(421);
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        await OutdatedConfigTask(readconfig);
-                                        break;
-                                    }
-                            }
-                        }
-
-                        break;
-
-                    default:
-                        await OutdatedConfigTask(readconfig);
-                        break;
+                    await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
+                    streamWriter.Close();
                 }
+
+                streamReader.Close();
+            }
+
+            await using (var streamWriter = new StreamWriter("silverbot.xml"))
+            {
+                if (readconfig.ConfigVer < 20 && File.Exists("splashes.json"))
+                {
+                    using StreamReader reader = new("splashes.json");
+                    readconfig.Splashes = JsonSerializer.Deserialize<DiscordActivity[]>(json: await reader.ReadToEndAsync()).Select(item => Splash.GetFromDiscordActivity(item)).ToArray();
+                }
+                readconfig.ConfigVer = CurrentConfVer;
+
+                MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(readconfig)).Save(streamWriter);
+                streamWriter.Close();
+            }
         }
 
         public static async Task<Config> GetAsync()
         {
             var serializer = new XmlSerializer(typeof(Config));
-
             if (!File.Exists("silverbot.xml"))
             {
                 await using (var streamWriter = new StreamWriter("silverbot.xml"))
@@ -425,16 +373,12 @@ namespace SilverBotDS.Objects
                     }.Start();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("silverbot.xml should have opened in the default app, edit it, save it and press enter");
-
-                    Console.WriteLine("Press any key WHEN READY to continue...");
-                    Console.ReadKey();
+                    Environment.Exit(420);
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
                     Environment.Exit(420);
                 }
             }
@@ -445,6 +389,7 @@ namespace SilverBotDS.Objects
             if (readconfig != null && (readconfig.ConfigVer == null || readconfig.ConfigVer != CurrentConfVer))
             {
                 await OutdatedConfigTask(readconfig);
+                return await GetAsync();
             }
             Giphy.Set(readconfig?.Gtoken);
             Fortnite.Setapi(readconfig?.FApiToken);

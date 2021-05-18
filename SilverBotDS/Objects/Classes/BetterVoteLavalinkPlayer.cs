@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects.Classes
 {
-    internal enum VoteSettings
+    internal enum LoopSettings
     {
         [EnumMember(Value = "none")]
         NotLooping,
@@ -25,7 +25,7 @@ namespace SilverBotDS.Objects.Classes
 
     internal class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
     {
-        public VoteSettings LoopSettings { get; set; } = VoteSettings.NotLooping;
+        public LoopSettings LoopSettings { get; set; } = LoopSettings.NotLooping;
 
         public BetterVoteLavalinkPlayer()
         {
@@ -44,7 +44,7 @@ namespace SilverBotDS.Objects.Classes
             }
             EnsureNotDestroyed();
             EnsureConnected();
-            if (!command && LoopSettings == VoteSettings.LoopingSong && CurrentTrack != null)
+            if (!command && LoopSettings == LoopSettings.LoopingSong && CurrentTrack != null)
             {
                 return PlayAsync(CurrentTrack, false);
             }
@@ -54,7 +54,7 @@ namespace SilverBotDS.Objects.Classes
                 while (count-- > 0)
                 {
                     track = Queue.Dequeue();
-                    if (LoopSettings is VoteSettings.LoopingQueue)
+                    if (LoopSettings is LoopSettings.LoopingQueue)
                     {
                         Queue.Add(track);
                     }

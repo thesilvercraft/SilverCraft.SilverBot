@@ -40,8 +40,6 @@ namespace SilverBotDS.Commands
     [Cooldown(1, 2, CooldownBucketType.User)]
     public class ImageModule : BaseCommandModule
     {
-#pragma warning disable CA1822 // Mark members as static
-
         private const int MaxBytes = 8388246;
 
         public HttpClient HttpClient { private get; set; }

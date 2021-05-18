@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Converters
 {
-    internal class VoteSettingsConverter : IArgumentConverter<VoteSettings>
+    internal class LoopSettingsConverter : IArgumentConverter<LoopSettings>
     {
-        public Task<Optional<VoteSettings>> ConvertAsync(string value, CommandContext ctx)
+        public Task<Optional<LoopSettings>> ConvertAsync(string value, CommandContext ctx)
         {
-            if (Enum.TryParse(typeof(VoteSettings), value, out var boolean))
+            if (Enum.TryParse(typeof(LoopSettings), value, out var boolean))
             {
-                return Task.FromResult(Optional.FromValue((VoteSettings)boolean));
+                return Task.FromResult(Optional.FromValue((LoopSettings)boolean));
             }
             return value.ToLower() switch
             {
-                "queue" or "q" => Task.FromResult(Optional.FromValue(VoteSettings.LoopingQueue)),
-                "no" or "none" or "off" => Task.FromResult(Optional.FromValue(VoteSettings.NotLooping)),
-                "song" or "s" or "single" => Task.FromResult(Optional.FromValue(VoteSettings.LoopingSong)),
-                _ => Task.FromResult(Optional.FromNoValue<VoteSettings>()),
+                "queue" or "q" => Task.FromResult(Optional.FromValue(LoopSettings.LoopingQueue)),
+                "no" or "none" or "off" => Task.FromResult(Optional.FromValue(LoopSettings.NotLooping)),
+                "song" or "s" or "single" => Task.FromResult(Optional.FromValue(LoopSettings.LoopingSong)),
+                _ => Task.FromResult(Optional.FromNoValue<LoopSettings>()),
             };
         }
     }

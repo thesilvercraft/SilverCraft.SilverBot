@@ -120,6 +120,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("urbandictionary"), Aliases("urbandict", "urban")]
+        [RequireNsfw]
         [Description("Search up definitions for words on urban dictionary, pls dont kill me urban")]
         public async Task Urban(CommandContext ctx, [Description("the name of the package")][RemainingText] string query)
         {
@@ -143,7 +144,7 @@ namespace SilverBotDS.Commands
 
                 await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 var bob = new DiscordEmbedBuilder().WithTitle(lang.SearchFailTitle).WithDescription(lang.SearchFailDescription).WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());
@@ -204,7 +205,7 @@ namespace SilverBotDS.Commands
 
                 await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 var bob = new DiscordEmbedBuilder().WithTitle(lang.SearchFailTitle).WithDescription(lang.SearchFailDescription).WithColor(await ColorUtils.GetSingleAsync());
                 await ctx.RespondAsync(embed: bob.Build());

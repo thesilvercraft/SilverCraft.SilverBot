@@ -412,7 +412,7 @@ namespace SilverBotDS.Commands
                     }
                     throw;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.SetOut(console);
                     throw;

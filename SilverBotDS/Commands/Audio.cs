@@ -120,7 +120,7 @@ namespace SilverBotDS.Commands
         .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
         .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
         .WithUrl(song.Song.Source)
-        .AddField(lang.TimeTillTrackPlays, player.LoopSettings == VoteSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
+        .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
         .Build())
         .SendAsync(ctx.Channel);
 
@@ -161,7 +161,7 @@ namespace SilverBotDS.Commands
             .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
             .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
             .WithUrl(song.Song.Source)
-            .AddField(lang.TimeTillTrackPlays, player.LoopSettings == VoteSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
+            .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
             .Build())
             .SendAsync(ctx.Channel);
             }
@@ -307,14 +307,14 @@ namespace SilverBotDS.Commands
 
             var pages = new List<Page>
                 {
-                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == VoteSettings.LoopingSong  ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
+                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == LoopSettings.LoopingSong  ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
                 };
             for (var i = 0; i < player.Queue.Count; i++)
             {
                 var timetillsongplays = TimeTillSongPlays(player, i + 1);
                 pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title)
                     .WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync())
-                    .AddField(lang.TimeTillTrackPlays, player.LoopSettings == VoteSettings.LoopingSong ? lang.SongTimeLeftSongLooping : timetillsongplays.Humanize(culture: lang.GetCultureInfo()))
+                    .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : timetillsongplays.Humanize(culture: lang.GetCultureInfo()))
                     .WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
             }
 
@@ -323,7 +323,7 @@ namespace SilverBotDS.Commands
 
         [Command("loop")]
         [Description("Loop or unloop the current song")]
-        public async Task Loop(CommandContext ctx, VoteSettings settings)
+        public async Task Loop(CommandContext ctx, LoopSettings settings)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!IsInVc(ctx))
@@ -343,15 +343,15 @@ namespace SilverBotDS.Commands
             player.LoopSettings = settings;
             switch (settings)
             {
-                case VoteSettings.NotLooping:
+                case LoopSettings.NotLooping:
                     await SendSimpleMessage(ctx, lang.NotLooping, language: lang);
                     break;
 
-                case VoteSettings.LoopingSong:
+                case LoopSettings.LoopingSong:
                     await SendSimpleMessage(ctx, lang.LoopingSong, language: lang);
                     break;
 
-                case VoteSettings.LoopingQueue:
+                case LoopSettings.LoopingQueue:
                     await SendSimpleMessage(ctx, lang.LoopingQueue, language: lang);
                     break;
 

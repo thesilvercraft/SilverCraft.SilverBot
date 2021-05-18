@@ -11,7 +11,6 @@
 @inject Config config
 @inject IHttpContextAccessor HttpContextAccessor
 @inject DiscordClient Discord
-@inject BrowserService Jsthing
 @model SilverBotDS.Pages.ListGuildsModel
 
 @{
@@ -49,8 +48,6 @@
         var serversbitch = System.Text.Json.JsonSerializer.Deserialize<SilverBotDS.Objects.Classes.Oauth.Guild[]>(apiResponse2);
         StringBuilder html_shit = new("<table><tr>");
         int epicness = 0;
-        var dimensions = await Jsthing.GetDimensions();
-        int maxepicness = dimensions.Width / 150;
         var servers = from server in serversbitch where Discord.Guilds.ContainsKey(server.UId) && ((Discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult()).Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner) select server;
         foreach (var server in servers)
         {

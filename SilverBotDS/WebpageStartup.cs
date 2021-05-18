@@ -10,7 +10,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
-using System.Threading.Tasks;
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
+using System.IO;
 
 namespace SilverBotDS
 {
@@ -76,6 +78,10 @@ namespace SilverBotDS
             }
 
             app.UseHttpsRedirection();
+            // var assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            //var assetDirectory = Path.Combine(assemblyDirectory, "wwwroot");
+
+            // use it
             app.UseStaticFiles();
 
             app.UseRouting();

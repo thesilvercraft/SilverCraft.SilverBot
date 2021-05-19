@@ -35,9 +35,9 @@ namespace SilverBotDS.Converters
            { "special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8" },
            { "velimir's favorite","https://www.youtube.com/watch?v=mdqU6Erw3kk"},
            { "cmpc music","https://www.youtube.com/playlist?list=PLgeUxNS5wZ89J7tzjHCMxfArAr4o-eaux" },
-            {"shut the fock up","https://cdn.discordapp.com/attachments/789617572608868404/840360529294000148/PINK_GUY_-_STFU-OLpeX4RRo28.mp3" },
-            { "fock you","https://cdn.discordapp.com/attachments/789617572608868404/840361885656285204/CeeLo_Green_-_FUCK_YOU_Official_Video-pc0mxOXbWIU.mp3"},
-            {"meme playlist","https://www.youtube.com/playlist?list=PLiiTWcm0RsKj8toM1CoxDbjDZftLYDFo1" }
+           {"shut the fock up","https://cdn.discordapp.com/attachments/789617572608868404/840360529294000148/PINK_GUY_-_STFU-OLpeX4RRo28.mp3" },
+           { "fock you","https://cdn.discordapp.com/attachments/789617572608868404/840361885656285204/CeeLo_Green_-_FUCK_YOU_Official_Video-pc0mxOXbWIU.mp3"},
+           {"meme playlist","https://www.youtube.com/playlist?list=PLiiTWcm0RsKj8toM1CoxDbjDZftLYDFo1" }
         };
 
         private bool IsSpotifyString(string url) => TrackRegex.IsMatch(url) || AlbumRegex.IsMatch(url) || PlaylistRegex.IsMatch(url);
@@ -51,7 +51,11 @@ namespace SilverBotDS.Converters
                     skipsongs--;
                     continue;
                 }
-                yield return await AudioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube);
+                var e = await AudioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube);
+                if (e is not null)
+                {
+                    yield return e;
+                }
             }
         }
 
@@ -66,7 +70,11 @@ namespace SilverBotDS.Converters
                         skipsongs--;
                         continue;
                     }
-                    yield return await AudioService.GetTrackAsync($"{track.Name} {track.Artists[0].Name}", SearchMode.YouTube);
+                    var e = await AudioService.GetTrackAsync($"{track.Name} {track.Artists[0].Name}", SearchMode.YouTube);
+                    if (e is not null)
+                    {
+                        yield return e;
+                    }
                 }
             }
         }

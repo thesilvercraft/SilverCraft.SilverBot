@@ -1,32 +1,34 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using SilverBotDS.WebHelpers
+@using DSharpPlus
+@using DSharpPlus.Entities
 @inject IHttpContextAccessor HttpContextAccessor
-
+@inject DiscordClient Discord
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <!-- Brand/logo -->
-  <a class="navbar-brand" href="#">Logo</a>
-  
-  <!-- Links -->
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link" href="#">Link 1</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Link 2</a>
-    </li>
-    @if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#">SolverBot</a>
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+
+        @if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
         {
-     <li class="nav-item">
-      <a class="nav-link" href="\login">Log in</a>
-    </li>
+            <li class="nav-item">
+                <a class="nav-link" href="\login">Log in</a>
+            </li>
         }
-     else
-     {
-   <li class="nav-item">
-      <a class="nav-link" href="">Hello </a>
-    </li>
-     }
-    
-  
-  </ul>
+        else
+        {
+
+            <li class="nav-item">
+                @{
+                    DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session).UId).GetAwaiter().GetResult();
+                }
+                <a class="nav-link" href="">Hello @user.Username # @user.Discriminator</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/listguilds">Servers</a>
+            </li>
+        }
+    </ul>
 </nav>

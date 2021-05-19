@@ -377,7 +377,7 @@ namespace SilverBotDS
             }
         }
 
-        private static Dictionary<string, string> GetStringDictionary(DiscordClient client)
+        public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
         {
             return new Dictionary<string, string> { ["GuildCount"] = client.Guilds.Values.LongCount().ToString(), ["Platform"] = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() };
         }

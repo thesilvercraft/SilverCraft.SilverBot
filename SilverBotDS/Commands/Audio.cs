@@ -112,26 +112,34 @@ namespace SilverBotDS.Commands
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
             BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-
-            await player.PlayTopAsync(song.Song);
-
-            await new DiscordMessageBuilder()
-        .WithReply(ctx.Message.Id)
-        .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
-        .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
-        .WithUrl(song.Song.Source)
-        .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
-        .Build())
-        .SendAsync(ctx.Channel);
+            if (song.Song is not null)
+            {
+                await player.PlayTopAsync(song.Song);
+                await new DiscordMessageBuilder()
+            .WithReply(ctx.Message.Id)
+            .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+            .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
+            .WithUrl(song.Song.Source)
+            .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
+            .Build())
+            .SendAsync(ctx.Channel);
+            }
 
             if (song.GetRestOfSongs is not null)
             {
+                ulong countofsongs = 0;
                 await foreach (var t in song.GetRestOfSongs)
                 {
-                    await player.PlayTopAsync(t);
+                    if (t is not null)
+                    {
+                        await player.PlayTopAsync(t);
+                        countofsongs++;
+                    }
                 }
-
-                await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, await song.GetRestOfSongs.CountAsync()));
+                if (countofsongs != 0)
+                {
+                    await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, countofsongs));
+                }
             }
         }
 
@@ -148,31 +156,40 @@ namespace SilverBotDS.Commands
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
             BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-
-            int pos = await player.PlayAsync(song.Song, true);
-            if (pos == 0)
+            if (song.Song is not null)
             {
-                await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, song.Song.Title + lang.SongByAuthor + song.Song.Author), url: song.Song.Source, language: lang);
-            }
-            else
-            {
-                await new DiscordMessageBuilder()
-            .WithReply(ctx.Message.Id)
-            .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
-            .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
-            .WithUrl(song.Song.Source)
-            .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
-            .Build())
-            .SendAsync(ctx.Channel);
+                int pos = await player.PlayAsync(song.Song, true);
+                if (pos == 0)
+                {
+                    await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, song.Song.Title + lang.SongByAuthor + song.Song.Author), url: song.Song.Source, language: lang);
+                }
+                else
+                {
+                    await new DiscordMessageBuilder()
+                .WithReply(ctx.Message.Id)
+                .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
+                .WithUrl(song.Song.Source)
+                .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
+                .Build())
+                .SendAsync(ctx.Channel);
+                }
             }
             if (song.GetRestOfSongs is not null)
             {
+                ulong countofsongs = 0;
                 await foreach (var t in song.GetRestOfSongs)
                 {
-                    await player.PlayAsync(t, true);
+                    if (t is not null)
+                    {
+                        await player.PlayAsync(t, true);
+                        countofsongs++;
+                    }
                 }
-
-                await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, await song.GetRestOfSongs.CountAsync()));
+                if (countofsongs != 0)
+                {
+                    await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, countofsongs));
+                }
             }
         }
 

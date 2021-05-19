@@ -5,7 +5,6 @@ on:
     branches: [ master ]
 jobs:
   build:
-
     runs-on: windows-2019
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
@@ -58,4 +57,14 @@ jobs:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
          asset_path: .\SilverBotDS\bin\Release\net5.0\SilverBotDS.dll
          asset_name: SilverBotDS.dll
+         asset_content_type: application/octet-stream
+    - name: Upload View Dll
+      id: upload-view-dll
+      uses: actions/upload-release-asset@v1
+      env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: .\SilverBotDS\bin\Release\net5.0\SilverBotDS.Views.dll
+         asset_name: SilverBotDS.Views.dll
          asset_content_type: application/octet-stream

@@ -11,9 +11,9 @@
 @inject Config config
 
 @{
-    ViewData["Title"] = "e";
+    ViewData["Title"] = "Da login page";
     string code = Request.Query["code"].ToString();
-    if (string.IsNullOrEmpty(code) || !string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")) )
+    if (string.IsNullOrEmpty(code) || !string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
     {
         Response.Redirect(config.LoginPageDiscordRedirectUrl);
     }
@@ -38,5 +38,7 @@
         var token = System.Text.Json.JsonSerializer.Deserialize<SilverBotDS.Objects.Classes.Oauth.Token>(responseFromServer);
 
         SessionHelper.SetObjectAsJson(HttpContext.Session, "accessToken", token.AccessToken);
+
+        Response.Redirect("/");
     }
 }

@@ -202,7 +202,7 @@ namespace SilverBotDS.Commands
             }
             if (str.StartsWith("```javascript"))
             {
-                str = str.Remove(0, 5);
+                str = str.Remove(0, 14);
             }
             if (str.StartsWith("```"))
             {

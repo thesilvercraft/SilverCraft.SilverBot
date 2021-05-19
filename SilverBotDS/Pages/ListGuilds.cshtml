@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/listguilds"
 @using System.Net
 @using System.Text
 @using System.IO
@@ -8,12 +8,13 @@
 @using System.Diagnostics
 @using SilverBotDS.WebHelpers
 @using SilverBotDS
+@using Microsoft.JSInterop
 @inject Config config
 @inject IHttpContextAccessor HttpContextAccessor
 @inject DiscordClient Discord
-@model SilverBotDS.Pages.ListGuildsModel
-
+@inject IJSRuntime jsRuntime
 @{
+
     if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
     {
         Response.Redirect($"https://{Request.Host}/login");
@@ -21,34 +22,11 @@
     else
     {
 
-        HttpWebRequest webRequest1 = (HttpWebRequest)WebRequest.Create("https://discordapp.com/api/users/@me");
-        webRequest1.Method = "Get";
-        webRequest1.ContentLength = 0;
-        webRequest1.Headers.Add("Authorization", $"Bearer {SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")}");
-        webRequest1.ContentType = "application/x-www-form-urlencoded";
-        string apiResponse1;
-        using (HttpWebResponse response1 = webRequest1.GetResponse() as HttpWebResponse)
-        {
-            StreamReader reader1 = new StreamReader(response1.GetResponseStream());
-            apiResponse1 = reader1.ReadToEnd();
-        }
-        var thing = System.Text.Json.JsonSerializer.Deserialize<SilverBotDS.Objects.Classes.Oauth.Oauththingy>(apiResponse1);
-        ViewData["Message"] = $"Hello {thing.Username}#{thing.Discriminator}!";
-        HttpWebRequest webRequest2 = (HttpWebRequest)WebRequest.Create("https://discordapp.com/api/v8/users/@me/guilds");
-        webRequest2.Method = "Get";
-        webRequest2.ContentLength = 0;
-        webRequest2.Headers.Add("Authorization", $"Bearer {SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")}");
-        webRequest2.ContentType = "application/x-www-form-urlencoded";
-        string apiResponse2 = "";
-        using (HttpWebResponse response2 = webRequest2.GetResponse() as HttpWebResponse)
-        {
-            StreamReader reader2 = new StreamReader(response2.GetResponseStream());
-            apiResponse2 = reader2.ReadToEnd();
-        }
-        var serversbitch = System.Text.Json.JsonSerializer.Deserialize<SilverBotDS.Objects.Classes.Oauth.Guild[]>(apiResponse2);
+        var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session);
+        ViewBag.message = $"Hello {thing.Username}#{thing.Discriminator}!";
         StringBuilder html_shit = new("<table><tr>");
         int epicness = 0;
-        var servers = from server in serversbitch where Discord.Guilds.ContainsKey(server.UId) && ((Discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult()).Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner) select server;
+        var servers = from server in SessionHelper.GetGuildsFromSession(HttpContextAccessor.HttpContext.Session) where Discord.Guilds.ContainsKey(server.UId) && ((Discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult()).Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner) select server;
         foreach (var server in servers)
         {
             if (epicness > 6)
@@ -75,8 +53,8 @@
             epicness++;
         }
         html_shit.Append("</tr></table>");
-        ViewData["Table"] = html_shit.ToString();
-    }
-}
-<h1>@ViewData["Message"]</h1>
-@Html.Raw(ViewData["Table"])
+        ViewBag.Table = html_shit.ToString();
+
+    } }
+<h1>@ViewBag.message</h1>
+@Html.Raw(ViewBag.Table)

@@ -1,7 +1,12 @@
 ﻿@page "/"
-@{
-
-}
+@using SilverBotDS
+@using SilverBotDS.Objects
+@using SilverBotDS.Utils
+@using DSharpPlus
+@using DSharpPlus.Entities
+@inject Config config
+@inject DiscordClient discord
 <body>
-    <h1>Hello and welcome to the new SilverBot webpage.</h1>
+    <p>@ArrayUtils.RandomFromArray(config.Splashes).GetDiscordActivity(Program.GetStringDictionary(discord)).Name</p>
+    <h1>Hello and welcome to the new SilverBot webpage. This is very very very very very very very very very beta</h1>
 </body>

@@ -31,6 +31,7 @@ namespace SilverBotDS.Objects.Database.Classes
             }
             catch (OutOfMemoryException)
             {
+                //we ran out of memory
             }
         }
 
@@ -42,6 +43,7 @@ namespace SilverBotDS.Objects.Database.Classes
             }
             catch (OutOfMemoryException)
             {
+                //we ran out of memory
             }
         }
 
@@ -53,6 +55,7 @@ namespace SilverBotDS.Objects.Database.Classes
             }
             catch (OutOfMemoryException)
             {
+                //we ran out of memory
             }
         }
 
@@ -64,6 +67,7 @@ namespace SilverBotDS.Objects.Database.Classes
             }
             catch (OutOfMemoryException)
             {
+                //we ran out of memory
             }
         }
     }

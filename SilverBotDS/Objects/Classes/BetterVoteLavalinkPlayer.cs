@@ -27,10 +27,6 @@ namespace SilverBotDS.Objects.Classes
     {
         public LoopSettings LoopSettings { get; set; } = LoopSettings.NotLooping;
 
-        public BetterVoteLavalinkPlayer()
-        {
-        }
-
         public override Task SkipAsync(int count = 1)
         {
             return SkipAsync(count, true);

@@ -117,7 +117,7 @@ namespace SilverBotDS
             ILoggerFactory logFactory = new LoggerFactory().AddSerilog(logger: log);
             //Make us a little cute client
             log.Verbose("Creating the discord client");
-            discord = new DiscordClient(new DiscordConfiguration()
+            discord = new DiscordClient(new DiscordConfiguration
             {
                 LoggerFactory = logFactory,
                 Token = config.Token,
@@ -126,7 +126,7 @@ namespace SilverBotDS
             });
             //Tell our client to initialize interactivity
             log.Verbose("Initializing interactivity");
-            discord.UseInteractivity(new InteractivityConfiguration()
+            discord.UseInteractivity(new InteractivityConfiguration
             {
                 PollBehaviour = PollBehaviour.KeepEmojis,
                 Timeout = TimeSpan.FromSeconds(30)
@@ -187,9 +187,7 @@ namespace SilverBotDS
                 default:
                     break;
             }
-
             services.AddSingleton(config);
-
             services.AddSingleton(httpClient);
             if (config.AutoDownloadAndStartLavalink)
             {
@@ -242,7 +240,7 @@ namespace SilverBotDS
             serviceProvider = services.BuildServiceProvider();
             var context = serviceProvider.GetService<DatabaseContext>();
             context.Database.Migrate();
-            CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration()
+            CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {
                 StringPrefixes = config.Prefix,
                 Services = serviceProvider

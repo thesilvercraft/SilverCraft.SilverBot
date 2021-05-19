@@ -63,15 +63,15 @@ namespace SilverBotDS.Commands
         [RequireUserPermissions(Permissions.ManageGuild)]
         public async Task SetLanguage(CommandContext ctx, string LangName)
         {
-            if (Language.LoadedLanguages().AsEnumerable().FirstOrDefault(x => x.ToLower() == LangName.ToLower()) != null)
+            if (Language.LoadedLanguages().AsEnumerable().FirstOrDefault(x => x.ToLowerInvariant() == LangName.ToLowerInvariant()) != null)
             {
                 if (ctx.Channel.IsPrivate)
                 {
-                    Database.InserOrUpdateLangCodeUser(ctx.User.Id, LangName.ToLower());
+                    Database.InserOrUpdateLangCodeUser(ctx.User.Id, LangName.ToLowerInvariant());
                 }
                 else
                 {
-                    Database.InserOrUpdateLangCodeGuild(ctx.Guild.Id, LangName.ToLower());
+                    Database.InserOrUpdateLangCodeGuild(ctx.Guild.Id, LangName.ToLowerInvariant());
                 }
                 var lang = await Language.GetLanguageFromCtxAsync(ctx);
                 await new DiscordMessageBuilder().WithReply(ctx.Message.Id)

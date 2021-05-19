@@ -18,10 +18,10 @@ namespace SilverBotDS.Converters
             {
                 return Task.FromResult(Optional.FromValue((LoopSettings)boolean));
             }
-            return value.ToLower() switch
+            return value.ToLowerInvariant() switch
             {
                 "queue" or "q" => Task.FromResult(Optional.FromValue(LoopSettings.LoopingQueue)),
-                "no" or "none" or "off" => Task.FromResult(Optional.FromValue(LoopSettings.NotLooping)),
+                "n" or "no" or "none" or "off" => Task.FromResult(Optional.FromValue(LoopSettings.NotLooping)),
                 "song" or "s" or "single" => Task.FromResult(Optional.FromValue(LoopSettings.LoopingSong)),
                 _ => Task.FromResult(Optional.FromNoValue<LoopSettings>()),
             };

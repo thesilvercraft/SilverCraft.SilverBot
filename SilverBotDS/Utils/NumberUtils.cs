@@ -6,7 +6,7 @@
         {
         }
 
-        private static readonly string[] divisors = new string[]
+        private static readonly string[] divisors = new[]
         {
           "",
           "K", // Thousand

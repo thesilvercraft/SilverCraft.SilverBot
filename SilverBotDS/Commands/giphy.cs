@@ -26,7 +26,7 @@ namespace SilverBotDS.Commands
 
         public static void Set(string token)
         {
-            if (string.IsNullOrEmpty(token) || token == "Giphy_Token_Here" || token.ToLower() == "none")
+            if (string.IsNullOrEmpty(token) || token == "Giphy_Token_Here" || token.ToLowerInvariant() == "none")
             {
                 giphy = new GiphyDotNet.Manager.Giphy();
             }

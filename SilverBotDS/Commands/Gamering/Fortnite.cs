@@ -28,7 +28,7 @@ namespace SilverBotDS.Commands.Gamering
         /// <param name="apiKey">the key to use</param>
         public static void Setapi(string apiKey)
         {
-            if (string.IsNullOrEmpty(apiKey) || apiKey == "Fortnite_Token_Here" || apiKey.ToLower() == "none")
+            if (string.IsNullOrEmpty(apiKey) || apiKey == "Fortnite_Token_Here" || apiKey.ToLowerInvariant() == "none")
             {
                 disabled = true;
             }

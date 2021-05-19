@@ -48,7 +48,6 @@ namespace SilverBotDS.Commands
         public async Task AddEmote(CommandContext ctx, [Description("Name like `Kappa`")] string name)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-
             try
             {
                 var image = SdImage.FromContext(ctx);
@@ -56,15 +55,13 @@ namespace SilverBotDS.Commands
             }
             catch (AttachmentCountIncorrectException acie)
             {
-                switch (acie.AttachmentCount)
+                if (acie.AttachmentCount is AttachmentCountIncorrect.TooLittleAttachments)
                 {
-                    case AttachmentCountIncorrect.TooLittleAttachments:
-                        await ctx.RespondAsync(lang.NoImageGeneric);
-                        return;
-
-                    case AttachmentCountIncorrect.TooMuchAttachments:
-                        await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
-                        return;
+                    await ctx.RespondAsync(lang.NoImageGeneric);
+                }
+                else if (acie.AttachmentCount is AttachmentCountIncorrect.TooMuchAttachments)
+                {
+                    await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
                 }
             }
         }

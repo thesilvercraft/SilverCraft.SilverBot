@@ -162,7 +162,6 @@ namespace SilverBotDS.Commands
                 l++;
                 e *= l;
             }
-            Console.WriteLine($"{e} {l} {xp}");
             return e;
         }
 
@@ -175,7 +174,6 @@ namespace SilverBotDS.Commands
                 l++;
                 e *= l;
             }
-            Console.WriteLine((double)e / (double)xp * 100d);
             return (double)xp / (double)e * 100d;
         }
 

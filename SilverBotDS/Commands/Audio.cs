@@ -371,9 +371,6 @@ namespace SilverBotDS.Commands
                 case LoopSettings.LoopingQueue:
                     await SendSimpleMessage(ctx, lang.LoopingQueue, language: lang);
                     break;
-
-                default:
-                    break;
             }
         }
 

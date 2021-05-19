@@ -67,7 +67,7 @@ namespace SilverBotDS.Commands
         public static async Task<MemoryStream> ResizeAsync(byte[] photoBytes, Size size)
         {
             using SImage img = SImage.Load(photoBytes);
-            img.Mutate(x => x.Resize(new ResizeOptions()
+            img.Mutate(x => x.Resize(new ResizeOptions
             {
                 Mode = ResizeMode.Max,
                 Size = size
@@ -147,7 +147,7 @@ namespace SilverBotDS.Commands
         /// <param name="photoBytes">The <see cref="byte"/> of the original picture</param>
         /// <param name="filter">The <see cref="IMatrixFilter"/> to use</param>
         /// <returns>A ,<see cref="MemoryStream"/> with a <see cref="PngFormat"/> of 70 Quality</returns>
-        private static MemoryStream Filter(byte[] photoBytes, EFilter filter)
+        private static MemoryStream FilterImgBytes(byte[] photoBytes, EFilter filter)
         {
             using SImage img = SImage.Load(photoBytes);
             if (filter == EFilter.Grayscale)
@@ -347,7 +347,7 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var outStream = Filter(await image.GetBytesAsync(HttpClient), EFilter.Grayscale);
+            await using var outStream = FilterImgBytes(await image.GetBytesAsync(HttpClient), EFilter.Grayscale);
             outStream.Position = 0;
             if (outStream.Length > MaxBytes)
             {
@@ -386,7 +386,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("text")]
-        public async Task Text(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light", float size = 30.0f)
+        public async Task DrawText(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light", float size = 30.0f)
         {
             await ctx.TriggerTypingAsync();
             var img = DrawText(text, new Font(font, size), Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255));

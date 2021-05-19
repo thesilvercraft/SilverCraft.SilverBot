@@ -119,8 +119,8 @@ namespace SilverBotDS.Objects
             this.y = y;
         }
 
-        public ulong x;
-        public ulong y;
+        public ulong x { get; set; }
+        public ulong y { get; set; }
     }
 
     public class TemplateStep : Step, IDisposable
@@ -140,7 +140,7 @@ namespace SilverBotDS.Objects
         }
 
         [XmlIgnore]
-        private Bitmap _image = null;
+        private Bitmap _image;
 
         public Bitmap Image(HttpClient e = null)
         {
@@ -198,11 +198,11 @@ namespace SilverBotDS.Objects
             this.isPfp = isPfp;
         }
 
-        public string url;
-        public bool isPfp;
+        public string url { get; set; }
+        public bool isPfp { get; set; }
 
         [XmlIgnore]
-        public SdImage _image;
+        public SdImage _image { get; set; }
 
         public SdImage Image()
         {
@@ -213,8 +213,8 @@ namespace SilverBotDS.Objects
             return _image;
         }
 
-        public ulong xSize;
-        public ulong ySize;
+        public ulong xSize { get; set; }
+        public ulong ySize { get; set; }
 
         ~PictureStep()
         {

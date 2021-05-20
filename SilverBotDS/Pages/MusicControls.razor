@@ -14,11 +14,13 @@
 @using SilverBotDS.Objects.Classes
 @using SilverBotDS.Converters
 @inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager uriHelper
+@using System.Threading
 @inject Config config
 @{
     if (!config.UseLavaLink)
     {
-        HttpContextAccessor.HttpContext.Response.Redirect("/");
+        uriHelper.NavigateTo("/", forceLoad: true);
     }
 }
 
@@ -28,7 +30,7 @@
 @{
     if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
     {
-        HttpContextAccessor.HttpContext.Response.Redirect($"https://{HttpContextAccessor.HttpContext.Request.Host}/login");
+        uriHelper.NavigateTo("/login", forceLoad: true);
     }
 }
 @{
@@ -38,87 +40,80 @@
 }
 @foreach (var guild in Discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null && x.Members[user.Id].VoiceState.Channel is not null && Lavalink.HasPlayer(x.Id) && Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))
 {
-<div class="window" style="max-width: 610px">
-    <div class="title-bar">
-        <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
-        <div class="title-bar-controls">
-            <button aria-label="Minimize"></button>
-            <button aria-label="Maximize"></button>
-            <button aria-label="Close"></button>
+    <div class="window" style="max-width: 610px">
+        <div class="title-bar">
+            <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
+            <div class="title-bar-controls">
+                <button aria-label="Close"></button>
+            </div>
         </div>
-    </div>
-    <div class="window-body">
-        @code{
-                   string ToggleStateText = "Resume / Pause";
-         string VoteSkipText = "VoteSkip";
-           BetterVoteLavalinkPlayer player;
-        ulong userid;
-        private async Task ToggleStatePress()
+        <div class="window-body">
+            @code{
+
+                ulong userid;
+                private async Task ToggleStatePress(BetterVoteLavalinkPlayer player)
                 {
-                    Debug.WriteLine("togglestateclick");
                     if (player.State is Lavalink4NET.Player.PlayerState.Paused)
                     {
 
                         await player.ResumeAsync();
-                        ToggleStateText = "⏸";
                     }
                     else if (player.State is Lavalink4NET.Player.PlayerState.Playing)
                     {
                         await player.PauseAsync();
-                        ToggleStateText = "▶️";
                     }
 
                 }
-                private async Task VoteSkipPress()
+                private async Task VoteSkipPress(BetterVoteLavalinkPlayer player)
                 {
-                    var votestatus=await player.VoteAsync(userid);
+                    var votestatus = await player.VoteAsync(userid);
                     //TO:DO possibly tell user count of people that voted or if the song was skipped
                 }
-                private async Task ForceSkipPress()
+                private async Task ForceSkipPress(BetterVoteLavalinkPlayer player)
                 {
                     await player.SkipAsync();
                 }
-                private void ShufflePress()
+                private void ShufflePress(BetterVoteLavalinkPlayer player)
                 {
                     player.Queue.Shuffle();
                 }
-                private void NotLoopingPress()
+                private void NotLoopingPress(BetterVoteLavalinkPlayer player)
                 {
                     player.LoopSettings = LoopSettings.NotLooping;
                 }
-                private void LoopingSongPress()
+                private void LoopingSongPress(BetterVoteLavalinkPlayer player)
                 {
                     player.LoopSettings = LoopSettings.LoopingSong;
                 }
-                private void LoopingQueuePress()
+                private void LoopingQueuePress(BetterVoteLavalinkPlayer player)
                 {
                     player.LoopSettings = LoopSettings.LoopingQueue;
                 }
-        }
-        @{
-
-      player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
-        userid=user.Id;
-         if (player.State is Lavalink4NET.Player.PlayerState.Paused)
-         {               
-             ToggleStateText = "▶️";
-         }
-         else if (player.State is Lavalink4NET.Player.PlayerState.Playing)
-         {
-             ToggleStateText = "⏸";
-         }
-
-        }
-        <input id="ToggleState" type="button" @onclick="ToggleStatePress" value="@ToggleStateText" runat="server" /><!--Play or Pause-->
-        <input id="VoteSkip" type="button" @onclick="VoteSkipPress" value="VoteSkip" />
-        @if (guild.Members[user.Id].Roles.Any(e => e.CheckPermission(DSharpPlus.Permissions.ManageChannels) == DSharpPlus.PermissionLevel.Allowed || e.Name.ToLower().Contains("dj")) || (guild.Members[user.Id].VoiceState.Channel.Users.LongCount(x => !x.IsBot) == 1))
-            {
-        <input id="ForceSkip" type="button" @onclick="ForceSkipPress" value="Just skip it™ (DJ only)" /><!--Requires dj-->
-        <input id="Shuffle" type="button" @onclick="ShufflePress" value="🔀Shuffle" />  <!--Requires dj-->
             }
-        <input id="NoLoop" type="button" @onclick="NotLoopingPress" value="Do not loop" />
-        <input id="LoopSong" type="button" @onclick="LoopingSongPress" value="Loop song" />
-        <input id="LoopQueue" type="button" @onclick="LoopingQueuePress" value="Loop queue" />
+            @{
+                string ToggleStateText = "Resume / Pause";
+                BetterVoteLavalinkPlayer player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
+                userid = user.Id;
+                if (player.State is Lavalink4NET.Player.PlayerState.Paused)
+                {
+                    ToggleStateText = "▶️";
+                }
+                else if (player.State is Lavalink4NET.Player.PlayerState.Playing)
+                {
+                    ToggleStateText = "⏸";
+                }
+
+            }
+            <input id="ToggleState" type="button" @onclick="@(async (e) => { await ToggleStatePress(player); if (player.State is Lavalink4NET.Player.PlayerState.Paused) { ToggleStateText = "▶️"; } else if (player.State is Lavalink4NET.Player.PlayerState.Playing) { ToggleStateText = "⏸";} })" value="@ToggleStateText" runat="server" /><!--Play or Pause-->
+            <input id="VoteSkip" type="button" @onclick="@(async (e) => await VoteSkipPress(player))" value="VoteSkip" />
+            @if (guild.Members[user.Id].Roles.Any(e => e.CheckPermission(DSharpPlus.Permissions.ManageChannels) == DSharpPlus.PermissionLevel.Allowed || e.Name.ToLower().Contains("dj")) || (guild.Members[user.Id].VoiceState.Channel.Users.LongCount(x => !x.IsBot) == 1))
+            {
+                <input id="ForceSkip" type="button" @onclick="@(async(e) => await ForceSkipPress(player))" value="Just skip it™ (DJ only)" /><!--Requires dj-->
+                <input id="Shuffle" type="button" @onclick="@(e =>  ShufflePress(player))" value="🔀Shuffle" /> <!--Requires dj-->
+            }
+            <input id="NoLoop" type="button" @onclick="@(e =>  NotLoopingPress(player))" value="Do not loop" />
+            <input id="LoopSong" type="button" @onclick="@(e =>  LoopingSongPress(player))" value="Loop song" />
+            <input id="LoopQueue" type="button" @onclick="@(e => LoopingQueuePress(player))" value="Loop queue" />
+        </div>
     </div>
-</div>
 }

@@ -38,22 +38,23 @@
 }
 @foreach (var guild in Discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null && x.Members[user.Id].VoiceState.Channel is not null && Lavalink.HasPlayer(x.Id) && Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))
 {
-    <div class="window" style="max-width: 600px">
-        <div class="title-bar">
-            <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
-            <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
-            </div>
+<div class="window" style="max-width: 600px">
+    <div class="title-bar">
+        <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
+        <div class="title-bar-controls">
+            <button aria-label="Minimize"></button>
+            <button aria-label="Maximize"></button>
+            <button aria-label="Close"></button>
         </div>
-        <div class="window-body">
-            @{
+    </div>
+    <div class="window-body">
+        @{
 
                 string ToggleStateText = "Resume / Pause";
                 var player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
                 void ToggleStatePress()
                 {
+                    Debug.WriteLine("togglestateclick");
                     if (player.State is Lavalink4NET.Player.PlayerState.Paused)
                     {
 
@@ -65,6 +66,7 @@
                         player.PauseAsync().GetAwaiter().GetResult();
                         ToggleStateText = "▶️";
                     }
+
                 }
                 void VoteSkipPress()
                 {
@@ -90,17 +92,17 @@
                 {
                     player.LoopSettings = LoopSettings.LoopingQueue;
                 }
-            }
-            <input id="ToggleState" type="button" @onclick="ToggleStatePress" value="@ToggleStateText" runat="server" /><!--Play or Pause-->
-            <input id="VoteSkip" type="button" @onclick="VoteSkipPress" value="VoteSkip" />
-            @if (guild.Members[user.Id].Roles.Any(e => e.CheckPermission(DSharpPlus.Permissions.ManageChannels) == DSharpPlus.PermissionLevel.Allowed || e.Name.ToLower().Contains("dj")) || (guild.Members[user.Id].VoiceState.Channel.Users.LongCount(x => !x.IsBot) == 1))
+        }
+        <input id="ToggleState" type="button" @onclick="ToggleStatePress();" value="@ToggleStateText" runat="server" /><!--Play or Pause-->
+        <input id="VoteSkip" type="button" @onclick="VoteSkipPress();" value="VoteSkip" />
+        @if (guild.Members[user.Id].Roles.Any(e => e.CheckPermission(DSharpPlus.Permissions.ManageChannels) == DSharpPlus.PermissionLevel.Allowed || e.Name.ToLower().Contains("dj")) || (guild.Members[user.Id].VoiceState.Channel.Users.LongCount(x => !x.IsBot) == 1))
             {
-                <input id="ForceSkip" type="button" @onclick="ForceSkipPress" value="Just skip it™ (DJ only)" /><!--Requires dj-->
-                <input id="Shuffle" type="button" @onclick="ShufflePress" value="Shuffle the queue" /> <!--Requires dj-->
+        <input id="ForceSkip" type="button" @onclick="ForceSkipPress();" value="Just skip it™ (DJ only)" /><!--Requires dj-->
+        <input id="Shuffle" type="button" @onclick="ShufflePress();" value="Shuffle the queue" />  <!--Requires dj-->
             }
-            <input id="NoLoop" type="button" @onclick="NotLoopingPress" value="Do not loop" />
-            <input id="LoopSong" type="button" @onclick="LoopingSongPress" value="Loop song" />
-            <input id="LoopQueue" type="button" @onclick="LoopingQueuePress" value="Loop queue" />
-        </div>
+        <input id="NoLoop" type="button" @onclick="NotLoopingPress();" value="Do not loop" />
+        <input id="LoopSong" type="button" @onclick="LoopingSongPress();" value="Loop song" />
+        <input id="LoopQueue" type="button" @onclick="LoopingQueuePress();" value="Loop queue" />
     </div>
+</div>
 }

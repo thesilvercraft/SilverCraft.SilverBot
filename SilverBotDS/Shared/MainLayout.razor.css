@@ -21,7 +21,8 @@
     align-items: center;
 }
 
-    .top-row a, .top-row .btn-link {
+    .top-row a,
+    .top-row .btn-link {
         white-space: nowrap;
         margin-left: 1.5rem;
     }
@@ -40,7 +41,8 @@
         justify-content: space-between;
     }
 
-    .top-row a, .top-row .btn-link {
+    .top-row a,
+    .top-row .btn-link {
         margin-left: 0;
     }
 }

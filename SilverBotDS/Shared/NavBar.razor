@@ -24,10 +24,13 @@
                 @{
                     DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session).UId).GetAwaiter().GetResult();
                 }
-                <a class="nav-link" href="">Hello @user.Username # @user.Discriminator</a>
+                <a class="nav-link" href="">Hello @user.Username#@user.Discriminator</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/listguilds">Servers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/musiccontrols">Track controller (PRE-ALPHA)</a>
             </li>
         }
     </ul>

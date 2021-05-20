@@ -78,8 +78,6 @@ namespace SilverBotDS
             }
 
             app.UseHttpsRedirection();
-            // var assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            //var assetDirectory = Path.Combine(assemblyDirectory, "wwwroot");
 
             // use it
             app.UseStaticFiles();

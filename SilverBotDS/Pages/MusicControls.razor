@@ -1,0 +1,106 @@
+﻿@page "/musiccontrols"
+@using System.Net
+@using System.Text
+@using System.IO
+@using Microsoft.AspNetCore.Http
+@using SilverBotDS.Objects
+@using DSharpPlus
+@using DSharpPlus.Entities
+@using System.Diagnostics
+@using SilverBotDS.WebHelpers
+@using SilverBotDS
+@using Microsoft.JSInterop
+@using Lavalink4NET
+@using SilverBotDS.Objects.Classes
+@using SilverBotDS.Converters
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Config config
+@{
+    if (!config.UseLavaLink)
+    {
+        HttpContextAccessor.HttpContext.Response.Redirect("/");
+    }
+}
+
+@inject DiscordClient Discord
+@inject IJSRuntime jsRuntime
+@inject LavalinkNode Lavalink
+@{
+    if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
+    {
+        HttpContextAccessor.HttpContext.Response.Redirect($"https://{HttpContextAccessor.HttpContext.Request.Host}/login");
+    }
+}
+@{
+    DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session).UId).GetAwaiter().GetResult();
+    var djattribute = new RequireDJAttribute();
+
+}
+@foreach (var guild in Discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null && x.Members[user.Id].VoiceState.Channel is not null && Lavalink.HasPlayer(x.Id) && Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))
+{
+    <div class="window" style="max-width: 600px">
+        <div class="title-bar">
+            <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            @{
+
+                string ToggleStateText = "Resume / Pause";
+                var player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
+                void ToggleStatePress()
+                {
+                    if (player.State is Lavalink4NET.Player.PlayerState.Paused)
+                    {
+
+                        player.ResumeAsync().GetAwaiter().GetResult();
+                        ToggleStateText = "⏸";
+                    }
+                    else if (player.State is Lavalink4NET.Player.PlayerState.Playing)
+                    {
+                        player.PauseAsync().GetAwaiter().GetResult();
+                        ToggleStateText = "▶️";
+                    }
+                }
+                void VoteSkipPress()
+                {
+                    player.VoteAsync(user.Id).GetAwaiter().GetResult();
+                }
+                void ForceSkipPress()
+                {
+                    player.SkipAsync().GetAwaiter().GetResult();
+                }
+                void ShufflePress()
+                {
+                    player.Queue.Shuffle();
+                }
+                void NotLoopingPress()
+                {
+                    player.LoopSettings = LoopSettings.NotLooping;
+                }
+                void LoopingSongPress()
+                {
+                    player.LoopSettings = LoopSettings.LoopingSong;
+                }
+                void LoopingQueuePress()
+                {
+                    player.LoopSettings = LoopSettings.LoopingQueue;
+                }
+            }
+            <input id="ToggleState" type="button" @onclick="ToggleStatePress" value="@ToggleStateText" runat="server" /><!--Play or Pause-->
+            <input id="VoteSkip" type="button" @onclick="VoteSkipPress" value="VoteSkip" />
+            @if (guild.Members[user.Id].Roles.Any(e => e.CheckPermission(DSharpPlus.Permissions.ManageChannels) == DSharpPlus.PermissionLevel.Allowed || e.Name.ToLower().Contains("dj")) || (guild.Members[user.Id].VoiceState.Channel.Users.LongCount(x => !x.IsBot) == 1))
+            {
+                <input id="ForceSkip" type="button" @onclick="ForceSkipPress" value="Just skip it™ (DJ only)" /><!--Requires dj-->
+                <input id="Shuffle" type="button" @onclick="ShufflePress" value="Shuffle the queue" /> <!--Requires dj-->
+            }
+            <input id="NoLoop" type="button" @onclick="NotLoopingPress" value="Do not loop" />
+            <input id="LoopSong" type="button" @onclick="LoopingSongPress" value="Loop song" />
+            <input id="LoopQueue" type="button" @onclick="LoopingQueuePress" value="Loop queue" />
+        </div>
+    </div>
+}

@@ -332,6 +332,10 @@ namespace SilverBotDS
             {
                 s.AddSingleton(config);
                 s.AddSingleton(discord);
+                if (config.UseLavaLink)
+                {
+                    s.AddSingleton(audioService);
+                }
                 switch (config.DatabaseType)
                 {
                     case 1:

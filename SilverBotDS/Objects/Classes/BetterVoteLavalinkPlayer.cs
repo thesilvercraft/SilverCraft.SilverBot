@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects.Classes
 {
-    internal enum LoopSettings
+    public enum LoopSettings
     {
         [EnumMember(Value = "none")]
         NotLooping,
@@ -23,7 +23,7 @@ namespace SilverBotDS.Objects.Classes
         LoopingQueue
     }
 
-    internal class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
+    public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
     {
         public LoopSettings LoopSettings { get; set; } = LoopSettings.NotLooping;
 

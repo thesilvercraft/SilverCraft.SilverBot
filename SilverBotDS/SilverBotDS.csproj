@@ -86,7 +86,7 @@
     </PackageReference>
     <PackageReference Include="Humanizer" Version="2.10.1" />
     <PackageReference Include="IPAddressRange" Version="4.2.0" />
-    <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.0-beta.3" />
+    <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.0" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.7.2" />
     <PackageReference Include="Markdig.Signed" Version="0.24.0" />
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />

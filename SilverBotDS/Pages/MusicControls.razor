@@ -38,7 +38,7 @@
 }
 @foreach (var guild in Discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null && x.Members[user.Id].VoiceState.Channel is not null && Lavalink.HasPlayer(x.Id) && Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))
 {
-<div class="window" style="max-width: 600px">
+<div class="window" style="max-width: 610px">
     <div class="title-bar">
         <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
         <div class="title-bar-controls">
@@ -48,61 +48,77 @@
         </div>
     </div>
     <div class="window-body">
-        @{
-
-                string ToggleStateText = "Resume / Pause";
-                var player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
-                void ToggleStatePress()
+        @code{
+                   string ToggleStateText = "Resume / Pause";
+         string VoteSkipText = "VoteSkip";
+           BetterVoteLavalinkPlayer player;
+        ulong userid;
+        private async Task ToggleStatePress()
                 {
                     Debug.WriteLine("togglestateclick");
                     if (player.State is Lavalink4NET.Player.PlayerState.Paused)
                     {
 
-                        player.ResumeAsync().GetAwaiter().GetResult();
+                        await player.ResumeAsync();
                         ToggleStateText = "⏸";
                     }
                     else if (player.State is Lavalink4NET.Player.PlayerState.Playing)
                     {
-                        player.PauseAsync().GetAwaiter().GetResult();
+                        await player.PauseAsync();
                         ToggleStateText = "▶️";
                     }
 
                 }
-                void VoteSkipPress()
+                private async Task VoteSkipPress()
                 {
-                    player.VoteAsync(user.Id).GetAwaiter().GetResult();
+                    var votestatus=await player.VoteAsync(userid);
+                    //TO:DO possibly tell user count of people that voted or if the song was skipped
                 }
-                void ForceSkipPress()
+                private async Task ForceSkipPress()
                 {
-                    player.SkipAsync().GetAwaiter().GetResult();
+                    await player.SkipAsync();
                 }
-                void ShufflePress()
+                private void ShufflePress()
                 {
                     player.Queue.Shuffle();
                 }
-                void NotLoopingPress()
+                private void NotLoopingPress()
                 {
                     player.LoopSettings = LoopSettings.NotLooping;
                 }
-                void LoopingSongPress()
+                private void LoopingSongPress()
                 {
                     player.LoopSettings = LoopSettings.LoopingSong;
                 }
-                void LoopingQueuePress()
+                private void LoopingQueuePress()
                 {
                     player.LoopSettings = LoopSettings.LoopingQueue;
                 }
         }
-        <input id="ToggleState" type="button" @onclick="ToggleStatePress();" value="@ToggleStateText" runat="server" /><!--Play or Pause-->
-        <input id="VoteSkip" type="button" @onclick="VoteSkipPress();" value="VoteSkip" />
+        @{
+
+      player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
+        userid=user.Id;
+         if (player.State is Lavalink4NET.Player.PlayerState.Paused)
+         {               
+             ToggleStateText = "▶️";
+         }
+         else if (player.State is Lavalink4NET.Player.PlayerState.Playing)
+         {
+             ToggleStateText = "⏸";
+         }
+
+        }
+        <input id="ToggleState" type="button" @onclick="ToggleStatePress" value="@ToggleStateText" runat="server" /><!--Play or Pause-->
+        <input id="VoteSkip" type="button" @onclick="VoteSkipPress" value="VoteSkip" />
         @if (guild.Members[user.Id].Roles.Any(e => e.CheckPermission(DSharpPlus.Permissions.ManageChannels) == DSharpPlus.PermissionLevel.Allowed || e.Name.ToLower().Contains("dj")) || (guild.Members[user.Id].VoiceState.Channel.Users.LongCount(x => !x.IsBot) == 1))
             {
-        <input id="ForceSkip" type="button" @onclick="ForceSkipPress();" value="Just skip it™ (DJ only)" /><!--Requires dj-->
-        <input id="Shuffle" type="button" @onclick="ShufflePress();" value="Shuffle the queue" />  <!--Requires dj-->
+        <input id="ForceSkip" type="button" @onclick="ForceSkipPress" value="Just skip it™ (DJ only)" /><!--Requires dj-->
+        <input id="Shuffle" type="button" @onclick="ShufflePress" value="🔀Shuffle" />  <!--Requires dj-->
             }
-        <input id="NoLoop" type="button" @onclick="NotLoopingPress();" value="Do not loop" />
-        <input id="LoopSong" type="button" @onclick="LoopingSongPress();" value="Loop song" />
-        <input id="LoopQueue" type="button" @onclick="LoopingQueuePress();" value="Loop queue" />
+        <input id="NoLoop" type="button" @onclick="NotLoopingPress" value="Do not loop" />
+        <input id="LoopSong" type="button" @onclick="LoopingSongPress" value="Loop song" />
+        <input id="LoopQueue" type="button" @onclick="LoopingQueuePress" value="Loop queue" />
     </div>
 </div>
 }

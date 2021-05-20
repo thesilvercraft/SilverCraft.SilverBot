@@ -35,11 +35,11 @@ namespace SilverBotDS.Objects.Database.Classes
             }
         }
 
-        public void Decrease()
+        public void Increase(ulong count)
         {
             try
             {
-                XP--;
+                XP += count;
             }
             catch (OutOfMemoryException)
             {
@@ -47,11 +47,11 @@ namespace SilverBotDS.Objects.Database.Classes
             }
         }
 
-        public void Increase(ulong count)
+        public void Decrease()
         {
             try
             {
-                XP += count;
+                XP--;
             }
             catch (OutOfMemoryException)
             {

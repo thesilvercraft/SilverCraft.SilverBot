@@ -127,7 +127,7 @@ namespace SilverBotDS.Commands
                 {
                     gr.Clear(Color.White);
                     gr.DrawImage(imanidiot, new Point(13, 20));
-                    using var img = ImageModule.DrawText($"{user.Username}#{ctx.User.Discriminator}", DiavloLight, Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
+                    using var img = ImageModule.DrawText($"{user.Username}#{user.Discriminator}", DiavloLight, Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
                     gr.DrawImage(img, new Point(229, 25));
                     gr.DrawRectangle(BlackPen, new Rectangle(new(233, 83), new Size(478, 30)));
                     var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == user.Id);
@@ -136,7 +136,7 @@ namespace SilverBotDS.Commands
                         var levelcount = GetLevel(o.XP);
                         var progress = 4.76 * GetProgressToNextLevel(o.XP);
                         gr.FillRectangle(GreenBrush, new Rectangle(new(234, 84), new Size((int)progress, 28)));
-                        gr.DrawString($"{o.XP}XP", DiavloLight, BlackBrush, new PointF((float)(170 + progress), 120));
+                        gr.DrawString($"{o.XP}XP", DiavloLight, BlackBrush, new PointF((float)(170 + progress), 140));
                         gr.DrawString($"{GetNeededXpForNextLevel(o.XP)}XP", DiavloLight, BlackBrush, new PointF(650.95f, 120));
                         gr.DrawString($"Level: {levelcount}", DiavloLight, BlackBrush, new PointF(232, 169));
                     }

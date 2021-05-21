@@ -371,6 +371,9 @@ namespace SilverBotDS.Commands
                 case LoopSettings.LoopingQueue:
                     await SendSimpleMessage(ctx, lang.LoopingQueue, language: lang);
                     break;
+
+                default:
+                    throw new InvalidOperationException("Unexpected value settings = " + settings);
             }
         }
 

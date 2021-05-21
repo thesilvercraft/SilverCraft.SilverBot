@@ -281,7 +281,6 @@ namespace SilverBotDS.Objects
       new("hear it with your eyes!", ActivityType.Playing),
       new("it'll change, soon!", ActivityType.Playing),
       new("space is key!", ActivityType.Playing),
-      new("for the love of god dont use dukt hosting", ActivityType.Playing),
       new("max is bad?", ActivityType.Playing),
       new("Smash Mouth - All Star", ActivityType.ListeningTo),
       new("indentation error", ActivityType.Watching),

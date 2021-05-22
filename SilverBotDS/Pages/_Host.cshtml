@@ -19,6 +19,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="index.css" type="text/css" />
+    <link rel="manifest" href="/manifest.json">
 </head>
 <body>
     <component type="typeof(NavBar)" render-mode="ServerPrerendered" />
@@ -37,6 +38,11 @@
 
     <script src="_framework/blazor.server.js"></script>
     <script type="text/javascript">
+        if ('serviceWorker' in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("/ServiceWorker.js");
+            });
+        }
         window.getDimensions = function () {
             return {
                 width: window.innerWidth,

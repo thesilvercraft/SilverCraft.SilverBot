@@ -1,7 +1,9 @@
-﻿using Lavalink4NET.Events;
+﻿using DSharpPlus.Entities;
+using Lavalink4NET.Events;
 using Lavalink4NET.Player;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -62,6 +64,15 @@ namespace SilverBotDS.Objects.Classes
                 StopAsync();
             }
             return Task.CompletedTask;
+        }
+
+        public event EventHandler<Tuple<DiscordUser, string>> OnWebsiteEvent;
+
+        public void TriggerWebsiteEvent(DiscordUser user, string action)
+        {
+            EventHandler<Tuple<DiscordUser, string>> handler = OnWebsiteEvent;
+            handler?.Invoke(this, new Tuple<DiscordUser, string>(user, action));
+            //Debug.WriteLine(user + " " + action);
         }
 
         public override Task OnTrackEndAsync(TrackEndEventArgs eventArgs)

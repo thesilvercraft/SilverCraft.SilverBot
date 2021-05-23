@@ -14,7 +14,7 @@ jobs:
       with:
         upload_translations: false
         download_translations: true
-        translation: '/SilverBotDS/Languages'
+        translation: '/SilverBotDS/Languages/%locale%.json'
         source: '/SilverBotDS/Languages'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

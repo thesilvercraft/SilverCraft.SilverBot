@@ -68,20 +68,3 @@ jobs:
          asset_path: .\SilverBotDS\bin\Release\net5.0\SilverBotDS.Views.dll
          asset_name: SilverBotDS.Views.dll
          asset_content_type: application/octet-stream
-    - name: Download translations
-      uses: crowdin/github-action@1.1.0
-      with:
-        download_translations: true
-        skip_untranslated_strings: true
-        skip_untranslated_files: true
-        push_translations: true
-        commit_message: 'New Crowdin translations by Github Action'
-        create_pull_request: true
-        pull_request_title: 'New Crowdin translations'
-        pull_request_body: 'New Crowdin pull request with translations'
-        pull_request_labels: 'enhancement, good first issue'
-        project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
-        token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
-        translation: '/Languages'
-        base_url: 'https://crowdin.com'
-        base_path: '/SilverBotDS'

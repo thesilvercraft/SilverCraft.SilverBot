@@ -15,6 +15,7 @@ jobs:
         upload_translations: false
         download_translations: true
         translation: '/SilverBotDS/Languages'
+        source: '/SilverBotDS/Languages'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}

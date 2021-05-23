@@ -68,11 +68,19 @@ namespace SilverBotDS.Objects.Classes
 
         public event EventHandler<Tuple<DiscordUser, string>> OnWebsiteEvent;
 
+        public event EventHandler<TrackStartedEventArgs> OnNewTrack;
+
         public void TriggerWebsiteEvent(DiscordUser user, string action)
         {
             EventHandler<Tuple<DiscordUser, string>> handler = OnWebsiteEvent;
             handler?.Invoke(this, new Tuple<DiscordUser, string>(user, action));
-            //Debug.WriteLine(user + " " + action);
+        }
+
+        public override Task OnTrackStartedAsync(TrackStartedEventArgs eventArgs)
+        {
+            EventHandler<TrackStartedEventArgs> handler = OnNewTrack;
+            handler?.Invoke(this, eventArgs);
+            return base.OnTrackStartedAsync(eventArgs);
         }
 
         public override Task OnTrackEndAsync(TrackEndEventArgs eventArgs)

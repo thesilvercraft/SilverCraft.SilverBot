@@ -86,6 +86,7 @@
     string ToggleStateText = "Resume / Pause";
     BetterVoteLavalinkPlayer player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
     player.OnWebsiteEvent += async (refr, tpl) => { await InvokeAsync(() => { StateHasChanged(); }); };
+    player.OnNewTrack += async (refr, song) => { await InvokeAsync(() => { StateHasChanged(); }); };
     if (player.State is Lavalink4NET.Player.PlayerState.Paused)
     {
         ToggleStateText = "▶️";
@@ -102,6 +103,7 @@
             </div>
         </div>
         <div class="window-body">
+            <p>Currently playing: <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ": player.CurrentTrack.Source)"><strong>@(player.CurrentTrack is null ? "nothing": player.CurrentTrack.Title)</strong></a></p>
             <input id="ToggleState" type="button" @onclick="@(async (e) => { await ToggleStatePress(player); if (player.State is Lavalink4NET.Player.PlayerState.Paused) { ToggleStateText = "▶️"; } else if (player.State is Lavalink4NET.Player.PlayerState.Playing) { ToggleStateText = "⏸";} })" value="@ToggleStateText" runat="server" /><!--Play or Pause-->
             <input id="VoteSkip" type="button" @onclick="@(async (e) => await VoteSkipPress(player))" value="VoteSkip" />
             @if (guild.Members[user.Id].Roles.Any(e => e.CheckPermission(DSharpPlus.Permissions.ManageChannels) == DSharpPlus.PermissionLevel.Allowed || e.Name.ToLower().Contains("dj")) || (guild.Members[user.Id].VoiceState.Channel.Users.LongCount(x => !x.IsBot) == 1))

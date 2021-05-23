@@ -69,6 +69,7 @@ jobs:
          asset_name: SilverBotDS.Views.dll
          asset_content_type: application/octet-stream
     - name: Download translations
+      uses: crowdin/github-action@1.1.0
       with:
         download_translations: true
         skip_untranslated_strings: true

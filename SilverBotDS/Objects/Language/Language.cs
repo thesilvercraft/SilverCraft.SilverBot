@@ -458,22 +458,25 @@ namespace SilverBotDS.Objects
                 var folloc = $"{Environment.CurrentDirectory}{Program.DirSlash}languages{Program.DirSlash}";
                 if (Directory.Exists(folloc))
                 {
-                    foreach (var u in Directory.GetFiles(folloc))
+                    foreach (var folder in Directory.GetDirectories(folloc))
                     {
-                        await using Stream stream = File.OpenRead(u);
-                        var reader = new StreamReader(stream);
-                        var content = await reader.ReadToEndAsync();
-                        reader.Close();
-                        reader.Dispose();
-                        var asdf = JsonSerializer.Deserialize<Language>(content);
-                        var name = Path.GetFileNameWithoutExtension(u);
-                        CachedLanguages.Add(name, asdf);
+                        foreach (var u in Directory.GetFiles(folder))
+                        {
+                            await using Stream stream = File.OpenRead(u);
+                            var reader = new StreamReader(stream);
+                            var content = await reader.ReadToEndAsync();
+                            reader.Close();
+                            reader.Dispose();
+                            var asdf = JsonSerializer.Deserialize<Language>(content);
+                            var name = Path.GetFileNameWithoutExtension(u);
+                            CachedLanguages.Add(name, asdf);
+                        }
                     }
                 }
                 else
                 {
-                    Directory.CreateDirectory(folloc);
-                    using var streamWriter = new StreamWriter(Environment.CurrentDirectory + $"{Program.DirSlash}languages{Program.DirSlash}en.json");
+                    Directory.CreateDirectory(folloc + $"{Program.DirSlash}en");
+                    using var streamWriter = new StreamWriter(Environment.CurrentDirectory + $"{Program.DirSlash}languages{Program.DirSlash}en{Program.DirSlash}en.json");
                     var options = new JsonSerializerOptions
                     {
                         WriteIndented = true

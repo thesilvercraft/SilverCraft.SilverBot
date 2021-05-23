@@ -40,6 +40,7 @@ using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Objects.Classes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Text.Json;
 
 namespace SilverBotDS
 {
@@ -51,8 +52,22 @@ namespace SilverBotDS
 
         private static void Main(string[] args)
         {
-            //Start the main async task
-
+            if (args.Length == 2 && args[0] == "generatelang")
+            {
+                if (!Directory.Exists(Path.GetDirectoryName(args[1])))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(args[1]));
+                }
+                using var streamWriter = new StreamWriter(args[1]);
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+                streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
+                Console.WriteLine("Serialised en.json");
+                Environment.Exit(70);
+                return;
+            }
             if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net5.0"))
             {
                 Environment.CurrentDirectory += "\\bin\\Debug\\net5.0";

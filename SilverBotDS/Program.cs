@@ -64,6 +64,8 @@ namespace SilverBotDS
                     WriteIndented = true
                 };
                 streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
+                streamWriter.Flush();
+                streamWriter.Close();
                 Console.WriteLine("Serialised en.json");
                 Environment.Exit(70);
                 return;

@@ -98,7 +98,7 @@ namespace SilverBotDS.Commands
                 for (ulong a = 0; a < (ulong)pages1.Length; a++)
                 {
                     var embedbuilder = new DiscordEmbedBuilder(pages1[a].Embed);
-                    embedbuilder.WithAuthor(string.Format(lang.PageNuget, (a + 1), pages.Count));
+                    embedbuilder.WithAuthor(string.Format(lang.PageNuget, a + 1, pages1.Length));
                     pages1[a].Embed = embedbuilder.Build();
                 }
                 await ctx.Channel.SendPaginatedMessageAsync(ctx.User, pages1);

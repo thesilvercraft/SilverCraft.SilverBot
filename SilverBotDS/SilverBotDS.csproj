@@ -164,6 +164,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Languages\" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
@@ -180,6 +183,6 @@
     <TypeScriptSourceRoot />
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="echo D | XCOPY &quot;$(ProjectDir)wwwroot&quot; &quot;$(TargetDir)wwwroot&quot; /S /Y" />
+    <Exec Command="echo D | XCOPY &quot;$(ProjectDir)wwwroot&quot; &quot;$(TargetDir)wwwroot&quot; /S /Y&#xD;&#xA;echo D | XCOPY &quot;$(ProjectDir)Languages&quot; &quot;$(TargetDir)Languages&quot; /S /Y" />
   </Target>
 </Project>

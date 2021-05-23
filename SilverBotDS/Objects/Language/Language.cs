@@ -455,7 +455,7 @@ namespace SilverBotDS.Objects
             }
             else
             {
-                var folloc = $"{Environment.CurrentDirectory}{Program.DirSlash}languages{Program.DirSlash}";
+                var folloc = $"{Environment.CurrentDirectory}{Program.DirSlash}Languages{Program.DirSlash}";
                 if (Directory.Exists(folloc))
                 {
                     foreach (var folder in Directory.GetDirectories(folloc))

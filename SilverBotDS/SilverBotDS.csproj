@@ -114,7 +114,7 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00909" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4-alpha.0.15" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11.8" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta12.1" />
     <PackageReference Include="SpotifyAPI.Web" Version="6.2.0" />
     <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0-preview.3.21201.4" />

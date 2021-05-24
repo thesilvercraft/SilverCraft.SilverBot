@@ -77,7 +77,7 @@
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
     <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00863" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00863" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00863" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00864" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
@@ -115,7 +115,7 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00909" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4-alpha.0.15" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11.8" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta12.1" />
     <PackageReference Include="SpotifyAPI.Web" Version="6.2.0" />
     <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0-preview.3.21201.4" />

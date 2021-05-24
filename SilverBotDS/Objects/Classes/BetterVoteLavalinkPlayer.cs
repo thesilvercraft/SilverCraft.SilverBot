@@ -70,6 +70,11 @@ namespace SilverBotDS.Objects.Classes
 
         public event EventHandler<TrackStartedEventArgs> OnNewTrack;
 
+        public void RemoveOnWebsiteEventHandelers()
+        {
+            OnWebsiteEvent = null;
+        }
+
         public void TriggerWebsiteEvent(DiscordUser user, string action)
         {
             EventHandler<Tuple<DiscordUser, string>> handler = OnWebsiteEvent;

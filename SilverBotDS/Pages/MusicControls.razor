@@ -28,9 +28,11 @@
         uriHelper.NavigateTo("/login", forceLoad: true);
     }
 }
+<RadzenNotification />
 @inject DiscordClient Discord
 @inject IJSRuntime jsRuntime
 @inject LavalinkNode Lavalink
+@inject NotificationService NotificationService
 @{
     DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session).UId).GetAwaiter().GetResult();
     var djattribute = new RequireDJAttribute();
@@ -83,10 +85,16 @@
         player.LoopSettings = LoopSettings.LoopingQueue;
         player.TriggerWebsiteEvent(user, "enabled queue looping");
     }
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+
+    }
     string ToggleStateText = "Resume / Pause";
     BetterVoteLavalinkPlayer player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
-    player.OnWebsiteEvent += async (refr, tpl) => { await InvokeAsync(() => { StateHasChanged(); }); };
-    player.OnNewTrack += async (refr, song) => { await InvokeAsync(() => { StateHasChanged(); }); };
+    player.OnNewTrack += async (refr, song) => { await InvokeAsync(() => { uriHelper.NavigateTo("/musiccontrols", forceLoad: false); }); };
+    player.RemoveOnWebsiteEventHandelers();
+    player.OnWebsiteEvent += (refr, parm) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = parm.Item1.Username, Detail = parm.Item2, Duration = 4000 }); };
     if (player.State is Lavalink4NET.Player.PlayerState.Paused)
     {
         ToggleStateText = "▶️";
@@ -95,7 +103,27 @@
     {
         ToggleStateText = "⏸";
     }
-    <div class="window" style="max-width: 610px">
+    @code
+{
+        int value = 100;
+        void OnChange(dynamic value, BetterVoteLavalinkPlayer player)
+        {
+            player.SetVolumeAsync((int)value / 100f, true);
+        }
+        protected override void OnAfterRender(bool firstRender)
+        {
+
+            if (firstRender)
+            {
+
+            }
+
+        }
+
+    }
+    value = (int)player.Volume * 100;
+
+    <div class="window" style="max-width: 800px">
         <div class="title-bar">
             <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
             <div class="title-bar-controls">
@@ -114,6 +142,7 @@
             <input id="NoLoop" type="button" @onclick="@(e =>  NotLoopingPress(player))" value="Do not loop" />
             <input id="LoopSong" type="button" @onclick="@(e =>  LoopingSongPress(player))" value="Loop song" />
             <input id="LoopQueue" type="button" @onclick="@(e => LoopingQueuePress(player))" value="Loop queue" />
+            <!--<RadzenSlider @@bind-value=@@value TValue="int" Min="1" Step="10" Max="100" Change=@@( args=> { OnChange(args, player); }) /> uncomment when slider works-->
         </div>
     </div>
 }

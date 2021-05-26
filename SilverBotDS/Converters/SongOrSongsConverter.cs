@@ -11,9 +11,13 @@ using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Lavalink4NET.Decoding;
 
 namespace SilverBotDS.Converters
 {
@@ -91,6 +95,7 @@ namespace SilverBotDS.Converters
             SpotifyClient spotifyClient = (SpotifyClient)ctx.CommandsNext.Services.GetService(typeof(SpotifyClient));
             LavalinkNode AudioService = (LavalinkNode)ctx.CommandsNext.Services.GetService(typeof(LavalinkNode));
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
+
             if (!IsInVc(ctx, AudioService))
             {
                 if (ctx.Member?.VoiceState?.Channel == null)
@@ -109,6 +114,15 @@ namespace SilverBotDS.Converters
                 value = aliases[value];
             }
             await ctx.TriggerTypingAsync();
+            if (value.EndsWith(".json"))
+            {
+                var client = (HttpClient)ctx.CommandsNext.Services.GetService(typeof(HttpClient));
+                if (client is not null)
+                {
+                    var tracks = JsonSerializer.Deserialize<SerialisableQueue>(await (await client.GetAsync(value)).Content.ReadAsStringAsync());
+                    return new(new(TrackDecoder.DecodeTrack(tracks.Identifiers.First()), null, tracks.Identifiers.Skip(1).Select(x => TrackDecoder.DecodeTrack(x)).ToAsyncEnumerable(), TimeSpan.FromMilliseconds(tracks.CurrentSongTimems)));
+                }
+            }
             if (spotifyClient is not null && IsSpotifyString(value))
             {
                 var m = TrackRegex.Match(value);

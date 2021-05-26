@@ -17,6 +17,7 @@ using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TimeSpanParserUtil;
@@ -112,7 +113,7 @@ namespace SilverBotDS.Commands
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
             BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-            if (song.Song is not null)
+            if (song.Song != null)
             {
                 await player.PlayTopAsync(song.Song);
                 await new DiscordMessageBuilder()
@@ -148,7 +149,18 @@ namespace SilverBotDS.Commands
         [Aliases("p")]
         public async Task Play(CommandContext ctx)
         {
-            await Resume(ctx);
+            if (ctx.Message.Attachments.Count == 1)
+            {
+                await Play(ctx, (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.Attachments[0].Url, ctx, typeof(SongORSongs)));
+            }
+            else if (ctx.Message.ReferencedMessage is not null && ctx.Message.ReferencedMessage.Attachments.Count == 1)
+            {
+                await Play(ctx, (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.ReferencedMessage.Attachments[0].Url, ctx, typeof(SongORSongs)));
+            }
+            else
+            {
+                await Resume(ctx);
+            }
         }
 
         [Command("play")]
@@ -156,9 +168,9 @@ namespace SilverBotDS.Commands
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
             BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-            if (song.Song is not null)
+            if (song.Song != null)
             {
-                int pos = await player.PlayAsync(song.Song, true);
+                int pos = await player.PlayAsync(song.Song, true, startTime: song.SongStartTime);
                 if (pos == 0)
                 {
                     await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, song.Song.Title + lang.SongByAuthor + song.Song.Author), url: song.Song.Source, language: lang);
@@ -268,6 +280,33 @@ namespace SilverBotDS.Commands
             BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             player.Queue.Shuffle();
             await SendSimpleMessage(ctx, lang.ShuffledSuccess, language: lang);
+        }
+
+        [Command("export")]
+        [Description("Export the queue")]
+        public async Task ExportQueue(CommandContext ctx)
+        {
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+            if (!IsInVc(ctx))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+                return;
+            }
+            var channel = ctx.Member?.VoiceState?.Channel;
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                return;
+            }
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
+            var queue = player.Queue.Select(x => x.Identifier).ToList();
+            queue.Insert(0, player.CurrentTrack.Identifier);
+            SerialisableQueue q = new()
+            {
+                Identifiers = queue.ToArray(),
+                CurrentSongTimems = player.TrackPosition.TotalMilliseconds
+            };
+            await OwnerOnly.SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(q), filename: "queue.json");
         }
 
         [Command("remove")]

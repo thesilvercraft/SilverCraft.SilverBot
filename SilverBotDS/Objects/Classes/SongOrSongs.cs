@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Lavalink4NET.Player;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 #nullable enable
 
@@ -18,7 +19,16 @@ namespace SilverBotDS.Objects
             GetRestOfSongs = songs;
         }
 
-        public LavalinkTrack Song { get; set; }
+        public SongORSongs(LavalinkTrack song, string nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs, TimeSpan startime)
+        {
+            Song = song;
+            NameOfPlayList = nameofplaylist;
+            GetRestOfSongs = songs;
+            SongStartTime = startime;
+        }
+
+        public LavalinkTrack? Song { get; set; }
+        public TimeSpan? SongStartTime { get; set; }
         public string NameOfPlayList { get; set; }
         public IAsyncEnumerable<LavalinkTrack>? GetRestOfSongs { get; set; }
     }

@@ -62,8 +62,11 @@ namespace SilverBotDS.Objects
                     //bug oh no
                 }
             }
-            graphics.Flush();
-            graphics.Save();
+            if (graphics is not null)
+            {
+                graphics.Flush();
+                graphics.Save();
+            }
             return Bitmap;
         }
 

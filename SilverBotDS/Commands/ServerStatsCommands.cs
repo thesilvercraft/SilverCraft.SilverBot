@@ -53,7 +53,6 @@ namespace SilverBotDS.Commands
             }
             await OwnerOnly.SendStringFileWithContent(ctx, string.Format(lang.StatisticCommand.EmojiEnd, messages.Count, (DateTime.Now - start).Humanize(2), (DateTime.Now - startproc).Humanize(2)), bob.ToString(), "emotes.csv");
             bob.Clear();
-            GC.Collect();
         }
 
         [Command("setcategory")]

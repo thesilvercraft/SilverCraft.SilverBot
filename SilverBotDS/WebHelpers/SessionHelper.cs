@@ -26,11 +26,9 @@ namespace SilverBotDS.WebHelpers
             webRequest2.ContentLength = 0;
             webRequest2.Headers.Add("Authorization", $"Bearer {GetObjectFromJson<string>(session, "accessToken")}");
             webRequest2.ContentType = "application/x-www-form-urlencoded";
-            using (HttpWebResponse response2 = webRequest2.GetResponse() as HttpWebResponse)
-            {
-                StreamReader reader2 = new(response2.GetResponseStream());
-                return JsonSerializer.Deserialize<Guild[]>(reader2.ReadToEnd());
-            }
+            using HttpWebResponse response2 = webRequest2.GetResponse() as HttpWebResponse;
+            StreamReader reader2 = new(response2.GetResponseStream());
+            return JsonSerializer.Deserialize<Guild[]>(reader2.ReadToEnd());
         }
 
         public static Oauththingy GetUserInfoFromSession(this ISession session)
@@ -40,11 +38,9 @@ namespace SilverBotDS.WebHelpers
             webRequest1.ContentLength = 0;
             webRequest1.Headers.Add("Authorization", $"Bearer {GetObjectFromJson<string>(session, "accessToken")}");
             webRequest1.ContentType = "application/x-www-form-urlencoded";
-            using (HttpWebResponse response1 = webRequest1.GetResponse() as HttpWebResponse)
-            {
-                StreamReader reader1 = new(response1.GetResponseStream());
-                return JsonSerializer.Deserialize<Oauththingy>(reader1.ReadToEnd());
-            }
+            using HttpWebResponse response1 = webRequest1.GetResponse() as HttpWebResponse;
+            StreamReader reader1 = new(response1.GetResponseStream());
+            return JsonSerializer.Deserialize<Oauththingy>(reader1.ReadToEnd());
         }
     }
 }

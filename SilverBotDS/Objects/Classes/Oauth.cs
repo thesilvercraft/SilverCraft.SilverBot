@@ -78,10 +78,7 @@ namespace SilverBotDS.Objects.Classes
             public string Permissions { get; set; }
 
             [JsonPropertyName("features")]
-#pragma warning disable CA1819 // Properties should not return arrays
             public string[] Features { get; set; } // should be removed if possbile violates CA1819
-
-#pragma warning restore CA1819 // Properties should not return arrays
         }
     }
 }

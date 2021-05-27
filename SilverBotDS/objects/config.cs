@@ -98,7 +98,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("Allow silverbot owner only commands (may allow the bot owner to kill pc)")]
         public bool AllowOwnerOnlyCommands { get; set; } = true;
 
-        [XmlDescription("Allow commands that someone might find distasteful like the fake nsfw commands that just expose everyone that try's to run them")]
+        [XmlDescription("Allow commands that someone might find distasteful, currently unused")]
         public bool AllowTrollCommands { get; set; } = false;
 
         [XmlDescription("A temporary way to disable the interactivity tracker")]

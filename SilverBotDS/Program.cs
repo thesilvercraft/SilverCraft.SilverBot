@@ -78,11 +78,6 @@ namespace SilverBotDS
             MainAsync(args).GetAwaiter().GetResult();
         }
 
-        public static void SendLog(string text)
-        {
-            log.Error(text);
-        }
-
         public static void SendLog(Exception exception)
         {
             log.Error(exception: exception, "An exception occurred");
@@ -302,10 +297,6 @@ namespace SilverBotDS
             if (config.UseNodeJs)
             {
                 commands.RegisterCommands<CalculatorCommands>();
-            }
-            if (config.AllowTrollCommands)
-            {
-                commands.RegisterCommands<NsfwCommands>();
             }
             if (config.EnableServerStatistics)
             {

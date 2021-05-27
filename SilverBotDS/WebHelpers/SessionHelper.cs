@@ -28,7 +28,7 @@ namespace SilverBotDS.WebHelpers
             webRequest2.ContentType = "application/x-www-form-urlencoded";
             using (HttpWebResponse response2 = webRequest2.GetResponse() as HttpWebResponse)
             {
-                StreamReader reader2 = new StreamReader(response2.GetResponseStream());
+                StreamReader reader2 = new(response2.GetResponseStream());
                 return JsonSerializer.Deserialize<Guild[]>(reader2.ReadToEnd());
             }
         }

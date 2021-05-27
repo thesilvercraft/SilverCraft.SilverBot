@@ -8,7 +8,6 @@ using Humanizer;
 using Lavalink4NET;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
-using Lavalink4NET.Rest;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
@@ -18,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TimeSpanParserUtil;
 

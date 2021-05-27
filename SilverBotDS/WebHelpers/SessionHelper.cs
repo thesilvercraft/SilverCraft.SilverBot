@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Net;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using static SilverBotDS.Objects.Classes.Oauth;
-using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace SilverBotDS.WebHelpers

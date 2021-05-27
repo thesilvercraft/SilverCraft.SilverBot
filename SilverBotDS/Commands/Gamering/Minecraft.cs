@@ -2,7 +2,6 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Utils;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 

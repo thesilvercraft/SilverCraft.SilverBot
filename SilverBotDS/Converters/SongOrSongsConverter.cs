@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using Lavalink4NET;
+using Lavalink4NET.Decoding;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
 using SilverBotDS.Commands;
@@ -12,12 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Lavalink4NET.Decoding;
 
 namespace SilverBotDS.Converters
 {

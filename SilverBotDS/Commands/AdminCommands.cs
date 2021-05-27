@@ -89,7 +89,7 @@ namespace SilverBotDS.Commands
 
                 var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache.SkipLast(1), PollBehaviour.KeepEmojis, duration);
                 var yesVotes = pollResult.First(x => x.Emoji.Name == "everybodyvotes").Voted;
-                if(yesVotes.Count==0)
+                if (yesVotes.Count == 0)
                 {
                     await commandContext.RespondAsync("Error: noone reacted in time");
                     return;

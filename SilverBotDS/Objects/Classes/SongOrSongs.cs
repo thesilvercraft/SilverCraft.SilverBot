@@ -1,10 +1,6 @@
-using DSharpPlus.Entities;
-using SilverBotDS.Utils;
-using System.Collections.Generic;
 using Lavalink4NET.Player;
-using System.Threading;
-using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 
 #nullable enable
 

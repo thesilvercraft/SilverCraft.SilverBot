@@ -232,6 +232,7 @@ namespace SilverBotDS.Commands
         [Command("seek")]
         [RequireDJ]
         [Description("Seeks to the specified time")]
+        //fixme: change string to timespan pls
         public async Task Seek(CommandContext ctx, string time)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -256,6 +257,34 @@ namespace SilverBotDS.Commands
             {
                 await SendSimpleMessage(ctx, lang.TrackCanNotBeSeeked, language: lang);
             }
+        }
+
+        [Command("clearqueue")]
+        [RequireDJ]
+        [Description("Seeks to the specified time")]
+        public async Task ClearQueue(CommandContext ctx)
+        {
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+            if (!IsInVc(ctx))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+                return;
+            }
+            var channel = ctx.Member?.VoiceState?.Channel;
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                return;
+            }
+
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
+            if (player.Queue.Count == 0 && player.State != PlayerState.NotPlaying)
+            {
+                await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
+                return;
+            }
+            int cnt = player.Queue.Clear();
+            await SendSimpleMessage(ctx, string.Format(lang.RemovedXSongOrSongs, cnt, cnt == 1 ? lang.RemovedSong : lang.RemovedSongs), language: lang);
         }
 
         [Command("shuffle")]

@@ -120,6 +120,16 @@ namespace SilverBotDS.Objects
         public string RemovedFront { get; set; } = "Removed: "; //"Removed: "Never gonna give you up by Rick Astley
 
         /// <summary>
+        /// Removed 20 songs
+        /// <br/>
+        /// see <seealso cref="RemovedSong"/> and <seealso cref="RemovedSongs"/>
+        /// </summary>
+        public string RemovedXSongOrSongs { get; set; } = "Removed {0} {1}";
+
+        public string RemovedSong { get; set; } = "song";
+        public string RemovedSongs { get; set; } = "songs";
+
+        /// <summary>
         /// Now looping song 🔂
         /// </summary>
         public string LoopingSong { get; set; } = "Now looping song 🔂";

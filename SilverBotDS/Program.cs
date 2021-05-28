@@ -263,6 +263,7 @@ namespace SilverBotDS
             commands.RegisterConverter(new SColorConverter());
             commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
+            commands.RegisterConverter(new TimeSpanConverter());
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<ModCommands>();

@@ -232,8 +232,7 @@ namespace SilverBotDS.Commands
         [Command("seek")]
         [RequireDJ]
         [Description("Seeks to the specified time")]
-        //fixme: change string to timespan pls
-        public async Task Seek(CommandContext ctx, string time)
+        public async Task Seek(CommandContext ctx, TimeSpan time)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!IsInVc(ctx))
@@ -247,11 +246,10 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            var timespan = TimeSpanParser.Parse(time, new TimeSpanParserOptions { ColonedDefault = Units.Minutes, UncolonedDefault = Units.Seconds });
             BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             try
             {
-                await player.SeekPositionAsync(timespan);
+                await player.SeekPositionAsync(time);
             }
             catch (NotSupportedException)
             {

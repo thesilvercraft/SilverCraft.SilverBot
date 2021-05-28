@@ -43,7 +43,7 @@ namespace SilverBotDS.Commands.Gamering
 
         [Command("fortstats")]
         [Description("Get the stats of a person using their username")]
-        public async Task Stats(CommandContext ctx, [Description("The username of the person")][RemainingText()] string name)
+        public async Task Stats(CommandContext ctx, [Description("The username of the person")][RemainingText] string name)
         {
             if (disabled)
             {

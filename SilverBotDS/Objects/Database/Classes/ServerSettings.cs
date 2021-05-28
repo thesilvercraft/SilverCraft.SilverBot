@@ -13,6 +13,5 @@ namespace SilverBotDS.Objects
         public bool EmotesOptin { get; set; }
         public ulong? ServerStatsCategoryId { get; set; }
         public List<ServerStatString> ServerStatsTemplates { get; set; }
-        //TODO: UNCOMMENT THING AND IMPLEMENT THING THAT BLASTS EARS public bool? EarBlaster9000 { get; set; }
     }
 }

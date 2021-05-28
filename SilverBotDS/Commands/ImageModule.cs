@@ -171,7 +171,7 @@ namespace SilverBotDS.Commands
                     }
                     else if (step is PictureStep step1)
                     {
-                        if (step1.isPfp)
+                        if (step1.IsPfp)
                         {
                             await ctx.RespondAsync(new DiscordMessageBuilder().WithContent($"Ping or send an id of the person you want in the photo step({steps.Count + 1} out of {e.steps.Length} steps)"));
                             var msg = await interactivity.WaitForMessageAsync((a) => { return a.Author.Id == ctx.User.Id; });

@@ -197,23 +197,23 @@ namespace SilverBotDS.Objects
             this.y = y;
             this.xSize = xSize;
             this.ySize = ySize;
-            this.url = url;
-            this.isPfp = isPfp;
+            this.Url = url;
+            this.IsPfp = isPfp;
         }
 
-        public string url { get; set; }
-        public bool isPfp { get; set; }
+        public string Url { get; set; }
+        public bool IsPfp { get; set; }
 
         [XmlIgnore]
-        public SdImage _image { get; set; }
+        public SdImage ImageF { get; set; }
 
         public SdImage Image()
         {
-            if (_image is null)
+            if (ImageF is null)
             {
-                _image = new SdImage(url);
+                ImageF = new SdImage(Url);
             }
-            return _image;
+            return ImageF;
         }
 
         public ulong xSize { get; set; }
@@ -234,9 +234,9 @@ namespace SilverBotDS.Objects
         {
             if (disposing)
             {
-                _image.Dispose();
+                ImageF.Dispose();
             }
-            url = null;
+            Url = null;
             // Cleanup
         }
     }

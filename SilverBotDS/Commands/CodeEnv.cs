@@ -35,7 +35,5 @@ namespace SilverBotDS.Commands
         {
             return StringUtils.RandomFromArray(Monika);
         }
-
-        public bool IsMaxABitch { get; } = true;
     }
 }

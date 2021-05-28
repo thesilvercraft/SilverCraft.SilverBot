@@ -590,51 +590,43 @@ namespace SilverBotDS
                 }
             }
 
-            if ((e.Channel.IsPrivate || e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages))
-              )
+            if (e.Channel.IsPrivate || e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
             {
-                //TODO: possibly send a xp thing
-                if (repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
+                if (config.EmulateBubot)
                 {
-                    if (config.EmulateBubot)
+                    switch (e.Message.Content)
                     {
-                        switch (e.Message.Content)
-                        {
-                            case "fock":
-                                await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                         .WithContent(e.Message.Content)
-                                         .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
-                                         .SendAsync(e.Channel);
-                                return;
+                        case "fock":
+                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                     .WithContent(e.Message.Content)
+                                     .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
+                                     .SendAsync(e.Channel);
+                            return;
 
-                            case "quality fock":
-                                await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                 .WithContent(e.Message.Content)
-                                 .WithFile("quality_fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.quality_fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.quality_fock.mp3"))
-                                 .SendAsync(e.Channel);
-                                return;
+                        case "quality fock":
+                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                             .WithContent(e.Message.Content)
+                             .WithFile("quality_fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.quality_fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.quality_fock.mp3"))
+                             .SendAsync(e.Channel);
+                            return;
 
-                            case "fock you":
-                                await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                 .WithContent("fock you too")
-                                 .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
-                                 .SendAsync(e.Channel);
-                                return;
+                        case "fock you":
+                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                             .WithContent("fock you too")
+                             .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
+                             .SendAsync(e.Channel);
+                            return;
 
-                            case "we will fock you":
-                                await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                 .WithContent("https://www.youtube.com/watch?v=lLN3caSQI1w")
-                                 .SendAsync(e.Channel);
-                                return;
-
-                            default:
-                                break;
-                        }
+                        case "we will fock you":
+                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                             .WithContent("https://www.youtube.com/watch?v=lLN3caSQI1w")
+                             .SendAsync(e.Channel);
+                            return;
                     }
-                    await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                                 .WithContent(e.Message.Content)
-                                                 .SendAsync(e.Channel);
                 }
+                await new DiscordMessageBuilder().WithReply(e.Message.Id)
+                                             .WithContent(e.Message.Content)
+                                             .SendAsync(e.Channel);
             }
         }
     }

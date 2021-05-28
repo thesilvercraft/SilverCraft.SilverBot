@@ -337,7 +337,6 @@ namespace SilverBotDS.Commands
                 await new DiscordMessageBuilder().WithContent($"Executed the code in {(afterrun - aftercompile).Humanize(6)} excluding compile time or {(afterrun - start).Humanize(6)} including it").SendAsync(ctx.Channel);
                 result = null;
                 script = null;
-                GC.Collect();
             }
             catch (CompilationErrorException e)
             {
@@ -397,7 +396,6 @@ namespace SilverBotDS.Commands
                     sw.Close();
                     Console.SetOut(console);
                     script = null;
-                    GC.Collect();
                 }
                 catch (CompilationErrorException e)
                 {

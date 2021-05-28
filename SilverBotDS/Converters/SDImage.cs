@@ -56,7 +56,6 @@ namespace SilverBotDS.Converters
             }
         }
 
-        //TODO: implement gifs and stickers
         public static SdImage FromAttachments(IReadOnlyList<DiscordAttachment> attachments)
         {
             if (attachments.Count == 1)

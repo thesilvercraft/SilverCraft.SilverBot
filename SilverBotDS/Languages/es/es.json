@@ -1,8 +1,8 @@
 {
-  "LangName": "English(EN)",
-  "LangCodeGoogleTranslate": "en",
-  "Hi": "Hi {0}!",
-  "TimeInUtc": "Time in UTC is {0}",
+  "LangName": "Español(ES)",
+  "LangCodeGoogleTranslate": "es",
+  "Hi": "Hola {0}!",
+  "TimeInUtc": "Tiempo en UTC es {0}",
   "CommandIsDisabled": "This command is disabled",
   "RequestedBy": "Requested by ",
   "DblaReturnedNull": "Something went wrong, it's probably on my end.",

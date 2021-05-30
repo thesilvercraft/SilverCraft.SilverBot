@@ -89,7 +89,8 @@ namespace SilverBotDS.Objects
                     EmotesOptin = true,
                     LangName = "en",
                     ServerId = id,
-                    ServerStatsCategoryId = null
+                    ServerStatsCategoryId = null,
+                    RepeatThings = false
                 });
             }
             SaveChanges();
@@ -110,7 +111,8 @@ namespace SilverBotDS.Objects
                     EmotesOptin = true,
                     LangName = "en",
                     ServerId = sid,
-                    ServerStatsCategoryId = id
+                    ServerStatsCategoryId = id,
+                    RepeatThings = false
                 });
             }
             SaveChanges();
@@ -135,7 +137,8 @@ namespace SilverBotDS.Objects
                     LangName = "en",
                     ServerId = sid,
                     ServerStatsCategoryId = null,
-                    ServerStatsTemplates = id
+                    ServerStatsTemplates = id,
+                    RepeatThings = false
                 });
             }
             SaveChanges();
@@ -229,7 +232,8 @@ namespace SilverBotDS.Objects
                     EmotesOptin = false,
                     LangName = lang,
                     ServerId = id,
-                    ServerStatsCategoryId = null
+                    ServerStatsCategoryId = null,
+                    RepeatThings = false
                 });
             }
             SaveChanges();

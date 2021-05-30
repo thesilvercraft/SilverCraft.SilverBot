@@ -589,8 +589,11 @@ namespace SilverBotDS
                     await IncreaseXP(e.Author.Id);
                 }
             }
+            var context = serviceProvider.GetService<DatabaseContext>();
 
-            if (e.Channel.IsPrivate || e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
+            var o = await context.serverSettings.FirstOrDefaultAsync(x => x.ServerId == e.Guild.Id);
+
+            if ((e.Channel.IsPrivate || o is not default(ServerSettings) && o.RepeatThings && e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages)) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
             {
                 if (config.EmulateBubot)
                 {

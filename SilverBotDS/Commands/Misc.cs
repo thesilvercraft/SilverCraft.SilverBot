@@ -86,6 +86,44 @@ namespace SilverBotDS.Commands
             }
         }
 
+        [Command("togglerepeat")]
+        [Description("toggle repeated strings")]
+        [RequireUserPermissions(Permissions.ManageGuild)]
+        public async Task SetLanguage(CommandContext ctx, bool enable)
+        {
+            var serversettings = Database.serverSettings.FirstOrDefault(x => x.ServerId == ctx.Guild.Id);
+            if (serversettings is not null)
+            {
+                serversettings.RepeatThings = enable;
+                Database.serverSettings.Update(serversettings);
+            }
+            else
+            {
+                Database.serverSettings.Add(new()
+                {
+                    EmotesOptin = false,
+                    LangName = "en",
+                    ServerId = ctx.Guild.Id,
+                    ServerStatsCategoryId = null,
+                    RepeatThings = enable
+                });
+            }
+            Database.SaveChanges();
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            if (enable)
+            {
+                await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                                     .WithContent(lang.EnableRepeatedPhrases)
+                                                     .SendAsync(ctx.Channel);
+            }
+            else
+            {
+                await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                     .WithContent(lang.DisabledRepeatedPhrases)
+                                     .SendAsync(ctx.Channel);
+            }
+        }
+
         [Command("translateunknown")]
         [Aliases("translate")]
         [Description("translate from an unknown language")]

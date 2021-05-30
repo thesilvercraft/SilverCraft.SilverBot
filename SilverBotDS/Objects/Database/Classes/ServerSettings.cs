@@ -13,5 +13,6 @@ namespace SilverBotDS.Objects
         public bool EmotesOptin { get; set; }
         public ulong? ServerStatsCategoryId { get; set; }
         public List<ServerStatString> ServerStatsTemplates { get; set; }
+        public bool RepeatThings { get; set; }
     }
 }

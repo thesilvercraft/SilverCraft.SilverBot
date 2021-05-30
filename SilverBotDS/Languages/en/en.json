@@ -140,6 +140,8 @@
   "XPCommandFailOther": "It appears that something either went wrong or they do not have any xp.",
   "XPCommandLeaderBoardTitle": "XP leaderboard:",
   "XPCommandLeaderBoardPerson": "{0} has {1}XP",
+  "DisabledRepeatedPhrases": "Disabled a thing that annoyed oscie.",
+  "EnableRepeatedPhrases": "Enabled a thing that annoyed oscie.",
   "Imagethings": {
     "JpegSuccess": "There ya go a jpegnized image",
     "SilverSuccess": "There ya go a silver image",

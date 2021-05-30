@@ -429,6 +429,8 @@ namespace SilverBotDS.Objects
         public string XPCommandFailOther { get; set; } = "It appears that something either went wrong or they do not have any xp.";
         public string XPCommandLeaderBoardTitle { get; set; } = "XP leaderboard:";
         public string XPCommandLeaderBoardPerson { get; set; } = "{0} has {1}XP";
+        public string DisabledRepeatedPhrases { get; set; } = "Disabled a thing that annoyed oscie.";
+        public string EnableRepeatedPhrases { get; set; } = "Enabled a thing that annoyed oscie.";
 
         public CultureInfo GetCultureInfo()
         {

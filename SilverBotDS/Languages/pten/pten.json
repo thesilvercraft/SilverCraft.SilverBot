@@ -140,6 +140,8 @@
   "XPCommandFailOther": "It appears that there there somethin' either went wrong or the crewmate does not 'ave any xp.",
   "XPCommandLeaderBoardTitle": "XP leaderboard:",
   "XPCommandLeaderBoardPerson": "{0} 'as {1}xp",
+  "DisabledRepeatedPhrases": "Disabled a thing that annoyed oscie.",
+  "EnableRepeatedPhrases": "Enabled a thing that annoyed oscie.",
   "Imagethings": {
     "JpegSuccess": "There yarr go a jpegnized image",
     "SilverSuccess": "There yarr go a silver image",

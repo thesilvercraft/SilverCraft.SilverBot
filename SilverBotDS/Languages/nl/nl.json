@@ -140,6 +140,8 @@
   "XPCommandFailOther": "Het lijkt erop dat er iets fout is gegaan of dat ze geen xp hebben.",
   "XPCommandLeaderBoardTitle": "XP-scorebord:",
   "XPCommandLeaderBoardPerson": "{0} heeft {1}XP",
+  "DisabledRepeatedPhrases": "Disabled a thing that annoyed oscie.",
+  "EnableRepeatedPhrases": "Enabled a thing that annoyed oscie.",
   "Imagethings": {
     "JpegSuccess": "There ya go a jpegnized image",
     "SilverSuccess": "hier, een silver foto",

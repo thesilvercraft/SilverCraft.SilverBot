@@ -140,6 +140,8 @@
   "XPCommandFailOther": "IT APPEARS DAT SOMETHIN EITHR WENT WRONG OR THEY DO NOT HAS ANY XP.",
   "XPCommandLeaderBoardTitle": "XP LEADERBORD:",
   "XPCommandLeaderBoardPerson": "{0} HAS {1}XP",
+  "DisabledRepeatedPhrases": "Disabled a thing that annoyed oscie.",
+  "EnableRepeatedPhrases": "Enabled a thing that annoyed oscie.",
   "Imagethings": {
     "JpegSuccess": "THAR YA GO JPEGNIZD IMAGE",
     "SilverSuccess": "THAR YA GO SILVR IMAGE",

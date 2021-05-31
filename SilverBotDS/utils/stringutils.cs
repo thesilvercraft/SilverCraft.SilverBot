@@ -52,7 +52,7 @@ namespace SilverBotDS.Utils
             return SplitInPartsIterator(s, partLength);
         }
 
-        public static IEnumerable<string> SplitInPartsIterator(string s, int partLength)
+        private static IEnumerable<string> SplitInPartsIterator(string s, int partLength)
         {
             for (int i = 0; i < s.Length; i += partLength)
             {

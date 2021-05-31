@@ -12,6 +12,7 @@ using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -418,9 +419,51 @@ namespace SilverBotDS.Commands
             }
         }
 
+        [Command("sh")]
+        public async Task RunConsole(CommandContext ctx, [RemainingText] string command)
+        {
+            command += Environment.OSVersion.Platform == PlatformID.Win32NT ? " & echo Exit code %ErrorLevel%" : " ; echo Exit code %?";
+            Process main = new();
+            main.StartInfo.FileName = Environment.OSVersion.Platform == PlatformID.Win32NT ? "CMD.exe" : "/bin/bash";
+            main.StartInfo.Arguments = $"{(Environment.OSVersion.Platform == PlatformID.Win32NT ? "/c" : "-c")} {command}";
+            main.StartInfo.RedirectStandardOutput = true;
+            main.StartInfo.RedirectStandardError = true;
+            main.StartInfo.RedirectStandardInput = true;
+            DiscordMessage msg = null;
+            main.Start();
+            ushort timesexited = 0;
+            StringBuilder content = new();
+            while (timesexited != 2)
+            {
+                while (main.StandardOutput.Peek() != -1)
+                {
+                    var readline = await main.StandardOutput.ReadToEndAsync() + await main.StandardError.ReadToEndAsync();
+                    if (msg is null || msg.Content.Length + readline.Length + 7 >= 2000)
+                    {
+                        foreach (var part in StringUtils.SplitInParts(readline, 1991))
+                        {
+                            msg = await ctx.Channel.SendMessageAsync($"```\n{part}```");
+                            content.Clear();
+                            content.Append($"{part}\n");
+                        }
+                    }
+                    else
+                    {
+                        await msg.ModifyAsync($"```{content}{readline}```");
+                        content.AppendLine(readline);
+                    }
+                    await Task.Delay(2000);
+                }
+                if (main.HasExited)
+                {
+                    timesexited++;
+                }
+            }
+        }
+
         [Command("runsql")]
         [Description("UHHHHHHHHHHHHH its a secret")]
-        public async Task Runsql(CommandContext ctx, string sql)
+        public async Task Runsql(CommandContext ctx, [RemainingText] string sql)
         {
             var thing = await Database.RunSqlAsync(sql, Browser);
             if (thing.Item1 != null && thing.Item2 == null)

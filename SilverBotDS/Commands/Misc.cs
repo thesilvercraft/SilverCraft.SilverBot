@@ -124,6 +124,15 @@ namespace SilverBotDS.Commands
             }
         }
 
+        [Command("button")]
+        public async Task ButtonTest(CommandContext ctx, [RemainingText] string text)
+        {
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                             .WithContent("e")
+                                             .WithComponents(new DiscordButtonComponent(ButtonStyle.Primary, "e", "e"))
+                                             .SendAsync(ctx.Channel);
+        }
+
         [Command("translateunknown")]
         [Aliases("translate")]
         [Description("translate from an unknown language")]

@@ -145,6 +145,7 @@ namespace SilverBotDS
             });
             //set up logging?
             discord.MessageCreated += Discord_MessageCreated;
+            discord.ComponentInteractionCreated += Discord_ComponentInteractionCreated;
             //Tell our cute client to use commands or in other words become a working class member of society
             log.Verbose("Initializing Commands");
             ServiceCollection services = new();
@@ -385,6 +386,16 @@ namespace SilverBotDS
                 log.Verbose("Waiting {V}", new TimeSpan(0, 0, 0, 0, config.MsInterval).Humanize(precision: 5));
                 await Task.Delay(config.MsInterval);
                 //repeat🔁
+            }
+        }
+
+        private static async Task Discord_ComponentInteractionCreated(DiscordClient sender, DSharpPlus.EventArgs.ComponentInteractionCreateEventArgs e)
+        {
+            if (e.Id == "e")
+            {
+                await e.Interaction.CreateResponseAsync(InteractionResponseType.DefferedMessageUpdate);
+                await e.Interaction.CreateFollowupMessageAsync(new DiscordFollowupMessageBuilder().WithContent("e"));
+                e.Handled = true;
             }
         }
 

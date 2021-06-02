@@ -15,6 +15,9 @@ namespace SilverBotDS.Objects
         /// </summary>
         public string LangName { get; set; }
 
+        /// <summary>
+        /// See if an user is banned
+        /// </summary>
         public bool IsBanned { get; set; }
     }
 }

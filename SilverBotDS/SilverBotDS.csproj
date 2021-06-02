@@ -75,9 +75,9 @@
 
   <ItemGroup>
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
-    <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00870" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00870" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00870" />
+    <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00872" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00872" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00872" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
@@ -109,7 +109,7 @@
     <PackageReference Include="Npgsql" Version="6.0.0-preview4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview4" />
     <PackageReference Include="Radzen.Blazor" Version="3.3.2" />
-    <PackageReference Include="ScottPlot" Version="4.1.15" />
+    <PackageReference Include="ScottPlot" Version="4.1.16" />
     <PackageReference Include="Serilog" Version="2.10.1-dev-01308" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10289" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />

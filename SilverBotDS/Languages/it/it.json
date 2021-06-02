@@ -140,8 +140,8 @@
   "XPCommandFailOther": "Sembra che qualcosa è andato storto o loro non hanno nessun xp.",
   "XPCommandLeaderBoardTitle": "Classifica di XP:",
   "XPCommandLeaderBoardPerson": "{0} ha {1}XP",
-  "DisabledRepeatedPhrases": "Disabled a thing that annoyed oscie.",
-  "EnableRepeatedPhrases": "Enabled a thing that annoyed oscie.",
+  "DisabledRepeatedPhrases": "Disabilitata una cosa che dava fastidio a oscie.",
+  "EnableRepeatedPhrases": "Abilitata una cosa che dava fastidio a oscie.",
   "Imagethings": {
     "JpegSuccess": "Ecco qui un immagine jpeg-zata",
     "SilverSuccess": "Ecco qui un immagine silver",

@@ -129,7 +129,7 @@ namespace SilverBotDS.Commands
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithContent("e")
-                                             .WithComponents(new DiscordButtonComponent(ButtonStyle.Primary, "e", "e"))
+                                             .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "e", "e"))
                                              .SendAsync(ctx.Channel);
         }
 

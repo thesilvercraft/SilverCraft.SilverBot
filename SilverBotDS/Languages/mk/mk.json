@@ -140,6 +140,8 @@
   "XPCommandFailOther": "Изгледа нешто се расипа или тие немаат ич xp.",
   "XPCommandLeaderBoardTitle": "Листа на XP:",
   "XPCommandLeaderBoardPerson": "{0} има {1}XP",
+  "DisabledRepeatedPhrases": "Исклучено нешто што го нервира Оси.",
+  "EnableRepeatedPhrases": "Уклучено нешто што го нервира Оси.",
   "Imagethings": {
     "JpegSuccess": "Ете ти jpeg-низирана слика",
     "SilverSuccess": "Еве ти црнобела слика",

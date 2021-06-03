@@ -140,6 +140,8 @@
   "XPCommandFailOther": "Es scheint, dass etwas schief gelaufen ist oder das Sie keine EP haben.",
   "XPCommandLeaderBoardTitle": "EP Rangliste:",
   "XPCommandLeaderBoardPerson": "{0} hat {1}EP",
+  "DisabledRepeatedPhrases": "Deaktivierte eine Sache, die Oscie genervt hat.",
+  "EnableRepeatedPhrases": "Aktivierte eine Sache, die Oscie genervt hat.",
   "Imagethings": {
     "JpegSuccess": "Für dich ein jpegnized Bild",
     "SilverSuccess": "Für dich ein Silbernes Bild",

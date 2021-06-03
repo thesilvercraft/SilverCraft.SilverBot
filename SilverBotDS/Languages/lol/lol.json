@@ -118,7 +118,7 @@
   },
   "StatisticCommand": {
     "SetToProvidedStrings": "SET THEM 2 TEH PROVIDD THINGS",
-    "SetToDefaultStrings": "SET THEM 2 TEH DEFAULT THINGS",
+    "SetToDefaultStrings": "Set them to the default things",
     "NoPerm": "PLZ GIMIE PERMISHUN 2 MANAGE CHANNELS IN DA KATEGORY",
     "CategorySetSuccess": "SET TEH KATEGORY 2 {0}, U MITE WANTS 2 ADD ATLEAST 4 CHANNELS OV ANY KIND IN IT AN DEN RUN TEH `SETSTATSTRINGS` COMMAND",
     "EmojiMessageDownloadStart": "DOWNLOADIN AT MOST {0} MESAGEZ WHICH WILL TAEK AROUND {1} CAUSE OV DISCORD RATELIMIT",
@@ -142,6 +142,11 @@
   "XPCommandLeaderBoardPerson": "{0} HAS {1}XP",
   "DisabledRepeatedPhrases": "DISABLD TING DAT ANNOYD OSCIE.",
   "EnableRepeatedPhrases": "ENABLD TING DAT ANNOYD OSCIE.",
+  "CheckFailed": "Check {0} failed",
+  "ChecksFailed": "Checks failed",
+  "InvalidOverload": "Invalid overload for `{0}`",
+  "GeneralException": "⚠ An error occurred, more information has been sent to the bot owner's log.",
+  "NoMatchingSubcommandsAndGroupNotExecutable": "No matching subcommands were found, and this group is not executable.",
   "Imagethings": {
     "JpegSuccess": "THAR YA GO JPEGNIZD IMAGE",
     "SilverSuccess": "THAR YA GO SILVR IMAGE",

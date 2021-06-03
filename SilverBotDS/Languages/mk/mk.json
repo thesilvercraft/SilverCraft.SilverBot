@@ -118,7 +118,7 @@
   },
   "StatisticCommand": {
     "SetToProvidedStrings": "Ги ставив до дадените работи",
-    "SetToDefaultStrings": "Ги ставив до дадените работи",
+    "SetToDefaultStrings": "Set them to the default things",
     "NoPerm": "Дај ми дозвола да ги сменам каналиве во категориата",
     "CategorySetSuccess": "Ја ставив категоријата да е {0}, додај 5 канали од билокаков вид и користи ја `setstatstrings` командата",
     "EmojiMessageDownloadStart": "Симнувам {0} пораќи што ќе трае {1}",
@@ -142,6 +142,11 @@
   "XPCommandLeaderBoardPerson": "{0} има {1}XP",
   "DisabledRepeatedPhrases": "Исклучено нешто што го нервира Оси.",
   "EnableRepeatedPhrases": "Уклучено нешто што го нервира Оси.",
+  "CheckFailed": "Check {0} failed",
+  "ChecksFailed": "Checks failed",
+  "InvalidOverload": "Invalid overload for `{0}`",
+  "GeneralException": "⚠ An error occurred, more information has been sent to the bot owner's log.",
+  "NoMatchingSubcommandsAndGroupNotExecutable": "No matching subcommands were found, and this group is not executable.",
   "Imagethings": {
     "JpegSuccess": "Ете ти jpeg-низирана слика",
     "SilverSuccess": "Еве ти црнобела слика",

@@ -5,12 +5,8 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject DiscordClient Discord
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <!-- Brand/logo -->
-    <a class="navbar-brand" href="#">SolverBot</a>
-
-    <!-- Links -->
+    <a class="navbar-brand" href="#">Silverbot</a>
     <ul class="navbar-nav">
-
         @if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
         {
             <li class="nav-item">
@@ -19,7 +15,6 @@
         }
         else
         {
-
             <li class="nav-item">
                 @{
                     DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session).UId).GetAwaiter().GetResult();
@@ -30,7 +25,7 @@
                 <a class="nav-link" href="/listguilds">Servers</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/musiccontrols">Track controller (PRE-ALPHA)</a>
+                <a class="nav-link" href="/musiccontrols">Music controller</a>
             </li>
         }
     </ul>

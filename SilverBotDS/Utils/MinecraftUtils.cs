@@ -11,6 +11,7 @@ namespace SilverBotDS.Utils
     {
 #pragma warning disable S1075 // URIs should not be hardcoded
         private const string GetProfileUrl = "https://api.mojang.com/users/profiles/minecraft/{0}";
+        private const string CrafatarBaseUrl = "https://crafatar.com/";
 #pragma warning restore S1075 // URIs should not be hardcoded
 
         public static async Task<Player> GetPlayerAsync(string name, HttpClient httpClient)
@@ -44,17 +45,17 @@ namespace SilverBotDS.Utils
 
             public string GetAvatarUrl()
             {
-                return string.Format("https://crafatar.com/avatars/{0}", Id);
+                return $"{CrafatarBaseUrl}avatars/{Id}";
             }
 
             public string GetHeadUrl()
             {
-                return string.Format("https://crafatar.com/renders/head/{0}", Id);
+                return $"{CrafatarBaseUrl}renders/head/{Id}";
             }
 
             public string GetBodyUrl()
             {
-                return string.Format("https://crafatar.com/renders/body/{0}", Id);
+                return $"{CrafatarBaseUrl}renders/body/{Id}";
             }
         }
     }

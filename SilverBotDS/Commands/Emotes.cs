@@ -206,7 +206,6 @@ namespace SilverBotDS.Commands
         {
             var isoptedin = Database.IsOptedInEmotes(ctx.Guild.Id);
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-
             if (isoptedin)
             {
                 var bob = new DiscordEmbedBuilder();

@@ -68,10 +68,10 @@ namespace SilverBotDS.Objects
         [XmlDescription("The Lavalink Node Password.")]
         public string LavalinkPassword { get; set; } = "youshallnotpass";
 
-        [XmlDescription("Friday text channel. leave none to disable")]
+        [XmlDescription("Friday text channel. leave 0 to disable")]
         public ulong FridayTextChannel { get; set; }
 
-        [XmlDescription("Friday voice channel. leave none to disable")]
+        [XmlDescription("Friday voice channel. leave 0 to disable")]
         public ulong FridayVoiceChannel { get; set; }
 
         [XmlDescription("What kind of database to use, 1 for postgres (slower but a traditional database), 2 for litedb (faster if your local disk is fast, not really a database))")]

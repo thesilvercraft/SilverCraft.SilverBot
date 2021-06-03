@@ -431,6 +431,27 @@ namespace SilverBotDS.Objects
         public string XPCommandLeaderBoardPerson { get; set; } = "{0} has {1}XP";
         public string DisabledRepeatedPhrases { get; set; } = "Disabled a thing that annoyed oscie.";
         public string EnableRepeatedPhrases { get; set; } = "Enabled a thing that annoyed oscie.";
+        //bot error stuff here
+        /// <summary>
+        /// Check {0} failed
+        /// </summary>
+        public string CheckFailed { get; set; } = "Check {0} failed";
+        /// <summary>
+        /// Checks failed
+        /// </summary>
+        public string ChecksFailed { get; set; } = "Checks failed";
+        /// <summary>
+        /// Invalid overload for `{0}`
+        /// </summary>
+        public string InvalidOverload { get; set; } = "Invalid overload for `{0}`";
+        /// <summary>
+        /// ⚠ An error occurred, more information has been sent to the bot owner's log.
+        /// </summary>
+        public string GeneralException { get; set; } = "⚠ An error occurred, more information has been sent to the bot owner's log.";
+        /// <summary>
+        /// No matching subcommands were found, and this group is not executable.
+        /// </summary>
+        public string NoMatchingSubcommandsAndGroupNotExecutable { get; set; } = "No matching subcommands were found, and this group is not executable.";
 
         public CultureInfo GetCultureInfo()
         {

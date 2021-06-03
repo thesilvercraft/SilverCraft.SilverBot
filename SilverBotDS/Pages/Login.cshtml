@@ -9,7 +9,6 @@
 @using SilverBotDS.WebHelpers
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Config config
-
 @{
     ViewData["Title"] = "Da login page";
     string code = Request.Query["code"].ToString();
@@ -36,9 +35,7 @@
         StreamReader reader = new StreamReader(postStream);
         string responseFromServer = reader.ReadToEnd();
         var token = System.Text.Json.JsonSerializer.Deserialize<SilverBotDS.Objects.Classes.Oauth.Token>(responseFromServer);
-
         SessionHelper.SetObjectAsJson(HttpContext.Session, "accessToken", token.AccessToken);
-
         Response.Redirect("/");
     }
 }

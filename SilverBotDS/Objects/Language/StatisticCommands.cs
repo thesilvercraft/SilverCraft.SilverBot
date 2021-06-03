@@ -5,7 +5,7 @@
         public class StatisticCommands
         {
             public string SetToProvidedStrings { get; set; } = "Set them to the provided things";
-            public string SetToDefaultStrings { get; set; } = "Set them to the provided things";
+            public string SetToDefaultStrings { get; set; } = "Set them to the default things";
             public string NoPerm { get; set; } = "Please give me permission to manage channels in the category";
             public string CategorySetSuccess { get; set; } = "Set the category to {0}, you might want to add atleast 4 channels of any kind in it and then run the `setstatstrings` command";
             public string EmojiMessageDownloadStart { get; set; } = "Downloading at most {0} messages which will take around {1} cause of discord ratelimit";

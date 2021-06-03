@@ -1,6 +1,7 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
@@ -125,11 +126,11 @@ namespace SilverBotDS.Commands
         }
 
         [Command("button")]
-        public async Task ButtonTest(CommandContext ctx, [RemainingText] string text)
+        public async Task ButtonTest(CommandContext ctx)
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithContent("e")
-                                             .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "e", "e"))
+                                             .WithContent("gaming")
+                                             .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary,"e","",false,new DiscordComponentEmoji(783096213875851304)))
                                              .SendAsync(ctx.Channel);
         }
 

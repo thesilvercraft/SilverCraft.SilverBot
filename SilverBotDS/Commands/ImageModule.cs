@@ -143,7 +143,7 @@ namespace SilverBotDS.Commands
         /// </summary>
         /// <param name="photoBytes">The <see cref="byte"/> of the original picture</param>
         /// <param name="filter">The <see cref="IMatrixFilter"/> to use</param>
-        /// <returns>A ,<see cref="MemoryStream"/> with a <see cref="PngFormat"/> of 70 Quality</returns>
+        /// <returns>A <see cref="MemoryStream"/> with a <see cref="PngFormat"/> of 70 Quality</returns>
         private static MemoryStream FilterImgBytes(byte[] photoBytes, EFilter filter)
         {
             using SImage img = SImage.Load(photoBytes);
@@ -162,7 +162,8 @@ namespace SilverBotDS.Commands
             if (ctx.Message.Attachments.Count == 1)
             {
                 ImageSteps e = await ImageSteps.Create(ctx.Message.Attachments[0].Url, HttpClient);
-                var steps = new List<Step>(); var interactivity = ctx.Client.GetInteractivity();
+                var steps = new List<Step>(); 
+                var interactivity = ctx.Client.GetInteractivity();
                 foreach (var step in e.steps)
                 {
                     if (step is TemplateStep)

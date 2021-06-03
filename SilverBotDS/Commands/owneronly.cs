@@ -92,7 +92,7 @@ namespace SilverBotDS.Commands
         {
             foreach (var url in _urls)
             {
-                _ = Html(ctx, url);
+                _ = Webshot(ctx, url);
             }
             return Task.CompletedTask;
         }

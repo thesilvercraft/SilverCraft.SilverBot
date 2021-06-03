@@ -72,7 +72,6 @@ namespace SilverBotDS.Commands
                 await ctx.Guild.BanMemberAsync(a.Id, reason: reason);
                 thing = lang.BotBannedUser;
             }
-
             b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync()).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
@@ -106,7 +105,6 @@ namespace SilverBotDS.Commands
                 return;
             }
             await ctx.Channel.DeleteMessagesAsync(messages, string.Format(lang.PurgedBySilverBotReason, ctx.Member.Username));
-
             await new DiscordMessageBuilder()
                                                .WithReply(ctx.Message.Id)
                                                .WithEmbed(new DiscordEmbedBuilder()

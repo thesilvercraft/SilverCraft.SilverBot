@@ -41,6 +41,8 @@ using SilverBotDS.Objects.Classes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json;
+using DSharpPlus.CommandsNext.Exceptions;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 
 namespace SilverBotDS
 {
@@ -249,7 +251,6 @@ namespace SilverBotDS
                 var sconfig = SpotifyClientConfig.CreateDefault();
                 services.AddSingleton(new SpotifyClient(sconfig.WithToken((await new OAuthClient(sconfig).RequestToken(new ClientCredentialsRequest(config.SpotifyClientId, config.SpotifyClientSecret))).AccessToken)));
             }
-
             serviceProvider = services.BuildServiceProvider();
             var context = serviceProvider.GetService<DatabaseContext>();
             context.Database.Migrate();
@@ -296,6 +297,7 @@ namespace SilverBotDS
                 commands.RegisterCommands<CalendarCommands>();
             }
             commands.CommandErrored += Commands_CommandErrored;
+            commands.CommandExecuted += Commands_CommandExecuted;
             if (config.UseNodeJs)
             {
                 commands.RegisterCommands<CalculatorCommands>();
@@ -319,6 +321,7 @@ namespace SilverBotDS
                 //intentional empty statement
             }
             await Task.Delay(2000);
+            await discord.UpdateStatusAsync(new("console logs while connnecting to lavalink", ActivityType.Watching));
             if (config.UseLavaLink)
             {
                 await audioService.InitializeAsync();
@@ -331,6 +334,7 @@ namespace SilverBotDS
                     _ = Task.Run(WaitForFridayAsync);
                 }
             }
+            await discord.UpdateStatusAsync(new("console logs while configuring server statistics", ActivityType.Watching));
             if (config.EnableServerStatistics)
             {
                 _ = Task.Run(() =>
@@ -338,6 +342,7 @@ namespace SilverBotDS
                     return StatisticsMainAsync();
                 });
             }
+            await discord.UpdateStatusAsync(new("console logs while launching the website module", ActivityType.Watching));
             host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
             {
                 s.AddSingleton(config);
@@ -375,6 +380,15 @@ namespace SilverBotDS
              .ConfigureWebHostDefaults(webBuilder =>
              {
                  webBuilder.UseStartup<WebpageStartup>();
+                 webBuilder.ConfigureAppConfiguration((ctx, cb) =>
+                 {
+                     if (!ctx.HostingEnvironment.IsDevelopment())
+                     {
+                         StaticWebAssetsLoader.UseStaticWebAssets(
+                           ctx.HostingEnvironment,
+                           ctx.Configuration);
+                     }
+                 });
              }).Build();
             _ = Task.Run(async () => await host.RunAsync());
             while (true)
@@ -389,12 +403,16 @@ namespace SilverBotDS
             }
         }
 
+        private static async Task Commands_CommandExecuted(CommandsNextExtension sender, CommandExecutionEventArgs e)
+        {
+            //TODO: add statistics
+        }
+
         private static async Task Discord_ComponentInteractionCreated(DiscordClient sender, DSharpPlus.EventArgs.ComponentInteractionCreateEventArgs e)
         {
             if (e.Id == "e")
             {
-                await e.Interaction.CreateResponseAsync(InteractionResponseType.DefferedMessageUpdate);
-                await e.Interaction.CreateFollowupMessageAsync(new DiscordFollowupMessageBuilder().WithContent("e"));
+                await e.Interaction.EditOriginalResponseAsync(new DiscordWebhookBuilder().WithContent($"{e.Interaction.User.Mention} gaming").WithComponents(new[] { new DiscordLinkButtonComponent("https://silverdimond.tk", "silvers site"), new DiscordLinkButtonComponent("https://dash.silverbot.cf", "silverbots dashboard") }));
                 e.Handled = true;
             }
         }
@@ -408,52 +426,57 @@ namespace SilverBotDS
         {
             if (e.Context.Channel.PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id)).HasPermission(Permissions.SendMessages))
             {
-                //inform user
-                if (e.Exception is DSharpPlus.CommandsNext.Exceptions.CommandNotFoundException)
+                if (e.Exception is CommandNotFoundException)
                 {
+                    //we do not do anything if it is a nonexistant command, i would have liked it to be a user only visible message but discord is shit
                     return;
-                }
-                else if (e.Exception is DSharpPlus.CommandsNext.Exceptions.ChecksFailedException cfe)
-                {
-                    if (cfe.FailedChecks.Count is 1)
-                    {
-                        await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
-                                 .WithContent($"Check `{cfe.FailedChecks[0].GetType()}` Failed")
-                                 .SendAsync(e.Context.Channel);
-                    }
-                    else
-                    {
-                        var pages = new List<Page>();
-                        var tempbuilder = new DiscordEmbedBuilder();
-                        tempbuilder.WithTitle("Checks failed");
-                        for (var i = 0; i < cfe.FailedChecks.Count; i++)
-                        {
-                            tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}");
-                            tempbuilder.WithDescription(cfe.FailedChecks[i].GetType().Name);
-                            pages.Add(new Page(embed: tempbuilder));
-                        }
-
-                        await e.Context.Channel.SendPaginatedMessageAsync(e.Context.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
-                    }
-                }
-                else if (e.Exception is DSharpPlus.CommandsNext.Exceptions.InvalidOverloadException || e.Exception is ArgumentException a && a.Message == "Could not find a suitable overload for the command.")
-                {
-                    await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
-                                .WithContent($"Invalid overload for `{e.Command.Name}`")
-                                .SendAsync(e.Context.Channel);
-                }
-                else if (e.Exception is InvalidOperationException ioe && ioe.Message == "No matching subcommands were found, and this group is not executable.")
-                {
-                    await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
-                                .WithContent(ioe.Message)
-                                .SendAsync(e.Context.Channel);
                 }
                 else
                 {
-                    await new DiscordMessageBuilder().WithReply(e.Context.Message.Id)
-                                   .WithContent("⚠An error occurred, more information has been sent to the bot owner's log.")
-                                   .SendAsync(e.Context.Channel);
+                    var lang = await Language.GetLanguageFromCtxAsync(e.Context); 
+                    if (e.Exception is ChecksFailedException cfe)
+                    {
+                        if (cfe.FailedChecks.Count is 1)
+                        {
+                            await new DiscordMessageBuilder()
+                                                             .WithReply(e.Context.Message.Id)
+                                                             .WithContent(string.Format(lang.CheckFailed,cfe.FailedChecks[0].GetType().Name))
+                                                             .SendAsync(e.Context.Channel);
+                        }
+                        else
+                        {
+                            var pages = new List<Page>();
+                            var tempbuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
+                            for (var i = 0; i < cfe.FailedChecks.Count; i++)
+                            {
+                                pages.Add(new Page(embed: tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}").WithDescription(cfe.FailedChecks[i].GetType().Name)));
+                            }
+                            await e.Context.Channel.SendPaginatedMessageAsync(e.Context.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+                        }
+                    }
+                    else if (e.Exception is InvalidOverloadException || e.Exception is ArgumentException a && a.Message == "Could not find a suitable overload for the command.")
+                    {
+                        await new DiscordMessageBuilder()
+                                                         .WithReply(e.Context.Message.Id)
+                                                         .WithContent(string.Format(lang.CheckFailed,e.Command.Name))
+                                                         .SendAsync(e.Context.Channel);
+                    }
+                    else if (e.Exception is InvalidOperationException ioe && ioe.Message == "No matching subcommands were found, and this group is not executable.")
+                    {
+                        await new DiscordMessageBuilder()
+                                                         .WithReply(e.Context.Message.Id)
+                                                         .WithContent(ioe.Message)
+                                                         .SendAsync(e.Context.Channel);
+                    }
+                    else
+                    {
+                        await new DiscordMessageBuilder()
+                                                         .WithReply(e.Context.Message.Id)
+                                                         .WithContent(lang.GeneralException)
+                                                         .SendAsync(e.Context.Channel);
+                    }
                 }
+               
             }
             log.Error(exception: e.Exception, "An exception occurred while trying to run {Command} with the raw arguments as {Raw}", e.Command.Name, e.Context.RawArgumentString);
         }

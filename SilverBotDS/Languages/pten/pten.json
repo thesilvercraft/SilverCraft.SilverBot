@@ -118,7 +118,7 @@
   },
   "StatisticCommand": {
     "SetToProvidedStrings": "Set them to the provided things",
-    "SetToDefaultStrings": "Set them to the provided things",
+    "SetToDefaultStrings": "Set them to the default things",
     "NoPerm": "Please give me permission to manage channels in the category",
     "CategorySetSuccess": "Set the category to {0}, ye might want to add atleast 4 channels o' any kind in it an' then run the `setstatstrings` command",
     "EmojiMessageDownloadStart": "Downloadin' at most {0} messages which will take around {1} cause o' discord ratelimit",
@@ -142,6 +142,11 @@
   "XPCommandLeaderBoardPerson": "{0} 'as {1}xp",
   "DisabledRepeatedPhrases": "Shot the cannons at a thin' that there annoyed oscie.",
   "EnableRepeatedPhrases": "Enabled a thin' that there annoyed oscie.",
+  "CheckFailed": "Check {0} failed",
+  "ChecksFailed": "Checks failed",
+  "InvalidOverload": "Invalid overload for `{0}`",
+  "GeneralException": "⚠ An error occurred, more information has been sent to the bot owner's log.",
+  "NoMatchingSubcommandsAndGroupNotExecutable": "No matching subcommands were found, and this group is not executable.",
   "Imagethings": {
     "JpegSuccess": "There yarr go a jpegnized image",
     "SilverSuccess": "There yarr go a silver image",

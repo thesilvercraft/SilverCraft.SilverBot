@@ -17,10 +17,10 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet publish -p:PublishProfile=FolderProfile
     - name: Zip
       shell: powershell
-      run: Compress-7Zip "SilverBotDS\bin\Release\net5.0" -ArchiveFileName "silverbot.zip" -Format Zip
+      run: Compress-7Zip "SilverBotDS\bin\Release\net5.0\publish" -ArchiveFileName "silverbot.zip" -Format Zip
     - name: Make a random name
       id: E
       shell: powershell
@@ -55,7 +55,7 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBotDS\bin\Release\net5.0\SilverBotDS.dll
+         asset_path: .\SilverBotDS\bin\Release\net5.0\publish\SilverBotDS.dll
          asset_name: SilverBotDS.dll
          asset_content_type: application/octet-stream
     - name: Upload View Dll
@@ -65,6 +65,6 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBotDS\bin\Release\net5.0\SilverBotDS.Views.dll
+         asset_path: .\SilverBotDS\bin\Release\net5.0\publish\SilverBotDS.Views.dll
          asset_name: SilverBotDS.Views.dll
          asset_content_type: application/octet-stream

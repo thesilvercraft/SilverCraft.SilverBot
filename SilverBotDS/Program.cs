@@ -379,8 +379,8 @@ namespace SilverBotDS
             })
              .ConfigureWebHostDefaults(webBuilder =>
              {
-                 webBuilder.UseStartup<WebpageStartup>();
                  webBuilder.UseStaticWebAssets();
+                 webBuilder.UseStartup<WebpageStartup>();
              }).Build();
             _ = Task.Run(async () => await host.RunAsync());
             while (true)

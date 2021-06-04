@@ -380,15 +380,7 @@ namespace SilverBotDS
              .ConfigureWebHostDefaults(webBuilder =>
              {
                  webBuilder.UseStartup<WebpageStartup>();
-                 webBuilder.ConfigureAppConfiguration((ctx, cb) =>
-                 {
-                     if (!ctx.HostingEnvironment.IsDevelopment())
-                     {
-                         StaticWebAssetsLoader.UseStaticWebAssets(
-                           ctx.HostingEnvironment,
-                           ctx.Configuration);
-                     }
-                 });
+                 webBuilder.UseStaticWebAssets();
              }).Build();
             _ = Task.Run(async () => await host.RunAsync());
             while (true)

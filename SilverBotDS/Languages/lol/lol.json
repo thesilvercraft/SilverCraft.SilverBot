@@ -142,6 +142,11 @@
   "XPCommandLeaderBoardPerson": "{0} HAS {1}XP",
   "DisabledRepeatedPhrases": "DISABLD TING DAT ANNOYD OSCIE.",
   "EnableRepeatedPhrases": "ENABLD TING DAT ANNOYD OSCIE.",
+  "CheckFailed": "CHECK {0} FAILD",
+  "ChecksFailed": "CHECKZ FAILD",
+  "InvalidOverload": "INVALID OVERLOAD 4 `{0}`",
+  "GeneralException": "⚠ AN ERROR OCCURRD, MOAR INFORMASHUN HAS BEEN SENT 2 TEH BOT OWNERS LOG.",
+  "NoMatchingSubcommandsAndGroupNotExecutable": "NO MATCHIN SUBCOMMANDZ WUZ FINDZ, AN DIS GROUP IZ NOT EXECUTABLE.",
   "Imagethings": {
     "JpegSuccess": "THAR YA GO JPEGNIZD IMAGE",
     "SilverSuccess": "THAR YA GO SILVR IMAGE",

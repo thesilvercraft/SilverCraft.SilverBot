@@ -24,9 +24,9 @@
   "WrongImageCount": "Relay **an** image me scurvy dog",
   "NotLooping": "Now not loopin'.",
   "NoResults": "Arr, there be nothin' fer `{0}`",
-  "Left": "I've departed from the port of {0}!",
+  "Left": "I've left {0}!",
   "InformationAbout": "Tales about ",
-  "JoinedSilverCraft": "'As embarked this here ship",
+  "JoinedSilverCraft": "'as joined this here ship",
   "PrefixUsedTopgg": "Prefix used",
   "ShuffledSuccess": "The shanty collection been shuffled",
   "User": "Crewmate: ",
@@ -105,7 +105,7 @@
     "Version": "Version"
   },
   "Mathcommands": {
-    "MathSteps": "Maths steps: ",
+    "MathSteps": "Math steps: ",
     "Results": "Result: "
   },
   "SteamCommand": {
@@ -118,7 +118,7 @@
   },
   "StatisticCommand": {
     "SetToProvidedStrings": "Set them to the provided things",
-    "SetToDefaultStrings": "Set them to the provided things",
+    "SetToDefaultStrings": "Set tharmm to the darggfaul things",
     "NoPerm": "Please give me permission to manage channels in the category",
     "CategorySetSuccess": "Set the category to {0}, ye might want to add atleast 4 channels o' any kind in it an' then run the `setstatstrings` command",
     "EmojiMessageDownloadStart": "Downloadin' at most {0} messages which will take around {1} cause o' discord ratelimit",
@@ -142,6 +142,11 @@
   "XPCommandLeaderBoardPerson": "{0} 'as {1}xp",
   "DisabledRepeatedPhrases": "Shot the cannons at a thin' that there annoyed oscie.",
   "EnableRepeatedPhrases": "Enabled a thin' that there annoyed oscie.",
+  "CheckFailed": "Check {0} failed",
+  "ChecksFailed": "Checks failed",
+  "InvalidOverload": "Invalid overload for `{0}`",
+  "GeneralException": "⚠ Ar arror argcurred, moree inforrmationn args been sent to darr bot ownarr's log.",
+  "NoMatchingSubcommandsAndGroupNotExecutable": "No marrching submiccomargs were found, argg this group is not executable.",
   "Imagethings": {
     "JpegSuccess": "There yarr go a jpegnized image",
     "SilverSuccess": "There yarr go a silver image",

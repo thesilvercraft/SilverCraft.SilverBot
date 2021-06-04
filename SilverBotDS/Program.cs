@@ -404,7 +404,7 @@ namespace SilverBotDS
         {
             if (e.Id == "e")
             {
-                await e.Interaction.EditOriginalResponseAsync(new DiscordWebhookBuilder().WithContent($"{e.Interaction.User.Mention} gaming").WithComponents(new[] { new DiscordLinkButtonComponent("https://silverdimond.tk", "silvers site"), new DiscordLinkButtonComponent("https://dash.silverbot.cf", "silverbots dashboard") }));
+                await e.Interaction.EditOriginalResponseAsync(new DiscordWebhookBuilder().WithContent($"{e.Interaction.User.Mention} gaming").AddComponents(new[] { new DiscordLinkButtonComponent("https://silverdimond.tk", "silvers site"), new DiscordLinkButtonComponent("https://dash.silverbot.cf", "silverbots dashboard") }));
                 e.Handled = true;
             }
         }

@@ -118,7 +118,7 @@
   },
   "StatisticCommand": {
     "SetToProvidedStrings": "Impostate alle cose fornite",
-    "SetToDefaultStrings": "Impostate alle cose fornite",
+    "SetToDefaultStrings": "Set them to the default things",
     "NoPerm": "Per favore dammi il permesso di gestire i canali nella categoria",
     "CategorySetSuccess": "Messa la categoria a {0}, dovresti aggiungere almeno 4 canali di qualsiasi genere e poi usare il comando `setstatstrings`",
     "EmojiMessageDownloadStart": "Scaricando almeno {0} il che ci vorrà {1} per il ratelimit di discord",
@@ -142,6 +142,11 @@
   "XPCommandLeaderBoardPerson": "{0} ha {1}XP",
   "DisabledRepeatedPhrases": "Disabilitata una cosa che dava fastidio a oscie.",
   "EnableRepeatedPhrases": "Abilitata una cosa che dava fastidio a oscie.",
+  "CheckFailed": "Check {0} failed",
+  "ChecksFailed": "Checks failed",
+  "InvalidOverload": "Invalid overload for `{0}`",
+  "GeneralException": "⚠ An error occurred, more information has been sent to the bot owner's log.",
+  "NoMatchingSubcommandsAndGroupNotExecutable": "No matching subcommands were found, and this group is not executable.",
   "Imagethings": {
     "JpegSuccess": "Ecco qui un immagine jpeg-zata",
     "SilverSuccess": "Ecco qui un immagine silver",

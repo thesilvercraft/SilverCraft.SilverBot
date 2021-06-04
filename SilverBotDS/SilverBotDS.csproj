@@ -75,9 +75,9 @@
 
   <ItemGroup>
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
-    <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00875" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00875" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00875" />
+    <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00876" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00876" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00876" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.2.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
@@ -105,10 +105,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Graph" Version="4.0.0-preview.5" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.7" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.31.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.32.0" />
     <PackageReference Include="Npgsql" Version="6.0.0-preview4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview4" />
-    <PackageReference Include="Radzen.Blazor" Version="3.4.1" />
+    <PackageReference Include="Radzen.Blazor" Version="3.4.2" />
     <PackageReference Include="ScottPlot" Version="4.1.16" />
     <PackageReference Include="Serilog" Version="2.10.1-dev-01308" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10289" />

@@ -118,7 +118,7 @@
   },
   "StatisticCommand": {
     "SetToProvidedStrings": "Stel ze in op de gegeven dingen",
-    "SetToDefaultStrings": "Stel ze in op de gegeven dingen",
+    "SetToDefaultStrings": "Set them to the default things",
     "NoPerm": "Geef me toestemming om kanalen in de categorie te beheren",
     "CategorySetSuccess": "Stel de categorie in op {0}, voeg er ten minste 4 kanalen van elk type aan toe en voer vervolgens het commando `setstatstrings` uit.",
     "EmojiMessageDownloadStart": "Maximaal {0} berichten aan het downloaden wat ongeveer {1} kan duren door discord ratelimit.",
@@ -142,6 +142,11 @@
   "XPCommandLeaderBoardPerson": "{0} heeft {1}XP",
   "DisabledRepeatedPhrases": "Disabled a thing that annoyed oscie.",
   "EnableRepeatedPhrases": "Enabled a thing that annoyed oscie.",
+  "CheckFailed": "Check {0} failed",
+  "ChecksFailed": "Checks failed",
+  "InvalidOverload": "Invalid overload for `{0}`",
+  "GeneralException": "⚠ An error occurred, more information has been sent to the bot owner's log.",
+  "NoMatchingSubcommandsAndGroupNotExecutable": "No matching subcommands were found, and this group is not executable.",
   "Imagethings": {
     "JpegSuccess": "There ya go a jpegnized image",
     "SilverSuccess": "Hier, een silver foto",

@@ -90,7 +90,7 @@ namespace SDiscordSink
                     break;
 
                 case LogEventLevel.Fatal:
-                    sb.Append("[FAT]");
+                    sb.Append("[FTL]");
                     builder.WithColor(DiscordColor.Red);
                     break;
 

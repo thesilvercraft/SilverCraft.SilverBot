@@ -19,7 +19,6 @@ namespace SilverBotDS
                 log.Information("Getting latest version info from {Source}", "GitHub");
                 Repo repo = new("thesilvercraft", "silverbot");
                 var info = await CommitInfo.GetLatestFromRepoAsync(repo, client);
-
                 if (info.Sha == ThisAssembly.Git.Sha)
                 {
                     log.Information("You are running {VNumber} which has the same Sha as the newest commit on master.", VNumber);

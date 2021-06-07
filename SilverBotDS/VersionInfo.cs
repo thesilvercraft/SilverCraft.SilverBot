@@ -26,7 +26,7 @@ namespace SilverBotDS
                 else
                 {
                     log.Information("You are running {VNumber} which DOES NOT HAVE the same Sha as the newest commit on master. ({Sha1} | {Sha2})", VNumber, info.Sha, ThisAssembly.Git.Sha);
-                    string gamer = System.IO.File.Exists("autoupdater.sh") ? "autoupdater.sh" : (System.IO.File.Exists("autoupdater.cmd") ? "autoupdater.cmd" : string.Empty);
+                    string gamer = System.IO.File.Exists("autoupdater.sh") ? "autoupdater.sh" : (System.IO.File.Exists("autoupdater.cmd") ? "autoupdater.cmd" : (System.IO.File.Exists("autoupdater.bat") ? "autoupdater.bat" : string.Empty));
                     if (!string.IsNullOrEmpty(gamer))
                     {
                         var rls = await Release.GetLatestFromRepoAsync(repo, client);

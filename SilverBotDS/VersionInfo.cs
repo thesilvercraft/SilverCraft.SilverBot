@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace SilverBotDS
                 log.Information("Getting latest version info from {Source}", "GitHub");
                 Repo repo = new("thesilvercraft", "silverbot");
                 var info = await CommitInfo.GetLatestFromRepoAsync(repo, client);
+
                 if (info.Sha == ThisAssembly.Git.Sha)
                 {
                     log.Information("You are running {VNumber} which has the same Sha as the newest commit on master.", VNumber);
@@ -25,6 +27,21 @@ namespace SilverBotDS
                 else
                 {
                     log.Information("You are running {VNumber} which DOES NOT HAVE the same Sha as the newest commit on master. ({Sha1} | {Sha2})", VNumber, info.Sha, ThisAssembly.Git.Sha);
+                    string gamer = System.IO.File.Exists("autoupdater.sh") ? "autoupdater.sh" : (System.IO.File.Exists("autoupdater.cmd") ? "autoupdater.cmd" : string.Empty);
+                    if (!string.IsNullOrEmpty(gamer))
+                    {
+                        var rls = await Release.GetLatestFromRepoAsync(repo, client);
+                        if (rls.Body.Contains(info.Sha))
+                        {
+                            log.Information("TRYING TO DOWNLOAD RELEASE {rls} from url {url} AS AUTOUPDATER WAS DETECTED", rls.HtmlUrl, rls.AssetsUrl);
+                            Process p = new();
+                            p.StartInfo.FileName = gamer;
+                            p.StartInfo.Arguments = $"\"{rls.Assets[0].BrowserDownloadUrl}\"";
+                            p.StartInfo.UseShellExecute = true;
+                            p.StartInfo.CreateNoWindow = false;
+                            p.Start();
+                        }
+                    }
                 }
                 if (ThisAssembly.Git.IsDirty)
                 {

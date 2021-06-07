@@ -43,6 +43,7 @@ using Microsoft.Extensions.Hosting;
 using System.Text.Json;
 using DSharpPlus.CommandsNext.Exceptions;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using Serilog.Events;
 
 namespace SilverBotDS
 {
@@ -118,6 +119,8 @@ namespace SilverBotDS
             config = await Config.GetAsync();
             WebHookUtils.ParseWebhookUrlNullable(config.LogWebhook, out ulong? id, out string token);
             var logfactory = new LoggerConfiguration()
+                         .MinimumLevel.Information()
+                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                          .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                          .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
             if (!(id == null || string.IsNullOrEmpty(token)))
@@ -125,9 +128,12 @@ namespace SilverBotDS
                 logfactory.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
             log = logfactory.CreateLogger();
-            log.Information("Checking for updates");
-            //Check for updates
-            await VersionInfo.Checkforupdates(httpClient, log);
+            if (config.EnableUpdateChecking)
+            {
+                log.Information("Checking for updates");
+                //Check for updates
+                await VersionInfo.Checkforupdates(httpClient, log);
+            }
             ILoggerFactory logFactory = new LoggerFactory().AddSerilog(logger: log);
             //Make us a little cute client
             log.Verbose("Creating the discord client");
@@ -237,13 +243,12 @@ namespace SilverBotDS
                     Password = config.LavalinkPassword
                 }, discordclientwrapper);
                 trackingService = new InactivityTrackingService(audioService, discordclientwrapper,
-                                                                new InactivityTrackingOptions());
+                                                new InactivityTrackingOptions());
                 services.AddSingleton(audioService);
                 if (!config.SitInVc)
                 {
                     services.AddSingleton(trackingService);
                 }
-
                 services.AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
             }
             if (IsNotNullAndIsNotB(config.SpotifyClientId, "Spotify_CLIENT_ID") && IsNotNullAndIsNotB(config.SpotifyClientSecret, "Spotify_CLIENT_SECRET"))
@@ -380,7 +385,7 @@ namespace SilverBotDS
              .ConfigureWebHostDefaults(webBuilder =>
              {
                  webBuilder.UseStartup<WebpageStartup>();
-             }).Build();
+             }).UseSerilog(log).Build();
             _ = Task.Run(async () => await host.RunAsync());
             while (true)
             {

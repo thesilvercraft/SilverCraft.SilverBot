@@ -32,7 +32,7 @@ namespace SilverBotDS
                         var rls = await Release.GetLatestFromRepoAsync(repo, client);
                         if (rls.Body.Contains(info.Sha))
                         {
-                            log.Information("TRYING TO DOWNLOAD RELEASE {rls} from url {url} AS AUTOUPDATER WAS DETECTED, VERY POG", rls.HtmlUrl, rls.AssetsUrl);
+                            log.Information("TRYING TO DOWNLOAD RELEASE {rls} from url {url} AS AUTOUPDATER WAS DETECTED", rls.HtmlUrl, rls.AssetsUrl);
                             Process p = new();
                             p.StartInfo.FileName = Environment.OSVersion.Platform == PlatformID.Win32NT ? "CMD.exe" : "/bin/bash";
                             p.StartInfo.Arguments = $"{(Environment.OSVersion.Platform == PlatformID.Win32NT ? "/c" : "-c")} .\\{gamer} \"{rls.Assets[0].BrowserDownloadUrl}\"";

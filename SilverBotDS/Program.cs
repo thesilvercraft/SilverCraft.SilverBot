@@ -225,7 +225,7 @@ namespace SilverBotDS
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = config.JavaLoc,
-                        Arguments = " -jar Lavalink.jar",
+                        Arguments = "-jar Lavalink.jar",
                         UseShellExecute = true
                     }
                 }.Start();

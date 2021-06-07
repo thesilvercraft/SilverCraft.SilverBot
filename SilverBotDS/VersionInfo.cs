@@ -33,11 +33,26 @@ namespace SilverBotDS
                         if (rls.Body.Contains(info.Sha))
                         {
                             log.Information("TRYING TO DOWNLOAD RELEASE {rls} from url {url} AS AUTOUPDATER WAS DETECTED", rls.HtmlUrl, rls.AssetsUrl);
-                            Process p = new();
-                            p.StartInfo.FileName = Environment.OSVersion.Platform == PlatformID.Win32NT ? "CMD.exe" : "/bin/bash";
-                            p.StartInfo.Arguments = $"{(Environment.OSVersion.Platform == PlatformID.Win32NT ? "/c" : "-c")} \" {(Environment.OSVersion.Platform == PlatformID.Win32NT ? "CMD.exe" : "/bin/bash")} {gamer} \"{rls.Assets[0].BrowserDownloadUrl}\" \"";
-                            p.StartInfo.CreateNoWindow = false;
-                            p.Start();
+                            if (Environment.OSVersion.Platform == PlatformID.Unix)
+                            {
+                                ProcessStartInfo pinf = new()
+                                {
+                                    Arguments = $"-c \"echo \"sudo {gamer} \"{rls.Assets[0].BrowserDownloadUrl}\"\" | at now\"",
+                                    CreateNoWindow = true,
+                                    FileName = "/bin/bash",
+                                    UseShellExecute = false,
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                };
+                                Process.Start(pinf);
+                            }
+                            else if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                            {
+                                Process p = new();
+                                p.StartInfo.FileName = "CMD.exe";
+                                p.StartInfo.Arguments = $"{gamer} \"{rls.Assets[0].BrowserDownloadUrl}\"";
+                                p.StartInfo.CreateNoWindow = false;
+                                p.Start();
+                            }
                         }
                     }
                 }

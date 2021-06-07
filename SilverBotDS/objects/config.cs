@@ -18,6 +18,8 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
+        private const ulong CurrentConfVer = 23;
+
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } = { "sd!" };
 
@@ -41,8 +43,6 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
         public ulong? ConfigVer { get; set; } = null;
-
-        private const ulong CurrentConfVer = 22;
 
         [XmlDescription("Webhook for logging")]
         public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
@@ -120,6 +120,9 @@ namespace SilverBotDS.Objects
 
         public ulong LoginPageDiscordClientId { get; set; } = 702445582559739976;
         public string LoginPageDiscordClientSecret { get; set; } = "lol no";
+
+        [XmlDescription("Do we check github for a newer commit")]
+        public bool EnableUpdateChecking { get; set; } = true;
 
         public Splash[] Splashes { get; set; } = {
       new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),
@@ -313,7 +316,7 @@ namespace SilverBotDS.Objects
                 {
                     if (e.GetType() == typeof(XmlDescriptionAttribute))
                     {
-                        xmlDocument = Xmlutils.CommentBeforeObject(xmlDocument, $"/Config/{i.Name}", ((XmlDescriptionAttribute)e).description);
+                        xmlDocument = XmlUtils.CommentBeforeObject(xmlDocument, $"/Config/{i.Name}", ((XmlDescriptionAttribute)e).description);
                     }
                 }
             }
@@ -343,7 +346,7 @@ namespace SilverBotDS.Objects
                 }
                 readconfig.ConfigVer = CurrentConfVer;
 
-                MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(readconfig)).Save(streamWriter);
+                MakeDocumentWithComments(XmlUtils.SerializeToXmlDocument(readconfig)).Save(streamWriter);
                 streamWriter.Close();
             }
         }
@@ -355,7 +358,7 @@ namespace SilverBotDS.Objects
             {
                 await using (var streamWriter = new StreamWriter("silverbot.xml"))
                 {
-                    MakeDocumentWithComments(Xmlutils.SerializeToXmlDocument(new Config
+                    MakeDocumentWithComments(XmlUtils.SerializeToXmlDocument(new Config
                     {
                         ConfigVer = CurrentConfVer
                     })).Save(streamWriter);

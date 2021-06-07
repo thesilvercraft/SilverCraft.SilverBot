@@ -4,11 +4,11 @@ using System.Text.RegularExpressions;
 
 namespace SilverBotDS.Utils
 {
-    internal class WebHookUtilz
+    internal class WebHookUtils
     {
         private static readonly Regex WebhookUrlRegex = new(@"^.*(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-z0-9_-]+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-        protected WebHookUtilz()
+        protected WebHookUtils()
         {
         }
 

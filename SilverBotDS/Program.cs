@@ -116,7 +116,7 @@ namespace SilverBotDS
         private static async Task MainAsync(string[] args)
         {
             config = await Config.GetAsync();
-            WebHookUtilz.ParseWebhookUrlNullable(config.LogWebhook, out ulong? id, out string token);
+            WebHookUtils.ParseWebhookUrlNullable(config.LogWebhook, out ulong? id, out string token);
             var logfactory = new LoggerConfiguration()
                          .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                          .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
@@ -424,14 +424,14 @@ namespace SilverBotDS
                 }
                 else
                 {
-                    var lang = await Language.GetLanguageFromCtxAsync(e.Context); 
+                    var lang = await Language.GetLanguageFromCtxAsync(e.Context);
                     if (e.Exception is ChecksFailedException cfe)
                     {
                         if (cfe.FailedChecks.Count is 1)
                         {
                             await new DiscordMessageBuilder()
                                                              .WithReply(e.Context.Message.Id)
-                                                             .WithContent(string.Format(lang.CheckFailed,cfe.FailedChecks[0].GetType().Name))
+                                                             .WithContent(string.Format(lang.CheckFailed, cfe.FailedChecks[0].GetType().Name))
                                                              .SendAsync(e.Context.Channel);
                         }
                         else
@@ -449,7 +449,7 @@ namespace SilverBotDS
                     {
                         await new DiscordMessageBuilder()
                                                          .WithReply(e.Context.Message.Id)
-                                                         .WithContent(string.Format(lang.CheckFailed,e.Command.Name))
+                                                         .WithContent(string.Format(lang.CheckFailed, e.Command.Name))
                                                          .SendAsync(e.Context.Channel);
                     }
                     else if (e.Exception is InvalidOperationException ioe && ioe.Message == "No matching subcommands were found, and this group is not executable.")
@@ -467,7 +467,6 @@ namespace SilverBotDS
                                                          .SendAsync(e.Context.Channel);
                     }
                 }
-               
             }
             log.Error(exception: e.Exception, "An exception occurred while trying to run {Command} with the raw arguments as {Raw}", e.Command.Name, e.Context.RawArgumentString);
         }

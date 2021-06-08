@@ -108,7 +108,7 @@
     <PackageReference Include="Microsoft.Graph" Version="4.0.0-preview.6" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.7" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.32.0" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.12.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.5.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Npgsql" Version="6.0.0-preview4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview4" />
@@ -137,7 +137,6 @@
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="TimeSpanParserUtil" Version="1.2.0" />
-    <PackageReference Include="TimeZoneConverter" Version="3.5.0" />
     <PackageReference Include="Wbubbler" Version="1.0.2" />
     <PackageReference Include="Xabe.FFmpeg" Version="5.0.2" />
     <PackageReference Include="Xabe.FFmpeg.Downloader" Version="5.0.2" />

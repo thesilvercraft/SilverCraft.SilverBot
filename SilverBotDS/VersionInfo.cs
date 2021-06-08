@@ -37,7 +37,7 @@ namespace SilverBotDS
                             {
                                 ProcessStartInfo pinf = new()
                                 {
-                                    Arguments = $"-c \"echo \"sudo {gamer} \"{rls.Assets[0].BrowserDownloadUrl}\"\" | at now\"",
+                                    Arguments = $"-c \"echo \\\"./{gamer}\\\" \\\"{rls.Assets[0].BrowserDownloadUrl}\\\" | at now\"",
                                     CreateNoWindow = true,
                                     FileName = "/bin/bash",
                                     UseShellExecute = false,

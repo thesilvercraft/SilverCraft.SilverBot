@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SilverBot</title>
     <base href="~/" />
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="SilverBotDS.styles.css" rel="stylesheet" />
@@ -20,13 +21,11 @@
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="index.css" type="text/css" />
     <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
-    @Html.PartialAsync("_Favicons")
+    @await Html.PartialAsync("_Favicons")
 </head>
 <body>
     <component type="typeof(NavBar)" render-mode="ServerPrerendered" />
     <component type="typeof(App)" render-mode="ServerPrerendered" />
-
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
             An error has occurred. This application may no longer respond until reloaded.

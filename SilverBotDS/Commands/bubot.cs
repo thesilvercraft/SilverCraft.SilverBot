@@ -37,7 +37,7 @@ namespace SilverBotDS.Commands
             int randomnumber;
             using (var random = new RandomGenerator())
             {
-                randomnumber = random.Next(1, 15);
+                randomnumber = random.Next(1, 18);
             }
             using var picture = new Bitmap(new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.Bibi.{randomnumber}.png") ?? throw new TemplateReturningNullException($"SilverBotDS.Templates.Bibi.{randomnumber}.png")));
             using (Graphics g = Graphics.FromImage(picture))

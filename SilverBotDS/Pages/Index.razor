@@ -4,9 +4,17 @@
 @using SilverBotDS.Utils
 @using DSharpPlus
 @using DSharpPlus.Entities
+@using System
+@using System.Threading
+@using System.Diagnostics
+@using Humanizer
 @inject Config config
 @inject DiscordClient discord
 <body>
-    <p>@ArrayUtils.RandomFromArray(config.Splashes).GetDiscordActivity(Program.GetStringDictionary(discord)).Name</p>
-    <h1>Hello and welcome to the new SilverBot webpage. do you like waffles?</h1>
+    <h1>SilverBot Dashboard</h1>
+    <h2>Wasting time in @discord.Guilds.Count servers</h2>
+    <h2>with @discord.Guilds.Values.Select(x=>x.Members.Count).Sum() people and stuff</h2>
+    <h2>I have been up for @((DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()).Humanize())</h2>
+    <h2>With @discord.ShardCount @(discord.ShardCount==1?"shard":"shards") and @Process.GetCurrentProcess().Threads.Count cpu @(Process.GetCurrentProcess().Threads.Count==1?"thread":"threads")</h2>
+<footer><p>E</p></footer>
 </body>

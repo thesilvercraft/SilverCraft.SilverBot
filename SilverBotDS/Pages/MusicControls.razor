@@ -47,7 +47,6 @@
     {
         if (player.State is Lavalink4NET.Player.PlayerState.Paused)
         {
-
             await player.ResumeAsync();
             player.TriggerWebsiteEvent(user, "resumed the player");
         }
@@ -64,7 +63,6 @@
     }
     async Task ForceSkipPress(BetterVoteLavalinkPlayer player)
     {
-        //dj only
         if (CheckForDJ())
         {
                 await player.SkipAsync();
@@ -101,9 +99,7 @@
     
     string ToggleStateText = "Resume / Pause";
       BetterVoteLavalinkPlayer player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
-     EventHandler<TrackStartedEventArgs> gamer=async (refr, song) => { await InvokeAsync(() => {
-       //TODO fix thing
-    }); };
+     EventHandler<TrackStartedEventArgs> gamer = async (refr, song) => { await InvokeAsync(() => { uriHelper.NavigateTo("/musiccontrols", forceLoad: false); }); };
     player.OnNewTrack += gamer;
     player.RemoveOnWebsiteEventHandelers();
     player.OnWebsiteEvent += (refr, parm) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = parm.Item1.Username, Detail = parm.Item2, Duration = 4000 }); };
@@ -154,7 +150,7 @@
             <input id="NoLoop" type="button" @onclick="@(e =>  NotLoopingPress(player))" value="Do not loop" />
             <input id="LoopSong" type="button" @onclick="@(e =>  LoopingSongPress(player))" value="Loop song" />
             <input id="LoopQueue" type="button" @onclick="@(e => LoopingQueuePress(player))" value="Loop queue" />
-            <RadzenSlider @@bind-value=@@value TValue="int" Min="1" Step="10" Max="100" Change=@@( args=> { OnChange(args, player); }) />
+            <RadzenSlider @bind-value=@value TValue="int" Min="1" Step="10" Max="100" Change=@( args=> { OnChange(args, player); }) />
         </div>
     </div>
 }

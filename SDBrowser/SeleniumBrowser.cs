@@ -3,9 +3,10 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using System.IO;
 
 namespace SDBrowser
 {
@@ -50,7 +51,7 @@ namespace SDBrowser
             return new SeleniumBrowser(browsertype, Environment.CurrentDirectory);
         }
 
-        public async Task<Bitmap> RenderHtmlAsync(string html)
+        public async Task<MemoryStream> RenderHtmlAsync(string html)
         {
             while (_isLocked)
             {
@@ -63,10 +64,10 @@ namespace SDBrowser
 
             wait.Until(driver1 => ((IJavaScriptExecutor)_webDriver).ExecuteScript("return document.readyState").Equals("complete")); var ss = ((ITakesScreenshot)_webDriver).GetScreenshot();
             _isLocked = false;
-            return Utils.ByteArrayToImage(ss.AsByteArray);
+            return new MemoryStream(ss.AsByteArray);
         }
 
-        public async Task<Bitmap> RenderUrlAsync(string url)
+        public async Task<MemoryStream> RenderUrlAsync(string url)
         {
             while (_isLocked)
             {
@@ -81,7 +82,7 @@ namespace SDBrowser
 
                 wait.Until(driver1 => ((IJavaScriptExecutor)_webDriver).ExecuteScript("return document.readyState").Equals("complete")); var ss = ((ITakesScreenshot)_webDriver).GetScreenshot();
                 _isLocked = false;
-                return Utils.ByteArrayToImage(ss.AsByteArray);
+                return new MemoryStream(ss.AsByteArray);
             }
             catch (Exception)
             {
@@ -90,7 +91,7 @@ namespace SDBrowser
             }
         }
 
-        public async Task<Bitmap> RenderUrlAsync(Uri url)
+        public async Task<MemoryStream> RenderUrlAsync(Uri url)
         {
             return await RenderUrlAsync(url.ToString());
         }

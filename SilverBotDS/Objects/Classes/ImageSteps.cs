@@ -1,7 +1,6 @@
 ﻿using SilverBotDS.Commands;
 using SilverBotDS.Converters;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.Serialization;
@@ -33,6 +32,7 @@ namespace SilverBotDS.Objects
             return ist;
         }
 
+        /*
         public async Task<Bitmap> ExecuteStepsAsync(Step[] filledsteps)
         {
             Bitmap Bitmap = null;
@@ -53,7 +53,7 @@ namespace SilverBotDS.Objects
                 }
                 else if (step is PictureStep step1)
                 {
-                    using var resizedbytes = await ImageModule.ResizeAsync(await step1.Image().GetBytesAsync(client), new SixLabors.ImageSharp.Size((int)step1.xSize, (int)step1.ySize));
+                    using var resizedbytes = (await ImageModule.ResizeAsync(await step1.Image().GetBytesAsync(client), new SixLabors.ImageSharp.Size((int)step1.xSize, (int)step1.ySize), true)).Item1;
                     using var resizedimg = new Bitmap(resizedbytes);
                     graphics.DrawImage(resizedimg, new Point((int)step.x, (int)step.y));
                 }
@@ -69,6 +69,7 @@ namespace SilverBotDS.Objects
             }
             return Bitmap;
         }
+        */
 
         protected virtual void Dispose(bool disposing)
         {
@@ -142,6 +143,7 @@ namespace SilverBotDS.Objects
             this.isUrl = isUrl;
         }
 
+        /*
         [XmlIgnore]
         private Bitmap _image;
 
@@ -162,7 +164,7 @@ namespace SilverBotDS.Objects
                 }
             }
             return _image;
-        }
+        }*/
 
         public string template;
         public bool isUrl;
@@ -179,7 +181,7 @@ namespace SilverBotDS.Objects
         {
             if (disposing)
             {
-                ((IDisposable)_image).Dispose();
+                //((IDisposable)_image).Dispose();
             }
             template = null;
         }

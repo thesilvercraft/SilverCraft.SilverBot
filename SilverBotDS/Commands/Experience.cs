@@ -10,7 +10,6 @@ using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -109,49 +108,49 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private readonly Pen BlackPen = new(new SolidBrush(Color.Black));
-        private readonly SolidBrush GreenBrush = new(Color.LightGreen);
-        private readonly Font DiavloLight = new("Diavlo Light", 30.0f);
-        private readonly SolidBrush BlackBrush = new(Color.Black);
+        /* private readonly Pen BlackPen = new(new SolidBrush(Color.Black));
+         private readonly SolidBrush GreenBrush = new(Color.LightGreen);
+         private readonly Font DiavloLight = new("Diavlo Light", 30.0f);
+         private readonly SolidBrush BlackBrush = new(Color.Black);
 
-        [Command("xpcard")]
-        public async Task XpCard(CommandContext ctx, DiscordUser user)
-        {
-            await ctx.TriggerTypingAsync();
-            var outStream = new MemoryStream();
-            SdImage image = new(user.GetAvatarUrl(ImageFormat.Png));
-            using (var imanidiot = Image.FromStream(await ImageModule.ResizeAsync(await image.GetBytesAsync(HttpClient), new SixLabors.ImageSharp.Size(200, 200))))
-            {
-                Image imge = new Bitmap(800, 240);
-                using (var gr = Graphics.FromImage(imge))
-                {
-                    gr.Clear(Color.White);
-                    gr.DrawImage(imanidiot, new Point(13, 20));
-                    using var img = ImageModule.DrawText($"{user.Username}#{user.Discriminator}", DiavloLight, Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
-                    gr.DrawImage(img, new Point(229, 25));
-                    gr.DrawRectangle(BlackPen, new Rectangle(new(233, 83), new Size(478, 30)));
-                    var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == user.Id);
-                    if (o is not null)
-                    {
-                        var levelcount = GetLevel(o.XP);
-                        var progress = 4.76 * GetProgressToNextLevel(o.XP);
-                        gr.FillRectangle(GreenBrush, new Rectangle(new(234, 84), new Size((int)progress, 28)));
-                        gr.DrawString($"{o.XP}XP", DiavloLight, BlackBrush, new PointF((float)(170 + progress), 140));
-                        gr.DrawString($"{GetNeededXpForNextLevel(o.XP)}XP", DiavloLight, BlackBrush, new PointF(650.95f, 120));
-                        gr.DrawString($"Level: {levelcount}", DiavloLight, BlackBrush, new PointF(232, 169));
-                    }
-                }
-                imge.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
-            }
-            outStream.Position = 0;
-            await ImageModule.SendImageStream(ctx, outStream);
-        }
+         [Command("xpcard")]
+         public async Task XpCard(CommandContext ctx, DiscordUser user)
+         {
+             await ctx.TriggerTypingAsync();
+             var outStream = new MemoryStream();
+             SdImage image = new(user.GetAvatarUrl(ImageFormat.Png));
+             using (var imanidiot = Image.FromStream((await ImageModule.ResizeAsync(await image.GetBytesAsync(HttpClient), new SixLabors.ImageSharp.Size(200, 200))).Item1))
+             {
+                 Image imge = new Bitmap(800, 240);
+                 using (var gr = Graphics.FromImage(imge))
+                 {
+                     gr.Clear(Color.White);
+                     gr.DrawImage(imanidiot, new Point(13, 20));
+                     using var img = ImageModule.DrawText($"{user.Username}#{user.Discriminator}", DiavloLight, Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0, 0));
+                     gr.DrawImage(img, new Point(229, 25));
+                     gr.DrawRectangle(BlackPen, new Rectangle(new(233, 83), new Size(478, 30)));
+                     var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == user.Id);
+                     if (o is not null)
+                     {
+                         var levelcount = GetLevel(o.XP);
+                         var progress = 4.76 * GetProgressToNextLevel(o.XP);
+                         gr.FillRectangle(GreenBrush, new Rectangle(new(234, 84), new Size((int)progress, 28)));
+                         gr.DrawString($"{o.XP}XP", DiavloLight, BlackBrush, new PointF((float)(170 + progress), 140));
+                         gr.DrawString($"{GetNeededXpForNextLevel(o.XP)}XP", DiavloLight, BlackBrush, new PointF(650.95f, 120));
+                         gr.DrawString($"Level: {levelcount}", DiavloLight, BlackBrush, new PointF(232, 169));
+                     }
+                 }
+                 imge.Save(outStream, .Imaging.ImageFormat.Png);
+             }
+             outStream.Position = 0;
+             await ImageModule.SendImageStream(ctx, outStream);
+         }
 
-        [Command("xpcard")]
-        public async Task XpCard(CommandContext ctx)
-        {
-            await XpCard(ctx, ctx.User);
-        }
+         [Command("xpcard")]
+         public async Task XpCard(CommandContext ctx)
+         {
+             await XpCard(ctx, ctx.User);
+         }*/
 
         private BigInteger GetNeededXpForNextLevel(BigInteger xp)
         {

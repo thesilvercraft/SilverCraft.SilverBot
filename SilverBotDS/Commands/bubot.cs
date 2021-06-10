@@ -3,7 +3,11 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Utils;
-using System.Drawing;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Processing;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -15,9 +19,9 @@ namespace SilverBotDS.Commands
     // [Description("stolen commands from bubot")]
     internal class Bubot : BaseCommandModule
     {
-        private readonly Font BibiFont = new("Arial", 30, FontStyle.Bold);
-        private readonly Brush WhiteBrush = new SolidBrush(Color.White);
-        private readonly Brush GrayBrush = new SolidBrush(Color.Gray);
+        private readonly Font BibiFont = new(SystemFonts.Find("Arial"), 30, FontStyle.Bold);
+        private readonly Color WhiteColor = Color.White;
+        private readonly Color GrayColor = Color.Gray;
 
         [Command("silveryeet")]
         [Description("Sends SilverYeet.gif")]
@@ -39,19 +43,15 @@ namespace SilverBotDS.Commands
             {
                 randomnumber = random.Next(1, 18);
             }
-            using var picture = new Bitmap(new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.Bibi.{randomnumber}.png") ?? throw new TemplateReturningNullException($"SilverBotDS.Templates.Bibi.{randomnumber}.png")));
-            using (Graphics g = Graphics.FromImage(picture))
+            using Image picture = await Image.LoadAsync(Assembly.GetExecutingAssembly().GetManifestResourceStream($"SilverBotDS.Templates.Bibi.{randomnumber}.png") ?? throw new TemplateReturningNullException($"SilverBotDS.Templates.Bibi.{randomnumber}.png"));
+            float size = BibiFont.Size;
+            while (TextMeasurer.Measure(input, new RendererOptions(new Font(BibiFont.Family, size, FontStyle.Bold))).Width > picture.Width)
             {
-                float size = BibiFont.Size;
-                while (g.MeasureString(input, new Font(BibiFont.FontFamily, size, BibiFont.Style)).Width > picture.Width)
-                {
-                    size -= 0.05f;
-                }
-                g.DrawString(input, new Font(BibiFont.FontFamily, size, BibiFont.Style), randomnumber is 10 or 9 ? GrayBrush : WhiteBrush, new PointF(4, 230));
-                g.Save();
+                size -= 0.05f;
             }
+            picture.Mutate(x => x.DrawText(input, new Font(BibiFont.Family, size, FontStyle.Bold), randomnumber is 10 or 9 ? GrayColor : WhiteColor, new PointF(4, 230)));
             await using var outStream = new MemoryStream();
-            picture.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
+            await picture.SaveAsPngAsync(outStream);
             outStream.Position = 0;
             randomnumber = 0;
             await ImageModule.SendImageStream(ctx, outStream, content: input);

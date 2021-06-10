@@ -4,10 +4,10 @@ using SilverBotDS.Objects.Database.Classes;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace SilverBotDS.Objects
 {
@@ -164,7 +164,7 @@ namespace SilverBotDS.Objects
             SaveChanges();
         }
 
-        public async Task<Tuple<string, Image>> RunSqlAsync(string sql, IBrowser browser)
+        public async Task<Tuple<string, MemoryStream>> RunSqlAsync(string sql, IBrowser browser)
         {
             await using var cmd = Database.GetDbConnection().CreateCommand();
             cmd.CommandText = sql;
@@ -177,7 +177,7 @@ namespace SilverBotDS.Objects
                 StringBuilder thing = new(HtmlStart);
                 if (dataTable.Rows.Count == 0)
                 {
-                    return new Tuple<string, Image>("nodata", null);
+                    return new Tuple<string, MemoryStream>("nodata", null);
                 }
                 else
                 {
@@ -192,7 +192,7 @@ namespace SilverBotDS.Objects
                             }
                             builder.AppendLine();
                         }
-                        return new Tuple<string, Image>(builder.Append("```").ToString(), null);
+                        return new Tuple<string, MemoryStream>(builder.Append("```").ToString(), null);
                     }
                     else
                     {
@@ -206,14 +206,14 @@ namespace SilverBotDS.Objects
                             thing.AppendLine("</tr>");
                         }
                         thing.AppendLine("</table></body></html>");
-                        return new Tuple<string, Image>(null, await browser.RenderHtmlAsync(thing.ToString()));
+                        return new Tuple<string, MemoryStream>(null, await browser.RenderHtmlAsync(thing.ToString()));
                     }
                 }
             }
             catch (Exception e)
             {
                 Program.SendLog(e);
-                return new Tuple<string, Image>("Error", null);
+                return new Tuple<string, MemoryStream>("Error", null);
             }
         }
 

@@ -32,13 +32,23 @@ namespace SilverBotDS.Commands
         public async Task AddEmote(CommandContext ctx, [Description("Name like `Kappa`")] string name, [Description("Url of the thing")] SdImage url)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await using var st = new MemoryStream(await url.GetBytesAsync(HttpClient));
-            if (st.Length > 256000)
+            var bytes = await url.GetBytesAsync(HttpClient);
+            var st = new MemoryStream(bytes);
+            try
             {
-                await ctx.RespondAsync(string.Format(lang.EmoteWasLargerThan256K, FileSizeUtils.FormatSize(st.Length)));
+                if (bytes.Length > 256000)
+                {
+                    await ctx.RespondAsync(string.Format(lang.EmoteWasLargerThan256K, FileSizeUtils.FormatSize(st.Length)));
+                    st = (await ImageModule.ResizeAsync(bytes, new(128, 128))).Item1;
+                }
+                var emote = await ctx.Guild.CreateEmojiAsync(name: name, image: st, reason: "Added via silverbot by " + ctx.User.Username);
+
+                await ctx.RespondAsync(emote.ToString());
             }
-            var emote = await ctx.Guild.CreateEmojiAsync(name: name, image: st, reason: "Added via silverbot by " + ctx.User.Username);
-            await ctx.RespondAsync(emote.ToString());
+            finally
+            {
+                await st.DisposeAsync();
+            }
         }
 
         [Command("addemote")]

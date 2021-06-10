@@ -20,6 +20,9 @@
     <None Remove="Templates\Bibi\12.png" />
     <None Remove="Templates\Bibi\13.png" />
     <None Remove="Templates\Bibi\14.png" />
+    <None Remove="Templates\Bibi\15.png" />
+    <None Remove="Templates\Bibi\16.png" />
+    <None Remove="Templates\Bibi\17.png" />
     <None Remove="Templates\Bibi\2.png" />
     <None Remove="Templates\Bibi\3.png" />
     <None Remove="Templates\Bibi\4.png" />
@@ -39,6 +42,9 @@
     <EmbeddedResource Include="Templates\Bibi\12.png" />
     <EmbeddedResource Include="Templates\Bibi\13.png" />
     <EmbeddedResource Include="Templates\Bibi\14.png" />
+    <EmbeddedResource Include="Templates\Bibi\15.png" />
+    <EmbeddedResource Include="Templates\Bibi\16.png" />
+    <EmbeddedResource Include="Templates\Bibi\17.png" />
     <EmbeddedResource Include="Templates\quality_fock.mp3" />
   </ItemGroup>
   <ItemGroup>

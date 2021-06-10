@@ -30,10 +30,10 @@ namespace SilverBotDS.Commands
         [Command("bibi")]
         [Description("Makes a image with Bibi.")]
         [Cooldown(1, 2, CooldownBucketType.User)]
-        public async Task Bibi(CommandContext ctx, [RemainingText][Description("bibi is")] string input)
+        public async Task Bibi(CommandContext ctx, [RemainingText][Description("Bibi is")] string input)
         {
             await ctx.TriggerTypingAsync();
-            input = "bibi is " + input;
+            input = "Bibi is " + input;
             int randomnumber;
             using (var random = new RandomGenerator())
             {

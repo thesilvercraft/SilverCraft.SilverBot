@@ -28,6 +28,11 @@
         uriHelper.NavigateTo("/login", forceLoad: true);
     }
 }
+<style>
+input{ 
+    margin-left:1px; 
+}
+</style>
 <RadzenNotification />
 @inject DiscordClient Discord
 @inject IJSRuntime jsRuntime
@@ -98,14 +103,14 @@
     }
     async Task VolumeUpPress(BetterVoteLavalinkPlayer player)
     {
-      if(player.Volume+0.1f<=1)
+      if((player.Volume+0.1f)<=1)
         {
             await player.SetVolumeAsync(player.Volume +0.1f);
         }
     }
        async Task VolumeDownPress(BetterVoteLavalinkPlayer player)
     {
-      if(player.Volume-0.1f>=0)
+      if((player.Volume-0.1f)>=0)
         {
             await player.SetVolumeAsync(player.Volume-0.1f);
         }
@@ -140,7 +145,7 @@
     }
 
 
-    <div class="window" style="max-width: 800px">
+    <div class="window" style="max-width: 640px">
         <div class="title-bar">
             <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
             <div class="title-bar-controls">
@@ -149,18 +154,21 @@
         </div>
         <div class="window-body">
             <p>Currently playing: <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ": player.CurrentTrack.Source)"><strong>@(player.CurrentTrack is null ? "nothing": player.CurrentTrack.Title)</strong></a></p>
-            <input id="ToggleState" type="button" @onclick="@(async (e) => { await ToggleStatePress(player); if (player.State is Lavalink4NET.Player.PlayerState.Paused) { ToggleStateText = "▶️"; } else if (player.State is Lavalink4NET.Player.PlayerState.Playing) { ToggleStateText = "⏸";} })" value="@ToggleStateText" runat="server" /><!--Play or Pause-->
-            <input id="VoteSkip" type="button" @onclick="@(async (e) => await VoteSkipPress(player))" value="VoteSkip" />
+            <input id="ToggleState" type="button" @onclick="@(async (e) => { await ToggleStatePress(player); if (player.State is Lavalink4NET.Player.PlayerState.Paused) { ToggleStateText = "▶️"; } else if (player.State is Lavalink4NET.Player.PlayerState.Playing) { ToggleStateText = "⏸";} })" value="@ToggleStateText" runat="server" />
+            <input id="VoteSkip" type="button" @onclick="@(async (e) => await VoteSkipPress(player))" value="VoteSkip" runat="server" />
             @if (CheckForDJ())
             {
-                <input id="ForceSkip" type="button" @onclick="@(async(e) => await ForceSkipPress(player))" value="Just skip it™ (DJ only)" /><!--Requires dj-->
-                <input id="Shuffle" type="button" @onclick="@(e =>  ShufflePress(player))" value="🔀Shuffle" /> <!--Requires dj-->
+                <input id="ForceSkip" type="button" @onclick="@(async(e) => await ForceSkipPress(player))" value="Just skip it™ (DJ only)" runat="server" />
             }
-            <input id="NoLoop" type="button" @onclick="@(e =>  NotLoopingPress(player))" value="Do not loop" />
-            <input id="LoopSong" type="button" @onclick="@(e =>  LoopingSongPress(player))" value="Loop song" />
-            <input id="LoopQueue" type="button" @onclick="@(e => LoopingQueuePress(player))" value="Loop queue" />
-            <input id="VolumeUp" type="button" @onclick="@(async(e) => await VolumeUpPress(player))" value="V+" />
-            <input id="VolumeDown" type="button" @onclick="@(async(e) =>await VolumeDownPress(player))" value="V-" />
+            @if (CheckForDJ())
+            {
+                <input id="Shuffle" type="button" @onclick="@(e =>  ShufflePress(player))" value="🔀Shuffle" runat="server" />
+            }
+            <input id="NoLoop" type="button" @onclick="@(e =>  NotLoopingPress(player))" value="Do not loop" runat="server" />
+            <input id="LoopSong" type="button" @onclick="@(e =>  LoopingSongPress(player))" value="Loop song" runat="server" />
+            <input id="LoopQueue" type="button" @onclick="@(e => LoopingQueuePress(player))" value="Loop queue" runat="server" />
+            <input id="VolumeUp" type="button" @onclick="@(async(e) => await VolumeUpPress(player))" value="V+" runat="server" />
+            <input id="VolumeDown" type="button" @onclick="@(async(e) =>await VolumeDownPress(player))" value="V-" runat="server" />
         </div>
     </div>
 }

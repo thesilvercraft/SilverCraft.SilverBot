@@ -96,6 +96,20 @@
     {
         NotificationService.Notify(message);
     }
+    async Task VolumeUpPress(BetterVoteLavalinkPlayer player)
+    {
+      if(player.Volume+10<=100)
+        {
+            await player.SetVolumeAsync(player.Volume + 10);
+        }
+    }
+       async Task VolumeDownPress(BetterVoteLavalinkPlayer player)
+    {
+      if(player.Volume-10>=0)
+        {
+            await player.SetVolumeAsync(player.Volume-10);
+        }
+    }
     
     string ToggleStateText = "Resume / Pause";
       BetterVoteLavalinkPlayer player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
@@ -113,11 +127,6 @@
     }
     @code
 {
-        int value = 100;
-        void OnChange(dynamic value, BetterVoteLavalinkPlayer player)
-        {
-            player.SetVolumeAsync((int)value / 100f, true);
-        }
         protected override void OnAfterRender(bool firstRender)
         {
 
@@ -129,7 +138,7 @@
         }
 
     }
-    value = (int)player.Volume * 100;
+
 
     <div class="window" style="max-width: 800px">
         <div class="title-bar">
@@ -150,7 +159,8 @@
             <input id="NoLoop" type="button" @onclick="@(e =>  NotLoopingPress(player))" value="Do not loop" />
             <input id="LoopSong" type="button" @onclick="@(e =>  LoopingSongPress(player))" value="Loop song" />
             <input id="LoopQueue" type="button" @onclick="@(e => LoopingQueuePress(player))" value="Loop queue" />
-            <RadzenSlider @bind-value=@value TValue="int" Min="1" Step="10" Max="100" Change=@( args=> { OnChange(args, player); }) />
+            <input id="VolumeUp" type="button" @onclick="@(async(e) => await VolumeUpPress(player))" value="V+" />
+            <input id="VolumeDown" type="button" @onclick="@(async(e) =>await VolumeDownPress(player))" value="V-" />
         </div>
     </div>
 }

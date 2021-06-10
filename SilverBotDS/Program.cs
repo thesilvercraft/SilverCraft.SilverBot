@@ -620,7 +620,7 @@ namespace SilverBotDS
             }
             var context = serviceProvider.GetService<DatabaseContext>();
 
-            var o = await context.serverSettings.FirstOrDefaultAsync(x => x.ServerId == e.Guild.Id);
+            var o = e.Channel.IsPrivate ? default : await context.serverSettings.FirstOrDefaultAsync(x => x.ServerId == e.Guild.Id);
 
             if ((e.Channel.IsPrivate || o is not default(ServerSettings) && o.RepeatThings && e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages)) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
             {

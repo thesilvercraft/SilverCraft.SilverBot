@@ -98,16 +98,16 @@
     }
     async Task VolumeUpPress(BetterVoteLavalinkPlayer player)
     {
-      if(player.Volume+10<=100)
+      if(player.Volume+0.1f<=1)
         {
-            await player.SetVolumeAsync(player.Volume + 10);
+            await player.SetVolumeAsync(player.Volume +0.1f);
         }
     }
        async Task VolumeDownPress(BetterVoteLavalinkPlayer player)
     {
-      if(player.Volume-10>=0)
+      if(player.Volume-0.1f>=0)
         {
-            await player.SetVolumeAsync(player.Volume-10);
+            await player.SetVolumeAsync(player.Volume-0.1f);
         }
     }
     

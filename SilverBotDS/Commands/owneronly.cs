@@ -477,12 +477,9 @@ namespace SilverBotDS.Commands
 #pragma warning disable S1075 // URIs should not be hardcoded
                 bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
 #pragma warning restore S1075 // URIs should not be hardcoded
-                await using var image = new MemoryStream();
-                thing.Item2.Save(image, System.Drawing.Imaging.ImageFormat.Png);
-                image.Position = 0;
-                await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
+                thing.Item2.Position = 0;
+                await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", thing.Item2).SendAsync(ctx.Channel);
                 thing.Item2.Dispose();
-                await image.DisposeAsync();
             }
         }
 
@@ -507,11 +504,8 @@ namespace SilverBotDS.Commands
 #pragma warning disable S1075 // URIs should not be hardcoded
             var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
 #pragma warning restore S1075 // URIs should not be hardcoded
-            await using var image = new MemoryStream();
             using var e = await Browser.RenderUrlAsync(html);
-            e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
-            image.Position = 0;
-            await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithReply(ctx.Message.Id).WithFile("html.png", image).SendAsync(ctx.Channel);
+            await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithReply(ctx.Message.Id).WithFile("html.png", e).SendAsync(ctx.Channel);
         }
 
         public class Rootobject
@@ -694,10 +688,9 @@ namespace SilverBotDS.Commands
             bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
 #pragma warning restore S1075 // URIs should not be hardcoded
             using var e = await Browser.RenderHtmlAsync(html);
-            await using var image = new MemoryStream();
-            e.Save(image, System.Drawing.Imaging.ImageFormat.Png);
-            image.Position = 0;
-            await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", image).SendAsync(ctx.Channel);
+
+            e.Position = 0;
+            await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", e).SendAsync(ctx.Channel);
         }
     }
 }

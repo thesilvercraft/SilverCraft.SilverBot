@@ -475,14 +475,14 @@ namespace SilverBotDS
                     {
                         await new DiscordMessageBuilder()
                                                          .WithReply(e.Context.Message.Id)
-                                                         .WithContent(string.Format(lang.CheckFailed, e.Command.Name))
+                                                         .WithContent(string.Format(lang.InvalidOverload, e.Command.Name))
                                                          .SendAsync(e.Context.Channel);
                     }
                     else if (e.Exception is InvalidOperationException ioe && ioe.Message == "No matching subcommands were found, and this group is not executable.")
                     {
                         await new DiscordMessageBuilder()
                                                          .WithReply(e.Context.Message.Id)
-                                                         .WithContent(ioe.Message)
+                                                         .WithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable)
                                                          .SendAsync(e.Context.Channel);
                     }
                     else

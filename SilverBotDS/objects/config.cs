@@ -21,7 +21,14 @@ namespace SilverBotDS.Objects
         private const ulong CurrentConfVer = 23;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
-        public string[] Prefix { get; set; } = { "sd!" };
+        public string[] Prefix { get; set; } =
+        {
+          "sd!",
+          "sb!",
+          "hey silverbot",
+          "ok silverbot",
+          "this is so sad silverbot"
+        };
 
         [XmlDescription("The Discord token, can be got from https://discord.com/developers/")]
         public string Token { get; set; } = "Discord_Token_Here";
@@ -306,6 +313,22 @@ namespace SilverBotDS.Objects
       new("Developers music video", ActivityType.ListeningTo),
       new("GREAT SUCCESS!", ActivityType.Playing),
       new("Doki Doki literature club", ActivityType.Playing),
+      new("Doki Doki literature club plus", ActivityType.Playing),
+      new("Doki Doki Literature Club!", ActivityType.ListeningTo),
+      new("Ohayou Sayori!", ActivityType.ListeningTo),
+      new("Dreams of Love and Literature", ActivityType.ListeningTo),
+      new("Okay, Everyone!", ActivityType.ListeningTo),
+      new("Play with Me", ActivityType.ListeningTo),
+      new("Poem Panic!", ActivityType.ListeningTo),
+      new("Daijoubu!", ActivityType.ListeningTo),
+      new("My Feelings", ActivityType.ListeningTo),
+      new("My Confession", ActivityType.ListeningTo),
+      new("Sayo-Nara", ActivityType.ListeningTo),
+      new("Just Monika.", ActivityType.ListeningTo),
+      new("I Still Love You", ActivityType.ListeningTo),
+      new("Your Reality", ActivityType.ListeningTo),
+      new("Poems Are Forever (feat. SHOJI)", ActivityType.ListeningTo),
+      new("Doki Doki (feat. Nick Kaelar)", ActivityType.ListeningTo),
     };
 
         private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
@@ -345,7 +368,6 @@ namespace SilverBotDS.Objects
                     readconfig.Splashes = JsonSerializer.Deserialize<DiscordActivity[]>(json: await reader.ReadToEndAsync()).Select(item => Splash.GetFromDiscordActivity(item)).ToArray();
                 }
                 readconfig.ConfigVer = CurrentConfVer;
-
                 MakeDocumentWithComments(XmlUtils.SerializeToXmlDocument(readconfig)).Save(streamWriter);
                 streamWriter.Close();
             }

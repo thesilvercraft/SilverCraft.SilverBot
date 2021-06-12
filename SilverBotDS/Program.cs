@@ -115,6 +115,21 @@ namespace SilverBotDS
             return !(a is null || a == b);
         }
 
+        private static readonly string[] requiredFonts = new[] { "Diavlo Light", "Arial", "Impact", "Trebuchet MS", "Times New Roman" };
+
+        private static bool CheckIfAllFontsAreHere()
+        {
+            var familynames = SystemFonts.Families.Select(x => x.Name);
+            foreach (var font in requiredFonts)
+            {
+                if (!familynames.Contains(font))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private static async Task MainAsync(string[] args)
         {
             config = await Config.GetAsync();
@@ -129,8 +144,8 @@ namespace SilverBotDS
                 logfactory.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
             log = logfactory.CreateLogger();
-            var familynames = SystemFonts.Families.Select(x => x.Name);
-            if (!(familynames.Contains("Diavlo Light") && familynames.Contains("Arial") && familynames.Contains("Impact") && familynames.Contains("Trebuchet MS")))
+
+            if (!(CheckIfAllFontsAreHere()))
             {
                 log.Warning("You do not have all reqired fonts to run silverbot, on windows you only have to install Diavlo Light while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\") and Diavlo Light");
             }

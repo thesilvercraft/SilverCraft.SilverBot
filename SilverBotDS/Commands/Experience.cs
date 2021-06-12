@@ -144,7 +144,7 @@ namespace SilverBotDS.Commands
                         oo.DrawText($"Level: {levelcount}", DiavloLight, BlackBrush, new PointF(232, 169));
                     }
                 });
-                imge.Save(outStream,new PngEncoder());
+                imge.Save(outStream, new PngEncoder());
             }
             outStream.Position = 0;
             await ImageModule.SendImageStream(ctx, outStream);

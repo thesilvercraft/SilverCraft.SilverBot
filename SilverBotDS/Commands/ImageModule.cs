@@ -291,42 +291,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        /* /// <summary>
-         /// Renders some text
-         /// </summary>
-         /// <param name="text">the text to render</param>
-         /// <param name="font">the font to use</param>
-         /// <param name="textColor">the color to use while rendering the text</param>
-         /// <param name="backColor">the background color to use</param>
-         /// <returns>An <see cref="Image"/></returns>
-         public static Image DrawText(string text, Font font, Color textColor, Color backColor)
-         {
-             Image img = new Bitmap(1, 1);
-             var drawing = Graphics.FromImage(img);
-             var textSize = drawing.MeasureString(text, font);
-             img.Dispose();
-             drawing.Dispose();
-             img = new Bitmap((int)textSize.Width, (int)textSize.Height);
-             drawing = Graphics.FromImage(img);
-             drawing.Clear(backColor);
-             Brush textBrush = new SolidBrush(textColor);
-             drawing.DrawString(text, font, textBrush, 0, 0);
-             drawing.Save();
-             textBrush.Dispose();
-             drawing.Dispose();
-             return img;
-         }
-
-         [Command("text")]
-         public async Task DrawText(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light", float size = 30.0f)
-         {
-             await ctx.TriggerTypingAsync();
-             var img = DrawText(text, new Font(font, size), Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255));
-             await using var outStream = new MemoryStream();
-             img.Save(outStream, .Imaging.ImageFormat.Png);
-             outStream.Position = 0;
-             await SendImageStream(ctx, outStream);
-         }
+        /*
 
          private Bitmap cachedmotivatetemplate;
          private Bitmap cachedadventuretimetemplate;

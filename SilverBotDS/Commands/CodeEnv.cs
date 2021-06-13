@@ -32,7 +32,7 @@ namespace SilverBotDS.Commands
         public static readonly string Waifu = Monika;
         public static readonly string L = "л";
         public static readonly string Wbubbler = "вбубблер";
+        public static readonly bool IsSilverAWeeb = true;
         public static readonly string DDLCPlus = "hype";
-      
     }
 }

@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="Pages\Monika.razor" />
     <None Include="Shared\MainLayout.razor" />
     <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
     <None Include="wwwroot\css\open-iconic\FONT-LICENSE" />
@@ -200,4 +201,10 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="echo D | XCOPY &quot;$(ProjectDir)wwwroot&quot; &quot;$(TargetDir)wwwroot&quot; /S /Y&#xD;&#xA;dotnet $(TargetPath) generatelang $(ProjectDir)Languages\en\en.json&#xD;&#xA;echo D | XCOPY &quot;$(ProjectDir)Languages&quot; &quot;$(TargetDir)Languages&quot; /S /Y" />
   </Target>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Monika.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Monika.razor" />
+  </ItemGroup>
 </Project>

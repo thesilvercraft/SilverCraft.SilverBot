@@ -63,34 +63,32 @@ namespace SilverBotDS.Commands
             };
             var gifResult = await giphy.GifSearch(searchParameter);
             var formated = string.Format(lang.SearchedFor, term);
-            b.WithDescription(formated + " : " + gifResult.Data[0].Url + string.Format(lang.PageGif, 1, gifResult.Data.Length)).WithAuthor(
+            b.WithDescription($"{formated} : {gifResult.Data[0].Url} {string.Format(lang.PageGif, 1, gifResult.Data.Length)}").WithAuthor(
 #pragma warning disable S1075 // URIs should not be hardcoded
                 lang.PoweredByGiphy, "https://developers.giphy.com/",
                 "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifResult.Data[0].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
 #pragma warning restore S1075 // URIs should not be hardcoded
-            await WaitForNextMessage(ctx, await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, page, formated, gifResult, b);
+            await WaitForNextMessage(ctx, await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText)).SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, page, formated, gifResult, b);
         }
 
         private async Task WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage, InteractivityExtension interactivity, Language lang, int page, string formated, GiphySearchResult gifResult, DiscordEmbedBuilder b = null)
-
         {
             b ??= new DiscordEmbedBuilder();
-            var msg = await interactivity.WaitForMessageAsync(xm => xm.Content.ToLower().Trim() == "next", TimeSpan.FromSeconds(60));
+            var msg = await oldmessage.WaitForButtonAsync("nextgif", TimeSpan.FromSeconds(300));
             if (msg.Result != null)
             {
-                _ = msg.Result.DeleteAsync();
                 page++;
-                if (page > gifResult.Data.Length)
+                if (page >= gifResult.Data.Length)
                 {
                     page = 0;
                 }
-                b.WithDescription(formated + " : " + gifResult.Data[page].Url + string.Format(lang.PageGif, page + 1, gifResult.Data.Length)).WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/", "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
-                await oldmessage.ModifyAsync(embed: b.Build());
+                b.WithDescription($"{formated} : {gifResult.Data[page].Url} {string.Format(lang.PageGif, page + 1, gifResult.Data.Length)}").WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
+                await msg.Result.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, new DiscordInteractionResponseBuilder(new DiscordMessageBuilder().WithEmbed(b).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText))));
                 await WaitForNextMessage(ctx, oldmessage, interactivity, lang, page, formated, gifResult, b);
             }
             else
             {
-                await oldmessage.ModifyAsync(lang.PeriodExpired);
+                await oldmessage.ModifyAsync(new DiscordMessageBuilder().WithEmbed(b).WithContent(lang.PeriodExpired).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText, true)));
             }
         }
     }

@@ -91,7 +91,7 @@
     <PackageReference Include="IPAddressRange" Version="4.2.0" />
     <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.1" />
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.7.2" />
-    <PackageReference Include="Markdig.Signed" Version="0.24.0" />
+    <PackageReference Include="Markdig.Signed" Version="0.25.0" />
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0-beta2" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0-beta2" />

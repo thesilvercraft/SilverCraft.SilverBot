@@ -74,7 +74,7 @@ namespace SilverBotDS.Commands
         private async Task WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage, InteractivityExtension interactivity, Language lang, int page, string formated, GiphySearchResult gifResult, DiscordEmbedBuilder b = null)
         {
             b ??= new DiscordEmbedBuilder();
-            var msg = await oldmessage.WaitForButtonAsync("nextgif", TimeSpan.FromSeconds(300));
+            var msg = await oldmessage.WaitForButtonAsync(ctx.User, TimeSpan.FromSeconds(300));
             if (msg.Result != null)
             {
                 page++;
@@ -82,6 +82,7 @@ namespace SilverBotDS.Commands
                 {
                     page = 0;
                 }
+                
                 b.WithDescription($"{formated} : {gifResult.Data[page].Url} {string.Format(lang.PageGif, page + 1, gifResult.Data.Length)}").WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
                 await msg.Result.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, new DiscordInteractionResponseBuilder(new DiscordMessageBuilder().WithEmbed(b).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText))));
                 await WaitForNextMessage(ctx, oldmessage, interactivity, lang, page, formated, gifResult, b);

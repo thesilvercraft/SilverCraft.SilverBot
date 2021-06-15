@@ -15,6 +15,7 @@
         <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
         }
       SilverBot
+      <span class="badge badge-primary">@(DateTime.UtcNow.Month==6?"Pride":"Web")</span>
     </a>
     <ul class="navbar-nav">
         @if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
@@ -32,10 +33,10 @@
                 <a class="nav-link" href="">Hello @user.Username#@user.Discriminator</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/listguilds">Servers</a>
+                <a class="nav-link" href="/listguilds">Servers<span class="badge badge-danger">Alpha</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/musiccontrols">Music controller</a>
+                <a class="nav-link" href="/musiccontrols">Music controller<span class="badge badge-warning">Beta</span></a>
             </li>
         }
     </ul>

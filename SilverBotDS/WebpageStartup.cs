@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Radzen;
+using SilverBotDS.Controlllers;
 
 namespace SilverBotDS
 {
@@ -138,6 +139,7 @@ namespace SilverBotDS
             services.AddDistributedMemoryCache();
             services.AddHttpContextAccessor();
             services.AddScoped<BrowserService>();
+            services.AddControllers();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromHours(1);
@@ -170,10 +172,11 @@ namespace SilverBotDS
             app.UseCloudflareForwardHeaderOptions();
             app.UseAuthentication();
             app.UseSession();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
-
+                endpoints.MapControllers();
                 endpoints.MapFallbackToPage("/_Host");
             });
         }

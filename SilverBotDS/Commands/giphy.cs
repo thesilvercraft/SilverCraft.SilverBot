@@ -81,8 +81,7 @@ namespace SilverBotDS.Commands
                 if (page >= gifResult.Data.Length)
                 {
                     page = 0;
-                }
-                
+                } 
                 b.WithDescription($"{formated} : {gifResult.Data[page].Url} {string.Format(lang.PageGif, page + 1, gifResult.Data.Length)}").WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
                 await msg.Result.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, new DiscordInteractionResponseBuilder(new DiscordMessageBuilder().WithEmbed(b).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText))));
                 await WaitForNextMessage(ctx, oldmessage, interactivity, lang, page, formated, gifResult, b);

@@ -11,10 +11,8 @@
 @inject Config config
 @inject DiscordClient discord
 <body>
-    <h1>SilverBot Dashboard</h1>
     <h2>Wasting time in @discord.Guilds.Count servers</h2>
     <h2>with @discord.Guilds.Values.Select(x=>x.Members.Count).Sum() people and stuff</h2>
     <h2>I have been up for @((DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()).Humanize())</h2>
-    <h2>With @discord.ShardCount @(discord.ShardCount==1?"shard":"shards") and @Process.GetCurrentProcess().Threads.Count cpu @(Process.GetCurrentProcess().Threads.Count==1?"thread":"threads")</h2>
-<footer><p>E</p></footer>
+    <h2>With @discord.ShardCount @(discord.ShardCount==1?"shard":"shards") and @(Process.GetCurrentProcess().Threads.Count) cpu @(Process.GetCurrentProcess().Threads.Count==1?"thread":"threads")</h2>
 </body>

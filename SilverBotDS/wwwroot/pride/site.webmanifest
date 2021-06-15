@@ -1,0 +1,19 @@
+{
+    "name": "SilverBot",
+    "short_name": "SilverBot",
+    "icons": [
+        {
+            "src": "/pride/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/pride/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#34f0fd",
+    "background_color": "#34f0fd",
+    "display": "standalone"
+}

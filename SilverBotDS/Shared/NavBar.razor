@@ -4,8 +4,18 @@
 @using DSharpPlus.Entities
 @inject IHttpContextAccessor HttpContextAccessor
 @inject DiscordClient Discord
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <a class="navbar-brand" href="#">Silverbot</a>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="font-family: 'Berlin Sans FB', sans-serif;">
+    <a class="navbar-brand" href="#">
+        @if(DateTime.UtcNow.Month==6)
+        {
+        <img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+        }
+        else
+        {
+        <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+        }
+      SilverBot
+    </a>
     <ul class="navbar-nav">
         @if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
         {

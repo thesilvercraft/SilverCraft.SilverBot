@@ -148,6 +148,10 @@
   "InvalidOverload": "Неточно користење на командата `{0}`",
   "GeneralException": "⚠ Грешка се случи, повеќе информации се испратени до логовите на сопственикот на ботот.",
   "NoMatchingSubcommandsAndGroupNotExecutable": "Не беа најдени точни подкоманди, и оваа група не може да се користи како една.",
+  "QuotePreviewQuoteID": "Quote ID: {0}",
+  "QuoteGetNoBook": "You do not have a \"Quote Book\", you can get one by adding a quote.",
+  "QuoteGetNoQuoteWithId": "You do not have a quote with that ID.",
+  "QuotePreviewDeleteSuccess": "The quote has been deleted.",
   "Imagethings": {
     "JpegSuccess": "Ете ти jpeg-низирана слика",
     "SilverSuccess": "Еве ти црнобела слика",

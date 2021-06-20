@@ -148,6 +148,10 @@
   "InvalidOverload": "Invalid overload for `{0}`",
   "GeneralException": "⚠ An error occurred, more information has been sent to the bot owner's log.",
   "NoMatchingSubcommandsAndGroupNotExecutable": "No matching subcommands were found, and this group is not executable.",
+  "QuotePreviewQuoteID": "Quote ID: {0}",
+  "QuoteGetNoBook": "You do not have a \"Quote Book\", you can get one by adding a quote.",
+  "QuoteGetNoQuoteWithId": "You do not have a quote with that ID.",
+  "QuotePreviewDeleteSuccess": "The quote has been deleted.",
   "Imagethings": {
     "JpegSuccess": "There ya go a jpegnized image",
     "SilverSuccess": "Hier, een silver foto",

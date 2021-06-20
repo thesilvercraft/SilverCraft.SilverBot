@@ -78,7 +78,6 @@ namespace SilverBotDS
             {
                 Environment.CurrentDirectory += "\\bin\\Debug\\net5.0";
             }
-
             MainAsync(args).GetAwaiter().GetResult();
         }
 
@@ -318,6 +317,7 @@ namespace SilverBotDS
             }
             commands.RegisterCommands<MiscCommands>();
             commands.RegisterCommands<MinecraftModule>();
+            commands.RegisterCommands<UserQuotesModule>();
             if (IsNotNullAndIsNotB(config.MicrosoftGraphClientId, "Graph-Client-Id-Here"))
             {
                 commands.RegisterCommands<CalendarCommands>();

@@ -39,6 +39,7 @@ namespace SilverBotDS.Objects
         public DbSet<ServerSettings> serverSettings { get; set; }
         public DbSet<UserSettings> userSettings { get; set; }
         public DbSet<UserExperience> userExperiences { get; set; }
+        public DbSet<UserQuote> userQuotes { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {

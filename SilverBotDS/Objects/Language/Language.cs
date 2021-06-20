@@ -459,7 +459,10 @@ namespace SilverBotDS.Objects
         /// No matching subcommands were found, and this group is not executable.
         /// </summary>
         public string NoMatchingSubcommandsAndGroupNotExecutable { get; set; } = "No matching subcommands were found, and this group is not executable.";
-
+        public string QuotePreviewQuoteID { get; set; } = "Quote ID: {0}";
+        public string QuoteGetNoBook { get; set; } = "You do not have a \"Quote Book\", you can get one by adding a quote.";
+        public string QuoteGetNoQuoteWithId { get; set; } = "You do not have a quote with that ID.";
+        public string QuotePreviewDeleteSuccess { get; set; } = "The quote has been deleted.";
         public CultureInfo GetCultureInfo()
         {
             return new CultureInfo(CultureInfo);

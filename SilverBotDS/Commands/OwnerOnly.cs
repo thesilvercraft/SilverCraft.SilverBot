@@ -45,7 +45,7 @@ namespace SilverBotDS.Commands
 
         [Command("riprandomframes")]
         [Description("less gooo baybae")]
-        public async Task RipRandomFrames(CommandContext ctx, int times, string loc)
+        public async Task RipRandomFrames(CommandContext ctx, int times, string loc, string decoder="hevc", string encoder = "hevc")
         {
             var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
             await ctx.RespondAsync($"its {info.Duration.Humanize()} ({info.Duration}) long");
@@ -59,7 +59,7 @@ namespace SilverBotDS.Commands
                     await FFmpeg.Conversions.New()
                     .AddStream(videoStream)
                     .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (number) => { return $"Extracts{Program.DirSlash}{name}{i}.png"; })
-                    .UseHardwareAcceleration(HardwareAccelerator.auto, VideoCodec.gif, VideoCodec.png)
+                    .UseHardwareAcceleration(HardwareAccelerator.auto, (VideoCodec)Enum.Parse(typeof(VideoCodec),decoder,true), (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
                     .Start();
                 }
             }
@@ -376,7 +376,6 @@ namespace SilverBotDS.Commands
                 Console.SetOut(console);
                 throw;
             }
-
         }
 
         [Command("jsevaluate")]

@@ -45,7 +45,7 @@ namespace SilverBotDS.Commands
 
         [Command("riprandomframes")]
         [Description("less gooo baybae")]
-        public async Task RipRandomFrames(CommandContext ctx, int times, string loc)
+        public async Task RipRandomFrames(CommandContext ctx, int times, string loc, string decoder="hevc", string encoder = "hevc")
         {
             var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
             await ctx.RespondAsync($"its {info.Duration.Humanize()} ({info.Duration}) long");
@@ -59,7 +59,7 @@ namespace SilverBotDS.Commands
                     await FFmpeg.Conversions.New()
                     .AddStream(videoStream)
                     .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (number) => { return $"Extracts{Program.DirSlash}{name}{i}.png"; })
-                    .UseHardwareAcceleration(HardwareAccelerator.auto, VideoCodec.hevc, VideoCodec.png)
+                    .UseHardwareAcceleration(HardwareAccelerator.auto, (VideoCodec)Enum.Parse(typeof(VideoCodec),decoder,true), (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
                     .Start();
                 }
             }
@@ -148,12 +148,20 @@ namespace SilverBotDS.Commands
             {
                 Allowed = Permissions.AccessChannels | Permissions.AddReactions | Permissions.AttachFiles | Permissions.ChangeNickname | Permissions.DeafenMembers | Permissions.EmbedLinks | Permissions.ManageChannels | Permissions.ManageMessages | Permissions.MoveMembers | Permissions.ReadMessageHistory | Permissions.SendMessages | Permissions.Speak | Permissions.Stream | Permissions.UseVoice | Permissions.UseVoiceDetection | Permissions.ManageRoles
             }};
-            var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders, "Added by SilverBot as requested by" + ctx.User.Username);
-            var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
-            _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
+            var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders, $"Added by SilverBot as requested by {ctx.User.Username}");
+            var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
+            _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
             DiscordMessageBuilder discordMessage = new();
             discordMessage.Content = ctx.User.Mention + " there m8 that took some time to do";
             await channel.SendMessageAsync(discordMessage);
+        }
+        [Command("sudo"), Description("Executes a command as another user."), Hidden, RequireOwner]
+        public async Task Sudo(CommandContext ctx, [Description("Member to execute as.")] DiscordMember member, [RemainingText, Description("Command text to execute.")] string command)
+        {
+            await ctx.TriggerTypingAsync();
+            var cmd = ctx.CommandsNext.FindCommand(command, out var customArgs);
+            var fakeContext = ctx.CommandsNext.CreateFakeContext(member, ctx.Channel, command, ctx.Prefix, cmd, customArgs);
+            await ctx.CommandsNext.ExecuteCommandAsync(fakeContext);
         }
 
         [Command("setupcategory")]
@@ -177,10 +185,10 @@ namespace SilverBotDS.Commands
             {
                 Allowed = Permissions.AccessChannels | Permissions.AddReactions | Permissions.AttachFiles | Permissions.ChangeNickname | Permissions.DeafenMembers | Permissions.EmbedLinks | Permissions.ManageChannels | Permissions.ManageMessages | Permissions.MoveMembers | Permissions.ReadMessageHistory | Permissions.SendMessages | Permissions.Speak | Permissions.Stream | Permissions.UseVoice | Permissions.UseVoiceDetection | Permissions.ManageRoles
             }};
-            var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders, "Added by SilverBot as requested by" + ctx.User.Username);
-            var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
-            _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: "Added by SilverBot as requested by" + ctx.User.Username);
-            await channel.SendMessageAsync(person.Mention + " there m8 that took some time to do");
+            var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders, $"Added by SilverBot as requested by {ctx.User.Username}");
+            var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
+            _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
+            await channel.SendMessageAsync($"{person.Mention} there m8 that took some time to do");
         }
 
         private readonly string[] references = new[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "MathParser.org-mXparser", "ScottPlot", "SilverBotDS", "Markdig.Signed", "Xabe.FFmpeg", "TimeSpanParserUtil" };
@@ -246,7 +254,7 @@ namespace SilverBotDS.Commands
                 string str = ob.ToString();
                 if (ob is TimeSpan span)
                 {
-                    str = span.Humanize(999);
+                    str = span.Humanize(20);
                 }
                 else if (ob is DateTime time)
                 {
@@ -266,7 +274,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        str = "```json\n" + str + "```";
+                        str = Formatter.BlockCode(str, "json");
                     }
                 }
                 else
@@ -308,7 +316,18 @@ namespace SilverBotDS.Commands
                 DateTime start = DateTime.Now;
                 var script = CSharpScript.Create(RemoveCodeBraces(code),
                 ScriptOptions.Default.WithReferences(references).WithImports(imports), typeof(CodeEnv));
-                script.Compile();
+                var diag=script.Compile();
+                if(diag.Length != 0)
+                {
+                    if (diag.Humanize().Length > 1958)
+                    {
+                        await SendStringFileWithContent(ctx, "Compilation Diagnostics showed up:", diag.Humanize(), "diag.txt");
+                    }
+                    else
+                    {
+                        await new DiscordMessageBuilder().WithContent($"Compilation Diagnostics showed up: {Formatter.BlockCode(RemoveCodeBraces(diag.Humanize()), "cs")}").SendAsync(ctx.Channel);
+                    }
+                }
                 DateTime aftercompile = DateTime.Now;
                 await new DiscordMessageBuilder().WithContent($"Compiled the code in {(aftercompile - start).Humanize(6)}").SendAsync(ctx.Channel);
                 var result = await script.RunAsync(new CodeEnv(ctx, Config));
@@ -330,7 +349,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        await new DiscordMessageBuilder().WithContent("Console Output" + AddBraces(sw.ToString())).SendAsync(ctx.Channel);
+                        await new DiscordMessageBuilder().WithContent($"Console Output {Formatter.BlockCode(sw.ToString())}").SendAsync(ctx.Channel);
                     }
                 }
                 sw.Close();
@@ -348,7 +367,7 @@ namespace SilverBotDS.Commands
                 }
                 else
                 {
-                    await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: ```csharp\n" + RemoveCodeBraces(e.Diagnostics.Humanize()) + "```").SendAsync(ctx.Channel);
+                    await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: {Formatter.BlockCode(RemoveCodeBraces(e.Diagnostics.Humanize()), "cs")}").SendAsync(ctx.Channel);
                 }
                 throw;
             }
@@ -391,7 +410,7 @@ namespace SilverBotDS.Commands
                         }
                         else
                         {
-                            await new DiscordMessageBuilder().WithContent("Console Output" + AddBraces(sw.ToString())).SendAsync(ctx.Channel);
+                            await new DiscordMessageBuilder().WithContent($"Console Output {Formatter.BlockCode(sw.ToString())}").SendAsync(ctx.Channel);
                         }
                     }
                     sw.Close();
@@ -407,7 +426,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: ```csharp\n" + RemoveCodeBraces(e.Diagnostics.Humanize()) + "```").SendAsync(ctx.Channel);
+                        await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: {Formatter.BlockCode(RemoveCodeBraces(e.Diagnostics.Humanize()) ,"cs")}").SendAsync(ctx.Channel);
                     }
                     throw;
                 }
@@ -442,14 +461,14 @@ namespace SilverBotDS.Commands
                     {
                         foreach (var part in StringUtils.SplitInParts(readline, 1991))
                         {
-                            msg = await ctx.Channel.SendMessageAsync($"```\n{part}```");
+                            msg = await ctx.Channel.SendMessageAsync(Formatter.BlockCode(part));
                             content.Clear();
-                            content.Append($"{part}\n");
+                            content.AppendLine(part);
                         }
                     }
                     else
                     {
-                        await msg.ModifyAsync($"```{content}{readline}```");
+                        await msg.ModifyAsync(Formatter.BlockCode($"{content}{readline}"));
                         content.AppendLine(readline);
                     }
                     await Task.Delay(2000);
@@ -647,7 +666,7 @@ namespace SilverBotDS.Commands
                 else
                 {
                     var emote = await ctx.Guild.CreateEmojiAsync(name: Path.GetFileNameWithoutExtension(file),
-                        image: stream, reason: "Added via silverbot by " + ctx.User.Username);
+                        image: stream, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
                     status.Append("\t " + emote + ' ' + StringUtils.BoolToEmoteString(true));
                 }
             }

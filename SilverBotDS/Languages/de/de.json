@@ -149,9 +149,9 @@
   "GeneralException": "⚠ Ein Fehler ist aufgetreten, mehr Informationen wurden and den Log des Besitzers gesendet.",
   "NoMatchingSubcommandsAndGroupNotExecutable": "Es wurden keine passenden Unterbefehle gefunden, und diese Gruppe ist nicht ausführbar.",
   "QuotePreviewQuoteID": "Zitats ID: {0}",
-  "QuoteGetNoBook": "You do not have a \"Quote Book\", you can get one by adding a quote.",
-  "QuoteGetNoQuoteWithId": "You do not have a quote with that ID.",
-  "QuotePreviewDeleteSuccess": "The quote has been deleted.",
+  "QuoteGetNoBook": "Du hast kein \"Zitat Buck\", du kannst eins bekommen indem du ein Zitat hinzufügst.",
+  "QuoteGetNoQuoteWithId": "Du hast kein Zitat mit dieser ID.",
+  "QuotePreviewDeleteSuccess": "Das Zitat wurde gelöscht.",
   "Imagethings": {
     "JpegSuccess": "Für dich ein jpegnized Bild",
     "SilverSuccess": "Für dich ein Silbernes Bild",

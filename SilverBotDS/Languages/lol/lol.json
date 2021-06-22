@@ -149,9 +149,9 @@
   "GeneralException": "⚠ AN ERROR OCCURRD, MOAR INFORMASHUN HAS BEEN SENT 2 TEH BOT OWNERS LOG.",
   "NoMatchingSubcommandsAndGroupNotExecutable": "NO MATCHIN SUBCOMMANDZ WUZ FINDZ, AN DIS GROUP IZ NOT EXECUTABLE.",
   "QuotePreviewQuoteID": "Quote ID: {0}",
-  "QuoteGetNoBook": "You do not have a \"Quote Book\", you can get one by adding a quote.",
-  "QuoteGetNoQuoteWithId": "You do not have a quote with that ID.",
-  "QuotePreviewDeleteSuccess": "The quote has been deleted.",
+  "QuoteGetNoBook": "U DO NOT HAS \"QUOTE BOOK\", U CAN GIT WAN BY ADDIN QUOTE.",
+  "QuoteGetNoQuoteWithId": "U DO NOT HAS QUOTE WID DAT ID.",
+  "QuotePreviewDeleteSuccess": "TEH QUOTE HAS BEEN DELETD.",
   "Imagethings": {
     "JpegSuccess": "THAR YA GO JPEGNIZD IMAGE",
     "SilverSuccess": "THAR YA GO SILVR IMAGE",

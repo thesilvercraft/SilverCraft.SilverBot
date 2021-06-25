@@ -148,6 +148,10 @@
   "InvalidOverload": "Ungültige Überlastung für `{0}`",
   "GeneralException": "⚠ Ein Fehler ist aufgetreten, mehr Informationen wurden and den Log des Besitzers gesendet.",
   "NoMatchingSubcommandsAndGroupNotExecutable": "Es wurden keine passenden Unterbefehle gefunden, und diese Gruppe ist nicht ausführbar.",
+  "QuotePreviewQuoteID": "Zitats ID: {0}",
+  "QuoteGetNoBook": "Du hast kein \"Zitat Buck\", du kannst eins bekommen indem du ein Zitat hinzufügst.",
+  "QuoteGetNoQuoteWithId": "Du hast kein Zitat mit dieser ID.",
+  "QuotePreviewDeleteSuccess": "Das Zitat wurde gelöscht.",
   "Imagethings": {
     "JpegSuccess": "Für dich ein jpegnized Bild",
     "SilverSuccess": "Für dich ein Silbernes Bild",

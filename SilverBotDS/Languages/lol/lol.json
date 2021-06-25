@@ -148,6 +148,10 @@
   "InvalidOverload": "INVALID OVERLOAD 4 `{0}`",
   "GeneralException": "⚠ AN ERROR OCCURRD, MOAR INFORMASHUN HAS BEEN SENT 2 TEH BOT OWNERS LOG.",
   "NoMatchingSubcommandsAndGroupNotExecutable": "NO MATCHIN SUBCOMMANDZ WUZ FINDZ, AN DIS GROUP IZ NOT EXECUTABLE.",
+  "QuotePreviewQuoteID": "Quote ID: {0}",
+  "QuoteGetNoBook": "U DO NOT HAS \"QUOTE BOOK\", U CAN GIT WAN BY ADDIN QUOTE.",
+  "QuoteGetNoQuoteWithId": "U DO NOT HAS QUOTE WID DAT ID.",
+  "QuotePreviewDeleteSuccess": "TEH QUOTE HAS BEEN DELETD.",
   "Imagethings": {
     "JpegSuccess": "THAR YA GO JPEGNIZD IMAGE",
     "SilverSuccess": "THAR YA GO SILVR IMAGE",

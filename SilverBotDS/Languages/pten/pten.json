@@ -148,6 +148,10 @@
   "InvalidOverload": "Invalid overload for `{0}`",
   "GeneralException": "⚠ Ar arror argcurred, moree inforrmationn args been sent to darr bot ownarr's log.",
   "NoMatchingSubcommandsAndGroupNotExecutable": "No marrching submiccomargs were found, argg this group is not executable.",
+  "QuotePreviewQuoteID": "Quote ID: {0}",
+  "QuoteGetNoBook": "You do not have a \"Quote Book\", you can get one by adding a quote.",
+  "QuoteGetNoQuoteWithId": "You do not have a quote with that ID.",
+  "QuotePreviewDeleteSuccess": "The quote has been deleted.",
   "Imagethings": {
     "JpegSuccess": "There yarr go a jpegnized image",
     "SilverSuccess": "There yarr go a silver image",

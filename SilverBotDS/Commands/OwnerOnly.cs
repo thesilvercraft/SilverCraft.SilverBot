@@ -152,7 +152,7 @@ namespace SilverBotDS.Commands
             var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
             _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
             DiscordMessageBuilder discordMessage = new();
-            discordMessage.Content = ctx.User.Mention + " there m8 that took some time to do";
+            discordMessage.Content = $"{ctx.User.Mention} there m8 that took some time to do";
             await channel.SendMessageAsync(discordMessage);
         }
         [Command("sudo"), Description("Executes a command as another user."), Hidden, RequireOwner]
@@ -190,10 +190,7 @@ namespace SilverBotDS.Commands
             _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
             await channel.SendMessageAsync($"{person.Mention} there m8 that took some time to do");
         }
-
-        private readonly string[] references = new[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "MathParser.org-mXparser", "ScottPlot", "SilverBotDS", "Markdig.Signed", "Xabe.FFmpeg", "TimeSpanParserUtil" };
-
-        private readonly string[] imports = new[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Wbubbler", "Humanizer", "TimeSpanParserUtil", "Xabe.FFmpeg", "ScottPlot" };
+        private readonly string[] imports = new[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq",  "Humanizer", "TimeSpanParserUtil", "Xabe.FFmpeg", "ScottPlot" };
 
         public static string RemoveCodeBraces(string str)
         {
@@ -244,9 +241,6 @@ namespace SilverBotDS.Commands
         {
             await new DiscordMessageBuilder().WithContent(title).WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }
-
-        private static string AddBraces(string a) => "```\n" + a + "```";
-
         public static async Task SendBestRepresentationAsync(object ob, CommandContext ctx)
         {
             try
@@ -262,7 +256,7 @@ namespace SilverBotDS.Commands
                 }
                 else if (ob is string @string)
                 {
-                    str = RemoveCodeBraces(@string);
+                    str = Formatter.BlockCode(@string);
                 }
                 else if (ob.GetType().IsSerializable || ob.GetType().IsArray || ob.GetType().IsEnum || ob.GetType().FullName == ob.ToString())
                 {
@@ -279,7 +273,7 @@ namespace SilverBotDS.Commands
                 }
                 else
                 {
-                    str = AddBraces(str);
+                    str = Formatter.BlockCode(str);
                 }
                 if (ob.ToString().Length >= 2000)
                 {
@@ -291,7 +285,7 @@ namespace SilverBotDS.Commands
             catch (Exception e)
             {
                 Program.SendLog(e);
-                await new DiscordMessageBuilder().WithContent($"Failed to parse {ob.GetType().FullName} as a string, using the generic ToString. {ob}").WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent($"Failed to parse `{ob.GetType().FullName}` as a string, using the generic ToString. {ob}").WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
             }
         }
 
@@ -304,7 +298,7 @@ namespace SilverBotDS.Commands
         /// Stolen idea from https://github.com/Voxel-Fox-Ltd/VoxelBotUtils/blob/master/voxelbotutils/cogs/owner_only.py#L172-L252
         /// </summary>
         [Command("evaluate")]
-        [Description("UHHHHHHHHHHHHH its a secret")]
+        [Description("EVALUATE SOME C# CODE")]
         [Aliases("eval", "ev")]
         public async Task Eval(CommandContext ctx, [RemainingText] string code)
         {
@@ -313,12 +307,14 @@ namespace SilverBotDS.Commands
             {
                 using var sw = new StringWriter();
                 Console.SetOut(sw);
-                DateTime start = DateTime.Now;
+                var sw1 = Stopwatch.StartNew();
                 var script = CSharpScript.Create(RemoveCodeBraces(code),
-                ScriptOptions.Default.WithReferences(references).WithImports(imports), typeof(CodeEnv));
+                ScriptOptions.Default.WithReferences(AppDomain.CurrentDomain.GetAssemblies().Where(xa => !xa.IsDynamic && !string.IsNullOrWhiteSpace(xa.Location))).WithImports(imports), typeof(CodeEnv));
                 var diag=script.Compile();
-                if(diag.Length != 0)
+                sw1.Stop();
+                if (diag.Length != 0)
                 {
+                   
                     if (diag.Humanize().Length > 1958)
                     {
                         await SendStringFileWithContent(ctx, "Compilation Diagnostics showed up:", diag.Humanize(), "diag.txt");
@@ -327,34 +323,41 @@ namespace SilverBotDS.Commands
                     {
                         await new DiscordMessageBuilder().WithContent($"Compilation Diagnostics showed up: {Formatter.BlockCode(RemoveCodeBraces(diag.Humanize()), "cs")}").SendAsync(ctx.Channel);
                     }
-                }
-                DateTime aftercompile = DateTime.Now;
-                await new DiscordMessageBuilder().WithContent($"Compiled the code in {(aftercompile - start).Humanize(6)}").SendAsync(ctx.Channel);
+                    var errcount = diag.LongCount(x => x.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error);
+                    if (errcount!=0)
+                    {
+                        await new DiscordMessageBuilder().WithContent($"OH NO! After examining the diagnostics, I found {errcount} errors. That means if i try to run this it **WILL** fail. I will **NOT** attempt to run this code.").SendAsync(ctx.Channel);
+                        return;
+                    }
+                }       
+                await new DiscordMessageBuilder().WithContent($"Compiled the code in {sw1.Elapsed.Humanize(6)}").SendAsync(ctx.Channel);
+                sw1.Start();
+                var sw2 = Stopwatch.StartNew();
                 var result = await script.RunAsync(new CodeEnv(ctx, Config));
-                DateTime afterrun = DateTime.Now;
                 if (result.ReturnValue is not null)
                 {
                     await SendBestRepresentationAsync(result.ReturnValue, ctx);
                 }
                 else
                 {
-                    await new DiscordMessageBuilder().WithContent($"Got a `null`").SendAsync(ctx.Channel);
+                    await new DiscordMessageBuilder().WithContent($"The evaluated code returned a `null`. (null is a special marker that is used when something does not have a value,similar to **N**ot**a****N**umber)").SendAsync(ctx.Channel);
                 }
                 if (!string.IsNullOrEmpty(sw.ToString()))
                 {
-                    if (sw.ToString().Length > 1979)
+                    if (sw.ToString().Length > 1978)
                     {
-                        //sending as a file to not get a 400
-                        await SendStringFileWithContent(ctx, "Console Output", sw.ToString(), "console.txt");
+                        await SendStringFileWithContent(ctx, "Console Output:", sw.ToString(), "console.txt");
                     }
                     else
                     {
-                        await new DiscordMessageBuilder().WithContent($"Console Output {Formatter.BlockCode(sw.ToString())}").SendAsync(ctx.Channel);
+                        await new DiscordMessageBuilder().WithContent($"Console Output: {Formatter.BlockCode(sw.ToString())}").SendAsync(ctx.Channel);
                     }
                 }
                 sw.Close();
                 Console.SetOut(console);
-                await new DiscordMessageBuilder().WithContent($"Executed the code in {(afterrun - aftercompile).Humanize(6)} excluding compile time or {(afterrun - start).Humanize(6)} including it").SendAsync(ctx.Channel);
+                await new DiscordMessageBuilder().WithContent($"Executed the code in {Formatter.Bold(sw2.Elapsed.Humanize(6))} excluding compile time, or {Formatter.Bold(sw1.Elapsed.Humanize(6))} including it.").SendAsync(ctx.Channel);
+                sw1.Stop();
+                sw2.Stop();
                 result = null;
                 script = null;
             }
@@ -441,7 +444,6 @@ namespace SilverBotDS.Commands
         [Command("sh")]
         public async Task RunConsole(CommandContext ctx, [RemainingText] string command)
         {
-            command += Environment.OSVersion.Platform == PlatformID.Win32NT ? " & echo Exit code %ErrorLevel%" : " ; echo Exit code %?";
             Process main = new();
             main.StartInfo.FileName = Environment.OSVersion.Platform == PlatformID.Win32NT ? "CMD.exe" : "/bin/bash";
             main.StartInfo.Arguments = $"{(Environment.OSVersion.Platform == PlatformID.Win32NT ? "/c" : "-c")} {command}";

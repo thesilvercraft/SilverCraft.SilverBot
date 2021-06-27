@@ -196,6 +196,12 @@ namespace SilverBotDS
                         services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Firefox, string.IsNullOrEmpty(config.DriverLocation) ? Environment.CurrentDirectory : config.DriverLocation));
                         break;
                     }
+                case 3:
+                    {
+                        log.Verbose("Using the remoteBrowser");
+                        services.AddSingleton<IBrowser>(new RemoteBrowser(httpClient));
+                        break;
+                    }
                 default:
                     {
                         throw new NotImplementedException();

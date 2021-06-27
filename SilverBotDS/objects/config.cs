@@ -60,7 +60,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("Set true if its a sid cookie, false if a bot one")]
         public bool TopggIsSelfbot { get; set; } = true;
 
-        [XmlDescription("What kind of browser to use, used for selinium. 1 for chrome (chromedriver) 2 for firefox")]
+        [XmlDescription("What kind of browser to use, used for selinium. 1 for chrome (chromedriver) 2 for firefox, 3 should be the remotebrowser")]
         public int BrowserType { get; set; } = 1;
 
         [XmlDescription("Location of that browser, leave blank for CWD(current working directory)")]

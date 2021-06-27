@@ -41,7 +41,7 @@ namespace SilverBotDS.Commands
         [Description("Repeats the message content")]
         public async Task Repeat(CommandContext ctx, [RemainingText][Description("The thing to repeat")] string e) => await ctx.RespondAsync(e);
 
-        private readonly string[] _urls = { "https://silverdimond.tk", "https://vfl.gg", "https://github.com/silverdimond" };
+        private readonly string[] _urls = { "https://silverdimond.tk", "https://vfl.gg", "https://github.com/silverdimond","https://cmpc.live","https://silverbot.cf","https://oscie.net" };
 
         [Command("riprandomframes")]
         [Description("less gooo baybae")]

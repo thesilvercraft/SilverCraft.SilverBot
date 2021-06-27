@@ -51,7 +51,7 @@ namespace SDBrowser
             return new SeleniumBrowser(browsertype, Environment.CurrentDirectory);
         }
 
-        public async Task<MemoryStream> RenderHtmlAsync(string html)
+        public async Task<Stream> RenderHtmlAsync(string html)
         {
             while (_isLocked)
             {
@@ -61,13 +61,12 @@ namespace SDBrowser
             _webDriver.Url = "data:text/html;base64," + Convert.ToBase64String(Encoding.UTF8.GetBytes(html));
             _webDriver.Navigate();
             IWait<IWebDriver> wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(30.00));
-
             wait.Until(driver1 => ((IJavaScriptExecutor)_webDriver).ExecuteScript("return document.readyState").Equals("complete")); var ss = ((ITakesScreenshot)_webDriver).GetScreenshot();
             _isLocked = false;
             return new MemoryStream(ss.AsByteArray);
         }
 
-        public async Task<MemoryStream> RenderUrlAsync(string url)
+        public async Task<Stream> RenderUrlAsync(string url)
         {
             while (_isLocked)
             {
@@ -89,11 +88,6 @@ namespace SDBrowser
                 _isLocked = false;
                 throw;
             }
-        }
-
-        public async Task<MemoryStream> RenderUrlAsync(Uri url)
-        {
-            return await RenderUrlAsync(url.ToString());
         }
     }
 }

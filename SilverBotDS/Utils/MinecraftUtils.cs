@@ -43,20 +43,11 @@ namespace SilverBotDS.Utils
             [JsonPropertyName("demo")]
             public bool Demo { get; set; }
 
-            public string GetAvatarUrl()
-            {
-                return $"{CrafatarBaseUrl}avatars/{Id}";
-            }
+            public string GetAvatarUrl() => $"{CrafatarBaseUrl}avatars/{Id}";
 
-            public string GetHeadUrl()
-            {
-                return $"{CrafatarBaseUrl}renders/head/{Id}";
-            }
+            public string GetHeadUrl() => $"{CrafatarBaseUrl}renders/head/{Id}";
 
-            public string GetBodyUrl()
-            {
-                return $"{CrafatarBaseUrl}renders/body/{Id}";
-            }
+            public string GetBodyUrl() => $"{CrafatarBaseUrl}renders/body/{Id}";
         }
     }
 }

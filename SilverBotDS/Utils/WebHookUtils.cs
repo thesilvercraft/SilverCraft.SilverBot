@@ -17,7 +17,7 @@ namespace SilverBotDS.Utils
             try
             {
                 ParseWebhookUrl(webhookUrl, out ulong webhookId, out webhookToken);
-                webhookIdnullable = (ulong?)webhookId;
+                webhookIdnullable = webhookId;
             }
             catch (Exception)
             {
@@ -33,14 +33,12 @@ namespace SilverBotDS.Utils
                 throw new ArgumentNullException(paramName: nameof(webhookUrl), message:
                     "The given webhook Url cannot be null or whitespace.");
             }
-
             // thrown when groups are not populated/valid, or when there is no match
             ArgumentException ex(string reason = null)
             {
                 return new(paramName: nameof(webhookUrl), message:
                                $"The given webhook Url was not in a valid format. {reason}");
             }
-
             var match = WebhookUrlRegex.Match(webhookUrl);
             if (match != null)
             {

@@ -43,12 +43,10 @@ namespace SilverBotDS.Utils
             {
                 throw new ArgumentNullException(nameof(s));
             }
-
             if (partLength <= 0)
             {
                 throw new ArgumentException("Part length has to be positive.", nameof(partLength));
             }
-
             return SplitInPartsIterator(s, partLength);
         }
 

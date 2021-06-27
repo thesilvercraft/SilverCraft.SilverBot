@@ -165,7 +165,7 @@ namespace SilverBotDS.Objects
             SaveChanges();
         }
 
-        public async Task<Tuple<string, MemoryStream>> RunSqlAsync(string sql, IBrowser browser)
+        public async Task<Tuple<string, Stream>> RunSqlAsync(string sql, IBrowser browser)
         {
             await using var cmd = Database.GetDbConnection().CreateCommand();
             cmd.CommandText = sql;
@@ -178,7 +178,7 @@ namespace SilverBotDS.Objects
                 StringBuilder thing = new(HtmlStart);
                 if (dataTable.Rows.Count == 0)
                 {
-                    return new Tuple<string, MemoryStream>("nodata", null);
+                    return new Tuple<string, Stream>("nodata", null);
                 }
                 else
                 {
@@ -193,7 +193,7 @@ namespace SilverBotDS.Objects
                             }
                             builder.AppendLine();
                         }
-                        return new Tuple<string, MemoryStream>(builder.Append("```").ToString(), null);
+                        return new Tuple<string, Stream>(builder.Append("```").ToString(), null);
                     }
                     else
                     {
@@ -207,14 +207,14 @@ namespace SilverBotDS.Objects
                             thing.AppendLine("</tr>");
                         }
                         thing.AppendLine("</table></body></html>");
-                        return new Tuple<string, MemoryStream>(null, await browser.RenderHtmlAsync(thing.ToString()));
+                        return new Tuple<string, Stream>(null, await browser.RenderHtmlAsync(thing.ToString()));
                     }
                 }
             }
             catch (Exception e)
             {
                 Program.SendLog(e);
-                return new Tuple<string, MemoryStream>("Error", null);
+                return new Tuple<string, Stream>("Error", null);
             }
         }
 

@@ -18,10 +18,8 @@ namespace SilverBotDS.Utils
                 var argumentOutOfRangeException = new ArgumentOutOfRangeException(nameof(minValue), "minValue must be lower than maxExclusiveValue");
                 throw argumentOutOfRangeException;
             }
-
             var diff = (long)maxExclusiveValue - minValue;
             var upperBound = uint.MaxValue / diff * diff;
-
             uint ui;
             do
             {

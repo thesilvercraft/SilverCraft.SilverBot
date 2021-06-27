@@ -50,7 +50,6 @@ namespace SilverBotDS.Utils
                 {
                     using StreamReader reader = new("colors.json");
                     var colors = JsonSerializer.Deserialize<SdColor[]>(json: await reader.ReadToEndAsync());
-
                     cache = (colors ?? Array.Empty<SdColor>()).Select(sdcolor => sdcolor.ToDiscordColor()).ToArray();
                     return cache;
                 }
@@ -111,7 +110,7 @@ namespace SilverBotDS.Utils
         /// <returns>a single (random) <see cref="DiscordColor"/></returns>
         internal static async Task<DiscordColor> GetSingleAsyncInternal(bool ignorecache = false, bool useinternal = false)
         {
-            RandomGenerator rg = new();
+            using RandomGenerator rg = new();
             var arr = await GetAsync(ignorecache, useinternal);
             return arr[rg.Next(0, arr.Length)];
         }

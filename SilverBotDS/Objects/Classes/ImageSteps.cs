@@ -1,5 +1,7 @@
 ﻿using SilverBotDS.Commands;
 using SilverBotDS.Converters;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -25,51 +27,43 @@ namespace SilverBotDS.Objects
             var serializer = new XmlSerializer(typeof(Step[]), "SilverBotDS.Objects");
             var rm = await c.GetAsync(url);
             var ist = new ImageSteps();
-
             using StringReader stringReader = new(await rm.Content.ReadAsStringAsync());
             ist.steps = (Step[])serializer.Deserialize(stringReader);
             ist.SetClient(c);
             return ist;
         }
 
-        /*
-        public async Task<Bitmap> ExecuteStepsAsync(Step[] filledsteps)
+        
+        public async Task<Image> ExecuteStepsAsync(Step[] filledsteps)
         {
-            Bitmap Bitmap = null;
-            Graphics graphics = null;
+            Image Bitmap = null;
             foreach (var step in filledsteps)
             {
                 if (step is TemplateStep step2)
                 {
                     if (Bitmap is null)
                     {
-                        Bitmap = new Bitmap(step2.Image(client));
-                        graphics = Graphics.FromImage(Bitmap);
+                        Bitmap = step2.GetImage(client);
                     }
                     else
                     {
-                        graphics.DrawImage(step2.Image(client), new Point(0, 0));
+                        Bitmap.Mutate(x => x.DrawImage(step2.GetImage(client), new Point(0, 0), 1));
                     }
                 }
                 else if (step is PictureStep step1)
                 {
                     using var resizedbytes = (await ImageModule.ResizeAsync(await step1.Image().GetBytesAsync(client), new SixLabors.ImageSharp.Size((int)step1.xSize, (int)step1.ySize), true)).Item1;
-                    using var resizedimg = new Bitmap(resizedbytes);
-                    graphics.DrawImage(resizedimg, new Point((int)step.x, (int)step.y));
+                    using var resizedimg = await Image.LoadAsync(resizedbytes);
+                    Bitmap.Mutate(x => x.DrawImage(resizedimg, new Point((int)step.x, (int)step.y),1));
                 }
                 else
                 {
                     //bug oh no
                 }
             }
-            if (graphics is not null)
-            {
-                graphics.Flush();
-                graphics.Save();
-            }
             return Bitmap;
         }
-        */
+        
 
         protected virtual void Dispose(bool disposing)
         {
@@ -138,16 +132,15 @@ namespace SilverBotDS.Objects
         {
             this.x = x;
             this.y = y;
-
             this.template = template;
             this.isUrl = isUrl;
         }
 
-        /*
+        
         [XmlIgnore]
-        private Bitmap _image;
+        private Image _image;
 
-        public Bitmap Image(HttpClient e = null)
+        public Image GetImage(HttpClient e = null)
         {
             e ??= new HttpClient();
             if (_image is null)
@@ -155,16 +148,16 @@ namespace SilverBotDS.Objects
                 if (isUrl)
                 {
                     using var memorystream = new MemoryStream(new SdImage(template).GetBytesAsync(e).GetAwaiter().GetResult());
-                    _image = new(memorystream);
+                    _image = Image.Load(memorystream);
                 }
                 else
                 {
                     using var FileStream = new FileStream(template, FileMode.Open);
-                    _image = new(FileStream);
+                    _image = Image.Load(FileStream);
                 }
             }
             return _image;
-        }*/
+        }
 
         public string template;
         public bool isUrl;

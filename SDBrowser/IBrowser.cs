@@ -6,10 +6,13 @@ namespace SDBrowser
 {
     public interface IBrowser
     {
-        Task<MemoryStream> RenderUrlAsync(string url);
+        Task<Stream> RenderUrlAsync(string url);
 
-        Task<MemoryStream> RenderUrlAsync(Uri url);
+        Task<Stream> RenderUrlAsync(Uri url)
+        {
+            return RenderUrlAsync(url.ToString());
+        }
 
-        Task<MemoryStream> RenderHtmlAsync(string html);
+        Task<Stream> RenderHtmlAsync(string html);
     }
 }

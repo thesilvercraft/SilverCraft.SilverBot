@@ -16,15 +16,12 @@ namespace SilverBotDS.Objects
             Type = type;
         }
 
-        public static Splash GetFromDiscordActivity(DiscordActivity discordActivity)
+        public static Splash GetFromDiscordActivity(DiscordActivity discordActivity) => new()
         {
-            return new Splash
-            {
-                Name = discordActivity.Name,
-                Type = discordActivity.ActivityType,
-                StreamUrl = discordActivity.StreamUrl
-            };
-        }
+            Name = discordActivity.Name,
+            Type = discordActivity.ActivityType,
+            StreamUrl = discordActivity.StreamUrl
+        };
 
         public DiscordActivity GetDiscordActivity(Dictionary<string, string> pairs) => new(StringUtils.FormatFromDictionary(Name, pairs), Type)
         {

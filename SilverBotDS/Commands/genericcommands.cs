@@ -58,7 +58,7 @@ namespace SilverBotDS.Commands
                 {
                     b.WithTitle(lang.Meme + asdf.Title)
                         .WithUrl(asdf.PostLink)
-                        .WithAuthor("👍 " + asdf.Ups + " | r/" + asdf.Subreddit)
+                        .WithAuthor($"👍 {asdf.Ups} | r/{asdf.Subreddit}")
                         .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
                         .AddField("NSFW", BoolToEmoteString(asdf.Nsfw), true)
                         .AddField("Spoiler", BoolToEmoteString(asdf.Spoiler), true)
@@ -142,6 +142,19 @@ namespace SilverBotDS.Commands
                                              .WithReply(ctx.Message.Id)
                                              .WithFile("message.txt", outStream)
                                              .SendAsync(ctx.Channel);
+        }
+        [Command("dump")]
+        [Description("Dump a messages raw content (useful for emote walls)")]
+        public async Task DumpMessage(CommandContext ctx)
+        {
+           if(ctx.Message.ReferencedMessage!=null)
+            {
+                await DumpMessage(ctx, ctx.Message.ReferencedMessage);
+            }
+           else
+            {
+                await DumpMessage(ctx, (await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, 1))[0]);
+            }
         }
 
         [Command("duckhosting"), Aliases("dukthosting", "ducthosting", ":duckhosting:", "<:duckhosting:797225115837792367>")]

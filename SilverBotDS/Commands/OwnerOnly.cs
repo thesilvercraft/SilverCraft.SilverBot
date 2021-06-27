@@ -326,7 +326,7 @@ namespace SilverBotDS.Commands
                     var errcount = diag.LongCount(x => x.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error);
                     if (errcount!=0)
                     {
-                        await new DiscordMessageBuilder().WithContent($"OH NO! After examining the diagnostics, I found {errcount} errors. That means if i try to run this it **WILL** fail. I will **NOT** attempt to run this code.").SendAsync(ctx.Channel);
+                        await new DiscordMessageBuilder().WithContent($"OH NO! After examining the diagnostics, I found {errcount} {(errcount==1?"error":"errors")}. That means if i try to run this it **WILL** fail. I will **NOT** attempt to run this code.").SendAsync(ctx.Channel);
                         return;
                     }
                 }       
@@ -340,7 +340,7 @@ namespace SilverBotDS.Commands
                 }
                 else
                 {
-                    await new DiscordMessageBuilder().WithContent($"The evaluated code returned a `null`. (null is a special marker that is used when something does not have a value,similar to **N**ot**a****N**umber)").SendAsync(ctx.Channel);
+                    await new DiscordMessageBuilder().WithContent($"The evaluated code returned a `null`. (null is a special marker that is used when something does not have a value, similar to **N**ot**AN**umber)").SendAsync(ctx.Channel);
                 }
                 if (!string.IsNullOrEmpty(sw.ToString()))
                 {
@@ -439,6 +439,10 @@ namespace SilverBotDS.Commands
                     throw;
                 }
             }
+            else
+            {
+                await new DiscordMessageBuilder().WithContent("Nodejs is disabled in the config").SendAsync(ctx.Channel);
+            }
         }
 
         [Command("sh")]
@@ -483,7 +487,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("runsql")]
-        [Description("UHHHHHHHHHHHHH its a secret")]
+        [Description("runs some sql")]
         public async Task Runsql(CommandContext ctx, [RemainingText] string sql)
         {
             var thing = await Database.RunSqlAsync(sql, Browser);
@@ -496,7 +500,7 @@ namespace SilverBotDS.Commands
             {
                 var bob = new DiscordEmbedBuilder();
 #pragma warning disable S1075 // URIs should not be hardcoded
-                bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+                bob.WithImageUrl("attachment://html.png").WithFooter($"Requested by {ctx.User.Username}", ctx.User.GetAvatarUrl(ImageFormat.Png));
 #pragma warning restore S1075 // URIs should not be hardcoded
                 thing.Item2.Position = 0;
                 await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", thing.Item2).SendAsync(ctx.Channel);
@@ -523,7 +527,7 @@ namespace SilverBotDS.Commands
                 return;
             }
 #pragma warning disable S1075 // URIs should not be hardcoded
-            var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
+            var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter($"Requested by {ctx.User.Username}", ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
 #pragma warning restore S1075 // URIs should not be hardcoded
             using var e = await Browser.RenderUrlAsync(html);
             await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithReply(ctx.Message.Id).WithFile("html.png", e).SendAsync(ctx.Channel);
@@ -567,14 +571,24 @@ namespace SilverBotDS.Commands
             {
                 emotes.Add(new Emote { Name = emoji.Name, Url = emoji.Url });
             }
-            Rootobject rootobject = new()
+            while(emotes.Count!=0)
             {
-                Author = "SilverBot",
-                Name = $"{ctx.Guild.Name}'s emotes",
-                Emotes = emotes.ToArray()
-            };
-
-            await SendStringFileWithContent(ctx, "Here ya go", JsonSerializer.Serialize(rootobject), "pack.json");
+                await SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new Rootobject()
+                {
+                    Author = "SilverBot",
+                    Name = $"{ctx.Guild.Name}'s emotes",
+                    Emotes = emotes.Take(30).ToArray()
+                }), "pack.json");
+                if (emotes.Count >= 30)
+                {
+                    emotes.RemoveRange(0, 30);
+                }
+                else
+                {
+                    emotes.Clear();
+                }
+            }
+            await new DiscordMessageBuilder().WithContent("https://support.guilded.gg/hc/en-us/articles/1500000398142").WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
 
         [Command("exportemotes")]
@@ -583,7 +597,6 @@ namespace SilverBotDS.Commands
         {
             var emojiz = ctx.Guild.Emojis.Values;
             List<SourceFile> sourceFiles = new();
-
             foreach (var emoji in emojiz)
             {
                 if (emoji.IsAnimated)
@@ -595,7 +608,6 @@ namespace SilverBotDS.Commands
                     sourceFiles.Add(new SourceFile { Name = emoji.Name, Extension = "png", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url) });
                 }
             }
-
             using MemoryStream memoryStream = new();
             using (ZipArchive zip = new(memoryStream, ZipArchiveMode.Create, true))
             {

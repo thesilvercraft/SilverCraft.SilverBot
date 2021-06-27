@@ -143,10 +143,9 @@ namespace SilverBotDS
                 logfactory.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
             log = logfactory.CreateLogger();
-
             if (!(CheckIfAllFontsAreHere()))
             {
-                log.Warning("You do not have all reqired fonts to run silverbot, on windows you only have to install Diavlo Light while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\") and Diavlo Light");
+                log.Fatal("You do not have all reqired fonts to run silverbot, on windows you only have to install Diavlo Light while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\") and Diavlo Light");
             }
             if (config.EnableUpdateChecking)
             {

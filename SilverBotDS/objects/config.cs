@@ -18,7 +18,7 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
-        private const ulong CurrentConfVer = 23;
+        private const ulong CurrentConfVer = 24;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } =
@@ -130,7 +130,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Do we check github for a newer commit")]
         public bool EnableUpdateChecking { get; set; } = true;
-
+        [XmlDescription("2 segment keys for science, they can be duplicates if you like exposing your key to the entire world")]
+        public string SegmentPrivateSource { get; set; } = "Segment_Key";
+        public string SegmentPublicSource { get; set; } = "Segment_Key";
         public Splash[] Splashes { get; set; } = {
       new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),
       new(".NET gang", ActivityType.Watching),

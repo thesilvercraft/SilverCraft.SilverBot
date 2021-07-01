@@ -80,6 +80,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Analytics" Version="3.8.0" />
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
     <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00903" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00903" />

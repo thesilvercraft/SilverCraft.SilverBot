@@ -207,7 +207,10 @@ namespace SilverBotDS
                         throw new NotImplementedException();
                     }
             }
-
+            if (IsNotNullAndIsNotB(config.SegmentPrivateSource, "Segment_Key"))
+            {
+                services.AddSingleton<IAnalyse>(new SegmentIo(config.SegmentPrivateSource));
+            }
             switch (config.DatabaseType)
             {
                 case 1:
@@ -427,7 +430,15 @@ namespace SilverBotDS
 
         private static async Task Commands_CommandExecuted(CommandsNextExtension sender, CommandExecutionEventArgs e)
         {
-            //TODO: add statistics
+            var analytics = serviceProvider.GetService<SegmentIo>();
+            if (analytics is not null)
+            {
+                await analytics.EmitEvent(e.Context.User, "CommandExecuted", new Dictionary<string, object>()
+               {
+                   { "commandname", e.Command.Name },
+                   { "rawmessage", e.Context.Message }
+               });
+            }
         }
 
         private static async Task Discord_ComponentInteractionCreated(DiscordClient sender, DSharpPlus.EventArgs.ComponentInteractionCreateEventArgs e)

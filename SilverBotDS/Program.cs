@@ -318,6 +318,7 @@ namespace SilverBotDS
             if (config.EmulateBubot)
             {
                 commands.RegisterCommands<Bubot>();
+                commands.RegisterCommands<BibiLib>();
             }
             if (config.UseLavaLink)
             {

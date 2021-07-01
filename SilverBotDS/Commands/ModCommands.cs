@@ -76,6 +76,23 @@ namespace SilverBotDS.Commands
             await ctx.RespondAsync(embed: b.Build());
         }
 
+     
+        [Command("kms")]
+        [Aliases("sewerslide")]
+        [Description("Kicks yourself lmao (or ban if you're super daring)")]
+        public async Task Kms(CommandContext ctx, [Description("hardcore sewerslide")] bool ban=false)
+        {
+            if (ban)
+            {
+                await ctx.Member.BanAsync(reason: "asked lol");
+            }
+            else
+            {
+                await ctx.Member.RemoveAsync(reason: "asked lol");
+            }
+            await ctx.RespondAsync($"{ctx.Member.Mention} took the easy way out");
+        }
+
         [Command("purge")]
         [Aliases("clean", "clear")]
         [Description("Downloads and removes X messages from the current channel.")]

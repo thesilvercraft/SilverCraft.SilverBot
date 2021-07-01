@@ -6,6 +6,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
+using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -57,6 +58,15 @@ namespace SilverBotDS.Commands
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithFile("language.json", stream)
                                              .SendAsync(ctx.Channel);
+        }
+
+        [Command("piss")]
+        [Description("piss :)")]
+        public async Task Piss(CommandContext ctx)
+        {
+            // line 67
+            // line 68
+            throw new PissException(69); // line 69 :)
         }
 
         [Command("setlang")]

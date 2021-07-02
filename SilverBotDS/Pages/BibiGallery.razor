@@ -1,0 +1,68 @@
+﻿@page "/bibigallery"
+@using System.Reflection
+@using SilverBotDS.Commands
+@code{
+public int BibiCutOutPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("SilverBotDS.Templates.BibiLibCutout.") && x.EndsWith(".png")).Count();
+public int BibiFullPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("SilverBotDS.Templates.BibiLibFull.") && x.EndsWith(".png")).Count();
+}
+<h1>Bibi pictures</h1>
+<p>By: <code>jaydenkamp#5087</code></p>
+<p>Collected and cut out by: <code>Wbubbler#7474</code></p>
+<style>
+    .column {
+  float: left;
+  width: 25%;
+  padding-left: 20px;
+}
+
+.column img {
+  opacity: 0.8;
+  cursor: pointer;
+  width:50%;
+}
+
+.column img:hover {
+  opacity: 1;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.container {
+  position: relative;
+  display: none;
+}
+
+#imgtext {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  color: white;
+  font-size: 20px;
+}
+.closebtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: white;
+  font-size: 35px;
+  cursor: pointer;
+}
+</style>
+<div class="row">
+@for(int a=1;a<BibiCutOutPictureCount;a++)
+{
+string url=$"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibCutout/{a}.png?raw=true";
+<div class="column">
+     <img src="@url" alt="@BibiLib.BibiDescText[a-1]"  onclick="galleryThing(this);">
+</div>
+}
+</div>
+
+<div class="container">
+  <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+  <img id="expandedImg" style="width:100%">
+  <div id="imgtext"></div>
+</div>
+

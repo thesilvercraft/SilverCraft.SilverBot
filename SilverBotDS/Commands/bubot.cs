@@ -20,6 +20,8 @@ using SixLabors.Fonts;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using System.Text.Json;
+
 namespace SilverBotDS.Commands
 {
     internal class Bubot : BaseCommandModule
@@ -76,38 +78,59 @@ namespace SilverBotDS.Commands
     
     }
     [Group("bibiLibrary")]
+    [Aliases("bibilib")]
+    [Description("Access the great cat bibi library.")]
     internal class BibiLib : BaseCommandModule
     {
         private readonly int BibiCutoutPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("SilverBotDS.Templates.BibiLibCutout.") && x.EndsWith(".png")).Count();
-        private readonly int BibiFullPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("SilverBotDS.Templates.BibiLibCutout.") && x.EndsWith(".png")).Count();
+        private readonly int BibiFullPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("SilverBotDS.Templates.BibiLibFull.") && x.EndsWith(".png")).Count();
+        public static readonly string[] BibiDescText = GetBibiDescText();
+        private static string[] GetBibiDescText()
+        {
+            StreamReader reader = new(
+               Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                   "SilverBotDS.Templates.BibiLibCutout.Titles.json"
+               )
+               ??
+               throw new TemplateReturningNullException(
+                   "SilverBotDS.Templates.BibiLibCutout.Titles.json"
+               )
+            );
+            return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
+        }
         [GroupCommand]
         [Description("Access the great cat bibi library.")]
-        public async Task bibiLibrary(CommandContext ctx, [RemainingText] string term)
+        public async Task BibiLibrary(CommandContext ctx)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            var page = 1;
-            var b = new DiscordEmbedBuilder();
-
-            var imgurl = $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/Bibi/{page}.png?raw=true";
-            b.WithDescription($"text about the great cat Bibi picture here : {imgurl}  {string.Format(lang.PageGif, 1, BibiCutoutPictureCount)}").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
-#pragma warning restore S1075 // URLs should not be hardpissed
-            await WaitForNextMessage(ctx, await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText)).SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, page, b);
+            var imgurl = $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibCutout/1.png?raw=true";
+            var b = new DiscordEmbedBuilder().WithTitle(BibiDescText[0]).WithDescription($"{imgurl}\n{string.Format(lang.PageGif, 1, BibiCutoutPictureCount)}").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
+            await WaitForNextMessage(ctx, await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText)).SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, 0, false, b);
         }
-        private async Task WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage, InteractivityExtension interactivity, Language lang, int page, DiscordEmbedBuilder b = null)
+        [Command("full")]
+        [Description("Access the great cat bibi library.")]
+        public async Task BibiLibraryFull(CommandContext ctx)
+        {
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var imgurl = $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibFull/1.png?raw=true";
+            var b = new DiscordEmbedBuilder().WithTitle("bibi").WithDescription($"{imgurl}\n{string.Format(lang.PageGif, 1, BibiFullPictureCount)}").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
+            await WaitForNextMessage(ctx, await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText)).SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, 0, true,b);
+        }
+        private async Task WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage, InteractivityExtension interactivity, Language lang, int page, bool gaming ,DiscordEmbedBuilder b = null)
         {
             b ??= new DiscordEmbedBuilder();
             var msg = await oldmessage.WaitForButtonAsync(ctx.User, TimeSpan.FromSeconds(300));
-            var imgurl = $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/Bibi/{page}.png?raw=true";
             if (msg.Result != null)
             {
                 page++;
-                if (page >= BibiCutoutPictureCount)
+                if (page == (gaming? BibiFullPictureCount : BibiCutoutPictureCount))
                 {
                     page = 0;
                 }
-                b.WithDescription($" : {imgurl} {string.Format(lang.PageGif, page + 1, BibiCutoutPictureCount)}").WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
+                var imgurl = $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/{(gaming? "BibiLibFull" : "BibiLibCutout")}/{page + 1}.png?raw=true";
+                b.WithTitle(gaming ? string.Empty : BibiDescText[page]).WithDescription($"{imgurl}\n{string.Format(lang.PageGif, page + 1, (gaming ? BibiFullPictureCount : BibiCutoutPictureCount))}").WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
                 await msg.Result.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, new DiscordInteractionResponseBuilder(new DiscordMessageBuilder().WithEmbed(b).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText))));
-                await WaitForNextMessage(ctx, oldmessage, interactivity, lang, page, b);
+                await WaitForNextMessage(ctx, oldmessage, interactivity, lang, page, gaming,b);
             }
             else
             {

@@ -52,5 +52,17 @@
             };
         };
     </script>
+    <script type="text/javascript">
+        function galleryThing(imgs) {
+  // https://www.w3schools.com/howto/howto_js_tab_img_gallery.asp
+  var expandImg = document.getElementById("expandedImg");
+  var imgText = document.getElementById("imgtext");
+  expandImg.src = imgs.src;
+  imgText.innerHTML = imgs.alt;
+  expandImg.parentElement.style.display = "block";
+  window.scrollTo(0,document.body.scrollHeight);
+}
+    </script>
+
 </body>
 </html>

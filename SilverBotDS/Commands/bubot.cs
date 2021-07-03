@@ -82,9 +82,9 @@ namespace SilverBotDS.Commands
     [Description("Access the great cat bibi library.")]
     internal class BibiLib : BaseCommandModule
     {
-        private readonly int BibiCutoutPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("SilverBotDS.Templates.BibiLibCutout.") && x.EndsWith(".png")).Count();
-        private readonly int BibiFullPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("SilverBotDS.Templates.BibiLibFull.") && x.EndsWith(".png")).Count();
+
         public static readonly string[] BibiDescText = GetBibiDescText();
+        public static readonly string[] BibiFullDescText = GetBibiFullDescText();
         private static string[] GetBibiDescText()
         {
             StreamReader reader = new(
@@ -96,6 +96,20 @@ namespace SilverBotDS.Commands
                    "SilverBotDS.Templates.BibiLibCutout.Titles.json"
                )
             );
+            Console.WriteLine("e");
+            return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
+        }
+        private static string[] GetBibiFullDescText()
+        {
+            StreamReader reader = new(
+               Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                   "SilverBotDS.Templates.BibiLibFull.Titles.json"
+               )
+               ??
+               throw new TemplateReturningNullException(
+                   "SilverBotDS.Templates.BibiLibFull.Titles.json"
+               )
+            );
             return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
         }
         [GroupCommand]
@@ -104,7 +118,7 @@ namespace SilverBotDS.Commands
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var imgurl = $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibCutout/1.png?raw=true";
-            var b = new DiscordEmbedBuilder().WithTitle(BibiDescText[0]).WithDescription($"{imgurl}\n{string.Format(lang.PageGif, 1, BibiCutoutPictureCount)}").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
+            var b = new DiscordEmbedBuilder().WithTitle(BibiDescText[0]).WithDescription($"{imgurl}\n{string.Format(lang.PageGif, 1, BibiDescText.Length)}").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
             await WaitForNextMessage(ctx, await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText)).SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, 0, false, b);
         }
         [Command("full")]
@@ -113,7 +127,7 @@ namespace SilverBotDS.Commands
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var imgurl = $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibFull/1.png?raw=true";
-            var b = new DiscordEmbedBuilder().WithTitle("bibi").WithDescription($"{imgurl}\n{string.Format(lang.PageGif, 1, BibiFullPictureCount)}").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
+            var b = new DiscordEmbedBuilder().WithTitle("bibi").WithDescription($"{imgurl}\n{string.Format(lang.PageGif, 1, BibiFullDescText.Length)}").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
             await WaitForNextMessage(ctx, await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText)).SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, 0, true,b);
         }
         private async Task WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage, InteractivityExtension interactivity, Language lang, int page, bool gaming ,DiscordEmbedBuilder b = null)
@@ -123,12 +137,12 @@ namespace SilverBotDS.Commands
             if (msg.Result != null)
             {
                 page++;
-                if (page == (gaming? BibiFullPictureCount : BibiCutoutPictureCount))
+                if (page == (gaming? BibiFullDescText.Length : BibiDescText.Length))
                 {
                     page = 0;
                 }
                 var imgurl = $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/{(gaming? "BibiLibFull" : "BibiLibCutout")}/{page + 1}.png?raw=true";
-                b.WithTitle(gaming ? string.Empty : BibiDescText[page]).WithDescription($"{imgurl}\n{string.Format(lang.PageGif, page + 1, (gaming ? BibiFullPictureCount : BibiCutoutPictureCount))}").WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
+                b.WithTitle(gaming ? string.Empty : BibiDescText[page]).WithDescription($"{imgurl}\n{string.Format(lang.PageGif, page + 1, (gaming ? BibiFullDescText.Length : BibiDescText.Length))}").WithImageUrl(imgurl).WithColor(color: await ColorUtils.GetSingleAsync());
                 await msg.Result.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, new DiscordInteractionResponseBuilder(new DiscordMessageBuilder().WithEmbed(b).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText))));
                 await WaitForNextMessage(ctx, oldmessage, interactivity, lang, page, gaming,b);
             }

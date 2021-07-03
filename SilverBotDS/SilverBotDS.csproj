@@ -15,6 +15,7 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Templates\BibiLibFull\Titles.json" />
     <Content Remove="Templates\Bibi\Titles.json" />
   </ItemGroup>
   <ItemGroup>
@@ -87,47 +88,48 @@
     <None Remove="Templates\weeb_reliable_template.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templates\BibiLibCutout\1.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\10.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\11.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\12.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\13.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\14.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\15.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\16.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\17.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\18.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\19.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\2.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\20.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\21.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\22.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\3.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\4.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\5.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\6.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\7.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\8.png" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\9.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\1.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\10.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\11.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\12.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\13.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\14.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\15.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\16.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\17.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\18.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\19.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\2.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\3.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\4.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\5.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\6.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\7.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\8.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\9.png" />
+    <Content Include="Templates\BibiLibCutout\1.png" />
+    <Content Include="Templates\BibiLibCutout\10.png" />
+    <Content Include="Templates\BibiLibCutout\11.png" />
+    <Content Include="Templates\BibiLibCutout\12.png" />
+    <Content Include="Templates\BibiLibCutout\13.png" />
+    <Content Include="Templates\BibiLibCutout\14.png" />
+    <Content Include="Templates\BibiLibCutout\15.png" />
+    <Content Include="Templates\BibiLibCutout\16.png" />
+    <Content Include="Templates\BibiLibCutout\17.png" />
+    <Content Include="Templates\BibiLibCutout\18.png" />
+    <Content Include="Templates\BibiLibCutout\19.png" />
+    <Content Include="Templates\BibiLibCutout\2.png" />
+    <Content Include="Templates\BibiLibCutout\20.png" />
+    <Content Include="Templates\BibiLibCutout\21.png" />
+    <Content Include="Templates\BibiLibCutout\22.png" />
+    <Content Include="Templates\BibiLibCutout\3.png" />
+    <Content Include="Templates\BibiLibCutout\4.png" />
+    <Content Include="Templates\BibiLibCutout\5.png" />
+    <Content Include="Templates\BibiLibCutout\6.png" />
+    <Content Include="Templates\BibiLibCutout\7.png" />
+    <Content Include="Templates\BibiLibCutout\8.png" />
+    <Content Include="Templates\BibiLibCutout\9.png" />
+    <Content Include="Templates\BibiLibFull\1.png" />
+    <Content Include="Templates\BibiLibFull\10.png" />
+    <Content Include="Templates\BibiLibFull\11.png" />
+    <Content Include="Templates\BibiLibFull\12.png" />
+    <Content Include="Templates\BibiLibFull\13.png" />
+    <Content Include="Templates\BibiLibFull\14.png" />
+    <Content Include="Templates\BibiLibFull\15.png" />
+    <Content Include="Templates\BibiLibFull\16.png" />
+    <Content Include="Templates\BibiLibFull\17.png" />
+    <Content Include="Templates\BibiLibFull\18.png" />
+    <Content Include="Templates\BibiLibFull\19.png" />
+    <Content Include="Templates\BibiLibFull\2.png" />
+    <Content Include="Templates\BibiLibFull\3.png" />
+    <Content Include="Templates\BibiLibFull\4.png" />
+    <Content Include="Templates\BibiLibFull\5.png" />
+    <Content Include="Templates\BibiLibFull\6.png" />
+    <Content Include="Templates\BibiLibFull\7.png" />
+    <Content Include="Templates\BibiLibFull\8.png" />
+    <Content Include="Templates\BibiLibFull\9.png" />
+    <EmbeddedResource Include="Templates\BibiLibFull\Titles.json" />
     <EmbeddedResource Include="Templates\Bibi\12.png" />
     <EmbeddedResource Include="Templates\Bibi\13.png" />
     <EmbeddedResource Include="Templates\Bibi\14.png" />

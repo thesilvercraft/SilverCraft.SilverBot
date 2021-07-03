@@ -431,7 +431,7 @@ namespace SilverBotDS
 
         private static async Task Commands_CommandExecuted(CommandsNextExtension sender, CommandExecutionEventArgs e)
         {
-            var analytics = serviceProvider.GetService<SegmentIo>();
+            var analytics = serviceProvider.GetService<IAnalyse>();
             if (analytics is not null)
             {
                 await analytics.EmitEvent(e.Context.User, "CommandExecuted", new Dictionary<string, object>()

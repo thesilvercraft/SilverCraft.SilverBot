@@ -1,10 +1,7 @@
 ﻿@page "/bibigallery"
 @using System.Reflection
 @using SilverBotDS.Commands
-@code{
-public int BibiCutOutPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("SilverBotDS.Templates.BibiLibCutout.") && x.EndsWith(".png")).Count();
-public int BibiFullPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("SilverBotDS.Templates.BibiLibFull.") && x.EndsWith(".png")).Count();
-}
+
 <h1>Bibi pictures</h1>
 <p>By: <code>jaydenkamp#5087</code></p>
 <p>Collected and cut out by: <code>Wbubbler#7474</code></p>
@@ -51,7 +48,7 @@ public int BibiFullPictureCount = Assembly.GetExecutingAssembly().GetManifestRes
 }
 </style>
 <div class="row">
-@for(int a=1;a<BibiCutOutPictureCount;a++)
+@for(int a=1;a<BibiLib.BibiDescText.Length;a++)
 {
 string url=$"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibCutout/{a}.png?raw=true";
 <div class="column">

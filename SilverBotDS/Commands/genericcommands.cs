@@ -326,6 +326,12 @@ namespace SilverBotDS.Commands
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
                 .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
+        [Command("user")]
+        [Description("Get the info I know about a specified user")]
+        public async Task Userinfo(CommandContext ctx)
+        {
+            await Userinfo(ctx,ctx.User);
+        }
 
 #pragma warning restore CA1822 // Mark members as static
     }

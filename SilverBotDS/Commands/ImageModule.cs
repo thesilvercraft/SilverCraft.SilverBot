@@ -24,7 +24,6 @@ using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 
-
 namespace SilverBotDS.Commands
 {
     [Cooldown(1, 2, CooldownBucketType.User)]

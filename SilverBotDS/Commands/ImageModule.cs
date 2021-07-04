@@ -519,7 +519,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private readonly Font JokerFont = new(SystemFonts.Find("Futura Extra Black Condensed"), 72);
+        private readonly FontFamily JokerFontFamily = SystemFonts.Find("Futura Extra Black Condensed");
         [Command("fail")]
         [Description("epic embed fail")]
         public async Task JokerLaugh(CommandContext ctx, [RemainingText] string text)
@@ -533,10 +533,12 @@ namespace SilverBotDS.Commands
                     "SilverBotDS.Templates.joker_laugh.gif"
                 )
             );
+            
+            Font JokerFont = new(JokerFontFamily, img.Width / 10);
 
             var dr = new DrawingOptions();
             dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
-            img.Mutate(m => m.DrawText(dr, text, new Font(JokerFont, size), Brushes.Solid(Color.Black), new PointF(251f, 0f)));
+            img.Mutate(m => m.DrawText(dr, text, JokerFont, Brushes.Solid(Color.Black), new PointF(251f, 0f)));
             await using MemoryStream outStream = new();
             await img.SaveAsync(outStream, new GifEncoder());
             outStream.Position = 0;

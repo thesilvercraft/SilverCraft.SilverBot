@@ -538,7 +538,7 @@ namespace SilverBotDS.Commands
 
             var dr = new DrawingOptions();
             dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
-            img.Mutate(m => m.DrawText(dr, text, JokerFont, Brushes.Solid(Color.Black), new PointF(251f, 0f)));
+            img.Mutate(m => m.DrawText(dr, text, JokerFont, Brushes.Solid(Color.Black), new PointF(0f, 10f)));
             await using MemoryStream outStream = new();
             await img.SaveAsync(outStream, new GifEncoder());
             outStream.Position = 0;

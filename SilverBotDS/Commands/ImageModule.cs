@@ -551,7 +551,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await SendImageStream(ctx, outStream,filename:"sbfail.gif", content: "there", lang: lang);
+                await SendImageStream(ctx, outStream, filename: "sbfail.gif", content: "there", lang: lang);
             }
         }
 

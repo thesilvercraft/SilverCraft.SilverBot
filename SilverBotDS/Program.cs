@@ -114,7 +114,7 @@ namespace SilverBotDS
             return !(a is null || a == b);
         }
 
-        private static readonly string[] requiredFonts = new[] { "Diavlo Light", "Arial", "Impact", "Trebuchet MS", "Times New Roman" };
+        private static readonly string[] requiredFonts = new[] { "Diavlo Light", "Arial", "Impact", "Trebuchet MS", "Times New Roman", "Futura Extra Black Condensed" };
 
         private static bool CheckIfAllFontsAreHere()
         {
@@ -145,7 +145,7 @@ namespace SilverBotDS
             log = logfactory.CreateLogger();
             if (!(CheckIfAllFontsAreHere()))
             {
-                log.Fatal("You do not have all reqired fonts to run silverbot, on windows you only have to install Diavlo Light while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\") and Diavlo Light");
+                log.Fatal("You do not have all reqired fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format.");
             }
             if (config.EnableUpdateChecking)
             {

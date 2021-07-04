@@ -82,6 +82,7 @@
     <None Remove="Templates\Bibi\e.jpg" />
     <None Remove="Templates\fock.mp3" />
     <None Remove="Templates\happy_new_year_template.png" />
+    <None Remove="Templates\joker_laugh.gif" />
     <None Remove="Templates\motivator_template.png" />
     <None Remove="Templates\paint_template.png" />
     <None Remove="Templates\quality_fock.mp3" />
@@ -136,6 +137,7 @@
     <EmbeddedResource Include="Templates\Bibi\15.png" />
     <EmbeddedResource Include="Templates\Bibi\16.png" />
     <EmbeddedResource Include="Templates\Bibi\17.png" />
+    <EmbeddedResource Include="Templates\joker_laugh.gif" />
     <EmbeddedResource Include="Templates\quality_fock.mp3" />
   </ItemGroup>
   <ItemGroup>

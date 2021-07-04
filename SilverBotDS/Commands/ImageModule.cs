@@ -1,12 +1,15 @@
-﻿using DSharpPlus;
+using System;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
-using SilverBotDS.Converters;
-using SilverBotDS.Exceptions;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -16,13 +19,10 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Processing.Processors.Filters;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading.Tasks;
+using SilverBotDS.Converters;
+using SilverBotDS.Exceptions;
+using SilverBotDS.Objects;
+using SilverBotDS.Utils;
 
 namespace SilverBotDS.Commands
 {
@@ -518,34 +518,43 @@ namespace SilverBotDS.Commands
                 await SendImageStream(ctx, outStream, content: "there", lang: lang);
             }
         }
-        private readonly Font JokerFont = new(SystemFonts.Find("Futura Extra Black Condensed"), 72);
+
+        private readonly FontFamily JokerFontFamily = SystemFonts.Find("Futura Extra Black Condensed");
         [Command("fail")]
         [Description("epic embed fail")]
         public async Task JokerLaugh(CommandContext ctx, [RemainingText] string text)
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            using var img = await Image.LoadAsync(Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.joker_laugh.gif") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.joker_laugh.gif"));
-            float size = JokerFont.Size;
-            while (TextMeasurer.Measure(text, new RendererOptions(new Font(JokerFont.Family, size))).Width > img.Width)
-            {
-                size -= 0.05f;
-            }
+            using var img = await Image.LoadAsync(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                    "SilverBotDS.Templates.joker_laugh.gif"
+                ) ?? throw new TemplateReturningNullException(
+                    "SilverBotDS.Templates.joker_laugh.gif"
+                )
+            );
+            
+            Font JokerFont = new(JokerFontFamily, img.Width / 10);
+
             var dr = new DrawingOptions();
             dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
-            img.Mutate(m => m.DrawText(dr, text, new Font(JokerFont, size), Brushes.Solid(Color.Black), new PointF(251f, 0f)));
+            // x component of pointf is arbitrary and irrelevent since the above alignment option is given
+            img.Mutate(m => m.DrawText(dr, text, JokerFont, Brushes.Solid(Color.Black), new PointF(0f, 10f)));
             await using MemoryStream outStream = new();
             await img.SaveAsync(outStream, new GifEncoder());
             outStream.Position = 0;
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
+                await Send_img_plsAsync(
+                    ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang
+                ).ConfigureAwait(false);
             }
             else
             {
                 await SendImageStream(ctx, outStream,filename:"sbfail.gif", content: "there", lang: lang);
             }
         }
+
         [Command("motivate")]
         public async Task Motivate(CommandContext ctx, [RemainingText] string text)
         {

@@ -518,6 +518,7 @@ namespace SilverBotDS.Commands
                 await SendImageStream(ctx, outStream, content: "there", lang: lang);
             }
         }
+
         private readonly Font JokerFont = new(SystemFonts.Find("Futura Extra Black Condensed"), 72);
         [Command("fail")]
         [Description("epic embed fail")]
@@ -525,12 +526,14 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            using var img = await Image.LoadAsync(Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.joker_laugh.gif") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.joker_laugh.gif"));
-            float size = JokerFont.Size;
-            while (TextMeasurer.Measure(text, new RendererOptions(new Font(JokerFont.Family, size))).Width > img.Width)
-            {
-                size -= 0.05f;
-            }
+            using var img = await Image.LoadAsync(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                    "SilverBotDS.Templates.joker_laugh.gif"
+                ) ?? throw new TemplateReturningNullException(
+                    "SilverBotDS.Templates.joker_laugh.gif"
+                )
+            );
+
             var dr = new DrawingOptions();
             dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
             img.Mutate(m => m.DrawText(dr, text, new Font(JokerFont, size), Brushes.Solid(Color.Black), new PointF(251f, 0f)));
@@ -539,13 +542,16 @@ namespace SilverBotDS.Commands
             outStream.Position = 0;
             if (outStream.Length > MaxBytes)
             {
-                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
+                await Send_img_plsAsync(
+                    ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang
+                ).ConfigureAwait(false);
             }
             else
             {
                 await SendImageStream(ctx, outStream,filename:"sbfail.gif", content: "there", lang: lang);
             }
         }
+
         [Command("motivate")]
         public async Task Motivate(CommandContext ctx, [RemainingText] string text)
         {

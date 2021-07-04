@@ -539,7 +539,7 @@ namespace SilverBotDS.Commands
             var dr = new DrawingOptions();
             dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
             // x component of pointf is arbitrary and irrelevent since the above alignment option is given
-            img.Mutate(m => m.DrawText(dr, text, JokerFont, Brushes.Solid(Color.Black), new PointF(0f, 10f)));
+            img.Mutate(m => m.DrawText(dr, text, JokerFont, Brushes.Solid(Color.Black), new PointF(255f, 20f)));
             await using MemoryStream outStream = new();
             await img.SaveAsync(outStream, new GifEncoder());
             outStream.Position = 0;

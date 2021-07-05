@@ -2,6 +2,7 @@
 using Lavalink4NET.Events;
 using Lavalink4NET.Player;
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
@@ -24,6 +25,7 @@ namespace SilverBotDS.Objects.Classes
     public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
     {
         public LoopSettings LoopSettings { get; set; } = LoopSettings.NotLooping;
+        public List<Tuple<LavalinkTrack,DateTime>> QueueHistory { get; set; } = new();
 
         public override Task SkipAsync(int count = 1)
         {
@@ -48,6 +50,7 @@ namespace SilverBotDS.Objects.Classes
                 while (count-- > 0)
                 {
                     track = Queue.Dequeue();
+                    QueueHistory.Add(new(track,DateTime.UtcNow));
                     if (LoopSettings is LoopSettings.LoopingQueue)
                     {
                         Queue.Add(track);

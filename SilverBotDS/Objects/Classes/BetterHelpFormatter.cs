@@ -17,7 +17,7 @@ namespace SilverBotDS.Objects.Classes
     {
         public DiscordEmbedBuilder EmbedBuilder { get; }
         private Command Command { get; set; }
-
+        private Language Lang { get; set; }
         /// <summary>
         /// Creates a new default help formatter.
         /// </summary>
@@ -25,9 +25,11 @@ namespace SilverBotDS.Objects.Classes
         public CustomHelpFormatter(CommandContext ctx)
             : base(ctx)
         {
+            var langtask = Language.GetLanguageFromCtxAsync(ctx);
+            langtask.Wait();
+            Lang= langtask.Result;
             EmbedBuilder = new DiscordEmbedBuilder()
-                .WithTitle("Help")
-                .WithColor(0x007FFF);
+                .WithTitle(Lang.HelpCommandHelpString);
         }
 
         /// <summary>
@@ -38,14 +40,14 @@ namespace SilverBotDS.Objects.Classes
         public override BaseHelpFormatter WithCommand(Command command)
         {
             Command = command;
-            EmbedBuilder.WithDescription($"{Formatter.InlineCode(command.Name)}: {command.Description ?? "No description provided."}");
+            EmbedBuilder.WithDescription($"{Formatter.InlineCode(command.Name)}: {command.Description ?? Lang.HelpCommandNoDescription}");
             if (command is CommandGroup cgroup && cgroup.IsExecutableWithoutSubcommands)
             {
-               EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\nThis group {Formatter.Bold("can")} be executed as a standalone command.");
+               EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\n{Lang.HelpCommandGroupCanBeExecuted}");
             }
             if (command.Aliases?.Any() == true)
             {
-                EmbedBuilder.AddField("Aliases", string.Join(", ", command.Aliases.Select(Formatter.InlineCode)), false);
+                EmbedBuilder.AddField(Lang.HelpCommandGroupAliases, string.Join(", ", command.Aliases.Select(Formatter.InlineCode)), false);
             }
             if (command.Overloads?.Any() == true)
             {
@@ -60,11 +62,11 @@ namespace SilverBotDS.Objects.Classes
                     sb.Append("`\n");
                     foreach (var arg in ovl.Arguments)
                     {
-                        sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type)).Append(")`: ").Append(arg.Description ?? "No description provided.").Append('\n');
+                        sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type)).Append(")`: ").Append(arg.Description ?? Lang.HelpCommandNoDescription).Append('\n');
                     }
                     sb.Append('\n');
                 }
-                EmbedBuilder.AddField("Arguments", sb.ToString().Trim(), false);
+                EmbedBuilder.AddField(Lang.HelpCommandGroupArguments, sb.ToString().Trim(), false);
             }
             return this;
         }
@@ -120,7 +122,7 @@ namespace SilverBotDS.Objects.Classes
             }
             else
             {
-                EmbedBuilder.AddField("Subcommands", string.Join(", ", subcommands.Select(x => Formatter.InlineCode(x.Name))), false);
+                EmbedBuilder.AddField(Lang.HelpCommandGroupSubcommands, string.Join(", ", subcommands.Select(x => Formatter.InlineCode(x.Name))), false);
             }
          
             
@@ -134,7 +136,9 @@ namespace SilverBotDS.Objects.Classes
         public override CommandHelpMessage Build()
         {
             if (Command == null)
-                EmbedBuilder.WithDescription("Listing all commands and groups. Specify a command to see more information.");
+            {
+                EmbedBuilder.WithDescription(Lang.HelpCommandGroupListingAllCommands);
+            }
             var colortask = ColorUtils.GetSingleAsync();
             colortask.Wait();
             EmbedBuilder.Color = colortask.Result;

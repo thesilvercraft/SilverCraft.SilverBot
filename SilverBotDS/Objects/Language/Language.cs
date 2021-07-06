@@ -1,4 +1,5 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -463,6 +464,13 @@ namespace SilverBotDS.Objects
         public string QuoteGetNoBook { get; set; } = "You do not have a \"Quote Book\", you can get one by adding a quote.";
         public string QuoteGetNoQuoteWithId { get; set; } = "You do not have a quote with that ID.";
         public string QuotePreviewDeleteSuccess { get; set; } = "The quote has been deleted.";
+        public string HelpCommandHelpString { get; set; } = "Help";
+        public string HelpCommandNoDescription { get; set; } = "No description provided.";
+        public string HelpCommandGroupCanBeExecuted { get; set; } = $"This group {Formatter.Bold("can")} be executed as a standalone command.";
+        public string HelpCommandGroupAliases { get; set; } = "Aliases";
+        public string HelpCommandGroupArguments{ get; set; } = "Arguments";
+        public string HelpCommandGroupSubcommands { get; set; } = "Subcommands";
+        public string HelpCommandGroupListingAllCommands { get; set; } = "Listing all commands and groups. Specify a command to see more information.";
         public CultureInfo GetCultureInfo()
         {
             return new CultureInfo(CultureInfo);

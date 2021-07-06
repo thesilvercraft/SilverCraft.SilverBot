@@ -152,6 +152,13 @@
   "QuoteGetNoBook": "U DO NOT HAS \"QUOTE BOOK\", U CAN GIT WAN BY ADDIN QUOTE.",
   "QuoteGetNoQuoteWithId": "U DO NOT HAS QUOTE WID DAT ID.",
   "QuotePreviewDeleteSuccess": "TEH QUOTE HAS BEEN DELETD.",
+  "HelpCommandHelpString": "Help",
+  "HelpCommandNoDescription": "No description provided.",
+  "HelpCommandGroupCanBeExecuted": "This group **can** be executed as a standalone command.",
+  "HelpCommandGroupAliases": "Aliases",
+  "HelpCommandGroupArguments": "Arguments",
+  "HelpCommandGroupSubcommands": "Subcommands",
+  "HelpCommandGroupListingAllCommands": "Listing all commands and groups. Specify a command to see more information.",
   "Imagethings": {
     "JpegSuccess": "THAR YA GO JPEGNIZD IMAGE",
     "SilverSuccess": "THAR YA GO SILVR IMAGE",

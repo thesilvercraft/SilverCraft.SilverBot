@@ -10,10 +10,12 @@ using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 
 namespace SilverBotDS.Commands
 {
     [Group("gif")]
+    [Category("Image")]
     internal class Giphy : BaseCommandModule
     {
         public static Giphy CreateInstance()

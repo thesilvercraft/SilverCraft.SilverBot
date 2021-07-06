@@ -4,6 +4,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
+using SilverBotDS.Attributes;
 using SilverBotDS.Utils;
 using System;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [RequireUserPermissions(Permissions.Administrator)]
+    [Category("Utility")]
     public class AdminCommands : BaseCommandModule
     {
         private DiscordEmoji[] _pollEmojiCache;

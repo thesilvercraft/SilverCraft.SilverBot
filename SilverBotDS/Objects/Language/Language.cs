@@ -409,7 +409,7 @@ namespace SilverBotDS.Objects
         public string SongNotExist { get; set; } = "That song does not exist my dude";
         public string VersionInfoTitle { get; set; } = "SilverBot Version info";
         public string PurgedBySilverBotReason { get; set; } = "Purged by SilverBot for {0}";
-        public string NotValidLanguage { get; set; } = "That isn't a valid language, valid languages are:{0}";
+        public string NotValidLanguage { get; set; } = "That isn't a valid language, valid languages are: {0}";
         public string CultureInfo { get; set; } = "en-GB";
         public VersioninfoCommand VersionInfoCommand { get; set; } = new();
         public NugetCommand NuGetCommand { get; set; } = new();
@@ -431,8 +431,8 @@ namespace SilverBotDS.Objects
         public string XPCommandFailOther { get; set; } = "It appears that something either went wrong or they do not have any xp.";
         public string XPCommandLeaderBoardTitle { get; set; } = "XP leaderboard:";
         public string XPCommandLeaderBoardPerson { get; set; } = "{0} has {1}XP";
-        public string DisabledRepeatedPhrases { get; set; } = "Disabled a thing that annoyed oscie.";
-        public string EnableRepeatedPhrases { get; set; } = "Enabled a thing that annoyed oscie.";
+        public string DisabledRepeatedPhrases { get; set; } = "Disabled the repeating of simple phrases (like `e` or `fock`).";
+        public string EnableRepeatedPhrases { get; set; } = "Enabled the repeating of simple phrases (like `e` or `fock`).";
 
         //bot error stuff here
         /// <summary>

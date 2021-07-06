@@ -3,6 +3,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Humanizer;
+using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Database.Classes;
 using System;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
+    [Category("Quote-Book")]
     internal class ServerStatsCommands : BaseCommandModule
     {
         private readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);

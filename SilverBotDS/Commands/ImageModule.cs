@@ -23,10 +23,12 @@ using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using SilverBotDS.Attributes;
 
 namespace SilverBotDS.Commands
 {
     [Cooldown(1, 2, CooldownBucketType.User)]
+    [Category("Image")]
     public class ImageModule : BaseCommandModule
     {
         private const int MaxBytes = 8388246;

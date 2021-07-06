@@ -7,12 +7,14 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
+using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using SBDSODC = SilverBotDS.Objects.Database.Classes;
 namespace SilverBotDS.Commands
 {
     [Group("quotes"), Aliases("quote")]
+    [Category("Quote-Book")]
     public class UserQuotesModule : BaseCommandModule
     {
         public DatabaseContext dctx { private get; set; }
@@ -32,6 +34,7 @@ namespace SilverBotDS.Commands
             if(!response.TimedOut)
             {
                 dctx.userQuotes.Remove(quote);
+                await dctx.SaveChangesAsync();
                 await response.Result.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, new DiscordInteractionResponseBuilder().WithContent(lang.QuotePreviewDeleteSuccess));
             }
             else

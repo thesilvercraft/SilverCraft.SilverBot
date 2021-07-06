@@ -17,24 +17,15 @@ namespace SilverBotDS.Utils
         }
 
         public Translator(HttpClient httpClient) => this.httpClient = httpClient;
-
         public static IEnumerable<string> Languages => LanguageModeMap.Keys.OrderBy(p => p);
-
-        public string TranslationSpeechUrl
-        {
-            get;
-            private set;
-        }
-
         private readonly HttpClient httpClient;
 
-        public async System.Threading.Tasks.Task<string> TranslateAsync
+        public async System.Threading.Tasks.Task<Tuple<string,string>> TranslateAsync
             (string sourceText,
              string sourceLanguage,
              string targetLanguage)
         {
             StringBuilder translation = new();
-
             string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={LanguageEnumToIdentifier(sourceLanguage)}&tl={LanguageEnumToIdentifier(targetLanguage)}&dt=t&q={HttpUtility.UrlEncode(sourceText)}";
             using (var response = await httpClient.GetAsync(url))
             {
@@ -74,22 +65,22 @@ namespace SilverBotDS.Utils
                 }
             }
             var translationstring = translation.ToString().Trim().Replace(" ?", "?").Replace(" !", "!").Replace(" ,", ",").Replace(" .", ".").Replace(" ;", ";").Replace("\n", Environment.NewLine).Replace("\\n", Environment.NewLine);
-            TranslationSpeechUrl = $"https://translate.googleapis.com/translate_tts?ie=UTF-8&q={HttpUtility.UrlEncode(translationstring)}&tl={LanguageEnumToIdentifier(targetLanguage)}&total=1&idx=0&textlen={translation.Length}&client=gtx";
             translation.Clear();
-            return translationstring;
+            return new(translationstring, $"https://translate.googleapis.com/translate_tts?ie=UTF-8&q={HttpUtility.UrlEncode(translationstring)}&tl={LanguageEnumToIdentifier(targetLanguage)}&total=1&idx=0&textlen={translation.Length}&client=gtx");
         }
 
         public static bool ContainsKeyOrVal(string language) => LanguageModeMap.ContainsValue(language) || LanguageModeMap.ContainsKey(language);
 
         private static string LanguageEnumToIdentifier(string language)
         {
-            if (!LanguageModeMap.ContainsValue(language))
+
+            if (!LanguageModeMap.ContainsValue(language.ToLowerInvariant()))
             {
                 LanguageModeMap.TryGetValue(language, out string mode);
                 return mode;
             }
             //no need to search for a value when it is one
-            return language;
+            return language.ToLowerInvariant();
         }
 
         private static readonly Dictionary<string, string> LanguageModeMap = new()

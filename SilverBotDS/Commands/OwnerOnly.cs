@@ -8,6 +8,7 @@ using Jering.Javascript.NodeJS;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using SDBrowser;
+using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -29,6 +30,7 @@ namespace SilverBotDS.Commands
 {
     [RequireOwner]
     [Hidden]
+    [Category("Owner")]
     internal class OwnerOnly : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
@@ -163,7 +165,6 @@ namespace SilverBotDS.Commands
             var fakeContext = ctx.CommandsNext.CreateFakeContext(member, ctx.Channel, command, ctx.Prefix, cmd, customArgs);
             await ctx.CommandsNext.ExecuteCommandAsync(fakeContext);
         }
-
         [Command("setupcategory")]
         [Description("Set up a category in the silverbot dev server")]
         [RequireBotPermissions(Permissions.ManageChannels | Permissions.ManageRoles)]

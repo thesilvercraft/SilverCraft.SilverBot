@@ -3,6 +3,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Fortnite_API;
 using Fortnite_API.Objects.V1;
+using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -11,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands.Gamering
 {
+    [Category("Gaming")]
+    [Group("fortnite")]
     internal class Fortnite : BaseCommandModule
     {
         public static Fortnite CreateInstance()

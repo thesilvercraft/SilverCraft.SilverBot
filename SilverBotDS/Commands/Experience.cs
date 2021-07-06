@@ -5,6 +5,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Microsoft.EntityFrameworkCore;
+using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
@@ -25,6 +26,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
+    [Category("XP")]
     internal class Experience : BaseCommandModule
     {
         public DatabaseContext Database { private get; set; }

@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
+    [Category("Moderation")]
     internal class ModCommands : BaseCommandModule
     {
         [Command("kick")]
@@ -80,6 +82,7 @@ namespace SilverBotDS.Commands
         [Command("kms")]
         [Aliases("sewerslide")]
         [Description("Kicks yourself lmao (or ban if you're super daring)")]
+        [RequireBotPermissions(Permissions.KickMembers)]
         public async Task Kms(CommandContext ctx, [Description("hardcore sewerslide")] bool ban=false)
         {
             if (ban)

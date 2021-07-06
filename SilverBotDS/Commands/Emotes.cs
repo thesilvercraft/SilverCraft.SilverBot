@@ -4,6 +4,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
@@ -19,6 +20,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
+    [Category("Emotes")]
     internal class Emotes : BaseCommandModule
     {
         public DatabaseContext Database { private get; set; }

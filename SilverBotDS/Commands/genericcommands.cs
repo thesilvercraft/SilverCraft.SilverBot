@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -16,6 +17,7 @@ using static SilverBotDS.Utils.StringUtils;
 
 namespace SilverBotDS.Commands
 {
+    [Category("General")]
     internal sealed class Genericcommands : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static

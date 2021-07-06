@@ -6,6 +6,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
+using SilverBotDS.Attributes;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
@@ -21,6 +22,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
+    [Category("Miscellaneous")]
     internal class MiscCommands : BaseCommandModule
     {
         public DatabaseContext Database { private get; set; }
@@ -135,14 +137,6 @@ namespace SilverBotDS.Commands
             }
         }
 
-        [Command("button")]
-        public async Task ButtonTest(CommandContext ctx)
-        {
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithContent("gaming")
-                                             .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary,"e","",false,new DiscordComponentEmoji(783096213875851304)))
-                                             .SendAsync(ctx.Channel);
-        }
 
         [Command("translateunknown")]
         [Aliases("translate")]
@@ -151,9 +145,18 @@ namespace SilverBotDS.Commands
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             Translator translator = new(HttpClient);
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithContent(await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate))
-                                             .SendAsync(ctx.Channel);
+            var tranlsation = await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate);
+            if(tranlsation.Item1.Length > 4095)
+            {
+                await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{tranlsation.Item2}>", tranlsation.Item1);
+            }
+            else
+            {
+                await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                                 .WithEmbed(new DiscordEmbedBuilder().WithDescription(tranlsation.Item1).WithUrl(tranlsation.Item2).WithTitle("TTS").Build())
+                                                 .WithAllowedMentions(Mentions.None)
+                                                 .SendAsync(ctx.Channel);
+            }
         }
 
         [Command("translateunknownto")]
@@ -162,19 +165,31 @@ namespace SilverBotDS.Commands
         public async Task TranlateUnknown(CommandContext ctx, string LanguageTo, [RemainingText] string text)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            LanguageTo = LanguageTo.Humanize(casing: LetterCasing.Sentence);
-            Translator translator = new(HttpClient);
-
+            if (!Translator.ContainsKeyOrVal(LanguageTo))
+            {
+                LanguageTo = LanguageTo.Humanize(casing: LetterCasing.Sentence);
+            }
             if (!Translator.ContainsKeyOrVal(LanguageTo))
             {
                 await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                            .WithContent(string.Format(lang.NotValidLanguage, StringUtils.ArrayToString(Translator.Languages.ToArray(), ", ")))
+                                           .WithAllowedMentions(Mentions.None)
                                            .SendAsync(ctx.Channel);
                 return;
             }
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                         .WithContent(await translator.TranslateAsync(text, "auto", LanguageTo))
-                                         .SendAsync(ctx.Channel);
+            Translator translator = new(HttpClient);
+            var tranlsation = await translator.TranslateAsync(text, "auto", LanguageTo);
+            if (tranlsation.Item1.Length > 4095)
+            {
+                await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{tranlsation.Item2}>", tranlsation.Item1);
+            }
+            else
+            {
+                await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                                 .WithEmbed(new DiscordEmbedBuilder().WithDescription(tranlsation.Item1).WithUrl(tranlsation.Item2).WithTitle("TTS").Build())
+                                                 .WithAllowedMentions(Mentions.None)
+                                                 .SendAsync(ctx.Channel);
+            }
         }
 
         [Command("urbandictionary"), Aliases("urbandict", "urban")]
@@ -196,7 +211,7 @@ namespace SilverBotDS.Commands
                         tempbuilder.AddField(lang.UrbanExample, data[i].Example);
                     }
 
-                    tempbuilder.WithFooter(lang.RequestedBy + ctx.User.Username + " " + string.Format(lang.PageNuget, i + 1, data.Length), ctx.User.GetAvatarUrl(ImageFormat.Png));
+                    tempbuilder.WithFooter($"{lang.RequestedBy}{ctx.User.Username} {string.Format(lang.PageNuget, i + 1, data.Length)}", ctx.User.GetAvatarUrl(ImageFormat.Png));
                     pages.Add(new Page(embed: tempbuilder));
                 }
 
@@ -239,12 +254,10 @@ namespace SilverBotDS.Commands
                     {
                         tempbuilder.WithDescription(data[i].Description);
                     }
-
                     if (data[i].Verified is not null)
                     {
                         tempbuilder.AddField(lang.NuGetCommand.NuGetVerified, StringUtils.BoolToEmoteString(data[i].Verified == true), true);
                     }
-
                     if (!string.IsNullOrEmpty(data[i].Type))
                     {
                         tempbuilder.AddField(lang.NuGetCommand.Type, data[i].Type, true);
@@ -257,10 +270,8 @@ namespace SilverBotDS.Commands
                     {
                         tempbuilder.AddField(lang.NuGetCommand.Version, data[i].Version, true);
                     }
-
                     pages.Add(new Page(embed: tempbuilder));
                 }
-
                 await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
             }
             catch (Exception)

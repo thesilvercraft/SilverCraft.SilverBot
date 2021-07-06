@@ -3,12 +3,14 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Jering.Javascript.NodeJS;
 using org.mariuszgromada.math.mxparser;
+using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
+    [Category("Calculator")]
     internal partial class CalculatorCommands : BaseCommandModule
     {
         [Command("calculateparserold")]

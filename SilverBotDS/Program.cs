@@ -172,7 +172,6 @@ namespace SilverBotDS
             });
             //set up logging?
             discord.MessageCreated += Discord_MessageCreated;
-            discord.ComponentInteractionCreated += Discord_ComponentInteractionCreated;
             //Tell our cute client to use commands or in other words become a working class member of society
             log.Verbose("Initializing Commands");
             ServiceCollection services = new();
@@ -292,6 +291,7 @@ namespace SilverBotDS
                 StringPrefixes = config.Prefix,
                 Services = serviceProvider
             });
+            commands.SetHelpFormatter<CustomHelpFormatter>();
             //Register our commands
             log.Verbose("Registering Commands&Converters");
             commands.RegisterConverter(new SdImageConverter());
@@ -442,14 +442,7 @@ namespace SilverBotDS
             }
         }
 
-        private static async Task Discord_ComponentInteractionCreated(DiscordClient sender, DSharpPlus.EventArgs.ComponentInteractionCreateEventArgs e)
-        {
-            if (e.Id == "e")
-            {
-                await e.Interaction.EditOriginalResponseAsync(new DiscordWebhookBuilder().WithContent($"{e.Interaction.User.Mention} gaming").AddComponents(new[] { new DiscordLinkButtonComponent("https://silverdimond.tk", "silvers site"), new DiscordLinkButtonComponent("https://dash.silverbot.cf", "silverbots dashboard") }));
-                e.Handled = true;
-            }
-        }
+      
 
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
         {

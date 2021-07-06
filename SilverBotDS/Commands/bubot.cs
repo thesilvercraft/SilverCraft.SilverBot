@@ -21,9 +21,11 @@ using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System.Text.Json;
+using SilverBotDS.Attributes;
 
 namespace SilverBotDS.Commands
 {
+    [Category("Bubot")]
     internal class Bubot : BaseCommandModule
     {
         private readonly Font BibiFont = new(SystemFonts.Find("Arial"), 30, FontStyle.Bold);
@@ -80,6 +82,7 @@ namespace SilverBotDS.Commands
     [Group("bibiLibrary")]
     [Aliases("bibilib")]
     [Description("Access the great cat bibi library.")]
+    [Category("Bubot")]
     internal class BibiLib : BaseCommandModule
     {
 

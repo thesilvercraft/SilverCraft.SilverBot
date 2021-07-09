@@ -437,7 +437,6 @@ namespace SilverBotDS
                 await analytics.EmitEvent(e.Context.User, "CommandExecuted", new Dictionary<string, object>()
                {
                    { "commandname", e.Command.Name },
-                   { "rawmessage", e.Context.Message }
                });
             }
         }

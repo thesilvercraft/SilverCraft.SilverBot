@@ -326,6 +326,7 @@ namespace SilverBotDS.Commands
                     if (errcount != 0)
                     {
                         await new DiscordMessageBuilder().WithContent($"I found {errcount} {(errcount==1?"error":"errors")}. I will **NOT** attempt to run this code.").SendAsync(ctx.Channel);
+                        Console.SetOut(console);
                         return;
                     }
                 }       

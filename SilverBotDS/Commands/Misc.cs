@@ -114,11 +114,8 @@ namespace SilverBotDS.Commands
             {
                 Database.serverSettings.Add(new()
                 {
-                    EmotesOptin = false,
-                    LangName = "en",
                     ServerId = ctx.Guild.Id,
-                    ServerStatsCategoryId = null,
-                    RepeatThings = enable
+                    RepeatThings = enable,
                 });
             }
             Database.SaveChanges();

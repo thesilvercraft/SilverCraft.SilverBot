@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
-    [Category("Quote-Book")]
+    [Category("Server statistics")]
     internal class ServerStatsCommands : BaseCommandModule
     {
         private readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -102,12 +102,7 @@ namespace SilverBotDS.Commands
         public async Task SetStatisticStrings(CommandContext ctx, params string[] cake)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            List<ServerStatString> e = new();
-            foreach (var peace in cake)
-            {
-                e.Add(new(peace));
-            }
-            Database.SetServerStatStrings(ctx.Guild.Id, e);
+            Database.SetServerStatStrings(ctx.Guild.Id, cake.Select(x => new ServerStatString(x)).ToList());
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                       .WithContent(lang.StatisticCommand.SetToProvidedStrings)
                                       .WithAllowedMentions(Mentions.None)

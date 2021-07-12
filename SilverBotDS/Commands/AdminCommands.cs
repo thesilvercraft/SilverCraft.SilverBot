@@ -5,8 +5,10 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Attributes;
+using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +19,19 @@ namespace SilverBotDS.Commands
     [Category("Utility")]
     public class AdminCommands : BaseCommandModule
     {
+        public DatabaseContext Database { private get; set; }
         private DiscordEmoji[] _pollEmojiCache;
-
+        [Command("setprefix")]
+        [RequireUserPermissions(Permissions.ManageGuild)]
+        public async Task SetPrefix(CommandContext ctx, params string[] cake)
+        {
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            Database.SetServerPrefixes(ctx.Guild.Id, cake);
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                                      .WithContent(lang.StatisticCommand.SetToProvidedStrings)
+                                      .WithAllowedMentions(Mentions.None)
+                                      .SendAsync(ctx.Channel);
+        }
         /// <summary>
         /// A simple emoji based yes/no poll.
         /// </summary>

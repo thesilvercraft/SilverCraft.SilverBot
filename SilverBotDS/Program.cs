@@ -283,13 +283,15 @@ namespace SilverBotDS
                 var sconfig = SpotifyClientConfig.CreateDefault();
                 services.AddSingleton(new SpotifyClient(sconfig.WithToken((await new OAuthClient(sconfig).RequestToken(new ClientCredentialsRequest(config.SpotifyClientId, config.SpotifyClientSecret))).AccessToken)));
             }
+            services.AddSingleton(log);
             serviceProvider = services.BuildServiceProvider();
             var context = serviceProvider.GetService<DatabaseContext>();
             context.Database.Migrate();
             CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {
                 StringPrefixes = config.Prefix,
-                Services = serviceProvider
+                Services = serviceProvider,
+                PrefixResolver = ResolvePrefixAsync
             });
             commands.SetHelpFormatter<CustomHelpFormatter>();
             //Register our commands
@@ -427,6 +429,38 @@ namespace SilverBotDS
                 await Task.Delay(config.MsInterval);
                 //repeat🔁
             }
+        }
+        private static Task<int> ResolvePrefixAsync(DiscordMessage msg)
+        {
+            if (msg.Channel.Type == ChannelType.Private)
+                return Task.FromResult(0);
+            var log = serviceProvider.GetService<Serilog.Core.Logger>();
+            var config = serviceProvider.GetService<Config>();
+            var gld = msg.Channel.Guild;
+            if (gld == null)
+            {
+                log.Warning("Guild {GuildId} was null on channel {ChannelId}.",
+                    msg.Channel.GuildId, msg.Channel.Id);
+                return Task.FromResult(-1);
+            }
+            var db = serviceProvider.GetService<DatabaseContext>();
+            var srvrsttings = db.serverSettings.SingleOrDefault(x => x.ServerId == gld.Id);
+            if (srvrsttings != null)
+            {
+                foreach (var pfix in srvrsttings.Prefixes)
+                {
+                    var pfixLocation = msg.GetStringPrefixLength(pfix, StringComparison.OrdinalIgnoreCase);
+                    if (pfixLocation != -1)
+                        return Task.FromResult(pfixLocation);
+                }
+            }
+            foreach (var pfix in config.Prefix)
+            {
+                var pfixLocation = msg.GetStringPrefixLength(pfix, StringComparison.OrdinalIgnoreCase);
+                if (pfixLocation != -1)
+                    return Task.FromResult(pfixLocation);
+            }
+            return Task.FromResult(-1);
         }
 
         private static async Task Commands_CommandExecuted(CommandsNextExtension sender, CommandExecutionEventArgs e)

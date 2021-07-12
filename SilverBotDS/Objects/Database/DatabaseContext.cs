@@ -40,7 +40,6 @@ namespace SilverBotDS.Objects
         public DbSet<UserSettings> userSettings { get; set; }
         public DbSet<UserExperience> userExperiences { get; set; }
         public DbSet<UserQuote> userQuotes { get; set; }
-
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
@@ -88,10 +87,7 @@ namespace SilverBotDS.Objects
                 serverSettings.Add(new()
                 {
                     EmotesOptin = true,
-                    LangName = "en",
                     ServerId = id,
-                    ServerStatsCategoryId = null,
-                    RepeatThings = false
                 });
             }
             SaveChanges();
@@ -109,18 +105,33 @@ namespace SilverBotDS.Objects
             {
                 serverSettings.Add(new()
                 {
-                    EmotesOptin = true,
-                    LangName = "en",
                     ServerId = sid,
                     ServerStatsCategoryId = id,
-                    RepeatThings = false
                 });
             }
             SaveChanges();
         }
 
         private readonly List<ServerStatString> StatsTemplates = new() { new("All Members: {AllMembersCount}"), new("Members: {MemberCount}"), new("Bots: {BotsCount}"), new("Boosts: {BoostCount}") };
-
+        public void SetServerPrefixes(ulong sid, string[] prefixes)
+        {
+           
+            var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
+            if (serversettings is not null)
+            {
+                serversettings.Prefixes = prefixes;
+                serverSettings.Update(serversettings);
+            }
+            else
+            {
+                serverSettings.Add(new()
+                {
+                    ServerId = sid,
+                    Prefixes = prefixes,
+                });
+            }
+            SaveChanges();
+        }
         public void SetServerStatStrings(ulong sid, List<ServerStatString> id)
         {
             id ??= StatsTemplates;
@@ -134,12 +145,8 @@ namespace SilverBotDS.Objects
             {
                 serverSettings.Add(new()
                 {
-                    EmotesOptin = true,
-                    LangName = "en",
                     ServerId = sid,
-                    ServerStatsCategoryId = null,
                     ServerStatsTemplates = id,
-                    RepeatThings = false
                 });
             }
             SaveChanges();
@@ -230,11 +237,8 @@ namespace SilverBotDS.Objects
             {
                 serverSettings.Add(new()
                 {
-                    EmotesOptin = false,
                     LangName = lang,
                     ServerId = id,
-                    ServerStatsCategoryId = null,
-                    RepeatThings = false
                 });
             }
             SaveChanges();

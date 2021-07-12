@@ -99,7 +99,6 @@ namespace SilverBotDS.Commands
                    "SilverBotDS.Templates.BibiLibCutout.Titles.json"
                )
             );
-            Console.WriteLine("e");
             return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
         }
         private static string[] GetBibiFullDescText()

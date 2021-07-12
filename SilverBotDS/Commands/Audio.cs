@@ -17,6 +17,7 @@ using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TimeSpanParserUtil;
@@ -391,7 +392,7 @@ namespace SilverBotDS.Commands
 
             var pages = new List<Page>
                 {
-                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == LoopSettings.LoopingSong  ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize()))
+                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize(culture: lang.GetCultureInfo())))
                 };
             for (var i = 0; i < player.Queue.Count; i++)
             {
@@ -483,6 +484,18 @@ namespace SilverBotDS.Commands
                 return;
             }
             await SendSimpleMessage(ctx, "Lyrics", $"```{lyrics}```");
+        }
+        [Command("songaliases")]
+        [Description("Get the hardcoded aliases in silverbots code")]
+
+        public async Task Aliases(CommandContext ctx)
+        {
+            StringBuilder bob = new();
+            foreach(var song in SongOrSongsConverter.Aliases)
+            {
+                bob.AppendLine($"{Formatter.InlineCode(song.Key)} - {Formatter.InlineCode(song.Value)}");
+            }
+            await SendSimpleMessage(ctx, message: bob.ToString());
         }
 
         [Command("resume")]

@@ -29,7 +29,6 @@ using Xabe.FFmpeg.Downloader;
 namespace SilverBotDS.Commands
 {
     [RequireOwner]
-    [Hidden]
     [Category("Owner")]
     internal class OwnerOnly : BaseCommandModule
     {
@@ -46,7 +45,7 @@ namespace SilverBotDS.Commands
         private readonly string[] _urls = { "https://silverdimond.tk", "https://vfl.gg", "https://github.com/silverdimond","https://cmpc.live","https://silverbot.cf","https://oscie.net" };
 
         [Command("riprandomframes")]
-        [Description("less gooo baybae")]
+        [Description("rips times count of frames from a file")]
         public async Task RipRandomFrames(CommandContext ctx, int times, string loc, string decoder="hevc", string encoder = "hevc")
         {
             var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
@@ -69,7 +68,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("downloadffmpeg")]
-        [Description("less gooo baybae")]
+        [Description("downloads ffmpeg")]
         public async Task Downloadffmpeg(CommandContext ctx)
         {
             await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
@@ -128,7 +127,14 @@ namespace SilverBotDS.Commands
             outStream.Position = 0;
             await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("plotted that").WithFile("silverbotimage.png", outStream));
         }
-
+        [Command("sudo"), Description("Executes a command as another user."), Hidden, RequireOwner]
+        public async Task Sudo(CommandContext ctx, [Description("Member to execute as.")] DiscordMember member, [RemainingText, Description("Command text to execute.")] string command)
+        {
+            await ctx.TriggerTypingAsync();
+            var cmd = ctx.CommandsNext.FindCommand(command, out var customArgs);
+            var fakeContext = ctx.CommandsNext.CreateFakeContext(member, ctx.Channel, command, ctx.Prefix, cmd, customArgs);
+            await ctx.CommandsNext.ExecuteCommandAsync(fakeContext);
+        }
         [Command("setupcategory")]
         [Description("Set up a category in the silverbot dev server")]
         [RequireBotPermissions(Permissions.ManageChannels | Permissions.ManageRoles)]
@@ -156,14 +162,6 @@ namespace SilverBotDS.Commands
             DiscordMessageBuilder discordMessage = new();
             discordMessage.Content = $"{ctx.User.Mention} there m8 that took some time to do";
             await channel.SendMessageAsync(discordMessage);
-        }
-        [Command("sudo"), Description("Executes a command as another user."), Hidden, RequireOwner]
-        public async Task Sudo(CommandContext ctx, [Description("Member to execute as.")] DiscordMember member, [RemainingText, Description("Command text to execute.")] string command)
-        {
-            await ctx.TriggerTypingAsync();
-            var cmd = ctx.CommandsNext.FindCommand(command, out var customArgs);
-            var fakeContext = ctx.CommandsNext.CreateFakeContext(member, ctx.Channel, command, ctx.Prefix, cmd, customArgs);
-            await ctx.CommandsNext.ExecuteCommandAsync(fakeContext);
         }
         [Command("setupcategory")]
         [Description("Set up a category in the silverbot dev server")]
@@ -253,7 +251,7 @@ namespace SilverBotDS.Commands
                 }
                 else if (ob is DateTime time)
                 {
-                    str = time.Humanize();
+                    str = Formatter.Timestamp(time);
                 }
                 else if (ob is string @string)
                 {
@@ -325,9 +323,9 @@ namespace SilverBotDS.Commands
                         await new DiscordMessageBuilder().WithContent($"Compilation Diagnostics showed up: {Formatter.BlockCode(RemoveCodeBraces(diag.Humanize()), "cs")}").SendAsync(ctx.Channel);
                     }
                     var errcount = diag.LongCount(x => x.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error);
-                    if (errcount!=0)
+                    if (errcount != 0)
                     {
-                        await new DiscordMessageBuilder().WithContent($"OH NO! After examining the diagnostics, I found {errcount} {(errcount==1?"error":"errors")}. That means if i try to run this it **WILL** fail. I will **NOT** attempt to run this code.").SendAsync(ctx.Channel);
+                        await new DiscordMessageBuilder().WithContent($"I found {errcount} {(errcount==1?"error":"errors")}. I will **NOT** attempt to run this code.").SendAsync(ctx.Channel);
                         return;
                     }
                 }       
@@ -341,7 +339,7 @@ namespace SilverBotDS.Commands
                 }
                 else
                 {
-                    await new DiscordMessageBuilder().WithContent($"The evaluated code returned a `null`. (null is a special marker that is used when something does not have a value, similar to **N**ot**AN**umber)").SendAsync(ctx.Channel);
+                    await new DiscordMessageBuilder().WithContent($"The evaluated code returned a `null`.").SendAsync(ctx.Channel);
                 }
                 if (!string.IsNullOrEmpty(sw.ToString()))
                 {
@@ -447,6 +445,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("sh")]
+        [Description("runs some commands")]
         public async Task RunConsole(CommandContext ctx, [RemainingText] string command)
         {
             Process main = new();
@@ -673,7 +672,7 @@ namespace SilverBotDS.Commands
                 await using var stream = new MemoryStream();
                 fileStream.Position = 0;
                 await fileStream.CopyToAsync(stream);
-                if (stream.Length > 256 * 1000)
+                if (stream.Length > 256000)
                 {
                     status.Append(Path.GetFileName(file));
                     status.Append("\t " + StringUtils.BoolToEmoteString(false) + " Bigger than 256kb");
@@ -710,7 +709,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("screenshothtml")]
-        [Description("UHHHHHHHHHHHHH its a secret")]
+        [Description("screenshot a webpage")]
         public async Task Html(CommandContext ctx, string html)
         {
             if (await IsBrowserNotSpecifed(ctx))

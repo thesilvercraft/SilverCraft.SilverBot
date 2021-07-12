@@ -447,7 +447,14 @@ namespace SilverBotDS
         {
             return new Dictionary<string, string> { ["GuildCount"] = client.Guilds.Values.LongCount().ToString(), ["Platform"] = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() };
         }
-
+        private static string RemoveStringFromEnd(string a, string sub)
+        {
+            if(a.EndsWith(sub))
+            {
+                a = a.Substring(0, a.LastIndexOf(sub));
+            }
+            return a;
+        }
         private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
             if (e.Context.Channel.PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id)).HasPermission(Permissions.SendMessages))
@@ -466,7 +473,7 @@ namespace SilverBotDS
                         {
                             await new DiscordMessageBuilder()
                                                              .WithReply(e.Context.Message.Id)
-                                                             .WithContent(string.Format(lang.CheckFailed, cfe.FailedChecks[0].GetType().Name))
+                                                             .WithContent(string.Format(lang.CheckFailed, RemoveStringFromEnd(cfe.FailedChecks[0].GetType().Name, "Attribute").Humanize()))
                                                              .SendAsync(e.Context.Channel);
                         }
                         else
@@ -475,7 +482,7 @@ namespace SilverBotDS
                             var tempbuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
                             for (var i = 0; i < cfe.FailedChecks.Count; i++)
                             {
-                                pages.Add(new Page(embed: tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}").WithDescription(cfe.FailedChecks[i].GetType().Name)));
+                                pages.Add(new Page(embed: tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}").WithDescription(RemoveStringFromEnd(cfe.FailedChecks[i].GetType().Name, "Attribute").Humanize())));
                             }
                             await e.Context.Channel.SendPaginatedMessageAsync(e.Context.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
                         }

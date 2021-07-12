@@ -25,7 +25,8 @@ namespace SilverBotDS.Objects.Classes
     public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
     {
         public LoopSettings LoopSettings { get; set; } = LoopSettings.NotLooping;
-        public List<Tuple<LavalinkTrack,DateTime>> QueueHistory { get; set; } = new();
+        public ulong LoopTimes { get; set; } = 0;
+        public List<Tuple<LavalinkTrack,DateTime,bool>> QueueHistory { get; set; } = new();
 
         public override Task SkipAsync(int count = 1)
         {
@@ -42,6 +43,7 @@ namespace SilverBotDS.Objects.Classes
             EnsureConnected();
             if (!command && LoopSettings == LoopSettings.LoopingSong && CurrentTrack != null)
             {
+                QueueHistory.Add(new(CurrentTrack, DateTime.UtcNow, false));
                 return PlayAsync(CurrentTrack, false);
             }
             else if (!Queue.IsEmpty)
@@ -50,7 +52,7 @@ namespace SilverBotDS.Objects.Classes
                 while (count-- > 0)
                 {
                     track = Queue.Dequeue();
-                    QueueHistory.Add(new(track,DateTime.UtcNow));
+                    QueueHistory.Add(new(track, DateTime.UtcNow,true));
                     if (LoopSettings is LoopSettings.LoopingQueue)
                     {
                         Queue.Add(track);

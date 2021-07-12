@@ -31,7 +31,7 @@ namespace SilverBotDS.Converters
 
         private static readonly Regex AlbumRegex = new(@"^(https:\/\/open\.spotify\.com\/album\/|spotify:album:)([a-zA-Z0-9]+)(.*)$", RegexOptions.Compiled);
 
-        private readonly IReadOnlyDictionary<string, string> aliases = new Dictionary<string, string>
+        public static readonly IReadOnlyDictionary<string, string> Aliases = new Dictionary<string, string>
         {
            {"we will fock you", "https://youtu.be/lLN3caSQI1w"},
            {"special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8"},
@@ -111,9 +111,9 @@ namespace SilverBotDS.Converters
                     await ctx.TriggerTypingAsync();
                 }
             }
-            if (aliases.ContainsKey(value))
+            if (Aliases.ContainsKey(value))
             {
-                value = aliases[value];
+                value = Aliases[value];
             }
             await ctx.TriggerTypingAsync();
             if (value.EndsWith(".json"))

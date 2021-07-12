@@ -28,12 +28,12 @@ namespace SilverBotDS.Commands
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithContent(string.Format(lang.StatisticCommand.EmojiMessageDownloadStart, limit, new TimeSpan(0, 0, limit / 100).Humanize(2)))
+                                             .WithContent(string.Format(lang.StatisticCommand.EmojiMessageDownloadStart, limit, new TimeSpan(0, 0, limit / 100).Humanize(2, culture: lang.GetCultureInfo())))
                                              .SendAsync(ctx.Channel);
             DateTime start = DateTime.Now;
             var messages = await channel.GetMessagesAsync(limit);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                            .WithContent(string.Format(lang.StatisticCommand.EmojiMessageDownloadEnd, messages.Count, limit, new TimeSpan(0, 0, limit / 100).Humanize(2), (DateTime.Now - start).Humanize(2), new TimeSpan(0, 0, messages.Count / 100).Humanize(2)))
+                                            .WithContent(string.Format(lang.StatisticCommand.EmojiMessageDownloadEnd, messages.Count, limit, new TimeSpan(0, 0, limit / 100).Humanize(2, culture: lang.GetCultureInfo()), (DateTime.Now - start).Humanize(2, culture: lang.GetCultureInfo()), new TimeSpan(0, 0, messages.Count / 100).Humanize(2, culture: lang.GetCultureInfo())))
                                             .SendAsync(ctx.Channel);
             DateTime startproc = DateTime.Now;
             StringBuilder bob = new("Name,Id,Timestamp\n");
@@ -53,7 +53,7 @@ namespace SilverBotDS.Commands
                 }
                 e++;
             }
-            await OwnerOnly.SendStringFileWithContent(ctx, string.Format(lang.StatisticCommand.EmojiEnd, messages.Count, (DateTime.Now - start).Humanize(2), (DateTime.Now - startproc).Humanize(2)), bob.ToString(), "emotes.csv");
+            await OwnerOnly.SendStringFileWithContent(ctx, string.Format(lang.StatisticCommand.EmojiEnd, messages.Count, (DateTime.Now - start).Humanize(2, culture: lang.GetCultureInfo()), (DateTime.Now - startproc).Humanize(2, culture: lang.GetCultureInfo())), bob.ToString(), "emotes.csv");
             bob.Clear();
         }
 

@@ -699,6 +699,13 @@ namespace SilverBotDS.Commands
             }
             await ctx.RespondAsync(bob.ToString());
         }
+        [Command("togglebanuser")]
+        public async Task ToggleBanUser(CommandContext ctx,DiscordUser userid,bool ban=true)
+        {
+            Database.ToggleBanUser(userid.Id, ban);
+            await Database.SaveChangesAsync();
+            await ctx.RespondAsync($"{userid.Id} has been {(ban?"banned":"unbanned")}");
+        }
 
         [Command("shutdown")]
         [Description("kill the bot")]

@@ -151,6 +151,24 @@ namespace SilverBotDS.Objects
             }
             SaveChanges();
         }
+        internal void ToggleBanUser(ulong id, bool BAN)
+        {
+            var usersettings = userSettings.FirstOrDefault(x => x.Id == id);
+            if (usersettings is not null)
+            {
+                usersettings.IsBanned = BAN;
+                userSettings.Update(usersettings);
+            }
+            else
+            {
+                userSettings.Add(new()
+                {
+                    Id = id,
+                    IsBanned = BAN
+                });
+            }
+            SaveChanges();
+        }
 
         internal void InserOrUpdateLangCodeUser(ulong id, string lang)
         {

@@ -79,7 +79,7 @@ namespace SilverBotDS.Commands.Gamering
             {
                 var bob = new DiscordEmbedBuilder();
                 bob.WithTitle(lang.SearchFailTitle);
-                bob.WithDescription(lang.SearchFailDescription + "\n" + e.Message);
+                bob.WithDescription($"{lang.SearchFailDescription}\n{e.Message}");
                 await ctx.RespondAsync(embed: bob.Build());
                 throw;
             }

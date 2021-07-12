@@ -289,7 +289,6 @@ namespace SilverBotDS
             context.Database.Migrate();
             CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {
-                StringPrefixes = config.Prefix,
                 Services = serviceProvider,
                 PrefixResolver = ResolvePrefixAsync
             });
@@ -332,7 +331,7 @@ namespace SilverBotDS
             if (IsNotNullAndIsNotB(config.MicrosoftGraphClientId, "Graph-Client-Id-Here"))
             {
                 commands.RegisterCommands<CalendarCommands>();
-            }
+            }           
             commands.CommandErrored += Commands_CommandErrored;
             commands.CommandExecuted += Commands_CommandExecuted;
             if (config.UseNodeJs)
@@ -436,6 +435,11 @@ namespace SilverBotDS
             {
                 return Task.FromResult(0);
             }
+            var db = serviceProvider.GetService<DatabaseContext>();
+            if (db.IsBanned(msg.Author.Id))
+            {
+                return Task.FromResult(-1);
+            }
             var gld = msg.Channel.Guild;
             if (gld == null)
             {
@@ -443,7 +447,6 @@ namespace SilverBotDS
                     msg.Channel.GuildId, msg.Channel.Id);
                 return Task.FromResult(-1);
             }
-            var db = serviceProvider.GetService<DatabaseContext>();
             var srvrsttings = db.serverSettings.SingleOrDefault(x => x.ServerId == gld.Id);
             if (srvrsttings != null)
             {
@@ -472,7 +475,7 @@ namespace SilverBotDS
             {
                 await analytics.EmitEvent(e.Context.User, "CommandExecuted", new Dictionary<string, object>()
                {
-                   { "commandname", e.Command.Name },
+                   { "commandname", e.Command.Parent is not null?e.Command.Parent.Name:string.Empty + e.Command.Name },
                });
             }
         }

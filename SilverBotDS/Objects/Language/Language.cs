@@ -473,7 +473,6 @@ namespace SilverBotDS.Objects
         public string HelpCommandGroupListingAllCommands { get; set; } = "Listing all commands and groups. Specify a command to see more information.";
         public CultureInfo GetCultureInfo()
         {
-            Console.WriteLine(CultureInfo);
             return new CultureInfo(CultureInfo);
         }
 

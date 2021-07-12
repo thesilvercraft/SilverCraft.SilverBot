@@ -27,7 +27,7 @@ namespace SilverBotDS.Objects
         public List<ServerStatString> ServerStatsTemplates { get; set; }
         public bool RepeatThings { get; set; }
         [NotMapped]
-        public string[] Prefixes { get=>JsonSerializer.Deserialize<string[]>(PrefixesInJson); set=> PrefixesInJson = JsonSerializer.Serialize(value); }
+        public string[] Prefixes { get=>JsonSerializer.Deserialize<string[]>(PrefixesInJson??"{}") ; set=> PrefixesInJson = JsonSerializer.Serialize(value); }
         public string PrefixesInJson { get; set; }
     }
     public class FakeString

@@ -433,9 +433,9 @@ namespace SilverBotDS
         private static Task<int> ResolvePrefixAsync(DiscordMessage msg)
         {
             if (msg.Channel.Type == ChannelType.Private)
+            {
                 return Task.FromResult(0);
-            var log = serviceProvider.GetService<Serilog.Core.Logger>();
-            var config = serviceProvider.GetService<Config>();
+            }
             var gld = msg.Channel.Guild;
             if (gld == null)
             {
@@ -451,7 +451,9 @@ namespace SilverBotDS
                 {
                     var pfixLocation = msg.GetStringPrefixLength(pfix, StringComparison.OrdinalIgnoreCase);
                     if (pfixLocation != -1)
+                    {
                         return Task.FromResult(pfixLocation);
+                    } 
                 }
             }
             foreach (var pfix in config.Prefix)

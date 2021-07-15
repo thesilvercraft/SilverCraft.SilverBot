@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -37,13 +38,15 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
                 .WithTitle(lang.VersionInfoTitle)
-                .AddField(lang.VersionInfoCommand.VersionNumber, "`" + VersionInfo.VNumber + "`")
+                .AddField(lang.VersionInfoCommand.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
                 .AddField(lang.VersionInfoCommand.GitRepo, ThisAssembly.Git.RepositoryUrl)
-                .AddField(lang.VersionInfoCommand.GitCommitHash, "`" + ThisAssembly.Git.Commit + "`")
-                .AddField(lang.VersionInfoCommand.GitBranch, "`" + ThisAssembly.Git.Branch + "`")
+                .AddField(lang.VersionInfoCommand.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
+                .AddField(lang.VersionInfoCommand.GitBranch, Formatter.InlineCode(ThisAssembly.Git.Branch))
                 .AddField(lang.VersionInfoCommand.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
-                .AddField(lang.VersionInfoCommand.CLR, "`" + (ctx.Client.CurrentApplication.Owners.Contains(ctx.User) && ctx.Channel.IsPrivate ? System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription : "REDACTED") + "`")
-                .WithAuthor(ctx.Client.CurrentUser.Username + "#" + ctx.Client.CurrentUser.Discriminator, iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
+                .AddField(lang.VersionInfoCommand.CLR, Formatter.InlineCode(RuntimeInformation.FrameworkDescription))
+                .AddField(lang.VersionInfoCommand.OS, Formatter.InlineCode(Environment.OSVersion.VersionString))
+                .AddField(lang.VersionInfoCommand.DsharpplusVersion, Formatter.InlineCode(ctx.Client.VersionString))
+                .WithAuthor($"{ctx.Client.CurrentUser.Username}#{ctx.Client.CurrentUser.Discriminator}", iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
@@ -56,7 +59,7 @@ namespace SilverBotDS.Commands
             {
                 WriteIndented = true
             };
-            var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(await Language.GetLanguageFromCtxAsync(ctx), options)));
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(await Language.GetLanguageFromCtxAsync(ctx), options)));
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithFile("language.json", stream)
                                              .SendAsync(ctx.Channel);
@@ -66,8 +69,6 @@ namespace SilverBotDS.Commands
         [Description("piss :)")]
         public Task Piss(CommandContext ctx)
         {
-            // line 67
-            // line 68
             throw new PissException(69); // line 69 :)
         }
 
@@ -76,7 +77,7 @@ namespace SilverBotDS.Commands
         [RequireUserPermissions(Permissions.ManageGuild)]
         public async Task SetLanguage(CommandContext ctx, string LangName)
         {
-            if (Language.LoadedLanguages().AsEnumerable().FirstOrDefault(x => x.ToLowerInvariant() == LangName.ToLowerInvariant()) != null)
+            if (Language.LoadedLanguages().AsEnumerable().Any(x => string.Equals(x, LangName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 if (ctx.Channel.IsPrivate)
                 {
@@ -94,7 +95,7 @@ namespace SilverBotDS.Commands
             else
             {
                 await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                          .WithContent("Unknown language. Valid choices are:```" + Language.LoadedLanguages().Humanize() + "```")
+                                          .WithContent($"Unknown language. Valid choices are:```{Language.LoadedLanguages().Humanize()}```")
                                           .SendAsync(ctx.Channel);
             }
         }
@@ -133,7 +134,6 @@ namespace SilverBotDS.Commands
                                      .SendAsync(ctx.Channel);
             }
         }
-
 
         [Command("translateunknown")]
         [Aliases("translate")]

@@ -36,7 +36,6 @@ namespace SilverBotDS.Objects
         public string Value { get; set; }
         public FakeString()
         {
-
         }
         public FakeString(string v)
         {
@@ -46,6 +45,5 @@ namespace SilverBotDS.Objects
         {
             return s.Value;
         }
-       
     }
 }

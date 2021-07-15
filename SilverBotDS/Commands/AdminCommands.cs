@@ -39,7 +39,6 @@ namespace SilverBotDS.Commands
         /// <param name="duration">Amount of time how long the poll should last.</param>
         /// <param name="question">Polls question</param>
         /// <returns></returns>
-
         [Command("emojipoll"), Description("Start a simple emoji poll for a simple yes/no question"), Cooldown(2, 30, CooldownBucketType.Guild)]
         public async Task EmojiPollAsync(CommandContext commandContext, [Description("How long should the poll last. (e.g. 1m = 1 minute)")] TimeSpan duration, [Description("Poll question"), RemainingText] string question)
         {
@@ -74,7 +73,7 @@ namespace SilverBotDS.Commands
                 {
                     pollResultText.Append("No");
                 }
-                pollResultText.Append($"**\nYes:{yesVotes} No:{noVotes} Undecided: {commandContext.Guild.MemberCount - (yesVotes + noVotes)} (server total-people that voted)");
+                pollResultText.Append("**\nYes:").Append(yesVotes).Append(" No:").Append(noVotes).Append(" Undecided: ").Append(commandContext.Guild.MemberCount - (yesVotes + noVotes)).Append(" (server total-people that voted)");
                 bob.WithDescription(pollResultText.ToString());
                 await pollStartMessage.ModifyAsync(embed: bob.Build());
             }

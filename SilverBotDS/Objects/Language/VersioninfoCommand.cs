@@ -4,6 +4,8 @@
     {
         public class VersioninfoCommand
         {
+            public string OS { get; set; } = "Operating system:";
+            public string DsharpplusVersion { get; set; } = "Dsharpplus version:";
             public string VersionNumber { get; set; } = "Version number";
             public string GitRepo { get; set; } = "Git repo";
             public string GitCommitHash { get; set; } = "Git Commit hash";

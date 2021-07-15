@@ -20,7 +20,9 @@ namespace SilverBotDS.Commands
             ExConfig = new Config();
         }
 
+#pragma warning disable IDE1006 // Naming Styles
         public CommandContext ctx { get; init; }
+#pragma warning restore IDE1006 // Naming Styles
         public DiscordMember Member { get; init; }
         public DiscordUser User { get; init; }
         public DiscordGuild Guild { get; init; }

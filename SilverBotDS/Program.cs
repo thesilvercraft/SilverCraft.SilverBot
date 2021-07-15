@@ -136,7 +136,7 @@ namespace SilverBotDS
                 logfactory.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
             log = logfactory.CreateLogger();
-            if (!(CheckIfAllFontsAreHere()))
+            if (!CheckIfAllFontsAreHere())
             {
                 log.Fatal("You do not have all reqired fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format.");
             }
@@ -191,7 +191,7 @@ namespace SilverBotDS
                     }
                 default:
                     {
-                        throw new NotImplementedException();
+                        throw new NotSupportedException();
                     }
             }
             #endregion
@@ -322,7 +322,7 @@ namespace SilverBotDS
             if (IsNotNullAndIsNotB(config.MicrosoftGraphClientId, "Graph-Client-Id-Here"))
             {
                 commands.RegisterCommands<CalendarCommands>();
-            }           
+            }
             commands.CommandErrored += Commands_CommandErrored;
             commands.CommandExecuted += Commands_CommandExecuted;
             if (config.UseNodeJs)
@@ -337,7 +337,7 @@ namespace SilverBotDS
             //🥁🥁🥁 drum-roll
             log.Information("Connecting to discord");
             bool isconnected = false;
-            discord.Ready += (DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs e) =>
+            discord.Ready += (DiscordClient _, DSharpPlus.EventArgs.ReadyEventArgs __) =>
             {
                 isconnected = true;
                 return Task.CompletedTask;
@@ -365,10 +365,7 @@ namespace SilverBotDS
             await discord.UpdateStatusAsync(new("console logs while configuring server statistics", ActivityType.Watching));
             if (config.EnableServerStatistics)
             {
-                _ = Task.Run(() =>
-                {
-                    return StatisticsMainAsync();
-                });
+                _ = Task.Run(() => StatisticsMainAsync());
             }
             await discord.UpdateStatusAsync(new("console logs while launching the website module", ActivityType.Watching));
             #region Website Fun Time
@@ -406,10 +403,7 @@ namespace SilverBotDS
                         break;
                 }
             })
-             .ConfigureWebHostDefaults(webBuilder =>
-             {
-                 webBuilder.UseStartup<WebpageStartup>();
-             }).UseSerilog(log).Build();
+             .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<WebpageStartup>()).UseSerilog(log).Build();
             #endregion
             _ = Task.Run(async () => await host.RunAsync());
             while (true)
@@ -450,7 +444,7 @@ namespace SilverBotDS
                     if (pfixLocation != -1)
                     {
                         return Task.FromResult(pfixLocation);
-                    } 
+                    }
                 }
             }
             foreach (var pfix in config.Prefix)
@@ -517,7 +511,7 @@ namespace SilverBotDS
                             await e.Context.Channel.SendPaginatedMessageAsync(e.Context.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
                         }
                     }
-                    else if (e.Exception is InvalidOverloadException || e.Exception is ArgumentException a && a.Message == "Could not find a suitable overload for the command.")
+                    else if (e.Exception is InvalidOverloadException || (e.Exception is ArgumentException a && a.Message == "Could not find a suitable overload for the command."))
                     {
                         await new DiscordMessageBuilder()
                                                          .WithReply(e.Context.Message.Id)
@@ -543,9 +537,7 @@ namespace SilverBotDS
             log.Error(exception: e.Exception, "An exception occurred while trying to run {Command} with the raw arguments as {Raw}", e.Command.Name, e.Context.RawArgumentString);
         }
 
-#pragma warning disable S1075 // URIs should not be hardcoded
         private const string FridayUrl = "https://youtu.be/akT0wxv9ON8";
-#pragma warning restore S1075 // URIs should not be hardcoded
         private static int last_friday;
 
         public static async Task StatisticsMainAsync()
@@ -675,7 +667,7 @@ namespace SilverBotDS
                                                  .WithContent(msgcontent)
                                                  .WithFile(filename, stream)
                                                  .SendAsync(chan);
-            }   
+            }
         }
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
@@ -717,10 +709,10 @@ namespace SilverBotDS
                             return;
                         case "quality fock":
                             await SendRepeatedMessage(
-                                e.Message.Id, e.Message.Content, e.Channel, "quality_fock.mp3", 
+                                e.Message.Id, e.Message.Content, e.Channel, "quality_fock.mp3",
                                 Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.quality_fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.quality_fock.mp3"));
                             return;
-                        case "fock you":                        
+                        case "fock you":
                             await SendRepeatedMessage(
                                 e.Message.Id, "fock you too", e.Channel, "fock.mp3",
                                 Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"));

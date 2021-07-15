@@ -47,7 +47,7 @@ namespace SilverBotDS.Commands
                     {
                         foreach (Match match in m.ToArray())
                         {
-                            bob.AppendLine($"{match.Groups["name"].Value},{Convert.ToUInt64(match.Groups["id"].Value)},{(DateTimeOffset)(message.EditedTimestamp != null ? message.EditedTimestamp : message.Timestamp):yyyy-MM-dd HH:mm:ss}");
+                            bob.Append(match.Groups["name"].Value).Append(',').Append(Convert.ToUInt64(match.Groups["id"].Value)).Append(',').AppendFormat("{0:yyyy-MM-dd HH:mm:ss}", (DateTimeOffset)(message.EditedTimestamp ?? message.Timestamp)).AppendLine();
                         }
                     }
                 }

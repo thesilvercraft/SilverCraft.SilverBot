@@ -59,12 +59,12 @@ namespace SilverBotDS.Commands
                 {
                     await FFmpeg.Conversions.New()
                     .AddStream(videoStream)
-                    .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (number) => { return $"Extracts{Program.DirSlash}{name}{i}.png"; })
+                    .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (_) => $"Extracts{Program.DirSlash}{name}{i}.png")
                     .UseHardwareAcceleration(HardwareAccelerator.auto, (VideoCodec)Enum.Parse(typeof(VideoCodec),decoder,true), (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
                     .Start();
                 }
             }
-            await ctx.RespondAsync($"done?");
+            await ctx.RespondAsync("done?");
         }
 
         [Command("downloadffmpeg")]
@@ -72,7 +72,7 @@ namespace SilverBotDS.Commands
         public async Task Downloadffmpeg(CommandContext ctx)
         {
             await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
-            await ctx.RespondAsync($"done?");
+            await ctx.RespondAsync("done?");
         }
 
         [Command("reloadcolors")]
@@ -104,7 +104,7 @@ namespace SilverBotDS.Commands
         {
             var interactivity = ctx.Client.GetInteractivity();
             await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("send x data"));
-            var msg = await interactivity.WaitForMessageAsync((a) => { return a.Author.Id == ctx.User.Id; });
+            var msg = await interactivity.WaitForMessageAsync((a) => a.Author.Id == ctx.User.Id);
             if (msg.TimedOut)
             {
                 await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("nvm your too slow"));
@@ -112,7 +112,7 @@ namespace SilverBotDS.Commands
             }
             double[] xdata = Array.ConvertAll(msg.Result.Content.Split(' '), double.Parse);
             await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("send y data"));
-            msg = await interactivity.WaitForMessageAsync((a) => { return a.Author.Id == ctx.User.Id; });
+            msg = await interactivity.WaitForMessageAsync((a) => a.Author.Id == ctx.User.Id);
             if (msg.TimedOut)
             {
                 await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("nvm your too slow"));
@@ -292,7 +292,24 @@ namespace SilverBotDS.Commands
         {
             WriteIndented = true
         };
-
+        [Command("dependancies")]
+        [Description("get the dependancies used")]
+        public async Task Dependancies(CommandContext ctx)
+        {
+            StringBuilder sb = new();
+            foreach(var dependancy in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                sb.AppendLine(dependancy.FullName);
+            }
+            if (sb.Length > 1958)
+            {
+                await SendStringFileWithContent(ctx, "stuff", sb.ToString(), "stuff.txt");
+            }
+            else
+            {
+                await new DiscordMessageBuilder().WithContent(Formatter.BlockCode(RemoveCodeBraces(sb.ToString()))).SendAsync(ctx.Channel);
+            }
+        }
         /// <summary>
         /// Stolen idea from https://github.com/Voxel-Fox-Ltd/VoxelBotUtils/blob/master/voxelbotutils/cogs/owner_only.py#L172-L252
         /// </summary>
@@ -313,7 +330,6 @@ namespace SilverBotDS.Commands
                 sw1.Stop();
                 if (diag.Length != 0)
                 {
-                   
                     if (diag.Humanize().Length > 1958)
                     {
                         await SendStringFileWithContent(ctx, "Compilation Diagnostics showed up:", diag.Humanize(), "diag.txt");
@@ -329,7 +345,7 @@ namespace SilverBotDS.Commands
                         Console.SetOut(console);
                         return;
                     }
-                }       
+                }
                 await new DiscordMessageBuilder().WithContent($"Compiled the code in {sw1.Elapsed.Humanize(6)}").SendAsync(ctx.Channel);
                 sw1.Start();
                 var sw2 = Stopwatch.StartNew();
@@ -340,7 +356,7 @@ namespace SilverBotDS.Commands
                 }
                 else
                 {
-                    await new DiscordMessageBuilder().WithContent($"The evaluated code returned a `null`.").SendAsync(ctx.Channel);
+                    await new DiscordMessageBuilder().WithContent("The evaluated code returned a `null`.").SendAsync(ctx.Channel);
                 }
                 if (!string.IsNullOrEmpty(sw.ToString()))
                 {
@@ -403,7 +419,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        await new DiscordMessageBuilder().WithContent($"Got a `null`").SendAsync(ctx.Channel);
+                        await new DiscordMessageBuilder().WithContent("Got a `null`").SendAsync(ctx.Channel);
                     }
                     if (!string.IsNullOrEmpty(sw.ToString()))
                     {
@@ -500,9 +516,7 @@ namespace SilverBotDS.Commands
             if (thing.Item1 == null && thing.Item2 != null)
             {
                 var bob = new DiscordEmbedBuilder();
-#pragma warning disable S1075 // URIs should not be hardcoded
                 bob.WithImageUrl("attachment://html.png").WithFooter($"Requested by {ctx.User.Username}", ctx.User.GetAvatarUrl(ImageFormat.Png));
-#pragma warning restore S1075 // URIs should not be hardcoded
                 thing.Item2.Position = 0;
                 await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", thing.Item2).SendAsync(ctx.Channel);
                 thing.Item2.Dispose();
@@ -527,9 +541,7 @@ namespace SilverBotDS.Commands
             {
                 return;
             }
-#pragma warning disable S1075 // URIs should not be hardcoded
             var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter($"Requested by {ctx.User.Username}", ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
-#pragma warning restore S1075 // URIs should not be hardcoded
             using var e = await Browser.RenderUrlAsync(html);
             await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithReply(ctx.Message.Id).WithFile("html.png", e).SendAsync(ctx.Channel);
         }
@@ -676,13 +688,13 @@ namespace SilverBotDS.Commands
                 if (stream.Length > 256000)
                 {
                     status.Append(Path.GetFileName(file));
-                    status.Append("\t " + StringUtils.BoolToEmoteString(false) + " Bigger than 256kb");
+                    status.Append("\t ").Append(StringUtils.BoolToEmoteString(false)).Append(" Bigger than 256kb");
                 }
                 else
                 {
                     var emote = await ctx.Guild.CreateEmojiAsync(name: Path.GetFileNameWithoutExtension(file),
                         image: stream, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
-                    status.Append("\t " + emote + ' ' + StringUtils.BoolToEmoteString(true));
+                    status.Append("\t ").Append(emote).Append(' ').Append(StringUtils.BoolToEmoteString(true));
                 }
             }
             await ctx.RespondAsync(status.ToString());
@@ -696,7 +708,7 @@ namespace SilverBotDS.Commands
             StringBuilder bob = new();
             foreach (var guild in ctx.Client.Guilds.Values)
             {
-                bob.AppendLine($"{guild.Name} | {guild.Owner.DisplayName} | {guild.MemberCount} | {guild.Id}");
+                bob.Append(guild.Name).Append(" | ").Append(guild.Owner.DisplayName).Append(" | ").Append(guild.MemberCount).Append(" | ").Append(guild.Id).AppendLine();
             }
             await ctx.RespondAsync(bob.ToString());
         }
@@ -725,9 +737,7 @@ namespace SilverBotDS.Commands
                 return;
             }
             var bob = new DiscordEmbedBuilder();
-#pragma warning disable S1075 // URIs should not be hardcoded
             bob.WithImageUrl("attachment://html.png").WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-#pragma warning restore S1075 // URIs should not be hardcoded
             using var e = await Browser.RenderHtmlAsync(html);
 
             e.Position = 0;

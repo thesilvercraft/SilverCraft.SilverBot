@@ -17,7 +17,7 @@ namespace SilverBotDS.Commands
     [Category("Quote-Book")]
     public class UserQuotesModule : BaseCommandModule
     {
-        public DatabaseContext dctx { private get; set; }
+        public DatabaseContext Dctx { private get; set; }
         public async Task PresentQuote(CommandContext ctx, SBDSODC.UserQuote quote, Language lang)
         {
             var b = new DiscordEmbedBuilder()
@@ -33,14 +33,14 @@ namespace SilverBotDS.Commands
             var response = await msg.WaitForButtonAsync(ctx.User, TimeSpan.FromSeconds(300));
             if(!response.TimedOut)
             {
-                dctx.userQuotes.Remove(quote);
-                await dctx.SaveChangesAsync();
+                Dctx.userQuotes.Remove(quote);
+                await Dctx.SaveChangesAsync();
                 await response.Result.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, new DiscordInteractionResponseBuilder().WithContent(lang.QuotePreviewDeleteSuccess));
             }
             else
             {
                 await msg.ModifyAsync(new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()));
-            }    
+            }
         }
         [Command("add")]
         [Description("Add a new quote to your \"Quote Book\"")]
@@ -48,7 +48,7 @@ namespace SilverBotDS.Commands
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             using RandomGenerator rg = new();
-            var uq = dctx.userQuotes.FirstOrDefault(x => x.UserId == ctx.User.Id);
+            var uq = Dctx.userQuotes.FirstOrDefault(x => x.UserId == ctx.User.Id);
             var quote = new SBDSODC.UserQuote()
             {
                 QuoteContent = content,
@@ -56,8 +56,8 @@ namespace SilverBotDS.Commands
                 TimeStamp = DateTime.UtcNow,
                 UserId = ctx.User.Id
             };
-            await dctx.userQuotes.AddAsync(quote);
-            await dctx.SaveChangesAsync();
+            await Dctx.userQuotes.AddAsync(quote);
+            await Dctx.SaveChangesAsync();
             await PresentQuote(ctx, quote,lang);
         }
         [Command("get")]
@@ -66,10 +66,10 @@ namespace SilverBotDS.Commands
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             using RandomGenerator rg = new();
-            var uq = dctx.userQuotes.Any(x => x.UserId == ctx.User.Id);
+            var uq = Dctx.userQuotes.Any(x => x.UserId == ctx.User.Id);
             if (uq)
             {
-                var q = dctx.userQuotes.FirstOrDefault(x => x.QuoteId == id && x.UserId == ctx.User.Id);
+                var q = Dctx.userQuotes.FirstOrDefault(x => x.QuoteId == id && x.UserId == ctx.User.Id);
                 if(q is not null)
                 {
                     await PresentQuote(ctx, q, lang);

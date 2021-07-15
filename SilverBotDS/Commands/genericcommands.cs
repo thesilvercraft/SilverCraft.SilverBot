@@ -50,13 +50,11 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var b = new DiscordEmbedBuilder();
             var client = HttpClient;
-#pragma warning disable S1075 // URIs should not be hardcoded
             var rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
-#pragma warning restore S1075 // URIs should not be hardcoded
             if (rm.StatusCode == HttpStatusCode.OK)
             {
                 var asdf = JsonSerializer.Deserialize<Meme>(await rm.Content.ReadAsStringAsync());
-                if (asdf != null && !asdf.Nsfw)
+                if (asdf?.Nsfw == false)
                 {
                     b.WithTitle(lang.Meme + asdf.Title)
                         .WithUrl(asdf.PostLink)
@@ -117,7 +115,7 @@ namespace SilverBotDS.Commands
         {
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
-                                             .WithContent($"Every day, I imagine a future where I can be with you\nIn my hand is a pen that will write a poem of me and you\nThe ink flows down into a dark puddle.\nJust move your hand - write the way into his heart!\nBut in this world of infinite choices,\nWhat will it take just to find that special day?\nHave I found everybody a fun assignment to do today?\nWhen you're here, everything that we do is fun for them anyway.\nWhen I can't even read my own feelings\nWhat good are words when a smile says it all?\nAnd if this world won't write me an ending\nWhat will it take just for me to end it all?\nDoes my pen only write bitter words for those who are dear to me?\nIs it love if I take you, or is it love if I set you free?\nThe ink flows down into a dark puddle\nHow can I write love into reality?\nAnd in your reality, if I don't know how to love you\nI'll leave you be")
+                                             .WithContent("Every day, I imagine a future where I can be with you\nIn my hand is a pen that will write a poem of me and you\nThe ink flows down into a dark puddle.\nJust move your hand - write the way into his heart!\nBut in this world of infinite choices,\nWhat will it take just to find that special day?\nHave I found everybody a fun assignment to do today?\nWhen you're here, everything that we do is fun for them anyway.\nWhen I can't even read my own feelings\nWhat good are words when a smile says it all?\nAnd if this world won't write me an ending\nWhat will it take just for me to end it all?\nDoes my pen only write bitter words for those who are dear to me?\nIs it love if I take you, or is it love if I set you free?\nThe ink flows down into a dark puddle\nHow can I write love into reality?\nAnd in your reality, if I don't know how to love you\nI'll leave you be")
                                              .SendAsync(ctx.Channel);
         }
 
@@ -254,7 +252,7 @@ namespace SilverBotDS.Commands
         public async Task WhoIsBot(CommandContext ctx, [Description("the bot")] DiscordUser user)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            if (string.IsNullOrEmpty(Config.TopggSidToken) || Config.TopggSidToken.ToLower() == "none")
+            if (string.IsNullOrEmpty(Config.TopggSidToken) || string.Equals(Config.TopggSidToken, "none", StringComparison.OrdinalIgnoreCase))
             {
                 await new DiscordMessageBuilder()
                                                  .WithReply(ctx.Message.Id)

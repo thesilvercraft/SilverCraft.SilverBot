@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Attributes
 {
-
     [AttributeUsage(AttributeTargets.All)]
     public class CategoryAttribute: Attribute
     {

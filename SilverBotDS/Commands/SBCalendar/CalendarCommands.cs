@@ -41,7 +41,7 @@ namespace SilverBotDS.Commands.SBCalendar
             var interactivity = ctx.Client.GetInteractivity();
             var oldmessage = await new DiscordMessageBuilder()
                                                .WithReply(ctx.Message.Id)
-                                              .WithContent($"Send the Subject (plain text):")
+                                              .WithContent("Send the Subject (plain text):")
                                               .WithAllowedMentions(Mentions.None)
                                                .SendAsync(ctx.Channel);
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -70,13 +70,13 @@ namespace SilverBotDS.Commands.SBCalendar
             }
             await oldmessage.ModifyAsync("Would you like to add a body? (***Y***es or ***N***o)");
 
-            msg = await interactivity.WaitForMessageAsync(xm => xm.Channel.Id == ctx.Channel.Id && (xm.Content.ToLowerInvariant().Contains("y") || xm.Content.ToLowerInvariant().Contains("n")), TimeSpan.FromSeconds(60));
+            msg = await interactivity.WaitForMessageAsync(xm => xm.Channel.Id == ctx.Channel.Id && (xm.Content.Contains('y', StringComparison.InvariantCultureIgnoreCase) || xm.Content.Contains('n', StringComparison.InvariantCultureIgnoreCase)), TimeSpan.FromSeconds(60));
 
             if (msg.Result != null)
             {
                 _ = msg.Result.DeleteAsync();
 
-                if (msg.Result.Content.ToLowerInvariant().Contains("y"))
+                if (msg.Result.Content.Contains('y', StringComparison.InvariantCultureIgnoreCase))
                 {
                     await oldmessage.ModifyAsync("Please send the text you wish to be added (as CommmonMark markdown):");
                     msg = await interactivity.WaitForMessageAsync(xm => xm.Channel.Id == ctx.Channel.Id, TimeSpan.FromSeconds(60));
@@ -101,7 +101,7 @@ namespace SilverBotDS.Commands.SBCalendar
             StringBuilder bob = new();
             foreach (var evnt in await calendar.GetCurrentPageAsync())
             {
-                bob.AppendLine($"{evnt.Subject} { DateTime.Parse(evnt.Start.DateTime)}");
+                bob.Append(evnt.Subject).Append(' ').Append(DateTime.Parse(evnt.Start.DateTime)).AppendLine();
             }
             var interactivity = ctx.Client.GetInteractivity();
             var pages = interactivity.GeneratePagesInEmbed(bob.ToString());

@@ -95,7 +95,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        stringBuilder.AppendLine($"<@!{person.Id}> has {person.XP}XP");
+                        stringBuilder.Append("<@!").Append(person.Id).Append("> has ").Append(person.XP).AppendLine("XP");
                     }
                 }
                 bob.WithDescription(stringBuilder.ToString());

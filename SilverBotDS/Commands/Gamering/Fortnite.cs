@@ -31,7 +31,7 @@ namespace SilverBotDS.Commands.Gamering
         /// <param name="apiKey">the key to use</param>
         public static void Setapi(string apiKey)
         {
-            if (string.IsNullOrEmpty(apiKey) || apiKey == "Fortnite_Token_Here" || apiKey.ToLowerInvariant() == "none")
+            if (string.IsNullOrEmpty(apiKey) || apiKey == "Fortnite_Token_Here" || string.Equals(apiKey, "none", StringComparison.InvariantCultureIgnoreCase))
             {
                 disabled = true;
             }
@@ -121,7 +121,7 @@ namespace SilverBotDS.Commands.Gamering
             var sb = new StringBuilder();
             foreach (var thing in shop.Data.Daily.Entries)
             {
-                sb.Append(thing.DevName + Environment.NewLine);
+                sb.Append(thing.DevName).Append(Environment.NewLine);
             }
             await ctx.RespondAsync(sb.ToString());
         }

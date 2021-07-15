@@ -96,7 +96,7 @@ namespace SilverBotDS.Commands
                 {
                     continue;
                 }
-                builder.AppendLine(string.Format(lang.Server, a.Name));
+                builder.AppendFormat(lang.Server, a.Name).AppendLine();
                 foreach (var emote in a.Emojis.Values.ToList())
                 {
                     if (emote.IsAnimated)

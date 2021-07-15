@@ -35,11 +35,12 @@ namespace SilverBotDS.Objects
                       "</head>" +
                       "<body>" +
                       "<table style=\"width: 100 % \">";
-
+#pragma warning disable IDE1006 // Naming Styles
         public DbSet<ServerSettings> serverSettings { get; set; }
         public DbSet<UserSettings> userSettings { get; set; }
         public DbSet<UserExperience> userExperiences { get; set; }
         public DbSet<UserQuote> userQuotes { get; set; }
+#pragma warning restore IDE1006 // Naming Styles
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
@@ -115,7 +116,6 @@ namespace SilverBotDS.Objects
         private readonly List<ServerStatString> StatsTemplates = new() { new("All Members: {AllMembersCount}"), new("Members: {MemberCount}"), new("Bots: {BotsCount}"), new("Boosts: {BoostCount}") };
         public void SetServerPrefixes(ulong sid, string[] prefixes)
         {
-           
             var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
             if (serversettings is not null)
             {
@@ -214,7 +214,7 @@ namespace SilverBotDS.Objects
                         {
                             foreach (var item in dataRow.ItemArray)
                             {
-                                builder.Append($"|{item,5}");
+                                builder.Append('|').AppendFormat("{0,5}", item);
                             }
                             builder.AppendLine();
                         }
@@ -227,7 +227,7 @@ namespace SilverBotDS.Objects
                             thing.AppendLine("<tr>");
                             foreach (var item in dataRow.ItemArray)
                             {
-                                thing.AppendLine("<td>" + item + "</td>");
+                                thing.Append("<td>").Append(item).AppendLine("</td>");
                             }
                             thing.AppendLine("</tr>");
                         }

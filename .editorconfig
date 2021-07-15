@@ -5,3 +5,4 @@ dotnet_diagnostic.CA1822.severity = silent
 
 # S1104: Fields should not have public accessibility
 dotnet_diagnostic.S1104.severity = silent
+dotnet_diagnostic.RCS1090.severity = silent

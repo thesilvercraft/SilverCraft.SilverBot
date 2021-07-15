@@ -154,7 +154,7 @@ namespace SilverBotDS.Commands
             {
                 await Play(ctx, (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.Attachments[0].Url, ctx, typeof(SongORSongs)));
             }
-            else if (ctx.Message.ReferencedMessage is not null && ctx.Message.ReferencedMessage.Attachments.Count == 1)
+            else if (ctx.Message.ReferencedMessage?.Attachments.Count == 1)
             {
                 await Play(ctx, (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.ReferencedMessage.Attachments[0].Url, ctx, typeof(SongORSongs)));
             }
@@ -367,7 +367,6 @@ namespace SilverBotDS.Commands
         [Command("queue")]
         [Description("check whats playing rn and whats next")]
         [Aliases("np", "nowplaying", "q")]
-        
         public async Task Queue(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -474,7 +473,6 @@ namespace SilverBotDS.Commands
 
         [Command("ovh")]
         [Description("get the lyrics from ovh")]
-        
         public async Task OVH(CommandContext ctx, string name, string artist)
         {
             var lyrics = await LyricsService.GetLyricsAsync(artist, name);
@@ -493,14 +491,14 @@ namespace SilverBotDS.Commands
             StringBuilder bob = new();
             foreach(var song in SongOrSongsConverter.Aliases)
             {
-                bob.AppendLine($"{Formatter.InlineCode(song.Key)} - {Formatter.InlineCode(song.Value)}");
+                bob.Append(Formatter.InlineCode(song.Key)).Append(" - ").AppendLine(Formatter.InlineCode(song.Value));
             }
             await SendSimpleMessage(ctx, message: bob.ToString());
         }
 
         [Command("resume")]
         [Description("resume the current song")]
-        
+
         public async Task Resume(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -526,7 +524,6 @@ namespace SilverBotDS.Commands
 
         [Command("join")]
         [Description("Tell me to join your channel of the voice type")]
-        
         public async Task Join(CommandContext ctx)
         {
             await StaticJoin(ctx, AudioService);
@@ -553,7 +550,6 @@ namespace SilverBotDS.Commands
         [Description("skip a song. dj only command")]
         [RequireDJ]
         [Aliases("fs")]
-        
         public async Task Skip(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -584,7 +580,6 @@ namespace SilverBotDS.Commands
         [Command("voteskip")]
         [Description("skip a song")]
         [Aliases("skip")]
-        
         public async Task VoteSkip(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -629,7 +624,6 @@ namespace SilverBotDS.Commands
         [Description("Tell me to leave your channel of the voice type, without checking if its in a vc")]
         [Aliases("fuckoffisntworking")]
         [RequireDJ]
-        
         public async Task ForceDisconnect(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -650,7 +644,6 @@ namespace SilverBotDS.Commands
         [Description("Tell me to leave your channel of the voice type")]
         [Aliases("fuckoff", "minecraftbedrockisbetter", "fockoff", "leave")]
         [RequireDJ]
-        
         public async Task Disconnect(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);

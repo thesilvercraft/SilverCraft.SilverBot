@@ -122,7 +122,7 @@ namespace SilverBotDS.Converters
                 if (client is not null)
                 {
                     var tracks = JsonSerializer.Deserialize<SerialisableQueue>(await (await client.GetAsync(value)).Content.ReadAsStringAsync());
-                    return new(new(TrackDecoder.DecodeTrack(tracks.Identifiers.First()), null, tracks.Identifiers.Skip(1).Select(x => TrackDecoder.DecodeTrack(x)).ToAsyncEnumerable(), TimeSpan.FromMilliseconds(tracks.CurrentSongTimems)));
+                    return new(new(TrackDecoder.DecodeTrack(tracks.Identifiers[0]), null, tracks.Identifiers.Skip(1).Select(x => TrackDecoder.DecodeTrack(x)).ToAsyncEnumerable(), TimeSpan.FromMilliseconds(tracks.CurrentSongTimems)));
                 }
             }
             if (spotifyClient is not null && IsSpotifyString(value))
@@ -150,14 +150,14 @@ namespace SilverBotDS.Converters
                 }
             }
             var track = await AudioService.GetTracksAsync(value, SearchMode.None);
-            if (track is null || !track.Any())
+            if (track?.Any() != true)
             {
                 track = new LavalinkTrack[] { await AudioService.GetTrackAsync(value, SearchMode.YouTube) };
 
-                if (track is null || !track.Any())
+                if (track?.Any() != true)
                 {
                     track = new LavalinkTrack[] { await AudioService.GetTrackAsync(value, SearchMode.SoundCloud) };
-                    if (track is null || !track.Any())
+                    if (track?.Any() != true)
                     {
                         await Audio.SendSimpleMessage(ctx, string.Format(lang.NoResults, value), language: lang);
                         return new();

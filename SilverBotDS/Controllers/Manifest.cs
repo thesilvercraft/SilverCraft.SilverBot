@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Controlllers
@@ -15,34 +16,44 @@ namespace SilverBotDS.Controlllers
     {
         public Rootobject Index()
         {
-            var obj = new Rootobject { name = "SilverBot", short_name = "Silverbot", start_url = "/", background_color = "#C0C0C0", theme_color = "#01dff0", display = "standalone" };
+            var obj = new Rootobject { Name = "SilverBot", ShortName = "Silverbot", StartUrl = "/", BackgroundColor = "#C0C0C0", ThemeColor = "#01dff0", Display = "standalone" };
             if (DateTime.UtcNow.Month == 6)
             {
-                obj.icons = new Icon[] { new Icon { sizes = "any", src = "/pride/silverbot.svg", type = "image/svg+xml" }, new Icon { sizes = "512x512", src = "/pride/android-chrome-512x512.png", type = "image/png" }, new Icon { sizes = "192x192", src = "/pride/android-chrome-192x192.png.png", type = "image/png" } };
+                obj.Icons = new Icon[] { new Icon { Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml" }, new Icon { Sizes = "512x512", Src = "/pride/android-chrome-512x512.png", Type = "image/png" }, new Icon { Sizes = "192x192", Src = "/pride/android-chrome-192x192.png.png", Type = "image/png" } };
             }
             else
             {
-                obj.icons = new Icon[] { new Icon { sizes = "any", src = "/silverbot.svg", type = "image/svg+xml" }, new Icon { sizes = "512x512", src = "/android-chrome-512x512.png", type = "image/png" }, new Icon { sizes = "192x192", src = "/android-chrome-192x192.png.png", type = "image/png" } };
+                obj.Icons = new Icon[] { new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml" }, new Icon { Sizes = "512x512", Src = "/android-chrome-512x512.png", Type = "image/png" }, new Icon { Sizes = "192x192", Src = "/android-chrome-192x192.png.png", Type = "image/png" } };
             }
             return obj;
         }
 
         public class Rootobject
         {
-            public string name { get; set; }
-            public string short_name { get; set; }
-            public Icon[] icons { get; set; }
-            public string start_url { get; set; }
-            public string display { get; set; }
-            public string background_color { get; set; }
-            public string theme_color { get; set; }
+            [JsonPropertyName("name")]
+            public string Name { get; set; }
+            [JsonPropertyName("short_name")]
+            public string ShortName { get; set; }
+            [JsonPropertyName("icons")]
+            public Icon[] Icons { get; set; }
+            [JsonPropertyName("start_url")]
+            public string StartUrl { get; set; }
+            [JsonPropertyName("display")]
+            public string Display { get; set; }
+            [JsonPropertyName("background_color")]
+            public string BackgroundColor { get; set; }
+            [JsonPropertyName("theme_color")]
+            public string ThemeColor { get; set; }
         }
 
         public class Icon
         {
-            public string src { get; set; }
-            public string sizes { get; set; }
-            public string type { get; set; }
+            [JsonPropertyName("src")]
+            public string Src { get; set; }
+            [JsonPropertyName("sizes")]
+            public string Sizes { get; set; }
+            [JsonPropertyName("type")]
+            public string Type { get; set; }
         }
     }
 }

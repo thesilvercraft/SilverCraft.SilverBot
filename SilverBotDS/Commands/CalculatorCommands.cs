@@ -30,7 +30,7 @@ namespace SilverBotDS.Commands
             StringBuilder builder = new("```");
             foreach (MathStep step in await StaticNodeJSService.InvokeFromStringAsync<MathStep[]>(moduleString: JSCODE, args: new object[] { input }))
             {
-                builder.AppendLine($"{step.OldVal} {step.Step} {step.NewVal}");
+                builder.Append(step.OldVal).Append(' ').Append(step.Step).Append(' ').AppendLine(step.NewVal);
             }
             if (string.IsNullOrEmpty(builder.ToString()) || builder.ToString() == "```")
             {

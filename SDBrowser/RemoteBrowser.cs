@@ -10,20 +10,17 @@ namespace SDBrowser
 {
     public class RemoteBrowser : IBrowser
     {
-        private HttpClient _client;
-       
+        private readonly HttpClient _client;
         public RemoteBrowser(HttpClient client)
         {
             _client = client;
-           
         }
         public RemoteBrowser()
         {
             _client = new HttpClient();
-        
         }
 
-        private string UrlOfRemote = "https://pagerendererapi.herokuapp.com/";
+        private readonly string UrlOfRemote = "https://pagerendererapi.herokuapp.com/";
         public Task<Stream> RenderHtmlAsync(string html)
         {
             throw new NotSupportedException("Remote Browsers do not have support for rendering raw HTML yet");
@@ -33,7 +30,5 @@ namespace SDBrowser
         {
           return await (await _client.GetAsync(UrlOfRemote + "renderpage?url="+ HttpUtility.UrlEncode(url))).Content.ReadAsStreamAsync();
         }
-
-       
     }
 }

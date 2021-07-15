@@ -55,12 +55,10 @@ namespace SilverBotDS.Objects
         /// <remarks>
         /// Needs to be used like <c>Language.Requested_by+Username</c> <strong>MAY BE SUBJECT TO CHANGE</strong>
         /// </remarks>
-
         public string RequestedBy { get; set; } = "Requested by ";
         /// <summary>
         /// Something went wrong, it's probably on my end.
         /// </summary>
-
         public string DblaReturnedNull { get; set; } = "Something went wrong, it's probably on my end.";
 
         /// <summary>
@@ -502,7 +500,6 @@ namespace SilverBotDS.Objects
                 }
                 else
                 {
-                    
                     return new Language();
                 }
             }
@@ -534,7 +531,7 @@ namespace SilverBotDS.Objects
                 return await GetAsync(a);
             }
         }
-        private static JsonSerializerOptions options = new()
+        private static readonly JsonSerializerOptions options = new()
         {
             WriteIndented = true
         };

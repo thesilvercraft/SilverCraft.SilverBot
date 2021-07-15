@@ -77,11 +77,7 @@ namespace SilverBotDS.Converters
 
         public async Task<byte[]> GetBytesAsync(HttpClient httpClient)
         {
-            if (_bytes == null)
-            {
-                _bytes = await httpClient.GetByteArrayAsync(Url);
-            }
-            return _bytes;
+            return _bytes ??= await httpClient.GetByteArrayAsync(Url);
         }
 
         protected virtual void Dispose(bool disposing)

@@ -91,6 +91,8 @@
   "NotValidLanguage": "DAT ISNT VALID LANGUAGE, VALID LANGUAGEZ R: {0}",
   "CultureInfo": "en-GB",
   "VersionInfoCommand": {
+    "OS": "Operating system:",
+    "DsharpplusVersion": "Dsharpplus version:",
     "VersionNumber": "VERSHUN NUMBR",
     "GitRepo": "GIT REPO",
     "GitCommitHash": "GIT COMMIT HASH",

@@ -50,28 +50,24 @@ namespace SilverBotDS.Commands
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
-
         [Command("generatelangtemplate")]
         [Description("make a template for translation")]
         public async Task GenerateLanguageTemplate(CommandContext ctx)
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(await Language.GetLanguageFromCtxAsync(ctx), options)));
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithFile("language.json", stream)
                                              .SendAsync(ctx.Channel);
         }
-
+        JsonSerializerOptions options = new JsonSerializerOptions{
+            WriteIndented = true
+        };
         [Command("piss")]
         [Description("piss :)")]
         public Task Piss(CommandContext ctx)
         {
             throw new PissException(69); // line 69 :)
         }
-
         [Command("setlang")]
         [Description("set your language")]
         [RequireUserPermissions(Permissions.ManageGuild)]

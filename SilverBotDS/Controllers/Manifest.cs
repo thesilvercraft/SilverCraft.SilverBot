@@ -19,11 +19,11 @@ namespace SilverBotDS.Controlllers
             var obj = new Rootobject { Name = "SilverBot", ShortName = "Silverbot", StartUrl = "/", BackgroundColor = "#C0C0C0", ThemeColor = "#01dff0", Display = "standalone" };
             if (DateTime.UtcNow.Month == 6)
             {
-                obj.Icons = new Icon[] { new Icon { Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml" }, new Icon { Sizes = "512x512", Src = "/pride/android-chrome-512x512.png", Type = "image/png" }, new Icon { Sizes = "192x192", Src = "/pride/android-chrome-192x192.png.png", Type = "image/png" } };
+                obj.Icons = new[] { new Icon { Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml" }, new Icon { Sizes = "512x512", Src = "/pride/android-chrome-512x512.png", Type = "image/png" }, new Icon { Sizes = "192x192", Src = "/pride/android-chrome-192x192.png.png", Type = "image/png" } };
             }
             else
             {
-                obj.Icons = new Icon[] { new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml" }, new Icon { Sizes = "512x512", Src = "/android-chrome-512x512.png", Type = "image/png" }, new Icon { Sizes = "192x192", Src = "/android-chrome-192x192.png.png", Type = "image/png" } };
+                obj.Icons = new[] { new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml" }, new Icon { Sizes = "512x512", Src = "/android-chrome-512x512.png", Type = "image/png" }, new Icon { Sizes = "192x192", Src = "/android-chrome-192x192.png.png", Type = "image/png" } };
             }
             return obj;
         }

@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects
 {
@@ -400,12 +401,12 @@ namespace SilverBotDS.Objects
         /// <summary>
         /// Never (song is looping)
         /// </summary>
-        public string SongTimeLeftSongLoopingCurrent { get; set; } = "Never (current song is looping)";
+        public string SongTimeLeftSongLoopingCurrent { get; set; } = "N/A (current song is looping)";
 
         /// <summary>
         /// Never (current song is looping)
         /// </summary>
-        public string SongTimeLeftSongLooping { get; set; } = "Never (song is looping)";
+        public string SongTimeLeftSongLooping { get; set; } = "N/A (song is looping)";
 
         public string SongNotExist { get; set; } = "That song does not exist my dude";
         public string VersionInfoTitle { get; set; } = "SilverBot Version info";
@@ -490,7 +491,7 @@ namespace SilverBotDS.Objects
             return CachedLanguages.Keys.ToArray();
         }
 
-        public static async System.Threading.Tasks.Task<Language> GetAsync(string a)
+        public static async Task<Language> GetAsync(string a)
         {
             a = a.Trim();
             if (CachedLanguages.Count != 0)
@@ -501,6 +502,7 @@ namespace SilverBotDS.Objects
                 }
                 else
                 {
+                    
                     return new Language();
                 }
             }
@@ -527,18 +529,26 @@ namespace SilverBotDS.Objects
                 else
                 {
                     Directory.CreateDirectory(folloc + $"{Program.DirSlash}en");
-                    using var streamWriter = new StreamWriter(Environment.CurrentDirectory + $"{Program.DirSlash}languages{Program.DirSlash}en{Program.DirSlash}en.json");
-                    var options = new JsonSerializerOptions
-                    {
-                        WriteIndented = true
-                    };
-                    await streamWriter.WriteAsync(JsonSerializer.Serialize(new Language(), options));
+                    await SerialiseDefaultAsync($"{Environment.CurrentDirectory}{Program.DirSlash}languages{Program.DirSlash}en{Program.DirSlash}en.json");
                 }
                 return await GetAsync(a);
             }
         }
-
-        public static async System.Threading.Tasks.Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
+        private static JsonSerializerOptions options = new()
+        {
+            WriteIndented = true
+        };
+        public static async Task SerialiseDefaultAsync(string loc)
+        {
+            using var streamWriter = new StreamWriter(loc);
+            await streamWriter.WriteAsync(JsonSerializer.Serialize(new Language(), options));
+        }
+        public static void SerialiseDefault(string loc)
+        {
+            using var streamWriter = new StreamWriter(loc);
+            streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
+        }
+        public static async Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
         {
             DatabaseContext db = (DatabaseContext)ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));
             return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));

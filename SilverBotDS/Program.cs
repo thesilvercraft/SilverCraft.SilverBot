@@ -62,14 +62,7 @@ namespace SilverBotDS
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(args[1]));
                 }
-                using var streamWriter = new StreamWriter(args[1]);
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                };
-                streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
-                streamWriter.Flush();
-                streamWriter.Close();
+                Language.SerialiseDefault(args[1]);
                 Console.WriteLine("Serialised en.json");
                 Environment.Exit(70);
                 return;
@@ -135,7 +128,7 @@ namespace SilverBotDS
             WebHookUtils.ParseWebhookUrlNullable(config.LogWebhook, out ulong? id, out string token);
             var logfactory = new LoggerConfiguration()
                          .MinimumLevel.Information()
-                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) //So uh asp.net LOVES spamming logs
                          .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                          .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
             if (!(id == null || string.IsNullOrEmpty(token)))
@@ -150,32 +143,27 @@ namespace SilverBotDS
             if (config.EnableUpdateChecking)
             {
                 log.Information("Checking for updates");
-                //Check for updates
                 await VersionInfo.Checkforupdates(httpClient, log);
             }
             ILoggerFactory logFactory = new LoggerFactory().AddSerilog(logger: log);
-            //Make us a little cute client
             log.Verbose("Creating the discord client");
             discord = new DiscordClient(new DiscordConfiguration
             {
                 LoggerFactory = logFactory,
                 Token = config.Token,
-                TokenType = TokenType.Bot,
                 Intents = DiscordIntents.All
             });
-            //Tell our client to initialize interactivity
             log.Verbose("Initializing interactivity");
             discord.UseInteractivity(new InteractivityConfiguration
             {
                 PollBehaviour = PollBehaviour.KeepEmojis,
                 Timeout = TimeSpan.FromSeconds(30)
             });
-            //set up logging?
+            //set up XP and repeating things
             discord.MessageCreated += Discord_MessageCreated;
-            //Tell our cute client to use commands or in other words become a working class member of society
             log.Verbose("Initializing Commands");
             ServiceCollection services = new();
-            //add a browser
+            #region Browser fun stuff
             switch (config.BrowserType)
             {
                 case 0:
@@ -206,10 +194,12 @@ namespace SilverBotDS
                         throw new NotImplementedException();
                     }
             }
+            #endregion
             if (IsNotNullAndIsNotB(config.SegmentPrivateSource, "Segment_Key"))
             {
                 services.AddSingleton<IAnalyse>(new SegmentIo(config.SegmentPrivateSource));
             }
+            #region Database fun stuff
             switch (config.DatabaseType)
             {
                 case 1:
@@ -235,6 +225,7 @@ namespace SilverBotDS
                 default:
                     break;
             }
+            #endregion
             services.AddSingleton(config);
             services.AddSingleton(httpClient);
             if (config.AutoDownloadAndStartLavalink)
@@ -292,8 +283,8 @@ namespace SilverBotDS
                 Services = serviceProvider,
                 PrefixResolver = ResolvePrefixAsync
             });
+            #region Registering Commands
             commands.SetHelpFormatter<CustomHelpFormatter>();
-            //Register our commands
             log.Verbose("Registering Commands&Converters");
             commands.RegisterConverter(new SdImageConverter());
             commands.RegisterConverter(new SColorConverter());
@@ -342,6 +333,7 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<ServerStatsCommands>();
             }
+            #endregion
             //🥁🥁🥁 drum-roll
             log.Information("Connecting to discord");
             bool isconnected = false;
@@ -379,6 +371,7 @@ namespace SilverBotDS
                 });
             }
             await discord.UpdateStatusAsync(new("console logs while launching the website module", ActivityType.Watching));
+            #region Website Fun Time
             host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
             {
                 s.AddSingleton(config);
@@ -417,6 +410,7 @@ namespace SilverBotDS
              {
                  webBuilder.UseStartup<WebpageStartup>();
              }).UseSerilog(log).Build();
+            #endregion
             _ = Task.Run(async () => await host.RunAsync());
             while (true)
             {
@@ -475,13 +469,10 @@ namespace SilverBotDS
             {
                 await analytics.EmitEvent(e.Context.User, "CommandExecuted", new Dictionary<string, object>()
                {
-                   { "commandname", e.Command.Parent is not null?e.Command.Parent.Name:string.Empty + e.Command.Name },
+                   { "commandname", (e.Command.Parent is not null ? e.Command.Parent.Name : string.Empty) + e.Command.Name },
                });
             }
         }
-
-      
-
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
         {
             return new Dictionary<string, string> { ["GuildCount"] = client.Guilds.Values.LongCount().ToString(), ["Platform"] = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() };
@@ -670,7 +661,22 @@ namespace SilverBotDS
                 await context.SaveChangesAsync();
             }
         }
-
+        private static async Task SendRepeatedMessage(ulong msgid, string msgcontent, DiscordChannel chan, string filename = null, Stream stream = null)
+        {
+            if(string.IsNullOrEmpty(filename) || stream is null)
+            {
+                await new DiscordMessageBuilder().WithReply(msgid)
+                                                 .WithContent(msgcontent)
+                                                 .SendAsync(chan);
+            }
+            else
+            {
+                await new DiscordMessageBuilder().WithReply(msgid)
+                                                 .WithContent(msgcontent)
+                                                 .WithFile(filename, stream)
+                                                 .SendAsync(chan);
+            }   
+        }
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
             if (e.Author.IsBot)
@@ -697,32 +703,27 @@ namespace SilverBotDS
             var context = serviceProvider.GetService<DatabaseContext>();
 
             var o = e.Channel.IsPrivate ? default : await context.serverSettings.FirstOrDefaultAsync(x => x.ServerId == e.Guild.Id);
-
-            if ((e.Channel.IsPrivate || o is not default(ServerSettings) && o.RepeatThings && e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages)) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
+            if ((e.Channel.IsPrivate
+                || (o is not default(ServerSettings) && o.RepeatThings && e.Channel.PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id)).HasPermission(Permissions.SendMessages))) && repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
             {
                 if (config.EmulateBubot)
                 {
                     switch (e.Message.Content)
                     {
                         case "fock":
-                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                                     .WithContent(e.Message.Content)
-                                     .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
-                                     .SendAsync(e.Channel);
+                            await SendRepeatedMessage(
+                                e.Message.Id, e.Message.Content, e.Channel, "fock.mp3",
+                                Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"));
                             return;
-
                         case "quality fock":
-                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                             .WithContent(e.Message.Content)
-                             .WithFile("quality_fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.quality_fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.quality_fock.mp3"))
-                             .SendAsync(e.Channel);
+                            await SendRepeatedMessage(
+                                e.Message.Id, e.Message.Content, e.Channel, "quality_fock.mp3", 
+                                Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.quality_fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.quality_fock.mp3"));
                             return;
-
-                        case "fock you":
-                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                             .WithContent("fock you too")
-                             .WithFile("fock.mp3", Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"))
-                             .SendAsync(e.Channel);
+                        case "fock you":                        
+                            await SendRepeatedMessage(
+                                e.Message.Id, "fock you too", e.Channel, "fock.mp3",
+                                Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"));
                             return;
                         case "kalorichan":
                         case "<:kalorichan:839099093552332850>":

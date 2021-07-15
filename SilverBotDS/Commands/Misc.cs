@@ -64,7 +64,7 @@ namespace SilverBotDS.Commands
 
         [Command("piss")]
         [Description("piss :)")]
-        public async Task Piss(CommandContext ctx)
+        public Task Piss(CommandContext ctx)
         {
             // line 67
             // line 68

@@ -91,6 +91,8 @@
   "NotValidLanguage": "That isn't a valid language, valid languages are: {0}",
   "CultureInfo": "nl-NL",
   "VersionInfoCommand": {
+    "OS": "Operating system:",
+    "DsharpplusVersion": "Dsharpplus version:",
     "VersionNumber": "Versie nummer",
     "GitRepo": "Git repo",
     "GitCommitHash": "Git Commit hash",

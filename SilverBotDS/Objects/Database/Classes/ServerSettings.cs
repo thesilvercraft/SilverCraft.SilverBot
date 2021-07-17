@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Text.Json;
-
+using System;
 namespace SilverBotDS.Objects
 {
     public class ServerSettings
@@ -16,7 +15,7 @@ namespace SilverBotDS.Objects
             ServerStatsCategoryId = null;
             ServerStatsTemplates = new();
             RepeatThings = false;
-            Prefixes = System.Array.Empty<string>();
+            Prefixes = Array.Empty<string>();
         }
         [Key]
         public ulong ServerId { get; init; }
@@ -29,21 +28,5 @@ namespace SilverBotDS.Objects
         [NotMapped]
         public string[] Prefixes { get=>JsonSerializer.Deserialize<string[]>(string.IsNullOrWhiteSpace(PrefixesInJson)?"{}": PrefixesInJson); set=> PrefixesInJson = JsonSerializer.Serialize(value); }
         public string PrefixesInJson { get; set; }
-    }
-    public class FakeString
-    {
-        [Key]
-        public string Value { get; set; }
-        public FakeString()
-        {
-        }
-        public FakeString(string v)
-        {
-            Value = v;
-        }
-        public static implicit operator string(FakeString s)
-        {
-            return s.Value;
-        }
     }
 }

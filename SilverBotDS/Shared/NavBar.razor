@@ -10,12 +10,16 @@
         {
         <img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
         }
+        else if(DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)
+        {
+        <img src="/halloween/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+        }
         else
         {
         <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
         }
       SilverBot
-      <span class="badge badge-primary">@(DateTime.UtcNow.Month==6?"Pride":"Web")</span>
+      <span class="badge badge-primary">@(DateTime.UtcNow.Month==6?"Pride":((DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)?"Halloween":"Web"))</span>
     </a>
     <ul class="navbar-nav">
         @if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))

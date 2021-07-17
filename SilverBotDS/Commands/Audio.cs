@@ -208,6 +208,7 @@ namespace SilverBotDS.Commands
 
         [Command("volume")]
         [Aliases("vol")]
+        [RequireDJ]
         [Description("Change the volume 1-100%")]
         public async Task Volume(CommandContext ctx, ushort volume)
         {
@@ -259,10 +260,9 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.TrackCanNotBeSeeked, language: lang);
             }
         }
-
         [Command("clearqueue")]
         [RequireDJ]
-        [Description("Seeks to the specified time")]
+        [Description("Clears the queue")]
         public async Task ClearQueue(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);

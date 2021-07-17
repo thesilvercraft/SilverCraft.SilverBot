@@ -291,6 +291,7 @@ namespace SilverBotDS
             commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterConverter(new TimeSpanConverter());
+            commands.RegisterCommands<Anime>();
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<ModCommands>();
@@ -481,7 +482,7 @@ namespace SilverBotDS
         }
         private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
-            if (e.Context.Channel.PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id)).HasPermission(Permissions.SendMessages))
+            if (e.Context.Channel.IsPrivate || e.Context.Channel.PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id)).HasPermission(Permissions.SendMessages) )
             {
                 if (e.Exception is CommandNotFoundException)
                 {

@@ -79,11 +79,10 @@ namespace SilverBotDS.Commands
         }
 
      
-        [Command("kms")]
-        [Aliases("sewerslide")]
+        [Command("kickme")]
         [Description("Kicks yourself lmao (or ban if you're super daring)")]
         [RequireBotPermissions(Permissions.KickMembers)]
-        public async Task Kms(CommandContext ctx, [Description("hardcore sewerslide")] bool ban=false)
+        public async Task Kms(CommandContext ctx, [Description("hardcore")] bool ban=false)
         {
             if (ban)
             {
@@ -93,7 +92,7 @@ namespace SilverBotDS.Commands
             {
                 await ctx.Member.RemoveAsync(reason: "asked lol");
             }
-            await ctx.RespondAsync($"{ctx.Member.Mention} took the easy way out");
+            await ctx.RespondAsync($"'{ctx.Member.Mention} took the easy way out' - michael de santa gta five");
         }
 
         [Command("purge")]

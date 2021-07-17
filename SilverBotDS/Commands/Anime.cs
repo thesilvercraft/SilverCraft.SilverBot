@@ -40,6 +40,7 @@ namespace SilverBotDS.Commands
         [Command("pat")]
         [Description("i have no idea what this means")]
         public async Task Pat(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/pat"));
+        [Command("kill")]
         [Description("the thing im gonna do to bub in fartnite")]
         public async Task Kill(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/kill"));
         [Command("cuddle")]

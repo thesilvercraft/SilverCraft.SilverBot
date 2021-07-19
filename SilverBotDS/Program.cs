@@ -600,7 +600,7 @@ namespace SilverBotDS
             }
             catch (Exception e)
             {
-                log.Error(e, "FOCK exception happened in stats thread");
+                log.Error(e, "exception happened in stats thread");
             }
         }
 
@@ -632,7 +632,7 @@ namespace SilverBotDS
             await channel.SendMessageAsync("It is Friday");
         }
 
-        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "fock", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "quality fock", "fock you", "we will fock you", "<:kalorichan:839099093552332850>","kalorichan" };
+        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "we will fock you", "<:kalorichan:839099093552332850>","kalorichan" };
         private static readonly Dictionary<ulong, DateTime> levellimit = new();
         private static readonly TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
 
@@ -703,21 +703,6 @@ namespace SilverBotDS
                 {
                     switch (e.Message.Content)
                     {
-                        case "fock":
-                            await SendRepeatedMessage(
-                                e.Message.Id, e.Message.Content, e.Channel, "fock.mp3",
-                                Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"));
-                            return;
-                        case "quality fock":
-                            await SendRepeatedMessage(
-                                e.Message.Id, e.Message.Content, e.Channel, "quality_fock.mp3",
-                                Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.quality_fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.quality_fock.mp3"));
-                            return;
-                        case "fock you":
-                            await SendRepeatedMessage(
-                                e.Message.Id, "fock you too", e.Channel, "fock.mp3",
-                                Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.fock.mp3") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.fock.mp3"));
-                            return;
                         case "kalorichan":
                         case "<:kalorichan:839099093552332850>":
                             await e.Message.RespondAsync("<:kalorichan:839099093552332850>");

@@ -85,6 +85,7 @@
   "SongTimeLeft": "Zeit übrig:",
   "SongTimeLeftSongLoopingCurrent": "Niemals (aktuelles Lied wird wiederholt)",
   "SongTimeLeftSongLooping": "Niemals (Lied wird wiederholt)",
+  "LoadedSilverBotPlaylistWithTitle": "Loaded SilverBot playlist/queue file, called {0}",
   "SongNotExist": "Dieser Song existiert nicht",
   "VersionInfoTitle": "SilverBot Version info",
   "PurgedBySilverBotReason": "Gesäubert von SilverBot für {0}",

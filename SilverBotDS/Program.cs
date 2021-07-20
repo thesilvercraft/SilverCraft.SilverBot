@@ -632,7 +632,7 @@ namespace SilverBotDS
             await channel.SendMessageAsync("It is Friday");
         }
 
-        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "we will fock you", "<:kalorichan:839099093552332850>","kalorichan" };
+        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "<:kalorichan:839099093552332850>","kalorichan" };
         private static readonly Dictionary<ulong, DateTime> levellimit = new();
         private static readonly TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
 
@@ -706,11 +706,6 @@ namespace SilverBotDS
                         case "kalorichan":
                         case "<:kalorichan:839099093552332850>":
                             await e.Message.RespondAsync("<:kalorichan:839099093552332850>");
-                            return;
-                        case "we will fock you":
-                            await new DiscordMessageBuilder().WithReply(e.Message.Id)
-                             .WithContent("https://www.youtube.com/watch?v=lLN3caSQI1w")
-                             .SendAsync(e.Channel);
                             return;
                     }
                 }

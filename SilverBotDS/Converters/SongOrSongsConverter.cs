@@ -31,21 +31,7 @@ namespace SilverBotDS.Converters
 
         private static readonly Regex AlbumRegex = new(@"^(https:\/\/open\.spotify\.com\/album\/|spotify:album:)([a-zA-Z0-9]+)(.*)$", RegexOptions.Compiled);
 
-        public static readonly IReadOnlyDictionary<string, string> Aliases = new Dictionary<string, string>
-        {
-           {"we will fock you", "https://youtu.be/lLN3caSQI1w"},
-           {"special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8"},
-           {"velimir's favorite","https://www.youtube.com/watch?v=mdqU6Erw3kk"},
-           {"cmpc music","https://www.youtube.com/playlist?list=PLgeUxNS5wZ89J7tzjHCMxfArAr4o-eaux"},
-           {"shut the fock up","https://cdn.discordapp.com/attachments/789617572608868404/840360529294000148/PINK_GUY_-_STFU-OLpeX4RRo28.mp3"},
-           {"fock you","https://cdn.discordapp.com/attachments/789617572608868404/840361885656285204/CeeLo_Green_-_FUCK_YOU_Official_Video-pc0mxOXbWIU.mp3"},
-           {"meme playlist","https://www.youtube.com/playlist?list=PLiiTWcm0RsKj8toM1CoxDbjDZftLYDFo1"},
-           {"evening mix","https://www.youtube.com/playlist?list=PLiiTWcm0RsKhoGLQA84m1ag9QV5AH1usW"},
-           {"kae chill beats","https://www.youtube.com/playlist?list=PLB7khNwMQ_sPGMqBYhS3_3u57U33JK2jB"},
-           {"spirit phone","https://music.youtube.com/playlist?list=OLAK5uy_k-gjwrMLQJbpBbYgWuTv0FYiws5aXkoG0"},
-           {"doug stream music","https://www.youtube.com/playlist?list=PLzTxt5iYdhzifPXw_g0hWp0YgFetgazuv"},
-           {"ninja tuna","https://music.youtube.com/playlist?list=OLAK5uy_lYrDqWbPEMCqxcBSOdaMWonNJzP24mLhA"}
-        };
+   
 
         private bool IsSpotifyString(string url) => TrackRegex.IsMatch(url) || AlbumRegex.IsMatch(url) || PlaylistRegex.IsMatch(url);
 
@@ -86,18 +72,15 @@ namespace SilverBotDS.Converters
             }
         }
 
-        private bool IsInVc(CommandContext ctx, LavalinkNode AudioService)
-        {
-            return AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
-                                                                                                                                                                  || AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
-        }
+        private bool IsInVc(CommandContext ctx, LavalinkNode AudioService) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
+                                                                                                                                               || AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
 
         public async Task<Optional<SongORSongs>> ConvertAsync(string value, CommandContext ctx)
         {
             SpotifyClient spotifyClient = (SpotifyClient)ctx.CommandsNext.Services.GetService(typeof(SpotifyClient));
+            Config conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
             LavalinkNode AudioService = (LavalinkNode)ctx.CommandsNext.Services.GetService(typeof(LavalinkNode));
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-
             if (!IsInVc(ctx, AudioService))
             {
                 if (ctx.Member?.VoiceState?.Channel == null)
@@ -111,9 +94,9 @@ namespace SilverBotDS.Converters
                     await ctx.TriggerTypingAsync();
                 }
             }
-            if (Aliases.ContainsKey(value))
+            if (conf.SongAliases.ContainsKey(value))
             {
-                value = Aliases[value];
+                value = conf.SongAliases[value];
             }
             await ctx.TriggerTypingAsync();
             if (value.EndsWith(".json"))
@@ -121,20 +104,22 @@ namespace SilverBotDS.Converters
                 var client = (HttpClient)ctx.CommandsNext.Services.GetService(typeof(HttpClient));
                 if (client is not null)
                 {
-                    var tracks = JsonSerializer.Deserialize<SerialisableQueue>(await (await client.GetAsync(value)).Content.ReadAsStringAsync());
+                    var tracks = JsonSerializer.Deserialize<SilverBotPlaylist>(await (await client.GetAsync(value)).Content.ReadAsStringAsync());
+                    if(!string.IsNullOrEmpty(tracks.PlaylistTitle))
+                    {
+                        await Audio.SendSimpleMessage(ctx, string.Format(lang.LoadedSilverBotPlaylistWithTitle, tracks.PlaylistTitle), language: lang);
+                    }
                     return new(new(TrackDecoder.DecodeTrack(tracks.Identifiers[0]), null, tracks.Identifiers.Skip(1).Select(x => TrackDecoder.DecodeTrack(x)).ToAsyncEnumerable(), TimeSpan.FromMilliseconds(tracks.CurrentSongTimems)));
                 }
             }
             if (spotifyClient is not null && IsSpotifyString(value))
             {
                 var m = TrackRegex.Match(value);
-
                 if (m.Success)
                 {
                     var song = await spotifyClient.Tracks.Get(m.Groups[2].Value);
                     return new(new SongORSongs(await AudioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube), null, null));
                 }
-
                 m = AlbumRegex.Match(value);
                 if (m.Success)
                 {

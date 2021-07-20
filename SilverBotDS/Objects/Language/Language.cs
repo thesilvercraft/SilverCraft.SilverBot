@@ -405,7 +405,7 @@ namespace SilverBotDS.Objects
         /// Never (current song is looping)
         /// </summary>
         public string SongTimeLeftSongLooping { get; set; } = "N/A (song is looping)";
-
+        public string LoadedSilverBotPlaylistWithTitle { get; set; } = "Loaded SilverBot playlist/queue file, called {0}";
         public string SongNotExist { get; set; } = "That song does not exist my dude";
         public string VersionInfoTitle { get; set; } = "SilverBot Version info";
         public string PurgedBySilverBotReason { get; set; } = "Purged by SilverBot for {0}";

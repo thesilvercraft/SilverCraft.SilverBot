@@ -18,6 +18,9 @@
     <link href="css/site.css" rel="stylesheet" />
     <link href="SilverBotDS.styles.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/github-dark.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="index.css" type="text/css" />
     <link rel="manifest" href="/manifest.json">
@@ -63,6 +66,11 @@
   window.scrollTo(0,document.body.scrollHeight);
 }
     </script>
+    <script>
+        window.addEventListener('load', function () {
+            setTimeout(function() { hljs.highlightAll(); }, 200);
+  
+})</script>
 
 </body>
 </html>

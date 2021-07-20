@@ -312,7 +312,7 @@ namespace SilverBotDS.Commands
 
         [Command("export")]
         [Description("Export the queue")]
-        public async Task ExportQueue(CommandContext ctx)
+        public async Task ExportQueue(CommandContext ctx, string playlistName = null)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!IsInVc(ctx))
@@ -329,12 +329,12 @@ namespace SilverBotDS.Commands
             BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             var queue = player.Queue.Select(x => x.Identifier).ToList();
             queue.Insert(0, player.CurrentTrack.Identifier);
-            SerialisableQueue q = new()
+            await OwnerOnly.SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new SilverBotPlaylist()
             {
                 Identifiers = queue.ToArray(),
-                CurrentSongTimems = player.TrackPosition.TotalMilliseconds
-            };
-            await OwnerOnly.SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(q), filename: "queue.json");
+                CurrentSongTimems = player.TrackPosition.TotalMilliseconds,
+                PlaylistTitle = playlistName
+            }), filename: "queue.json");
         }
 
         [Command("remove")]
@@ -489,7 +489,7 @@ namespace SilverBotDS.Commands
         public async Task Aliases(CommandContext ctx)
         {
             StringBuilder bob = new();
-            foreach(var song in SongOrSongsConverter.Aliases)
+            foreach(var song in Config.SongAliases)
             {
                 bob.Append(Formatter.InlineCode(song.Key)).Append(" - ").AppendLine(Formatter.InlineCode(song.Value));
             }

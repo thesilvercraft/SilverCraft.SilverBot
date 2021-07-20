@@ -4,6 +4,7 @@ using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
 using SilverBotDS.Utils;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
-        private const ulong CurrentConfVer = 24;
+        private const ulong CurrentConfVer = 25;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } =
@@ -39,7 +40,7 @@ namespace SilverBotDS.Objects
         [XmlDescription("The FortniteAPI token, can be got from https://dash.fortnite-api.com/")]
         public string FApiToken { get; set; } = "Fortnite_Token_Here";
 
-        [XmlDescription("Location of java.exe to be able to launch lavalink (type java if in path or if using LiNUX)")]
+        [XmlDescription("Location of java.exe to be able to launch lavalink (type java if in path")]
         public string JavaLoc { get; set; } = "C:\\Program Files\\Java\\jdk-13\\bin\\java.exe";
 
         [XmlDescription("(ulong)Id of main server")]
@@ -81,10 +82,10 @@ namespace SilverBotDS.Objects
         [XmlDescription("Friday voice channel. leave 0 to disable")]
         public ulong FridayVoiceChannel { get; set; }
 
-        [XmlDescription("What kind of database to use, 1 for postgres (slower but a traditional database), 2 for litedb (faster if your local disk is fast, not really a database))")]
+        [XmlDescription("What kind of database to use, 1 for postgresql (https://cdn.discordapp.com/attachments/636085718002958336/841264673868873769/postgres.png), 2 for sqllite (easier if you are unable to host postgresql))")]
         public int DatabaseType { get; set; } = 1;
 
-        [XmlDescription("Conection string for database, Unused if using litedb, make null if stored in DATABASE_URL")]
+        [XmlDescription("Conection string for database, Unused if using sqllite, make null if stored in DATABASE_URL")]
         public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
 
         [XmlDescription("Uses Jering.Javascript.NodeJS to execute some javascript code")]
@@ -133,6 +134,21 @@ namespace SilverBotDS.Objects
         [XmlDescription("2 segment keys for science, they can be duplicates if you like exposing your key to the entire world")]
         public string SegmentPrivateSource { get; set; } = "Segment_Key";
         public string SegmentPublicSource { get; set; } = "Segment_Key";
+        [XmlDescription("Song aliases, It can be any kind of url or search term (It also supports SilverBotPlaylist files, will make guide about them later)")]
+        public SerializableDictionary<string, string> SongAliases { get; set; } = new SerializableDictionary<string, string>
+        {
+           {"special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8"},
+           {"meme playlist", "https://www.youtube.com/playlist?list=PLiiTWcm0RsKj8toM1CoxDbjDZftLYDFo1"},
+           {"evening mix", "https://www.youtube.com/playlist?list=PLiiTWcm0RsKhoGLQA84m1ag9QV5AH1usW"},
+           {"kae chill beats", "https://www.youtube.com/playlist?list=PLB7khNwMQ_sPGMqBYhS3_3u57U33JK2jB"},
+           {"spirit phone", "https://music.youtube.com/playlist?list=OLAK5uy_k-gjwrMLQJbpBbYgWuTv0FYiws5aXkoG0"},
+           {"mouth moods", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e57ElPzTNKW0XHE1wisqr5H"},
+           {"mouth silence", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e6F0to07duRPcEclXq_bYta"},
+           {"mouth sounds", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e5p_f8YmH2jk23Zvq_h-UE-"},
+           {"view monster", "https://www.youtube.com/playlist?list=PL621AB9949A35F306" },
+           {"doug stream music", "https://www.youtube.com/playlist?list=PLzTxt5iYdhzifPXw_g0hWp0YgFetgazuv"},
+           {"ninja tuna", "https://music.youtube.com/playlist?list=OLAK5uy_lYrDqWbPEMCqxcBSOdaMWonNJzP24mLhA"}
+        };
         public Splash[] Splashes { get; set; } = {
       new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),
       new(".NET gang", ActivityType.Watching),

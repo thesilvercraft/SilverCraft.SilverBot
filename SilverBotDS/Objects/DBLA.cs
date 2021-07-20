@@ -24,7 +24,7 @@ namespace SilverBotDS.Objects
             /// Makes a new client
             /// </summary>
             /// <param name="tokentouse">The Token to use</param>
-            /// <param name="toselfbot">Set <see cref="true"/> for cookie auth, set <see cref="false"/> for auth auth</param>
+            /// <param name="toselfbot">Set <see cref="true"/> for cookie auth, set <see cref="false"/> for auth</param>
             public Client(string tokentouse, bool toselfbot)
             {
                 _token = tokentouse;

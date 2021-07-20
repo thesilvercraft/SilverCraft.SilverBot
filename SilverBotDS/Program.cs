@@ -654,22 +654,6 @@ namespace SilverBotDS
                 await context.SaveChangesAsync();
             }
         }
-        private static async Task SendRepeatedMessage(ulong msgid, string msgcontent, DiscordChannel chan, string filename = null, Stream stream = null)
-        {
-            if(string.IsNullOrEmpty(filename) || stream is null)
-            {
-                await new DiscordMessageBuilder().WithReply(msgid)
-                                                 .WithContent(msgcontent)
-                                                 .SendAsync(chan);
-            }
-            else
-            {
-                await new DiscordMessageBuilder().WithReply(msgid)
-                                                 .WithContent(msgcontent)
-                                                 .WithFile(filename, stream)
-                                                 .SendAsync(chan);
-            }
-        }
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
             if (e.Author.IsBot)

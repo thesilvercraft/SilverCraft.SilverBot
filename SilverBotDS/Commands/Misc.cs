@@ -59,7 +59,8 @@ namespace SilverBotDS.Commands
                                              .WithFile("language.json", stream)
                                              .SendAsync(ctx.Channel);
         }
-        JsonSerializerOptions options = new JsonSerializerOptions{
+
+        private readonly JsonSerializerOptions options = new(){
             WriteIndented = true
         };
         [Command("piss")]

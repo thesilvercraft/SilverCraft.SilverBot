@@ -85,6 +85,7 @@
   "SongTimeLeft": "Time left:",
   "SongTimeLeftSongLoopingCurrent": "N/A (current song is looping)",
   "SongTimeLeftSongLooping": "N/A (song is looping)",
+  "LoadedSilverBotPlaylistWithTitle": "Loaded SilverBot playlist/queue file, called {0}",
   "SongNotExist": "That there shanty does not exist mate",
   "VersionInfoTitle": "Silverbot version info",
   "PurgedBySilverBotReason": "Purged by silverbot fer {0}",

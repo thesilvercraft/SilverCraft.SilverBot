@@ -85,6 +85,7 @@
   "SongTimeLeft": "TIEM LEFT:",
   "SongTimeLeftSongLoopingCurrent": "N/A (CURRENT SONG IZ LOOPIN)",
   "SongTimeLeftSongLooping": "N/A (SONG IZ LOOPIN)",
+  "LoadedSilverBotPlaylistWithTitle": "Loaded SilverBot playlist/queue file, called {0}",
   "SongNotExist": "DAT SONG DOEZ NOT EXIST MAH FRIENDO",
   "VersionInfoTitle": "SILVERBOT VERSHUN INFO",
   "PurgedBySilverBotReason": "PURGD BY SILVERBOT 4 {0}",

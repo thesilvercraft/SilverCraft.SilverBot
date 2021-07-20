@@ -22,7 +22,6 @@ namespace SilverBotDS.Commands
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                              .WithEmbed(new DiscordEmbedBuilder().WithImageUrl(url))
-                                             .WithContent(url)
                                              .SendAsync(ctx.Channel);
         }
         [Command("hug")]

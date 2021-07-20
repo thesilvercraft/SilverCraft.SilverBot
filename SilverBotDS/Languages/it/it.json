@@ -85,6 +85,7 @@
   "SongTimeLeft": "Tempo rimanente:",
   "SongTimeLeftSongLoopingCurrent": "N/A (current song is looping)",
   "SongTimeLeftSongLooping": "N/A (song is looping)",
+  "LoadedSilverBotPlaylistWithTitle": "Loaded SilverBot playlist/queue file, called {0}",
   "SongNotExist": "Quella canzone non esiste fra",
   "VersionInfoTitle": "Info sulla versione SilverBot",
   "PurgedBySilverBotReason": "Purgato da SilverBot per {0}",

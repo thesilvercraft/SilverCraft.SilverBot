@@ -71,7 +71,7 @@ namespace SilverBotDS.Commands
                 {
                     await ctx.RespondAsync(lang.NoImageGeneric);
                 }
-                else if (acie.AttachmentCount is AttachmentCountIncorrect.TooMuchAttachments)
+                else if (acie.AttachmentCount is AttachmentCountIncorrect.TooManyAttachments)
                 {
                     await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
                 }
@@ -140,7 +140,7 @@ namespace SilverBotDS.Commands
                 pages[indx].Embed = discordEmbed.Build();
             }
             var interactivity = ctx.Client.GetInteractivity();
-            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages);
+            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
         }
 
         [Command("emote")]

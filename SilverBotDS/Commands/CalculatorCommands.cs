@@ -18,7 +18,7 @@ namespace SilverBotDS.Commands
         public async Task CalculateOld(CommandContext ctx, [RemainingText] string input)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            await new DiscordMessageBuilder().WithContent(lang.Mathcommands.MathSteps + " ```json\n" + new Expression(input).calculate() + "```").SendAsync(ctx.Channel);
+            await new DiscordMessageBuilder().WithContent($"{lang.Mathcommands.MathSteps} ```json\n{new Expression(input).calculate()}```").SendAsync(ctx.Channel);
         }
 
         private const string JSCODE = "module.exports = (callback, x) => { const mathsteps = require('mathsteps'); const steps = mathsteps.solveEquation(x); class MathStep { constructor(oldval,step, newval ) { this.oldval = oldval; this.step = step; this.newval = newval;  }} var mySteps = []; steps.forEach(step => {mySteps.push(new MathStep(step.oldEquation.ascii(), step.changeType, step.newEquation.ascii()));}); callback(null, mySteps);}";

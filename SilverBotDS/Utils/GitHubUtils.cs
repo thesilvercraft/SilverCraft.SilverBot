@@ -33,12 +33,13 @@ namespace SilverBotDS.Utils
             public static Optional<Repo> TryParseUrl(string url)
             {
                 var m = R.Match(url);
-                var repo = new Repo();
                 if (m.Success)
                 {
-                    repo.User = m.Groups["user"].Value;
-                    repo.Reponame = m.Groups["repo"].Value;
-                    return Optional.FromValue(repo);
+                    return Optional.FromValue(new Repo
+                    {
+                        User = m.Groups["user"].Value,
+                        Reponame = m.Groups["repo"].Value
+                    });
                 }
                 else
                 {

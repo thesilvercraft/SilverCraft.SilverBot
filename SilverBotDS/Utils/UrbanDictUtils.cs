@@ -8,7 +8,7 @@ using System.Web;
 
 namespace SilverBotDS.Utils
 {
-    internal class UrbanDictUtils
+    internal static class UrbanDictUtils
     {
         public static async Task<Defenition[]> GetDefenition(string word, HttpClient httpClient)
         {

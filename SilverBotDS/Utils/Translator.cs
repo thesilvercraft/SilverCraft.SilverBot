@@ -73,7 +73,6 @@ namespace SilverBotDS.Utils
 
         private static string LanguageEnumToIdentifier(string language)
         {
-
             if (!LanguageModeMap.ContainsValue(language.ToLowerInvariant()))
             {
                 LanguageModeMap.TryGetValue(language, out string mode);

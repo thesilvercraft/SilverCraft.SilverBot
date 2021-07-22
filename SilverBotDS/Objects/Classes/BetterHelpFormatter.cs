@@ -17,7 +17,7 @@ namespace SilverBotDS.Objects.Classes
     {
         public DiscordEmbedBuilder EmbedBuilder { get; }
         private Command Command { get; set; }
-        private Language Lang { get; set; }
+        private Language Lang { get; init; }
         /// <summary>
         /// Creates a new default help formatter.
         /// </summary>
@@ -27,7 +27,7 @@ namespace SilverBotDS.Objects.Classes
         {
             var langtask = Language.GetLanguageFromCtxAsync(ctx);
             langtask.Wait();
-            Lang= langtask.Result;
+            Lang = langtask.Result;
             EmbedBuilder = new DiscordEmbedBuilder()
                 .WithTitle(Lang.HelpCommandHelpString);
         }
@@ -78,7 +78,6 @@ namespace SilverBotDS.Objects.Classes
         /// <returns>This help formatter.</returns>
         public override BaseHelpFormatter WithSubcommands(IEnumerable<Command> subcommands)
         {
-
             if(Command == null)
             {
                 Dictionary<string, HashSet<string>> commands = new();
@@ -110,22 +109,18 @@ namespace SilverBotDS.Objects.Classes
                                 }
                                 commands[category].Add(command.Name);
                             }
-
                         }
                     }
                 }
                 foreach (var category in commands.Keys)
                 {
                     EmbedBuilder.AddField(category, string.Join(", ", commands[category].Select(x => Formatter.InlineCode(x))), false);
-                    
                 }
             }
             else
             {
                 EmbedBuilder.AddField(Lang.HelpCommandGroupSubcommands, string.Join(", ", subcommands.Select(x => Formatter.InlineCode(x.Name))), false);
             }
-         
-            
             return this;
         }
 

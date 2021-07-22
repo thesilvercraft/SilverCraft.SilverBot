@@ -8,7 +8,6 @@ using Humanizer;
 using Lavalink4NET;
 using Lavalink4NET.DSharpPlus;
 using Lavalink4NET.Lyrics;
-using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
 using Lavalink4NET.Tracking;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +20,6 @@ using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
 using SilverBotDS.Commands.SBCalendar;
 using SilverBotDS.Converters;
-using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using SpotifyAPI.Web;
@@ -31,8 +29,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using SDiscordSink;
@@ -40,11 +36,10 @@ using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Objects.Classes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using System.Text.Json;
 using DSharpPlus.CommandsNext.Exceptions;
-using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Serilog.Events;
 using SixLabors.Fonts;
+using DSharpPlus.Interactivity.EventHandling;
 
 namespace SilverBotDS
 {
@@ -157,7 +152,17 @@ namespace SilverBotDS
             discord.UseInteractivity(new InteractivityConfiguration
             {
                 PollBehaviour = PollBehaviour.KeepEmojis,
-                Timeout = TimeSpan.FromSeconds(30)
+                Timeout = TimeSpan.FromSeconds(60),
+                PaginationButtons = new PaginationButtons()
+                {
+                    Stop = new DiscordButtonComponent(ButtonStyle.Danger, "stop", null, false, new DiscordComponentEmoji("⏹️")),
+                    Left = new DiscordButtonComponent(ButtonStyle.Secondary, "left", null, false, new DiscordComponentEmoji("◀️")),
+                    Right = new DiscordButtonComponent(ButtonStyle.Secondary, "right", null, false, new DiscordComponentEmoji("▶️")),
+                    SkipLeft = new DiscordButtonComponent(ButtonStyle.Primary, "skipl", null, false, new DiscordComponentEmoji("⏮️")),
+                    SkipRight = new DiscordButtonComponent(ButtonStyle.Primary, "skipr", null, false, new DiscordComponentEmoji("⏭️"))
+                },
+                AckPaginationButtons = true,
+                ButtonBehavior = ButtonPaginationBehavior.Disable
             });
             //set up XP and repeating things
             discord.MessageCreated += Discord_MessageCreated;

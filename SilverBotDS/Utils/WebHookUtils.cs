@@ -36,8 +36,8 @@ namespace SilverBotDS.Utils
             // thrown when groups are not populated/valid, or when there is no match
             ArgumentException ex(string reason = null)
             {
-                return new(paramName: nameof(webhookUrl), message:
-                               $"The given webhook Url was not in a valid format. {reason}");
+                return new(message:
+                               $"The given webhook Url was not in a valid format. {reason}", paramName: nameof(webhookUrl));
             }
             var match = WebhookUrlRegex.Match(webhookUrl);
             if (match != null)

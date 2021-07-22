@@ -535,9 +535,7 @@ namespace SilverBotDS.Commands
                     "SilverBotDS.Templates.joker_laugh.gif"
                 )
             );
-            
             Font JokerFont = new(JokerFontFamily, img.Width / 10);
-
             var dr = new DrawingOptions();
             dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
             // x component of pointf is arbitrary and irrelevent since the above alignment option is given
@@ -570,58 +568,53 @@ namespace SilverBotDS.Commands
                 await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
+        private readonly FontFamily CaptionFont = SystemFonts.Find("Futura Extra Black Condensed");
 
-        /*
-           //Non-functioning
-            private readonly Font CaptionFont = new(SystemFonts.Find("Impact"), 100);
-
-            [Command("caption")]
-            public async Task Caption(CommandContext ctx, SdImage image, [RemainingText] string text)
+        [Command("caption")]
+        public async Task Caption(CommandContext ctx, SdImage image, [RemainingText] string text)
+        {
+            await ctx.TriggerTypingAsync();
+            await using var inStream = new MemoryStream(await image.GetBytesAsync(HttpClient));
+            using var bitmap = Image.Load(inStream, out SixLabors.ImageSharp.Formats.IImageFormat frmt);
+            int x = bitmap.Width, y = bitmap.Height;
+            var font = new Font(CaptionFont, x / 10);
+            await using var outStream = new MemoryStream();
+            FontRectangle textSize;
+            var dr = new DrawingOptions();
+            dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
+            dr.TextOptions.VerticalAlignment = VerticalAlignment.Center;
+            textSize = TextMeasurer.Measure(text, new(font));
+            using (var img2 = new Image<Rgba32>(x, y + (int)textSize.Height))
             {
-                await ctx.TriggerTypingAsync();
-                await using var inStream = new MemoryStream(await image.GetBytesAsync(HttpClient));
-                using var bitmap = Image.Load(inStream);
-                int x = bitmap.Width, y = bitmap.Height;
-                var font = new Font(CaptionFont, x / 10);
-                await using var outStream = new MemoryStream();
-                FontRectangle textSize;
-
-                textSize=TextMeasurer.Measure(text, new(font));
-                using (var img2 = new Bitmap(x, y + (int)textSize.Height))
-                {
-                    using (var draw2 = Graphics.FromImage(img2))
-                    {
-                        draw2.Clear(Color.FromArgb(255, 255, 255));
-                        draw2.DrawString(text, font, new SolidBrush(Color.FromArgb(0, 0, 0)), new RectangleF(new PointF(0, 0), new SizeF(x, textSize.Height)), stringFormat);
-                        draw2.DrawImage(bitmap, new Point(0, (int)textSize.Height));
-                        draw2.Save();
-                    }
-                    img2.Save(outStream, .Imaging.ImageFormat.Png);
-                }
-                outStream.Position = 0;
-                var lang = await Language.GetLanguageFromCtxAsync(ctx);
-                if (outStream.Length > MaxBytes)
-                {
-                    await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
-                }
-                else
-                {
-                    await SendImageStream(ctx, outStream, content: "there", lang: lang);
-                }
+                img2.Mutate(o => o.Fill(Color.FromRgb(255, 255, 255)));
+                img2.Mutate(o => o.DrawText(dr, text, font, Brushes.Solid(Color.FromRgb(0, 0, 0)), new PointF(img2.Width/2, textSize.Height / 2)));
+                img2.Mutate(o => o.DrawImage(bitmap, new Point(0, (int)textSize.Height), 1));
+                img2.Save(outStream, frmt);
             }
-
-            [Command("caption")]
-            public async Task Caption(CommandContext ctx, [RemainingText] string text)
+            outStream.Position = 0;
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            if (outStream.Length > MaxBytes)
             {
-                try
-                {
-                    var image = SdImage.FromContext(ctx);
-                    await Caption(ctx, image, text);
-                }
-                catch (AttachmentCountIncorrectException acie)
-                {
-                    await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-                }
-            */
+                await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang).ConfigureAwait(false);
+            }
+            else
+            {
+                await SendImageStream(ctx, outStream, content: "there", lang: lang);
+            }
+        }
+
+        [Command("caption")]
+        public async Task Caption(CommandContext ctx, [RemainingText] string text)
+        {
+            try
+            {
+                var image = SdImage.FromContext(ctx);
+                await Caption(ctx, image, text);
+            }
+            catch (AttachmentCountIncorrectException acie)
+            {
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
+            }
+        }
     }
 }

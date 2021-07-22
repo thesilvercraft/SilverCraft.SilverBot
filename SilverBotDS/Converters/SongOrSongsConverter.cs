@@ -31,8 +31,6 @@ namespace SilverBotDS.Converters
 
         private static readonly Regex AlbumRegex = new(@"^(https:\/\/open\.spotify\.com\/album\/|spotify:album:)([a-zA-Z0-9]+)(.*)$", RegexOptions.Compiled);
 
-   
-
         private bool IsSpotifyString(string url) => TrackRegex.IsMatch(url) || AlbumRegex.IsMatch(url) || PlaylistRegex.IsMatch(url);
 
         private async IAsyncEnumerable<LavalinkTrack> GetTracksUsingAlbum(FullAlbum album, LavalinkNode AudioService, uint skipsongs = 1)

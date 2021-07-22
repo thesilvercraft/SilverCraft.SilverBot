@@ -35,15 +35,24 @@ namespace SilverBotDS.Converters
             {
                 return FromAttachments(ctx.Message.Attachments);
             }
+            if (ctx.Message.Stickers.Count == 1)
+            {
+                return new SdImage(ctx.Message.Stickers[0].StickerUrl);
+            }
             if (ctx.Message.ReferencedMessage is not null)
             {
                 if (ctx.Message.ReferencedMessage.Attachments.Count == 1)
                 {
                     return FromAttachments(ctx.Message.ReferencedMessage.Attachments);
                 }
-                else
+                if (ctx.Message.ReferencedMessage.Stickers.Count == 1)
                 {
-                    //TODO: implement getting the image as a link
+                    return new SdImage(ctx.Message.Stickers[0].StickerUrl);
+                }
+                var m = SdImageConverter.URLregex.Match(ctx.Message.Content);
+                if (m.Success)
+                {
+                    return new SdImage(m.Value);
                 }
             }
             if (ctx.Message.Attachments.Count == 0)
@@ -52,7 +61,7 @@ namespace SilverBotDS.Converters
             }
             else
             {
-                throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooMuchAttachments);
+                throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooManyAttachments);
             }
         }
 
@@ -70,7 +79,7 @@ namespace SilverBotDS.Converters
                 }
                 else
                 {
-                    throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooMuchAttachments);
+                    throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooManyAttachments);
                 }
             }
         }
@@ -101,20 +110,19 @@ namespace SilverBotDS.Converters
 
     public enum AttachmentCountIncorrect : byte
     {
-        TooMuchAttachments,
+        TooManyAttachments,
         TooLittleAttachments
     }
 
     public class SdImageConverter : IArgumentConverter<SdImage>
     {
-        private readonly Regex _expression = new("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        private readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        private readonly Regex _user = new("<@!(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        public static readonly Regex URLregex = new("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private static readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private static readonly Regex _user = new("<@!(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         public async Task<Optional<SdImage>> ConvertAsync(string value, CommandContext ctx)
         {
             var m = _emote.Match(value);
-
             if (m.Success)
             {
                 return Optional.FromValue(new SdImage($"https://cdn.discordapp.com/emojis/{m.Groups["id"].Value}"));
@@ -124,13 +132,8 @@ namespace SilverBotDS.Converters
             {
                 return Optional.FromValue(new SdImage(await ctx.Client.GetUserAsync(Convert.ToUInt64(u.Groups["id"].Value))));
             }
-            if (_expression.IsMatch(value))
+            if (URLregex.IsMatch(value))
             {
-                if (CodeEnv.Monika.Contains(value))
-                {
-                    await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent("i will not allow such behavior..... It appears as SilverBot is having some **technical difficulties**, we will retry in a sec...").SendAsync(ctx.Channel);
-                    await Task.Delay(250);
-                }
                 return Optional.FromValue(new SdImage(value));
             }
             return Optional.FromNoValue<SdImage>();

@@ -10,18 +10,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
 using NetTools;
-using Microsoft.Extensions.FileProviders;
-using System.Reflection;
-using System.IO;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Radzen;
-using SilverBotDS.Controlllers;
-
 namespace SilverBotDS
 {
     internal static class CloudFlareConnectingIpMiddleware
@@ -82,8 +74,7 @@ namespace SilverBotDS
                 ICollection<string> urls = builder.ServerFeatures.Get<IServerAddressesFeature>().Addresses;
                 if (urls != null && urls.Count != 0)
                 {
-                    string[] cloudFlareIP = GetCloudflareIP();
-                    foreach (string line in cloudFlareIP)
+                    foreach (string line in GetCloudflareIP())
                     {
                         if (IPAddressRange.TryParse(line, out IPAddressRange range))
                         {
@@ -135,6 +126,7 @@ namespace SilverBotDS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddMvc().AddXmlSerializerFormatters();
             services.AddServerSideBlazor();
             services.AddDistributedMemoryCache();
             services.AddHttpContextAccessor();
@@ -172,7 +164,6 @@ namespace SilverBotDS
             app.UseCloudflareForwardHeaderOptions();
             app.UseAuthentication();
             app.UseSession();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

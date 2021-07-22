@@ -176,9 +176,9 @@
   <ItemGroup>
     <PackageReference Include="Analytics" Version="3.8.0" />
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
-    <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00925" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00925" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00925" />
+    <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00927" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00927" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00927" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
@@ -193,7 +193,7 @@
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0-beta3" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0-beta3" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.0-1.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.0-2.final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.5.21301.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.5.21301.9">
       <PrivateAssets>all</PrivateAssets>
@@ -220,7 +220,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Radzen.Blazor" Version="3.7.1" />
+    <PackageReference Include="Radzen.Blazor" Version="3.7.2" />
     <PackageReference Include="ScottPlot" Version="4.1.16" />
     <PackageReference Include="Serilog" Version="2.10.1-dev-01343" />
     <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00229" />

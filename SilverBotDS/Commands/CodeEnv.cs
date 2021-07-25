@@ -8,7 +8,7 @@ namespace SilverBotDS.Commands
 {
     public class CodeEnv
     {
-        public CodeEnv(CommandContext context, Config config)
+        public CodeEnv(CommandContext context, Config config, DatabaseContext dbctx)
         {
             ctx = context;
             Member = ctx.Member;
@@ -18,6 +18,7 @@ namespace SilverBotDS.Commands
             Client = ctx.Client;
             Config = config;
             ExConfig = new Config();
+            DBContext = dbctx;
         }
 
 #pragma warning disable IDE1006 // Naming Styles
@@ -36,5 +37,6 @@ namespace SilverBotDS.Commands
         public static readonly string Wbubbler = "вбубблер";
         public static readonly bool IsSilverAWeeb = true;
         public static readonly string DDLCPlus = "hype";
+        public DatabaseContext DBContext { get; init; }
     }
 }

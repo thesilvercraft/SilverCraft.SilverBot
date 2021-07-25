@@ -349,7 +349,7 @@ namespace SilverBotDS.Commands
                 await new DiscordMessageBuilder().WithContent($"Compiled the code in {sw1.Elapsed.Humanize(6)}").SendAsync(ctx.Channel);
                 sw1.Start();
                 var sw2 = Stopwatch.StartNew();
-                var result = await script.RunAsync(new CodeEnv(ctx, Config));
+                var result = await script.RunAsync(new CodeEnv(ctx, Config, Database));
                 if (result.ReturnValue is not null)
                 {
                     await SendBestRepresentationAsync(result.ReturnValue, ctx);

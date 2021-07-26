@@ -514,7 +514,8 @@ namespace SilverBotDS
                             {
                                 pages.Add(new Page(embed: tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}").WithDescription(RemoveStringFromEnd(cfe.FailedChecks[i].GetType().Name, "Attribute").Humanize())));
                             }
-                            await e.Context.Channel.SendPaginatedMessageAsync(e.Context.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+                            var interactivity = e.Context.Client.GetInteractivity();
+                            await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages, token: new System.Threading.CancellationToken());
                         }
                     }
                     else if (e.Exception is InvalidOverloadException || (e.Exception is ArgumentException a && a.Message == "Could not find a suitable overload for the command."))

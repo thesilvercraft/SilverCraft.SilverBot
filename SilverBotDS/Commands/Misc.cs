@@ -208,8 +208,8 @@ namespace SilverBotDS.Commands
                     tempbuilder.WithFooter($"{lang.RequestedBy}{ctx.User.Username} {string.Format(lang.PageNuget, i + 1, data.Length)}", ctx.User.GetAvatarUrl(ImageFormat.Png));
                     pages.Add(new Page(embed: tempbuilder));
                 }
-
-                await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+                var interactivity = ctx.Client.GetInteractivity();
+                await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
             }
             catch (Exception)
             {
@@ -266,7 +266,8 @@ namespace SilverBotDS.Commands
                     }
                     pages.Add(new Page(embed: tempbuilder));
                 }
-                await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+                var interactivity = ctx.Client.GetInteractivity();
+                await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
             }
             catch (Exception)
             {

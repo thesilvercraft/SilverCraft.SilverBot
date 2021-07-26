@@ -105,7 +105,7 @@ namespace SilverBotDS.Commands.SBCalendar
             }
             var interactivity = ctx.Client.GetInteractivity();
             var pages = interactivity.GeneratePagesInEmbed(bob.ToString());
-            await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages);
+            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
             bob.Clear();
         }
     }

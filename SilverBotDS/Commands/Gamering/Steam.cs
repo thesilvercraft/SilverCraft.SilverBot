@@ -65,7 +65,8 @@ namespace SilverBotDS.Commands.Gamering
                 }
                 if (pages.Count > 0)
                 {
-                    await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+                    var interactivity = ctx.Client.GetInteractivity();
+                    await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
                 }
                 else
                 {

@@ -292,9 +292,9 @@ namespace SilverBotDS.Commands
         {
             WriteIndented = true
         };
-        [Command("dependancies")]
-        [Description("get the dependancies used")]
-        public async Task Dependancies(CommandContext ctx)
+        [Command("dependencies")]
+        [Description("get the dependencies used")]
+        public async Task Dependencies(CommandContext ctx)
         {
             StringBuilder sb = new();
             foreach(var dependancy in AppDomain.CurrentDomain.GetAssemblies())

@@ -108,7 +108,8 @@ namespace SilverBotDS.Commands
                     embedbuilder.WithAuthor(string.Format(lang.PageNuget, a + 1, pages1.Length));
                     pages1[a].Embed = embedbuilder.Build();
                 }
-                await ctx.Channel.SendPaginatedMessageAsync(ctx.User, pages1);
+                var interactivity = ctx.Client.GetInteractivity();
+                await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages1, token: new System.Threading.CancellationToken());
             }
             else
             {

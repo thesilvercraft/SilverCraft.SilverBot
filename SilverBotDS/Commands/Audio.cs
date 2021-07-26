@@ -400,8 +400,8 @@ namespace SilverBotDS.Commands
                     .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : timetillsongplays.Humanize(culture: lang.GetCultureInfo()))
                     .WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
             }
-
-            await ctx.Channel.SendPaginatedMessageAsync(ctx.Member, pages, timeoutoverride: new TimeSpan(0, 2, 0));
+            var interactivity = ctx.Client.GetInteractivity();
+            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
         }
 
         [Command("loop")]

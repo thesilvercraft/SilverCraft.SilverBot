@@ -147,7 +147,8 @@ namespace SilverBotDS.Objects
            {"mouth sounds", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e5p_f8YmH2jk23Zvq_h-UE-"},
            {"view monster", "https://www.youtube.com/playlist?list=PL621AB9949A35F306" },
            {"doug stream music", "https://www.youtube.com/playlist?list=PLzTxt5iYdhzifPXw_g0hWp0YgFetgazuv"},
-           {"ninja tuna", "https://music.youtube.com/playlist?list=OLAK5uy_lYrDqWbPEMCqxcBSOdaMWonNJzP24mLhA"}
+           {"ninja tuna", "https://music.youtube.com/playlist?list=OLAK5uy_lYrDqWbPEMCqxcBSOdaMWonNJzP24mLhA"},
+           {"antenna5", "http://antenna5stream.neotel.mk:8000/live128"}
         };
         public Splash[] Splashes { get; set; } = {
       new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),

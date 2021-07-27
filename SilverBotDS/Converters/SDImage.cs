@@ -47,7 +47,7 @@ namespace SilverBotDS.Converters
                 }
                 if (ctx.Message.ReferencedMessage.Stickers.Count == 1)
                 {
-                    return new SdImage(ctx.Message.Stickers[0].StickerUrl);
+                    return new SdImage(ctx.Message.ReferencedMessage.Stickers[0].StickerUrl);
                 }
                 var m = SdImageConverter.URLregex.Match(ctx.Message.Content);
                 if (m.Success)

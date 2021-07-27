@@ -4,7 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.Xml.Serialization;
+using System.ComponentModel;
 namespace SilverBotDS.Controllers
 {
     [ApiController]
@@ -50,12 +51,11 @@ namespace SilverBotDS.Controllers
         //From here on out blame vs
 #pragma warning disable IDE1006 // Naming Styles
         // NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
-        [Serializable()]
-        [System.ComponentModel.DesignerCategory("code")]
-        [System.Xml.Serialization.XmlType(AnonymousType = true)]
-        [System.Xml.Serialization.XmlRoot(Namespace = "", IsNullable = false)]
-
-        public partial class browserconfig
+        [Serializable]
+        [DesignerCategory("code")]
+        [XmlType(AnonymousType = true)]
+        [XmlRoot(Namespace = "", IsNullable = false)]
+        public class browserconfig
 
         {
             public browserconfigMsapplication msapplication
@@ -65,10 +65,10 @@ namespace SilverBotDS.Controllers
             }
         }
 
-        [SerializableAttribute()]
-        [System.ComponentModel.DesignerCategory("code")]
-        [System.Xml.Serialization.XmlType(AnonymousType = true)]
-        public partial class browserconfigMsapplication
+        [Serializable]
+        [DesignerCategory("code")]
+        [XmlType(AnonymousType = true)]
+        public class browserconfigMsapplication
         {
             public browserconfigMsapplicationTile tile
             {
@@ -77,10 +77,10 @@ namespace SilverBotDS.Controllers
             }
         }
 
-        [Serializable()]
-        [System.ComponentModel.DesignerCategory("code")]
-        [System.Xml.Serialization.XmlType(AnonymousType = true)]
-        public partial class browserconfigMsapplicationTile
+        [Serializable]
+        [DesignerCategory("code")]
+        [XmlType(AnonymousType = true)]
+        public class browserconfigMsapplicationTile
         {
             public browserconfigMsapplicationTileSquare70x70logo square70x70logo
             {
@@ -113,12 +113,12 @@ namespace SilverBotDS.Controllers
             }
         }
 
-        [Serializable()]
-        [System.ComponentModel.DesignerCategory("code")]
-        [System.Xml.Serialization.XmlType(AnonymousType = true)]
-        public partial class browserconfigMsapplicationTileSquare70x70logo
+        [Serializable]
+        [DesignerCategory("code")]
+        [XmlType(AnonymousType = true)]
+        public class browserconfigMsapplicationTileSquare70x70logo
         {
-            [System.Xml.Serialization.XmlAttribute()]
+            [XmlAttribute()]
             public string src
             {
                 get;
@@ -126,13 +126,12 @@ namespace SilverBotDS.Controllers
             }
         }
 
-        [Serializable()]
-        [System.ComponentModel.DesignerCategory("code")]
-        [System.Xml.Serialization.XmlType(AnonymousType = true)]
-        public partial class browserconfigMsapplicationTileSquare150x150logo
+        [Serializable]
+        [DesignerCategory("code")]
+        [XmlType(AnonymousType = true)]
+        public class browserconfigMsapplicationTileSquare150x150logo
         {
-
-            [System.Xml.Serialization.XmlAttribute()]
+            [XmlAttribute()]
             public string src
             {
                 get;
@@ -140,12 +139,12 @@ namespace SilverBotDS.Controllers
             }
         }
 
-        [Serializable()]
-        [System.ComponentModel.DesignerCategory("code")]
-        [System.Xml.Serialization.XmlType(AnonymousType = true)]
-        public partial class browserconfigMsapplicationTileSquare310x310logo
+        [Serializable]
+        [DesignerCategory("code")]
+        [XmlType(AnonymousType = true)]
+        public class browserconfigMsapplicationTileSquare310x310logo
         {
-            [System.Xml.Serialization.XmlAttribute()]
+            [XmlAttribute()]
             public string src
             {
                 get;
@@ -153,12 +152,12 @@ namespace SilverBotDS.Controllers
             }
         }
 
-        [Serializable()]
-        [System.ComponentModel.DesignerCategory("code")]
-        [System.Xml.Serialization.XmlType(AnonymousType = true)]
-        public partial class browserconfigMsapplicationTileWide310x150logo
+        [Serializable]
+        [DesignerCategory("code")]
+        [XmlType(AnonymousType = true)]
+        public class browserconfigMsapplicationTileWide310x150logo
         {
-            [System.Xml.Serialization.XmlAttribute()]
+            [XmlAttribute()]
             public string src
             {
                 get;

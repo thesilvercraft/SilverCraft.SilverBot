@@ -192,7 +192,7 @@
     <PackageReference Include="Markdig.Signed" Version="0.25.0" />
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0-beta3" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0-beta3" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.0-2.final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.5.21301.9" />

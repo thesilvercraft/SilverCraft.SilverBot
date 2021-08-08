@@ -39,7 +39,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("random")]
-        public async Task Kindsffeefergergrgfdfdsgfdfg(CommandContext ctx)
+        public async Task Random(CommandContext ctx)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var gifresult = await giphy.RandomGif(new RandomParameter
@@ -51,7 +51,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("search"), Aliases("s")]
-        public async Task Kindsffeefergergrgfdfdsgfdgfdsfgdfgfdfdghdfg(CommandContext ctx, [RemainingText] string term)
+        public async Task Search(CommandContext ctx, [RemainingText] string term)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var b = new DiscordEmbedBuilder();

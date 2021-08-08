@@ -4,11 +4,8 @@ using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
 using SilverBotDS.Utils;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml;
@@ -19,7 +16,7 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
-        private const ulong CurrentConfVer = 25;
+        private const ulong CurrentConfVer = 26;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } =
@@ -100,9 +97,20 @@ namespace SilverBotDS.Objects
         [XmlDescription("Allow silverbot to connect to lavalink and use audio commands, useful if you have lavalink installed or if you allowed silverbot to install and run lavalink (requires java)")]
         public bool UseLavaLink { get; set; } = true;
 
-        [XmlDescription("Allow silverbot to emulate bubot (enables bibi picture commands and other stuff)")]
+        [XmlDescription("Allow silverbot to emulate bubot (enables some basic commands)")]
         public bool EmulateBubot { get; set; } = false;
-
+        [XmlDescription("Allow silverbot to emulate bubot's bibi commands (also enables the bibi gallery)")]
+        public bool EmulateBubotBibi { get; set; } = false;
+        [XmlDescription("Location of bibi pictures (local -  pictures(png) -  folder)")]
+        public string LocalBibiPictures { get; set; } = "C:\\BibiPictures\\Bibi\\";
+        [XmlDescription("Location of bibi pictures (BibiLibCutout - web - pictures)")]
+        public string BibiLibCutOut { get; set; } = "https://cmpc.live/bibipics/bibicutout/picture{0}.png?raw=true";
+        [XmlDescription("Location of titles for BibiLibCutout pictures (BibiLibCutout - local - config)")]
+        public string BibiLibCutOutConfig { get; set; } = "C:\\BibiPictures\\BibiLibCutout\\Titles.json";
+        [XmlDescription("Location of bibi pictures (BibiLibFull - web - pictures)")]
+        public string BibiLibFull { get; set; } = "https://cmpc.live/bibipics/bibifull/picture{0}.png?swag=true";
+        [XmlDescription("Location of titles for BibiLibFull pictures (BibiLibFull - local - config)")]
+        public string BibiLibFullConfig { get; set; } = "C:\\BibiPictures\\BibiLibFull\\Titles.json";
         [XmlDescription("Allow silverbot owner only commands (may allow the bot owner to kill pc)")]
         public bool AllowOwnerOnlyCommands { get; set; } = true;
 
@@ -130,11 +138,11 @@ namespace SilverBotDS.Objects
         public string LoginPageDiscordClientSecret { get; set; } = "lol no";
 
         [XmlDescription("Do we check github for a newer commit")]
-        public bool EnableUpdateChecking { get; set; } = true;
-        [XmlDescription("2 segment keys for science, they can be duplicates if you like exposing your key to the entire world")]
+        public bool EnableUpdateChecking { get; set; } = false;
+        [XmlDescription("2 segment keys for science, they can be duplicates if you like exposing your keys to the entire world")]
         public string SegmentPrivateSource { get; set; } = "Segment_Key";
         public string SegmentPublicSource { get; set; } = "Segment_Key";
-        [XmlDescription("Song aliases, It can be any kind of url or search term (It also supports SilverBotPlaylist files, will make guide about them later)")]
+        [XmlDescription("Song aliases, It can be any kind of url or search term (It also supports SilverBotPlaylist files)")]
         public SerializableDictionary<string, string> SongAliases { get; set; } = new SerializableDictionary<string, string>
         {
            {"special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8"},
@@ -375,7 +383,6 @@ namespace SilverBotDS.Objects
                     await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
                     streamWriter.Close();
                 }
-
                 streamReader.Close();
             }
 
@@ -405,38 +412,23 @@ namespace SilverBotDS.Objects
                     })).Save(streamWriter);
                     streamWriter.Close();
                 }
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    new Process
-                    {
-                        StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + Program.DirSlash + "silverbot.xml")
-                        {
-                            UseShellExecute = true
-                        }
-                    }.Start();
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("silverbot.xml should have opened in the default app, edit it, save it and press enter");
-                    Environment.Exit(420);
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
-                    Environment.Exit(420);
-                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
+                Environment.Exit(420);
             }
-
-            await using var fs = File.Open("silverbot.xml", FileMode.Open);
-            var readconfig = serializer.Deserialize(fs) as Config;
-            fs.Close();
-            if (readconfig != null && (readconfig.ConfigVer == null || readconfig.ConfigVer != CurrentConfVer))
+            Config cnf = null;
+            using (var fs = new StreamReader("silverbot.xml"))
             {
-                await OutdatedConfigTask(readconfig);
-                return await GetAsync();
+                cnf = (Config)serializer.Deserialize(fs);
+                if (cnf != null && (cnf.ConfigVer == null || cnf.ConfigVer != CurrentConfVer))
+                {
+                    await OutdatedConfigTask(cnf);
+                    return await GetAsync();
+                }
+                Giphy.Set(cnf?.Gtoken);
+                Fortnite.Setapi(cnf?.FApiToken);
             }
-            Giphy.Set(readconfig?.Gtoken);
-            Fortnite.Setapi(readconfig?.FApiToken);
-            return readconfig;
+            return cnf;
         }
     }
 }

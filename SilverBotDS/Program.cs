@@ -130,11 +130,7 @@ namespace SilverBotDS
             {
                 logfactory.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
-            log = logfactory.CreateLogger();
-            if (!CheckIfAllFontsAreHere())
-            {
-                log.Fatal("You do not have all reqired fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format.");
-            }
+            log = logfactory.CreateLogger();           
             if (config.EnableUpdateChecking)
             {
                 log.Information("Checking for updates");
@@ -296,14 +292,28 @@ namespace SilverBotDS
             commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterConverter(new TimeSpanConverter());
+            if (!CheckIfAllFontsAreHere())
+            {
+                log.Fatal("You do not have all reqired fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format. SilverBot will be running in a reduced feature mode where experience and Image related commands will not be enabled.");
+            }
+            else
+            {
+                commands.RegisterCommands<Experience>();
+                commands.RegisterCommands<ImageModule>();
+            }
             commands.RegisterCommands<Anime>();
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<ModCommands>();
-            commands.RegisterCommands<Giphy>();
-            commands.RegisterCommands<ImageModule>();
-            commands.RegisterCommands<AdminCommands>();
-            commands.RegisterCommands<Experience>();
+            if(IsNotNullAndIsNotB(config.Gtoken, "Giphy_Token_Here"))
+            {
+                commands.RegisterCommands<Giphy>();
+            }
+            else
+            {
+                log.Information("You do not have a giphy token in the config, giphy related commands will be disabled.");
+            }
+            commands.RegisterCommands<AdminCommands>();          
             if (config.AllowOwnerOnlyCommands)
             {
                 commands.RegisterCommands<OwnerOnly>();
@@ -313,9 +323,16 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<Fortnite>();
             }
+            else
+            {
+                log.Information("You do not have a fortnite api token in the config, fortnite related commands will be disabled.");
+            }
             if (config.EmulateBubot)
             {
                 commands.RegisterCommands<Bubot>();
+            }
+            if(config.EmulateBubotBibi)
+            {
                 commands.RegisterCommands<BibiLib>();
             }
             if (config.UseLavaLink)

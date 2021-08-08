@@ -6,11 +6,11 @@
 @using System.Text.Json
 @inject Config config
 @inject NavigationManager nvgmng
-@
-{
-    if(!config.EmulateBubotBibi)
-{
-nvgmng.NavigateTo("/404");
+@{
+    if (!config.EmulateBubotBibi)
+    {
+        nvgmng.NavigateTo("/404");
+    }
 }
 
 @code{

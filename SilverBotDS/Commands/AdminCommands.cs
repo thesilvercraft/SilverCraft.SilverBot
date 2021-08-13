@@ -55,26 +55,13 @@ namespace SilverBotDS.Commands
                 var bob = new DiscordEmbedBuilder();
                 bob.WithTitle(question).WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username, iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png)).WithColor(await ColorUtils.GetSingleAsync());
                 var pollStartMessage = await commandContext.RespondAsync(bob.Build());
-                var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache, PollBehaviour.KeepEmojis, duration);
-                var yesVotes = pollResult.First(x => x.Emoji.Name == "everybodyvotes").Total;
-                var noVotes = pollResult.First(x => x.Emoji.Name == "nobodyvotes").Total;
-                var pollResultText = new StringBuilder();
-                pollResultText.Append("Poll result: **");
-                if (yesVotes > noVotes)
+                foreach(var emote in _pollEmojiCache)
                 {
-                    pollResultText.Append("Yes");
+                    await pollStartMessage.CreateReactionAsync(emote);
                 }
-                else if (yesVotes == noVotes)
-                {
-                    pollResultText.Append("Undecided");
-                }
-                else
-                {
-                    pollResultText.Append("No");
-                }
-                pollResultText.Append("**\nYes:").Append(yesVotes).Append(" No:").Append(noVotes).Append(" Undecided: ").Append(commandContext.Guild.MemberCount - (yesVotes + noVotes)).Append(" (server total-people that voted)");
-                bob.WithDescription(pollResultText.ToString());
-                await pollStartMessage.ModifyAsync(embed: bob.Build());
+                using var rng = new RandomGenerator();
+                await Database.plannedEvents.AddAsync(new() { ChannelID = commandContext.Channel.Id, EventID = rng.RandomAbcString(20), Handled = false, MessageID=commandContext.Message.Id,Time=DateTime.Now+duration,Type=Objects.Database.Classes.PlannedEventType.EmojiPoll,UserID=commandContext.User.Id,ResponseMessageID= pollStartMessage.Id});
+                await Database.SaveChangesAsync();
             }
             else
             {
@@ -83,9 +70,9 @@ namespace SilverBotDS.Commands
         }
 
         [Command("GiveAway"), Description("Start a simple giveaway")]
-        public async Task GiveAway(CommandContext commandContext, [Description("How long should the giveaway last. (e.g. 1m = 1 minute)")] TimeSpan duration, [Description("Giveaway content"), RemainingText] string question)
+        public async Task GiveAway(CommandContext commandContext, [Description("How long should the giveaway last. (e.g. 1m = 1 minute)")] TimeSpan duration, [Description("Giveaway content"), RemainingText] string item)
         {
-            if (!string.IsNullOrEmpty(question))
+            if (!string.IsNullOrEmpty(item))
             {
                 var client = commandContext.Client;
                 var interactivity = client.GetInteractivity();
@@ -97,22 +84,16 @@ namespace SilverBotDS.Commands
                     };
                 }
                 var bob = new DiscordEmbedBuilder();
-                bob.WithTitle(question).WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username, iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png));
+                bob.WithTitle(item).WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username, iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png));
                 var pollStartMessage = await commandContext.RespondAsync(bob.Build());
-
-                var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache.SkipLast(1), PollBehaviour.KeepEmojis, duration);
-                var yesVotes = pollResult.First(x => x.Emoji.Name == "everybodyvotes").Voted;
-                if (yesVotes.Count == 0)
-                {
-                    await commandContext.RespondAsync("Error: noone reacted in time");
-                    return;
-                }
-                RandomGenerator generator = new();
-                await commandContext.RespondAsync($"{yesVotes.ElementAt(generator.Next(0, yesVotes.Count)).Mention} won {question}");
+                await pollStartMessage.CreateReactionAsync(_pollEmojiCache[0]);
+                using var rng = new RandomGenerator();
+                await Database.plannedEvents.AddAsync(new() { ChannelID = commandContext.Channel.Id, EventID = rng.RandomAbcString(20), Handled = false, MessageID = commandContext.Message.Id, Time = DateTime.Now + duration, Type = Objects.Database.Classes.PlannedEventType.GiveAway, UserID = commandContext.User.Id, ResponseMessageID = pollStartMessage.Id });
+                await Database.SaveChangesAsync();
             }
             else
             {
-                await commandContext.RespondAsync("Error: the question can't be empty");
+                await commandContext.RespondAsync("Error: the item can't be empty");
             }
         }
     }

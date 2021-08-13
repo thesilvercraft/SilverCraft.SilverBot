@@ -422,6 +422,7 @@ namespace SilverBotDS.Objects
                 cnf = (Config)serializer.Deserialize(fs);
                 if (cnf != null && (cnf.ConfigVer == null || cnf.ConfigVer != CurrentConfVer))
                 {
+                    fs.Dispose();
                     await OutdatedConfigTask(cnf);
                     return await GetAsync();
                 }

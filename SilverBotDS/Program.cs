@@ -713,16 +713,24 @@ namespace SilverBotDS
                                     log.Error("Category type is {CategoryType} and not Category for channel {ChannelId}", category.Type, thing.Item2);
                                 }
                             }
-                            catch (DSharpPlus.Exceptions.NotFoundException)
+                            catch (Exception ex) when (ex is NotFoundException or UnauthorizedException)
                             {
-                                var dmchannel = await server.Owner.CreateDmChannelAsync();
-                                await dmchannel.SendMessageAsync($"Hello SilverBot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work as something broke.");
-                                dbctx.SetServerStatsCategory(thing.Item1, null);
+                                try
+                                {
+                                    var dmchannel = await server.Owner.CreateDmChannelAsync();
+                                    await dmchannel.SendMessageAsync($"Hello SilverBot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work as something broke.");
+                                    dbctx.SetServerStatsCategory(thing.Item1, null);
+                                }
+                                catch (UnauthorizedException)
+                                {
+                                    dbctx.SetServerStatsCategory(thing.Item1, null);
+                                    await server.LeaveAsync();
+                                }
                             }
                         }
-                        catch (DSharpPlus.Exceptions.NotFoundException)
+                        catch (NotFoundException)
                         {
-                            // TODO: ADD TRACKING OF STUFF AND DELETE SERVER SETTINGS IF THIS FAILS 3 TIMES
+                            dbctx.SetServerStatsCategory(thing.Item1, null);
                         }
                     }
                     await Task.Delay(1800000);

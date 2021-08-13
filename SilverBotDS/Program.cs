@@ -658,7 +658,7 @@ namespace SilverBotDS
                             }
                             else
                             {
-                                Console.WriteLine($"removed an {evnt.Type}");
+                                log.Verbose($"removed an {evnt.Type}");
                                 dbctx.plannedEvents.Remove(evnt);
                                 await dbctx.SaveChangesAsync();
                             }

@@ -44,7 +44,6 @@ namespace SilverBotDS.Commands
             if (!string.IsNullOrEmpty(question))
             {
                 var client = commandContext.Client;
-                var interactivity = client.GetInteractivity();
                 if (_pollEmojiCache == null)
                 {
                     _pollEmojiCache = new[] {
@@ -75,7 +74,6 @@ namespace SilverBotDS.Commands
             if (!string.IsNullOrEmpty(item))
             {
                 var client = commandContext.Client;
-                var interactivity = client.GetInteractivity();
                 if (_pollEmojiCache == null)
                 {
                     _pollEmojiCache = new[] {

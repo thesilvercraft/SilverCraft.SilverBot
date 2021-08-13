@@ -654,7 +654,6 @@ namespace SilverBotDS
                                         log.Error(e, "exception happened in events thread in the switch case");
                                     }
                                 }
-
                             }
                             else
                             {
@@ -727,7 +726,6 @@ namespace SilverBotDS
                         }
                     }
                     await Task.Delay(1800000);
-
                 }
                 catch (Exception e)
                 {

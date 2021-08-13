@@ -53,9 +53,9 @@
   <ItemGroup>
     <PackageReference Include="Analytics" Version="3.8.0" />
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
-    <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00930" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00930" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00930" />
+    <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-00961" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-00961" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-00961" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
@@ -68,10 +68,10 @@
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="2.0.1-preview.1" />
     <PackageReference Include="Markdig.Signed" Version="0.25.0" />
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0-beta3" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0-beta3" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.0-2.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.0-3.final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.5.21301.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.5.21301.9">
       <PrivateAssets>all</PrivateAssets>
@@ -83,18 +83,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.0-preview.5.21301.17">
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.0-preview.7.21378.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Graph" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Graph" Version="4.2.0" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.7" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.35.0" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.15.1" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.35.1" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.15.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Npgsql" Version="6.0.0-preview5" />
+    <PackageReference Include="Npgsql" Version="6.0.0-preview6" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview5" />
-    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.12.1">
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.13.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -103,18 +103,18 @@
     <PackageReference Include="Serilog" Version="2.10.1-dev-01343" />
     <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00229" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10289" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1-dev-00874" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1-dev-00876" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4-alpha.0.50" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4-alpha.0.62" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta13.6" />
-    <PackageReference Include="SpotifyAPI.Web" Version="6.2.0" />
+    <PackageReference Include="SpotifyAPI.Web" Version="6.2.1" />
     <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
     <PackageReference Include="System.Globalization" Version="4.3.0" />
     <PackageReference Include="System.Globalization.Calendars" Version="4.3.0" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Text.Json" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0-preview.7.21377.19" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="TimeSpanParserUtil" Version="1.2.0" />

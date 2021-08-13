@@ -720,17 +720,20 @@ namespace SilverBotDS
                                     var dmchannel = await server.Owner.CreateDmChannelAsync();
                                     await dmchannel.SendMessageAsync($"Hello SilverBot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work as something broke.");
                                     dbctx.SetServerStatsCategory(thing.Item1, null);
+                                    await dbctx.SaveChangesAsync();
                                 }
                                 catch (UnauthorizedException)
                                 {
                                     dbctx.SetServerStatsCategory(thing.Item1, null);
                                     await server.LeaveAsync();
+                                    await dbctx.SaveChangesAsync();
                                 }
                             }
                         }
-                        catch (NotFoundException)
+                        catch (Exception ex) when (ex.GetType() == typeof(NotFoundException) || ex.GetType() == typeof(UnauthorizedException))
                         {
                             dbctx.SetServerStatsCategory(thing.Item1, null);
+                            await dbctx.SaveChangesAsync();
                         }
                     }
                     await Task.Delay(1800000);

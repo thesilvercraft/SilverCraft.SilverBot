@@ -713,7 +713,7 @@ namespace SilverBotDS
                                     log.Error("Category type is {CategoryType} and not Category for channel {ChannelId}", category.Type, thing.Item2);
                                 }
                             }
-                            catch (Exception ex) when (ex is NotFoundException or UnauthorizedException)
+                            catch (Exception ex) when (ex.GetType() == typeof(NotFoundException) || ex.GetType() == typeof(UnauthorizedException))
                             {
                                 try
                                 {

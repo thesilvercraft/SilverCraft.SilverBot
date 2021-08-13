@@ -732,7 +732,8 @@ namespace SilverBotDS
                         }
                         catch (Exception ex) when (ex.GetType() == typeof(NotFoundException) || ex.GetType() == typeof(UnauthorizedException))
                         {
-                            dbctx.SetServerStatsCategory(thing.Item1, null);
+                            var serversettings = dbctx.serverSettings.FirstOrDefault(x => x.ServerId == thing.Item1);
+                            dbctx.serverSettings.Remove(serversettings);
                             await dbctx.SaveChangesAsync();
                         }
                     }

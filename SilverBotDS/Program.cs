@@ -40,6 +40,9 @@ using DSharpPlus.CommandsNext.Exceptions;
 using Serilog.Events;
 using SixLabors.Fonts;
 using DSharpPlus.Interactivity.EventHandling;
+using DSharpPlus.VoiceNext;
+using SnowdPlayer;
+using Xabe.FFmpeg.Downloader;
 
 namespace SilverBotDS
 {
@@ -119,6 +122,7 @@ namespace SilverBotDS
 
         private static async Task MainAsync(string[] args)
         {
+            await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
             config = await Config.GetAsync();
             WebHookUtils.ParseWebhookUrlNullable(config.LogWebhook, out ulong? id, out string token);
             var logfactory = new LoggerConfiguration()
@@ -131,10 +135,7 @@ namespace SilverBotDS
                 logfactory.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
             log = logfactory.CreateLogger();
-            if (!CheckIfAllFontsAreHere())
-            {
-                log.Fatal("You do not have all reqired fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format.");
-            }
+
             if (config.EnableUpdateChecking)
             {
                 log.Information("Checking for updates");
@@ -168,7 +169,9 @@ namespace SilverBotDS
             discord.MessageCreated += Discord_MessageCreated;
             log.Verbose("Initializing Commands");
             ServiceCollection services = new();
+
             #region Browser fun stuff
+
             switch (config.BrowserType)
             {
                 case 0:
@@ -199,12 +202,16 @@ namespace SilverBotDS
                         throw new NotSupportedException();
                     }
             }
-            #endregion
+
+            #endregion Browser fun stuff
+
             if (IsNotNullAndIsNotB(config.SegmentPrivateSource, "Segment_Key"))
             {
                 services.AddSingleton<IAnalyse>(new SegmentIo(config.SegmentPrivateSource));
             }
+
             #region Database fun stuff
+
             switch (config.DatabaseType)
             {
                 case 1:
@@ -230,7 +237,9 @@ namespace SilverBotDS
                 default:
                     break;
             }
-            #endregion
+
+            #endregion Database fun stuff
+
             services.AddSingleton(config);
             services.AddSingleton(httpClient);
             if (config.AutoDownloadAndStartLavalink)
@@ -253,6 +262,7 @@ namespace SilverBotDS
                     }
                 }.Start();
             }
+            services.AddSingleton(new SnowService(discord.UseVoiceNext()));
             log.Verbose("Waiting 6s");
             await Task.Delay(6000);
             if (config.UseLavaLink)
@@ -288,7 +298,9 @@ namespace SilverBotDS
                 Services = serviceProvider,
                 PrefixResolver = ResolvePrefixAsync
             });
+
             #region Registering Commands
+
             commands.SetHelpFormatter<CustomHelpFormatter>();
             log.Verbose("Registering Commands&Converters");
             commands.RegisterConverter(new SdImageConverter());
@@ -301,9 +313,18 @@ namespace SilverBotDS
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<ModCommands>();
             commands.RegisterCommands<Giphy>();
-            commands.RegisterCommands<ImageModule>();
+            if (!CheckIfAllFontsAreHere())
+            {
+                log.Fatal("You do not have all reqired fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format.");
+            }
+            else
+            {
+                commands.RegisterCommands<ImageModule>();
+                commands.RegisterCommands<Experience>();
+            }
             commands.RegisterCommands<AdminCommands>();
-            commands.RegisterCommands<Experience>();
+
+            commands.RegisterCommands<NewAudio>();
             if (config.AllowOwnerOnlyCommands)
             {
                 commands.RegisterCommands<OwnerOnly>();
@@ -339,7 +360,9 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<ServerStatsCommands>();
             }
-            #endregion
+
+            #endregion Registering Commands
+
             //🥁🥁🥁 drum-roll
             log.Information("Connecting to discord");
             bool isconnected = false;
@@ -374,7 +397,9 @@ namespace SilverBotDS
                 _ = Task.Run(() => StatisticsMainAsync());
             }
             await discord.UpdateStatusAsync(new("console logs while launching the website module", ActivityType.Watching));
+
             #region Website Fun Time
+
             host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
             {
                 s.AddSingleton(config);
@@ -410,7 +435,9 @@ namespace SilverBotDS
                 }
             })
              .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<WebpageStartup>()).UseSerilog(log).Build();
-            #endregion
+
+            #endregion Website Fun Time
+
             _ = Task.Run(async () => await host.RunAsync());
             while (true)
             {
@@ -423,6 +450,7 @@ namespace SilverBotDS
                 //repeat🔁
             }
         }
+
         private static Task<int> ResolvePrefixAsync(DiscordMessage msg)
         {
             if (msg.Channel.Type == ChannelType.Private)
@@ -473,21 +501,24 @@ namespace SilverBotDS
                });
             }
         }
+
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
         {
             return new Dictionary<string, string> { ["GuildCount"] = client.Guilds.Values.LongCount().ToString(), ["Platform"] = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() };
         }
+
         private static string RemoveStringFromEnd(string a, string sub)
         {
-            if(a.EndsWith(sub))
+            if (a.EndsWith(sub))
             {
                 a = a.Substring(0, a.LastIndexOf(sub));
             }
             return a;
         }
+
         private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
-            if (e.Context.Channel.IsPrivate || e.Context.Channel.PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id)).HasPermission(Permissions.SendMessages) )
+            if (e.Context.Channel.IsPrivate || e.Context.Channel.PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id)).HasPermission(Permissions.SendMessages))
             {
                 if (e.Exception is CommandNotFoundException)
                 {
@@ -638,7 +669,7 @@ namespace SilverBotDS
             await channel.SendMessageAsync("It is Friday");
         }
 
-        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "<:kalorichan:839099093552332850>","kalorichan" };
+        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "<:kalorichan:839099093552332850>", "kalorichan" };
         private static readonly Dictionary<ulong, DateTime> levellimit = new();
         private static readonly TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
 
@@ -660,6 +691,7 @@ namespace SilverBotDS
                 await context.SaveChangesAsync();
             }
         }
+
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
             if (e.Author.IsBot)

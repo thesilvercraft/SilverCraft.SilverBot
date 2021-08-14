@@ -40,12 +40,14 @@ using DSharpPlus.CommandsNext.Exceptions;
 using Serilog.Events;
 using SixLabors.Fonts;
 using DSharpPlus.Interactivity.EventHandling;
+using DSharpPlus.VoiceNext;
+using SnowdPlayer;
+using Xabe.FFmpeg.Downloader;
 using DSharpPlus.Exceptions;
 using System.Text;
 using CodenameGenerator;
 using DSharpPlus.SlashCommands;
 using SilverBotDS.Commands.Slash;
-
 namespace SilverBotDS
 {
     internal static class Program
@@ -200,7 +202,9 @@ namespace SilverBotDS
                         throw new NotSupportedException();
                     }
             }
-            #endregion
+
+            #endregion Browser fun stuff
+
             if (IsNotNullAndIsNotB(config.SegmentPrivateSource, "Segment_Key"))
             {
                 services.AddSingleton<IAnalyse>(new SegmentIo(config.SegmentPrivateSource));
@@ -231,7 +235,7 @@ namespace SilverBotDS
                 default:
                     break;
             }
-            #endregion
+            #endregion Database fun stuff
             services.AddSingleton(config);
             services.AddSingleton(httpClient);
             if (config.AutoDownloadAndStartLavalink)
@@ -253,6 +257,10 @@ namespace SilverBotDS
                         UseShellExecute = true
                     }
                 }.Start();
+            }
+            if(config.UseNewAudio)
+            {
+                services.AddSingleton(new SnowService(discord.UseVoiceNext()));
             }
             log.Verbose("Waiting 6s");
             await Task.Delay(6000);
@@ -320,6 +328,10 @@ namespace SilverBotDS
                 log.Information("You do not have a giphy token in the config, giphy related commands will be disabled.");
             }
             commands.RegisterCommands<AdminCommands>();
+            if(config.UseNewAudio)
+            {
+                commands.RegisterCommands<NewAudio>();
+            }
             if (config.AllowOwnerOnlyCommands)
             {
                 commands.RegisterCommands<OwnerOnly>();
@@ -438,7 +450,7 @@ namespace SilverBotDS
                 }
             })
              .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<WebpageStartup>()).UseSerilog(log).Build();
-            #endregion
+            #endregion Website Fun Time
             _ = Task.Run(async () => await host.RunAsync());
             while (true)
             {

@@ -545,6 +545,10 @@ namespace SilverBotDS.Objects
             using var streamWriter = new StreamWriter(loc);
             streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
         }
+        public static async Task<Language> GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)
+        {
+            return await GetAsync(db.GetLangCodeGuild(id));
+        }
         public static async Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
         {
             DatabaseContext db = (DatabaseContext)ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));

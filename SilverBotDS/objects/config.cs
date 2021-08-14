@@ -16,7 +16,7 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
-        private const ulong CurrentConfVer = 26;
+        private const ulong CurrentConfVer = 27;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } =
@@ -30,7 +30,8 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("The Discord token, can be got from https://discord.com/developers/")]
         public string Token { get; set; } = "Discord_Token_Here";
-
+        [XmlDescription("Allow silverbot to use the shitty commands discord is pushing down our throats, this uses the DSharpPlus.SlashCommands library made by IDoEverything")]
+        public bool UseSlashCommands { get; set; } = false;
         [XmlDescription("The Giphy token, can be got from https://developers.giphy.com/")]
         public string Gtoken { get; set; } = "Giphy_Token_Here";
 

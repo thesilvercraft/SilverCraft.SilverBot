@@ -104,7 +104,7 @@ namespace SilverBotDS.Commands
         {
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
-                                             .WithContent($"https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=2147483639&scope=bot")
+                                             .WithContent($"https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=1278602326&scope=bot%20applications.commands")
                                              .SendAsync(ctx.Channel);
         }
 
@@ -242,9 +242,9 @@ namespace SilverBotDS.Commands
                                                  .SendAsync(ctx.Channel);
         }
 
-        private async Task<bool> IsAtSilverCraftAsync(CommandContext ctx, DiscordUser b)
+        public static async Task<bool> IsAtSilverCraftAsync(DiscordClient discord, DiscordUser b, Config cnf)
         {
-            return (await ctx.Client.GetGuildAsync(Config.ServerId)).Members.ContainsKey(b.Id);
+            return (await discord.GetGuildAsync(cnf.ServerId)).Members.ContainsKey(b.Id);
         }
 
         [Command("bot")]
@@ -316,7 +316,7 @@ namespace SilverBotDS.Commands
                 .WithTitle(lang.User + a.Username)
                 .WithDescription(lang.InformationAbout + a.Mention)
                 .AddField(lang.Userid, a.Id.ToString(), true)
-                .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await IsAtSilverCraftAsync(ctx, a)), true)
+                .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await IsAtSilverCraftAsync(ctx.Client, a,Config)), true)
                 .AddField(lang.IsAnOwner, BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(a)), true)
                 .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
                 .AddField(lang.AccountCreationDate, a.CreationTimestamp.ToString(cultureinfo), true)

@@ -43,6 +43,8 @@ using DSharpPlus.Interactivity.EventHandling;
 using DSharpPlus.Exceptions;
 using System.Text;
 using CodenameGenerator;
+using DSharpPlus.SlashCommands;
+using SilverBotDS.Commands.Slash;
 
 namespace SilverBotDS
 {
@@ -287,6 +289,7 @@ namespace SilverBotDS
                 Services = serviceProvider,
                 PrefixResolver = ResolvePrefixAsync
             });
+            var slash = discord.UseSlashCommands(new SlashCommandsConfiguration() { Services=serviceProvider});
             #region Registering Commands
             commands.SetHelpFormatter<CustomHelpFormatter>();
             log.Verbose("Registering Commands&Converters");
@@ -360,6 +363,10 @@ namespace SilverBotDS
                 commands.RegisterCommands<ServerStatsCommands>();
             }
             #endregion
+            if(config.UseSlashCommands)
+            {
+                slash.RegisterCommands<GeneralCommands>(699361201586438235);
+            }
             //🥁🥁🥁 drum-roll
             log.Information("Connecting to discord");
             bool isconnected = false;
@@ -592,7 +599,7 @@ namespace SilverBotDS
             {
                 pollResultText.Append("No");
             }
-            pollResultText.Append("**\nYes:").Append(yesVotes).Append(" No:").Append(noVotes).Append(" Undecided: ").Append(channel.Guild.Members.Count(x=>!x.Value.IsBot)- (yesVotes + noVotes));
+            pollResultText.Append("**\nYes:").Append(yesVotes).Append(" No:").Append(noVotes).Append(" Undecided: ").Append(channel.Guild.Members.Count(x => !x.Value.IsBot) - (yesVotes + noVotes));
             bob.WithDescription(pollResultText.ToString());
             await msg.ModifyAsync(bob.Build());
             @event.Handled = true;

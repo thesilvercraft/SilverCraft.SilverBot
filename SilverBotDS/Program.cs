@@ -43,6 +43,10 @@ using DSharpPlus.Interactivity.EventHandling;
 using DSharpPlus.VoiceNext;
 using SnowdPlayer;
 using Xabe.FFmpeg.Downloader;
+using DSharpPlus.Exceptions;
+using System.Text;
+using CodenameGenerator;
+
 
 namespace SilverBotDS
 {
@@ -61,7 +65,7 @@ namespace SilverBotDS
                     Directory.CreateDirectory(Path.GetDirectoryName(args[1]));
                 }
                 Language.SerialiseDefault(args[1]);
-                Console.WriteLine("Serialised en.json");
+                Console.WriteLine("Serialized en.json");
                 Environment.Exit(70);
                 return;
             }
@@ -135,7 +139,6 @@ namespace SilverBotDS
                 logfactory.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
             log = logfactory.CreateLogger();
-
             if (config.EnableUpdateChecking)
             {
                 log.Information("Checking for updates");
@@ -308,22 +311,28 @@ namespace SilverBotDS
             commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterConverter(new TimeSpanConverter());
+            if (!CheckIfAllFontsAreHere())
+            {
+                log.Fatal("You do not have all required fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format. SilverBot will be running in a reduced feature mode where experience and Image related commands will not be enabled.");
+            }
+            else
+            {
+                commands.RegisterCommands<Experience>();
+                commands.RegisterCommands<ImageModule>();
+            }
             commands.RegisterCommands<Anime>();
             commands.RegisterCommands<Genericcommands>();
             commands.RegisterCommands<Emotes>();
             commands.RegisterCommands<ModCommands>();
-            commands.RegisterCommands<Giphy>();
-            if (!CheckIfAllFontsAreHere())
+            if (IsNotNullAndIsNotB(config.Gtoken, "Giphy_Token_Here"))
             {
-                log.Fatal("You do not have all reqired fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format.");
+                commands.RegisterCommands<Giphy>();
             }
             else
             {
-                commands.RegisterCommands<ImageModule>();
-                commands.RegisterCommands<Experience>();
+                log.Information("You do not have a giphy token in the config, giphy related commands will be disabled.");
             }
             commands.RegisterCommands<AdminCommands>();
-
             commands.RegisterCommands<NewAudio>();
             if (config.AllowOwnerOnlyCommands)
             {
@@ -334,9 +343,16 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<Fortnite>();
             }
+            else
+            {
+                log.Information("You do not have a fortnite api token in the config, fortnite related commands will be disabled.");
+            }
             if (config.EmulateBubot)
             {
                 commands.RegisterCommands<Bubot>();
+            }
+            if (config.EmulateBubotBibi)
+            {
                 commands.RegisterCommands<BibiLib>();
             }
             if (config.UseLavaLink)
@@ -378,7 +394,7 @@ namespace SilverBotDS
                 //intentional empty statement
             }
             await Task.Delay(2000);
-            await discord.UpdateStatusAsync(new("console logs while connnecting to lavalink", ActivityType.Watching));
+            await discord.UpdateStatusAsync(new("console logs while connecting to lavalink", ActivityType.Watching));
             if (config.UseLavaLink)
             {
                 await audioService.InitializeAsync();
@@ -396,6 +412,7 @@ namespace SilverBotDS
             {
                 _ = Task.Run(() => StatisticsMainAsync());
             }
+            _ = Task.Run(() => RunEventsAsync());
             await discord.UpdateStatusAsync(new("console logs while launching the website module", ActivityType.Watching));
 
             #region Website Fun Time
@@ -522,7 +539,7 @@ namespace SilverBotDS
             {
                 if (e.Exception is CommandNotFoundException)
                 {
-                    //we do not do anything if it is a nonexistant command, i would have liked it to be a user only visible message but discord is shit
+                    //we do not do anything if it is a nonexistent command, i would have liked it to be a user only visible message but discord is shit
                     return;
                 }
                 else
@@ -577,14 +594,117 @@ namespace SilverBotDS
 
         private const string FridayUrl = "https://youtu.be/akT0wxv9ON8";
         private static int last_friday;
-
+        public static async Task RunEmojiEvent(PlannedEvent @event)
+        {
+            if (@event.Type != PlannedEventType.EmojiPoll)
+            {
+                throw new ArgumentException("The parameter @event needs to be an EmojiPoll", nameof(@event));
+            }
+            var channel = await discord.GetChannelAsync(@event.ChannelID);
+            var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
+            var bob = new DiscordEmbedBuilder(msg.Embeds[0]);
+            var yesVotes = (await msg.GetReactionsAsync(DiscordEmoji.FromName(discord, ":everybodyvotes:"))).Count(x => x.Id != discord.CurrentUser.Id && !x.IsBot);
+            var noVotes = (await msg.GetReactionsAsync(DiscordEmoji.FromName(discord, ":nobodyvotes:"))).Count(x => x.Id != discord.CurrentUser.Id && !x.IsBot);
+            var pollResultText = new StringBuilder();
+            pollResultText.Append("Poll result: **");
+            if (yesVotes > noVotes)
+            {
+                pollResultText.Append("Yes");
+            }
+            else if (yesVotes == noVotes)
+            {
+                pollResultText.Append("Undecided");
+            }
+            else
+            {
+                pollResultText.Append("No");
+            }
+            pollResultText.Append("**\nYes:").Append(yesVotes).Append(" No:").Append(noVotes).Append(" Undecided: ").Append(channel.Guild.Members.Count(x=>!x.Value.IsBot)- (yesVotes + noVotes));
+            bob.WithDescription(pollResultText.ToString());
+            await msg.ModifyAsync(bob.Build());
+            @event.Handled = true;
+        }
+        public static async Task RunGiveAwayEvent(PlannedEvent @event)
+        {
+            if (@event.Type != PlannedEventType.GiveAway)
+            {
+                throw new ArgumentException("The parameter evnt needs to be an GiveAway", nameof(@event));
+            }
+            var channel = await discord.GetChannelAsync(@event.ChannelID);
+            var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
+            var bob = new DiscordEmbedBuilder(msg.Embeds[0]);
+            var people = (await msg.GetReactionsAsync(DiscordEmoji.FromName(discord, ":everybodyvotes:"))).Where(x => x.Id != discord.CurrentUser.Id && !x.IsBot);
+            using var random = new RandomGenerator();
+            if (!people.Any())
+            {
+                await channel.SendMessageAsync("Nobody reacted in time :(");
+            }
+            else
+            {
+                await channel.SendMessageAsync($"{people.ElementAt(random.Next(0, people.Count())).Mention} won {msg.Embeds[0].Title}");
+            }
+            @event.Handled = true;
+        }
+        public static async Task RunEventsAsync()
+        {
+            var dbctx = serviceProvider.GetRequiredService<DatabaseContext>();
+            while (true)
+            {
+                try
+                {
+                    var arr = dbctx.plannedEvents.ToArray();
+                    for (int a = 0; a < arr.Length; a++)
+                    {
+                        var evnt = arr[a];
+                        if (evnt != null)
+                        {
+                            if (!evnt.Handled)
+                            {
+                                if (evnt.Time <= DateTime.Now)
+                                {
+                                    try
+                                    {
+                                        switch (evnt.Type)
+                                        {
+                                            case PlannedEventType.EmojiPoll:
+                                                _ = Task.Run(() => RunEmojiEvent(evnt));
+                                                break;
+                                            case PlannedEventType.GiveAway:
+                                                _ = Task.Run(() => RunGiveAwayEvent(evnt));
+                                                break;
+                                            case PlannedEventType.Reminder:
+                                                throw new NotImplementedException();
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        log.Error(e, "exception happened in events thread in the switch case");
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                log.Verbose($"removed an {evnt.Type}");
+                                dbctx.plannedEvents.Remove(evnt);
+                                await dbctx.SaveChangesAsync();
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Error(e, "exception happened in events thread");
+                }
+                await Task.Delay(3000);
+            }
+        }
         public static async Task StatisticsMainAsync()
         {
-            try
+            while (true)
             {
-                log.Verbose("Entered statistics method");
-                while (true)
+                try
                 {
+                    log.Verbose("Entered statistics method");
                     var dbctx = serviceProvider.GetRequiredService<DatabaseContext>();
                     log.Verbose("Getting the settings about statistics");
                     var things = dbctx.GetStatisticSettings();
@@ -617,27 +737,39 @@ namespace SilverBotDS
                                 }
                                 else
                                 {
-                                    log.Error("uhhhhhh awkward category.type is {CategoryType} and not Category for channel {ChannelId}", category.Type, thing.Item2);
+                                    log.Error("Category type is {CategoryType} and not Category for channel {ChannelId}", category.Type, thing.Item2);
                                 }
                             }
-                            catch (DSharpPlus.Exceptions.NotFoundException)
+                            catch (Exception ex) when (ex.GetType() == typeof(NotFoundException) || ex.GetType() == typeof(UnauthorizedException))
                             {
-                                var dmchannel = await server.Owner.CreateDmChannelAsync();
-                                await dmchannel.SendMessageAsync($"Hello silverbot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work as something broke.");
-                                dbctx.SetServerStatsCategory(thing.Item1, null);
+                                try
+                                {
+                                    var dmchannel = await server.Owner.CreateDmChannelAsync();
+                                    await dmchannel.SendMessageAsync($"Hello SilverBot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work as something broke.");
+                                    dbctx.SetServerStatsCategory(thing.Item1, null);
+                                    await dbctx.SaveChangesAsync();
+                                }
+                                catch (UnauthorizedException)
+                                {
+                                    dbctx.SetServerStatsCategory(thing.Item1, null);
+                                    await server.LeaveAsync();
+                                    await dbctx.SaveChangesAsync();
+                                }
                             }
                         }
-                        catch (DSharpPlus.Exceptions.NotFoundException)
+                        catch (Exception ex) when (ex.GetType() == typeof(NotFoundException) || ex.GetType() == typeof(UnauthorizedException))
                         {
-                            // TODO: ADD TRACKING OF STUFF AND DELETE SERVER SETTINGS IF THIS FAILS 3 TIMES
+                            var serversettings = dbctx.serverSettings.FirstOrDefault(x => x.ServerId == thing.Item1);
+                            dbctx.serverSettings.Remove(serversettings);
+                            await dbctx.SaveChangesAsync();
                         }
                     }
                     await Task.Delay(1800000);
                 }
-            }
-            catch (Exception e)
-            {
-                log.Error(e, "exception happened in stats thread");
+                catch (Exception e)
+                {
+                    log.Error(e, "exception happened in stats thread");
+                }
             }
         }
 

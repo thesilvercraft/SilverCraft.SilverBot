@@ -25,8 +25,9 @@ namespace SilverBotDS.Commands
     internal class Bubot : BaseCommandModule
     {
         private readonly Font BibiFont = new(SystemFonts.Find("Arial"), 30, FontStyle.Bold);
-        private readonly int BibiPictureCount = Assembly.GetExecutingAssembly().GetManifestResourceNames().Count(x => x.StartsWith("SilverBotDS.Templates.Bibi.") && x.EndsWith(".png"));
-
+        private int BibiPictureCount { get { return Directory.EnumerateFiles(config.LocalBibiPictures).Count(x => x.EndsWith(".png")); } }
+        public Config config { private get; set; }
+     
         [Command("silveryeet")]
         [Description("Sends SilverYeet.gif")]
         public async Task Silveryeet(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://cdn.discordapp.com/attachments/751246248102592567/823475242822533120/SilverYeet.gif").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
@@ -40,21 +41,13 @@ namespace SilverBotDS.Commands
         public async Task Bibi(CommandContext ctx, [RemainingText][Description("Bibi is")] string input)
         {
             await ctx.TriggerTypingAsync();
-            input = "bibi is " + input;
+            input = $"bibi is {input}";
             int randomnumber;
             using (var random = new RandomGenerator())
             {
                 randomnumber = random.Next(1, BibiPictureCount);
             }
-            using Image picture = await Image.LoadAsync(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                    $"SilverBotDS.Templates.Bibi.{randomnumber}.png"
-                )
-                ??
-                throw new TemplateReturningNullException(
-                    $"SilverBotDS.Templates.Bibi.{randomnumber}.png"
-                )
-            );
+            using Image picture = await Image.LoadAsync($"{config.LocalBibiPictures}{randomnumber}.png");
             float size = BibiFont.Size;
             while (TextMeasurer.Measure(input, new RendererOptions(new Font(BibiFont.Family, size, FontStyle.Bold))).Width > picture.Width)
             {
@@ -78,32 +71,22 @@ namespace SilverBotDS.Commands
     [Category("Bubot")]
     internal class BibiLib : BaseCommandModule
     {
-        public static readonly string[] BibiDescText = GetBibiDescText();
-        public static readonly string[] BibiFullDescText = GetBibiFullDescText();
-        private static string[] GetBibiDescText()
+        public BibiLib()
         {
-            StreamReader reader = new(
-               Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                   "SilverBotDS.Templates.BibiLibCutout.Titles.json"
-               )
-               ??
-               throw new TemplateReturningNullException(
-                   "SilverBotDS.Templates.BibiLibCutout.Titles.json"
-               )
-            );
+            BibiDescText = GetBibiDescText();
+            BibiFullDescText = GetBibiFullDescText();
+        }
+        private readonly string[] BibiDescText;
+        private readonly string[] BibiFullDescText;
+        public Config config { private get; set; }
+        private string[] GetBibiDescText()
+        {
+            using StreamReader reader = new(config.BibiLibCutOutConfig);
             return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
         }
-        private static string[] GetBibiFullDescText()
+        private string[] GetBibiFullDescText()
         {
-            StreamReader reader = new(
-               Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                   "SilverBotDS.Templates.BibiLibFull.Titles.json"
-               )
-               ??
-               throw new TemplateReturningNullException(
-                   "SilverBotDS.Templates.BibiLibFull.Titles.json"
-               )
-            );
+            using StreamReader reader = new(config.BibiLibFullConfig);
             return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
         }
         [GroupCommand]

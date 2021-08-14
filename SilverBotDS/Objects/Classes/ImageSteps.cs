@@ -32,8 +32,6 @@ namespace SilverBotDS.Objects
             ist.SetClient(c);
             return ist;
         }
-
-        
         public async Task<Image> ExecuteStepsAsync(Step[] filledsteps)
         {
             Image Bitmap = null;
@@ -63,8 +61,6 @@ namespace SilverBotDS.Objects
             }
             return Bitmap;
         }
-        
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -135,8 +131,6 @@ namespace SilverBotDS.Objects
             this.template = template;
             this.isUrl = isUrl;
         }
-
-        
         [XmlIgnore]
         private Image _image;
 

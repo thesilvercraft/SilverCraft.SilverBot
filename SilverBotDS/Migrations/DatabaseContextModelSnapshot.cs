@@ -16,6 +16,37 @@ namespace SilverBotDS.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.0-preview.5.21301.9");
 
+            modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.PlannedEvent", b =>
+                {
+                    b.Property<string>("EventID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("ChannelID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Handled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("MessageID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong?>("ResponseMessageID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("UserID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("EventID");
+
+                    b.ToTable("plannedEvents");
+                });
+
             modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.ServerStatString", b =>
                 {
                     b.Property<ulong>("Key")

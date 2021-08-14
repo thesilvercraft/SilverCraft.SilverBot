@@ -40,6 +40,7 @@ namespace SilverBotDS.Objects
         public DbSet<UserSettings> userSettings { get; set; }
         public DbSet<UserExperience> userExperiences { get; set; }
         public DbSet<UserQuote> userQuotes { get; set; }
+        public DbSet<PlannedEvent> plannedEvents { get; set; }
 #pragma warning restore IDE1006 // Naming Styles
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {

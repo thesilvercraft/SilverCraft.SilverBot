@@ -5,7 +5,7 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <DebugType>Full</DebugType>
+    <DebugType>portable</DebugType>
     <StartupObject>SilverBotDS.Program</StartupObject>
     <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
     <AnalysisLevel>preview</AnalysisLevel>
@@ -17,71 +17,8 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="Templates\BibiLibFull\Titles.json" />
-    <Content Remove="Templates\Bibi\Titles.json" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Exceptions\NewFile.txt" />
     <None Remove="Templates\adventure_time_template.png" />
-    <None Remove="Templates\BibiLibCutout\1.png" />
-    <None Remove="Templates\BibiLibCutout\10.png" />
-    <None Remove="Templates\BibiLibCutout\11.png" />
-    <None Remove="Templates\BibiLibCutout\12.png" />
-    <None Remove="Templates\BibiLibCutout\13.png" />
-    <None Remove="Templates\BibiLibCutout\14.png" />
-    <None Remove="Templates\BibiLibCutout\15.png" />
-    <None Remove="Templates\BibiLibCutout\16.png" />
-    <None Remove="Templates\BibiLibCutout\17.png" />
-    <None Remove="Templates\BibiLibCutout\18.png" />
-    <None Remove="Templates\BibiLibCutout\19.png" />
-    <None Remove="Templates\BibiLibCutout\2.png" />
-    <None Remove="Templates\BibiLibCutout\20.png" />
-    <None Remove="Templates\BibiLibCutout\21.png" />
-    <None Remove="Templates\BibiLibCutout\22.png" />
-    <None Remove="Templates\BibiLibCutout\3.png" />
-    <None Remove="Templates\BibiLibCutout\4.png" />
-    <None Remove="Templates\BibiLibCutout\5.png" />
-    <None Remove="Templates\BibiLibCutout\6.png" />
-    <None Remove="Templates\BibiLibCutout\7.png" />
-    <None Remove="Templates\BibiLibCutout\8.png" />
-    <None Remove="Templates\BibiLibCutout\9.png" />
-    <None Remove="Templates\BibiLibFull\1.png" />
-    <None Remove="Templates\BibiLibFull\10.png" />
-    <None Remove="Templates\BibiLibFull\11.png" />
-    <None Remove="Templates\BibiLibFull\12.png" />
-    <None Remove="Templates\BibiLibFull\13.png" />
-    <None Remove="Templates\BibiLibFull\14.png" />
-    <None Remove="Templates\BibiLibFull\15.png" />
-    <None Remove="Templates\BibiLibFull\16.png" />
-    <None Remove="Templates\BibiLibFull\17.png" />
-    <None Remove="Templates\BibiLibFull\18.png" />
-    <None Remove="Templates\BibiLibFull\19.png" />
-    <None Remove="Templates\BibiLibFull\2.png" />
-    <None Remove="Templates\BibiLibFull\3.png" />
-    <None Remove="Templates\BibiLibFull\4.png" />
-    <None Remove="Templates\BibiLibFull\5.png" />
-    <None Remove="Templates\BibiLibFull\6.png" />
-    <None Remove="Templates\BibiLibFull\7.png" />
-    <None Remove="Templates\BibiLibFull\8.png" />
-    <None Remove="Templates\BibiLibFull\9.png" />
-    <None Remove="Templates\Bibi\1.png" />
-    <None Remove="Templates\Bibi\10.png" />
-    <None Remove="Templates\Bibi\11.png" />
-    <None Remove="Templates\Bibi\12.png" />
-    <None Remove="Templates\Bibi\13.png" />
-    <None Remove="Templates\Bibi\14.png" />
-    <None Remove="Templates\Bibi\15.png" />
-    <None Remove="Templates\Bibi\16.png" />
-    <None Remove="Templates\Bibi\17.png" />
-    <None Remove="Templates\Bibi\2.png" />
-    <None Remove="Templates\Bibi\3.png" />
-    <None Remove="Templates\Bibi\4.png" />
-    <None Remove="Templates\Bibi\5.png" />
-    <None Remove="Templates\Bibi\6.png" />
-    <None Remove="Templates\Bibi\7.png" />
-    <None Remove="Templates\Bibi\8.png" />
-    <None Remove="Templates\Bibi\9.png" />
-    <None Remove="Templates\Bibi\e.jpg" />
     <None Remove="Templates\fock.mp3" />
     <None Remove="Templates\happy_new_year_template.png" />
     <None Remove="Templates\joker_laugh.gif" />
@@ -91,70 +28,11 @@
     <None Remove="Templates\weeb_reliable_template.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Templates\BibiLibCutout\1.png" />
-    <Content Include="Templates\BibiLibCutout\10.png" />
-    <Content Include="Templates\BibiLibCutout\11.png" />
-    <Content Include="Templates\BibiLibCutout\12.png" />
-    <Content Include="Templates\BibiLibCutout\13.png" />
-    <Content Include="Templates\BibiLibCutout\14.png" />
-    <Content Include="Templates\BibiLibCutout\15.png" />
-    <Content Include="Templates\BibiLibCutout\16.png" />
-    <Content Include="Templates\BibiLibCutout\17.png" />
-    <Content Include="Templates\BibiLibCutout\18.png" />
-    <Content Include="Templates\BibiLibCutout\19.png" />
-    <Content Include="Templates\BibiLibCutout\2.png" />
-    <Content Include="Templates\BibiLibCutout\20.png" />
-    <Content Include="Templates\BibiLibCutout\21.png" />
-    <Content Include="Templates\BibiLibCutout\22.png" />
-    <Content Include="Templates\BibiLibCutout\3.png" />
-    <Content Include="Templates\BibiLibCutout\4.png" />
-    <Content Include="Templates\BibiLibCutout\5.png" />
-    <Content Include="Templates\BibiLibCutout\6.png" />
-    <Content Include="Templates\BibiLibCutout\7.png" />
-    <Content Include="Templates\BibiLibCutout\8.png" />
-    <Content Include="Templates\BibiLibCutout\9.png" />
-    <Content Include="Templates\BibiLibFull\1.png" />
-    <Content Include="Templates\BibiLibFull\10.png" />
-    <Content Include="Templates\BibiLibFull\11.png" />
-    <Content Include="Templates\BibiLibFull\12.png" />
-    <Content Include="Templates\BibiLibFull\13.png" />
-    <Content Include="Templates\BibiLibFull\14.png" />
-    <Content Include="Templates\BibiLibFull\15.png" />
-    <Content Include="Templates\BibiLibFull\16.png" />
-    <Content Include="Templates\BibiLibFull\17.png" />
-    <Content Include="Templates\BibiLibFull\18.png" />
-    <Content Include="Templates\BibiLibFull\19.png" />
-    <Content Include="Templates\BibiLibFull\2.png" />
-    <Content Include="Templates\BibiLibFull\3.png" />
-    <Content Include="Templates\BibiLibFull\4.png" />
-    <Content Include="Templates\BibiLibFull\5.png" />
-    <Content Include="Templates\BibiLibFull\6.png" />
-    <Content Include="Templates\BibiLibFull\7.png" />
-    <Content Include="Templates\BibiLibFull\8.png" />
-    <Content Include="Templates\BibiLibFull\9.png" />
-    <EmbeddedResource Include="Templates\BibiLibFull\Titles.json" />
-    <EmbeddedResource Include="Templates\Bibi\12.png" />
-    <EmbeddedResource Include="Templates\Bibi\13.png" />
-    <EmbeddedResource Include="Templates\Bibi\14.png" />
-    <EmbeddedResource Include="Templates\Bibi\15.png" />
-    <EmbeddedResource Include="Templates\Bibi\16.png" />
-    <EmbeddedResource Include="Templates\Bibi\17.png" />
     <EmbeddedResource Include="Templates\joker_laugh.gif" />
     <EmbeddedResource Include="Templates\quality_fock.mp3" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\adventure_time_template.png" />
-    <EmbeddedResource Include="Templates\Bibi\1.png" />
-    <EmbeddedResource Include="Templates\Bibi\10.png" />
-    <EmbeddedResource Include="Templates\Bibi\11.png" />
-    <EmbeddedResource Include="Templates\Bibi\2.png" />
-    <EmbeddedResource Include="Templates\Bibi\3.png" />
-    <EmbeddedResource Include="Templates\Bibi\4.png" />
-    <EmbeddedResource Include="Templates\Bibi\5.png" />
-    <EmbeddedResource Include="Templates\Bibi\6.png" />
-    <EmbeddedResource Include="Templates\Bibi\7.png" />
-    <EmbeddedResource Include="Templates\Bibi\8.png" />
-    <EmbeddedResource Include="Templates\Bibi\9.png" />
     <EmbeddedResource Include="Templates\fock.mp3" />
     <EmbeddedResource Include="Templates\happy_new_year_template.png" />
     <EmbeddedResource Include="Templates\motivator_template.png" />
@@ -165,7 +43,6 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="Pages\Monika.razor" />
     <None Include="Shared\MainLayout.razor" />
-    <EmbeddedResource Include="Templates\BibiLibCutout\Titles.json" />
     <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
     <None Include="wwwroot\css\open-iconic\FONT-LICENSE" />
     <None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
@@ -176,10 +53,10 @@
   <ItemGroup>
     <PackageReference Include="Analytics" Version="3.8.0" />
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
-    <PackageReference Include="DSharpPlus" Version="4.1.0-nightly-00940" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00930" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00930" />
-    <PackageReference Include="DSharpPlus.VoiceNext" Version="4.1.0-nightly-00940" />
+    <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-00961" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-00961" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-00961" />
+    <PackageReference Include="DSharpPlus.VoiceNext" Version="4.1.0-nightly-00961" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
     <PackageReference Include="GitInfo" Version="2.1.2">
@@ -192,10 +69,10 @@
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="2.0.1-preview.1" />
     <PackageReference Include="Markdig.Signed" Version="0.25.0" />
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0-beta3" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0-beta3" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.0-2.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.0-3.final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.5.21301.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.5.21301.9">
       <PrivateAssets>all</PrivateAssets>
@@ -207,38 +84,38 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.0-preview.5.21301.17">
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.0-preview.7.21378.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Graph" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Graph" Version="4.2.0" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.7" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.35.0" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.15.1" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.35.1" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.15.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Npgsql" Version="6.0.0-preview5" />
+    <PackageReference Include="Npgsql" Version="6.0.0-preview6" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview5" />
-    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.12.1">
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.13.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Radzen.Blazor" Version="3.7.3" />
+    <PackageReference Include="Radzen.Blazor" Version="3.8.2" />
     <PackageReference Include="ScottPlot" Version="4.1.16" />
     <PackageReference Include="Serilog" Version="2.10.1-dev-01343" />
     <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00229" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10289" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1-dev-00874" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1-dev-00876" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4-alpha.0.50" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta13.3" />
-    <PackageReference Include="SpotifyAPI.Web" Version="6.2.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4-alpha.0.62" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta13.6" />
+    <PackageReference Include="SpotifyAPI.Web" Version="6.2.1" />
     <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
     <PackageReference Include="System.Globalization" Version="4.3.0" />
     <PackageReference Include="System.Globalization.Calendars" Version="4.3.0" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Text.Json" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0-preview.7.21377.19" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="TimeSpanParserUtil" Version="1.2.0" />
@@ -255,17 +132,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Templates\Bibi\1.png" />
-    <Resource Include="Templates\Bibi\10.png" />
-    <Resource Include="Templates\Bibi\11.png" />
-    <Resource Include="Templates\Bibi\2.png" />
-    <Resource Include="Templates\Bibi\3.png" />
-    <Resource Include="Templates\Bibi\4.png" />
-    <Resource Include="Templates\Bibi\5.png" />
-    <Resource Include="Templates\Bibi\6.png" />
-    <Resource Include="Templates\Bibi\7.png" />
-    <Resource Include="Templates\Bibi\8.png" />
-    <Resource Include="Templates\Bibi\9.png" />
     <Resource Include="Templates\weeb_reliable_template.png" />
   </ItemGroup>
   <Target Name="AddAssemblyAliasToReactiveAsync" AfterTargets="ResolveAssemblyReferences">

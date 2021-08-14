@@ -40,9 +40,13 @@ using DSharpPlus.CommandsNext.Exceptions;
 using Serilog.Events;
 using SixLabors.Fonts;
 using DSharpPlus.Interactivity.EventHandling;
+using DSharpPlus.VoiceNext;
+using SnowdPlayer;
+using Xabe.FFmpeg.Downloader;
 using DSharpPlus.Exceptions;
 using System.Text;
 using CodenameGenerator;
+
 
 namespace SilverBotDS
 {
@@ -122,6 +126,7 @@ namespace SilverBotDS
 
         private static async Task MainAsync(string[] args)
         {
+            await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
             config = await Config.GetAsync();
             WebHookUtils.ParseWebhookUrlNullable(config.LogWebhook, out ulong? id, out string token);
             var logfactory = new LoggerConfiguration()
@@ -167,7 +172,9 @@ namespace SilverBotDS
             discord.MessageCreated += Discord_MessageCreated;
             log.Verbose("Initializing Commands");
             ServiceCollection services = new();
+
             #region Browser fun stuff
+
             switch (config.BrowserType)
             {
                 case 0:
@@ -198,12 +205,16 @@ namespace SilverBotDS
                         throw new NotSupportedException();
                     }
             }
-            #endregion
+
+            #endregion Browser fun stuff
+
             if (IsNotNullAndIsNotB(config.SegmentPrivateSource, "Segment_Key"))
             {
                 services.AddSingleton<IAnalyse>(new SegmentIo(config.SegmentPrivateSource));
             }
+
             #region Database fun stuff
+
             switch (config.DatabaseType)
             {
                 case 1:
@@ -229,7 +240,9 @@ namespace SilverBotDS
                 default:
                     break;
             }
-            #endregion
+
+            #endregion Database fun stuff
+
             services.AddSingleton(config);
             services.AddSingleton(httpClient);
             if (config.AutoDownloadAndStartLavalink)
@@ -252,6 +265,7 @@ namespace SilverBotDS
                     }
                 }.Start();
             }
+            services.AddSingleton(new SnowService(discord.UseVoiceNext()));
             log.Verbose("Waiting 6s");
             await Task.Delay(6000);
             if (config.UseLavaLink)
@@ -287,7 +301,9 @@ namespace SilverBotDS
                 Services = serviceProvider,
                 PrefixResolver = ResolvePrefixAsync
             });
+
             #region Registering Commands
+
             commands.SetHelpFormatter<CustomHelpFormatter>();
             log.Verbose("Registering Commands&Converters");
             commands.RegisterConverter(new SdImageConverter());
@@ -317,6 +333,7 @@ namespace SilverBotDS
                 log.Information("You do not have a giphy token in the config, giphy related commands will be disabled.");
             }
             commands.RegisterCommands<AdminCommands>();
+            commands.RegisterCommands<NewAudio>();
             if (config.AllowOwnerOnlyCommands)
             {
                 commands.RegisterCommands<OwnerOnly>();
@@ -359,7 +376,9 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<ServerStatsCommands>();
             }
-            #endregion
+
+            #endregion Registering Commands
+
             //🥁🥁🥁 drum-roll
             log.Information("Connecting to discord");
             bool isconnected = false;
@@ -395,7 +414,9 @@ namespace SilverBotDS
             }
             _ = Task.Run(() => RunEventsAsync());
             await discord.UpdateStatusAsync(new("console logs while launching the website module", ActivityType.Watching));
+
             #region Website Fun Time
+
             host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
             {
                 s.AddSingleton(config);
@@ -431,7 +452,9 @@ namespace SilverBotDS
                 }
             })
              .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<WebpageStartup>()).UseSerilog(log).Build();
-            #endregion
+
+            #endregion Website Fun Time
+
             _ = Task.Run(async () => await host.RunAsync());
             while (true)
             {
@@ -444,6 +467,7 @@ namespace SilverBotDS
                 //repeat🔁
             }
         }
+
         private static Task<int> ResolvePrefixAsync(DiscordMessage msg)
         {
             if (msg.Channel.Type == ChannelType.Private)
@@ -494,10 +518,12 @@ namespace SilverBotDS
                });
             }
         }
+
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
         {
             return new Dictionary<string, string> { ["GuildCount"] = client.Guilds.Values.LongCount().ToString(), ["Platform"] = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() };
         }
+
         private static string RemoveStringFromEnd(string a, string sub)
         {
             if (a.EndsWith(sub))
@@ -506,6 +532,7 @@ namespace SilverBotDS
             }
             return a;
         }
+
         private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
             if (e.Context.Channel.IsPrivate || e.Context.Channel.PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id)).HasPermission(Permissions.SendMessages))
@@ -796,6 +823,7 @@ namespace SilverBotDS
                 await context.SaveChangesAsync();
             }
         }
+
         private static async Task Discord_MessageCreated(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
             if (e.Author.IsBot)

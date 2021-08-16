@@ -65,7 +65,7 @@ namespace SilverBotDS.Commands
         };
         [Command("piss")]
         [Description("piss :)")]
-        public Task Piss(CommandContext ctx)
+        public async Task Piss(CommandContext ctx)
         {
             throw new PissException(69); // line 69 :)
         }

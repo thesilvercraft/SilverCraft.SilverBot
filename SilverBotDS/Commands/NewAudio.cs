@@ -30,15 +30,16 @@ namespace SilverBotDS.Commands
     internal class NewAudio : BaseCommandModule
     {
         public SnowService AudioService { private get; set; }
+        public LavalinkNode AudioServicee { private get; set; }
         public LyricsService LyricsService { private get; set; }
 
         public Config Config { private get; set; }
 
         public SpotifyClient SpotifyClient { private get; set; }
+        private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected || AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
 
-        /* private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
-                                                                                                                                                                     || AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
 
+        /*                                                                                                                                                         
          private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "", string imageurl = "", string url = "", Language language = null)
          {
              language ??= await Language.GetLanguageFromCtxAsync(ctx);
@@ -663,25 +664,118 @@ namespace SilverBotDS.Commands
         .WithEmbed(embedBuilder.Build())
         .SendAsync(ctx.Channel);
         }
-
-        [Command("vctest")]
-        [Description("sponge bob sponge bob squarepants")]
-        public async Task Test(CommandContext ctx)
+        [Command("stop")]
+        [Description("stops playing the current song")]
+        public async Task Stop(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-            if (AudioService.HasPlayer(ctx.Guild.Id) && (AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id) is not null || AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id).State is PlayerState.NotConnected or PlayerState.Destroyed))
+
+            var channel = ctx.Member?.VoiceState?.Channel;
+
+            if (!IsInVc(ctx))
             {
-                await SendSimpleMessage(ctx, lang.AlreadyConnected, language: lang);
+                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
                 return;
             }
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                return;
+            }
+            SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+            
+            await player.StopAsync();
+        }
+        [Command("disconnect")]
+        [Description("stops playing the current song and leaves")]
+        [RequireDJ]
+        public async Task Disconnect(CommandContext ctx)
+        {
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+
+            var channel = ctx.Member?.VoiceState?.Channel;
+
+            if (!IsInVc(ctx))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+                return;
+            }
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                return;
+            }
+            SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+
+            await player.DisconnectAsync();
+        }
+        [Command("resume")]
+        [Description("resume the current song")]
+        public async Task Resume(CommandContext ctx)
+        {
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+
+            var channel = ctx.Member?.VoiceState?.Channel;
+
+            if (!IsInVc(ctx))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+                return;
+            }
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                return;
+            }
+            SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+            if (player.State != PlayerState.Paused)
+            {
+                await SendSimpleMessage(ctx, lang.NotPaused, language: lang);
+                return;
+            }
+            await player.ResumeAsync();
+        }
+        [Command("pause")]
+        [Description("pause the current song")]
+        public async Task Pause(CommandContext ctx)
+        {
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+
+            var channel = ctx.Member?.VoiceState?.Channel;
+
+            if (!IsInVc(ctx))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+                return;
+            }
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                return;
+            }
+            SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+            if (player.State != PlayerState.Playing)
+            {
+                await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
+                return;
+            }
+            await player.PauseAsync();
+        }
+        [Command("play")]
+        [Description("sponge bob sponge bob squarepants")]
+        public async Task Test(CommandContext ctx, string tunez)
+        {
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+            
             if ((ctx.Member?.VoiceState?.Channel) == null)
             {
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            var pl = await AudioService.JoinAsync<SnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
+            var pl = AudioService.HasPlayer(ctx.Guild.Id) ? AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id): await AudioService.JoinAsync<SnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
             await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name), language: lang);
-            await pl.PlayAsync(null);
+            
+            await pl.PlayAsync(await AudioService.GetTrackAsync(tunez));
             await SendSimpleMessage(ctx, "e", language: lang);
         }
     }

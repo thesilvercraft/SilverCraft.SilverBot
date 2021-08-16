@@ -29,22 +29,37 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using DSharpPlus.VoiceNext;
+using Lavalink4NET;
+using Lavalink4NET.Events;
 using Lavalink4NET.Player;
-using Xabe.FFmpeg;
+using Lavalink4NET.Rest;
+using VideoLibrary;
+using System.Text.RegularExpressions;
 
 namespace SnowdPlayer
 {
+
+
     public class SnowService : IDisposable
     {
-        public SnowService(VoiceNextExtension vn)
+        public SnowService(VoiceNextExtension vn, bool allowlocalfiles=false)
         {
             VoiceNextExtension = vn;
+            AllowLocalFiles = allowlocalfiles;
         }
 
         private bool disposedValue;
-        private VoiceNextExtension VoiceNextExtension { get; set; }
+
+        private bool AllowLocalFiles { get; set; }
+        public event AsyncEventHandler<TrackEndEventArgs> TrackEnd;
+        public event AsyncEventHandler<TrackExceptionEventArgs> TrackException;
+        public event AsyncEventHandler<TrackStartedEventArgs> TrackStarted;
+        public event AsyncEventHandler<TrackStuckEventArgs> TrackStuck;
+
+        private VoiceNextExtension VoiceNextExtension { get; init; }
         protected Dictionary<ulong, SnowPlayer> Players { get; } = new();
 
         private static T CreateDefaultFactory<T>() where T : SnowPlayer, new() => new T();
@@ -57,7 +72,7 @@ namespace SnowdPlayer
         /// <inheritdoc/>
         /// <exception cref="ObjectDisposedException">thrown if the instance is disposed</exception>
         public Task<SnowPlayer> JoinAsync(ulong guildId, ulong voiceChannelId, bool selfDeaf = false, bool selfMute = false)
-            => JoinAsync(CreateDefaultFactory<SnowPlayer>, guildId, voiceChannelId, selfDeaf, selfMute);
+           => JoinAsync(CreateDefaultFactory<SnowPlayer>, guildId, voiceChannelId, selfDeaf, selfMute);
 
         /// <inheritdoc/>
         /// <exception cref="ObjectDisposedException">thrown if the instance is disposed</exception>
@@ -115,7 +130,7 @@ namespace SnowdPlayer
             }
         }
 
-        public bool HasPlayer(ulong id)
+        new public bool HasPlayer(ulong id)
         {
             EnsureNotDisposed();
             return Players.ContainsKey(id);
@@ -162,19 +177,72 @@ namespace SnowdPlayer
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+        public LavalinkPlayer GetPlayer(ulong guildId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IReadOnlyList<TPlayer> GetPlayers<TPlayer>() where TPlayer : LavalinkPlayer
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task InitializeAsync()
+        {
+            return Task.CompletedTask;
+        }
+        Regex YTRgx = new(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
+        public async Task<SnowTrack> GetTrackAsync(string query, SearchMode mode = SearchMode.None, bool noCache = false, CancellationToken cancellationToken = default)
+        {
+            if (Uri.TryCreate(query, UriKind.Absolute, out Uri result))
+            {
+                if (result.IsFile)
+                {
+                   // return StreamProvider.Local;
+                }
+
+               // return GetStreamProvider(result.Host, result.AbsolutePath);
+            }
+            if (YTRgx.IsMatch(query))
+            {
+                var video = await YouTube.Default.GetVideoAsync(query);
+                if (video != null)
+                {
+                    return new SnowTrack(query, video.Info.Author, TimeSpan.FromSeconds(video.Info.LengthSeconds ?? 0), video.Info.LengthSeconds == null, true, query, video.Info.Title, YTRgx.Match(query).Groups[1].Value, StreamProvider.YouTube);
+                }
+            }
+            return null;
+        }
+
+        public Task<IEnumerable<SnowTrack>> GetTracksAsync(string query, SearchMode mode = SearchMode.None, bool noCache = false, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TrackLoadResponsePayload> LoadTracksAsync(string query, SearchMode mode = SearchMode.None, bool noCache = false, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public delegate TPlayer PlayerFactory<TPlayer>() where TPlayer : SnowPlayer;
 
     public class SnowTrack : LavalinkTrack
     {
+        public static SnowTrack FromLavalinkTrack(LavalinkTrack b) => new(b.Identifier, b.Author, b.Duration, b.IsLiveStream, b.IsSeekable, b.Source, b.Title, b.TrackIdentifier, b.Provider);
         public SnowTrack(string identifier, LavalinkTrackInfo info) : base(identifier, info)
+        {
+        }
+
+        public SnowTrack(string identifier, string author, TimeSpan duration, bool isLiveStream, bool isSeekable, string source, string title, string trackIdentifier, StreamProvider provider) : base(identifier, author, duration, isLiveStream, isSeekable, source, title, trackIdentifier, provider)
         {
         }
     }
 
     public class SnowPlayer : IDisposable
     {
+
         public bool disposedValue;
 
         public ulong? VoiceChannelId { get; internal set; }
@@ -247,6 +315,17 @@ namespace SnowdPlayer
             return player;
         }
 
+        private async Task<string> GetURLAsync(LavalinkTrack track)
+        {
+            Console.WriteLine(track.Provider);
+            if (track.Provider == StreamProvider.YouTube)
+            {
+                var video = (await YouTube.Default.GetAllVideosAsync(track.Source)).First(x=>x.AdaptiveKind==AdaptiveKind.Audio);
+                Console.WriteLine(video.Uri);
+                return video.Uri;
+            }
+            return track.Source;
+        }
         /// <summary>
         ///     Plays the specified <paramref name="track"/> asynchronously.
         /// </summary>
@@ -265,21 +344,104 @@ namespace SnowdPlayer
         public virtual async Task PlayAsync(SnowTrack track, TimeSpan? startTime = null,
             TimeSpan? endTime = null, bool noReplace = false)
         {
-            //CurrentTrack = track ?? throw new ArgumentNullException(nameof(track));
+            CurrentTrack = track ?? throw new ArgumentNullException(nameof(track));
             //startTime ??= track.Position;
-            var filePath = @"C:\Users\Filip\Music\Super Sonic Racing.mp3";
-            var ffmpeg = Process.Start(new ProcessStartInfo
+            var filePath = await GetURLAsync(track);
+            Console.WriteLine(filePath);
+            if (filePath != null)
             {
-                FileName = "ffmpeg",
-                Arguments = $@"-i ""{filePath}"" -ac 2 -f s16le -ar 48000 pipe:1",
-                RedirectStandardOutput = true,
-                UseShellExecute = false
-            });
-            await ffmpeg.StandardOutput.BaseStream.CopyToAsync(vnc.GetTransmitSink());
+                FFmpeg = Process.Start(new ProcessStartInfo
+                {
+                    FileName = "ffmpeg",
+                    Arguments = $@"-i ""{filePath}"" -err_detect ignore_err -ac 2 -bufsize 69420k -f s16le -ar 48000 pipe:1",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
+                });
+                cancellationToken1 = new();
+                _ = Task.Run(async () => await FFmpeg.StandardOutput.BaseStream.CopyToAsync(vnc.GetTransmitSink(), cancellationToken: cancellationToken1.Token));
+                FFmpeg.Exited += FFmpeg_Exited;
+                State = PlayerState.Playing;
+            }
 
-            State = PlayerState.Playing;
         }
 
+        private void FFmpeg_Exited(object sender, EventArgs e)
+        {
+            OnTrackEndAsync().GetAwaiter().GetResult();
+        }
+        public virtual Task OnTrackEndAsync()
+        {
+            if (DisconnectOnStop)
+            {
+                return DisconnectAsync();
+            }
+            else
+            {
+                // The track ended, set to not playing
+                State = PlayerState.NotPlaying;
+                CurrentTrack = null;
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public virtual Task DisconnectAsync()
+        {
+            if (cancellationToken1 != null)
+            {
+                cancellationToken1.Cancel();
+                cancellationToken1 = new();
+            }
+            if (!FFmpeg.HasExited)
+            {
+                FFmpeg.Kill();
+            }
+            vnc.Disconnect();
+            State = PlayerState.NotConnected;
+            return Task.CompletedTask;
+        }
+
+        public virtual Task PauseAsync()
+        {
+            if (State == PlayerState.Playing)
+            {
+                cancellationToken1.Cancel();
+                State = PlayerState.Paused;
+            }
+            return Task.CompletedTask;
+        }
+        public virtual Task ResumeAsync()
+        {
+            if (State == PlayerState.Paused)
+            {
+                cancellationToken1 = new();
+                _ = Task.Run(async () => await FFmpeg.StandardOutput.BaseStream.CopyToAsync(vnc.GetTransmitSink(), cancellationToken: cancellationToken1.Token));
+                State = PlayerState.Playing;
+            }
+            return Task.CompletedTask;
+        }
+        public virtual async Task StopAsync()
+        {
+            if (DisconnectOnStop)
+            {
+                await DisconnectAsync();
+            }
+            else
+            {
+                if (cancellationToken1 != null)
+                {
+                    cancellationToken1.Cancel();
+                    cancellationToken1 = new();
+                }
+                if (!FFmpeg.HasExited)
+                {
+                    FFmpeg.Kill();
+                }
+                State = PlayerState.NotPlaying;
+            }
+        }
+        private CancellationTokenSource cancellationToken1 {  get; set; }
+        private Process FFmpeg { get; set; }
         private VoiceNextConnection vnc { get; set; }
 
         public Task PlayTopAsync(LavalinkTrack song)

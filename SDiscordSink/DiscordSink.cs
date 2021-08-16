@@ -7,6 +7,8 @@ using System.Text;
 using System.Globalization;
 using Serilog;
 using Serilog.Configuration;
+using System.Text.RegularExpressions;
+using System.IO;
 
 #nullable enable
 
@@ -33,18 +35,22 @@ namespace SDiscordSink
                 webhookClient.AddWebhookAsync(webhook.Item1, webhook.Item2).Wait();
             }
         }
-
+        Regex VBUErr = new(@"^Error `(P<error>.+?)` encountered.\nGuild `(P<guild_id>\d+|None)`, channel `(P<channel_id>\d+|None)`, user `(P<user_id>\d+|None)`\n```\n(P<command_invoke>.+?)\n```$",RegexOptions.Multiline|RegexOptions.Compiled);
         public void Emit(LogEvent logEvent)
         {
             var builder = new DiscordEmbedBuilder();
             var message = logEvent.RenderMessage();
+            if (logEvent.Exception != null && message.StartsWith("Error"))
+            {
+                webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent($"{message}\n").AddFile("error.cs",new MemoryStream(Encoding.Unicode.GetBytes($"{ logEvent.Exception.Message ?? "null" }\nStack trace:\n{ logEvent.Exception.StackTrace ?? "null"}\nSource\n{ logEvent.Exception.Source ?? "null"}\nHelp link:\n{ logEvent.Exception.HelpLink ?? "null"}")),true).WithUsername("sb - Error"));
+            }
             string? restMessage = null;
             if (message.Length > 230)
             {
                 var firstLineEnd = message.IndexOfAny(new[] { '\r', '\n' });
                 if (firstLineEnd < 0 || firstLineEnd > 230)
                 {
-                    builder.WithTitle(message.Substring(0, 230) + "…");
+                    builder.WithTitle(string.Concat(message.AsSpan(0, 230), "…"));
                     restMessage = "…" + message[230..];
                 }
                 else
@@ -122,7 +128,7 @@ namespace SDiscordSink
                     var capacity = 2030 - sb.Length;
                     sb.Insert(0, '\n');
                     sb.Insert(0, "…");
-                    sb.Insert(0, restMessage.Substring(0, capacity));
+                    sb.Insert(0, restMessage.AsSpan(0, capacity));
                 }
             }
             builder.WithDescription(sb.ToString());

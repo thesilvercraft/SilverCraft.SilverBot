@@ -377,7 +377,7 @@ namespace SilverBotDS
             #endregion
             if(config.UseSlashCommands)
             {
-                slash.RegisterCommands<GeneralCommands>(699361201586438235);
+                slash.RegisterCommands<GeneralCommands>();
             }
             //🥁🥁🥁 drum-roll
             log.Information("Connecting to discord");
@@ -581,7 +581,7 @@ namespace SilverBotDS
                     }
                 }
             }
-            log.Error(exception: e.Exception, "An exception occurred while trying to run {Command} with the raw arguments as {Raw}", e.Command.Name, e.Context.RawArgumentString);
+            log.Error(exception: e.Exception, $"Error `{e.Exception.GetType().FullName}` encountered.\nGuild `{e.Context.Guild?.Id.ToString() ?? "None"}`, channel `{e.Context.Channel?.Id.ToString() ?? "None"}`, user `{ e.Context.User?.Id.ToString() ?? "None"}`\n```\n{e.Context.Message.Content}\n```");
         }
 
         private const string FridayUrl = "https://youtu.be/akT0wxv9ON8";

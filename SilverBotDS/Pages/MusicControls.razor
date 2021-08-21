@@ -29,9 +29,9 @@
     }
 }
 <style>
-input{ 
-    margin-left:1px; 
-}
+    input {
+        margin-left: 1px;
+    }
 </style>
 <RadzenNotification />
 @inject DiscordClient Discord
@@ -70,16 +70,16 @@ input{
     {
         if (CheckForDJ())
         {
-                await player.SkipAsync();
-                player.TriggerWebsiteEvent(user, "skipped a song");   
+            await player.SkipAsync();
+            player.TriggerWebsiteEvent(user, "skipped a song");
         }
     }
     void ShufflePress(BetterVoteLavalinkPlayer player)
     {
-        if(CheckForDJ())
+        if (CheckForDJ())
         {
-             player.Queue.Shuffle();
-             player.TriggerWebsiteEvent(user, "shuffled the playlist");       
+            player.Queue.Shuffle();
+            player.TriggerWebsiteEvent(user, "shuffled the playlist");
         }
     }
     void NotLoopingPress(BetterVoteLavalinkPlayer player)
@@ -103,49 +103,57 @@ input{
     }
     async Task VolumeUpPress(BetterVoteLavalinkPlayer player)
     {
-      if((player.Volume+0.1f)<=1)
+        if ((player.Volume + 0.1f) <= 1)
         {
-            await player.SetVolumeAsync(player.Volume +0.1f);
+            await player.SetVolumeAsync(player.Volume + 0.1f);
         }
     }
-       async Task VolumeDownPress(BetterVoteLavalinkPlayer player)
+    async Task VolumeDownPress(BetterVoteLavalinkPlayer player)
     {
-      if((player.Volume-0.1f)>=0)
+        if ((player.Volume - 0.1f) >= 0)
         {
-            await player.SetVolumeAsync(player.Volume-0.1f);
+            await player.SetVolumeAsync(player.Volume - 0.1f);
         }
     }
-    
+
     string ToggleStateText = "Resume / Pause";
-      BetterVoteLavalinkPlayer player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
-     EventHandler<TrackStartedEventArgs> gamer = async (refr, song) => { await InvokeAsync(() => { uriHelper.NavigateTo("/musiccontrols", forceLoad: false); }); };
+    BetterVoteLavalinkPlayer player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
+    EventHandler<TrackStartedEventArgs> gamer = async (refr, song) =>
+    {
+        try
+        {
+            await InvokeAsync(() => { uriHelper.NavigateTo("/musiccontrols", forceLoad: false); });
+        }
+        catch (Exception e)
+        {
+
+        }
+    };
     player.OnNewTrack += gamer;
     player.RemoveOnWebsiteEventHandelers();
     player.OnWebsiteEvent += (refr, parm) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = parm.Item1.Username, Detail = parm.Item2, Duration = 4000 }); };
     if (player.State is Lavalink4NET.Player.PlayerState.Paused)
     {
-        ToggleStateText = "▶️";
+        ToggleStateText = "play_circle_filled";
     }
     else if (player.State is Lavalink4NET.Player.PlayerState.Playing)
     {
-        ToggleStateText = "⏸";
+        ToggleStateText = "pause_circle_filled";
     }
     @code
-{
-        protected override void OnAfterRender(bool firstRender)
+    {
+    protected override void OnAfterRender(bool firstRender)
+    {
+
+        if (firstRender)
         {
-
-            if (firstRender)
-            {
-
-            }
 
         }
 
     }
+    }
 
-
-    <div class="window" style="max-width: 640px">
+    <div class="window" style="max-width: 720px">
         <div class="title-bar">
             <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
             <div class="title-bar-controls">
@@ -154,21 +162,22 @@ input{
         </div>
         <div class="window-body">
             <p>Currently playing: <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ": player.CurrentTrack.Source)"><strong>@(player.CurrentTrack is null ? "nothing": player.CurrentTrack.Title)</strong></a></p>
-            <input id="ToggleState" type="button" @onclick="@(async (e) => { await ToggleStatePress(player); if (player.State is Lavalink4NET.Player.PlayerState.Paused) { ToggleStateText = "▶️"; } else if (player.State is Lavalink4NET.Player.PlayerState.Playing) { ToggleStateText = "⏸";} })" value="@ToggleStateText" runat="server" />
-            <input id="VoteSkip" type="button" @onclick="@(async (e) => await VoteSkipPress(player))" value="VoteSkip" runat="server" />
+            <button type="submit" name="ToggleState" id="ToggleState" @onclick="@(async (e) => { await ToggleStatePress(player); if (player.State is Lavalink4NET.Player.PlayerState.Paused) { ToggleStateText = "play_circle_filled"; } else if (player.State is Lavalink4NET.Player.PlayerState.Playing) { ToggleStateText = "pause_circle_filled";} })" runat="server"><RadzenIcon Icon="@ToggleStateText" /></button>
+            <button type="submit" name="VoteSkip" id="VoteSkip" @onclick="@(async(e) => await VoteSkipPress(player))" runat="server"><RadzenIcon Icon="how_to_vote" /><RadzenIcon Icon="skip_next" /></button>
             @if (CheckForDJ())
             {
-                <input id="ForceSkip" type="button" @onclick="@(async(e) => await ForceSkipPress(player))" value="Just skip it™ (DJ only)" runat="server" />
+                <button type="submit" name="ForceSkip" id="ForceSkip" @onclick="@(async(e) => await ForceSkipPress(player))" runat="server"><RadzenIcon Icon="skip_next" /></button>
             }
             @if (CheckForDJ())
             {
-                <input id="Shuffle" type="button" @onclick="@(e =>  ShufflePress(player))" value="🔀Shuffle" runat="server" />
+                <button type="submit" name="Shuffle" id="Shuffle" @onclick="@(e =>  ShufflePress(player))" runat="server"><RadzenIcon Icon="shuffle" /></button>
             }
-            <input id="NoLoop" type="button" @onclick="@(e =>  NotLoopingPress(player))" value="Do not loop" runat="server" />
-            <input id="LoopSong" type="button" @onclick="@(e =>  LoopingSongPress(player))" value="Loop song" runat="server" />
-            <input id="LoopQueue" type="button" @onclick="@(e => LoopingQueuePress(player))" value="Loop queue" runat="server" />
-            <input id="VolumeUp" type="button" @onclick="@(async(e) => await VolumeUpPress(player))" value="V+" runat="server" />
-            <input id="VolumeDown" type="button" @onclick="@(async(e) =>await VolumeDownPress(player))" value="V-" runat="server" />
+            <button type="submit" name="NoLoop" id="NoLoop" @onclick="@(e => NotLoopingPress(player))" runat="server"><RadzenIcon Icon="repeat" /></button>
+            <button type="submit" name="LoopSong" id="LoopSong" @onclick="@(e => LoopingSongPress(player))" runat="server"><RadzenIcon Icon="repeat_one" /></button>
+            <button type="submit" name="LoopQueue" id="LoopQueue" @onclick="@(e => LoopingQueuePress(player))" runat="server"><RadzenIcon Icon="repeat_on" /></button>
+            <button type="submit" name="VolumeDown" id="VolumeDown" @onclick="@(async(e) =>await VolumeDownPress(player))" runat="server"><RadzenIcon Icon="volume_down" /></button>
+            <button type="submit" name="VolumeUp" id="VolumeUp" @onclick="@(async(e) => await VolumeUpPress(player))" runat="server"><RadzenIcon Icon="volume_up" /></button>
+            
         </div>
     </div>
 }

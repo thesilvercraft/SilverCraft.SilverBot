@@ -314,7 +314,7 @@ namespace SnowdPlayer
             player.VoiceNext = vne;
             return player;
         }
-
+        private Task PlayerTask;
         private async Task<string> GetURLAsync(LavalinkTrack track)
         {
             Console.WriteLine(track.Provider);
@@ -353,12 +353,12 @@ namespace SnowdPlayer
                 FFmpeg = Process.Start(new ProcessStartInfo
                 {
                     FileName = "ffmpeg",
-                    Arguments = $@"-i ""{filePath}"" -err_detect ignore_err -ac 2 -bufsize 69420k -f s16le -ar 48000 pipe:1",
+                    Arguments = $@"-i ""{filePath}"" -err_detect ignore_err -ac 2 -f s16le -ar 48000 pipe:1",
                     RedirectStandardOutput = true,
                     UseShellExecute = false
                 });
                 cancellationToken1 = new();
-                _ = Task.Run(async () => await FFmpeg.StandardOutput.BaseStream.CopyToAsync(vnc.GetTransmitSink(), cancellationToken: cancellationToken1.Token));
+                PlayerTask = Task.Run(async () => await FFmpeg.StandardOutput.BaseStream.CopyToAsync(vnc.GetTransmitSink(), cancellationToken: cancellationToken1.Token));
                 FFmpeg.Exited += FFmpeg_Exited;
                 State = PlayerState.Playing;
             }
@@ -415,7 +415,7 @@ namespace SnowdPlayer
             if (State == PlayerState.Paused)
             {
                 cancellationToken1 = new();
-                _ = Task.Run(async () => await FFmpeg.StandardOutput.BaseStream.CopyToAsync(vnc.GetTransmitSink(), cancellationToken: cancellationToken1.Token));
+                PlayerTask = Task.Run(async () => await FFmpeg.StandardOutput.BaseStream.CopyToAsync(vnc.GetTransmitSink(), cancellationToken: cancellationToken1.Token));
                 State = PlayerState.Playing;
             }
             return Task.CompletedTask;

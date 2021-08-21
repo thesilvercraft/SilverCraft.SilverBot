@@ -71,7 +71,7 @@ namespace SilverBotDS
             }
             if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net5.0"))
             {
-                Environment.CurrentDirectory += "\\bin\\Debug\\net5.0";
+                Environment.CurrentDirectory += Environment.OSVersion.Platform==PlatformID.Win32NT? "\\bin\\Debug\\net5.0" : "/bin/Debug/net5.0";
             }
             MainAsync(args).GetAwaiter().GetResult();
         }
@@ -306,6 +306,7 @@ namespace SilverBotDS
             commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterConverter(new TimeSpanConverter());
+            commands.RegisterConverter(new IImageFormatConverter());
             if (!CheckIfAllFontsAreHere())
             {
                 log.Fatal("You do not have all required fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format. SilverBot will be running in a reduced feature mode where experience and Image related commands will not be enabled.");

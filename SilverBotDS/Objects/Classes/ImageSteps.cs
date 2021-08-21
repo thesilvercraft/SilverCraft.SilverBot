@@ -1,6 +1,7 @@
 ﻿using SilverBotDS.Commands;
 using SilverBotDS.Converters;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
@@ -50,7 +51,7 @@ namespace SilverBotDS.Objects
                 }
                 else if (step is PictureStep step1)
                 {
-                    using var resizedbytes = (await ImageModule.ResizeAsync(await step1.Image().GetBytesAsync(client), new SixLabors.ImageSharp.Size((int)step1.xSize, (int)step1.ySize), true)).Item1;
+                    using var resizedbytes = (await ImageModule.ResizeAsync(await step1.Image().GetBytesAsync(client), new SixLabors.ImageSharp.Size((int)step1.xSize, (int)step1.ySize), PngFormat.Instance)).Item1;
                     using var resizedimg = await Image.LoadAsync(resizedbytes);
                     Bitmap.Mutate(x => x.DrawImage(resizedimg, new Point((int)step.x, (int)step.y),1));
                 }

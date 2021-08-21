@@ -10,6 +10,7 @@
     <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
     <AnalysisLevel>preview</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <UserSecretsId>02ac9d1d-689a-48f6-a136-dc1e8cb28b0d</UserSecretsId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>

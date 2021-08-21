@@ -24,6 +24,7 @@ using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using SilverBotDS.Attributes;
+using SixLabors.ImageSharp.Formats;
 
 namespace SilverBotDS.Commands
 {
@@ -80,27 +81,37 @@ namespace SilverBotDS.Commands
         {
             lang ??= await Language.GetLanguageFromCtxAsync(ctx);
             content ??= lang.Success;
-            await new DiscordMessageBuilder().WithContent(content).WithFile(filename, outstream).WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+            await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
+            .WithTitle(content)
+            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))).WithFile(filename, outstream).WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }
-
-        public static async Task<Tuple<MemoryStream, string>> ResizeAsync(byte[] photoBytes, Size size, bool forcepng = false)
+#nullable enable
+        public static async Task<Tuple<MemoryStream, string>> ResizeAsync(byte[] photoBytes, Size size, IImageFormat? format = null)
         {
-            using Image img = Image.Load(photoBytes, out SixLabors.ImageSharp.Formats.IImageFormat frmt);
+            using Image img = Image.Load(photoBytes, out IImageFormat frmt);
+            if (size.Width == 0)
+            {
+                size.Width = img.Width;
+            }
+            if (size.Height == 0)
+            {
+                size.Height = img.Height;
+            }
             img.Mutate(x => x.Resize(new ResizeOptions
             {
                 Mode = ResizeMode.Max,
                 Size = size
             }));
             MemoryStream stream = new();
-            if (forcepng)
+            if (format != null)
             {
-                frmt = PngFormat.Instance;
+                frmt = format;
             }
             await img.SaveAsync(stream, frmt);
             stream.Position = 0;
             return new(stream, frmt.FileExtensions.First());
         }
-
+#nullable disable
         private static readonly JpegEncoder BadJpegEncoder = new()
         {
             Quality = 1
@@ -198,11 +209,11 @@ namespace SilverBotDS.Commands
         }
 
         [Command("resize")]
-        public async Task Resize(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("Width")] int x, [Description("Height")] int y)
+        public async Task Resize(CommandContext ctx, [Description("the url of the image")] SdImage image, [Description("Width")] int x = 0, [Description("Height")] int y = 0, IImageFormat format = null)
         {
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            var thing = await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(x, y));
+            var thing = await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(x, y), format);
             if (thing.Item1.Length > MaxBytes)
             {
                 await Send_img_plsAsync(ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(thing.Item1.Length)), lang).ConfigureAwait(false);
@@ -212,14 +223,31 @@ namespace SilverBotDS.Commands
                 await SendImageStream(ctx, thing.Item1, filename: $"sbimg.{thing.Item2}", content: lang.Imagethings.ResizeSuccess, lang: lang);
             }
         }
-
         [Command("resize")]
-        public async Task Resize(CommandContext ctx, [Description("Width")] int x, [Description("Height")] int y)
+        public async Task Resize(CommandContext ctx, SdImage image, IImageFormat format)
+        {
+            await Resize(ctx, image, 0, 0, format);
+        }
+        [Command("resize")]
+        public async Task Resize(CommandContext ctx, IImageFormat format)
         {
             try
             {
                 var image = SdImage.FromContext(ctx);
-                await Resize(ctx, image, x, y);
+                await Resize(ctx, image, 0, 0, format);
+            }
+            catch (AttachmentCountIncorrectException acie)
+            {
+                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
+            }
+        }
+        [Command("resize")]
+        public async Task Resize(CommandContext ctx, [Description("Width")] int x = 0, [Description("Height")] int y = 0, IImageFormat format = null)
+        {
+            try
+            {
+                var image = SdImage.FromContext(ctx);
+                await Resize(ctx, image, x, y, format);
             }
             catch (AttachmentCountIncorrectException acie)
             {
@@ -328,7 +356,7 @@ namespace SilverBotDS.Commands
             else
             {
                 stream.Position = 0;
-                await using var resizedstream = (await ResizeAsync(stream.ToArray(), new(size, size), true)).Item1;
+                await using var resizedstream = (await ResizeAsync(stream.ToArray(), new(size, size), PngFormat.Instance)).Item1;
                 resizedstream.Position = 0;
                 return resizedstream.ToArray();
             }
@@ -455,7 +483,7 @@ namespace SilverBotDS.Commands
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             using var img = await Image.LoadAsync(Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.paint_template.png") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.paint_template.png"));
-            await using var resizedstream = (await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(1771, 984), true)).Item1;
+            await using var resizedstream = (await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(1771, 984), PngFormat.Instance)).Item1;
             using (Image internalimage = await Image.LoadAsync(resizedstream))
             {
                 img.Mutate(x => x.DrawImage(internalimage, new Point(132, 95), 1));
@@ -495,7 +523,7 @@ namespace SilverBotDS.Commands
             await ctx.TriggerTypingAsync();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             using var img = await Image.LoadAsync(Assembly.GetExecutingAssembly().GetManifestResourceStream("SilverBotDS.Templates.motivator_template.png") ?? throw new TemplateReturningNullException("SilverBotDS.Templates.motivator_template.png"));
-            await using var resizedstream = (await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(1027, 684), true)).Item1;
+            await using var resizedstream = (await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(1027, 684), PngFormat.Instance)).Item1;
             using (Image internalimage = await Image.LoadAsync(resizedstream))
             {
                 img.Mutate(x => x.DrawImage(internalimage, new Point(126, 83), 1));
@@ -587,7 +615,7 @@ namespace SilverBotDS.Commands
             using (var img2 = new Image<Rgba32>(x, y + (int)textSize.Height))
             {
                 img2.Mutate(o => o.Fill(Color.FromRgb(255, 255, 255)));
-                img2.Mutate(o => o.DrawText(dr, text, font, Brushes.Solid(Color.FromRgb(0, 0, 0)), new PointF(img2.Width/2, textSize.Height / 2)));
+                img2.Mutate(o => o.DrawText(dr, text, font, Brushes.Solid(Color.FromRgb(0, 0, 0)), new PointF(img2.Width / 2, textSize.Height / 2)));
                 img2.Mutate(o => o.DrawImage(bitmap, new Point(0, (int)textSize.Height), 1));
                 img2.Save(outStream, frmt);
             }

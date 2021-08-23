@@ -36,7 +36,7 @@ namespace SilverBotDS.Commands
         public Config Config { private get; set; }
 
         public SpotifyClient SpotifyClient { private get; set; }
-        private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected || AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
+        private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected || AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
 
 
         /*                                                                                                                                                         
@@ -682,7 +682,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+            QueuedSnowPlayer player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
             
             await player.StopAsync();
         }
@@ -705,7 +705,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+            QueuedSnowPlayer player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
 
             await player.DisconnectAsync();
         }
@@ -727,7 +727,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+            QueuedSnowPlayer player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Paused)
             {
                 await SendSimpleMessage(ctx, lang.NotPaused, language: lang);
@@ -753,7 +753,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+            QueuedSnowPlayer player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Playing)
             {
                 await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
@@ -772,7 +772,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            var pl = AudioService.HasPlayer(ctx.Guild.Id) ? AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id): await AudioService.JoinAsync<SnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
+            var pl = AudioService.HasPlayer(ctx.Guild.Id) ? AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id): await AudioService.JoinAsync<QueuedSnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
             await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name), language: lang);
             
             await pl.PlayAsync(await AudioService.GetTrackAsync(tunez));

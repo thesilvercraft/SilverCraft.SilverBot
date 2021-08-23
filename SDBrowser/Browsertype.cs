@@ -4,6 +4,6 @@
     {
         Chrome,
         Firefox,
-        InternetExplorer
+        Edge
     }
 }

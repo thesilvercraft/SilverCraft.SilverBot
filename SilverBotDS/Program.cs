@@ -71,7 +71,7 @@ namespace SilverBotDS
             }
             if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net5.0"))
             {
-                Environment.CurrentDirectory += Environment.OSVersion.Platform==PlatformID.Win32NT? "\\bin\\Debug\\net5.0" : "/bin/Debug/net5.0";
+                Environment.CurrentDirectory += Environment.OSVersion.Platform == PlatformID.Win32NT ? "\\bin\\Debug\\net5.0" : "/bin/Debug/net5.0";
             }
             MainAsync(args).GetAwaiter().GetResult();
         }
@@ -123,7 +123,6 @@ namespace SilverBotDS
             }
             return true;
         }
-
         private static async Task MainAsync(string[] args)
         {
             config = await Config.GetAsync();
@@ -258,9 +257,9 @@ namespace SilverBotDS
                     }
                 }.Start();
             }
-            if(config.UseNewAudio)
+            if (config.UseNewAudio)
             {
-                services.AddSingleton(new SnowService(discord.UseVoiceNext()));
+                services.AddSingleton(new SnowService(discord.UseVoiceNext(), false, true));
             }
             log.Verbose("Waiting 6s");
             await Task.Delay(6000);
@@ -297,7 +296,7 @@ namespace SilverBotDS
                 Services = serviceProvider,
                 PrefixResolver = ResolvePrefixAsync
             });
-            var slash = discord.UseSlashCommands(new SlashCommandsConfiguration() { Services=serviceProvider});
+            var slash = discord.UseSlashCommands(new SlashCommandsConfiguration() { Services = serviceProvider });
             #region Registering Commands
             commands.SetHelpFormatter<CustomHelpFormatter>();
             log.Verbose("Registering Commands&Converters");
@@ -329,7 +328,7 @@ namespace SilverBotDS
                 log.Information("You do not have a giphy token in the config, giphy related commands will be disabled.");
             }
             commands.RegisterCommands<AdminCommands>();
-            if(config.UseNewAudio)
+            if (config.UseNewAudio)
             {
                 commands.RegisterCommands<NewAudio>();
             }
@@ -376,7 +375,7 @@ namespace SilverBotDS
                 commands.RegisterCommands<ServerStatsCommands>();
             }
             #endregion
-            if(config.UseSlashCommands)
+            if (config.UseSlashCommands)
             {
                 slash.RegisterCommands<GeneralCommands>();
             }
@@ -405,15 +404,15 @@ namespace SilverBotDS
                 }
                 if (IsNotNullAndIsNotB(config.FridayTextChannel, 0) && IsNotNullAndIsNotB(config.FridayVoiceChannel, 0) && config.UseLavaLink)
                 {
-                    _ = Task.Run(WaitForFridayAsync);
+                    var waitforfriday = Task.Run(WaitForFridayAsync);
                 }
             }
             await discord.UpdateStatusAsync(new("console logs while configuring server statistics", ActivityType.Watching));
             if (config.EnableServerStatistics)
             {
-                _ = Task.Run(() => StatisticsMainAsync());
+                var statisticsinstance = Task.Run(() => StatisticsMainAsync());
             }
-            _ = Task.Run(() => RunEventsAsync());
+            var eventsinstance = Task.Run(() => RunEventsAsync());
             await discord.UpdateStatusAsync(new("console logs while launching the website module", ActivityType.Watching));
             #region Website Fun Time
             host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
@@ -452,7 +451,7 @@ namespace SilverBotDS
             })
              .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<WebpageStartup>()).UseSerilog(log).Build();
             #endregion Website Fun Time
-            _ = Task.Run(async () => await host.RunAsync());
+            var hostwebsite = Task.Run(async () => await host.RunAsync());
             while (true)
             {
                 log.Verbose("Updating the status to a random one");
@@ -585,7 +584,6 @@ namespace SilverBotDS
             log.Error(exception: e.Exception, $"Error `{e.Exception.GetType().FullName}` encountered.\nGuild `{e.Context.Guild?.Id.ToString() ?? "None"}`, channel `{e.Context.Channel?.Id.ToString() ?? "None"}`, user `{ e.Context.User?.Id.ToString() ?? "None"}`\n```\n{e.Context.Message.Content}\n```");
         }
 
-        private const string FridayUrl = "https://youtu.be/akT0wxv9ON8";
         private static int last_friday;
         public static async Task RunEmojiEvent(PlannedEvent @event)
         {
@@ -660,10 +658,10 @@ namespace SilverBotDS
                                         switch (evnt.Type)
                                         {
                                             case PlannedEventType.EmojiPoll:
-                                                _ = Task.Run(() => RunEmojiEvent(evnt));
+                                                var emjiev = Task.Run(() => RunEmojiEvent(evnt));
                                                 break;
                                             case PlannedEventType.GiveAway:
-                                                _ = Task.Run(() => RunGiveAwayEvent(evnt));
+                                                var gvev = Task.Run(() => RunGiveAwayEvent(evnt));
                                                 break;
                                             case PlannedEventType.Reminder:
                                                 throw new NotImplementedException();
@@ -775,23 +773,31 @@ namespace SilverBotDS
                     last_friday = DateTime.Now.DayOfYear;
                     await ExecuteFridayAsync();
                 }
+                else
+                {
+                    if (last_friday == DateTime.Now.DayOfYear - 1)
+                    {
+                        await ExecuteFridayAsync(false);
+                    }
+                }
                 await Task.Delay(1000);
             }
         }
 
-        public static async Task ExecuteFridayAsync()
+        public static async Task ExecuteFridayAsync(bool friday = true)
         {
-            var vchannel = await discord.GetChannelAsync(config.FridayVoiceChannel);
-            if (audioService.HasPlayer((ulong)vchannel.GuildId))
+            if (friday)
             {
-                BetterVoteLavalinkPlayer player = audioService.GetPlayer<BetterVoteLavalinkPlayer>((ulong)vchannel.GuildId);
-                await player.DisconnectAsync();
+                var channel = await discord.GetChannelAsync(config.FridayTextChannel);
+                await channel.SendMessageAsync("It is Friday");
+                await channel.AddOverwriteAsync(channel.Guild.EveryoneRole, Permissions.SendMessages, reason: "friday");
             }
-            BetterVoteLavalinkPlayer playere = await audioService.JoinAsync<BetterVoteLavalinkPlayer>((ulong)vchannel.GuildId, vchannel.Id, true);
-            var track = await audioService.GetTrackAsync(FridayUrl, SearchMode.YouTube);
-            await playere.PlayAsync(track);
-            var channel = await discord.GetChannelAsync(config.FridayTextChannel);
-            await channel.SendMessageAsync("It is Friday");
+            else
+            {
+                var channel = await discord.GetChannelAsync(config.FridayTextChannel);
+                await channel.SendMessageAsync("Friday ended :c");
+                await channel.AddOverwriteAsync(channel.Guild.EveryoneRole, deny: Permissions.SendMessages, reason: "not friday");
+            }
         }
 
         private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "<:kalorichan:839099093552332850>", "kalorichan" };

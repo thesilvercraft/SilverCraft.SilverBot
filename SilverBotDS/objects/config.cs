@@ -16,7 +16,7 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
-        private const ulong CurrentConfVer = 28;
+        private const ulong CurrentConfVer = 30;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } =
@@ -161,6 +161,8 @@ namespace SilverBotDS.Objects
            {"ninja tuna", "https://music.youtube.com/playlist?list=OLAK5uy_lYrDqWbPEMCqxcBSOdaMWonNJzP24mLhA"},
            {"antenna5", "http://antenna5stream.neotel.mk:8000/live128"}
         };
+        [XmlDescription("Allows silverbot to use youtube-dl which is a tool for finding direct download links for streaming services")]
+        public bool AllowYoutubeDL { get; set; } = false;
         public Splash[] Splashes { get; set; } = {
       new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),
       new(".NET gang", ActivityType.Watching),

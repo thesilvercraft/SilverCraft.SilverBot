@@ -75,46 +75,39 @@ namespace SDiscordSink
                     builder.WithColor(DiscordColor.DarkGray);
                     sb.Append("[VER]");
                     break;
-
                 case LogEventLevel.Debug:
                     sb.Append("[DEB]");
                     break;
-
                 case LogEventLevel.Information:
                     builder.WithColor(DiscordColor.DarkBlue);
                     sb.Append("[INF]");
                     break;
-
                 case LogEventLevel.Warning:
                     builder.WithColor(DiscordColor.Orange);
                     sb.Append("[WRN]");
                     break;
-
                 case LogEventLevel.Error:
                     sb.Append("[ERR]");
                     builder.WithColor(DiscordColor.DarkRed);
                     break;
-
                 case LogEventLevel.Fatal:
                     sb.Append("[FTL]");
                     builder.WithColor(DiscordColor.Red);
                     break;
-
                 default:
                     sb.Append("[DEF]");
                     break;
             }
-            sb.Append("` | `");
-            sb.Append(logEvent.Timestamp.ToString("o", CultureInfo.InvariantCulture));
-            sb.Append('`');
+            sb.Append("` | ");
+            sb.Append(Formatter.Timestamp(logEvent.Timestamp.LocalDateTime,TimestampFormat.LongDateTime));
             if (logEvent.Exception != null)
             {
                 sb.Append(" | `");
                 sb.Append(logEvent.Exception.GetType());
-                sb.Append('`');
+                sb.Append("` |");
                 sb.AppendLine();
                 var exMessage = logEvent.Exception.Message;
-                sb.Append(exMessage.Length <= 1024 ? exMessage : exMessage.Substring(0, 1024));
+                sb.Append(exMessage?.Length <= 1024 ? exMessage : exMessage?.Substring(0, 1024));
             }
             if (restMessage != null)
             {
@@ -132,7 +125,7 @@ namespace SDiscordSink
                 }
             }
             builder.WithDescription(sb.ToString());
-            webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().AddEmbed(builder.Build()));
+            webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().AddEmbed(builder.Build()).WithUsername("Non-VBU compliant log entry"));
         }
     }
 }

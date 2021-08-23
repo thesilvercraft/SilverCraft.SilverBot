@@ -10,8 +10,7 @@ namespace SilverBotDS.Converters
     {
         public Task<Optional<SColor>> ConvertAsync(string value, CommandContext ctx)
         {
-            bool v = SColor.TryParse(value, out SColor tintcolor);
-            if (v)
+            if (SColor.TryParse(value, out SColor tintcolor))
             {
                 return Task.FromResult(Optional.FromValue(tintcolor));
             }

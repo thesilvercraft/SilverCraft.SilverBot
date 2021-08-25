@@ -104,7 +104,8 @@ namespace SilverBotDS.Commands
         {
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
-                                             .WithContent($"https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=1278602326&scope=bot%20applications.commands")
+                                             .WithContent($"{ctx.Member.Mention} https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=1278602326&scope=bot%20applications.commands")
+                                             .WithAllowedMentions(Mentions.None)
                                              .SendAsync(ctx.Channel);
         }
 
@@ -131,6 +132,7 @@ namespace SilverBotDS.Commands
         public async Task Ping(CommandContext ctx) => await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent($"🏓 Pong! {ctx.Client.Ping}ms").SendAsync(ctx.Channel);
 
         [Command("dump")]
+        [RequirePermissions(Permissions.ReadMessageHistory | Permissions.SendMessages)]
         [Description("Dump a messages raw content (useful for emote walls)")]
         public async Task DumpMessage(CommandContext ctx, DiscordMessage message)
         {
@@ -140,6 +142,8 @@ namespace SilverBotDS.Commands
             };
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
+                                             .WithContent($"{ctx.Member.Mention}")
+                                             .WithAllowedMentions(Mentions.None)
                                              .WithFile("message.txt", outStream)
                                              .SendAsync(ctx.Channel);
         }

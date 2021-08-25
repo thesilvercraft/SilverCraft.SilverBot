@@ -29,7 +29,7 @@ namespace SilverBotDS.Objects.Classes
             langtask.Wait();
             Lang = langtask.Result;
             EmbedBuilder = new DiscordEmbedBuilder()
-                .WithTitle(Lang.HelpCommandHelpString);
+                .WithTitle(Lang.HelpCommandHelpString).WithFooter(Lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)); 
         }
 
         /// <summary>

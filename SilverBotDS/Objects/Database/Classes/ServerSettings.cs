@@ -13,7 +13,6 @@ namespace SilverBotDS.Objects
             LangName = "en";
             EmotesOptin = false;
             ServerStatsCategoryId = null;
-            ServerStatsTemplates = new();
             RepeatThings = false;
             Prefixes = Array.Empty<string>();
         }
@@ -22,7 +21,9 @@ namespace SilverBotDS.Objects
         public string LangName { get; set; }
         public bool EmotesOptin { get; set; }
         public ulong? ServerStatsCategoryId { get; set; }
-        public List<ServerStatString> ServerStatsTemplates { get; set; }
+        [NotMapped]
+        public ServerStatString[] ServerStatsTemplates { get => JsonSerializer.Deserialize<ServerStatString[]>(string.IsNullOrWhiteSpace(ServerStatsTemplatesInJson) ? "[]" : ServerStatsTemplatesInJson); set => ServerStatsTemplatesInJson = JsonSerializer.Serialize(value); }
+        public string ServerStatsTemplatesInJson { get; set; }
         public bool RepeatThings { get; set; }
         [NotMapped]
         public string[] Prefixes { get=>JsonSerializer.Deserialize<string[]>(string.IsNullOrWhiteSpace(PrefixesInJson)?"[]": PrefixesInJson); set=> PrefixesInJson = JsonSerializer.Serialize(value); }

@@ -56,9 +56,9 @@ namespace SilverBotDS.Objects
             return userSettings.FirstOrDefault(x => x.Id == id)?.LangName ?? "en";
         }
 
-        public IAsyncEnumerable<Tuple<ulong, ulong?, List<ServerStatString>>> GetStatisticSettings()
+        public Tuple<ulong, ulong?, ServerStatString[]>[] GetStatisticSettings()
         {
-            return serverSettings.Where(x => x.ServerStatsCategoryId != null).Select(x => new Tuple<ulong, ulong?, List<ServerStatString>>(x.ServerId, x.ServerStatsCategoryId, x.ServerStatsTemplates)).ToAsyncEnumerable();
+            return serverSettings.Where(x => x.ServerStatsCategoryId != null).Select(x => new Tuple<ulong, ulong?, ServerStatString[]>(x.ServerId, x.ServerStatsCategoryId, x.ServerStatsTemplates)).ToArray();
         }
 
         public string GetLangCodeGuild(ulong id)
@@ -114,7 +114,7 @@ namespace SilverBotDS.Objects
             SaveChanges();
         }
 
-        private readonly List<ServerStatString> StatsTemplates = new() { new("All Members: {AllMembersCount}"), new("Members: {MemberCount}"), new("Bots: {BotsCount}"), new("Boosts: {BoostCount}") };
+        private readonly ServerStatString[] StatsTemplates = new ServerStatString[] { new("All Members: {AllMembersCount}"), new("Members: {MemberCount}"), new("Bots: {BotsCount}"), new("Boosts: {BoostCount}") };
         public void SetServerPrefixes(ulong sid, string[] prefixes)
         {
             var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
@@ -133,7 +133,7 @@ namespace SilverBotDS.Objects
             }
             SaveChanges();
         }
-        public void SetServerStatStrings(ulong sid, List<ServerStatString> id)
+        public void SetServerStatStrings(ulong sid, ServerStatString[] id)
         {
             id ??= StatsTemplates;
             var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);

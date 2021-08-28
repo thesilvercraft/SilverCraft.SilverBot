@@ -127,11 +127,36 @@ namespace SilverBotDS
         {
             config = await Config.GetAsync();
             WebHookUtils.ParseWebhookUrlNullable(config.LogWebhook, out ulong? id, out string token);
-            var logfactory = new LoggerConfiguration()
-                         .MinimumLevel.Information()
-                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) //So uh asp.net LOVES spamming logs
-                         .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-                         .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
+            var logfactory = new LoggerConfiguration();
+            switch (config.MinimumLogLevel)
+            {
+                case LogLevel.Trace:
+                    logfactory = logfactory.MinimumLevel.Verbose();
+                    break;
+                case LogLevel.Debug:
+                    logfactory = logfactory.MinimumLevel.Debug();
+                    break;
+                case LogLevel.Information:
+                    logfactory = logfactory.MinimumLevel.Information();
+                    break;
+                case LogLevel.Warning:
+                    logfactory = logfactory.MinimumLevel.Warning();
+                    break;
+                case LogLevel.Error:
+                    logfactory = logfactory.MinimumLevel.Error();
+                    break;
+                case LogLevel.Critical:
+                    logfactory = logfactory.MinimumLevel.Fatal();
+                    break;
+            }
+            logfactory
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) //So uh asp.net LOVES spamming logs
+            .WriteTo.Console(theme: AnsiConsoleTheme.Code);
+            if(config.UseTXTFilesAsLogs)
+            {
+                logfactory.WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
+            }
+            
             if (!(id == null || string.IsNullOrEmpty(token)))
             {
                 logfactory.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
@@ -695,32 +720,32 @@ namespace SilverBotDS
             {
                 try
                 {
-                    log.Verbose("Entered statistics method");
+                    log.Debug("Entered statistics method");
                     var dbctx = serviceProvider.GetRequiredService<DatabaseContext>();
-                    log.Verbose("Getting the settings about statistics");
+                    log.Debug("Getting the settings about statistics");
                     var things = dbctx.GetStatisticSettings();
-                    log.Verbose("Got the settings about statistics");
-                    await foreach (var thing in things)
+                    log.Debug("Got the settings about statistics");
+                    foreach (var thing in things)
                     {
-                        log.Verbose("Getting the guild with the id {Id}", thing.Item1);
+                        log.Debug("Getting the guild with the id {Id}", thing.Item1);
                         try
                         {
                             var server = await discord.GetGuildAsync(thing.Item1);
-                            log.Verbose("Got the guild with the id {Id}", thing.Item1);
-                            log.Verbose("Getting the channel with the id {Id}", thing.Item2);
+                            log.Debug("Got the guild with the id {Id}", thing.Item1);
+                            log.Debug("Getting the channel with the id {Id}", thing.Item2);
                             try
                             {
                                 var category = server.Channels[(ulong)thing.Item2];
-                                log.Verbose("Got the channel with the id {Id}", thing.Item2);
+                                log.Debug("Got the channel with the id {Id}", thing.Item2);
                                 if (category.Type is ChannelType.Category)
                                 {
                                     int e = 0;
-                                    log.Verbose("Getting the children of the channel {Id}", thing.Item2);
+                                    log.Debug("Getting the children of the channel {Id}", thing.Item2);
                                     foreach (var child in category.Children)
                                     {
-                                        if (thing.Item3.Count > e)
+                                        if (thing.Item3.Length > e)
                                         {
-                                            log.Verbose("Updating {Id}", child.Id);
+                                            log.Debug("Updating {Id}", child.Id);
                                             await child.ModifyAsync(a => a.Name = thing.Item3[e].Serialize(server));
                                         }
                                         e++;
@@ -755,12 +780,12 @@ namespace SilverBotDS
                             await dbctx.SaveChangesAsync();
                         }
                     }
-                    await Task.Delay(1800000);
                 }
                 catch (Exception e)
                 {
                     log.Error(e, "exception happened in stats thread");
                 }
+                await Task.Delay(1800000);
             }
         }
 

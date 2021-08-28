@@ -686,7 +686,6 @@ namespace SnowdPlayer
                     UseShellExecute = false
                 });
                 prc.WaitForExit();
-                Console.WriteLine(prc.ExitCode);
                 if(prc.ExitCode==0)
                 {
                     HttpClient client = new();
@@ -1089,11 +1088,9 @@ namespace SnowdPlayer
         private Task PlayerTask;
         private async Task<string> GetURLAsync(LavalinkTrack track)
         {
-            Console.WriteLine(track.Provider);
             if (track.Provider == StreamProvider.YouTube)
             {
                 var video = (await YouTube.Default.GetAllVideosAsync(track.Source)).Where(x => x.AdaptiveKind == AdaptiveKind.Audio).OrderByDescending(x => x.AudioBitrate).Select(x => { Console.WriteLine(x.Uri); return x; }).First();
-                Console.WriteLine(video.Uri);
                 return video.Uri;
             }
             if(UseYoutubeDL)
@@ -1148,9 +1145,7 @@ namespace SnowdPlayer
                 throw new InvalidOperationException($"Don't play something while the player {reason}");
             }*/
             var filePath = await GetURLAsync(track);
-            Console.WriteLine(filePath);
-            Console.WriteLine($@"-i ""{filePath}"" -err_detect ignore_err -ac 2 -f s16le {(startTime.HasValue ? "-ss " + (startTime.Value.ToFFmpeg()) : "")}{(endTime.HasValue ? " -to " + (endTime.Value.ToFFmpeg()) : "")} -ar 48000 pipe:1");
-            Task.Delay(5000);
+            await Task.Delay(5000);
             if (filePath != null)
             {
                 FFmpeg = Process.Start(new ProcessStartInfo

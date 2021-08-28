@@ -1,4 +1,5 @@
 ﻿using DSharpPlus.Entities;
+using Microsoft.Extensions.Logging;
 using SilverBotDS.Attributes;
 using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
@@ -16,7 +17,7 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
-        private const ulong CurrentConfVer = 30;
+        private const ulong CurrentConfVer = 31;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } =
@@ -27,8 +28,11 @@ namespace SilverBotDS.Objects
           "ok silverbot",
           "this is so sad silverbot"
         };
-
-        [XmlDescription("The Discord token, can be got from https://discord.com/developers/")]
+        [XmlDescription("how much is the bot allowed to log, Values can be Trace, Debug, Information, Warning, Error or Critical")]
+        public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
+        [XmlDescription("Should silverbot keep its logs on a log.txt file in its directory")]
+        public bool UseTXTFilesAsLogs { get; set; } = true;
+        [XmlDescription("The Discord token, can be had at https://discord.com/developers/")]
         public string Token { get; set; } = "Discord_Token_Here";
         [XmlDescription("Allow silverbot to use the shitty commands discord is pushing down our throats, this uses the DSharpPlus.SlashCommands library made by IDoEverything")]
         public bool UseSlashCommands { get; set; } = false;
@@ -46,10 +50,10 @@ namespace SilverBotDS.Objects
         [XmlDescription("(ulong)Id of main server")]
         public ulong ServerId { get; set; } = 679353407667961877;
 
-        [XmlDescription("Interval to use so discord dont ban us, in ms, is int32 so use -1 if you want no splash changes, defaults to 30m as kae kinda was like hey you know discord has probably put you on a watchlist")]
+        [XmlDescription("Interval to use so discord dont ban us, in ms, is int32 so use -1 if you want no splash changes, defaults to 30m (1800000ms)")]
         public int MsInterval { get; set; } = 1800000;
 
-        [XmlDescription("The current config version, don't change unless told by the bot or silverdimond")]
+        [XmlDescription("The current config version, don't change unless insctructed by dev")]
         public ulong? ConfigVer { get; set; } = null;
 
         [XmlDescription("Webhook for logging")]
@@ -61,11 +65,17 @@ namespace SilverBotDS.Objects
         [XmlDescription("Set true if its a sid cookie, false if a bot one")]
         public bool TopggIsSelfbot { get; set; } = true;
 
-        [XmlDescription("What kind of browser to use, used for selinium. 1 for chrome (chromedriver) 2 for firefox, 3 should be the remotebrowser")]
+        [XmlDescription("What kind of browser to use, 0 for no browser, 1 for chrome (chromedriver), 2 for firefox (geckodriver), 3 should be the remotebrowser(uses pagerendererapi)")]
         public int BrowserType { get; set; } = 1;
 
-        [XmlDescription("Location of that browser, leave blank for CWD(current working directory)")]
+        [XmlDescription("Location of that browser's driver, leave blank for CWD(current working directory)")]
         public string DriverLocation { get; set; } = "";
+
+        [XmlDescription("Allow silverbot to connect to lavalink and use audio commands, useful if you have lavalink installed or if you allowed silverbot to install and run lavalink (requires java)")]
+        public bool UseLavaLink { get; set; } = true;
+
+        [XmlDescription("Allow silverbot to download and start Lavalink, if you disable this your responsible for launching lavalink")]
+        public bool AutoDownloadAndStartLavalink { get; set; } = true;
 
         [XmlDescription("The Lavalink Node restful HTTP api URI.")]
         public string LavalinkRestUri { get; set; } = "http://localhost:2333/";
@@ -91,14 +101,8 @@ namespace SilverBotDS.Objects
         [XmlDescription("Uses Jering.Javascript.NodeJS to execute some javascript code")]
         public bool UseNodeJs { get; set; } = false;
 
-        [XmlDescription("Allow silverbot to download and start Lavalink, if you disable this your responsible for launching lavalink")]
-        public bool AutoDownloadAndStartLavalink { get; set; } = true;
-
         [XmlDescription("Allow silverbot to load (or make) a colors config, useful if you plan on adding colors")]
         public bool ColorConfig { get; set; } = true;
-
-        [XmlDescription("Allow silverbot to connect to lavalink and use audio commands, useful if you have lavalink installed or if you allowed silverbot to install and run lavalink (requires java)")]
-        public bool UseLavaLink { get; set; } = true;
 
         [XmlDescription("Allow silverbot to emulate bubot (enables some basic commands)")]
         public bool EmulateBubot { get; set; } = false;
@@ -114,7 +118,7 @@ namespace SilverBotDS.Objects
         public string BibiLibFull { get; set; } = "https://cmpc.live/bibipics/bibifull/picture{0}.png?swag=true";
         [XmlDescription("Location of titles for BibiLibFull pictures (BibiLibFull - local - config)")]
         public string BibiLibFullConfig { get; set; } = "C:\\BibiPictures\\BibiLibFull\\Titles.json";
-        [XmlDescription("Allow silverbot owner only commands (may allow the bot owner to kill pc)")]
+        [XmlDescription("Allow silverbot owner only commands (may allow any bot owner to kill the pc silverbot is running on)")]
         public bool AllowOwnerOnlyCommands { get; set; } = true;
 
         [XmlDescription("Allow commands that someone might find distasteful, currently unused")]

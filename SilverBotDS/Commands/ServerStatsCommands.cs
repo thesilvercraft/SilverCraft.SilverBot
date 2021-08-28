@@ -102,7 +102,7 @@ namespace SilverBotDS.Commands
         public async Task SetStatisticStrings(CommandContext ctx, params string[] cake)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            Database.SetServerStatStrings(ctx.Guild.Id, cake.Select(x => new ServerStatString(x)).ToList());
+            Database.SetServerStatStrings(ctx.Guild.Id, cake.Select(x => new ServerStatString(x)).ToArray());
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                                       .WithContent(lang.StatisticCommand.SetToProvidedStrings)
                                       .WithAllowedMentions(Mentions.None)

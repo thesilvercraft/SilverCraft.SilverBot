@@ -96,7 +96,7 @@
     <PackageReference Include="Microsoft.Identity.Client" Version="4.35.1" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Npgsql" Version="6.0.0-preview6" />
+    <PackageReference Include="Npgsql" Version="6.0.0-preview7" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview5" />
     <PackageReference Include="NSwag.ApiDescription.Client" Version="13.13.2">
       <PrivateAssets>all</PrivateAssets>

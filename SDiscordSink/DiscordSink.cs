@@ -42,7 +42,7 @@ namespace SDiscordSink
             var message = logEvent.RenderMessage();
             if (logEvent.Exception != null && message.StartsWith("Error"))
             {
-                webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent($"{message}\n").AddFile("error.cs",new MemoryStream(Encoding.Unicode.GetBytes($"{ logEvent.Exception.Message ?? "null" }\nStack trace:\n{ logEvent.Exception.StackTrace ?? "null"}\nSource\n{ logEvent.Exception.Source ?? "null"}\nHelp link:\n{ logEvent.Exception.HelpLink ?? "null"}")),true).WithUsername("sb - Error"));
+                webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent($"{message}\n").AddFile("error.cs",new MemoryStream(Encoding.UTF8.GetBytes($"{ logEvent.Exception.Message ?? "null" }\nStack trace:\n{ logEvent.Exception.StackTrace ?? "null"}\nSource\n{ logEvent.Exception.Source ?? "null"}\nHelp link:\n{ logEvent.Exception.HelpLink ?? "null"}")),true).WithUsername("sb - Error"));
             }
             string? restMessage = null;
             if (message.Length > 230)

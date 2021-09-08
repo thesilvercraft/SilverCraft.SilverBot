@@ -31,7 +31,7 @@ namespace SilverBotDS.Commands
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithContent(string.Format(lang.Hi, ctx.Member.Mention))
+                                             .WithContent(string.Format(lang.Hi, ctx.User.Mention))
                                              .SendAsync(ctx.Channel);
         }
 
@@ -104,7 +104,7 @@ namespace SilverBotDS.Commands
         {
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
-                                             .WithContent($"{ctx.Member.Mention} https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=1278602326&scope=bot%20applications.commands")
+                                             .WithContent($"{ctx.User.Mention} https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=1278602326&scope=bot%20applications.commands")
                                              .WithAllowedMentions(Mentions.None)
                                              .SendAsync(ctx.Channel);
         }
@@ -142,7 +142,7 @@ namespace SilverBotDS.Commands
             };
             await new DiscordMessageBuilder()
                                              .WithReply(ctx.Message.Id)
-                                             .WithContent($"{ctx.Member.Mention}")
+                                             .WithContent($"{ctx.User.Mention}")
                                              .WithAllowedMentions(Mentions.None)
                                              .WithFile("message.txt", outStream)
                                              .SendAsync(ctx.Channel);

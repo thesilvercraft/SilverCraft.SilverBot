@@ -18,7 +18,6 @@ using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
-using SilverBotDS.Commands.SBCalendar;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
@@ -48,6 +47,8 @@ using System.Text;
 using CodenameGenerator;
 using DSharpPlus.SlashCommands;
 using SilverBotDS.Commands.Slash;
+using DSharpPlus.CommandsNext.Attributes;
+
 namespace SilverBotDS
 {
     internal static class Program
@@ -322,6 +323,7 @@ namespace SilverBotDS
                 PrefixResolver = ResolvePrefixAsync
             });
             var slash = discord.UseSlashCommands(new SlashCommandsConfiguration() { Services = serviceProvider });
+            slash.SlashCommandErrored += Slash_SlashCommandErrored;
             #region Registering Commands
             commands.SetHelpFormatter<CustomHelpFormatter>();
             log.Verbose("Registering Commands&Converters");
@@ -385,10 +387,6 @@ namespace SilverBotDS
             commands.RegisterCommands<MiscCommands>();
             commands.RegisterCommands<MinecraftModule>();
             commands.RegisterCommands<UserQuotesModule>();
-            if (IsNotNullAndIsNotB(config.MicrosoftGraphClientId, "Graph-Client-Id-Here"))
-            {
-                commands.RegisterCommands<CalendarCommands>();
-            }
             commands.CommandErrored += Commands_CommandErrored;
             commands.CommandExecuted += Commands_CommandExecuted;
             if (config.UseNodeJs)
@@ -488,6 +486,8 @@ namespace SilverBotDS
                 //repeat🔁
             }
         }
+
+        
         private static Task<int> ResolvePrefixAsync(DiscordMessage msg)
         {
             if (msg.Channel.Type == ChannelType.Private)
@@ -538,6 +538,11 @@ namespace SilverBotDS
                });
             }
         }
+        private static async Task Slash_SlashCommandErrored(SlashCommandsExtension sender, DSharpPlus.SlashCommands.EventArgs.SlashCommandErrorEventArgs e)
+        {
+
+        }
+
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
         {
             return new Dictionary<string, string> { ["GuildCount"] = client.Guilds.Values.LongCount().ToString(), ["Platform"] = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() };
@@ -549,6 +554,69 @@ namespace SilverBotDS
                 a = a.Substring(0, a.LastIndexOf(sub));
             }
             return a;
+        }
+        /// <summary>
+        /// Render the error message for an Attribute
+        /// </summary>
+        /// <param name="checkBase">The attribute</param>
+        /// <param name="lang">The language</param>
+        /// <param name="isinguild">Was the command executed in a guild or in dm's</param>
+        /// <returns>A <see cref="string"/> containing the error message</returns>
+        static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang, bool isinguild)
+        {
+            var chkbstype = checkBase.GetType();
+            if(chkbstype == typeof(RequireDJAttribute))
+            {
+                return lang.RequireDJCheckFailed;
+            }
+            else if(chkbstype == typeof(RequireGuildAttribute))
+            {
+                return lang.RequireGuildCheckFailed;
+            }
+            else if(chkbstype == typeof(RequireNsfwAttribute))
+            {
+                return lang.RequireNsfwCheckFailed;
+            }
+            else if(chkbstype == typeof(RequireOwnerAttribute))
+            {
+                return lang.RequireOwnerCheckFailed;
+            }
+            else if(checkBase is RequireRolesAttribute rolesatt)
+            {
+                if(rolesatt.RoleNames.Count==1)
+                {
+                    return string.Format(lang.RequireRolesCheckFailedSG, rolesatt.RoleNames[0]);
+                }
+                else
+                {
+                    return string.Format(lang.RequireRolesCheckFailedPL, rolesatt.RoleNames.Humanize());
+                }
+            }
+            else if(checkBase is RequireBotPermissionsAttribute requireBotPermissions)
+            {
+               if(!(requireBotPermissions.IgnoreDms && isinguild))
+                {
+                    return lang.RequireGuildCheckFailed;
+                }
+                return string.Format(lang.RequireBotPermisionsCheckFailedPL, requireBotPermissions.Permissions.Humanize());
+            }
+            else if(checkBase is RequireUserPermissionsAttribute userPermissions)
+            {
+                if(!(userPermissions.IgnoreDms && isinguild))
+                {
+                    return lang.RequireGuildCheckFailed;
+                }
+                return string.Format(lang.RequireUserPermisionsCheckFailedPL, userPermissions.Permissions.Humanize());
+            }
+            else if (checkBase is RequirePermissionsAttribute userAndBotPermissions)
+            {
+                if (!(userAndBotPermissions.IgnoreDms && isinguild))
+                {
+                    return lang.RequireGuildCheckFailed;
+                }
+                return string.Format(lang.RequireUserPermisionsCheckFailedPL, userAndBotPermissions.Permissions.Humanize());
+            }
+            return string.Format(lang.CheckFailed, RemoveStringFromEnd(chkbstype.Name, "Attribute").Humanize());
         }
         private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
@@ -566,9 +634,10 @@ namespace SilverBotDS
                     {
                         if (cfe.FailedChecks.Count is 1)
                         {
+                            
                             await new DiscordMessageBuilder()
                                                              .WithReply(e.Context.Message.Id)
-                                                             .WithContent(string.Format(lang.CheckFailed, RemoveStringFromEnd(cfe.FailedChecks[0].GetType().Name, "Attribute").Humanize()))
+                                                             .WithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang, e.Context.Guild != null))
                                                              .SendAsync(e.Context.Channel);
                         }
                         else
@@ -577,7 +646,7 @@ namespace SilverBotDS
                             var tempbuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
                             for (var i = 0; i < cfe.FailedChecks.Count; i++)
                             {
-                                pages.Add(new Page(embed: tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}").WithDescription(RemoveStringFromEnd(cfe.FailedChecks[i].GetType().Name, "Attribute").Humanize())));
+                                pages.Add(new Page(embed: tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}").WithDescription(RenderErrorMessageForAttribute(cfe.FailedChecks[i], lang, e.Context.Guild != null))));
                             }
                             var interactivity = e.Context.Client.GetInteractivity();
                             await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages, token: new System.Threading.CancellationToken());

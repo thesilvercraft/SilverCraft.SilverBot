@@ -24,7 +24,7 @@ namespace SilverBotDS.Commands
     [Category("Bubot")]
     internal class Bubot : BaseCommandModule
     {
-        private readonly Font BibiFont = new(SystemFonts.Find("Arial"), 30, FontStyle.Bold);
+        private readonly Font BibiFont = new(SystemFonts.Get("Arial"), 30, FontStyle.Bold);
         private int BibiPictureCount { get { return Directory.EnumerateFiles(config.LocalBibiPictures).Count(x => x.EndsWith(".png")); } }
         public Config config { private get; set; }
      

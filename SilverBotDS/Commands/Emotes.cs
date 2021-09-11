@@ -27,7 +27,7 @@ namespace SilverBotDS.Commands
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
 
-        [Command("addemote")]
+        [Command("addemote"), Aliases("addemoji")]
         [Description("Wanna add a emote but discord is too complicated to navigate. You need to add attachment here ")]
         [RequireGuild]
         [RequirePermissions(Permissions.ManageEmojis)]
@@ -78,7 +78,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        [Command("allemotes")]
+        [Command("allemotes"), Aliases("allemoji", "allemojis")]
         [Description("Get all the emotes from the SilverSocial enabled servers")]
         public async Task Allemotes(CommandContext ctx)
         {
@@ -143,7 +143,7 @@ namespace SilverBotDS.Commands
             await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
         }
 
-        [Command("emote")]
+        [Command("emote"), Aliases("emoji")]
         [Description("Get an emote from the SilverSocial enabled servers")]
         public async Task GetEmotes(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote)
         {
@@ -211,7 +211,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        [Command("optintoemotes")]
+        [Command("optintoemotes"), Aliases("optintoemoji","optintoemojis")]
         [RequireUserPermissions(Permissions.ManageGuild)]
         [RequireGuild]
         public async Task Optin(CommandContext ctx)

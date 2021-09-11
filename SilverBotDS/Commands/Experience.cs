@@ -117,7 +117,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private readonly Font DiavloLight = new(SystemFonts.Find("Diavlo Light"), 30.0f);
+        private readonly Font DiavloLight = new(SystemFonts.Get("Diavlo Light"), 30.0f);
         private readonly SolidBrush BlackBrush = new(Color.Black);
 
         [Command("xpcard")]

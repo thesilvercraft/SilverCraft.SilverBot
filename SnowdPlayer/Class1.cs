@@ -676,7 +676,7 @@ namespace SnowdPlayer
         Regex YTRgx = new(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
         public async Task<SnowTrack> GetTrackAsync(string query, SearchMode mode = SearchMode.None, bool noCache = false, CancellationToken cancellationToken = default)
         {
-            if(UseYoutubeDL)
+            /*if(UseYoutubeDL)
             {
                 var prc = Process.Start(new ProcessStartInfo
                 {
@@ -697,7 +697,7 @@ namespace SnowdPlayer
                     File.Delete(filename);
                     return new SnowTrack(query, "not implemented", mediaInfo.AudioStreams.First().Duration, false, true, query, "not implemented", query, StreamProvider.Http);
                 }
-            }
+            }*/
             if (YTRgx.IsMatch(query))
             {
                 var video = await YouTube.Default.GetVideoAsync(query);

@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.SlashCommands;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -470,6 +471,15 @@ namespace SilverBotDS.Objects
         public string HelpCommandGroupArguments{ get; set; } = "Arguments";
         public string HelpCommandGroupSubcommands { get; set; } = "Subcommands";
         public string HelpCommandGroupListingAllCommands { get; set; } = "Listing all commands and groups. Specify a command to see more information.";
+        public string RequireDJCheckFailed { get; set; } = "You must have the DJ role to use that";
+        public string RequireGuildCheckFailed { get; set; } = "You must be in a Guild (aka discord server) to use that.";
+        public string RequireNsfwCheckFailed { get; set; } = "You must be in a channel that is marked NSFW to use that.";
+        public string RequireOwnerCheckFailed { get; set; } = "You must be a SilverBot owner to use that.";
+        public string RequireRolesCheckFailedSG { get; set; } = "You must have the {0} role to use that.";
+        public string RequireRolesCheckFailedPL { get; set; } = "You must have the roles named {0} to use that.";
+        public string RequireBotPermisionsCheckFailedPL { get; set; } = "I must have the permisions {0} for you to use that.";
+        public string RequireUserPermisionsCheckFailedPL { get; set; } = "You must have the permisions {0} to use that.";
+        public string RequireBotAndUserPermisionsCheckFailedPL { get; set; } = "We both must have the permisions {0} for you to use that.";
         public CultureInfo GetCultureInfo()
         {
             return new CultureInfo(CultureInfo);
@@ -552,6 +562,11 @@ namespace SilverBotDS.Objects
         public static async Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
         {
             DatabaseContext db = (DatabaseContext)ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));
+            return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
+        }
+        public static async Task<Language> GetLanguageFromCtxAsync(BaseContext ctx)
+        {
+            DatabaseContext db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
             return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
         }
     }

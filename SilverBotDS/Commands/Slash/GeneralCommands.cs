@@ -7,6 +7,9 @@ using DSharpPlus;
 using DSharpPlus.Entities;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using System.Runtime.InteropServices;
+using System.IO;
+using System.Text;
 
 namespace SilverBotDS.Commands.Slash
 {
@@ -17,27 +20,80 @@ namespace SilverBotDS.Commands.Slash
         [SlashCommand("hello", "A simple hello command")]
         public async Task TestCommand(InteractionContext ctx)
         {
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent($"hey {ctx.User.Mention} what are you doing here, go back to using normal commands"));
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent($"hello {ctx.User.Mention}"));
         }
-        [ContextMenu(ApplicationCommandType.UserContextMenu, "Whois-like search")]
-        public async Task UserMenu(ContextMenuContext ctx)
+        public async Task WhoIsTask(BaseContext ctx, DiscordUser user)
         {
-            var a = ctx.TargetMember;
             var lang = await Language.GetLanguageFromGuildIdAsync(ctx.Guild.Id, DBCTX);
             var cultureinfo = lang.GetCultureInfo();
             await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
-                .WithTitle(lang.User + a.Username)
-                .WithDescription(lang.InformationAbout + a.Mention)
-                .AddField(lang.Userid, a.Id.ToString(), true)
-                .AddField(lang.JoinedSilverCraft, StringUtils.BoolToEmoteString(await Genericcommands.IsAtSilverCraftAsync(ctx.Client, a, CNF)), true)
-                .AddField(lang.IsAnOwner, StringUtils.BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(a)), true)
-                .AddField(lang.IsABot, StringUtils.BoolToEmoteString(a.IsBot), true)
-                .AddField(lang.AccountCreationDate, a.CreationTimestamp.ToString(cultureinfo), true)
-                .AddField(lang.AccountJoinDate, ctx.Guild?.Members.ContainsKey(a.Id) == true ? ctx.Guild?.Members[a.Id].JoinedAt.ToString(cultureinfo) : "NA", true)
+                .WithTitle(lang.User + user.Username)
+                .WithDescription(lang.InformationAbout + user.Mention)
+                .AddField(lang.Userid, Formatter.InlineCode(user.Id.ToString()), true)
+                .AddField(lang.JoinedSilverCraft, StringUtils.BoolToEmoteString(await Genericcommands.IsAtSilverCraftAsync(ctx.Client, user, CNF)), true)
+                .AddField(lang.IsAnOwner, StringUtils.BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(user)), true)
+                .AddField(lang.IsABot, StringUtils.BoolToEmoteString(user.IsBot), true)
+                .AddField(lang.AccountCreationDate, user.CreationTimestamp.ToString(cultureinfo), true)
+                .AddField(lang.AccountJoinDate, ctx.Guild?.Members.ContainsKey(user.Id) == true ? ctx.Guild?.Members[user.Id].JoinedAt.ToString(cultureinfo) : "NA", true)
                 .WithColor(await ColorUtils.GetSingleAsync())
-                .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
+                .WithThumbnail(user.GetAvatarUrl(ImageFormat.Png))
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
                 .Build()).AsEphemeral(true));
+        }
+        [SlashCommand("whois", "Find out the info silverbot knows about someone.")]
+        public  Task WhoIsCommand(InteractionContext ctx, [Option("user", "User to view info on")] DiscordUser user)
+        {
+            return WhoIsTask(ctx, user);
+        }
+        [ContextMenu(ApplicationCommandType.UserContextMenu, "Whois-like search")]
+        public  Task UserMenu(ContextMenuContext ctx)
+        {
+            return WhoIsTask(ctx, ctx.TargetMember);
+        }
+        [SlashCommand("version", "Find out the version info for this instance of silverbot")]
+        public async Task VersionInfoCommand(InteractionContext ctx)
+        {
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
+                .WithTitle(lang.VersionInfoTitle)
+                .AddField(lang.VersionInfoCommand.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
+                .AddField(lang.VersionInfoCommand.GitRepo, ThisAssembly.Git.RepositoryUrl)
+                .AddField(lang.VersionInfoCommand.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
+                .AddField(lang.VersionInfoCommand.GitBranch, Formatter.InlineCode(ThisAssembly.Git.Branch))
+                .AddField(lang.VersionInfoCommand.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
+                .AddField(lang.VersionInfoCommand.CLR, Formatter.InlineCode(RuntimeInformation.FrameworkDescription))
+                .AddField(lang.VersionInfoCommand.OS, Formatter.InlineCode(Environment.OSVersion.VersionString))
+                .AddField(lang.VersionInfoCommand.DsharpplusVersion, Formatter.InlineCode(ctx.Client.VersionString))
+                .WithAuthor($"{ctx.Client.CurrentUser.Username}#{ctx.Client.CurrentUser.Discriminator}", iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
+                .WithColor(await ColorUtils.GetSingleAsync())
+                .Build()).AsEphemeral(true));
+        }
+        [SlashCommand("dukthosting", "Find out the version info for this instance of silverbot")]
+        public async Task DuktHostingCommand(InteractionContext ctx)
+        {
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
+                .WithTitle(lang.VersionInfoTitle)
+                .AddField(lang.VersionInfoCommand.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
+                .AddField(lang.VersionInfoCommand.GitRepo, ThisAssembly.Git.RepositoryUrl)
+                .AddField(lang.VersionInfoCommand.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
+                .AddField(lang.VersionInfoCommand.GitBranch, Formatter.InlineCode(ThisAssembly.Git.Branch))
+                .AddField(lang.VersionInfoCommand.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
+                .AddField(lang.VersionInfoCommand.CLR, Formatter.InlineCode(RuntimeInformation.FrameworkDescription))
+                .AddField(lang.VersionInfoCommand.OS, Formatter.InlineCode(Environment.OSVersion.VersionString))
+                .AddField(lang.VersionInfoCommand.DsharpplusVersion, Formatter.InlineCode(ctx.Client.VersionString))
+                .WithAuthor($"{ctx.Client.CurrentUser.Username}#{ctx.Client.CurrentUser.Discriminator}", iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
+                .WithColor(await ColorUtils.GetSingleAsync())
+                .Build()));
+        }
+        [ContextMenu(ApplicationCommandType.MessageContextMenu, "Dump message")]
+        public async Task DumpCommand(ContextMenuContext ctx) 
+        {
+            await using var outStream = new MemoryStream(Encoding.UTF8.GetBytes(ctx.TargetMessage.Content))
+            {
+                Position = 0
+            };
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddFile("message.txt",outStream));
         }
     }
 }

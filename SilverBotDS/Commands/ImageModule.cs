@@ -57,7 +57,7 @@ namespace SilverBotDS.Commands
         public async Task DrawText(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light", float size = 30.0f)
         {
             await ctx.TriggerTypingAsync();
-            using var img = DrawText(text, new Font(SystemFonts.Find(font), size), Color.FromRgb(0, 0, 0), Color.FromRgb(255, 255, 255));
+            using var img = DrawText(text, new Font(SystemFonts.Get(font), size), Color.FromRgb(0, 0, 0), Color.FromRgb(255, 255, 255));
             await using var outStream = new MemoryStream();
             await img.SaveAsPngAsync(outStream);
             outStream.Position = 0;
@@ -332,7 +332,7 @@ namespace SilverBotDS.Commands
             await Reliable(ctx, ctx.User, koichi);
         }
 
-        private readonly Font SubtitlesFont = new(SystemFonts.Find("Trebuchet MS"), 100);
+        private readonly Font SubtitlesFont = new(SystemFonts.Get("Trebuchet MS"), 100);
 
         /// <summary>
         /// Gets the profile picture of a discord user in a 256x256 bitmap saved to a byte array
@@ -515,7 +515,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private readonly Font MotivateFont = new(SystemFonts.Find("Times New Roman"), 100);
+        private readonly Font MotivateFont = new(SystemFonts.Get("Times New Roman"), 100);
 
         [Command("motivate")]
         public async Task Motivate(CommandContext ctx, SdImage image, [RemainingText] string text)
@@ -549,7 +549,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private readonly FontFamily JokerFontFamily = SystemFonts.Find("Futura Extra Black Condensed");
+        private readonly FontFamily JokerFontFamily = SystemFonts.Get("Futura Extra Black Condensed");
         [Command("fail")]
         [Description("epic embed fail")]
         public async Task JokerLaugh(CommandContext ctx, [RemainingText] string text)
@@ -596,7 +596,7 @@ namespace SilverBotDS.Commands
                 await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
-        private readonly FontFamily CaptionFont = SystemFonts.Find("Futura Extra Black Condensed");
+        private readonly FontFamily CaptionFont = SystemFonts.Get("Futura Extra Black Condensed");
 
         [Command("caption")]
         public async Task Caption(CommandContext ctx, SdImage image, [RemainingText] string text)

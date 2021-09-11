@@ -803,6 +803,7 @@ namespace SilverBotDS
                     if (last_friday == DateTime.Now.DayOfYear - 1)
                     {
                         await ExecuteFridayAsync(false);
+                        last_friday = 0;
                     }
                 }
                 await Task.Delay(1000);

@@ -107,7 +107,7 @@ namespace SilverBotDS.Objects
         /// Whoa there, there is nothing queued next.
         /// </summary>
         public string NothingInQueue { get; set; } = "Whoa there, there is nothing queued next.";
-
+        public string NothingInQueueHistory { get; set; } = "Whoa there is nothing in the queue history";
         /// <summary>
         /// Never gonna give you up<b> by </b>Rick Astley
         /// <para/>
@@ -375,6 +375,7 @@ namespace SilverBotDS.Objects
         /// Estimated time till it plays:
         /// </summary>
         public string TimeTillTrackPlays { get; set; } = "Estimated time till it plays:";
+        public string TimeWhenTrackPlayed { get; set; } = "Time when the track started:";
 
         /// <summary>
         /// Uh oh something went wrong. Please try again a little bit later.

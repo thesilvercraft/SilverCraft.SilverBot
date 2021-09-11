@@ -362,7 +362,42 @@ namespace SilverBotDS.Commands
             player.Queue.RemoveAt(songindex - 1);
             await SendSimpleMessage(ctx, lang.RemovedFront + thingy.Title + lang.SongByAuthor + thingy.Author, language: lang);
         }
+        [Command("queuehistory")]
+        [Description("check what was playing")]
+        [Aliases("qh", "prevplaying", "pq")]
+        public async Task QueueHistory(CommandContext ctx)
+        {
+            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+            if (!IsInVc(ctx))
+            {
+                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+                return;
+            }
+            var channel = ctx.Member?.VoiceState?.Channel;
+            if (channel == null)
+            {
+                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                return;
+            }
 
+            BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
+            if (player.QueueHistory.Count==0)
+            {
+                await SendSimpleMessage(ctx, lang.NothingInQueueHistory, language: lang);
+                return;
+            }
+
+            var pages = new List<Page>();
+            for (var i = 0; i < player.QueueHistory.Count; i++)
+            {
+                pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.QueueHistory[i].Item1.Title)
+                    .WithUrl(player.QueueHistory[i].Item1.Source).WithColor(await ColorUtils.GetSingleAsync())
+                    .AddField(lang.TimeWhenTrackPlayed, Formatter.Timestamp(player.QueueHistory[i].Item2,TimestampFormat.RelativeTime))
+                    .WithAuthor(string.Format(lang.PageNuget, i + 1, player.QueueHistory.Count ))));
+            }
+            var interactivity = ctx.Client.GetInteractivity();
+            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
+        }
         [Command("queue")]
         [Description("check whats playing rn and whats next")]
         [Aliases("np", "nowplaying", "q")]

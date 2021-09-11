@@ -32,7 +32,14 @@ namespace SilverBotDS.Objects.Classes
         {
             return SkipAsync(count, true);
         }
-
+        public override Task<int> PlayAsync(LavalinkTrack track, bool enqueue, TimeSpan? startTime = null, TimeSpan? endTime = null, bool noReplace = false)
+        {
+            if(enqueue)
+            {
+                QueueHistory.Add(new(track, DateTime.UtcNow, false));
+            }
+            return base.PlayAsync(track, enqueue, startTime, endTime, noReplace);
+        }
         public Task SkipAsync(int count, bool command)
         {
             if (count <= 0)

@@ -173,6 +173,7 @@
   "RequireBotPermisionsCheckFailedPL": "Ich muss die Berechtigung {0} haben, um das zu nutzen.",
   "RequireUserPermisionsCheckFailedPL": "Du musst die Berechtigung {0} haben, um das zu nutzen.",
   "RequireBotAndUserPermisionsCheckFailedPL": "Wir müssen beide die Berechtigungen {0} haben, damit Du das benutzen kannst.",
+  "UnknownImageFormat": "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.",
   "Imagethings": {
     "JpegSuccess": "Für dich ein jpegnized Bild",
     "SilverSuccess": "Für dich ein Silbernes Bild",

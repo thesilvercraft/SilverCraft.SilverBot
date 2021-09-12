@@ -48,6 +48,7 @@ using CodenameGenerator;
 using DSharpPlus.SlashCommands;
 using SilverBotDS.Commands.Slash;
 using DSharpPlus.CommandsNext.Attributes;
+using SixLabors.ImageSharp;
 
 namespace SilverBotDS
 {
@@ -664,6 +665,13 @@ namespace SilverBotDS
                         await new DiscordMessageBuilder()
                                                          .WithReply(e.Context.Message.Id)
                                                          .WithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable)
+                                                         .SendAsync(e.Context.Channel);
+                    }
+                    else if(e.Exception is UnknownImageFormatException)
+                    {
+                        await new DiscordMessageBuilder()
+                                                         .WithReply(e.Context.Message.Id)
+                                                         .WithContent(lang.UnknownImageFormat)
                                                          .SendAsync(e.Context.Channel);
                     }
                     else

@@ -179,4 +179,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Monika.razor" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Languages\en\" />
+  </ItemGroup>
 </Project>

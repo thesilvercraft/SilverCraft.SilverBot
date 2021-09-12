@@ -410,7 +410,7 @@ namespace SilverBotDS.Commands
                     using var sw = new StringWriter();
                     Console.SetOut(sw);
                     DateTime start = DateTime.Now;
-                    var script = await StaticNodeJSService.InvokeFromStringAsync<object>(RemoveCodeBraces(code));
+                    var script = await StaticNodeJSService.InvokeFromStringAsync<string>(RemoveCodeBraces(code));
                     DateTime aftercompile = DateTime.Now;
                     await new DiscordMessageBuilder().WithContent($"Ran the code in {(aftercompile - start).Humanize(6)}").SendAsync(ctx.Channel);
                     if (script is not null)

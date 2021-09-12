@@ -481,6 +481,7 @@ namespace SilverBotDS.Objects
         public string RequireBotPermisionsCheckFailedPL { get; set; } = "I must have the permisions {0} for you to use that.";
         public string RequireUserPermisionsCheckFailedPL { get; set; } = "You must have the permisions {0} to use that.";
         public string RequireBotAndUserPermisionsCheckFailedPL { get; set; } = "We both must have the permisions {0} for you to use that.";
+        public string UnknownImageFormat { get; set; } = "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.";
         public CultureInfo GetCultureInfo()
         {
             return new CultureInfo(CultureInfo);

@@ -4,7 +4,7 @@
 [![wakatime](https://wakatime.com/badge/github/thesilvercraft/SilverBot.svg)](https://wakatime.com/badge/github/thesilvercraft/SilverBot)
 [![Crowdin](https://badges.crowdin.net/silverbot/localized.svg)](https://crowdin.com/project/silverbot)  
 A multipurpose discord bot written in DSharpPlus using Lavalink4Net for audio.  
-You can invite my instance [here](https://discord.com/api/oauth2/authorize?client_id=702445582559739976&permissions=2147483639&scope=bot), most of the permissions are not necessary.  
+You can invite my instance [here](https://discord.com/api/oauth2/authorize?client_id=702445582559739976&permissions=1278602326&scope=bot%20applications.commands).
 (<https://silverbot.cf>)  
 <!--| :exclamation: This guide is not finished|
 |-----------------------------------------|

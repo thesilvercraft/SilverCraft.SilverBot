@@ -396,7 +396,7 @@ namespace SilverBotDS.Commands
                     .WithAuthor(string.Format(lang.PageNuget, i + 1, player.QueueHistory.Count ))));
             }
             var interactivity = ctx.Client.GetInteractivity();
-            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
+            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages);
         }
         [Command("queue")]
         [Description("check whats playing rn and whats next")]
@@ -436,12 +436,13 @@ namespace SilverBotDS.Commands
                     .WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
             }
             var interactivity = ctx.Client.GetInteractivity();
-            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
+            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages);
         }
 
         [Command("loop")]
-        [Description("Loop or unloop the current song")]
-        public async Task Loop(CommandContext ctx, LoopSettings settings)
+        [Aliases("repeat")]
+        [Description("Loops nothing/the queue/the currently playing song")]
+        public async Task Loop(CommandContext ctx, [Description("Has to be none, song or queue")]LoopSettings settings)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!IsInVc(ctx))

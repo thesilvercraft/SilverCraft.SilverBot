@@ -191,7 +191,8 @@ namespace SilverBotDS
                     SkipRight = new DiscordButtonComponent(ButtonStyle.Primary, "skipr", null, false, new DiscordComponentEmoji("⏭️"))
                 },
                 AckPaginationButtons = true,
-                ButtonBehavior = ButtonPaginationBehavior.Disable
+                ButtonBehavior = ButtonPaginationBehavior.Disable,
+                PaginationBehaviour= PaginationBehaviour.WrapAround
             });
             //set up XP and repeating things
             discord.MessageCreated += Discord_MessageCreated;

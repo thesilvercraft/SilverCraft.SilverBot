@@ -38,11 +38,8 @@ namespace SilverBotDS.Commands
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
 
-        [Command("repeat")]
-        [Description("Repeats the message content")]
-        public async Task Repeat(CommandContext ctx, [RemainingText][Description("The thing to repeat")] string e) => await ctx.RespondAsync(e);
 
-        private readonly string[] _urls = { "https://silverdimond.tk", "https://vfl.gg", "https://github.com/silverdimond","https://cmpc.live","https://silverbot.cf","https://oscie.net" };
+        private readonly string[] _urls = { "https://silverdiamond.cf", "https://vfl.gg", "https://github.com/silverdimond","https://cmpc.live","https://silverbot.cf","https://oscie.net" };
 
         [Command("riprandomframes")]
         [Description("rips times count of frames from a file")]
@@ -127,6 +124,7 @@ namespace SilverBotDS.Commands
             outStream.Position = 0;
             await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("plotted that").WithFile("silverbotimage.png", outStream));
         }
+        
         [Command("sudo"), Description("Executes a command as another user."), Hidden, RequireOwner]
         public async Task Sudo(CommandContext ctx, [Description("Member to execute as.")] DiscordMember member, [RemainingText, Description("Command text to execute.")] string command)
         {

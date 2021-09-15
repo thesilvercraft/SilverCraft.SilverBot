@@ -55,10 +55,10 @@
     <PackageReference Include="Analytics" Version="3.8.0" />
     <PackageReference Include="Azure.Identity" Version="1.5.0-beta.4" />
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
-    <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-00963" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-00963" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-00963" />
-    <PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-00963" />
+    <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-00989" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-00989" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-00989" />
+    <PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-00989" />
     <PackageReference Include="DSharpPlus.Menus" Version="1.0.3.5" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />
@@ -70,13 +70,13 @@
     <PackageReference Include="IDoEverything.DSharpPlus.SlashCommands" Version="2.0.3" />
     <PackageReference Include="IPAddressRange" Version="4.2.0" />
     <PackageReference Include="Jering.Javascript.NodeJS" Version="6.0.1" />
-    <PackageReference Include="Lavalink4NET.DSharpPlus" Version="2.0.1-preview.1" />
+    <PackageReference Include="Lavalink4NET.DSharpPlus" Version="2.0.1-preview.2" />
     <PackageReference Include="Markdig.Signed" Version="0.26.0" />
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.0-3.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.0-4.final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.5.21301.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.5.21301.9">
       <PrivateAssets>all</PrivateAssets>
@@ -88,7 +88,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.0-preview.7.21378.6">
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.0-rc.1.21452.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -118,7 +118,7 @@
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Text.Json" Version="6.0.0-preview.7.21377.19" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0-rc.1.21451.13" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="TimeSpanParserUtil" Version="1.2.0" />

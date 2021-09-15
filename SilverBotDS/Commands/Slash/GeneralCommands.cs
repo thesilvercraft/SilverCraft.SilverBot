@@ -68,20 +68,13 @@ namespace SilverBotDS.Commands.Slash
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .Build()).AsEphemeral(true));
         }
-        [SlashCommand("dukthosting", "Find out the version info for this instance of silverbot")]
+        [SlashCommand("dukthosting", "SilverHosting:tm: best")]
         public async Task DuktHostingCommand(InteractionContext ctx)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
-                .WithTitle(lang.VersionInfoTitle)
-                .AddField(lang.VersionInfoCommand.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
-                .AddField(lang.VersionInfoCommand.GitRepo, ThisAssembly.Git.RepositoryUrl)
-                .AddField(lang.VersionInfoCommand.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
-                .AddField(lang.VersionInfoCommand.GitBranch, Formatter.InlineCode(ThisAssembly.Git.Branch))
-                .AddField(lang.VersionInfoCommand.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
-                .AddField(lang.VersionInfoCommand.CLR, Formatter.InlineCode(RuntimeInformation.FrameworkDescription))
-                .AddField(lang.VersionInfoCommand.OS, Formatter.InlineCode(Environment.OSVersion.VersionString))
-                .AddField(lang.VersionInfoCommand.DsharpplusVersion, Formatter.InlineCode(ctx.Client.VersionString))
+                .WithTitle(lang.SilverhostingJokeTitle)
+                .WithDescription(lang.SilverhostingJokeDescription)
                 .WithAuthor($"{ctx.Client.CurrentUser.Username}#{ctx.Client.CurrentUser.Discriminator}", iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .Build()));

@@ -58,7 +58,7 @@
     <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-00989" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-00989" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-00989" />
-    <PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-00989" />
+    <PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-00991" />
     <PackageReference Include="DSharpPlus.Menus" Version="1.0.3.5" />
     <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.1" />
     <PackageReference Include="GiphyDotNet" Version="2.0.0" />

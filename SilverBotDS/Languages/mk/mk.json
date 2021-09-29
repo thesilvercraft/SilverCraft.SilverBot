@@ -173,7 +173,7 @@
   "RequireBotPermisionsCheckFailedPL": "Јас мора да ги имам дозволите {0} за да го користиш тоа.",
   "RequireUserPermisionsCheckFailedPL": "Ти мора да ги имаш дозволите {0} за да го користиш тоа.",
   "RequireBotAndUserPermisionsCheckFailedPL": "Јас и ти мора да ги имамаме дозволите {0} за да го користиш тоа.",
-  "UnknownImageFormat": "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.",
+  "UnknownImageFormat": "Не знам како да го прочитам тој формат, јас само можам да читам BPM, TIFF, GIF, PNG, TGA и JPEG фотографии.",
   "Imagethings": {
     "JpegSuccess": "Ете ти jpeg-низирана слика",
     "SilverSuccess": "Еве ти црнобела слика",

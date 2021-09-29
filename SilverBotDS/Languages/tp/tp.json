@@ -1,7 +1,7 @@
 {
   "LangName": "toki pona(tp)",
   "LangCodeGoogleTranslate": "tp",
-  "Hi": "toki a {0}!",
+  "Hi": "toki {0}!",
   "TimeInUtc": "tenpo insa UTC sama {0}",
   "CommandIsDisabled": "ni pali ala",
   "RequestedBy": "wile tan ",

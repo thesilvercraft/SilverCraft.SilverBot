@@ -55,7 +55,7 @@
     <PackageReference Include="Analytics" Version="3.8.0" />
     <PackageReference Include="Azure.Identity" Version="1.5.0-beta.4" />
     <PackageReference Include="CodenameGenerator" Version="1.2.47" />
-    <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-00989" />
+    <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-01011" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-00989" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-00989" />
     <PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-00989" />

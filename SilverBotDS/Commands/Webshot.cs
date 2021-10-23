@@ -18,10 +18,10 @@ namespace SilverBotDS.Commands
         [Command("webshot")]
         [Description("screenshots a webpage")]
         [RequireConfigVariable("AllowPublicWebshot", true)]
-        public async Task WebshotCommand(CommandContext ctx, string html)
+        public async Task WebshotCommand(CommandContext ctx, string html, byte waittime = 0)
         {
             var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter($"Requested by {ctx.User.Username}", ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);
-            using var e = await Browser.RenderUrlAsync(html);
+            using var e = await Browser.RenderUrlAsync(html, waittime);
             await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithReply(ctx.Message.Id).WithFile("html.png", e).SendAsync(ctx.Channel);
         }
     }

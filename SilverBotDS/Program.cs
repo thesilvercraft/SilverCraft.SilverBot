@@ -430,7 +430,36 @@ namespace SilverBotDS
 
             if (config.UseSlashCommands)
             {
-                slash.RegisterCommands<GeneralCommands>();
+                if (Debugger.IsAttached)
+                {
+                    slash.RegisterCommands<GeneralCommands>(config.ServerId);
+                    if (config.AllowPublicWebshot)
+                    {
+                        if (config.BrowserType == 0)
+                        {
+                            log.Information("You have not set-up a browser for silverbot to use. As such the public webshot slash-command will not be registered.");
+                        }
+                        else
+                        {
+                            slash.RegisterCommands<WebshotSlash>(config.ServerId);
+                        }
+                    }
+                }
+                else
+                {
+                    slash.RegisterCommands<GeneralCommands>();
+                    if (config.AllowPublicWebshot)
+                    {
+                        if (config.BrowserType == 0)
+                        {
+                            log.Information("You have not set-up a browser for silverbot to use. As such the public webshot slash-command will not be registered.");
+                        }
+                        else
+                        {
+                            slash.RegisterCommands<WebshotSlash>();
+                        }
+                    }
+                }
             }
             //🥁🥁🥁 drum-roll
             log.Information("Connecting to discord");

@@ -17,7 +17,7 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
-        private const ulong CurrentConfVer = 31;
+        private const ulong CurrentConfVer = 32;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } =
@@ -28,16 +28,22 @@ namespace SilverBotDS.Objects
           "ok silverbot",
           "this is so sad silverbot"
         };
+
         [XmlDescription("how much is the bot allowed to log, Values can be Trace, Debug, Information, Warning, Error or Critical")]
         public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
+
         [XmlDescription("Should silverbot keep its logs on a log.txt file in its directory")]
         public bool UseTXTFilesAsLogs { get; set; } = true;
+
         [XmlDescription("The Discord token, can be had at https://discord.com/developers/")]
         public string Token { get; set; } = "Discord_Token_Here";
+
         [XmlDescription("Allow silverbot to use the shitty commands discord is pushing down our throats, this uses the DSharpPlus.SlashCommands library made by IDoEverything")]
         public bool UseSlashCommands { get; set; } = false;
+
         [XmlDescription("Allow silverbot to use the new experimental snowdplayer")]
         public bool UseNewAudio { get; set; } = false;
+
         [XmlDescription("The Giphy token, can be got from https://developers.giphy.com/")]
         public string Gtoken { get; set; } = "Giphy_Token_Here";
 
@@ -64,6 +70,9 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Set true if its a sid cookie, false if a bot one")]
         public bool TopggIsSelfbot { get; set; } = true;
+
+        [XmlDescription("Gives everyone the ability to use webshot")]
+        public bool AllowPublicWebshot { get; set; } = false;
 
         [XmlDescription("What kind of browser to use, 0 for no browser, 1 for chrome (chromedriver), 2 for firefox (geckodriver), 3 should be the remotebrowser(uses pagerendererapi)")]
         public int BrowserType { get; set; } = 1;
@@ -106,18 +115,25 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Allow silverbot to emulate bubot (enables some basic commands)")]
         public bool EmulateBubot { get; set; } = false;
+
         [XmlDescription("Allow silverbot to emulate bubot's bibi commands (also enables the bibi gallery)")]
         public bool EmulateBubotBibi { get; set; } = false;
+
         [XmlDescription("Location of bibi pictures (local -  pictures(png) -  folder)")]
         public string LocalBibiPictures { get; set; } = "C:\\BibiPictures\\Bibi\\";
+
         [XmlDescription("Location of bibi pictures (BibiLibCutout - web - pictures)")]
         public string BibiLibCutOut { get; set; } = "https://cmpc.live/bibipics/bibicutout/picture{0}.png?raw=true";
+
         [XmlDescription("Location of titles for BibiLibCutout pictures (BibiLibCutout - local - config)")]
         public string BibiLibCutOutConfig { get; set; } = "C:\\BibiPictures\\BibiLibCutout\\Titles.json";
+
         [XmlDescription("Location of bibi pictures (BibiLibFull - web - pictures)")]
         public string BibiLibFull { get; set; } = "https://cmpc.live/bibipics/bibifull/picture{0}.png?swag=true";
+
         [XmlDescription("Location of titles for BibiLibFull pictures (BibiLibFull - local - config)")]
         public string BibiLibFullConfig { get; set; } = "C:\\BibiPictures\\BibiLibFull\\Titles.json";
+
         [XmlDescription("Allow silverbot owner only commands (may allow any bot owner to kill the pc silverbot is running on)")]
         public bool AllowOwnerOnlyCommands { get; set; } = true;
 
@@ -143,9 +159,12 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Do we check github for a newer commit")]
         public bool EnableUpdateChecking { get; set; } = false;
+
         [XmlDescription("2 segment keys for science, they can be duplicates if you like exposing your keys to the entire world")]
         public string SegmentPrivateSource { get; set; } = "Segment_Key";
+
         public string SegmentPublicSource { get; set; } = "Segment_Key";
+
         [XmlDescription("Song aliases, It can be any kind of url or search term (It also supports SilverBotPlaylist files)")]
         public SerializableDictionary<string, string> SongAliases { get; set; } = new SerializableDictionary<string, string>
         {
@@ -162,8 +181,10 @@ namespace SilverBotDS.Objects
            {"ninja tuna", "https://music.youtube.com/playlist?list=OLAK5uy_lYrDqWbPEMCqxcBSOdaMWonNJzP24mLhA"},
            {"antenna5", "http://antenna5stream.neotel.mk:8000/live128"}
         };
+
         [XmlDescription("Allows silverbot to use youtube-dl which is a tool for finding direct download links for streaming services")]
         public bool AllowYoutubeDL { get; set; } = false;
+
         public Splash[] Splashes { get; set; } = {
       new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),
       new(".NET gang", ActivityType.Watching),
@@ -274,8 +295,7 @@ namespace SilverBotDS.Objects
       new("T-shape is cancer", ActivityType.Playing),
       new("som splashes for u ^_^", ActivityType.Playing),
       new("1% less memory!", ActivityType.Playing),
-      new("Kalorichen has invited you to play Minecraft", ActivityType.Playing),
-      new("Kalorichan has invited you to play Minecraft", ActivityType.Playing),
+      new("Kalorichen has invited you to play Minecraft", ActivityType.ListeningTo),
       new("ThePajamaSlime! ThePajamaSlime! ThePajamaSlime!", ActivityType.Playing),
       new("Xbox 360 Edition", ActivityType.Playing),
       new("sign in with your microsoft account", ActivityType.Playing),
@@ -305,7 +325,6 @@ namespace SilverBotDS.Objects
       new("bot now has graphics, you're welcome", ActivityType.Playing),
       new("(it's a xml file with a list, not a method)", ActivityType.Playing),
       new("superb bus service", ActivityType.Playing),
-      new("SELECT * FROM BITCHES WHERE (NAME=\"MAX\")", ActivityType.Playing),
       new("SELCET? AWESMOE!", ActivityType.Playing),
       new("pretty pink spigots", ActivityType.Playing),
       new("you're uh winner", ActivityType.Playing),
@@ -330,7 +349,7 @@ namespace SilverBotDS.Objects
       new("in 5,4,3,2,1 I know you see", ActivityType.Playing),
       new("the world will change for me", ActivityType.Playing),
       new("and be so wonderful", ActivityType.Playing),
-      new("https://www.youtube.com/watch?v=HPM05dQgdig", ActivityType.Playing),
+      new("https://www.youtube.com/watch?v=HPM05dQgdig", ActivityType.ListeningTo),
       new("RIP XBOX360", ActivityType.Playing),
       new("https://catjam.tk/", ActivityType.Playing),
       new("Leave it all to me", ActivityType.ListeningTo),

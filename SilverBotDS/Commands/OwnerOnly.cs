@@ -38,12 +38,11 @@ namespace SilverBotDS.Commands
         public Config Config { private get; set; }
         public HttpClient HttpClient { private get; set; }
 
-
-        private readonly string[] _urls = { "https://silverdiamond.cf", "https://vfl.gg", "https://github.com/silverdimond","https://cmpc.live","https://silverbot.cf","https://oscie.net" };
+        private readonly string[] _urls = { "https://silverdiamond.cf", "https://vfl.gg", "https://github.com/silverdimond", "https://cmpc.live", "https://silverbot.cf", "https://oscie.net" };
 
         [Command("riprandomframes")]
         [Description("rips times count of frames from a file")]
-        public async Task RipRandomFrames(CommandContext ctx, int times, string loc, string decoder="hevc", string encoder = "hevc")
+        public async Task RipRandomFrames(CommandContext ctx, int times, string loc, string decoder = "hevc", string encoder = "hevc")
         {
             var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
             await ctx.RespondAsync($"its {info.Duration.Humanize()} ({info.Duration}) long");
@@ -57,7 +56,7 @@ namespace SilverBotDS.Commands
                     await FFmpeg.Conversions.New()
                     .AddStream(videoStream)
                     .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (_) => $"Extracts{Program.DirSlash}{name}{i}.png")
-                    .UseHardwareAcceleration(HardwareAccelerator.auto, (VideoCodec)Enum.Parse(typeof(VideoCodec),decoder,true), (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
+                    .UseHardwareAcceleration(HardwareAccelerator.auto, (VideoCodec)Enum.Parse(typeof(VideoCodec), decoder, true), (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
                     .Start();
                 }
             }
@@ -124,7 +123,7 @@ namespace SilverBotDS.Commands
             outStream.Position = 0;
             await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("plotted that").WithFile("silverbotimage.png", outStream));
         }
-        
+
         [Command("sudo"), Description("Executes a command as another user."), Hidden, RequireOwner]
         public async Task Sudo(CommandContext ctx, [Description("Member to execute as.")] DiscordMember member, [RemainingText, Description("Command text to execute.")] string command)
         {
@@ -133,6 +132,7 @@ namespace SilverBotDS.Commands
             var fakeContext = ctx.CommandsNext.CreateFakeContext(member, ctx.Channel, command, ctx.Prefix, cmd, customArgs);
             await ctx.CommandsNext.ExecuteCommandAsync(fakeContext);
         }
+
         [Command("setupcategory")]
         [Description("Set up a category in the silverbot dev server")]
         [RequireBotPermissions(Permissions.ManageChannels | Permissions.ManageRoles)]
@@ -161,6 +161,7 @@ namespace SilverBotDS.Commands
             discordMessage.Content = $"{ctx.User.Mention} there m8 that took some time to do";
             await channel.SendMessageAsync(discordMessage);
         }
+
         [Command("setupcategory")]
         [Description("Set up a category in the silverbot dev server")]
         [RequireBotPermissions(Permissions.ManageChannels | Permissions.ManageRoles)]
@@ -187,7 +188,8 @@ namespace SilverBotDS.Commands
             _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category, reason: $"Added by SilverBot as requested by {ctx.User.Username}");
             await channel.SendMessageAsync($"{person.Mention} there m8 that took some time to do");
         }
-        private readonly string[] imports = new[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq",  "Humanizer", "TimeSpanParserUtil", "Xabe.FFmpeg", "ScottPlot" };
+
+        private readonly string[] imports = new[] { "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Humanizer", "TimeSpanParserUtil", "Xabe.FFmpeg", "ScottPlot" };
 
         public static string RemoveCodeBraces(string str)
         {
@@ -238,6 +240,7 @@ namespace SilverBotDS.Commands
         {
             await new DiscordMessageBuilder().WithContent(title).WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }
+
         public static async Task SendBestRepresentationAsync(object ob, CommandContext ctx)
         {
             try
@@ -290,12 +293,13 @@ namespace SilverBotDS.Commands
         {
             WriteIndented = true
         };
+
         [Command("dependencies")]
         [Description("get the dependencies used")]
         public async Task Dependencies(CommandContext ctx)
         {
             StringBuilder sb = new();
-            foreach(var dependancy in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var dependancy in AppDomain.CurrentDomain.GetAssemblies())
             {
                 sb.AppendLine(dependancy.FullName);
             }
@@ -308,6 +312,7 @@ namespace SilverBotDS.Commands
                 await new DiscordMessageBuilder().WithContent(Formatter.BlockCode(RemoveCodeBraces(sb.ToString()))).SendAsync(ctx.Channel);
             }
         }
+
         /// <summary>
         /// Stolen idea from https://github.com/Voxel-Fox-Ltd/VoxelBotUtils/blob/master/voxelbotutils/cogs/owner_only.py#L172-L252
         /// </summary>
@@ -324,7 +329,7 @@ namespace SilverBotDS.Commands
                 var sw1 = Stopwatch.StartNew();
                 var script = CSharpScript.Create(RemoveCodeBraces(code),
                 ScriptOptions.Default.WithReferences(AppDomain.CurrentDomain.GetAssemblies().Where(xa => !xa.IsDynamic && !string.IsNullOrWhiteSpace(xa.Location))).WithImports(imports), typeof(CodeEnv));
-                var diag=script.Compile();
+                var diag = script.Compile();
                 sw1.Stop();
                 if (diag.Length != 0)
                 {
@@ -339,7 +344,7 @@ namespace SilverBotDS.Commands
                     var errcount = diag.LongCount(x => x.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error);
                     if (errcount != 0)
                     {
-                        await new DiscordMessageBuilder().WithContent($"I found {errcount} {(errcount==1?"error":"errors")}. I will **NOT** attempt to run this code.").SendAsync(ctx.Channel);
+                        await new DiscordMessageBuilder().WithContent($"I found {errcount} {(errcount == 1 ? "error" : "errors")}. I will **NOT** attempt to run this code.").SendAsync(ctx.Channel);
                         Console.SetOut(console);
                         return;
                     }
@@ -443,7 +448,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: {Formatter.BlockCode(RemoveCodeBraces(e.Diagnostics.Humanize()) ,"cs")}").SendAsync(ctx.Channel);
+                        await new DiscordMessageBuilder().WithContent($"Compilation Error occurred: {Formatter.BlockCode(RemoveCodeBraces(e.Diagnostics.Humanize()), "cs")}").SendAsync(ctx.Channel);
                     }
                     throw;
                 }
@@ -531,7 +536,7 @@ namespace SilverBotDS.Commands
             return a;
         }
 
-        [Command("webshot")]
+        [Command("webshotown")]
         [Description("screenshots a webpage")]
         public async Task Webshot(CommandContext ctx, string html)
         {
@@ -582,7 +587,7 @@ namespace SilverBotDS.Commands
             {
                 emotes.Add(new Emote { Name = emoji.Name, Url = emoji.Url });
             }
-            while(emotes.Count!=0)
+            while (emotes.Count != 0)
             {
                 await SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new Rootobject()
                 {
@@ -710,12 +715,13 @@ namespace SilverBotDS.Commands
             }
             await ctx.RespondAsync(bob.ToString());
         }
+
         [Command("togglebanuser")]
-        public async Task ToggleBanUser(CommandContext ctx,DiscordUser userid,bool ban=true)
+        public async Task ToggleBanUser(CommandContext ctx, DiscordUser userid, bool ban = true)
         {
             Database.ToggleBanUser(userid.Id, ban);
             await Database.SaveChangesAsync();
-            await ctx.RespondAsync($"{userid.Id} has been {(ban?"banned":"unbanned")}");
+            await ctx.RespondAsync($"{userid.Id} has been {(ban ? "banned" : "unbanned")}");
         }
 
         [Command("shutdown")]

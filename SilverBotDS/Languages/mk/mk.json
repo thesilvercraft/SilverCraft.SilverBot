@@ -171,8 +171,11 @@
   "RequireRolesCheckFailedSG": "Ти мора да го имаш ролот {0} за да го користиш тоа.",
   "RequireRolesCheckFailedPL": "Ти мора да ги имаш роловите {0} за да го користиш тоа.",
   "RequireBotPermisionsCheckFailedPL": "Јас мора да ги имам дозволите {0} за да го користиш тоа.",
+  "RequireBotPermisionsCheckFailedSG": "I must have the permision {0} for you to use that.",
   "RequireUserPermisionsCheckFailedPL": "Ти мора да ги имаш дозволите {0} за да го користиш тоа.",
+  "RequireUserPermisionsCheckFailedSG": "You must have the permision {0} to use that.",
   "RequireBotAndUserPermisionsCheckFailedPL": "Јас и ти мора да ги имамаме дозволите {0} за да го користиш тоа.",
+  "RequireBotAndUserPermisionsCheckFailedSG": "We both must have the permision {0} for you to use that.",
   "UnknownImageFormat": "Не знам како да го прочитам тој формат, јас само можам да читам BPM, TIFF, GIF, PNG, TGA и JPEG фотографии.",
   "Imagethings": {
     "JpegSuccess": "Ете ти jpeg-низирана слика",

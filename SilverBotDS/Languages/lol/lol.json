@@ -171,8 +171,11 @@
   "RequireRolesCheckFailedSG": "U MUST HAS TEH {0} ROLE 2 USE DAT.",
   "RequireRolesCheckFailedPL": "U MUST HAS TEH ROLEZ NAMD {0} 2 USE DAT.",
   "RequireBotPermisionsCheckFailedPL": "I MUST HAS TEH PERMISHUNS {0} 4 U 2 USE DAT.",
+  "RequireBotPermisionsCheckFailedSG": "I must have the permision {0} for you to use that.",
   "RequireUserPermisionsCheckFailedPL": "U MUST HAS TEH PERMISHUNS {0} 2 USE DAT.",
+  "RequireUserPermisionsCheckFailedSG": "You must have the permision {0} to use that.",
   "RequireBotAndUserPermisionsCheckFailedPL": "WE BOTH MUST HAS TEH PERMISHUNS {0} 4 U 2 USE DAT.",
+  "RequireBotAndUserPermisionsCheckFailedSG": "We both must have the permision {0} for you to use that.",
   "UnknownImageFormat": "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.",
   "Imagethings": {
     "JpegSuccess": "THAR YA GO JPEGNIZD IMAGE",

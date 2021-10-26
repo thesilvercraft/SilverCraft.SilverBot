@@ -57,6 +57,7 @@ namespace SilverBotDS.Objects
         /// Needs to be used like <c>Language.Requested_by+Username</c> <strong>MAY BE SUBJECT TO CHANGE</strong>
         /// </remarks>
         public string RequestedBy { get; set; } = "Requested by ";
+
         /// <summary>
         /// Something went wrong, it's probably on my end.
         /// </summary>
@@ -107,7 +108,9 @@ namespace SilverBotDS.Objects
         /// Whoa there, there is nothing queued next.
         /// </summary>
         public string NothingInQueue { get; set; } = "Whoa there, there is nothing queued next.";
+
         public string NothingInQueueHistory { get; set; } = "Whoa there is nothing in the queue history";
+
         /// <summary>
         /// Never gonna give you up<b> by </b>Rick Astley
         /// <para/>
@@ -375,6 +378,7 @@ namespace SilverBotDS.Objects
         /// Estimated time till it plays:
         /// </summary>
         public string TimeTillTrackPlays { get; set; } = "Estimated time till it plays:";
+
         public string TimeWhenTrackPlayed { get; set; } = "Time when the track started:";
 
         /// <summary>
@@ -407,6 +411,7 @@ namespace SilverBotDS.Objects
         /// Never (current song is looping)
         /// </summary>
         public string SongTimeLeftSongLooping { get; set; } = "N/A (song is looping)";
+
         public string LoadedSilverBotPlaylistWithTitle { get; set; } = "Loaded SilverBot playlist/queue file, called {0}";
         public string SongNotExist { get; set; } = "That song does not exist my dude";
         public string VersionInfoTitle { get; set; } = "SilverBot Version info";
@@ -461,6 +466,7 @@ namespace SilverBotDS.Objects
         /// No matching subcommands were found, and this group is not executable.
         /// </summary>
         public string NoMatchingSubcommandsAndGroupNotExecutable { get; set; } = "No matching subcommands were found, and this group is not executable.";
+
         public string QuotePreviewQuoteID { get; set; } = "Quote ID: {0}";
         public string QuoteGetNoBook { get; set; } = "You do not have a \"Quote Book\", you can get one by adding a quote.";
         public string QuoteGetNoQuoteWithId { get; set; } = "You do not have a quote with that ID.";
@@ -469,7 +475,7 @@ namespace SilverBotDS.Objects
         public string HelpCommandNoDescription { get; set; } = "No description provided.";
         public string HelpCommandGroupCanBeExecuted { get; set; } = $"This group {Formatter.Bold("can")} be executed as a standalone command.";
         public string HelpCommandGroupAliases { get; set; } = "Aliases";
-        public string HelpCommandGroupArguments{ get; set; } = "Arguments";
+        public string HelpCommandGroupArguments { get; set; } = "Arguments";
         public string HelpCommandGroupSubcommands { get; set; } = "Subcommands";
         public string HelpCommandGroupListingAllCommands { get; set; } = "Listing all commands and groups. Specify a command to see more information.";
         public string RequireDJCheckFailed { get; set; } = "You must have the DJ role to use that";
@@ -479,9 +485,13 @@ namespace SilverBotDS.Objects
         public string RequireRolesCheckFailedSG { get; set; } = "You must have the {0} role to use that.";
         public string RequireRolesCheckFailedPL { get; set; } = "You must have the roles named {0} to use that.";
         public string RequireBotPermisionsCheckFailedPL { get; set; } = "I must have the permisions {0} for you to use that.";
+        public string RequireBotPermisionsCheckFailedSG { get; set; } = "I must have the permision {0} for you to use that.";
         public string RequireUserPermisionsCheckFailedPL { get; set; } = "You must have the permisions {0} to use that.";
+        public string RequireUserPermisionsCheckFailedSG { get; set; } = "You must have the permision {0} to use that.";
         public string RequireBotAndUserPermisionsCheckFailedPL { get; set; } = "We both must have the permisions {0} for you to use that.";
+        public string RequireBotAndUserPermisionsCheckFailedSG { get; set; } = "We both must have the permision {0} for you to use that.";
         public string UnknownImageFormat { get; set; } = "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.";
+
         public CultureInfo GetCultureInfo()
         {
             return new CultureInfo(CultureInfo);
@@ -543,29 +553,35 @@ namespace SilverBotDS.Objects
                 return await GetAsync(a);
             }
         }
+
         private static readonly JsonSerializerOptions options = new()
         {
             WriteIndented = true
         };
+
         public static async Task SerialiseDefaultAsync(string loc)
         {
             using var streamWriter = new StreamWriter(loc);
             await streamWriter.WriteAsync(JsonSerializer.Serialize(new Language(), options));
         }
+
         public static void SerialiseDefault(string loc)
         {
             using var streamWriter = new StreamWriter(loc);
             streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
         }
+
         public static async Task<Language> GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)
         {
             return await GetAsync(db.GetLangCodeGuild(id));
         }
+
         public static async Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
         {
             DatabaseContext db = (DatabaseContext)ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));
             return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
         }
+
         public static async Task<Language> GetLanguageFromCtxAsync(BaseContext ctx)
         {
             DatabaseContext db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));

@@ -49,6 +49,7 @@ using DSharpPlus.SlashCommands;
 using SilverBotDS.Commands.Slash;
 using DSharpPlus.CommandsNext.Attributes;
 using SixLabors.ImageSharp;
+using System.Reflection;
 
 namespace SilverBotDS
 {
@@ -662,7 +663,15 @@ namespace SilverBotDS
                 {
                     return lang.RequireGuildCheckFailed;
                 }
-                return string.Format(lang.RequireBotPermisionsCheckFailedPL, requireBotPermissions.Permissions.Humanize());
+                Console.WriteLine(Enum.IsDefined(requireBotPermissions.Permissions));
+                if (Enum.IsDefined(requireBotPermissions.Permissions) && requireBotPermissions.Permissions != Permissions.All)
+                {
+                    return string.Format(lang.RequireBotPermisionsCheckFailedSG, requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+                }
+                else
+                {
+                    return string.Format(lang.RequireBotPermisionsCheckFailedPL, requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+                }
             }
             else if (checkBase is RequireUserPermissionsAttribute userPermissions)
             {
@@ -670,7 +679,14 @@ namespace SilverBotDS
                 {
                     return lang.RequireGuildCheckFailed;
                 }
-                return string.Format(lang.RequireUserPermisionsCheckFailedPL, userPermissions.Permissions.Humanize());
+                if (Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All)
+                {
+                    return string.Format(lang.RequireUserPermisionsCheckFailedSG, userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+                }
+                else
+                {
+                    return string.Format(lang.RequireUserPermisionsCheckFailedPL, userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+                }
             }
             else if (checkBase is RequirePermissionsAttribute userAndBotPermissions)
             {
@@ -678,7 +694,14 @@ namespace SilverBotDS
                 {
                     return lang.RequireGuildCheckFailed;
                 }
-                return string.Format(lang.RequireUserPermisionsCheckFailedPL, userAndBotPermissions.Permissions.Humanize());
+                if (Enum.IsDefined(userAndBotPermissions.Permissions) && userAndBotPermissions.Permissions != Permissions.All)
+                {
+                    return string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG, userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+                }
+                else
+                {
+                    return string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL, userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+                }
             }
             return string.Format(lang.CheckFailed, RemoveStringFromEnd(chkbstype.Name, "Attribute").Humanize());
         }
@@ -972,7 +995,7 @@ namespace SilverBotDS
             }
         }
 
-        private static readonly string[] repeatstrings = { "anime", "canada", "fuck", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "<:kalorichan:839099093552332850>", "kalorichan" };
+        private static readonly string[] repeatstrings = { "anime", "canada", "e", "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h", "gaming", "<:kalorichan:839099093552332850>", "kalorichan" };
         private static readonly Dictionary<ulong, DateTime> levellimit = new();
         private static readonly TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
 

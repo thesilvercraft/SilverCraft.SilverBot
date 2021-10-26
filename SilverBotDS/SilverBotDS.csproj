@@ -93,7 +93,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Graph" Version="4.6.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.36.2" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.37.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.18.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Npgsql" Version="6.0.0-preview7" />

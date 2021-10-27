@@ -85,7 +85,9 @@ namespace SilverBotDS.Commands
             .WithTitle(content)
             .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))).WithFile(filename, outstream).WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
         }
+
 #nullable enable
+
         public static async Task<Tuple<MemoryStream, string>> ResizeAsync(byte[] photoBytes, Size size, IImageFormat? format = null)
         {
             using Image img = Image.Load(photoBytes, out IImageFormat frmt);
@@ -111,7 +113,9 @@ namespace SilverBotDS.Commands
             stream.Position = 0;
             return new(stream, frmt.FileExtensions.First());
         }
+
 #nullable disable
+
         private static readonly JpegEncoder BadJpegEncoder = new()
         {
             Quality = 1
@@ -140,7 +144,7 @@ namespace SilverBotDS.Commands
         private static async Task<Tuple<MemoryStream, string>> TintAsync(byte[] photoBytes, Color color)
         {
             var instream = new MemoryStream(photoBytes);
-            using var img = Image.Load(instream, out SixLabors.ImageSharp.Formats.IImageFormat frmt);
+            using var img = Image.Load(instream, out IImageFormat frmt);
             await instream.DisposeAsync();
             var pixel = color.ToPixel<Rgba32>();
             ColorMatrix matrix = new(pixel.R / 255f, 0, 0, 0, 0, pixel.G / 255f, 0, 0, 0, 0, pixel.B / 255f, 0, 0, 0, 0, pixel.A / 255f, 0, 0, 0, 0);
@@ -223,11 +227,13 @@ namespace SilverBotDS.Commands
                 await SendImageStream(ctx, thing.Item1, filename: $"sbimg.{thing.Item2}", content: lang.Imagethings.ResizeSuccess, lang: lang);
             }
         }
+
         [Command("resize")]
         public async Task Resize(CommandContext ctx, SdImage image, IImageFormat format)
         {
             await Resize(ctx, image, 0, 0, format);
         }
+
         [Command("resize")]
         public async Task Resize(CommandContext ctx, IImageFormat format)
         {
@@ -241,6 +247,7 @@ namespace SilverBotDS.Commands
                 await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
+
         [Command("resize")]
         public async Task Resize(CommandContext ctx, [Description("Width")] int x = 0, [Description("Height")] int y = 0, IImageFormat format = null)
         {
@@ -550,6 +557,7 @@ namespace SilverBotDS.Commands
         }
 
         private readonly FontFamily JokerFontFamily = SystemFonts.Get("Futura Extra Black Condensed");
+
         [Command("fail")]
         [Description("epic embed fail")]
         public async Task JokerLaugh(CommandContext ctx, [RemainingText] string text)
@@ -596,6 +604,7 @@ namespace SilverBotDS.Commands
                 await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
             }
         }
+
         private readonly FontFamily CaptionFont = SystemFonts.Get("Futura Extra Black Condensed");
 
         [Command("caption")]

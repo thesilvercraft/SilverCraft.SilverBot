@@ -409,6 +409,11 @@ namespace SilverBotDS
             {
                 commands.RegisterCommands<BibiLib>();
             }
+            else if (config.EmulateBubot)
+            {
+                var cmd = commands.FindCommand("bibi", out _);
+                commands.UnregisterCommands(cmd);
+            }
             if (config.UseLavaLink)
             {
                 commands.RegisterCommands<Audio>();

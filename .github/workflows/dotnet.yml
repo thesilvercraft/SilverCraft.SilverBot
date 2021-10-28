@@ -35,7 +35,7 @@ jobs:
       with:
          tag_name: ${{ steps.E.outputs.Random }}
          release_name: ${{ steps.E.outputs.Random }}
-         body: Automated release, a release will be created for every single push on the master branch. this one is for ${{ github.sha }}, WARNING BINARIES OF DEPENDANCIES ARE NOT MIT LICENSED
+         body: Automated release, a release will be created for every single push on the master branch. this one is for ${{ github.sha }}, As always zipped releases should contain most things the program needs to run and that means it has to contains the license info of every dependancy contained within it
          draft: true
          prerelease: false
     - name: Upload Release Asset

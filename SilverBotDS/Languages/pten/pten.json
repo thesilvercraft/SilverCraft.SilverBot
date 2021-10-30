@@ -49,6 +49,8 @@
   "AlreadyOptedIn": "Already plundered fer the SilverBot emotes",
   "Server": "Ship: {0}",
   "OptedIn": "Opted into SilverBot emotes",
+  "OptedInWebshot": "Opted into SilverBot WebShot",
+  "OptedOutWebshot": "Opted out of SilverBot WebShot",
   "AllAvailibleEmotes": "**All available emotes**",
   "UserIsBannedFromSilversocial": "Ye be banned from usin' the SilverSocial features",
   "UselessFact": "Useless fact",

@@ -49,6 +49,8 @@
   "AlreadyOptedIn": "De SilverBot emotes zijn al gekozen",
   "Server": "Server: {0}",
   "OptedIn": "Opted into SilverBot emotes",
+  "OptedInWebshot": "Opted into SilverBot WebShot",
+  "OptedOutWebshot": "Opted out of SilverBot WebShot",
   "AllAvailibleEmotes": "**Alle emotes**",
   "UserIsBannedFromSilversocial": "Ha je bent verbannen van het gebruiken van SilverSocial features",
   "UselessFact": "Nutteloze feit",

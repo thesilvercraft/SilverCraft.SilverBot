@@ -5,7 +5,6 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Attributes;
-using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using SixLabors.Fonts;
@@ -15,7 +14,6 @@ using SixLabors.ImageSharp.Processing;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -27,10 +25,11 @@ namespace SilverBotDS.Commands
         private readonly Font BibiFont = new(SystemFonts.Get("Arial"), 30, FontStyle.Bold);
         private int BibiPictureCount { get { return Directory.EnumerateFiles(config.LocalBibiPictures).Count(x => x.EndsWith(".png")); } }
         public Config config { private get; set; }
-     
+
         [Command("silveryeet")]
         [Description("Sends SilverYeet.gif")]
         public async Task Silveryeet(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://cdn.discordapp.com/attachments/751246248102592567/823475242822533120/SilverYeet.gif").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
+
         [Command("WeWillFockYou")]
         [Description("Gives a Youtube link for the legendary We Will Fock You video.")]
         public async Task WeWillFockYou(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://youtu.be/lLN3caSQI1w").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
@@ -65,6 +64,7 @@ namespace SilverBotDS.Commands
             await ImageModule.SendImageStream(ctx, outStream, content: input);
         }
     }
+
     [Group("bibiLibrary")]
     [Aliases("bibilib")]
     [Description("Access the great cat bibi library.")]
@@ -76,19 +76,23 @@ namespace SilverBotDS.Commands
             BibiDescText = GetBibiDescText();
             BibiFullDescText = GetBibiFullDescText();
         }
+
         private readonly string[] BibiDescText;
         private readonly string[] BibiFullDescText;
         public Config config { private get; set; }
+
         private string[] GetBibiDescText()
         {
             using StreamReader reader = new(config.BibiLibCutOutConfig);
             return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
         }
+
         private string[] GetBibiFullDescText()
         {
             using StreamReader reader = new(config.BibiLibFullConfig);
             return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
         }
+
         [GroupCommand]
         [Description("Access the great cat bibi library.")]
         public async Task BibiLibrary(CommandContext ctx)
@@ -103,6 +107,7 @@ namespace SilverBotDS.Commands
             var interactivity = ctx.Client.GetInteractivity();
             await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
         }
+
         [Command("full")]
         [Description("Access the great cat bibi library.")]
         public async Task BibiLibraryFull(CommandContext ctx)

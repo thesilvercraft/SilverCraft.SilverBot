@@ -6,11 +6,11 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using GiphyDotNet.Model.Parameters;
 using GiphyDotNet.Model.Results;
+using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.Threading.Tasks;
-using SilverBotDS.Attributes;
 
 namespace SilverBotDS.Commands
 {

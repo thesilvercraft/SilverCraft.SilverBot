@@ -26,20 +26,22 @@ namespace SilverBotDS.Objects.Classes
     {
         public LoopSettings LoopSettings { get; set; } = LoopSettings.NotLooping;
         public ulong LoopTimes { get; set; } = 0;
-        public List<Tuple<LavalinkTrack,DateTime,bool>> QueueHistory { get; set; } = new();
+        public List<Tuple<LavalinkTrack, DateTime, bool>> QueueHistory { get; set; } = new();
 
         public override Task SkipAsync(int count = 1)
         {
             return SkipAsync(count, true);
         }
+
         public override Task<int> PlayAsync(LavalinkTrack track, bool enqueue, TimeSpan? startTime = null, TimeSpan? endTime = null, bool noReplace = false)
         {
-            if(enqueue)
+            if (enqueue)
             {
                 QueueHistory.Add(new(track, DateTime.UtcNow, false));
             }
             return base.PlayAsync(track, enqueue, startTime, endTime, noReplace);
         }
+
         public Task SkipAsync(int count, bool command)
         {
             if (count <= 0)
@@ -59,7 +61,7 @@ namespace SilverBotDS.Objects.Classes
                 while (count-- > 0)
                 {
                     track = Queue.Dequeue();
-                    QueueHistory.Add(new(track, DateTime.UtcNow,true));
+                    QueueHistory.Add(new(track, DateTime.UtcNow, true));
                     if (LoopSettings is LoopSettings.LoopingQueue)
                     {
                         Queue.Add(track);

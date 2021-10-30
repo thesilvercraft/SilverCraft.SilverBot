@@ -77,10 +77,11 @@ namespace SilverBotDS.Commands
             b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync()).WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             await ctx.RespondAsync(embed: b.Build());
         }
+
         [Command("kickme")]
         [Description("Kicks yourself lmao (or ban if you're super daring)")]
         [RequireBotPermissions(Permissions.KickMembers)]
-        public async Task Kms(CommandContext ctx, [Description("hardcore")] bool ban=false)
+        public async Task Kms(CommandContext ctx, [Description("hardcore")] bool ban = false)
         {
             if (ban)
             {

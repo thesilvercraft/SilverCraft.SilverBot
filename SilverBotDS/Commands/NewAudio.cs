@@ -2,25 +2,16 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.Interactivity;
-using DSharpPlus.Interactivity.Extensions;
-using Humanizer;
 using Lavalink4NET;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
 using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
-using SpotifyAPI.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using SnowdPlayer;
+using SpotifyAPI.Web;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
@@ -36,10 +27,10 @@ namespace SilverBotDS.Commands
         public Config Config { private get; set; }
 
         public SpotifyClient SpotifyClient { private get; set; }
+
         private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected || AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
 
-
-        /*                                                                                                                                                         
+        /*
          private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "", string imageurl = "", string url = "", Language language = null)
          {
              language ??= await Language.GetLanguageFromCtxAsync(ctx);
@@ -664,6 +655,7 @@ namespace SilverBotDS.Commands
         .WithEmbed(embedBuilder.Build())
         .SendAsync(ctx.Channel);
         }
+
         [Command("stop")]
         [Description("stops playing the current song")]
         public async Task Stop(CommandContext ctx)
@@ -683,9 +675,10 @@ namespace SilverBotDS.Commands
                 return;
             }
             QueuedSnowPlayer player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
-            
+
             await player.StopAsync();
         }
+
         [Command("disconnect")]
         [Description("stops playing the current song and leaves")]
         [RequireDJ]
@@ -709,6 +702,7 @@ namespace SilverBotDS.Commands
 
             await player.DisconnectAsync();
         }
+
         [Command("resume")]
         [Description("resume the current song")]
         public async Task Resume(CommandContext ctx)
@@ -735,6 +729,7 @@ namespace SilverBotDS.Commands
             }
             await player.ResumeAsync();
         }
+
         [Command("pause")]
         [Description("pause the current song")]
         public async Task Pause(CommandContext ctx)
@@ -761,20 +756,21 @@ namespace SilverBotDS.Commands
             }
             await player.PauseAsync();
         }
+
         [Command("play")]
         [Description("sponge bob sponge bob squarepants")]
         public async Task Test(CommandContext ctx, string tunez)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-            
+
             if ((ctx.Member?.VoiceState?.Channel) == null)
             {
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 return;
             }
-            var pl = AudioService.HasPlayer(ctx.Guild.Id) ? AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id): await AudioService.JoinAsync<QueuedSnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
+            var pl = AudioService.HasPlayer(ctx.Guild.Id) ? AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id) : await AudioService.JoinAsync<QueuedSnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
             await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name), language: lang);
-            
+
             await pl.PlayAsync(await AudioService.GetTrackAsync(tunez));
             await SendSimpleMessage(ctx, "e", language: lang);
         }

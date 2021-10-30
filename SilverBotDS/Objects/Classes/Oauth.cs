@@ -9,6 +9,7 @@ namespace SilverBotDS.Objects.Classes
         {
             [JsonPropertyName("id")]
             public string Id { get; set; }
+
             public ulong UId { get => Convert.ToUInt64(Id); }
 
             [JsonPropertyName("username")]

@@ -257,6 +257,16 @@ namespace SilverBotDS.Objects
         public string OptedIn { get; set; } = "Opted into SilverBot emotes";
 
         /// <summary>
+        /// Opted into SilverBot WebShot
+        /// </summary>
+        public string OptedInWebshot { get; set; } = "Opted into SilverBot WebShot";
+
+        /// <summary>
+        /// Opted out of SilverBot WebShot
+        /// </summary>
+        public string OptedOutWebshot { get; set; } = "Opted out of SilverBot WebShot";
+
+        /// <summary>
         /// **All available emotes**
         /// </summary>
         public string AllAvailibleEmotes { get; set; } = "**All available emotes**";

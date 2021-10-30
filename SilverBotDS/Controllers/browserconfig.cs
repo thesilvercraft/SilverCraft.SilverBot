@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 using System.ComponentModel;
+using System.Xml.Serialization;
+
 namespace SilverBotDS.Controllers
 {
     [ApiController]
@@ -48,8 +45,10 @@ namespace SilverBotDS.Controllers
             }
             return obj;
         }
+
         //From here on out blame vs
 #pragma warning disable IDE1006 // Naming Styles
+
         // NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
         [Serializable]
         [DesignerCategory("code")]
@@ -164,7 +163,7 @@ namespace SilverBotDS.Controllers
                 set;
             }
         }
-#pragma warning restore IDE1006 // Naming Styles
 
+#pragma warning restore IDE1006 // Naming Styles
     }
 }

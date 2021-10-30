@@ -1,7 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
-using SilverBotDS.Objects.Classes;
 using System;
 using System.Threading.Tasks;
 using TimeSpanParserUtil;

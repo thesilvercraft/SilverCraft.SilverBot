@@ -6,20 +6,20 @@
 @inject DiscordClient Discord
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="font-family: 'Berlin Sans FB', sans-serif;">
     <a class="navbar-brand" href="#">
-        @if(DateTime.UtcNow.Month==6)
+        @if (DateTime.UtcNow.Month == 6)
         {
-        <img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+            <img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
         }
-        else if(DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)
+        else if (DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)
         {
-        <img src="/halloween/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+            <img src="/halloween/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
         }
         else
         {
-        <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+            <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
         }
-      SilverBot
-      <span class="badge badge-primary">@(DateTime.UtcNow.Month==6?"Pride":((DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)?"Halloween":"Web"))</span>
+        SilverBot
+        <span class="badge badge-primary">@(DateTime.UtcNow.Month==6?"Pride":((DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)?"Halloween":"Web"))</span>
     </a>
     <ul class="navbar-nav">
         @if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
@@ -37,10 +37,10 @@
                 <a class="nav-link" href="">Hello @user.Username#@user.Discriminator</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/listguilds">Servers<span class="badge badge-danger">Alpha</span></a>
+                <a class="nav-link" href="/listguilds">Servers<span class="badge badge-danger">Beta</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/musiccontrols">Music controller<span class="badge badge-warning">Beta</span></a>
+                <a class="nav-link" href="/musiccontrols">Music controller<span class="badge badge-warning">Beta+</span></a>
             </li>
         }
     </ul>

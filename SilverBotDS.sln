@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDBrowser", "SDBrowser\SDBr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDiscordSink", "SDiscordSink\SDiscordSink.csproj", "{D1B1C5F1-7763-45B3-AAF9-F656214E6AD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnowdPlayer", "SnowdPlayer\SnowdPlayer.csproj", "{8C269328-1541-4626-BC66-EA3E0276508E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowdPlayer", "SnowdPlayer\SnowdPlayer.csproj", "{8C269328-1541-4626-BC66-EA3E0276508E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

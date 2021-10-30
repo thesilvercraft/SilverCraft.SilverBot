@@ -103,7 +103,7 @@ namespace SilverBotDS.Converters
                 if (client is not null)
                 {
                     var tracks = JsonSerializer.Deserialize<SilverBotPlaylist>(await (await client.GetAsync(value)).Content.ReadAsStringAsync());
-                    if(!string.IsNullOrEmpty(tracks.PlaylistTitle))
+                    if (!string.IsNullOrEmpty(tracks.PlaylistTitle))
                     {
                         await Audio.SendSimpleMessage(ctx, string.Format(lang.LoadedSilverBotPlaylistWithTitle, tracks.PlaylistTitle), language: lang);
                     }

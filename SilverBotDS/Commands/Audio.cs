@@ -92,11 +92,11 @@ namespace SilverBotDS.Commands
             TimeSpan time;
             if (player.CurrentTrack.IsLiveStream)
             {
-                time = TimeSpan.FromHours(2) - player.TrackPosition;
+                time = TimeSpan.FromHours(2) - player.Position.Position;
             }
             else
             {
-                time = player.CurrentTrack.Duration - player.TrackPosition;
+                time = player.CurrentTrack.Duration - player.Position.Position;
             }
 
             for (int i = 0; i < song - 1; i++)
@@ -259,6 +259,7 @@ namespace SilverBotDS.Commands
                 await SendSimpleMessage(ctx, lang.TrackCanNotBeSeeked, language: lang);
             }
         }
+
         [Command("clearqueue")]
         [RequireDJ]
         [Description("Clears the queue")]
@@ -331,7 +332,7 @@ namespace SilverBotDS.Commands
             await OwnerOnly.SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new SilverBotPlaylist()
             {
                 Identifiers = queue.ToArray(),
-                CurrentSongTimems = player.TrackPosition.TotalMilliseconds,
+                CurrentSongTimems = player.Position.Position.TotalMilliseconds,
                 PlaylistTitle = playlistName
             }), filename: "queue.json");
         }
@@ -362,6 +363,7 @@ namespace SilverBotDS.Commands
             player.Queue.RemoveAt(songindex - 1);
             await SendSimpleMessage(ctx, lang.RemovedFront + thingy.Title + lang.SongByAuthor + thingy.Author, language: lang);
         }
+
         [Command("queuehistory")]
         [Description("check what was playing")]
         [Aliases("qh", "prevplaying", "pq")]
@@ -381,7 +383,7 @@ namespace SilverBotDS.Commands
             }
 
             BetterVoteLavalinkPlayer player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-            if (player.QueueHistory.Count==0)
+            if (player.QueueHistory.Count == 0)
             {
                 await SendSimpleMessage(ctx, lang.NothingInQueueHistory, language: lang);
                 return;
@@ -392,12 +394,13 @@ namespace SilverBotDS.Commands
             {
                 pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.QueueHistory[i].Item1.Title)
                     .WithUrl(player.QueueHistory[i].Item1.Source).WithColor(await ColorUtils.GetSingleAsync())
-                    .AddField(lang.TimeWhenTrackPlayed, Formatter.Timestamp(player.QueueHistory[i].Item2,TimestampFormat.RelativeTime))
-                    .WithAuthor(string.Format(lang.PageNuget, i + 1, player.QueueHistory.Count ))));
+                    .AddField(lang.TimeWhenTrackPlayed, Formatter.Timestamp(player.QueueHistory[i].Item2, TimestampFormat.RelativeTime))
+                    .WithAuthor(string.Format(lang.PageNuget, i + 1, player.QueueHistory.Count))));
             }
             var interactivity = ctx.Client.GetInteractivity();
             await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages);
         }
+
         [Command("queue")]
         [Description("check whats playing rn and whats next")]
         [Aliases("np", "nowplaying", "q")]
@@ -425,7 +428,7 @@ namespace SilverBotDS.Commands
 
             var pages = new List<Page>
                 {
-                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize(culture: lang.GetCultureInfo())))
+                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.Position.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.Position.Position).Humanize(culture: lang.GetCultureInfo())))
                 };
             for (var i = 0; i < player.Queue.Count; i++)
             {
@@ -442,7 +445,7 @@ namespace SilverBotDS.Commands
         [Command("loop")]
         [Aliases("repeat")]
         [Description("Loops nothing/the queue/the currently playing song")]
-        public async Task Loop(CommandContext ctx, [Description("Has to be none, song or queue")]LoopSettings settings)
+        public async Task Loop(CommandContext ctx, [Description("Has to be none, song or queue")] LoopSettings settings)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             if (!IsInVc(ctx))
@@ -518,13 +521,13 @@ namespace SilverBotDS.Commands
             }
             await SendSimpleMessage(ctx, "Lyrics", $"```{lyrics}```");
         }
+
         [Command("songaliases")]
         [Description("Get the hardcoded aliases in silverbots code")]
-
         public async Task Aliases(CommandContext ctx)
         {
             StringBuilder bob = new();
-            foreach(var song in Config.SongAliases)
+            foreach (var song in Config.SongAliases)
             {
                 bob.Append(Formatter.InlineCode(song.Key)).Append(" - ").AppendLine(Formatter.InlineCode(song.Value));
             }
@@ -533,7 +536,6 @@ namespace SilverBotDS.Commands
 
         [Command("resume")]
         [Description("resume the current song")]
-
         public async Task Resume(CommandContext ctx)
         {
             Language lang = await Language.GetLanguageFromCtxAsync(ctx);

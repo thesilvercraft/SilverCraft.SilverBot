@@ -5,11 +5,9 @@ using DSharpPlus.CommandsNext.Entities;
 using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
 using SilverBotDS.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects.Classes
 {
@@ -18,6 +16,7 @@ namespace SilverBotDS.Objects.Classes
         public DiscordEmbedBuilder EmbedBuilder { get; }
         private Command Command { get; set; }
         private Language Lang { get; init; }
+
         /// <summary>
         /// Creates a new default help formatter.
         /// </summary>
@@ -29,7 +28,7 @@ namespace SilverBotDS.Objects.Classes
             langtask.Wait();
             Lang = langtask.Result;
             EmbedBuilder = new DiscordEmbedBuilder()
-                .WithTitle(Lang.HelpCommandHelpString).WithFooter(Lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)); 
+                .WithTitle(Lang.HelpCommandHelpString).WithFooter(Lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto));
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace SilverBotDS.Objects.Classes
             EmbedBuilder.WithDescription($"{Formatter.InlineCode(command.Name)}: {command.Description ?? Lang.HelpCommandNoDescription}");
             if (command is CommandGroup cgroup && cgroup.IsExecutableWithoutSubcommands)
             {
-               EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\n{Lang.HelpCommandGroupCanBeExecuted}");
+                EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\n{Lang.HelpCommandGroupCanBeExecuted}");
             }
             if (command.Aliases?.Any() == true)
             {
@@ -78,7 +77,7 @@ namespace SilverBotDS.Objects.Classes
         /// <returns>This help formatter.</returns>
         public override BaseHelpFormatter WithSubcommands(IEnumerable<Command> subcommands)
         {
-            if(Command == null)
+            if (Command == null)
             {
                 Dictionary<string, HashSet<string>> commands = new();
                 foreach (var command in subcommands)
@@ -87,9 +86,9 @@ namespace SilverBotDS.Objects.Classes
                     {
                         foreach (var attribute in command.CustomAttributes.Where(x => x.GetType() == typeof(CategoryAttribute)))
                         {
-                            foreach(var category in ((CategoryAttribute)attribute).Category)
+                            foreach (var category in ((CategoryAttribute)attribute).Category)
                             {
-                                if(!commands.ContainsKey(category))
+                                if (!commands.ContainsKey(category))
                                 {
                                     commands.Add(category, new());
                                 }

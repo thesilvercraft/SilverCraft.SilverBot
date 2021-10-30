@@ -147,15 +147,16 @@ namespace SilverBotDS.Commands
                                              .WithFile("message.txt", outStream)
                                              .SendAsync(ctx.Channel);
         }
+
         [Command("dump")]
         [Description("Dump a messages raw content (useful for emote walls)")]
         public async Task DumpMessage(CommandContext ctx)
         {
-           if(ctx.Message.ReferencedMessage!=null)
+            if (ctx.Message.ReferencedMessage != null)
             {
                 await DumpMessage(ctx, ctx.Message.ReferencedMessage);
             }
-           else
+            else
             {
                 await DumpMessage(ctx, (await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, 1))[0]);
             }
@@ -320,7 +321,7 @@ namespace SilverBotDS.Commands
                 .WithTitle(lang.User + a.Username)
                 .WithDescription(lang.InformationAbout + a.Mention)
                 .AddField(lang.Userid, a.Id.ToString(), true)
-                .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await IsAtSilverCraftAsync(ctx.Client, a,Config)), true)
+                .AddField(lang.JoinedSilverCraft, BoolToEmoteString(await IsAtSilverCraftAsync(ctx.Client, a, Config)), true)
                 .AddField(lang.IsAnOwner, BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(a)), true)
                 .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
                 .AddField(lang.AccountCreationDate, a.CreationTimestamp.ToString(cultureinfo), true)
@@ -330,11 +331,12 @@ namespace SilverBotDS.Commands
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
                 .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
+
         [Command("user")]
         [Description("Get the info I know about a specified user")]
         public async Task Userinfo(CommandContext ctx)
         {
-            await Userinfo(ctx,ctx.User);
+            await Userinfo(ctx, ctx.User);
         }
 
 #pragma warning restore CA1822 // Mark members as static

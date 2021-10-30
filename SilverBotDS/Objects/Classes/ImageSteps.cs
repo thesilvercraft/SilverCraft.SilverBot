@@ -33,6 +33,7 @@ namespace SilverBotDS.Objects
             ist.SetClient(c);
             return ist;
         }
+
         public async Task<Image> ExecuteStepsAsync(Step[] filledsteps)
         {
             Image Bitmap = null;
@@ -53,7 +54,7 @@ namespace SilverBotDS.Objects
                 {
                     using var resizedbytes = (await ImageModule.ResizeAsync(await step1.Image().GetBytesAsync(client), new SixLabors.ImageSharp.Size((int)step1.xSize, (int)step1.ySize), PngFormat.Instance)).Item1;
                     using var resizedimg = await Image.LoadAsync(resizedbytes);
-                    Bitmap.Mutate(x => x.DrawImage(resizedimg, new Point((int)step.x, (int)step.y),1));
+                    Bitmap.Mutate(x => x.DrawImage(resizedimg, new Point((int)step.x, (int)step.y), 1));
                 }
                 else
                 {
@@ -62,6 +63,7 @@ namespace SilverBotDS.Objects
             }
             return Bitmap;
         }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -132,6 +134,7 @@ namespace SilverBotDS.Objects
             this.template = template;
             this.isUrl = isUrl;
         }
+
         [XmlIgnore]
         private Image _image;
 

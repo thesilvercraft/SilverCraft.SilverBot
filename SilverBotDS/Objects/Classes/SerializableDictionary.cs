@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
-using System.Xml.Serialization;
 using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace SilverBotDS
 {
@@ -9,6 +9,7 @@ namespace SilverBotDS
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
     {
         #region IXmlSerializable Members
+
         public XmlSchema GetSchema()
         {
             return null;
@@ -57,6 +58,7 @@ namespace SilverBotDS
                 writer.WriteEndElement();
             }
         }
+
         #endregion IXmlSerializable Members
     }
 }

@@ -3,10 +3,10 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SDBrowser
 {

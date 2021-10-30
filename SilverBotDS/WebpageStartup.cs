@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SilverBotDS.Objects;
+using Microsoft.JSInterop;
+using NetTools;
+using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.JSInterop;
-using NetTools;
-using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Radzen;
+using System.Threading.Tasks;
+
 namespace SilverBotDS
 {
     internal static class CloudFlareConnectingIpMiddleware
@@ -130,6 +130,7 @@ namespace SilverBotDS
             services.AddServerSideBlazor();
             services.AddDistributedMemoryCache();
             services.AddHttpContextAccessor();
+            services.AddProtectedBrowserStorage();
             services.AddScoped<BrowserService>();
             services.AddControllers();
             services.AddSession(options =>

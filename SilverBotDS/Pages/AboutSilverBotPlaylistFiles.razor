@@ -1,7 +1,10 @@
 ﻿@page "/silverbotplaylistfiles"
-SilverBot has its own way of storing playlists, in code i used to call it a SerialisableQueue but now i renamed it to SilverBotPlaylist to be simpler.<br />
-How does one work?<br />
-This is an example playlist<br />
+SilverBot has its own way of storing playlists, in code i used to call it a SerialisableQueue but now i renamed it to SilverBotPlaylist to be simpler.
+<br />
+How does one work?
+<br />
+This is an example playlist
+<br />
 <pre><code class="language-json">{
   "Identifiers": [
     "QAAAoQIAPFJpY2sgQXN0bGV5IC0gTmV2ZXIgR29ubmEgR2l2ZSBZb3UgVXAgKE9mZmljaWFsIE11c2ljIFZpZGVvKQALUmljayBBc3RsZXkAAAAAAANACAALZFF3NHc5V2dYY1EAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQAHeW91dHViZQAAAAAAAAAA"
@@ -9,8 +12,13 @@ This is an example playlist<br />
   "CurrentSongTimems": 3429.1405,
   "PlaylistTitle": "Example Playlist"
 }
-</code></pre><br />
-The Identifiers field is an array of multiple strings, The tracks are serialised by Lavaplayer then forwarded to Lavalink4Net by lavalink and finally Lavalink4Net makes them in to base64 encoded strings, the reverse can be said when decoding them.*<br />
-The CurrentSongTimems field is a number that tells silverbot on what millisecond of the first song it should start on. (used to be required but now is optional)<br />
-The PlaylistTitle field is a string indicating the title of the playlist.<br />
-* The Identifiers field is required while all the others are optional<br />
+</code></pre>
+<br />
+The Identifiers field is an array of multiple strings, The tracks are serialised by Lavaplayer then forwarded to Lavalink4Net by lavalink and finally Lavalink4Net makes them in to base64 encoded strings, the reverse can be said when decoding them.*
+<br />
+The CurrentSongTimems field is a number that tells silverbot on what millisecond of the first song it should start on. (used to be required but now is optional)
+<br />
+The PlaylistTitle field is a string indicating the title of the playlist.
+<br />
+* The Identifiers field is required while all the others are optional
+<br />

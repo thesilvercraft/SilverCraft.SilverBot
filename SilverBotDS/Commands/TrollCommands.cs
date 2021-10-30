@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SilverBotDS.Commands
+﻿namespace SilverBotDS.Commands
 {
     public class TrollCommands
     {

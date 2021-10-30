@@ -1,14 +1,13 @@
-﻿using Serilog.Core;
-using Serilog.Events;
-using System;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.Entities;
-using System.Text;
-using System.Globalization;
 using Serilog;
 using Serilog.Configuration;
-using System.Text.RegularExpressions;
+using Serilog.Core;
+using Serilog.Events;
+using System;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 
 #nullable enable
 
@@ -35,14 +34,16 @@ namespace SDiscordSink
                 webhookClient.AddWebhookAsync(webhook.Item1, webhook.Item2).Wait();
             }
         }
-        Regex VBUErr = new(@"^Error `(P<error>.+?)` encountered.\nGuild `(P<guild_id>\d+|None)`, channel `(P<channel_id>\d+|None)`, user `(P<user_id>\d+|None)`\n```\n(P<command_invoke>.+?)\n```$",RegexOptions.Multiline|RegexOptions.Compiled);
+
+        private Regex VBUErr = new(@"^Error `(P<error>.+?)` encountered.\nGuild `(P<guild_id>\d+|None)`, channel `(P<channel_id>\d+|None)`, user `(P<user_id>\d+|None)`\n```\n(P<command_invoke>.+?)\n```$", RegexOptions.Multiline | RegexOptions.Compiled);
+
         public void Emit(LogEvent logEvent)
         {
             var builder = new DiscordEmbedBuilder();
             var message = logEvent.RenderMessage();
             if (logEvent.Exception != null && message.StartsWith("Error"))
             {
-                webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent($"{message}\n").AddFile("error.cs",new MemoryStream(Encoding.UTF8.GetBytes($"{ logEvent.Exception.Message ?? "null" }\nStack trace:\n{ logEvent.Exception.StackTrace ?? "null"}\nSource\n{ logEvent.Exception.Source ?? "null"}\nHelp link:\n{ logEvent.Exception.HelpLink ?? "null"}")),true).WithUsername("sb - Error"));
+                webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent($"{message}\n").AddFile("error.cs", new MemoryStream(Encoding.UTF8.GetBytes($"{ logEvent.Exception.Message ?? "null" }\nStack trace:\n{ logEvent.Exception.StackTrace ?? "null"}\nSource\n{ logEvent.Exception.Source ?? "null"}\nHelp link:\n{ logEvent.Exception.HelpLink ?? "null"}")), true).WithUsername("sb - Error"));
             }
             string? restMessage = null;
             if (message.Length > 230)
@@ -75,31 +76,37 @@ namespace SDiscordSink
                     builder.WithColor(DiscordColor.DarkGray);
                     sb.Append("[VER]");
                     break;
+
                 case LogEventLevel.Debug:
                     sb.Append("[DEB]");
                     break;
+
                 case LogEventLevel.Information:
                     builder.WithColor(DiscordColor.DarkBlue);
                     sb.Append("[INF]");
                     break;
+
                 case LogEventLevel.Warning:
                     builder.WithColor(DiscordColor.Orange);
                     sb.Append("[WRN]");
                     break;
+
                 case LogEventLevel.Error:
                     sb.Append("[ERR]");
                     builder.WithColor(DiscordColor.DarkRed);
                     break;
+
                 case LogEventLevel.Fatal:
                     sb.Append("[FTL]");
                     builder.WithColor(DiscordColor.Red);
                     break;
+
                 default:
                     sb.Append("[DEF]");
                     break;
             }
             sb.Append("` | ");
-            sb.Append(Formatter.Timestamp(logEvent.Timestamp.LocalDateTime,TimestampFormat.LongDateTime));
+            sb.Append(Formatter.Timestamp(logEvent.Timestamp.LocalDateTime, TimestampFormat.LongDateTime));
             if (logEvent.Exception != null)
             {
                 sb.Append(" | `");

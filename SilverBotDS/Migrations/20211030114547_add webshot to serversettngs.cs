@@ -2,21 +2,22 @@
 
 namespace SilverBotDS.Migrations
 {
-    public partial class Addcustomprefixes : Migration
+    public partial class addwebshottoserversettngs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "PrefixesInJson",
+            migrationBuilder.AddColumn<bool>(
+                name: "WebShot",
                 table: "serverSettings",
-                type: "TEXT",
-                nullable: true);
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PrefixesInJson",
+                name: "WebShot",
                 table: "serverSettings");
         }
     }

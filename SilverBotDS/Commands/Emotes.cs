@@ -80,6 +80,7 @@ namespace SilverBotDS.Commands
 
         [Command("allemotes"), Aliases("allemoji", "allemojis")]
         [Description("Get all the emotes from the SilverSocial enabled servers")]
+        [RequireGuildDatabaseValue("EmotesOptin", true, true)]
         public async Task Allemotes(CommandContext ctx)
         {
             var builder = new StringBuilder();
@@ -145,6 +146,7 @@ namespace SilverBotDS.Commands
 
         [Command("emote"), Aliases("emoji")]
         [Description("Get an emote from the SilverSocial enabled servers")]
+        [RequireGuildDatabaseValue("EmotesOptin", true, true)]
         public async Task GetEmotes(CommandContext ctx, [Description("Emote name like :pog: or pog")] string emote)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -211,7 +213,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        [Command("optintoemotes"), Aliases("optintoemoji","optintoemojis")]
+        [Command("optintoemotes"), Aliases("optintoemoji", "optintoemojis")]
         [RequireUserPermissions(Permissions.ManageGuild)]
         [RequireGuild]
         public async Task Optin(CommandContext ctx)

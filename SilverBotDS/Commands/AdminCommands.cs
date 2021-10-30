@@ -2,14 +2,10 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.Interactivity.Enums;
-using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
@@ -20,6 +16,7 @@ namespace SilverBotDS.Commands
     {
         public DatabaseContext Database { private get; set; }
         private DiscordEmoji[] _pollEmojiCache;
+
         [Command("setprefix")]
         [RequireUserPermissions(Permissions.ManageGuild)]
         public async Task SetPrefix(CommandContext ctx, params string[] cake)
@@ -31,6 +28,7 @@ namespace SilverBotDS.Commands
                                       .WithAllowedMentions(Mentions.None)
                                       .SendAsync(ctx.Channel);
         }
+
         /// <summary>
         /// A simple emoji based yes/no poll.
         /// </summary>
@@ -54,12 +52,12 @@ namespace SilverBotDS.Commands
                 var bob = new DiscordEmbedBuilder();
                 bob.WithTitle(question).WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username, iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png)).WithColor(await ColorUtils.GetSingleAsync());
                 var pollStartMessage = await commandContext.RespondAsync(bob.Build());
-                foreach(var emote in _pollEmojiCache)
+                foreach (var emote in _pollEmojiCache)
                 {
                     await pollStartMessage.CreateReactionAsync(emote);
                 }
                 using var rng = new RandomGenerator();
-                await Database.plannedEvents.AddAsync(new() { ChannelID = commandContext.Channel.Id, EventID = rng.RandomAbcString(20), Handled = false, MessageID=commandContext.Message.Id,Time=DateTime.Now+duration,Type=Objects.Database.Classes.PlannedEventType.EmojiPoll,UserID=commandContext.User.Id,ResponseMessageID= pollStartMessage.Id});
+                await Database.plannedEvents.AddAsync(new() { ChannelID = commandContext.Channel.Id, EventID = rng.RandomAbcString(20), Handled = false, MessageID = commandContext.Message.Id, Time = DateTime.Now + duration, Type = Objects.Database.Classes.PlannedEventType.EmojiPoll, UserID = commandContext.User.Id, ResponseMessageID = pollStartMessage.Id });
                 await Database.SaveChangesAsync();
             }
             else

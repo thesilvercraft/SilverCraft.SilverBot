@@ -24,28 +24,23 @@
  *  THE SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 using DSharpPlus.VoiceNext;
-using Lavalink4NET;
 using Lavalink4NET.Events;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
-using VideoLibrary;
-using System.Text.RegularExpressions;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using VideoLibrary;
 using Xabe.FFmpeg;
-using System.IO;
-using System.Net.Http;
 
 namespace SnowdPlayer
 {
-
     /// <summary>
     ///     A thread-safe queue for <see cref="SnowTrack"/>.
     /// </summary>
@@ -464,7 +459,9 @@ namespace SnowdPlayer
                 _list.AddRange(tracks);
             }
         }
+
 #nullable enable
+
         /// <summary>
         ///     Tries to dequeue a track using the FIFO method.
         /// </summary>
@@ -491,6 +488,7 @@ namespace SnowdPlayer
                 return true;
             }
         }
+
 #nullable disable
 
         /// <summary>
@@ -522,22 +520,28 @@ namespace SnowdPlayer
             }
         }
     }
+
     public class SnowService : IDisposable
     {
-        public SnowService(VoiceNextExtension vn, bool allowlocalfiles=false,bool useyoutubedl=false)
+        public SnowService(VoiceNextExtension vn, bool allowlocalfiles = false, bool useyoutubedl = false)
         {
             VoiceNextExtension = vn;
             AllowLocalFiles = allowlocalfiles;
             UseYoutubeDL = useyoutubedl;
         }
+
         private bool UseYoutubeDL { get; set; }
 
         private bool disposedValue;
 
         private bool AllowLocalFiles { get; set; }
+
         public event AsyncEventHandler<TrackEndEventArgs> TrackEnd;
+
         public event AsyncEventHandler<TrackExceptionEventArgs> TrackException;
+
         public event AsyncEventHandler<TrackStartedEventArgs> TrackStarted;
+
         public event AsyncEventHandler<TrackStuckEventArgs> TrackStuck;
 
         private VoiceNextExtension VoiceNextExtension { get; init; }
@@ -673,7 +677,9 @@ namespace SnowdPlayer
         {
             return Task.CompletedTask;
         }
-        Regex YTRgx = new(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
+
+        private Regex YTRgx = new(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
+
         public async Task<SnowTrack> GetTrackAsync(string query, SearchMode mode = SearchMode.None, bool noCache = false, CancellationToken cancellationToken = default)
         {
             /*if(UseYoutubeDL)
@@ -738,6 +744,7 @@ namespace SnowdPlayer
     public class SnowTrack : LavalinkTrack
     {
         public static SnowTrack FromLavalinkTrack(LavalinkTrack b) => new(b.Identifier, b.Author, b.Duration, b.IsLiveStream, b.IsSeekable, b.Source, b.Title, b.TrackIdentifier, b.Provider);
+
         public SnowTrack(string identifier, LavalinkTrackInfo info) : base(identifier, info)
         {
         }
@@ -746,7 +753,8 @@ namespace SnowdPlayer
         {
         }
     }
-    public class QueuedSnowPlayer: BaseSnowPlayer
+
+    public class QueuedSnowPlayer : BaseSnowPlayer
     {
         private readonly bool _disconnectOnStop;
 
@@ -833,7 +841,6 @@ namespace SnowdPlayer
         public virtual async Task<int> PlayAsync(SnowTrack track, bool enqueue,
             TimeSpan? startTime = null, TimeSpan? endTime = null, bool noReplace = false)
         {
-
             // check if the track should be enqueued (if a track is already playing)
             if (enqueue && (Queue.Count > 0 || State == PlayerState.Playing || State == PlayerState.Paused))
             {
@@ -859,7 +866,6 @@ namespace SnowdPlayer
         /// <exception cref="InvalidOperationException">thrown if the player is destroyed</exception>
         public virtual async Task PlayTopAsync(SnowTrack track)
         {
-
             if (track is null)
             {
                 throw new ArgumentNullException(nameof(track));
@@ -965,7 +971,7 @@ namespace SnowdPlayer
             // no tracks queued, stop player and disconnect if specified
             else
             {
-                if(_disconnectOnStop)
+                if (_disconnectOnStop)
                 {
                     DisconnectAsync();
                 }
@@ -973,11 +979,11 @@ namespace SnowdPlayer
                 {
                     StopAsync();
                 }
-
             }
 
             return Task.CompletedTask;
         }
+
         /// <summary>
         ///     Stops playing the current track and disconnects asynchronously.
         /// </summary>
@@ -988,6 +994,7 @@ namespace SnowdPlayer
             Queue.Clear();
             return base.DisconnectAsync();
         }
+
         /// <summary>
         ///     Stops playing the current track asynchronously.
         /// </summary>
@@ -997,6 +1004,7 @@ namespace SnowdPlayer
         {
             return StopAsync(true);
         }
+
         /// <summary>
         ///     Stops playing the current track asynchronously.
         /// </summary>
@@ -1004,16 +1012,16 @@ namespace SnowdPlayer
         /// <exception cref="InvalidOperationException">thrown if the player is destroyed</exception>
         public Task StopAsync(bool clearqueue)
         {
-            if(clearqueue)
+            if (clearqueue)
             {
                 Queue.Clear();
             }
             return base.StopAsync();
         }
     }
+
     public class BaseSnowPlayer : IDisposable
     {
-
         public bool disposedValue;
 
         public ulong? VoiceChannelId { get; internal set; }
@@ -1051,7 +1059,9 @@ namespace SnowdPlayer
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
         private bool UseYoutubeDL { get; set; }
+
         /// <summary>
         ///     Initializes a new instance of a player.
         /// </summary>
@@ -1082,10 +1092,12 @@ namespace SnowdPlayer
             player.DisconnectOnStop = disconnectOnStop;
             player.VoiceNext = vne;
             player.State = PlayerState.NotConnected;
-            player.UseYoutubeDL=useyoutbedl;
+            player.UseYoutubeDL = useyoutbedl;
             return player;
         }
+
         private Task PlayerTask;
+
         private async Task<string> GetURLAsync(LavalinkTrack track)
         {
             if (track.Provider == StreamProvider.YouTube)
@@ -1093,15 +1105,15 @@ namespace SnowdPlayer
                 var video = (await YouTube.Default.GetAllVideosAsync(track.Source)).Where(x => x.AdaptiveKind == AdaptiveKind.Audio).OrderByDescending(x => x.AudioBitrate).Select(x => { Console.WriteLine(x.Uri); return x; }).First();
                 return video.Uri;
             }
-            if(UseYoutubeDL)
+            if (UseYoutubeDL)
             {
-                 var prc = Process.Start(new ProcessStartInfo
-                 {
-                     FileName = "youtube-dl",
-                     Arguments = $@"--format best --get-url ""{track.Source}""",
-                     RedirectStandardOutput = true,
-                     UseShellExecute = false
-                 });
+                var prc = Process.Start(new ProcessStartInfo
+                {
+                    FileName = "youtube-dl",
+                    Arguments = $@"--format best --get-url ""{track.Source}""",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
+                });
                 prc.WaitForExit();
                 return prc.StandardOutput.ReadToEnd();
             }
@@ -1111,6 +1123,7 @@ namespace SnowdPlayer
             }
             return track.Source;
         }
+
         /// <summary>
         ///     Plays the specified <paramref name="track"/> asynchronously.
         /// </summary>
@@ -1161,14 +1174,14 @@ namespace SnowdPlayer
                 FFmpeg.Exited += FFmpeg_Exited;
                 State = PlayerState.Playing;
             }
-
         }
 
         private void FFmpeg_Exited(object sender, EventArgs e)
         {
             OnTrackEndAsync(this, TrackEndReason.Finished, CurrentTrack.TrackIdentifier).GetAwaiter().GetResult();
         }
-        public virtual Task OnTrackEndAsync(BaseSnowPlayer baseSnow,TrackEndReason reason, string trackidentifier)
+
+        public virtual Task OnTrackEndAsync(BaseSnowPlayer baseSnow, TrackEndReason reason, string trackidentifier)
         {
             if (DisconnectOnStop)
             {
@@ -1209,6 +1222,7 @@ namespace SnowdPlayer
             }
             return Task.CompletedTask;
         }
+
         public virtual Task ResumeAsync()
         {
             if (State == PlayerState.Paused)
@@ -1219,6 +1233,7 @@ namespace SnowdPlayer
             }
             return Task.CompletedTask;
         }
+
         public virtual async Task StopAsync()
         {
             if (DisconnectOnStop)
@@ -1239,7 +1254,8 @@ namespace SnowdPlayer
                 State = PlayerState.NotPlaying;
             }
         }
-        private CancellationTokenSource cancellationToken1 {  get; set; }
+
+        private CancellationTokenSource cancellationToken1 { get; set; }
         private Process FFmpeg { get; set; }
         private VoiceNextConnection vnc { get; set; }
 

@@ -3,7 +3,7 @@
 @using SilverBotDS.Shared
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    Layout = null;
+    //Layout = null;
 }
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@
     <link href="SilverBotDS.styles.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/github-dark.min.css">
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/github-dark.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="index.css" type="text/css" />
@@ -41,6 +41,7 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <script src="_content/Microsoft.AspNetCore.Components.ProtectedBrowserStorage/protectedBrowserStorage.js"></script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
     <script type="text/javascript">
         if ('serviceWorker' in navigator) {
@@ -57,20 +58,19 @@
     </script>
     <script type="text/javascript">
         function galleryThing(imgs) {
-  // https://www.w3schools.com/howto/howto_js_tab_img_gallery.asp
-  var expandImg = document.getElementById("expandedImg");
-  var imgText = document.getElementById("imgtext");
-  expandImg.src = imgs.src;
-  imgText.innerHTML = imgs.alt;
-  expandImg.parentElement.style.display = "block";
-  window.scrollTo(0,document.body.scrollHeight);
-}
+            // https://www.w3schools.com/howto/howto_js_tab_img_gallery.asp
+            var expandImg = document.getElementById("expandedImg");
+            var imgText = document.getElementById("imgtext");
+            expandImg.src = imgs.src;
+            imgText.innerHTML = imgs.alt;
+            expandImg.parentElement.style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
+        }
     </script>
     <script>
         window.addEventListener('load', function () {
-            setTimeout(function() { hljs.highlightAll(); }, 200);
-  
-})</script>
+            setTimeout(function () { hljs.highlightAll(); }, 200);
 
+        })</script>
 </body>
 </html>

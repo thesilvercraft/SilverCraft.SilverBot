@@ -1,7 +1,6 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
@@ -50,6 +49,7 @@ namespace SilverBotDS.Commands
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
+
         [Command("generatelangtemplate")]
         [Description("make a template for translation")]
         public async Task GenerateLanguageTemplate(CommandContext ctx)
@@ -60,15 +60,18 @@ namespace SilverBotDS.Commands
                                              .SendAsync(ctx.Channel);
         }
 
-        private readonly JsonSerializerOptions options = new(){
+        private readonly JsonSerializerOptions options = new()
+        {
             WriteIndented = true
         };
+
         [Command("piss")]
         [Description("piss :)")]
         public async Task Piss(CommandContext ctx)
         {
             throw new PissException(69); // line 69 :)
         }
+
         [Command("setlang")]
         [Description("set your language")]
         [RequireUserPermissions(Permissions.ManageGuild)]
@@ -140,7 +143,7 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             Translator translator = new(HttpClient);
             var tranlsation = await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate);
-            if(tranlsation.Item1.Length > 4095)
+            if (tranlsation.Item1.Length > 4095)
             {
                 await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{tranlsation.Item2}>", tranlsation.Item1);
             }

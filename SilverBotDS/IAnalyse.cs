@@ -1,8 +1,6 @@
 ﻿using DSharpPlus.Entities;
 using Segment;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SilverBotDS
@@ -11,12 +9,14 @@ namespace SilverBotDS
     {
         Task EmitEvent(DiscordUser UserId, string EventName, IDictionary<string, object> Args);
     }
+
     public class SegmentIo : IAnalyse
     {
         public SegmentIo(string token)
         {
             Analytics.Initialize(token);
         }
+
         public Task EmitEvent(DiscordUser User, string EventName, IDictionary<string, object> Args)
         {
             Analytics.Client.Track(User.Id.ToString(), EventName, Args);

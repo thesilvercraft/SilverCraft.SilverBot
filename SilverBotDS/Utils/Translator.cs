@@ -17,10 +17,11 @@ namespace SilverBotDS.Utils
         }
 
         public Translator(HttpClient httpClient) => this.httpClient = httpClient;
+
         public static IEnumerable<string> Languages => LanguageModeMap.Keys.OrderBy(p => p);
         private readonly HttpClient httpClient;
 
-        public async System.Threading.Tasks.Task<Tuple<string,string>> TranslateAsync
+        public async System.Threading.Tasks.Task<Tuple<string, string>> TranslateAsync
             (string sourceText,
              string sourceLanguage,
              string targetLanguage)

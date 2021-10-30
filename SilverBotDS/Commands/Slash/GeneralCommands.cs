@@ -1,15 +1,14 @@
-﻿using DSharpPlus.SlashCommands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.Entities;
+using DSharpPlus.SlashCommands;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
-using System.Runtime.InteropServices;
+using System;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands.Slash
 {
@@ -17,11 +16,13 @@ namespace SilverBotDS.Commands.Slash
     {
         public DatabaseContext DBCTX { private get; set; }
         public Config CNF { private get; set; }
+
         [SlashCommand("hello", "A simple hello command")]
         public async Task TestCommand(InteractionContext ctx)
         {
             await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent($"hello {ctx.User.Mention}"));
         }
+
         public async Task WhoIsTask(BaseContext ctx, DiscordUser user)
         {
             var lang = await Language.GetLanguageFromGuildIdAsync(ctx.Guild.Id, DBCTX);
@@ -40,16 +41,19 @@ namespace SilverBotDS.Commands.Slash
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
                 .Build()).AsEphemeral(true));
         }
+
         [SlashCommand("whois", "Find out the info silverbot knows about someone.")]
-        public  Task WhoIsCommand(InteractionContext ctx, [Option("user", "User to view info on")] DiscordUser user)
+        public Task WhoIsCommand(InteractionContext ctx, [Option("user", "User to view info on")] DiscordUser user)
         {
             return WhoIsTask(ctx, user);
         }
+
         [ContextMenu(ApplicationCommandType.UserContextMenu, "Whois-like search")]
-        public  Task UserMenu(ContextMenuContext ctx)
+        public Task UserMenu(ContextMenuContext ctx)
         {
             return WhoIsTask(ctx, ctx.TargetMember);
         }
+
         [SlashCommand("version", "Find out the version info for this instance of silverbot")]
         public async Task VersionInfoCommand(InteractionContext ctx)
         {
@@ -68,6 +72,7 @@ namespace SilverBotDS.Commands.Slash
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .Build()).AsEphemeral(true));
         }
+
         [SlashCommand("dukthosting", "SilverHosting:tm: best")]
         public async Task DuktHostingCommand(InteractionContext ctx)
         {
@@ -79,14 +84,15 @@ namespace SilverBotDS.Commands.Slash
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .Build()));
         }
+
         [ContextMenu(ApplicationCommandType.MessageContextMenu, "Dump message")]
-        public async Task DumpCommand(ContextMenuContext ctx) 
+        public async Task DumpCommand(ContextMenuContext ctx)
         {
             await using var outStream = new MemoryStream(Encoding.UTF8.GetBytes(ctx.TargetMessage.Content))
             {
                 Position = 0
             };
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddFile("message.txt",outStream));
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddFile("message.txt", outStream));
         }
     }
 }

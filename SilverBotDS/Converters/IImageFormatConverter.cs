@@ -7,14 +7,10 @@ using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Tga;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Converters
 {
-    
     internal class IImageFormatConverter : IArgumentConverter<IImageFormat>
     {
         public Task<Optional<IImageFormat>> ConvertAsync(string value, CommandContext ctx)

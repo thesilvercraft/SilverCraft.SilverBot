@@ -4,10 +4,10 @@ using SilverBotDS.Objects.Database.Classes;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace SilverBotDS.Objects
 {
@@ -35,6 +35,7 @@ namespace SilverBotDS.Objects
                       "</head>" +
                       "<body>" +
                       "<table style=\"width: 100 % \">";
+
 #pragma warning disable IDE1006 // Naming Styles
         public DbSet<ServerSettings> serverSettings { get; set; }
         public DbSet<UserSettings> userSettings { get; set; }
@@ -42,6 +43,7 @@ namespace SilverBotDS.Objects
         public DbSet<UserQuote> userQuotes { get; set; }
         public DbSet<PlannedEvent> plannedEvents { get; set; }
 #pragma warning restore IDE1006 // Naming Styles
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
@@ -59,6 +61,20 @@ namespace SilverBotDS.Objects
         public Tuple<ulong, ulong?, ServerStatString[]>[] GetStatisticSettings()
         {
             return serverSettings.Where(x => x.ServerStatsCategoryId != null).Select(x => new Tuple<ulong, ulong?, ServerStatString[]>(x.ServerId, x.ServerStatsCategoryId, x.ServerStatsTemplates)).ToArray();
+        }
+
+        public ServerSettings GetServerSettings(ulong id)
+        {
+            var a = serverSettings.Where(x => x.ServerId == id).FirstOrDefault();
+            if (a == null)
+            {
+                a = new()
+                {
+                    ServerId = id,
+                };
+                serverSettings.Add(a);
+            }
+            return a;
         }
 
         public string GetLangCodeGuild(ulong id)
@@ -115,6 +131,7 @@ namespace SilverBotDS.Objects
         }
 
         private readonly ServerStatString[] StatsTemplates = new ServerStatString[] { new("All Members: {AllMembersCount}"), new("Members: {MemberCount}"), new("Bots: {BotsCount}"), new("Boosts: {BoostCount}") };
+
         public void SetServerPrefixes(ulong sid, string[] prefixes)
         {
             var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
@@ -133,6 +150,7 @@ namespace SilverBotDS.Objects
             }
             SaveChanges();
         }
+
         public void SetServerStatStrings(ulong sid, ServerStatString[] id)
         {
             id ??= StatsTemplates;
@@ -152,6 +170,7 @@ namespace SilverBotDS.Objects
             }
             SaveChanges();
         }
+
         internal void ToggleBanUser(ulong id, bool BAN)
         {
             var usersettings = userSettings.FirstOrDefault(x => x.Id == id);

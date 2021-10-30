@@ -1,8 +1,6 @@
 ﻿using DSharpPlus.Entities;
 using SilverBotDS.Utils;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SilverBotDS.Objects.Database.Classes
@@ -17,8 +15,6 @@ namespace SilverBotDS.Objects.Database.Classes
         {
             Template = template;
         }
-
-       
 
         public string Template { get; set; }
 

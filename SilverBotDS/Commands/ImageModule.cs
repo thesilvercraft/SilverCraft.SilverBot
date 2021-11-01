@@ -588,6 +588,33 @@ namespace SilverBotDS.Commands
                 await SendImageStream(ctx, outStream, filename: "sbfail.gif", content: "there", lang: lang);
             }
         }
+        
+        [Command("caption")]
+        [Description("Captions an image")]
+        public async Task CaptionImage(CommandContext ctx, [RemainingText] string text)
+        {
+            await ctx.TriggerTypingAsync();
+            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            using var img = await SdImage.FromContext(ctx);
+            Font JokerFont = new(JokerFontFamily, img.Width / 10);
+            var dr = new DrawingOptions();
+            dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
+            // x component of pointf is arbitrary and irrelevent since the above alignment option is given
+            img.Mutate(m => m.DrawText(dr, text, JokerFont, Brushes.Solid(Color.Black), new PointF(255f, 20f)));
+            await using MemoryStream outStream = new();
+            await img.SaveAsync(outStream, new GifEncoder());
+            outStream.Position = 0;
+            if (outStream.Length > MaxBytes)
+            {
+                await Send_img_plsAsync(
+                    ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang
+                ).ConfigureAwait(false);
+            }
+            else
+            {
+                await SendImageStream(ctx, outStream, filename: "sbfail.gif", content: "there", lang: lang);
+            }
+        }
 
         [Command("motivate")]
         public async Task Motivate(CommandContext ctx, [RemainingText] string text)

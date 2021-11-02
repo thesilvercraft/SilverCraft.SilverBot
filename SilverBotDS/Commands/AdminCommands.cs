@@ -24,7 +24,7 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             Database.SetServerPrefixes(ctx.Guild.Id, cake);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                      .WithContent(lang.StatisticCommand.SetToProvidedStrings)
+                                      .WithContent(lang.SetToProvidedStrings)
                                       .WithAllowedMentions(Mentions.None)
                                       .SendAsync(ctx.Channel);
         }

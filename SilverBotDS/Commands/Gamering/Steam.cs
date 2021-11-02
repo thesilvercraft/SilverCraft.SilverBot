@@ -37,15 +37,15 @@ namespace SilverBotDS.Commands.Gamering
                         switch (listings[i].SaleType)
                         {
                             case SteamStoreQuery.Enums.sType.FreeToPlay:
-                                tempbuilder.WithAuthor(lang.SteamCommand.FreeToPlayGameType);
+                                tempbuilder.WithAuthor(lang.FreeToPlayGameType);
                                 break;
 
                             case SteamStoreQuery.Enums.sType.NotAvailable:
-                                tempbuilder.WithAuthor(lang.SteamCommand.NotAvailableGameType);
+                                tempbuilder.WithAuthor(lang.NotAvailableGameType);
                                 break;
 
                             case SteamStoreQuery.Enums.sType.CostsMoney:
-                                tempbuilder.WithAuthor(lang.SteamCommand.CostsMoneyGameTypeBug);
+                                tempbuilder.WithAuthor(lang.CostsMoneyGameTypeBug);
                                 break;
 
                             default:
@@ -54,7 +54,7 @@ namespace SilverBotDS.Commands.Gamering
                     }
                     else
                     {
-                        tempbuilder.WithAuthor(string.Format(lang.SteamCommand.AmericanMoney, listings[i].Price));
+                        tempbuilder.WithAuthor(string.Format(lang.AmericanMoney, listings[i].Price));
                     }
                     tempbuilder.WithFooter($"{lang.RequestedBy}{ctx.User.Username} {string.Format(lang.PageNuget, i + 1, listings.Count)}", ctx.User.GetAvatarUrl(ImageFormat.Png));
                     if (!string.IsNullOrEmpty(listings[i].ImageLink))
@@ -71,8 +71,8 @@ namespace SilverBotDS.Commands.Gamering
                 else
                 {
                     var bob = new DiscordEmbedBuilder();
-                    bob.WithTitle(lang.SteamCommand.NoGamesWereReturned);
-                    bob.WithDescription(lang.SteamCommand.NoGamesWereReturnedDescription);
+                    bob.WithTitle(lang.NoGamesWereReturned);
+                    bob.WithDescription(lang.NoGamesWereReturnedDescription);
                     await ctx.RespondAsync(embed: bob.Build());
                 }
             }

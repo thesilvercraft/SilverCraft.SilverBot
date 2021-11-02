@@ -37,33 +37,18 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
                 .WithTitle(lang.VersionInfoTitle)
-                .AddField(lang.VersionInfoCommand.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
-                .AddField(lang.VersionInfoCommand.GitRepo, ThisAssembly.Git.RepositoryUrl)
-                .AddField(lang.VersionInfoCommand.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
-                .AddField(lang.VersionInfoCommand.GitBranch, Formatter.InlineCode(ThisAssembly.Git.Branch))
-                .AddField(lang.VersionInfoCommand.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
-                .AddField(lang.VersionInfoCommand.CLR, Formatter.InlineCode(RuntimeInformation.FrameworkDescription))
-                .AddField(lang.VersionInfoCommand.OS, Formatter.InlineCode(Environment.OSVersion.VersionString))
-                .AddField(lang.VersionInfoCommand.DsharpplusVersion, Formatter.InlineCode(ctx.Client.VersionString))
+                .AddField(lang.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
+                .AddField(lang.GitRepo, ThisAssembly.Git.RepositoryUrl)
+                .AddField(lang.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
+                .AddField(lang.GitBranch, Formatter.InlineCode(ThisAssembly.Git.Branch))
+                .AddField(lang.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
+                .AddField(lang.CLR, Formatter.InlineCode(RuntimeInformation.FrameworkDescription))
+                .AddField(lang.OS, Formatter.InlineCode(Environment.OSVersion.VersionString))
+                .AddField(lang.DsharpplusVersion, Formatter.InlineCode(ctx.Client.VersionString))
                 .WithAuthor($"{ctx.Client.CurrentUser.Username}#{ctx.Client.CurrentUser.Discriminator}", iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
-
-        [Command("generatelangtemplate")]
-        [Description("make a template for translation")]
-        public async Task GenerateLanguageTemplate(CommandContext ctx)
-        {
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(await Language.GetLanguageFromCtxAsync(ctx), options)));
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithFile("language.json", stream)
-                                             .SendAsync(ctx.Channel);
-        }
-
-        private readonly JsonSerializerOptions options = new()
-        {
-            WriteIndented = true
-        };
 
         [Command("piss")]
         [Description("piss :)")]
@@ -236,7 +221,7 @@ namespace SilverBotDS.Commands
                     var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Title).WithUrl($"https://www.nuget.org/packages/{data[i].Id}").WithColor(await ColorUtils.GetSingleAsync());
                     if (data[i].Authors is null)
                     {
-                        tempbuilder.WithAuthor(string.Format(lang.NuGetCommand.SomethingsContributors, data[i].Title), data[i].ProjectUrl);
+                        tempbuilder.WithAuthor(string.Format(lang.SomethingsContributors, data[i].Title), data[i].ProjectUrl);
                     }
                     else
                     {
@@ -253,19 +238,19 @@ namespace SilverBotDS.Commands
                     }
                     if (data[i].Verified is not null)
                     {
-                        tempbuilder.AddField(lang.NuGetCommand.NuGetVerified, StringUtils.BoolToEmoteString(data[i].Verified == true), true);
+                        tempbuilder.AddField(lang.NuGetVerified, StringUtils.BoolToEmoteString(data[i].Verified == true), true);
                     }
                     if (!string.IsNullOrEmpty(data[i].Type))
                     {
-                        tempbuilder.AddField(lang.NuGetCommand.Type, data[i].Type, true);
+                        tempbuilder.AddField(lang.Type, data[i].Type, true);
                     }
                     if (data[i].TotalDownloads is not null)
                     {
-                        tempbuilder.AddField(lang.NuGetCommand.Downloads, data[i].TotalDownloads.ToString(), true);
+                        tempbuilder.AddField(lang.Downloads, data[i].TotalDownloads.ToString(), true);
                     }
                     if (!string.IsNullOrEmpty(data[i].Version))
                     {
-                        tempbuilder.AddField(lang.NuGetCommand.Version, data[i].Version, true);
+                        tempbuilder.AddField(lang.Version, data[i].Version, true);
                     }
                     pages.Add(new Page(embed: tempbuilder));
                 }

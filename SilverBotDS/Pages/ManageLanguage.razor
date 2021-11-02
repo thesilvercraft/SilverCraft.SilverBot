@@ -1,0 +1,85 @@
+﻿@page "/managelanguage/{id:int}"
+@using Microsoft.AspNetCore.Http
+@using SilverBotDS.Objects
+@using DSharpPlus
+@using System.Diagnostics
+@using SilverBotDS.WebHelpers
+@using SilverBotDS
+@using Microsoft.JSInterop
+@using System.Text.Json
+@using System.Text
+@inject Config config
+@inject IHttpContextAccessor HttpContextAccessor
+@inject DiscordClient Discord
+@inject DatabaseContext dbctx
+@inject IJSRuntime jsRuntime
+@inject NavigationManager uriHelper
+@using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private string bindmaterial;
+}
+@{
+    JsonSerializerOptions options = new()
+    {
+        WriteIndented = true
+    };
+    if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
+    {
+        uriHelper.NavigateTo("/login", forceLoad: true);
+    }
+    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session);
+    var translator = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
+    if (translator == null)
+    {
+        uriHelper.NavigateTo("/", forceLoad: true);
+    }
+
+    var languages = translator.CustomLanguages;
+
+    if (languages.Count <= id)
+    {
+        uriHelper.NavigateTo("/languageeditor");
+    }
+
+    var language = translator.CustomLanguages.ToList().ElementAt(id);
+    var json = JsonSerializer.Serialize(language, options);
+
+    async Task downloadlanguage()
+    {
+        await jsRuntime.InvokeVoidAsync("download", json, "language.json", "application/json");
+    }
+    void UpdateHeading()
+    {
+        bindmaterial = json;
+    }
+    void HandleValidSubmit()
+    {
+        var o = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
+        var p = o.CustomLanguages.ToList();
+        p[id] = JsonSerializer.Deserialize<Language>(bindmaterial);
+        p[id].Id = language.Id;
+        o.CustomLanguages = p;
+        dbctx.translatorSettings.Attach(o);
+        dbctx.translatorSettings.Update(o);
+        Console.WriteLine(dbctx.SaveChanges());
+        uriHelper.NavigateTo("/languageeditor");
+        // Process the valid form
+    }
+}
+
+<p>Welcome to the beta version of the language edit page</p>
+<p>Currently editing: <strong>@language.LangName</strong></p>
+<p>If you want to download the file please wait for your browser to load it and DON'T SPAM THE BUTTON UNLESS YOU WANT TO HAVE A BAD TIME</p>
+<button @onclick="UpdateHeading">
+    Click on button to load thing
+</button>
+<button @onclick="HandleValidSubmit">
+    Save
+</button>
+<button @onclick="downloadlanguage">
+    Download to your computer
+</button>
+<RadzenTextArea @bind-Value=@bindmaterial Style=" width: 100%; height: 100vh;" />

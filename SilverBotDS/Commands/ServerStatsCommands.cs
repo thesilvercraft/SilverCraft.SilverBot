@@ -27,12 +27,12 @@ namespace SilverBotDS.Commands
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithContent(string.Format(lang.StatisticCommand.EmojiMessageDownloadStart, limit, new TimeSpan(0, 0, limit / 100).Humanize(2, culture: lang.GetCultureInfo())))
+                                             .WithContent(string.Format(lang.EmojiMessageDownloadStart, limit, new TimeSpan(0, 0, limit / 100).Humanize(2, culture: lang.GetCultureInfo())))
                                              .SendAsync(ctx.Channel);
             DateTime start = DateTime.Now;
             var messages = await channel.GetMessagesAsync(limit);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                            .WithContent(string.Format(lang.StatisticCommand.EmojiMessageDownloadEnd, messages.Count, limit, new TimeSpan(0, 0, limit / 100).Humanize(2, culture: lang.GetCultureInfo()), (DateTime.Now - start).Humanize(2, culture: lang.GetCultureInfo()), new TimeSpan(0, 0, messages.Count / 100).Humanize(2, culture: lang.GetCultureInfo())))
+                                            .WithContent(string.Format(lang.EmojiMessageDownloadEnd, messages.Count, limit, new TimeSpan(0, 0, limit / 100).Humanize(2, culture: lang.GetCultureInfo()), (DateTime.Now - start).Humanize(2, culture: lang.GetCultureInfo()), new TimeSpan(0, 0, messages.Count / 100).Humanize(2, culture: lang.GetCultureInfo())))
                                             .SendAsync(ctx.Channel);
             DateTime startproc = DateTime.Now;
             StringBuilder bob = new("Name,Id,Timestamp\n");
@@ -52,7 +52,7 @@ namespace SilverBotDS.Commands
                 }
                 e++;
             }
-            await OwnerOnly.SendStringFileWithContent(ctx, string.Format(lang.StatisticCommand.EmojiEnd, messages.Count, (DateTime.Now - start).Humanize(2, culture: lang.GetCultureInfo()), (DateTime.Now - startproc).Humanize(2, culture: lang.GetCultureInfo())), bob.ToString(), "emotes.csv");
+            await OwnerOnly.SendStringFileWithContent(ctx, string.Format(lang.EmojiEnd, messages.Count, (DateTime.Now - start).Humanize(2, culture: lang.GetCultureInfo()), (DateTime.Now - startproc).Humanize(2, culture: lang.GetCultureInfo())), bob.ToString(), "emotes.csv");
             bob.Clear();
         }
 
@@ -68,14 +68,14 @@ namespace SilverBotDS.Commands
                 {
                     Database.SetServerStatsCategory(ctx.Guild.Id, category.Id);
                     await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                              .WithContent(string.Format(lang.StatisticCommand.CategorySetSuccess, category.Name))
+                                              .WithContent(string.Format(lang.CategorySetSuccess, category.Name))
                                               .WithAllowedMentions(Mentions.None)
                                               .SendAsync(ctx.Channel);
                 }
                 else
                 {
                     await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                           .WithContent(lang.StatisticCommand.NoPerm)
+                                           .WithContent(lang.NoPerm)
                                            .WithAllowedMentions(Mentions.None)
                                            .SendAsync(ctx.Channel);
                 }
@@ -90,7 +90,7 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             Database.SetServerStatStrings(ctx.Guild.Id, null);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                      .WithContent(lang.StatisticCommand.SetToDefaultStrings)
+                                      .WithContent(lang.SetToDefaultStrings)
                                       .WithAllowedMentions(Mentions.None)
                                       .SendAsync(ctx.Channel);
         }
@@ -103,7 +103,7 @@ namespace SilverBotDS.Commands
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             Database.SetServerStatStrings(ctx.Guild.Id, cake.Select(x => new ServerStatString(x)).ToArray());
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                      .WithContent(lang.StatisticCommand.SetToProvidedStrings)
+                                      .WithContent(lang.SetToProvidedStrings)
                                       .WithAllowedMentions(Mentions.None)
                                       .SendAsync(ctx.Channel);
         }

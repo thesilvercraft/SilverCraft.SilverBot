@@ -25,7 +25,7 @@ namespace SilverBotDS.Attributes
             {
                 return Task.FromResult(AllowDirectMessages);
             }
-            DatabaseContext dbctx = (DatabaseContext)ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));
+            using var dbctx = (DatabaseContext)ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));
             var guildsettings = dbctx.GetServerSettings(ctx.Guild.Id);
             var compareval = typeof(ServerSettings).GetProperty(Variable).GetValue(guildsettings);
             if (Equals(compareval, State))
@@ -58,7 +58,7 @@ namespace SilverBotDS.Attributes
             {
                 return Task.FromResult(AllowDirectMessages);
             }
-            DatabaseContext dbctx = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
+            using var dbctx = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
             var guildsettings = dbctx.GetServerSettings(ctx.Guild.Id);
             var compareval = typeof(ServerSettings).GetProperty(Variable).GetValue(guildsettings);
             if (Equals(compareval, State))

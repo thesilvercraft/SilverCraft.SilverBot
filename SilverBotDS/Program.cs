@@ -417,6 +417,7 @@ namespace SilverBotDS
             commands.RegisterCommands<MiscCommands>();
             commands.RegisterCommands<MinecraftModule>();
             commands.RegisterCommands<UserQuotesModule>();
+            commands.RegisterCommands<TranslatorCommands>();
             commands.CommandErrored += Commands_CommandErrored;
             commands.CommandExecuted += Commands_CommandExecuted;
             if (config.UseNodeJs)
@@ -503,37 +504,19 @@ namespace SilverBotDS
 
             host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
             {
-                s.AddSingleton(config);
+                foreach (var e in services)
+                {
+                    s.Add(e);
+                }
+
+                //s.AddSingleton(config);
                 s.AddSingleton(discord);
-                if (config.UseLavaLink)
+                /*if (config.UseLavaLink)
                 {
                     s.AddSingleton(audioService);
-                }
-                switch (config.DatabaseType)
-                {
-                    case 1:
-                        {
-                            if (config != null && !string.IsNullOrEmpty(config.ConnString))
-                            {
-                                s.AddDbContext<DatabaseContext>(options => options.UseNpgsql(config.ConnString), ServiceLifetime.Transient);
-                            }
-                            else
-                            {
-                                Uri tmp = new(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new InvalidOperationException());
-                                string[] usernameandpass = tmp.UserInfo.Split(":");
-                                s.AddDbContext<DatabaseContext>(options => options.UseNpgsql($"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}"), ServiceLifetime.Transient);
-                            }
-                            break;
-                        }
-                    case 2:
-                        {
-                            s.AddDbContext<DatabaseContext>(options => options.UseSqlite("Filename=./silverbotdatabasev2.db"), ServiceLifetime.Transient);
-                            break;
-                        }
+                }*/
 
-                    default:
-                        break;
-                }
+                //s.AddSingleton(serviceProvider.GetService<DbContext>());
             })
              .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<WebpageStartup>()).UseSerilog(log).Build();
 
@@ -664,7 +647,6 @@ namespace SilverBotDS
                 {
                     return lang.RequireGuildCheckFailed;
                 }
-                Console.WriteLine(Enum.IsDefined(requireBotPermissions.Permissions));
                 if (Enum.IsDefined(requireBotPermissions.Permissions) && requireBotPermissions.Permissions != Permissions.All)
                 {
                     return string.Format(lang.RequireBotPermisionsCheckFailedSG, requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
@@ -891,7 +873,7 @@ namespace SilverBotDS
                 try
                 {
                     log.Debug("Entered statistics method");
-                    var dbctx = serviceProvider.GetRequiredService<DatabaseContext>();
+                    using var dbctx = serviceProvider.GetRequiredService<DatabaseContext>();
                     log.Debug("Getting the settings about statistics");
                     var things = dbctx.GetStatisticSettings();
                     log.Debug("Got the settings about statistics");
@@ -1002,7 +984,7 @@ namespace SilverBotDS
 
         private static async Task IncreaseXP(ulong id, ulong count = 1)
         {
-            var context = serviceProvider.GetService<DatabaseContext>();
+            using var context = serviceProvider.GetService<DatabaseContext>();
 
             var o = await context.userExperiences.FirstOrDefaultAsync(x => x.Id == id);
             if (o is not null)
@@ -1042,7 +1024,7 @@ namespace SilverBotDS
                     await IncreaseXP(e.Author.Id);
                 }
             }
-            var context = serviceProvider.GetService<DatabaseContext>();
+            using var context = serviceProvider.GetService<DatabaseContext>();
 
             var o = e.Channel.IsPrivate ? default : await context.serverSettings.FirstOrDefaultAsync(x => x.ServerId == e.Guild.Id);
             if ((e.Channel.IsPrivate

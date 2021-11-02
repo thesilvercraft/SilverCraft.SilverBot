@@ -1,6 +1,8 @@
-﻿namespace SilverBotDS.Commands
+﻿using DSharpPlus.CommandsNext;
+
+namespace SilverBotDS.Commands
 {
-    public class TrollCommands
+    public class TrollCommands : BaseCommandModule
     {
     }
 }

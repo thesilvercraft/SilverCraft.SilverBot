@@ -1,0 +1,50 @@
+﻿@page "/languageeditor"
+@using System.Text
+@using Microsoft.AspNetCore.Http
+@using SilverBotDS.Objects
+@using DSharpPlus
+@using SilverBotDS.WebHelpers
+@using SilverBotDS
+@using Microsoft.JSInterop
+@inject Config config
+@inject IHttpContextAccessor HttpContextAccessor
+@inject DiscordClient Discord
+@inject IJSRuntime jsRuntime
+@inject NavigationManager uriHelper
+@inject DatabaseContext dbctx
+@{
+    if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>
+    (HttpContextAccessor.HttpContext.Session, "accessToken")))
+    {
+        uriHelper.NavigateTo("/login", forceLoad: true);
+    }
+    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session);
+    var translator = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
+    if (translator == null)
+    {
+        uriHelper.NavigateTo("/", forceLoad: true);
+    }
+
+    var languages = translator.CustomLanguages.ToList();
+    int a = 0;
+}
+<h1>The custom languages you can edit:</h1>
+<div>
+    <div class="card-body">
+        <div class="row justify-content-center">
+            @foreach (var language in languages)
+            {
+
+                <div class="row">
+                    <div class="m-2 center col">
+                        <a href="/managelanguage/@a">
+
+                            <p class="text-center">@language.LangName</p>
+                        </a>
+                    </div>
+                </div>
+                a++;
+            }
+        </div>
+    </div>
+</div>

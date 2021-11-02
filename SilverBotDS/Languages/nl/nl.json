@@ -93,44 +93,37 @@
   "PurgedBySilverBotReason": "Gepurged door SilverBot voor {0}",
   "NotValidLanguage": "That isn't a valid language, valid languages are: {0}",
   "CultureInfo": "nl-NL",
-  "VersionInfoCommand": {
-    "OS": "Operating system:",
-    "DsharpplusVersion": "Dsharpplus version:",
-    "VersionNumber": "Versie nummer",
-    "GitRepo": "Git repo",
-    "GitCommitHash": "Git Commit hash",
-    "GitBranch": "Git Branch",
-    "IsDirty": "Is vies",
-    "CLR": "CLR"
-  },
-  "NuGetCommand": {
-    "SomethingsContributors": "{0}'s contributors",
-    "NuGetVerified": "NuGet verified",
-    "Type": "Type",
-    "Downloads": "<:green_download_icon:805051604797227038>",
-    "Version": "Version"
-  },
-  "Mathcommands": {
-    "MathSteps": "Math steps: ",
-    "Results": "Result: "
-  },
-  "SteamCommand": {
-    "FreeToPlayGameType": "F2P",
-    "NotAvailableGameType": "Niet beschikbaar",
-    "CostsMoneyGameTypeBug": "Het kost USD maar ik weet niet hoeveel",
-    "NoGamesWereReturned": "Geen games geretourneerd",
-    "NoGamesWereReturnedDescription": "Probeer opnieuw later, of probeer je zoekterm aan te passen",
-    "AmericanMoney": "{0} USD"
-  },
-  "StatisticCommand": {
-    "SetToProvidedStrings": "Stel ze in op de gegeven dingen",
-    "SetToDefaultStrings": "Set them to the default things",
-    "NoPerm": "Geef me toestemming om kanalen in de categorie te beheren",
-    "CategorySetSuccess": "Stel de categorie in op {0}, voeg er ten minste 4 kanalen van elk type aan toe en voer vervolgens het commando `setstatstrings` uit.",
-    "EmojiMessageDownloadStart": "Maximaal {0} berichten aan het downloaden wat ongeveer {1} kan duren door discord ratelimit.",
-    "EmojiMessageDownloadEnd": "{0} Gedownload maar had {1} verwacht, geschatte tijd was: {2} werkelijke tijd was {3} verwachte tijd indien het juiste limiet opgegeven zou {4} zijn\nIn ieder geval ben ik nu berichten aan het verwerken",
-    "EmojiEnd": "Ik heb {0} berichten gelezen in {1} (inclusief download) {2} (exclusief download)\nEmote gebruiksgegevens:"
-  },
+  "OS": "Operating system:",
+  "DsharpplusVersion": "Dsharpplus version:",
+  "VersionNumber": "Versie nummer",
+  "GitRepo": "Git repo",
+  "GitCommitHash": "Git Commit hash",
+  "GitBranch": "Git Branch",
+  "IsDirty": "Is vies",
+  "CLR": "CLR",
+
+  "SomethingsContributors": "{0}'s contributors",
+  "NuGetVerified": "NuGet verified",
+  "Type": "Type",
+  "Downloads": "<:green_download_icon:805051604797227038>",
+  "Version": "Version",
+  "MathSteps": "Math steps: ",
+  "Results": "Result: "
+
+  "FreeToPlayGameType": "F2P",
+  "NotAvailableGameType": "Niet beschikbaar",
+  "CostsMoneyGameTypeBug": "Het kost USD maar ik weet niet hoeveel",
+  "NoGamesWereReturned": "Geen games geretourneerd",
+  "NoGamesWereReturnedDescription": "Probeer opnieuw later, of probeer je zoekterm aan te passen",
+  "AmericanMoney": "{0} USD",
+
+  "SetToProvidedStrings": "Stel ze in op de gegeven dingen",
+  "SetToDefaultStrings": "Set them to the default things",
+  "NoPerm": "Geef me toestemming om kanalen in de categorie te beheren",
+  "CategorySetSuccess": "Stel de categorie in op {0}, voeg er ten minste 4 kanalen van elk type aan toe en voer vervolgens het commando `setstatstrings` uit.",
+  "EmojiMessageDownloadStart": "Maximaal {0} berichten aan het downloaden wat ongeveer {1} kan duren door discord ratelimit.",
+  "EmojiMessageDownloadEnd": "{0} Gedownload maar had {1} verwacht, geschatte tijd was: {2} werkelijke tijd was {3} verwachte tijd indien het juiste limiet opgegeven zou {4} zijn\nIn ieder geval ben ik nu berichten aan het verwerken",
+  "EmojiEnd": "Ik heb {0} berichten gelezen in {1} (inclusief download) {2} (exclusief download)\nEmote gebruiksgegevens:",
   "BotBannedUser": "de bot heeft geprobeerd de user te bannen",
   "BotKickedUser": "De bot heeft geprobeerd de user te yeeten",
   "AddedXAmountOfSongs": "{0} liedjes bij de wachtrij toegevoegd",
@@ -174,11 +167,9 @@
   "RequireUserPermisionsCheckFailedPL": "You must have the permisions {0} to use that.",
   "RequireBotAndUserPermisionsCheckFailedPL": "We both must have the permisions {0} for you to use that.",
   "UnknownImageFormat": "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.",
-  "Imagethings": {
-    "JpegSuccess": "There ya go a jpegnized image",
-    "SilverSuccess": "Hier, een silver foto",
-    "ComicSuccess": "Hier, een foto met de comic filter",
-    "ResizeSuccess": "Hier, een verkleind/vergroote foto",
-    "TintSuccess": "Wauw, de foto heeft nu een andere kleur :O"
-  }
+  "JpegSuccess": "There ya go a jpegnized image",
+  "SilverSuccess": "Hier, een silver foto",
+  "ComicSuccess": "Hier, een foto met de comic filter",
+  "ResizeSuccess": "Hier, een verkleind/vergroote foto",
+  "TintSuccess": "Wauw, de foto heeft nu een andere kleur :O"
 }

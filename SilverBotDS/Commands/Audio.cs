@@ -428,7 +428,7 @@ namespace SilverBotDS.Commands
 
             var pages = new List<Page>
                 {
-                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.Position.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.Position.Position).Humanize(culture: lang.GetCultureInfo())))
+                    new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.Position.Position.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.Position.Position).Humanize(culture: lang.GetCultureInfo())))
                 };
             for (var i = 0; i < player.Queue.Count; i++)
             {

@@ -192,7 +192,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await SendImageStream(ctx, outStream, "silverbotimage.jpeg", lang.Imagethings.JpegSuccess, lang);
+                await SendImageStream(ctx, outStream, "silverbotimage.jpeg", lang.JpegSuccess, lang);
             }
         }
 
@@ -222,7 +222,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await SendImageStream(ctx, thing.Item1, filename: $"sbimg.{thing.Item2}", content: lang.Imagethings.ResizeSuccess, lang: lang);
+                await SendImageStream(ctx, thing.Item1, filename: $"sbimg.{thing.Item2}", content: lang.ResizeSuccess, lang: lang);
             }
         }
 
@@ -274,7 +274,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await SendImageStream(ctx, outStream, filename: $"sbimg.{thing.Item2}", content: lang.Imagethings.TintSuccess, lang: lang);
+                await SendImageStream(ctx, outStream, filename: $"sbimg.{thing.Item2}", content: lang.TintSuccess, lang: lang);
             }
         }
 
@@ -321,7 +321,7 @@ namespace SilverBotDS.Commands
             }
             else
             {
-                await SendImageStream(ctx, outStream, filename: $"sbimg.{thing.Item2}", content: lang.Imagethings.SilverSuccess, lang: lang);
+                await SendImageStream(ctx, outStream, filename: $"sbimg.{thing.Item2}", content: lang.SilverSuccess, lang: lang);
             }
         }
 

@@ -1,18 +1,28 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.SlashCommands;
+using Microsoft.EntityFrameworkCore;
+using SilverBotDS.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects
 {
+    [Owned]
     public partial class Language
     {
+        [ForeignKey("TranslatorSettings.Id")]
+        [JsonIgnore]
+        public Guid Id { get; set; }
+
         /// <summary>
         /// Default(EN)
         /// </summary>
@@ -428,11 +438,7 @@ namespace SilverBotDS.Objects
         public string PurgedBySilverBotReason { get; set; } = "Purged by SilverBot for {0}";
         public string NotValidLanguage { get; set; } = "That isn't a valid language, valid languages are: {0}";
         public string CultureInfo { get; set; } = "en-GB";
-        public VersioninfoCommand VersionInfoCommand { get; set; } = new();
-        public NugetCommand NuGetCommand { get; set; } = new();
-        public MathCommands Mathcommands { get; set; } = new();
-        public SteamCommands SteamCommand { get; set; } = new();
-        public StatisticCommands StatisticCommand { get; set; } = new();
+
         public string BotBannedUser { get; set; } = "The bot has attempted to ban the user";
         public string BotKickedUser { get; set; } = "The bot has attempted to kick the user";
         public string AddedXAmountOfSongs { get; set; } = "Added {0} songs to the queue";
@@ -501,13 +507,44 @@ namespace SilverBotDS.Objects
         public string RequireBotAndUserPermisionsCheckFailedPL { get; set; } = "We both must have the permisions {0} for you to use that.";
         public string RequireBotAndUserPermisionsCheckFailedSG { get; set; } = "We both must have the permision {0} for you to use that.";
         public string UnknownImageFormat { get; set; } = "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.";
+        public string JpegSuccess { get; set; } = "There ya go a jpegnized image";
+        public string SilverSuccess { get; set; } = "There ya go a silver image";
+        public string ComicSuccess { get; set; } = "There ya go a image with the comic filter";
+        public string ResizeSuccess { get; set; } = "There ya go a resized image";
+        public string TintSuccess { get; set; } = "There ya go a tinted image";
+        public string MathSteps { get; set; } = "Math steps: ";
+        public string Results { get; set; } = "Result: ";
+        public string SomethingsContributors { get; set; } = "{0}'s contributors";
+        public string NuGetVerified { get; set; } = "NuGet verified";
+        public string Type { get; set; } = "Type";
+        public string Downloads { get; set; } = "<:green_download_icon:805051604797227038>";
+        public string Version { get; set; } = "Version";
+        public string SetToProvidedStrings { get; set; } = "Set them to the provided things";
+        public string SetToDefaultStrings { get; set; } = "Set them to the default things";
+        public string NoPerm { get; set; } = "Please give me permission to manage channels in the category";
+        public string CategorySetSuccess { get; set; } = "Set the category to {0}, you might want to add atleast 4 channels of any kind in it and then run the `setstatstrings` command";
+        public string EmojiMessageDownloadStart { get; set; } = "Downloading at most {0} messages which will take around {1} cause of discord ratelimit";
+        public string EmojiMessageDownloadEnd { get; set; } = "Downloaded {0} while expecting {1}, estimated time was: {2} actual time was {3} expected time if provided correct limit would be {4}\nWell anyways processing messages";
+        public string EmojiEnd { get; set; } = "i went through {0} messages in {1}(including download) {2}(excluding download)\nEmote usage data:";
+        public string FreeToPlayGameType { get; set; } = "F2P";
+        public string NotAvailableGameType { get; set; } = "Not Available";
+        public string CostsMoneyGameTypeBug { get; set; } = "It costs merica bucks but idk how much";
+        public string NoGamesWereReturned { get; set; } = "No Games were returned";
+        public string NoGamesWereReturnedDescription { get; set; } = "Try again later, or try changing your search term";
+        public string AmericanMoney { get; set; } = "{0} merica bucks";
+        public string OS { get; set; } = "Operating system:";
+        public string DsharpplusVersion { get; set; } = "Dsharpplus version:";
+        public string VersionNumber { get; set; } = "Version number";
+        public string GitRepo { get; set; } = "Git repo";
+        public string GitCommitHash { get; set; } = "Git Commit hash";
+        public string GitBranch { get; set; } = "Git Branch";
+        public string IsDirty { get; set; } = "Is dirty";
+        public string CLR { get; set; } = "CLR";
 
         public CultureInfo GetCultureInfo()
         {
             return new CultureInfo(CultureInfo);
         }
-
-        public ImageThings Imagethings { get; set; } = new();
 
         private static readonly Dictionary<string, Language> CachedLanguages = new();
 
@@ -588,14 +625,39 @@ namespace SilverBotDS.Objects
 
         public static async Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
         {
-            DatabaseContext db = (DatabaseContext)ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));
-            return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
+            using (var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext)))
+            {
+                var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
+                if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
+                {
+                    var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
+
+                    if (t != null && t.IsTranslator && t.CurrentCustomLanguage != null)
+                    {
+                        await db.Entry(t).ReloadAsync();
+                        return t.CurrentCustomLanguage;
+                    }
+                }
+                return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
+            }
         }
 
         public static async Task<Language> GetLanguageFromCtxAsync(BaseContext ctx)
         {
-            DatabaseContext db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
-            return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
+            using (var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext)))
+            {
+                var conf = (Config)ctx.Services.GetService(typeof(Config));
+                if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
+                {
+                    var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
+                    if (t != null && t.IsTranslator && t.CurrentCustomLanguage != null)
+                    {
+                        await db.Entry(t).ReloadAsync();
+                        return t.CurrentCustomLanguage;
+                    }
+                }
+                return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
+            }
         }
     }
 }

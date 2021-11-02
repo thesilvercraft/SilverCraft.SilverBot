@@ -93,44 +93,38 @@
   "PurgedBySilverBotReason": "Избриша SilverBot за {0}",
   "NotValidLanguage": "Тоа не е валиден јазик, валидни јазици се: {0}",
   "CultureInfo": "mk-MK",
-  "VersionInfoCommand": {
-    "OS": "Оперативен систем:",
-    "DsharpplusVersion": "Dsharpplus верзија:",
-    "VersionNumber": "Version number",
-    "GitRepo": "Git repo",
-    "GitCommitHash": "Git Commit hash",
-    "GitBranch": "Git Branch",
-    "IsDirty": "Is dirty",
-    "CLR": "CLR"
-  },
-  "NuGetCommand": {
-    "SomethingsContributors": "контрибутерите на {0}",
-    "NuGetVerified": "NuGet verified",
-    "Type": "Вид",
-    "Downloads": "<:green_download_icon:805051604797227038>",
-    "Version": "Верзија"
-  },
-  "Mathcommands": {
-    "MathSteps": "Математички чекори: ",
-    "Results": "Резултат: "
-  },
-  "SteamCommand": {
-    "FreeToPlayGameType": "Бесплатна",
-    "NotAvailableGameType": "Неможе да се купи моментално",
-    "CostsMoneyGameTypeBug": "Кошта пари но неможев да најдам колку",
-    "NoGamesWereReturned": "Не најдов никакви игри",
-    "NoGamesWereReturnedDescription": "Пробај пак или барај со други зборови",
-    "AmericanMoney": "{0} американски долари"
-  },
-  "StatisticCommand": {
-    "SetToProvidedStrings": "Ги ставив до дадените работи",
-    "SetToDefaultStrings": "Ги поставив на почетните подесувања",
-    "NoPerm": "Дај ми дозвола да ги сменам каналиве во категориата",
-    "CategorySetSuccess": "Ја ставив категоријата да е {0}, додај 5 канали од билокаков вид и користи ја `setstatstrings` командата",
-    "EmojiMessageDownloadStart": "Симнувам {0} пораќи што ќе трае {1}",
-    "EmojiMessageDownloadEnd": "Симнав {0} додека очекував {1}, очекував да трае {2} додека траеше {3}, ако ми кажеше точно колку пораки да симнам мислам дека ќе траеше {4}",
-    "EmojiEnd": "Отидов преку {0} пораки во {1} вклучувајќи симнување {2} исклучувајќи симнување\nИнфромации за емојиња:"
-  },
+  "OS": "Оперативен систем:",
+  "DsharpplusVersion": "Dsharpplus верзија:",
+  "VersionNumber": "Version number",
+  "GitRepo": "Git repo",
+  "GitCommitHash": "Git Commit hash",
+  "GitBranch": "Git Branch",
+  "IsDirty": "Is dirty",
+  "CLR": "CLR",
+
+  "SomethingsContributors": "контрибутерите на {0}",
+  "NuGetVerified": "NuGet verified",
+  "Type": "Вид",
+  "Downloads": "<:green_download_icon:805051604797227038>",
+  "Version": "Верзија",
+
+  "MathSteps": "Математички чекори: ",
+  "Results": "Резултат: ",
+
+  "FreeToPlayGameType": "Бесплатна",
+  "NotAvailableGameType": "Неможе да се купи моментално",
+  "CostsMoneyGameTypeBug": "Кошта пари но неможев да најдам колку",
+  "NoGamesWereReturned": "Не најдов никакви игри",
+  "NoGamesWereReturnedDescription": "Пробај пак или барај со други зборови",
+  "AmericanMoney": "{0} американски долари",
+
+  "SetToProvidedStrings": "Ги ставив до дадените работи",
+  "SetToDefaultStrings": "Ги поставив на почетните подесувања",
+  "NoPerm": "Дај ми дозвола да ги сменам каналиве во категориата",
+  "CategorySetSuccess": "Ја ставив категоријата да е {0}, додај 5 канали од билокаков вид и користи ја `setstatstrings` командата",
+  "EmojiMessageDownloadStart": "Симнувам {0} пораќи што ќе трае {1}",
+  "EmojiMessageDownloadEnd": "Симнав {0} додека очекував {1}, очекував да трае {2} додека траеше {3}, ако ми кажеше точно колку пораки да симнам мислам дека ќе траеше {4}",
+  "EmojiEnd": "Отидов преку {0} пораки во {1} вклучувајќи симнување {2} исклучувајќи симнување\nИнфромации за емојиња:",
   "BotBannedUser": "Ботот се обиде да го ban-ира корисникот",
   "BotKickedUser": "Ботот се обиде да го kick-не корисникот",
   "AddedXAmountOfSongs": "Додадов {0} песни до листата",
@@ -174,11 +168,9 @@
   "RequireUserPermisionsCheckFailedPL": "Ти мора да ги имаш дозволите {0} за да го користиш тоа.",
   "RequireBotAndUserPermisionsCheckFailedPL": "Јас и ти мора да ги имамаме дозволите {0} за да го користиш тоа.",
   "UnknownImageFormat": "Не знам како да го прочитам тој формат, јас само можам да читам BPM, TIFF, GIF, PNG, TGA и JPEG фотографии.",
-  "Imagethings": {
-    "JpegSuccess": "Ете ти jpeg-низирана слика",
-    "SilverSuccess": "Еве ти црнобела слика",
-    "ComicSuccess": "Ете ти слика со комичен филтер",
-    "ResizeSuccess": "Ете ти слика која има променета големина",
-    "TintSuccess": "Ете ти обоена слика"
-  }
+  "JpegSuccess": "Ете ти jpeg-низирана слика",
+  "SilverSuccess": "Еве ти црнобела слика",
+  "ComicSuccess": "Ете ти слика со комичен филтер",
+  "ResizeSuccess": "Ете ти слика која има променета големина",
+  "TintSuccess": "Ете ти обоена слика"
 }

@@ -17,7 +17,7 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
-        private const ulong CurrentConfVer = 32;
+        private const ulong CurrentConfVer = 33;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } =
@@ -150,6 +150,11 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Do we enable the shitty server statistics")]
         public bool EnableServerStatistics { get; set; } = true;
+
+        [XmlDescription("Used for the new Translator Mode thingy")]
+        public ulong TranslatorRoleId { get; set; } = 0;
+
+        public ulong TranslatorModeChannel { get; set; } = 0;
 
         [XmlDescription("RedirectUrl for the page")]
         public string LoginPageDiscordRedirectUrl { get; set; } = "https://discord.com/api/oauth2/authorize?client_id=702445582559739976&redirect_uri=https%3A%2F%2Flocalhost%3A44319%2Flogin&response_type=code&scope=identify%20guilds%20guilds.join";

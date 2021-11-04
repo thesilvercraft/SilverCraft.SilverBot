@@ -577,68 +577,6 @@ namespace SilverBotDS.Commands
             public byte[] FileBytes { get; set; }
         }
 
-        [Command("exportemotestoguilded")]
-        [RequireGuild]
-        public async Task ExportEmotesToGuilded(CommandContext ctx)
-        {
-            var emojiz = ctx.Guild.Emojis.Values;
-            List<Emote> emotes = new();
-            foreach (var emoji in emojiz)
-            {
-                emotes.Add(new Emote { Name = emoji.Name, Url = emoji.Url });
-            }
-            while (emotes.Count != 0)
-            {
-                await SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new Rootobject()
-                {
-                    Author = "SilverBot",
-                    Name = $"{ctx.Guild.Name}'s emotes",
-                    Emotes = emotes.Take(30).ToArray()
-                }), "pack.json");
-                if (emotes.Count >= 30)
-                {
-                    emotes.RemoveRange(0, 30);
-                }
-                else
-                {
-                    emotes.Clear();
-                }
-            }
-            await new DiscordMessageBuilder().WithContent("https://support.guilded.gg/hc/en-us/articles/1500000398142").WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
-        }
-
-        [Command("exportemotes")]
-        [RequireGuild]
-        public async Task DownloadEmotz(CommandContext ctx)
-        {
-            var emojiz = ctx.Guild.Emojis.Values;
-            List<SourceFile> sourceFiles = new();
-            foreach (var emoji in emojiz)
-            {
-                if (emoji.IsAnimated)
-                {
-                    sourceFiles.Add(new SourceFile { Name = emoji.Name, Extension = "gif", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url) });
-                }
-                else
-                {
-                    sourceFiles.Add(new SourceFile { Name = emoji.Name, Extension = "png", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url) });
-                }
-            }
-            using MemoryStream memoryStream = new();
-            using (ZipArchive zip = new(memoryStream, ZipArchiveMode.Create, true))
-            {
-                foreach (SourceFile f in sourceFiles)
-                {
-                    ZipArchiveEntry zipItem = zip.CreateEntry($"{f.Name}.{f.Extension}");
-                    using MemoryStream originalFileMemoryStream = new(f.FileBytes);
-                    using Stream entryStream = zipItem.Open();
-                    originalFileMemoryStream.CopyTo(entryStream);
-                }
-            }
-            memoryStream.Position = 0;
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithFile("emojis.zip", memoryStream).SendAsync(ctx.Channel);
-        }
-
         [Command("addemotes")]
         [Description("testing shiz")]
         [RequireGuild]

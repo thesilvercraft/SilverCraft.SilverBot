@@ -197,17 +197,11 @@ namespace SilverBotDS.Commands
         }
 
         [Command("jpeg")]
+        [RequireAttachment]
         public async Task Jpegize(CommandContext ctx)
         {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Jpegize(ctx, image);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
+            var image = SdImage.FromContext(ctx);
+            await Jpegize(ctx, image);
         }
 
         [Command("resize")]
@@ -233,31 +227,19 @@ namespace SilverBotDS.Commands
         }
 
         [Command("resize")]
+        [RequireAttachment]
         public async Task Resize(CommandContext ctx, IImageFormat format)
         {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Resize(ctx, image, 0, 0, format);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
+            var image = SdImage.FromContext(ctx);
+            await Resize(ctx, image, 0, 0, format);
         }
 
         [Command("resize")]
+        [RequireAttachment]
         public async Task Resize(CommandContext ctx, [Description("Width")] int x = 0, [Description("Height")] int y = 0, IImageFormat format = null)
         {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Resize(ctx, image, x, y, format);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
+            var image = SdImage.FromContext(ctx);
+            await Resize(ctx, image, x, y, format);
         }
 
         [Command("tint")]
@@ -279,32 +261,19 @@ namespace SilverBotDS.Commands
         }
 
         [Command("tint")]
+        [RequireAttachment]
         public async Task Tint(CommandContext ctx, [Description("https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Color.html#SixLabors_ImageSharp_Color_TryParse_System_String_SixLabors_ImageSharp_Color__")] Color color)
         {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Tint(ctx, image, color);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
+            var image = SdImage.FromContext(ctx);
+            await Tint(ctx, image, color);
         }
 
         [Command("silver")]
+        [RequireAttachment]
         public async Task Grayscale(CommandContext ctx)
         {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Grayscale(ctx, image);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount, lang);
-            }
+            var image = SdImage.FromContext(ctx);
+            await Grayscale(ctx, image);
         }
 
         [Command("silver")]
@@ -507,17 +476,11 @@ namespace SilverBotDS.Commands
         }
 
         [Command("mspaint")]
+        [RequireAttachment]
         public async Task Paint(CommandContext ctx)
         {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Paint(ctx, image);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
+            var image = SdImage.FromContext(ctx);
+            await Paint(ctx, image);
         }
 
         private readonly Font MotivateFont = new(SystemFonts.Get("Times New Roman"), 100);
@@ -590,17 +553,11 @@ namespace SilverBotDS.Commands
         }
 
         [Command("motivate")]
+        [RequireAttachment]
         public async Task Motivate(CommandContext ctx, [RemainingText] string text)
         {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Motivate(ctx, image, text);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
+            var image = SdImage.FromContext(ctx);
+            await Motivate(ctx, image, text);
         }
 
         private readonly FontFamily CaptionFont = SystemFonts.Get("Futura Extra Black Condensed");
@@ -639,17 +596,11 @@ namespace SilverBotDS.Commands
         }
 
         [Command("caption")]
+        [RequireAttachment]
         public async Task Caption(CommandContext ctx, [RemainingText] string text)
         {
-            try
-            {
-                var image = SdImage.FromContext(ctx);
-                await Caption(ctx, image, text);
-            }
-            catch (AttachmentCountIncorrectException acie)
-            {
-                await Sendcorrectamountofimages(ctx, acie.AttachmentCount);
-            }
+            var image = SdImage.FromContext(ctx);
+            await Caption(ctx, image, text);
         }
     }
 }

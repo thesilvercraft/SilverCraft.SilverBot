@@ -6,7 +6,14 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
+using static SilverBotDS.Commands.OwnerOnly;
 
 namespace SilverBotDS.Commands
 {
@@ -16,6 +23,7 @@ namespace SilverBotDS.Commands
     {
         public DatabaseContext Database { private get; set; }
         private DiscordEmoji[] _pollEmojiCache;
+        public HttpClient HttpClient { private get; set; }
 
         [Command("setprefix")]
         [RequireUserPermissions(Permissions.ManageGuild)]
@@ -91,6 +99,71 @@ namespace SilverBotDS.Commands
             {
                 await commandContext.RespondAsync("Error: the item can't be empty");
             }
+        }
+
+        [Command("exportemotestoguilded")]
+        [Description("Exports your guild's emotes into a \"Emote Pack\" Guilded can read")]
+        [RequireGuild]
+        public async Task ExportEmotesToGuilded(CommandContext ctx)
+        {
+            var emojiz = ctx.Guild.Emojis.Values;
+            List<Emote> emotes = new();
+            foreach (var emoji in emojiz)
+            {
+                emotes.Add(new Emote { Name = emoji.Name, Url = emoji.Url });
+            }
+            while (emotes.Count != 0)
+            {
+                await SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new Rootobject()
+                {
+                    Author = "SilverBot",
+                    Name = $"{ctx.Guild.Name}'s emotes",
+                    Emotes = emotes.Take(30).ToArray()
+                }), "pack.json");
+                if (emotes.Count >= 30)
+                {
+                    emotes.RemoveRange(0, 30);
+                }
+                else
+                {
+                    emotes.Clear();
+                }
+            }
+            await new DiscordMessageBuilder().WithContent("https://support.guilded.gg/hc/en-us/articles/1500000398142").WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+        }
+
+        [Command("exportemotes")]
+        [RequireGuild]
+        public async Task DownloadEmotz(CommandContext ctx)
+        {
+            await ctx.TriggerTypingAsync();
+            var emojiz = ctx.Guild.Emojis.Values;
+            List<SourceFile> sourceFiles = new();
+            foreach (var emoji in emojiz)
+            {
+                if (emoji.IsAnimated)
+                {
+                    sourceFiles.Add(new SourceFile { Name = emoji.Name, Extension = "gif", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url) });
+                }
+                else
+                {
+                    sourceFiles.Add(new SourceFile { Name = emoji.Name, Extension = "png", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url) });
+                }
+                await Task.Delay(50);
+            }
+            using MemoryStream memoryStream = new();
+            using (ZipArchive zip = new(memoryStream, ZipArchiveMode.Create, true))
+            {
+                foreach (SourceFile f in sourceFiles)
+                {
+                    ZipArchiveEntry zipItem = zip.CreateEntry($"{f.Name}.{f.Extension}");
+                    using MemoryStream originalFileMemoryStream = new(f.FileBytes);
+                    using Stream entryStream = zipItem.Open();
+                    originalFileMemoryStream.CopyTo(entryStream);
+                }
+            }
+            memoryStream.Position = 0;
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithFile("emojis.zip", memoryStream).SendAsync(ctx.Channel);
         }
     }
 }

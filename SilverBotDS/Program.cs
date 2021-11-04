@@ -25,6 +25,7 @@ using SDiscordSink;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using SilverBotDS.Attributes;
 using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
 using SilverBotDS.Commands.Slash;
@@ -611,7 +612,7 @@ namespace SilverBotDS
         /// <param name="lang">The language</param>
         /// <param name="isinguild">Was the command executed in a guild or in dm's</param>
         /// <returns>A <see cref="string"/> containing the error message</returns>
-        private static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang, bool isinguild)
+        private static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang, bool isinguild, CommandErrorEventArgs e)
         {
             var chkbstype = checkBase.GetType();
             if (chkbstype == typeof(RequireDJAttribute))
@@ -686,6 +687,17 @@ namespace SilverBotDS
                     return string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL, userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
                 }
             }
+            else if (checkBase is RequireAttachmentAttribute attachmentAttribute)
+            {
+                if (e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount)
+                {
+                    return (string)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang).GetValue(lang);
+                }
+                else
+                {
+                    return (string)typeof(Language).GetProperty(attachmentAttribute.LessThenLang).GetValue(lang);
+                }
+            }
             return string.Format(lang.CheckFailed, RemoveStringFromEnd(chkbstype.Name, "Attribute").Humanize());
         }
 
@@ -707,7 +719,7 @@ namespace SilverBotDS
                         {
                             await new DiscordMessageBuilder()
                                                              .WithReply(e.Context.Message.Id)
-                                                             .WithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang, e.Context.Guild != null))
+                                                             .WithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang, e.Context.Guild != null, e))
                                                              .SendAsync(e.Context.Channel);
                         }
                         else
@@ -716,7 +728,7 @@ namespace SilverBotDS
                             var tempbuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
                             for (var i = 0; i < cfe.FailedChecks.Count; i++)
                             {
-                                pages.Add(new Page(embed: tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}").WithDescription(RenderErrorMessageForAttribute(cfe.FailedChecks[i], lang, e.Context.Guild != null))));
+                                pages.Add(new Page(embed: tempbuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}").WithDescription(RenderErrorMessageForAttribute(cfe.FailedChecks[i], lang, e.Context.Guild != null, e))));
                             }
                             var interactivity = e.Context.Client.GetInteractivity();
                             await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages, token: new System.Threading.CancellationToken());

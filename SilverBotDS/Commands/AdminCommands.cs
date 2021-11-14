@@ -64,8 +64,8 @@ namespace SilverBotDS.Commands
                 {
                     await pollStartMessage.CreateReactionAsync(emote);
                 }
-                using var rng = new RandomGenerator();
-                await Database.plannedEvents.AddAsync(new() { ChannelID = commandContext.Channel.Id, EventID = rng.RandomAbcString(20), Handled = false, MessageID = commandContext.Message.Id, Time = DateTime.Now + duration, Type = Objects.Database.Classes.PlannedEventType.EmojiPoll, UserID = commandContext.User.Id, ResponseMessageID = pollStartMessage.Id });
+
+                await Database.plannedEvents.AddAsync(new() { ChannelID = commandContext.Channel.Id, EventID = RandomGenerator.RandomAbcString(20), Handled = false, MessageID = commandContext.Message.Id, Time = DateTime.Now + duration, Type = Objects.Database.Classes.PlannedEventType.EmojiPoll, UserID = commandContext.User.Id, ResponseMessageID = pollStartMessage.Id });
                 await Database.SaveChangesAsync();
             }
             else
@@ -91,8 +91,7 @@ namespace SilverBotDS.Commands
                 bob.WithTitle(item).WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username, iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png));
                 var pollStartMessage = await commandContext.RespondAsync(bob.Build());
                 await pollStartMessage.CreateReactionAsync(_pollEmojiCache[0]);
-                using var rng = new RandomGenerator();
-                await Database.plannedEvents.AddAsync(new() { ChannelID = commandContext.Channel.Id, EventID = rng.RandomAbcString(20), Handled = false, MessageID = commandContext.Message.Id, Time = DateTime.Now + duration, Type = Objects.Database.Classes.PlannedEventType.GiveAway, UserID = commandContext.User.Id, ResponseMessageID = pollStartMessage.Id });
+                await Database.plannedEvents.AddAsync(new() { ChannelID = commandContext.Channel.Id, EventID = RandomGenerator.RandomAbcString(20), Handled = false, MessageID = commandContext.Message.Id, Time = DateTime.Now + duration, Type = Objects.Database.Classes.PlannedEventType.GiveAway, UserID = commandContext.User.Id, ResponseMessageID = pollStartMessage.Id });
                 await Database.SaveChangesAsync();
             }
             else

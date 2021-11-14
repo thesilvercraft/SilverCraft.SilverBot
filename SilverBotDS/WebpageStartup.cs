@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SilverBotDS
@@ -22,7 +23,7 @@ namespace SilverBotDS
 
         private static string[] GetStrings(string url)
         {
-            return new WebClient().DownloadString(url).Split('\n').Select(s => s.Trim()).ToArray();
+            return Program.ServiceProvider.GetService<HttpClient>().GetStringAsync(url).GetAwaiter().GetResult().Split('\n').Select(s => s.Trim()).ToArray();
         }
 
         private static string[] GetCloudflareIP()
@@ -44,7 +45,8 @@ namespace SilverBotDS
 197.234.240.0/22
 198.41.128.0/17
 162.158.0.0/15
-104.16.0.0/12
+104.16.0.0/13
+104.24.0.0/14
 172.64.0.0/13
 131.0.72.0/22
 2400:cb00::/32

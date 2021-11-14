@@ -20,7 +20,7 @@ jobs:
       run: dotnet publish -c Release -p:PublishProfile=FolderProfile 
     - name: Zip
       shell: powershell
-      run: Compress-7Zip "SilverBotDS\bin\Release\net5.0\publish" -ArchiveFileName "silverbot.zip" -Format Zip
+      run: Compress-7Zip "SilverBotDS\bin\Release\net6.0\publish" -ArchiveFileName "silverbot.zip" -Format Zip
     - name: Make a random name
       id: E
       shell: powershell

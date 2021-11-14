@@ -14,13 +14,14 @@
 @inject DiscordClient Discord
 @inject IJSRuntime jsRuntime
 @inject NavigationManager uriHelper
+@inject HttpClient client
 @{
     if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
     {
         uriHelper.NavigateTo("/login", forceLoad: true);
     }
-    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session);
-    var servers = from server in SessionHelper.GetGuildsFromSession(HttpContextAccessor.HttpContext.Session) where Discord.Guilds.ContainsKey(server.UId) && ((Discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult()).Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner) select server;
+    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client);
+    var servers = from server in SessionHelper.GetGuildsFromSession(HttpContextAccessor.HttpContext.Session, client) where Discord.Guilds.ContainsKey(server.UId) && ((Discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult()).Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner) select server;
 }
 <h1>The servers you can manage:</h1>
 <div>

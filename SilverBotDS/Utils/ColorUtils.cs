@@ -110,9 +110,8 @@ namespace SilverBotDS.Utils
         /// <returns>a single (random) <see cref="DiscordColor"/></returns>
         internal static async Task<DiscordColor> GetSingleAsyncInternal(bool ignorecache = false, bool useinternal = false)
         {
-            using RandomGenerator rg = new();
             var arr = await GetAsync(ignorecache, useinternal);
-            return arr[rg.Next(0, arr.Length)];
+            return arr[RandomGenerator.Next(0, arr.Length)];
         }
     }
 }

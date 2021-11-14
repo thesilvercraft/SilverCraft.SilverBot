@@ -47,19 +47,18 @@ namespace SilverBotDS.Commands
             var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
             await ctx.RespondAsync($"its {info.Duration.Humanize()} ({info.Duration}) long");
 
-            using (RandomGenerator random = new())
-            {
+            
                 string name = Path.GetFileName(loc);
                 IVideoStream videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
                 for (int i = 0; i < times; i++)
                 {
                     await FFmpeg.Conversions.New()
                     .AddStream(videoStream)
-                    .ExtractNthFrame(random.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (_) => $"Extracts{Program.DirSlash}{name}{i}.png")
+                    .ExtractNthFrame(RandomGenerator.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (_) => $"Extracts{Program.DirSlash}{name}{i}.png")
                     .UseHardwareAcceleration(HardwareAccelerator.auto, (VideoCodec)Enum.Parse(typeof(VideoCodec), decoder, true), (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
                     .Start();
                 }
-            }
+            
             await ctx.RespondAsync("done?");
         }
 

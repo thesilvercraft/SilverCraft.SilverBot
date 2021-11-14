@@ -49,12 +49,12 @@ namespace SilverBotDS.Commands
         public async Task Add(CommandContext ctx, [RemainingText] string content)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            using RandomGenerator rg = new();
+           
             var uq = Dctx.userQuotes.FirstOrDefault(x => x.UserId == ctx.User.Id);
             var quote = new SBDSODC.UserQuote()
             {
                 QuoteContent = content,
-                QuoteId = rg.RandomAbcString(6),
+                QuoteId = RandomGenerator.RandomAbcString(6),
                 TimeStamp = DateTime.UtcNow,
                 UserId = ctx.User.Id
             };
@@ -68,7 +68,7 @@ namespace SilverBotDS.Commands
         public async Task Get(CommandContext ctx, string id)
         {
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            using RandomGenerator rg = new();
+           
             var uq = Dctx.userQuotes.Any(x => x.UserId == ctx.User.Id);
             if (uq)
             {

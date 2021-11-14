@@ -16,6 +16,7 @@
 @inject NavigationManager uriHelper
 @using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
+@inject HttpClient client
 @code {
     [Parameter]
     public int id { get; set; }
@@ -30,7 +31,7 @@
     {
         uriHelper.NavigateTo("/login", forceLoad: true);
     }
-    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session);
+    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client);
     var translator = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
     if (translator == null)
     {

@@ -4,6 +4,7 @@
 @using DSharpPlus.Entities
 @inject IHttpContextAccessor HttpContextAccessor
 @inject DiscordClient Discord
+@inject HttpClient client
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="font-family: 'Berlin Sans FB', sans-serif;">
     <a class="navbar-brand" href="#">
         @if (DateTime.UtcNow.Month == 6)
@@ -32,7 +33,7 @@
         {
             <li class="nav-item">
                 @{
-                    DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session).UId).GetAwaiter().GetResult();
+                    DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client).UId).GetAwaiter().GetResult();
                 }
                 <a class="nav-link" href="">Hello @user.Username#@user.Discriminator</a>
             </li>

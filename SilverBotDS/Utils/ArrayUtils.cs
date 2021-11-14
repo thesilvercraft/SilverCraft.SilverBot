@@ -6,6 +6,6 @@ namespace SilverBotDS.Utils
     {
         public static T RandomFromArray<T>(T[] vs) => vs.Length == 0
                 ? throw new ArgumentOutOfRangeException(nameof(vs), "Array must not be empty")
-                : vs[new RandomGenerator().Next(0, vs.Length - 1)];
+                : vs[RandomGenerator.Next(0, vs.Length - 1)];
     }
 }

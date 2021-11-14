@@ -12,13 +12,14 @@
 @inject IJSRuntime jsRuntime
 @inject NavigationManager uriHelper
 @inject DatabaseContext dbctx
+@inject HttpClient client
 @{
     if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>
     (HttpContextAccessor.HttpContext.Session, "accessToken")))
     {
         uriHelper.NavigateTo("/login", forceLoad: true);
     }
-    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session);
+    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session,client);
     var translator = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
     if (translator == null)
     {

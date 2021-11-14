@@ -2,6 +2,8 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using static SilverBotDS.Objects.Classes.Oauth;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -20,7 +22,7 @@ namespace SilverBotDS.WebHelpers
             return value == null ? default : JsonSerializer.Deserialize<T>(value);
         }
 
-        public static Guild[] GetGuildsFromSession(this ISession session)
+        public static Guild[] GetGuildsFromSession(this ISession session, HttpClient client)
         {
             if (session.TryGetValue("GuildsCache", out _))
             {
@@ -30,19 +32,16 @@ namespace SilverBotDS.WebHelpers
                     return e.Item1;
                 }
             }
-            HttpWebRequest webRequest2 = (HttpWebRequest)WebRequest.Create("https://discordapp.com/api/v8/users/@me/guilds");
-            webRequest2.Method = "Get";
-            webRequest2.ContentLength = 0;
-            webRequest2.Headers.Add("Authorization", $"Bearer {GetObjectFromJson<string>(session, "accessToken")}");
-            webRequest2.ContentType = "application/x-www-form-urlencoded";
-            using HttpWebResponse response2 = webRequest2.GetResponse() as HttpWebResponse;
-            StreamReader reader2 = new(response2.GetResponseStream());
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://discordapp.com/api/v8/users/@me/guilds");
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", GetObjectFromJson<string>(session, "accessToken"));
+            var response = client.Send(requestMessage);
+            StreamReader reader2 = new(response.Content.ReadAsStream());
             var guilds = JsonSerializer.Deserialize<Guild[]>(reader2.ReadToEnd());
             session.SetObjectAsJson("GuildsCache", new Tuple<Guild[], DateTime>(guilds, DateTime.UtcNow));
             return guilds;
         }
 
-        public static Oauththingy GetUserInfoFromSession(this ISession session)
+        public static Oauththingy GetUserInfoFromSession(this ISession session, HttpClient client)
         {
             if (session.TryGetValue("UserCache", out _))
             {
@@ -52,13 +51,10 @@ namespace SilverBotDS.WebHelpers
                     return e.Item1;
                 }
             }
-            HttpWebRequest webRequest1 = (HttpWebRequest)WebRequest.Create("https://discordapp.com/api/users/@me");
-            webRequest1.Method = "Get";
-            webRequest1.ContentLength = 0;
-            webRequest1.Headers.Add("Authorization", $"Bearer {GetObjectFromJson<string>(session, "accessToken")}");
-            webRequest1.ContentType = "application/x-www-form-urlencoded";
-            using HttpWebResponse response1 = webRequest1.GetResponse() as HttpWebResponse;
-            StreamReader reader1 = new(response1.GetResponseStream());
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://discordapp.com/api/users/@me");
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", GetObjectFromJson<string>(session, "accessToken"));
+            var response = client.Send(requestMessage);
+            StreamReader reader1 = new(response.Content.ReadAsStream());
             var oauth = JsonSerializer.Deserialize<Oauththingy>(reader1.ReadToEnd());
             session.SetObjectAsJson("UserCache", new Tuple<Oauththingy, DateTime>(oauth, DateTime.UtcNow));
             return oauth;

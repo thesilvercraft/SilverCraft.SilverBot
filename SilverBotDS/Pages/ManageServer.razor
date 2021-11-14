@@ -19,6 +19,7 @@
 @inject NavigationManager uriHelper
 @using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
+@inject HttpClient client
 @code {
     [Parameter]
     public long id { get; set; }
@@ -28,8 +29,8 @@
     {
         uriHelper.NavigateTo("/login", forceLoad: true);
     }
-    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session);
-    var servers = from server in SessionHelper.GetGuildsFromSession(HttpContextAccessor.HttpContext.Session) where Discord.Guilds.ContainsKey(server.UId) && ((Discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult()).Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner) select server;
+    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client);
+    var servers = from server in SessionHelper.GetGuildsFromSession(HttpContextAccessor.HttpContext.Session, client) where Discord.Guilds.ContainsKey(server.UId) && ((Discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult()).Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner) select server;
     if (!servers.Any(x => x.Id == id.ToString()))
     {
         uriHelper.NavigateTo("/listguilds");

@@ -41,11 +41,10 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             input = $"bibi is {input}";
-            int randomnumber;
-            using (var random = new RandomGenerator())
-            {
-                randomnumber = random.Next(1, BibiPictureCount);
-            }
+            int randomnumber=RandomGenerator.Next(1, BibiPictureCount);
+            
+
+            
             using Image picture = await Image.LoadAsync($"{config.LocalBibiPictures}{randomnumber}.png");
             float size = BibiFont.Size;
             while (TextMeasurer.Measure(input, new RendererOptions(new Font(BibiFont.Family, size, FontStyle.Bold))).Width > picture.Width)

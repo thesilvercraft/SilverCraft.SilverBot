@@ -83,14 +83,14 @@ namespace SilverBotDS
 
         public static Config GetConfig()
         {
-            return serviceProvider.GetService<Config>();
+            return ServiceProvider.GetService<Config>();
         }
 
         private static DiscordClient discord;
         private static LavalinkNode audioService;
         private static InactivityTrackingService trackingService;
         private static Serilog.Core.Logger log;
-        private static ServiceProvider serviceProvider;
+        public static ServiceProvider ServiceProvider {  get; private set; }
         private static readonly HttpClient httpClient = NewhttpClientWithUserAgent();
 
         private static HttpClient NewhttpClientWithUserAgent()
@@ -326,15 +326,15 @@ namespace SilverBotDS
                 services.AddSingleton(new SpotifyClient(sconfig.WithToken((await new OAuthClient(sconfig).RequestToken(new ClientCredentialsRequest(config.SpotifyClientId, config.SpotifyClientSecret))).AccessToken)));
             }
             services.AddSingleton(log);
-            serviceProvider = services.BuildServiceProvider();
-            var context = serviceProvider.GetService<DatabaseContext>();
+            ServiceProvider = services.BuildServiceProvider();
+            var context = ServiceProvider.GetService<DatabaseContext>();
             context.Database.Migrate();
             CommandsNextExtension commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {
-                Services = serviceProvider,
+                Services = ServiceProvider,
                 PrefixResolver = ResolvePrefixAsync
             });
-            var slash = discord.UseSlashCommands(new SlashCommandsConfiguration() { Services = serviceProvider });
+            var slash = discord.UseSlashCommands(new SlashCommandsConfiguration() { Services = ServiceProvider });
             slash.SlashCommandErrored += Slash_SlashCommandErrored;
 
             #region Registering Commands
@@ -542,7 +542,7 @@ namespace SilverBotDS
             {
                 return Task.FromResult(0);
             }
-            var db = serviceProvider.GetService<DatabaseContext>();
+            var db = ServiceProvider.GetService<DatabaseContext>();
             if (db.IsBanned(msg.Author.Id))
             {
                 return Task.FromResult(-1);
@@ -577,7 +577,7 @@ namespace SilverBotDS
 
         private static async Task Commands_CommandExecuted(CommandsNextExtension sender, CommandExecutionEventArgs e)
         {
-            var analytics = serviceProvider.GetService<IAnalyse>();
+            var analytics = ServiceProvider.GetService<IAnalyse>();
             if (analytics is not null)
             {
                 await analytics.EmitEvent(e.Context.User, "CommandExecuted", new Dictionary<string, object>()
@@ -810,21 +810,20 @@ namespace SilverBotDS
             var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
             var bob = new DiscordEmbedBuilder(msg.Embeds[0]);
             var people = (await msg.GetReactionsAsync(DiscordEmoji.FromName(discord, ":everybodyvotes:"))).Where(x => x.Id != discord.CurrentUser.Id && !x.IsBot);
-            using var random = new RandomGenerator();
             if (!people.Any())
             {
                 await channel.SendMessageAsync("Nobody reacted in time :(");
             }
             else
             {
-                await channel.SendMessageAsync($"{people.ElementAt(random.Next(0, people.Count())).Mention} won {msg.Embeds[0].Title}");
+                await channel.SendMessageAsync($"{people.ElementAt(RandomGenerator.Next(0, people.Count())).Mention} won {msg.Embeds[0].Title}");
             }
             @event.Handled = true;
         }
 
         public static async Task RunEventsAsync()
         {
-            var dbctx = serviceProvider.GetRequiredService<DatabaseContext>();
+            var dbctx = ServiceProvider.GetRequiredService<DatabaseContext>();
             while (true)
             {
                 try
@@ -885,7 +884,7 @@ namespace SilverBotDS
                 try
                 {
                     log.Debug("Entered statistics method");
-                    using var dbctx = serviceProvider.GetRequiredService<DatabaseContext>();
+                    using var dbctx = ServiceProvider.GetRequiredService<DatabaseContext>();
                     log.Debug("Getting the settings about statistics");
                     var things = dbctx.GetStatisticSettings();
                     log.Debug("Got the settings about statistics");
@@ -996,7 +995,7 @@ namespace SilverBotDS
 
         private static async Task IncreaseXP(ulong id, ulong count = 1)
         {
-            using var context = serviceProvider.GetService<DatabaseContext>();
+            using var context = ServiceProvider.GetService<DatabaseContext>();
 
             var o = await context.userExperiences.FirstOrDefaultAsync(x => x.Id == id);
             if (o is not null)
@@ -1036,7 +1035,7 @@ namespace SilverBotDS
                     await IncreaseXP(e.Author.Id);
                 }
             }
-            using var context = serviceProvider.GetService<DatabaseContext>();
+            using var context = ServiceProvider.GetService<DatabaseContext>();
 
             var o = e.Channel.IsPrivate ? default : await context.serverSettings.FirstOrDefaultAsync(x => x.ServerId == e.Guild.Id);
             if ((e.Channel.IsPrivate

@@ -38,8 +38,9 @@
 @inject IJSRuntime jsRuntime
 @inject LavalinkNode Lavalink
 @inject NotificationService NotificationService
+@inject HttpClient client
 @{
-    DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session).UId).GetAwaiter().GetResult();
+    DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client).UId).GetAwaiter().GetResult();
     var djattribute = new RequireDJAttribute();
 }
 @foreach (var guild in Discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null && x.Members[user.Id].VoiceState.Channel is not null && Lavalink.HasPlayer(x.Id) && Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))

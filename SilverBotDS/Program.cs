@@ -600,7 +600,7 @@ namespace SilverBotDS
         {
             if (a.EndsWith(sub))
             {
-                a = a.Substring(0, a.LastIndexOf(sub));
+                a = a[..a.LastIndexOf(sub)];
             }
             return a;
         }

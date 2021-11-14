@@ -11,11 +11,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install 7Zip PowerShell Module
       shell: powershell
-      run: Install-Module 7Zip4PowerShell -Force -Verbose
+      run: Install-Module 7Zip4PowerShell -Force
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Build
       run: dotnet publish -c Release -p:PublishProfile=FolderProfile 
     - name: Zip

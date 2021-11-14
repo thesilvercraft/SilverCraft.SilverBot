@@ -58,13 +58,3 @@ jobs:
          asset_path: .\SilverBotDS\bin\Release\net6.0\publish\SilverBotDS.dll
          asset_name: SilverBotDS.dll
          asset_content_type: application/octet-stream
-    - name: Upload View Dll
-      id: upload-view-dll
-      uses: actions/upload-release-asset@v1
-      env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBotDS\bin\Release\net6.0\publish\SilverBotDS.Views.dll
-         asset_name: SilverBotDS.Views.dll
-         asset_content_type: application/octet-stream

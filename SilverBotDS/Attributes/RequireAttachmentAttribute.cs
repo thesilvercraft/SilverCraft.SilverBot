@@ -13,8 +13,9 @@ namespace SilverBotDS.Attributes
         public uint AttachmentCount { get; init; }
         public string LessThenLang { get; set; }
         public string MoreThenLang { get; set; }
+        public int OverloadCount { get; set; }
 
-        public RequireAttachmentAttribute(uint attachmentcount = 1, string lessthen = "NoImageGeneric", string morethen = "MoreThanOneImageGeneric")
+        public RequireAttachmentAttribute(uint attachmentcount = 1, string lessthen = "NoImageGeneric", string morethen = "MoreThanOneImageGeneric",int argumentCountThatOverloadsCheck =-1)
         {
             AttachmentCount = attachmentcount;
             if (typeof(Language).GetProperty(lessthen).CanRead)
@@ -33,15 +34,14 @@ namespace SilverBotDS.Attributes
             {
                 throw new InvalidOperationException("MoreThen must be readable");
             }
+            OverloadCount = argumentCountThatOverloadsCheck;
         }
 
         public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
         {
-            if (help)
-            {
-                return Task.FromResult(true);
-            }
-            return Task.FromResult(ctx.Message.Attachments.Count == AttachmentCount);
+            return help || (OverloadCount == ctx.RawArgumentString.Split(" ").Length)
+                ? Task.FromResult(true)
+                : Task.FromResult(ctx.Message.Attachments.Count == AttachmentCount);
         }
     }
 }

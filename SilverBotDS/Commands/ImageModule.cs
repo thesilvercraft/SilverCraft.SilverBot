@@ -62,19 +62,7 @@ namespace SilverBotDS.Commands
             await SendImageStream(ctx, outStream);
         }
 
-        private static async Task Sendcorrectamountofimages(CommandContext ctx, AttachmentCountIncorrect e, Language lang = null)
-        {
-            lang ??= await Language.GetLanguageFromCtxAsync(ctx);
-            if (e == AttachmentCountIncorrect.TooLittleAttachments)
-            {
-                await Send_img_plsAsync(ctx, lang.NoImageGeneric, lang).ConfigureAwait(false);
-            }
-            else
-            {
-                await Send_img_plsAsync(ctx, lang.MoreThanOneImageGeneric, lang).ConfigureAwait(false);
-            }
-        }
-
+        
         public static async Task SendImageStream(CommandContext ctx, Stream outstream, string filename = "sbimg.png", string content = null, Language lang = null)
         {
             lang ??= await Language.GetLanguageFromCtxAsync(ctx);
@@ -197,7 +185,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("jpeg")]
-        [RequireAttachment]
+        [RequireAttachment(argumentCountThatOverloadsCheck:1)]
         public async Task Jpegize(CommandContext ctx)
         {
             var image = SdImage.FromContext(ctx);
@@ -227,7 +215,6 @@ namespace SilverBotDS.Commands
         }
 
         [Command("resize")]
-        [RequireAttachment]
         public async Task Resize(CommandContext ctx, IImageFormat format)
         {
             var image = SdImage.FromContext(ctx);
@@ -235,7 +222,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("resize")]
-        [RequireAttachment]
+        //[RequireAttachment(argumentCountThatOverloadsCheck: 3)]
         public async Task Resize(CommandContext ctx, [Description("Width")] int x = 0, [Description("Height")] int y = 0, IImageFormat format = null)
         {
             var image = SdImage.FromContext(ctx);
@@ -261,7 +248,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("tint")]
-        [RequireAttachment]
+        [RequireAttachment(argumentCountThatOverloadsCheck: 2)]
         public async Task Tint(CommandContext ctx, [Description("https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Color.html#SixLabors_ImageSharp_Color_TryParse_System_String_SixLabors_ImageSharp_Color__")] Color color)
         {
             var image = SdImage.FromContext(ctx);
@@ -269,7 +256,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("silver")]
-        [RequireAttachment]
+        [RequireAttachment(argumentCountThatOverloadsCheck: 1)]
         public async Task Grayscale(CommandContext ctx)
         {
             var image = SdImage.FromContext(ctx);
@@ -476,7 +463,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("mspaint")]
-        [RequireAttachment]
+        [RequireAttachment(argumentCountThatOverloadsCheck: 1)]
         public async Task Paint(CommandContext ctx)
         {
             var image = SdImage.FromContext(ctx);
@@ -553,7 +540,7 @@ namespace SilverBotDS.Commands
         }
 
         [Command("motivate")]
-        [RequireAttachment]
+        [RequireAttachment(argumentCountThatOverloadsCheck: 1)]
         public async Task Motivate(CommandContext ctx, [RemainingText] string text)
         {
             var image = SdImage.FromContext(ctx);

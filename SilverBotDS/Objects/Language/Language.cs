@@ -445,11 +445,11 @@ namespace SilverBotDS.Objects
         public string TrackingStarted { get; set; } = "This isn't implemented.";
         public string TrackingStopped { get; set; } = "Enabled 24/7 mode";
         public string TrackCanNotBeSeeked { get; set; } = "This track can not be seeked";
-        public string XPCommandSelf { get; set; } = "You have {0} XP, which are into {1} {2}";
-        public string XPCommandOther { get; set; } = "They have {0} XP, which are into {1} {2}";
+        public string XPCommandSelf { get; set; } = "You have {0} XP, level {1}";
+        public string XPCommandOther { get; set; } = "They have {0} XP, level {1}";
         public string XPCommandGeneralFail { get; set; } = "Ooops the database broke, please dm an SilverBot admin";
-        public string XPCommandLevel { get; set; } = "level";
-        public string XPCommandLevels { get; set; } = "levels";
+
+
         public string XPCommandFailSelf { get; set; } = "It appears that something either went wrong or you do not have any xp.";
         public string XPCommandFailOther { get; set; } = "It appears that something either went wrong or they do not have any xp.";
         public string XPCommandLeaderBoardTitle { get; set; } = "XP leaderboard:";
@@ -625,39 +625,35 @@ namespace SilverBotDS.Objects
 
         public static async Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
         {
-            using (var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext)))
+            using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
+            var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
+            if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
             {
-                var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
-                if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
-                {
-                    var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
+                var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
 
-                    if (t != null && t.IsTranslator && t.CurrentCustomLanguage != null)
-                    {
-                        await db.Entry(t).ReloadAsync();
-                        return t.CurrentCustomLanguage;
-                    }
+                if (t != null && t.IsTranslator && t.CurrentCustomLanguage != null)
+                {
+                    await db.Entry(t).ReloadAsync();
+                    return t.CurrentCustomLanguage;
                 }
-                return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
             }
+            return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
         }
 
         public static async Task<Language> GetLanguageFromCtxAsync(BaseContext ctx)
         {
-            using (var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext)))
+            using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
+            var conf = (Config)ctx.Services.GetService(typeof(Config));
+            if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
             {
-                var conf = (Config)ctx.Services.GetService(typeof(Config));
-                if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
+                var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
+                if (t != null && t.IsTranslator && t.CurrentCustomLanguage != null)
                 {
-                    var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
-                    if (t != null && t.IsTranslator && t.CurrentCustomLanguage != null)
-                    {
-                        await db.Entry(t).ReloadAsync();
-                        return t.CurrentCustomLanguage;
-                    }
+                    await db.Entry(t).ReloadAsync();
+                    return t.CurrentCustomLanguage;
                 }
-                return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
             }
+            return await GetAsync(ctx.Channel.IsPrivate ? db.GetLangCodeUser(ctx.User.Id) : db.GetLangCodeGuild(ctx.Guild.Id));
         }
     }
 }

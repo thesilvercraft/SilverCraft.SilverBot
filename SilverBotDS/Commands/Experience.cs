@@ -31,7 +31,28 @@ namespace SilverBotDS.Commands
     {
         public DatabaseContext Database { private get; set; }
         public HttpClient HttpClient { private get; set; }
-
+        [Command("givexpbecausedowntimepercent")]
+        [RequireOwner]
+        public async Task BonusXp(CommandContext ctx, byte percent)
+        {
+            foreach (var person in Database.userExperiences)
+            {
+                person.XP += ((person.XP / 100) * percent);
+                Database.userExperiences.Update(person);
+            }
+            await Database.SaveChangesAsync();
+        }
+        [Command("givexpbecausedowntime")]
+        [RequireOwner]
+        public async Task BonusXpPerperson(CommandContext ctx, ulong xp)
+        {
+            foreach (var person in Database.userExperiences)
+            {
+                person.XP += xp;
+                Database.userExperiences.Update(person);
+            }
+            await Database.SaveChangesAsync();
+        }
         [Command("xp")]
         public async Task XPCommand(CommandContext ctx)
         {
@@ -41,7 +62,8 @@ namespace SilverBotDS.Commands
             if (o is not null)
             {
                 var levelcount = GetLevel(o.XP);
-                b.WithDescription(string.Format(lang.XPCommandSelf, o.XP, levelcount, levelcount % 2 == 0 ? lang.XPCommandLevels : lang.XPCommandLevel));
+                Console.WriteLine(lang.XPCommandSelf);
+                b.WithDescription(string.Format(lang.XPCommandSelf, o.XP, levelcount));
             }
             else
             {
@@ -60,7 +82,7 @@ namespace SilverBotDS.Commands
             if (o is not null)
             {
                 var levelcount = GetLevel(o.XP);
-                b.WithDescription(string.Format(lang.XPCommandOther, o.XP, levelcount, levelcount % 2 == 0 ? lang.XPCommandLevels : lang.XPCommandLevel));
+                b.WithDescription(string.Format(lang.XPCommandOther, o.XP, levelcount));
             }
             else
             {
@@ -70,7 +92,7 @@ namespace SilverBotDS.Commands
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
         }
 
-        private static readonly IEnumerable<int> range = Enumerable.Range(1900, 2000);
+        private static readonly IEnumerable<int> range = Enumerable.Range(700, 2000);
 
         [Command("xptop")]
         [RequireGuild]
@@ -95,7 +117,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        stringBuilder.Append("<@!").Append(person.Id).Append("> has ").Append(person.XP).AppendLine("XP");
+                        stringBuilder.Append("<@!").Append(person.Id).Append("> Lvl ").Append(GetLevel(person.XP)).Append(person.XP).AppendLine("XP");
                     }
                 }
                 bob.WithDescription(stringBuilder.ToString());

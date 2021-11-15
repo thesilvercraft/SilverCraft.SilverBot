@@ -30,6 +30,7 @@ using SilverBotDS.Commands;
 using SilverBotDS.Commands.Gamering;
 using SilverBotDS.Commands.Slash;
 using SilverBotDS.Converters;
+using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes;
@@ -69,9 +70,9 @@ namespace SilverBotDS
                 Environment.Exit(70);
                 return;
             }
-            if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net5.0"))
+            if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net6.0"))
             {
-                Environment.CurrentDirectory += Environment.OSVersion.Platform == PlatformID.Win32NT ? "\\bin\\Debug\\net5.0" : "/bin/Debug/net5.0";
+                Environment.CurrentDirectory += Environment.OSVersion.Platform == PlatformID.Win32NT ? "\\bin\\Debug\\net6.0" : "/bin/Debug/net6.0";
             }
             MainAsync(args).GetAwaiter().GetResult();
         }
@@ -754,6 +755,23 @@ namespace SilverBotDS
                                                          .WithReply(e.Context.Message.Id)
                                                          .WithContent(lang.UnknownImageFormat)
                                                          .SendAsync(e.Context.Channel);
+                    }
+                    else if (e.Exception is AttachmentCountIncorrectException aa)
+                    {
+                        if(aa.AttachmentCount == AttachmentCountIncorrect.TooManyAttachments)
+                        {
+                            await new DiscordMessageBuilder()
+                                                        .WithReply(e.Context.Message.Id)
+                                                        .WithContent(lang.WrongImageCount)
+                                                        .SendAsync(e.Context.Channel);
+                        }
+                        else
+                        {
+                            await new DiscordMessageBuilder()
+                                                        .WithReply(e.Context.Message.Id)
+                                                        .WithContent(lang.NoImageGeneric)
+                                                        .SendAsync(e.Context.Channel);
+                        }
                     }
                     else
                     {

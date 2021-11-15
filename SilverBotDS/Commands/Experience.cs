@@ -117,7 +117,7 @@ namespace SilverBotDS.Commands
                     }
                     else
                     {
-                        stringBuilder.Append("<@!").Append(person.Id).Append("> Lvl ").Append(GetLevel(person.XP)).Append(person.XP).AppendLine("XP");
+                        stringBuilder.Append("<@!").Append(person.Id).Append("> Lvl ").Append(GetLevel(person.XP)).Append(" ").Append(person.XP).AppendLine("XP");
                     }
                 }
                 bob.WithDescription(stringBuilder.ToString());

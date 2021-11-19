@@ -74,6 +74,7 @@ namespace SilverBotDS.Objects
                     ServerId = id,
                 };
                 serverSettings.Add(a);
+                SaveChanges();
             }
             return a;
         }

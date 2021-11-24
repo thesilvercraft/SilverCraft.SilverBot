@@ -6,6 +6,7 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
@@ -22,10 +23,7 @@ namespace SilverBotDS.Commands
     [Category("Bubot")]
     internal class Bubot : BaseCommandModule
     {
-        private readonly Font BibiFont = new(SystemFonts.Get("Arial"), 30, FontStyle.Bold);
-        private int BibiPictureCount { get { return Directory.EnumerateFiles(config.LocalBibiPictures).Count(x => x.EndsWith(".png")); } }
-        public Config config { private get; set; }
-
+       
         [Command("silveryeet")]
         [Description("Sends SilverYeet.gif")]
         public async Task Silveryeet(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://cdn.discordapp.com/attachments/751246248102592567/823475242822533120/SilverYeet.gif").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
@@ -34,6 +32,30 @@ namespace SilverBotDS.Commands
         [Description("Gives a Youtube link for the legendary We Will Fock You video.")]
         public async Task WeWillFockYou(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://youtu.be/lLN3caSQI1w").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
 
+    }
+    [Category("Bubot")]
+    internal class BibiCommands : SilverBotCommandModule, IRequireFonts
+    {
+        public static string[] RequiredFontFamilies => new string[] { "Arial" };
+        public override Task<bool> ExecuteRequirements(Config conf)
+        {
+            if (!Directory.Exists(conf.LocalBibiPictures))
+            {
+                return Task.FromResult(false);
+            }
+            if (!File.Exists(conf.BibiLibCutOutConfig))
+            {
+                return Task.FromResult(false);
+            }
+            if (!File.Exists(conf.BibiLibFullConfig))
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
+        }
+        public Config config { private get; set; }
+        private readonly Font BibiFont = new(SystemFonts.Get("Arial"), 30, FontStyle.Bold);
+        private int BibiPictureCount { get { return Directory.EnumerateFiles(config.LocalBibiPictures).Count(x => x.EndsWith(".png")); } }
         [Command("bibi")]
         [Description("Makes a image with the great cat Bibi.")]
         [Cooldown(1, 2, CooldownBucketType.User)]
@@ -41,10 +63,7 @@ namespace SilverBotDS.Commands
         {
             await ctx.TriggerTypingAsync();
             input = $"bibi is {input}";
-            int randomnumber=RandomGenerator.Next(1, BibiPictureCount);
-            
-
-            
+            int randomnumber = RandomGenerator.Next(1, BibiPictureCount);
             using Image picture = await Image.LoadAsync($"{config.LocalBibiPictures}{randomnumber}.png");
             float size = BibiFont.Size;
             while (TextMeasurer.Measure(input, new RendererOptions(new Font(BibiFont.Family, size, FontStyle.Bold))).Width > picture.Width)
@@ -63,21 +82,42 @@ namespace SilverBotDS.Commands
             await ImageModule.SendImageStream(ctx, outStream, content: input);
         }
     }
-
     [Group("bibiLibrary")]
     [Aliases("bibilib")]
     [Description("Access the great cat bibi library.")]
     [Category("Bubot")]
-    internal class BibiLib : BaseCommandModule
+    internal class BibiLib : SilverBotCommandModule
     {
-        public BibiLib()
+        public override Task<bool> ExecuteRequirements(Config conf)
         {
-            BibiDescText = GetBibiDescText();
-            BibiFullDescText = GetBibiFullDescText();
+            if(!Directory.Exists(conf.LocalBibiPictures))
+            {
+                return Task.FromResult(false);
+            }
+            if (!File.Exists(conf.BibiLibCutOutConfig))
+            {
+                return Task.FromResult(false);
+            }
+            if (!File.Exists(conf.BibiLibFullConfig))
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
         }
-
-        private readonly string[] BibiDescText;
-        private readonly string[] BibiFullDescText;
+       
+        void EnsureCreated()
+        {
+            if(BibiDescText ==null)
+            {
+                BibiDescText = GetBibiDescText();
+            }
+            if (BibiFullDescText == null)
+            {
+                BibiFullDescText = GetBibiFullDescText();
+            }
+        }
+        private string[] BibiDescText;
+        private string[] BibiFullDescText;
         public Config config { private get; set; }
 
         private string[] GetBibiDescText()
@@ -96,6 +136,7 @@ namespace SilverBotDS.Commands
         [Description("Access the great cat bibi library.")]
         public async Task BibiLibrary(CommandContext ctx)
         {
+            EnsureCreated();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             List<Page> pages = new();
             for (int a = 0; a < BibiDescText.Length; a++)
@@ -111,6 +152,7 @@ namespace SilverBotDS.Commands
         [Description("Access the great cat bibi library.")]
         public async Task BibiLibraryFull(CommandContext ctx)
         {
+            EnsureCreated();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             List<Page> pages = new();
             for (int a = 0; a < BibiFullDescText.Length; a++)

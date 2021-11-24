@@ -9,4 +9,11 @@ namespace SilverBotDS.Attributes
 
         public XmlDescriptionAttribute(string des) => description = des;
     }
+    [AttributeUsage(AttributeTargets.Property)]
+    internal class XmlCommentInsideAttribute : Attribute
+    {
+        public string comment;
+
+        public XmlCommentInsideAttribute(string des) => comment = des;
+    }
 }

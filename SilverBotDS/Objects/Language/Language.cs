@@ -547,7 +547,15 @@ namespace SilverBotDS.Objects
         }
 
         private static readonly Dictionary<string, Language> CachedLanguages = new();
-
+        public static Dictionary<string, Language> GetLoadedLanguages()
+        {
+            if (CachedLanguages.Count == 0)
+            {
+                var t = GetAsync("en");
+                t.Wait();
+            }
+            return CachedLanguages;
+        }
         public static string[] LoadedLanguages()
         {
             if (CachedLanguages.Count == 0)

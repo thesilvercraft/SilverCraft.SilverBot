@@ -6,6 +6,7 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
@@ -28,12 +29,12 @@ namespace SilverBotDS.Commands
 {
     [Cooldown(1, 2, CooldownBucketType.User)]
     [Category("Image")]
-    public class ImageModule : BaseCommandModule
+    public class ImageModule : BaseCommandModule, IRequireFonts
     {
         private const int MaxBytes = 8388246;
 
         public HttpClient HttpClient { private get; set; }
-
+        public static string[] RequiredFontFamilies => new string[] { "Impact", "Trebuchet MS", "Times New Roman", "Futura Extra Black Condensed" };
         /// <summary>
         /// Renders some text
         /// </summary>

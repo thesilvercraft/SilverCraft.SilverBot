@@ -8,6 +8,7 @@ using GiphyDotNet.Model.Parameters;
 using GiphyDotNet.Model.Results;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using System;
 using System.Threading.Tasks;
@@ -16,31 +17,35 @@ namespace SilverBotDS.Commands
 {
     [Group("gif")]
     [Category("Image")]
-    internal class Giphy : BaseCommandModule
+    internal class Giphy : SilverBotCommandModule
     {
         public static Giphy CreateInstance()
         {
             return new Giphy();
         }
-
+       
 #pragma warning disable CA1822 // Mark members as static
-        private static GiphyDotNet.Manager.Giphy giphy = new();
-
-        public static void Set(string token)
+        GiphyDotNet.Manager.Giphy giphy = null;
+        public Config config { private get; set; }
+        
+        void MakeSureTokenIsSet()
         {
-            if (string.IsNullOrEmpty(token) || token == "Giphy_Token_Here" || string.Equals(token, "none", StringComparison.InvariantCultureIgnoreCase))
+            if(giphy == null)
             {
-                giphy = new GiphyDotNet.Manager.Giphy();
-            }
-            else
-            {
-                giphy = new(token);
+                if (string.IsNullOrEmpty(config.Gtoken) || config.Gtoken == "Giphy_Token_Here" || string.Equals(config.Gtoken, "none", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    giphy = new GiphyDotNet.Manager.Giphy();
+                }
+                else
+                {
+                    giphy = new(config.Gtoken);
+                }
             }
         }
-
         [Command("random")]
         public async Task Random(CommandContext ctx)
         {
+            MakeSureTokenIsSet();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var gifresult = await giphy.RandomGif(new RandomParameter
             {
@@ -53,6 +58,7 @@ namespace SilverBotDS.Commands
         [Command("search"), Aliases("s")]
         public async Task Search(CommandContext ctx, [RemainingText] string term)
         {
+            MakeSureTokenIsSet();
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             var b = new DiscordEmbedBuilder();
             var searchParameter = new SearchParameter

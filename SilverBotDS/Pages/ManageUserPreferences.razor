@@ -1,0 +1,58 @@
+﻿@page "/userpreferences"
+
+@using System.Net
+@using System.Text
+@using System.IO
+@using DSharpPlus.Entities
+@using Microsoft.AspNetCore.Http
+@using SilverBotDS.Objects
+@using DSharpPlus
+@using System.Diagnostics
+@using SilverBotDS.WebHelpers
+@using SilverBotDS
+@using Microsoft.JSInterop
+
+@inject Config config
+@inject IHttpContextAccessor HttpContextAccessor
+@inject DiscordClient Discord
+@inject DatabaseContext dbctx
+@inject IJSRuntime jsRuntime
+@inject NavigationManager uriHelper
+@using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject HttpClient client
+@{
+    if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
+    {
+        uriHelper.NavigateTo("/login", forceLoad: true);
+    }
+    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client);
+
+
+    var userpref = dbctx.userSettings.FirstOrDefault(x=>x.Id == thing.UId);
+    if(userpref== null)
+    {
+        userpref = new() { Id = thing.UId, IsBanned = false, LangName = "en", UsesNewMusicPage = false };
+        dbctx.userSettings.Add(userpref);
+         dbctx.SaveChanges();
+    }
+}
+@if (!dbctx.IsBanned(thing.UId))
+{
+    <p>Welcome to the beta version of the user preferences edit page</p>
+
+
+    <RadzenSwitch @bind-Value=@userpref.UsesNewMusicPage Name="Switch1" Style="margin-bottom: 20px" />
+    <RadzenLabel Text="Use the new Music Controller page" Component="Switch1" Style="margin-left: 5px;" />
+    <br />
+    <RadzenDropDown AllowClear="false" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@Language.GetLoadedLanguages() @bind-Value=@userpref.LangName
+                                TextProperty="Value.LangName" ValueProperty="Key"  Style="width:300px" />
+    <RadzenLabel Text="Your personal language (used for direct messages and stuff)" Component="Switch2" Style="margin-left: 5px;" />
+
+    <br />
+    <RadzenButton Click=@(args => { dbctx.userSettings.Update(userpref); dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px" />
+}
+else
+{
+    <h1>Oh no an error has occured, please contact the person that owns this instance of Silverbot.</h1>
+}

@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.Scripting;
 using SDBrowser;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace SilverBotDS.Commands
 {
     [RequireOwner]
     [Category("Owner")]
-    internal class OwnerOnly : BaseCommandModule
+    internal class OwnerOnly : SilverBotCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
         public DatabaseContext Database { private get; set; }
@@ -47,18 +48,18 @@ namespace SilverBotDS.Commands
             var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
             await ctx.RespondAsync($"its {info.Duration.Humanize()} ({info.Duration}) long");
 
-            
-                string name = Path.GetFileName(loc);
-                IVideoStream videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
-                for (int i = 0; i < times; i++)
-                {
-                    await FFmpeg.Conversions.New()
-                    .AddStream(videoStream)
-                    .ExtractNthFrame(RandomGenerator.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (_) => $"Extracts{Program.DirSlash}{name}{i}.png")
-                    .UseHardwareAcceleration(HardwareAccelerator.auto, (VideoCodec)Enum.Parse(typeof(VideoCodec), decoder, true), (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
-                    .Start();
-                }
-            
+
+            string name = Path.GetFileName(loc);
+            IVideoStream videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
+            for (int i = 0; i < times; i++)
+            {
+                await FFmpeg.Conversions.New()
+                .AddStream(videoStream)
+                .ExtractNthFrame(RandomGenerator.Next(1, (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)), (_) => $"Extracts{Program.DirSlash}{name}{i}.png")
+                .UseHardwareAcceleration(HardwareAccelerator.auto, (VideoCodec)Enum.Parse(typeof(VideoCodec), decoder, true), (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
+                .Start();
+            }
+
             await ctx.RespondAsync("done?");
         }
 
@@ -92,7 +93,32 @@ namespace SilverBotDS.Commands
             }
             return Task.CompletedTask;
         }
-
+        [Command("UnRegisterCommand")]
+        public async Task UnRegCmd(CommandContext ctx, [RemainingText]string cmdwithparm)
+        {
+            ctx.CommandsNext.UnregisterCommands(ctx.CommandsNext.FindCommand(cmdwithparm, out _));
+        }
+        [Command("RegisterModule")]
+        public async Task RegMod(CommandContext ctx, string mod)
+        {
+            Type type = Type.GetType(mod);
+            if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
+            {
+                SilverBotCommandModule n = (SilverBotCommandModule)Activator.CreateInstance(type);
+                if (await n.ExecuteRequirements(Config))
+                {
+                    ctx.CommandsNext.RegisterCommands(type);
+                }
+                else
+                {
+                    await ctx.RespondAsync($"Module {mod} won't be loaded as its requirements weren't met");
+                }
+            }
+            else
+            {
+                ctx.CommandsNext.RegisterCommands(type);
+            }
+        }
         [Command("plot")]
         [Description("plot a thingy")]
         public async Task Plot(CommandContext ctx)

@@ -5,14 +5,19 @@ using Jering.Javascript.NodeJS;
 using org.mariuszgromada.math.mxparser;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands
 {
     [Category("Calculator")]
-    internal partial class CalculatorCommands : BaseCommandModule
+    internal partial class CalculatorCommands : SilverBotCommandModule
     {
+        public override Task<bool> ExecuteRequirements(Config conf)
+        {
+            return Task.FromResult(conf.UseNodeJs);
+        }
         [Command("calculateparserold")]
         [Description("Calculate a math expression using MathParser.org-mXparser")]
         public async Task CalculateOld(CommandContext ctx, [RemainingText] string input)

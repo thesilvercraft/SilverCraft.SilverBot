@@ -8,6 +8,7 @@ using Lavalink4NET.Player;
 using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using SnowdPlayer;
 using SpotifyAPI.Web;
@@ -18,12 +19,15 @@ namespace SilverBotDS.Commands
     [RequireGuild]
     [Category("New Audio")]
     [Group("a")]
-    internal class NewAudio : BaseCommandModule
+    internal class NewAudio : SilverBotCommandModule
     {
         public SnowService AudioService { private get; set; }
         public LavalinkNode AudioServicee { private get; set; }
         public LyricsService LyricsService { private get; set; }
-
+        public override Task<bool> ExecuteRequirements(Config conf)
+        {
+            return Task.FromResult(conf.UseNewAudio);
+        }
         public Config Config { private get; set; }
 
         public SpotifyClient SpotifyClient { private get; set; }

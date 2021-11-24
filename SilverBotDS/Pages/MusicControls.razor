@@ -28,19 +28,24 @@
         uriHelper.NavigateTo("/login", forceLoad: true);
     }
 }
-<style>
-    input {
-        margin-left: 1px;
-    }
-</style>
+
+
 <RadzenNotification />
 @inject DiscordClient Discord
 @inject IJSRuntime jsRuntime
 @inject LavalinkNode Lavalink
+@inject DatabaseContext dbCtx
 @inject NotificationService NotificationService
 @inject HttpClient client
 @{
+    bool usenew = false;
     DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client).UId).GetAwaiter().GetResult();
+    var userpref = dbCtx.userSettings.FirstOrDefault(x => x.Id == user.Id);
+    if(userpref!=null)
+    {
+        usenew = userpref.UsesNewMusicPage;
+
+    }
     var djattribute = new RequireDJAttribute();
 }
 @foreach (var guild in Discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null && x.Members[user.Id].VoiceState.Channel is not null && Lavalink.HasPlayer(x.Id) && Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))
@@ -65,7 +70,14 @@
     async Task VoteSkipPress(BetterVoteLavalinkPlayer player)
     {
         var votestatus = await player.VoteAsync(user.Id);
-        //TODO possibly tell user count of people that voted or if the song was skipped
+        if(votestatus.WasSkipped)
+        {
+            player.TriggerWebsiteEvent(user, "skipped a song by voting");
+        }
+        else if(votestatus.WasAdded)
+        {
+            player.TriggerWebsiteEvent(user, "voted for skipping this song");
+        }
     }
     async Task ForceSkipPress(BetterVoteLavalinkPlayer player)
     {
@@ -117,7 +129,7 @@
         }
     }
 
-    string ToggleStateText = "Resume / Pause";
+    string ToggleStateText = "report_problem";
     BetterVoteLavalinkPlayer player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
     EventHandler<TrackStartedEventArgs> gamer = async (refr, song) =>
     {
@@ -130,16 +142,27 @@
 
         }
     };
-    player.OnNewTrack += gamer;
-    player.RemoveOnWebsiteEventHandelers();
-    player.OnWebsiteEvent += (refr, parm) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = parm.Item1.Username, Detail = parm.Item2, Duration = 4000 }); };
+    //player.OnNewTrack += gamer;
+    player.RemoveOnWebsiteEventHandelers(user);
+    if(player.OnWebsiteEvent.ContainsKey(user))
+    {
+        player.OnWebsiteEvent[user].Add((s,u) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = u.Username, Detail = s, Duration = 4000 }); return true; });
+       
+    }
+    else
+    {
+        player.OnWebsiteEvent.Add(user,new());
+        player.OnWebsiteEvent[user].Add((s,u) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = u.Username, Detail = s, Duration = 4000 }); return true; });
+       
+    }
+    //player.OnWebsiteEvent += (refr, parm) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = parm.Item1.Username, Detail = parm.Item2, Duration = 4000 }); };
     if (player.State is Lavalink4NET.Player.PlayerState.Paused)
     {
-        ToggleStateText = "play_circle_filled";
+        ToggleStateText = "play_arrow";
     }
     else if (player.State is Lavalink4NET.Player.PlayerState.Playing)
     {
-        ToggleStateText = "pause_circle_filled";
+        ToggleStateText = "pause";
     }
     @code
     {
@@ -153,8 +176,34 @@
 
     }
     }
-
-    <div class="window" style="max-width: 720px">
+    if(usenew)
+    {
+     <div id="audio-player-container">
+        <p id="maintext"><RadzenIcon Icon="volume_up" style="top: 50%;transform: translateY(30%);"/>@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</p>
+        <p>Currently playing: <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ": player.CurrentTrack.Source)"><strong>@(player.CurrentTrack is null ? "Nothing by Noone": player.CurrentTrack.Title)</strong></a></p>
+        <button type="submit" name="ToggleState" id="ToggleState" @onclick="@(async (e) => { await ToggleStatePress(player); if (player.State is Lavalink4NET.Player.PlayerState.Paused) { ToggleStateText = "play_arrow"; } else if (player.State is Lavalink4NET.Player.PlayerState.Playing) { ToggleStateText = "pause";} })" runat="server"><RadzenIcon Icon="@ToggleStateText" /></button>
+        <button type="submit" name="VoteSkip" id="VoteSkip" @onclick="@(async(e) => await VoteSkipPress(player))" runat="server"><RadzenIcon Icon="how_to_vote" /></button>
+        @if (CheckForDJ())
+        {
+            <button type="submit" name="ForceSkip" id="ForceSkip" @onclick="@(async(e) => await ForceSkipPress(player))" runat="server"><RadzenIcon Icon="skip_next" /></button>
+        }
+        @if (CheckForDJ())
+        {
+            <button type="submit" name="Shuffle" id="Shuffle" @onclick="@(e =>  ShufflePress(player))" runat="server"><RadzenIcon Icon="shuffle" /></button>
+        }
+        <button type="submit" name="NoLoop" id="NoLoop" @onclick="@(e => NotLoopingPress(player))" runat="server"><RadzenIcon Icon="repeat" /></button>
+        <button type="submit" name="LoopSong" id="LoopSong" @onclick="@(e => LoopingSongPress(player))" runat="server"><RadzenIcon Icon="repeat_one" /></button>
+        <button type="submit" name="LoopQueue" id="LoopQueue" @onclick="@(e => LoopingQueuePress(player))" runat="server"><RadzenIcon Icon="repeat_on" /></button>
+        <button type="submit" name="VolumeDown" id="VolumeDown" @onclick="@(async(e) =>await VolumeDownPress(player))" runat="server"><RadzenIcon Icon="volume_down" /></button>
+        <button type="submit" name="VolumeUp" id="VolumeUp" @onclick="@(async(e) => await VolumeUpPress(player))" runat="server"><RadzenIcon Icon="volume_up" /></button>
+        <!--<span id="current-time" class="time">0:00</span>
+        <input type="range" id="seek-slider" max="100" value="0">
+        <span id="duration" class="time">0:00</span>-->
+    </div>   
+    }
+    else
+    {
+<div class="window" style="max-width: 720px">
         <div class="title-bar">
             <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
             <div class="title-bar-controls">
@@ -179,5 +228,30 @@
             <button type="submit" name="VolumeDown" id="VolumeDown" @onclick="@(async(e) =>await VolumeDownPress(player))" runat="server"><RadzenIcon Icon="volume_down" /></button>
             <button type="submit" name="VolumeUp" id="VolumeUp" @onclick="@(async(e) => await VolumeUpPress(player))" runat="server"><RadzenIcon Icon="volume_up" /></button>
         </div>
-    </div>
+        </div>
+    }    
 }
+@if(!usenew)
+    {
+        <link rel="stylesheet" href="https://unpkg.com/7.css">
+    }
+    else
+    {
+        <style>
+  button {
+        border-radius: 30%;
+        width: 40px;
+        height: 40px;
+        margin: 0 5px;
+    }
+    #audio-player-container
+    {
+        margin: 10px;
+        max-width: 600px;
+        border-radius: 2%;
+        border: 1px solid black;
+        background-color: black;
+        color: white;
+    }
+</style>
+    }

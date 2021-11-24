@@ -4,6 +4,7 @@ using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +20,7 @@ namespace SilverBotDS.Commands
     [RequireTranslator(true)]
     [ModuleLifespan(ModuleLifespan.Transient)]
     [Category("Translation")]
-    public class TranslatorCommands : BaseCommandModule
+    public class TranslatorCommands : SilverBotCommandModule
     {
         public DatabaseContext databaseContext { set; private get; }
         public HttpClient httpClient { get; set; }

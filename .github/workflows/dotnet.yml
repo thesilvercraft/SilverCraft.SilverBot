@@ -18,7 +18,9 @@ jobs:
         dotnet-version: 6.0.x
     - name: Build
       run: dotnet publish -c Release -p:PublishProfile=FolderProfile 
-    - name: Zip
+    - name: Copy SilverBotDS.AnimeModule to publish directory
+      run: copy "SilverBotDS.AnimeModule\bin\Release\net6.0\SilverBotDS.AnimeModule*" "SilverBotDS\bin\Release\net6.0\publish"
+    - name: Zip 
       shell: powershell
       run: Compress-7Zip "SilverBotDS\bin\Release\net6.0\publish" -ArchiveFileName "silverbot.zip" -Format Zip
     - name: Make a random name
@@ -57,4 +59,14 @@ jobs:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
          asset_path: .\SilverBotDS\bin\Release\net6.0\publish\SilverBotDS.dll
          asset_name: SilverBotDS.dll
+         asset_content_type: application/octet-stream
+    - name: Upload Release Dll of AnimeModule
+      id: upload-release-dll-anime
+      uses: actions/upload-release-asset@v1
+      env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: .\SilverBotDS.AnimeModule\bin\Release\net6.0\publish\SilverBotDS.AnimeModule.dll
+         asset_name: SilverBotDS.AnimeModule.dll
          asset_content_type: application/octet-stream

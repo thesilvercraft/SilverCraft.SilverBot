@@ -15,7 +15,10 @@ namespace SilverBotDS.Commands
         public HttpClient Client { private get; set; }
         private const string BaseURL = "https://anime-api.hisoka17.repl.co/";
 
-        private async Task<string> GetAnimeUrl(string endpoint) => JsonSerializer.Deserialize<Rootobject>(await (await Client.GetAsync(BaseURL + endpoint)).Content.ReadAsStringAsync()).Url;
+        private async Task<string> GetAnimeUrl(string endpoint)
+        {
+            return JsonSerializer.Deserialize<Rootobject>(await (await Client.GetAsync(BaseURL + endpoint)).Content.ReadAsStringAsync()).Url;
+        }
 
         private async Task SendImage(CommandContext ctx, string url)
         {

@@ -50,7 +50,19 @@ namespace SilverBotDS.Utils
 
             return xd;
         }
-
+        /// <summary>
+        /// kinda stolen from https://stackoverflow.com/questions/6328288/how-to-comment-a-line-of-a-xml-file-in-c-sharp-with-system-xml
+        /// </summary>
+        /// <param name="inputdoc">The input document</param>
+        /// <param name="xpath">Xpath of the Object</param>
+        /// <param name="comment">The comment</param>
+        /// <returns>A XmlDocument that has the comment before the xpath thingy</returns>
+        public static XmlDocument CommentInObject(XmlDocument inputdoc, string xpath, string comment)
+        {
+            var elementToComment = inputdoc.SelectSingleNode(xpath);
+            elementToComment.InnerText = $"<!--{comment}-->\n" + elementToComment.InnerText;
+            return inputdoc;
+        }
         /// <summary>
         /// kinda stolen from https://stackoverflow.com/questions/6328288/how-to-comment-a-line-of-a-xml-file-in-c-sharp-with-system-xml
         /// </summary>

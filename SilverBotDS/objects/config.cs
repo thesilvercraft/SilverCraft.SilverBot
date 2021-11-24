@@ -17,7 +17,7 @@ namespace SilverBotDS.Objects
     [Serializable]
     public class Config
     {
-        private const ulong CurrentConfVer = 33;
+        private const ulong CurrentConfVer = 35;
 
         [XmlDescription("Array of prefixes the bot will respond to")]
         public string[] Prefix { get; set; } =
@@ -40,7 +40,35 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Allow silverbot to use the shitty commands discord is pushing down our throats, this uses the DSharpPlus.SlashCommands library made by IDoEverything")]
         public bool UseSlashCommands { get; set; } = false;
+        [XmlDescription("What modules should silverbot load")]
+        public string[] ModulesToLoad { get; set; } =
+        {
+            typeof(Genericcommands).FullName,
+            typeof(Emotes).FullName,
+            typeof(ModCommands).FullName,
+            typeof(Giphy).FullName,
+            typeof(NewAudio).FullName,
+            typeof(OwnerOnly).FullName,
+            typeof(SteamCommands).FullName,
+            typeof(Fortnite).FullName,
+            typeof(Bubot).FullName,
+            typeof(BibiCommands).FullName,
+            typeof(BibiLib).FullName,
+            typeof(Audio).FullName,
+            typeof(MiscCommands).FullName,
+            typeof(MinecraftModule).FullName,
+            typeof(UserQuotesModule).FullName,
+            typeof(TranslatorCommands).FullName,
+            typeof(CalculatorCommands).FullName,
+            typeof(ServerStatsCommands).FullName,
+        };
 
+        [XmlDescription("What modules should silverbot load from external dlls")]
+        
+        public SerializableDictionary<string, string> ModulesToLoadExternal { get; set; } = new SerializableDictionary<string, string>
+        {
+           {"SilverBotDS.AnimeModule.dll", "SilverBotDS.Commands.Anime"},
+        };
         [XmlDescription("Allow silverbot to use the new experimental snowdplayer")]
         public bool UseNewAudio { get; set; } = false;
 
@@ -133,12 +161,6 @@ namespace SilverBotDS.Objects
 
         [XmlDescription("Location of titles for BibiLibFull pictures (BibiLibFull - local - config)")]
         public string BibiLibFullConfig { get; set; } = "C:\\BibiPictures\\BibiLibFull\\Titles.json";
-
-        [XmlDescription("Allow silverbot owner only commands (may allow any bot owner to kill the pc silverbot is running on)")]
-        public bool AllowOwnerOnlyCommands { get; set; } = true;
-
-        [XmlDescription("Allow commands that someone might find distasteful, currently unused")]
-        public bool AllowTrollCommands { get; set; } = false;
 
         [XmlDescription("A temporary way to disable the interactivity tracker")]
         public bool SitInVc { get; set; } = false;
@@ -398,6 +420,10 @@ namespace SilverBotDS.Objects
                     {
                         xmlDocument = XmlUtils.CommentBeforeObject(xmlDocument, $"/Config/{i.Name}", ((XmlDescriptionAttribute)e).description);
                     }
+                    else if (e.GetType() == typeof(XmlCommentInsideAttribute))
+                    {
+                        xmlDocument = XmlUtils.CommentInObject(xmlDocument, $"/Config/{i.Name}", ((XmlCommentInsideAttribute)e).comment);
+                    }
                 }
             }
 
@@ -456,8 +482,6 @@ namespace SilverBotDS.Objects
                     await OutdatedConfigTask(cnf);
                     return await GetAsync();
                 }
-                Giphy.Set(cnf?.Gtoken);
-                Fortnite.Setapi(cnf?.FApiToken);
             }
             return cnf;
         }

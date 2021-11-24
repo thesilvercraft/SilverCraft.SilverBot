@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
@@ -27,10 +28,14 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [Category("XP")]
-    internal class Experience : BaseCommandModule
+    internal class Experience : SilverBotCommandModule, IRequireFonts
     {
+      
         public DatabaseContext Database { private get; set; }
         public HttpClient HttpClient { private get; set; }
+
+        public static string[] RequiredFontFamilies => new string[]{ "Diavlo Light" };
+
         [Command("givexpbecausedowntimepercent")]
         [RequireOwner]
         public async Task BonusXp(CommandContext ctx, byte percent)

@@ -45,6 +45,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -91,7 +92,7 @@ namespace SilverBotDS
         private static LavalinkNode audioService;
         private static InactivityTrackingService trackingService;
         private static Serilog.Core.Logger log;
-        public static ServiceProvider ServiceProvider {  get; private set; }
+        public static ServiceProvider ServiceProvider { get; private set; }
         private static readonly HttpClient httpClient = NewhttpClientWithUserAgent();
 
         private static HttpClient NewhttpClientWithUserAgent()
@@ -110,9 +111,8 @@ namespace SilverBotDS
             return !(a is null || a == b);
         }
 
-        private static readonly string[] requiredFonts = new[] { "Diavlo Light", "Arial", "Impact", "Trebuchet MS", "Times New Roman", "Futura Extra Black Condensed" };
 
-        private static bool CheckIfAllFontsAreHere()
+        private static bool CheckIfAllFontsAreHere(string[] requiredFonts)
         {
             var familynames = SystemFonts.Families.Select(x => x.Name);
             foreach (var font in requiredFonts)
@@ -348,89 +348,91 @@ namespace SilverBotDS
             commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterConverter(new TimeSpanConverter());
             commands.RegisterConverter(new IImageFormatConverter());
-            if (!CheckIfAllFontsAreHere())
+            foreach (var module in config.ModulesToLoad)
             {
-                log.Fatal("You do not have all required fonts to run silverbot, on windows you have to install Diavlo Light and Futura Extra Black Condensed while on linux you have to install the base windows fonts (using \"sudo apt-get install ttf-mscorefonts-installer\"), Diavlo Light and Futura Extra Black Condensed. You might have to find all of the fonts in a TTF format. SilverBot will be running in a reduced feature mode where experience and Image related commands will not be enabled.");
-            }
-            else
-            {
-                commands.RegisterCommands<Experience>();
-                commands.RegisterCommands<ImageModule>();
-            }
-            if (config.AllowPublicWebshot)
-            {
-                if (config.BrowserType == 0)
+                try
                 {
-                    log.Information("You have not set-up a browser for silverbot to use. As such the public webshot command will not be registered.");
+                    Type type = Type.GetType(module);
+                    if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
+                    {
+                        var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetGetMethod().Invoke(null, null);
+                        if (!CheckIfAllFontsAreHere(fonts))
+                        {
+                            log.Information("Module {module} won't be loaded as its requirements weren't met, (fonts)", module);
+                        }
+                    }
+                    if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
+                    {
+                        SilverBotCommandModule n = (SilverBotCommandModule)Activator.CreateInstance(type);
+                        if (await n.ExecuteRequirements(config))
+                        {
+                            commands.RegisterCommands(type);
+                        }
+                        else
+                        {
+                            log.Information("Module {module} won't be loaded as its requirements weren't met", module);
+                        }
+                    }
+                    else
+                    {
+                        commands.RegisterCommands(type);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("Failed to load module {module} Exception {ex} occured", module, ex);
+                }
+            }
+            foreach (var group in config.ModulesToLoadExternal.GroupBy(x => x.Key))
+            {
+                if (File.Exists(group.Key))
+                {
+                    Assembly assembly = Assembly.LoadFrom(group.Key);
+                    foreach (var module in group)
+                    {
+                        try
+                        {
+                           
+                            Type type = assembly.GetType(module.Value);
+                            if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
+                            {
+                                var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetGetMethod().Invoke(null, null);
+                                if (!CheckIfAllFontsAreHere(fonts))
+                                {
+                                    log.Information("Module {module} won't be loaded as its requirements weren't met, (fonts)", module.Value);
+                                }
+                            }
+                            if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
+                            {
+                                SilverBotCommandModule n = (SilverBotCommandModule)Activator.CreateInstance(type);
+                                if (await n.ExecuteRequirements(config))
+                                {
+                                    commands.RegisterCommands(type);
+                                }
+                                else
+                                {
+                                    log.Information("Module {module} won't be loaded as its requirements weren't met", module.Value);
+                                }
+                            }
+                            else
+                            {
+                                commands.RegisterCommands(type);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Error("Failed to load module {module} Exception {ex} occured", module.Value, ex);
+                        }
+
+                    }
                 }
                 else
                 {
-                    commands.RegisterCommands<Webshot>();
+                    log.Information("Modules from the {file} won't be loaded as its file doesn't exist", group.Key);
                 }
             }
-
-            commands.RegisterCommands<Anime>();
-            commands.RegisterCommands<Genericcommands>();
-            commands.RegisterCommands<Emotes>();
-            commands.RegisterCommands<ModCommands>();
-            if (IsNotNullAndIsNotB(config.Gtoken, "Giphy_Token_Here"))
-            {
-                commands.RegisterCommands<Giphy>();
-            }
-            else
-            {
-                log.Information("You do not have a giphy token in the config, giphy related commands will be disabled.");
-            }
-            commands.RegisterCommands<AdminCommands>();
-            if (config.UseNewAudio)
-            {
-                commands.RegisterCommands<NewAudio>();
-            }
-            if (config.AllowOwnerOnlyCommands)
-            {
-                commands.RegisterCommands<OwnerOnly>();
-            }
-            commands.RegisterCommands<SteamCommands>();
-            if (IsNotNullAndIsNotB(config.FApiToken, "Fortnite_Token_Here"))
-            {
-                commands.RegisterCommands<Fortnite>();
-            }
-            else
-            {
-                log.Information("You do not have a fortnite api token in the config, fortnite related commands will be disabled.");
-            }
-            if (config.EmulateBubot)
-            {
-                commands.RegisterCommands<Bubot>();
-            }
-            if (config.EmulateBubotBibi)
-            {
-                commands.RegisterCommands<BibiLib>();
-            }
-            else if (config.EmulateBubot)
-            {
-                var cmd = commands.FindCommand("bibi", out _);
-                commands.UnregisterCommands(cmd);
-            }
-            if (config.UseLavaLink)
-            {
-                commands.RegisterCommands<Audio>();
-            }
-            commands.RegisterCommands<MiscCommands>();
-            commands.RegisterCommands<MinecraftModule>();
-            commands.RegisterCommands<UserQuotesModule>();
-            commands.RegisterCommands<TranslatorCommands>();
             commands.CommandErrored += Commands_CommandErrored;
             commands.CommandExecuted += Commands_CommandExecuted;
-            if (config.UseNodeJs)
-            {
-                commands.RegisterCommands<CalculatorCommands>();
-            }
-            if (config.EnableServerStatistics)
-            {
-                commands.RegisterCommands<ServerStatsCommands>();
-            }
-
             #endregion Registering Commands
 
             if (config.UseSlashCommands)
@@ -758,7 +760,7 @@ namespace SilverBotDS
                     }
                     else if (e.Exception is AttachmentCountIncorrectException aa)
                     {
-                        if(aa.AttachmentCount == AttachmentCountIncorrect.TooManyAttachments)
+                        if (aa.AttachmentCount == AttachmentCountIncorrect.TooManyAttachments)
                         {
                             await new DiscordMessageBuilder()
                                                         .WithReply(e.Context.Message.Id)

@@ -19,5 +19,6 @@ namespace SilverBotDS.Objects
         /// See if an user is banned
         /// </summary>
         public bool IsBanned { get; set; }
+        public bool UsesNewMusicPage { get; set; } = false;
     }
 }

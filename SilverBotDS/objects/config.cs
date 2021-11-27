@@ -61,6 +61,7 @@ namespace SilverBotDS.Objects
             typeof(TranslatorCommands).FullName,
             typeof(CalculatorCommands).FullName,
             typeof(ServerStatsCommands).FullName,
+            typeof(ImageModule).FullName
         };
 
         [XmlDescription("What modules should silverbot load from external dlls")]

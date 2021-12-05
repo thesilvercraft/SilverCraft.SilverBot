@@ -15,7 +15,7 @@ namespace SilverBotDS.Commands.Gamering
 {
     [Category("Gaming")]
     [Group("fortnite")]
-    internal class Fortnite : SilverBotCommandModule
+    public class Fortnite : SilverBotCommandModule
     {
         public Config config {private get; set; }
         public override Task<bool> ExecuteRequirements(Config conf)

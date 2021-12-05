@@ -31,7 +31,7 @@ namespace SilverBotDS.Commands
 {
     [RequireOwner]
     [Category("Owner")]
-    internal class OwnerOnly : SilverBotCommandModule
+    public class OwnerOnly : SilverBotCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
         public DatabaseContext Database { private get; set; }

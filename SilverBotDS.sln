@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDiscordSink", "SDiscordSin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowdPlayer", "SnowdPlayer\SnowdPlayer.csproj", "{8C269328-1541-4626-BC66-EA3E0276508E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverBotDS.AnimeModule", "SilverBotDS.AnimeModule\SilverBotDS.AnimeModule.csproj", "{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverBotDS.AnimeModule", "SilverBotDS.AnimeModule\SilverBotDS.AnimeModule.csproj", "{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

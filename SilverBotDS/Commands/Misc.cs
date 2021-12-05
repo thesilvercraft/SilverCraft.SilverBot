@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [Category("Miscellaneous")]
-    internal class MiscCommands : BaseCommandModule
+    public class MiscCommands : BaseCommandModule
     {
         public DatabaseContext Database { private get; set; }
         public Config Config { private get; set; }

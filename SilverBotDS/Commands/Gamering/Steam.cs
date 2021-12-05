@@ -14,7 +14,7 @@ namespace SilverBotDS.Commands.Gamering
 {
     [Category("Gaming")]
     [Group("steam")]
-    internal class SteamCommands : BaseCommandModule
+    public class SteamCommands : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
 

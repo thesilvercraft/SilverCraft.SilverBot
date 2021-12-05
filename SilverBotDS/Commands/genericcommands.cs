@@ -18,7 +18,7 @@ using static SilverBotDS.Utils.StringUtils;
 namespace SilverBotDS.Commands
 {
     [Category("General")]
-    internal sealed class Genericcommands : BaseCommandModule
+    public sealed class Genericcommands : BaseCommandModule
     {
 #pragma warning disable CA1822 // Mark members as static
 

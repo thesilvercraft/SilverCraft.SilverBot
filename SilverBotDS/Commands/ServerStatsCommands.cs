@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [Category("Server statistics")]
-    internal class ServerStatsCommands : BaseCommandModule
+    public class ServerStatsCommands : BaseCommandModule
     {
         private readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public DatabaseContext Database { private get; set; }

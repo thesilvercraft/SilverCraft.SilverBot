@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [Category("XP")]
-    internal class Experience : SilverBotCommandModule, IRequireFonts
+    public class Experience : SilverBotCommandModule, IRequireFonts
     {
       
         public DatabaseContext Database { private get; set; }

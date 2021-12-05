@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [Category("Emotes")]
-    internal class Emotes : BaseCommandModule
+    public class Emotes : BaseCommandModule
     {
         public DatabaseContext Database { private get; set; }
         public Config Config { private get; set; }

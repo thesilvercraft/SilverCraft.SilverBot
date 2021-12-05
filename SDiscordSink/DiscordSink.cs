@@ -35,7 +35,7 @@ namespace SDiscordSink
             }
         }
 
-        private Regex VBUErr = new(@"^Error `(P<error>.+?)` encountered.\nGuild `(P<guild_id>\d+|None)`, channel `(P<channel_id>\d+|None)`, user `(P<user_id>\d+|None)`\n```\n(P<command_invoke>.+?)\n```$", RegexOptions.Multiline | RegexOptions.Compiled);
+        private readonly Regex VBUErr = new(@"^Error `(P<error>.+?)` encountered.\nGuild `(P<guild_id>\d+|None)`, channel `(P<channel_id>\d+|None)`, user `(P<user_id>\d+|None)`\n```\n(P<command_invoke>.+?)\n```$", RegexOptions.Multiline | RegexOptions.Compiled);
 
         public void Emit(LogEvent logEvent)
         {
@@ -56,7 +56,7 @@ namespace SDiscordSink
                 }
                 else
                 {
-                    builder.WithTitle(message.Substring(0, firstLineEnd));
+                    builder.WithTitle(message[..firstLineEnd]);
                     if (message[firstLineEnd] == '\r' && message.Length > firstLineEnd + 1 && message[firstLineEnd + 1] == '\n')
                     {
                         firstLineEnd++;
@@ -114,7 +114,7 @@ namespace SDiscordSink
                 sb.Append("` |");
                 sb.AppendLine();
                 var exMessage = logEvent.Exception.Message;
-                sb.Append(exMessage?.Length <= 1024 ? exMessage : exMessage?.Substring(0, 1024));
+                sb.Append(exMessage?.Length <= 1024 ? exMessage : exMessage?[..1024]);
             }
             if (restMessage != null)
             {

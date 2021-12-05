@@ -19,7 +19,7 @@ namespace SilverBotDS.Commands
     [RequireGuild]
     [Category("New Audio")]
     [Group("a")]
-    internal class NewAudio : SilverBotCommandModule
+    public class NewAudio : SilverBotCommandModule
     {
         public SnowService AudioService { private get; set; }
         public LavalinkNode AudioServicee { private get; set; }

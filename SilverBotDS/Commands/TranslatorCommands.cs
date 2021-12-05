@@ -130,7 +130,7 @@ namespace SilverBotDS.Commands
             }
         }
 
-        private Regex customlangregex = new("(?<uid>[0-9]*)-(?<language>.+(-?([a-z]+?))?)-(?<langid>[0-9]+)");
+        private readonly Regex customlangregex = new("(?<uid>[0-9]*)-(?<language>.+(-?([a-z]+?))?)-(?<langid>[0-9]+)");
 
         [Command("generatelangtemplate")]
         [Description("make a template for translation")]

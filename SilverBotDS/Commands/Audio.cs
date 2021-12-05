@@ -25,7 +25,7 @@ namespace SilverBotDS.Commands
 {
     [RequireGuild]
     [Category("Audio")]
-    internal class Audio : BaseCommandModule
+    public class Audio : BaseCommandModule
     {
         public LavalinkNode AudioService { private get; set; }
         public LyricsService LyricsService { private get; set; }

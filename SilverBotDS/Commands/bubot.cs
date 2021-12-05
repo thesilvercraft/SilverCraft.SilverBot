@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [Category("Bubot")]
-    internal class Bubot : BaseCommandModule
+    public class Bubot : BaseCommandModule
     {
        
         [Command("silveryeet")]

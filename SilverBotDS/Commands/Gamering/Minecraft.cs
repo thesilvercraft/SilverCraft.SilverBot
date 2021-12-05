@@ -11,7 +11,7 @@ namespace SilverBotDS.Commands.Gamering
     [Category("Gaming")]
     [Group("minecraft")]
     [Aliases("mc")]
-    internal class MinecraftModule : BaseCommandModule
+    public class MinecraftModule : BaseCommandModule
     {
         //HEY LOIS IM PLAYING MINECRAFT
         public HttpClient HttpClient { private get; set; }

@@ -2,7 +2,7 @@
 
 namespace SilverBotDS.Commands
 {
-    internal partial class CalculatorCommands
+    public partial class CalculatorCommands
     {
         public class MathStep
         {

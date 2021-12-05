@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [Category("Calculator")]
-    internal partial class CalculatorCommands : SilverBotCommandModule
+    public partial class CalculatorCommands : SilverBotCommandModule
     {
         public override Task<bool> ExecuteRequirements(Config conf)
         {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace SilverBotDS.Commands
 {
     [Category("Moderation")]
-    internal class ModCommands : BaseCommandModule
+    public class ModCommands : BaseCommandModule
     {
         [Command("kick")]
         [Description("Kick a specified user")]

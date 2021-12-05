@@ -28,10 +28,7 @@ namespace SilverBotDS.Commands
         [Description("Sends SilverYeet.gif")]
         public async Task Silveryeet(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://cdn.discordapp.com/attachments/751246248102592567/823475242822533120/SilverYeet.gif").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
 
-        [Command("WeWillFockYou")]
-        [Description("Gives a Youtube link for the legendary We Will Fock You video.")]
-        public async Task WeWillFockYou(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://youtu.be/lLN3caSQI1w").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
-
+        
     }
     [Category("Bubot")]
     internal class BibiCommands : SilverBotCommandModule, IRequireFonts

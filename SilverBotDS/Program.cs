@@ -355,10 +355,10 @@ namespace SilverBotDS
                     Type type = Type.GetType(module);
                     if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
                     {
-                        var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetGetMethod().Invoke(null, null);
+                        var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
                         if (!CheckIfAllFontsAreHere(fonts))
                         {
-                            log.Information("Module {module} won't be loaded as its requirements weren't met, (fonts)", module);
+                            log.Information("Module {module} won't be loaded as its requirements weren't met: the font/fonts {fonts} is/are missing", module,string.Join(',',fonts));
                         }
                     }
                     if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
@@ -396,10 +396,10 @@ namespace SilverBotDS
                             Type type = assembly.GetType(module.Value);
                             if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
                             {
-                                var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetGetMethod().Invoke(null, null);
+                                var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
                                 if (!CheckIfAllFontsAreHere(fonts))
                                 {
-                                    log.Information("Module {module} won't be loaded as its requirements weren't met, (fonts)", module.Value);
+                                    log.Information("Module {module} won't be loaded as its requirements weren't met, the font/fonts {fonts} is/are missing", module, string.Join(',', fonts));
                                 }
                             }
                             if (type.IsSubclassOf(typeof(SilverBotCommandModule)))

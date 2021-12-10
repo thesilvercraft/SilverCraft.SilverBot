@@ -17,9 +17,9 @@ namespace SilverBotDS
             Analytics.Initialize(token);
         }
 
-        public Task EmitEvent(DiscordUser User, string EventName, IDictionary<string, object> Args)
+        public Task EmitEvent(DiscordUser UserId, string EventName, IDictionary<string, object> Args)
         {
-            Analytics.Client.Track(User.Id.ToString(), EventName, Args);
+            Analytics.Client.Track(UserId.Id.ToString(), EventName, Args);
             return Task.CompletedTask;
         }
     }

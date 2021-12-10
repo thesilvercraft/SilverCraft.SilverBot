@@ -44,9 +44,9 @@ namespace SilverBotDS.Commands
                     var m = _emote.Matches(part);
                     if (m.Count != 0)
                     {
-                        foreach (Match match in m.ToArray())
+                        foreach (var gr in m.Select(ovl=>ovl.Groups))
                         {
-                            bob.Append(match.Groups["name"].Value).Append(',').Append(Convert.ToUInt64(match.Groups["id"].Value)).Append(',').AppendFormat("{0:yyyy-MM-dd HH:mm:ss}", (DateTimeOffset)(message.EditedTimestamp ?? message.Timestamp)).AppendLine();
+                            bob.Append(gr["name"].Value).Append(',').Append(Convert.ToUInt64(gr["id"].Value)).Append(',').AppendFormat("{0:yyyy-MM-dd HH:mm:ss}", message.EditedTimestamp ?? message.Timestamp).AppendLine();
                         }
                     }
                 }

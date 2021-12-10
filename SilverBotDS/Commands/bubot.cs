@@ -23,12 +23,9 @@ namespace SilverBotDS.Commands
     [Category("Bubot")]
     public class Bubot : BaseCommandModule
     {
-       
         [Command("silveryeet")]
         [Description("Sends SilverYeet.gif")]
         public async Task Silveryeet(CommandContext ctx) => await new DiscordMessageBuilder().WithContent("https://cdn.discordapp.com/attachments/751246248102592567/823475242822533120/SilverYeet.gif").WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None).SendAsync(ctx.Channel);
-
-        
     }
     [Category("Bubot")]
     internal class BibiCommands : SilverBotCommandModule, IRequireFonts
@@ -101,7 +98,6 @@ namespace SilverBotDS.Commands
             }
             return Task.FromResult(true);
         }
-       
         void EnsureCreated()
         {
             if(BibiDescText ==null)

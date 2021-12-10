@@ -17,8 +17,8 @@ namespace SilverBotDS.Commands
 
         [Command("webshot")]
         [Description("screenshots a webpage")]
-        [RequireConfigVariable("AllowPublicWebshot", true)]
-        [RequireGuildDatabaseValue("WebShot", true, true)]
+        [RequireConfigVariableAttribute("AllowPublicWebshot", true)]
+        [RequireGuildDatabaseValueAttribute("WebShot", true, true)]
         public async Task WebshotCommand(CommandContext ctx, string html, byte waittime = 0)
         {
             var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png").WithFooter($"Requested by {ctx.User.Username}", ctx.User.GetAvatarUrl(ImageFormat.Png)).WithColor(DiscordColor.Green);

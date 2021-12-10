@@ -22,10 +22,10 @@ namespace SilverBotDS.Utils
             ulong i = 0;
             StringBuilder newFormatString = new(formatString);
             Dictionary<string, ulong> keyToInt = new();
-            foreach (var tuple in valueDict)
+            foreach (var tuple in valueDict.Select(tuple=>tuple.Key))
             {
-                newFormatString = newFormatString.Replace($"{{{tuple.Key}}}", $"{{{i}}}");
-                keyToInt.Add(tuple.Key, i);
+                newFormatString = newFormatString.Replace($"{{{tuple}}}", $"{{{i}}}");
+                keyToInt.Add(tuple, i);
                 i++;
             }
             return string.Format(newFormatString.ToString(), valueDict.OrderBy(x => keyToInt[x.Key]).Select(x => x.Value).ToArray());

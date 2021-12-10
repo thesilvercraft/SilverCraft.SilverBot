@@ -243,18 +243,18 @@ namespace SnowdPlayer
 
         /// <summary>
         ///     Copies all tracks to the specified <paramref name="array"/> at the specified
-        ///     <paramref name="index"/>.
+        ///     <paramref name="arrayIndex"/>.
         /// </summary>
         /// <remarks>
         ///     This method is thread-safe, so it can be used from multiple threads at once safely.
         /// </remarks>
         /// <param name="array">the array to the tracks to</param>
-        /// <param name="index">the zero-based writing start index</param>
-        public void CopyTo(SnowTrack[] array, int index)
+        /// <param name="arrayIndex">the zero-based writing start index</param>
+        public void CopyTo(SnowTrack[] array, int arrayIndex)
         {
             lock (_syncRoot)
             {
-                _list.CopyTo(array, index);
+                _list.CopyTo(array, arrayIndex);
             }
         }
 
@@ -272,7 +272,7 @@ namespace SnowdPlayer
         {
             lock (_syncRoot)
             {
-                if (_list.Count <= 0)
+                if (_list.Count == 0)
                 {
                     throw new InvalidOperationException("No tracks in to dequeue.");
                 }
@@ -477,7 +477,7 @@ namespace SnowdPlayer
         {
             lock (_syncRoot)
             {
-                if (_list.Count <= 0)
+                if (_list.Count == 0)
                 {
                     track = default;
                     return false;
@@ -739,7 +739,7 @@ namespace SnowdPlayer
         }
     }
 
-    public delegate TPlayer PlayerFactory<TPlayer>() where TPlayer : BaseSnowPlayer;
+    public delegate TPlayer PlayerFactory<out TPlayer>() where TPlayer : BaseSnowPlayer;
 
     public class SnowTrack : LavalinkTrack
     {

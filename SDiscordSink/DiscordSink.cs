@@ -24,7 +24,7 @@ namespace SDiscordSink
 
     public class DiscordSink : ILogEventSink
     {
-        private readonly DiscordWebhookClient webhookClient = new();
+        private readonly DiscordWebhookClient webhookClient;
 
         public DiscordSink(params Tuple<ulong, string>[] webhooks)
         {

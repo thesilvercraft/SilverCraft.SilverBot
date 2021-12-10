@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Attributes
 {
-    public class RequireGuildDatabaseValue : CheckBaseAttribute
+    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
+    public class RequireGuildDatabaseValueAttribute : CheckBaseAttribute
     {
         private string Variable { get; init; }
         private object State { get; init; }
         private bool AllowDirectMessages { get; init; }
 
-        public RequireGuildDatabaseValue(string variable, object state, bool allowdms)
+        public RequireGuildDatabaseValueAttribute(string variable, object state, bool allowdms)
         {
             Variable = variable;
             State = state;
@@ -39,13 +40,14 @@ namespace SilverBotDS.Attributes
         }
     }
 
-    public class RequireGuildDatabaseValueSlash : SlashCheckBaseAttribute
+    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
+    public class RequireGuildDatabaseValueSlashAttribute : SlashCheckBaseAttribute
     {
         private string Variable { get; init; }
         private object State { get; init; }
         private bool AllowDirectMessages { get; init; }
 
-        public RequireGuildDatabaseValueSlash(string variable, object state, bool allowdms)
+        public RequireGuildDatabaseValueSlashAttribute(string variable, object state, bool allowdms)
         {
             Variable = variable;
             State = state;

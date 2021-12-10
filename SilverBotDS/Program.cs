@@ -110,8 +110,6 @@ namespace SilverBotDS
             }
             return !(a is null || a == b);
         }
-
-
         private static bool CheckIfAllFontsAreHere(string[] requiredFonts)
         {
             var familynames = SystemFonts.Families.Select(x => x.Name);
@@ -392,7 +390,6 @@ namespace SilverBotDS
                     {
                         try
                         {
-                           
                             Type type = assembly.GetType(module.Value);
                             if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
                             {
@@ -422,9 +419,7 @@ namespace SilverBotDS
                         catch (Exception ex)
                         {
                             log.Error("Failed to load module {module} Exception {ex} occured", module.Value, ex);
-                        }
-
-                    }
+                        }                    }
                 }
                 else
                 {
@@ -592,6 +587,7 @@ namespace SilverBotDS
 
         private static async Task Slash_SlashCommandErrored(SlashCommandsExtension sender, DSharpPlus.SlashCommands.EventArgs.SlashCommandErrorEventArgs e)
         {
+            //TODO IMPLEMENT STATISTICS
         }
 
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)

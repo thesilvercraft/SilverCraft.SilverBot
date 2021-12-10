@@ -13,7 +13,6 @@ namespace SilverBotDS.Objects.Database.Classes
     {
         public TranslatorSettings()
         {
-            CustomLanguages = new List<Language>();
         }
 
         [Key]

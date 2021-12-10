@@ -51,15 +51,15 @@ namespace SilverBotDS.Objects.Classes
             if (command.Overloads?.Any() == true)
             {
                 var sb = new StringBuilder();
-                foreach (var ovl in command.Overloads.OrderByDescending(x => x.Priority))
+                foreach (var ovl in command.Overloads.OrderByDescending(x => x.Priority).Select(ovl=>ovl.Arguments))
                 {
                     sb.Append('`').Append(command.QualifiedName);
-                    foreach (var arg in ovl.Arguments)
+                    foreach (var arg in ovl)
                     {
                         sb.Append(arg.IsOptional || arg.IsCatchAll ? " [" : " <").Append(arg.Name).Append(arg.IsCatchAll ? "..." : "").Append(arg.IsOptional || arg.IsCatchAll ? ']' : '>');
                     }
                     sb.Append("`\n");
-                    foreach (var arg in ovl.Arguments)
+                    foreach (var arg in ovl)
                     {
                         sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type)).Append(")`: ").Append(arg.Description ?? Lang.HelpCommandNoDescription).Append('\n');
                     }

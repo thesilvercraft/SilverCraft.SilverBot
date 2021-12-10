@@ -3,13 +3,13 @@
 namespace SilverBotDS.Exceptions
 {
     [Serializable]
-    public class DBLAException : Exception
+    public class DblaException : Exception
     {
-        public DBLAException()
+        public DblaException()
         {
         }
 
-        public DBLAException(string error)
+        public DblaException(string error)
             : base($"DBLA returned an error: {error}")
         {
         }

@@ -639,7 +639,7 @@ namespace SilverBotDS.Objects
             {
                 var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
 
-                if (t != null && t.IsTranslator && t.CurrentCustomLanguage != null)
+                if (t?.IsTranslator == true && t.CurrentCustomLanguage != null)
                 {
                     await db.Entry(t).ReloadAsync();
                     return t.CurrentCustomLanguage;
@@ -655,7 +655,7 @@ namespace SilverBotDS.Objects
             if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
             {
                 var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
-                if (t != null && t.IsTranslator && t.CurrentCustomLanguage != null)
+                if (t?.IsTranslator == true && t.CurrentCustomLanguage != null)
                 {
                     await db.Entry(t).ReloadAsync();
                     return t.CurrentCustomLanguage;

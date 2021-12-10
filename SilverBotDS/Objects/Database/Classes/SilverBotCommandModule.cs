@@ -9,10 +9,8 @@ namespace SilverBotDS.Objects.Classes
         {
             return Task.FromResult(true);
         }
-       
     }
     public interface IRequireFonts
     {
-
     }
 }

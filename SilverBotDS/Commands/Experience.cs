@@ -30,7 +30,6 @@ namespace SilverBotDS.Commands
     [Category("XP")]
     public class Experience : SilverBotCommandModule, IRequireFonts
     {
-      
         public DatabaseContext Database { private get; set; }
         public HttpClient HttpClient { private get; set; }
 

@@ -12,7 +12,7 @@ namespace SilverBotDS.Commands.Slash
         public IBrowser Browser { private get; set; }
 
         [SlashCommand("webshot", "A command to take a screenshot of a website")]
-        [RequireGuildDatabaseValueSlash("WebShot", true, true)]
+        [RequireGuildDatabaseValueSlashAttribute("WebShot", true, true)]
         public async Task WebShot(InteractionContext ctx, [Option("url", "The url to take a screenshot of")] string url, [Choice("10s", 10)][Choice("7s", 7)][Choice("5s", 5)][Choice("Don't wait", 0)][Option("waittime", "How long to wait after it takes a screenshot")] long waittime = 0)
         {
             await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);

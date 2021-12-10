@@ -47,7 +47,7 @@ namespace SilverBotDS.Objects
                     var bot = JsonSerializer.Deserialize<Bot>(response.Content);
                     if (bot != null && !string.IsNullOrEmpty(bot.Error))
                     {
-                        throw new DBLAException(bot.Error);
+                        throw new DblaException(bot.Error);
                     }
                     else
                     {

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Attributes
 {
-    public class RequireConfigVariable : CheckBaseAttribute
+    public class RequireConfigVariableAttribute : CheckBaseAttribute
     {
         private string Variable { get; init; }
         private object State { get; init; }
 
-        public RequireConfigVariable(string variable, object state)
+        public RequireConfigVariableAttribute(string variable, object state)
         {
             Variable = variable;
             State = state;

@@ -53,8 +53,6 @@ public class OwnerOnly : SilverBotCommandModule
     {
         var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
         await ctx.RespondAsync($"its {info.Duration.Humanize()} ({info.Duration}) long");
-
-
         var name = Path.GetFileName(loc);
         var videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
         for (var i = 0; i < times; i++)
@@ -111,16 +109,31 @@ public class OwnerOnly : SilverBotCommandModule
     }
 
     [Command("RegisterModule")]
-    public async Task RegMod(CommandContext ctx, string mod)
+    public async Task RegMod(CommandContext ctx, string mod, bool skipcheck=false)
     {
         var type = Type.GetType(mod);
-        if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
+        if(!skipcheck)
         {
-            var n = (SilverBotCommandModule) Activator.CreateInstance(type);
-            if (await n.ExecuteRequirements(Config))
-                ctx.CommandsNext.RegisterCommands(type);
+            if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
+            {
+                var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
+                if (!Program.CheckIfAllFontsAreHere(fonts))
+                {
+                    await ctx.RespondAsync($"Module {mod} won't be loaded as its requirements weren't met: the font/fonts {string.Join(',', fonts)} is/are missing");
+                }
+            }
+            if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
+            {
+                var n = (SilverBotCommandModule)Activator.CreateInstance(type);
+                if (await n.ExecuteRequirements(Config))
+                    ctx.CommandsNext.RegisterCommands(type);
+                else
+                    await ctx.RespondAsync($"Module {mod} won't be loaded as its requirements weren't met");
+            }
             else
-                await ctx.RespondAsync($"Module {mod} won't be loaded as its requirements weren't met");
+            {
+                ctx.CommandsNext.RegisterCommands(type);
+            }
         }
         else
         {

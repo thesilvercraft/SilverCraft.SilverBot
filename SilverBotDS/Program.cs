@@ -134,7 +134,7 @@ namespace SilverBotDS
             return !(a is null || a == b);
         }
 
-        private static bool CheckIfAllFontsAreHere(string[] requiredFonts)
+        public static bool CheckIfAllFontsAreHere(string[] requiredFonts)
         {
             if (requiredFonts == null) throw new ArgumentNullException(nameof(requiredFonts));
             var familyNames = SystemFonts.Families.Select(x => x.Name).ToList();

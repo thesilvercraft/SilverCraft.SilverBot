@@ -1,177 +1,179 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ApplicationManifest>app.manifest</ApplicationManifest>
-		<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-	</PropertyGroup>
-	<PropertyGroup>
-		<DebugType>portable</DebugType>
-		<StartupObject>SilverBotDS.Program</StartupObject>
-		<ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
-		<AnalysisLevel>preview</AnalysisLevel>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-		<UserSecretsId>02ac9d1d-689a-48f6-a136-dc1e8cb28b0d</UserSecretsId>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputPath>bin\Debug\</OutputPath>
-		<DocumentationFile></DocumentationFile>
-		<CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-	</PropertyGroup>
-	<ItemGroup>
-		<None Remove="Exceptions\NewFile.txt" />
-		<None Remove="Templates\adventure_time_template.png" />
-		<None Remove="Templates\happy_new_year_template.png" />
-		<None Remove="Templates\joker_laugh.gif" />
-		<None Remove="Templates\motivator_template.png" />
-		<None Remove="Templates\paint_template.png" />
-		<None Remove="Templates\weeb_reliable_template.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Templates\joker_laugh.gif" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Templates\adventure_time_template.png" />
-		<EmbeddedResource Include="Templates\happy_new_year_template.png" />
-		<EmbeddedResource Include="Templates\motivator_template.png" />
-		<EmbeddedResource Include="Templates\paint_template.png" />
-		<EmbeddedResource Include="Templates\weeb_reliable_template.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="..\.editorconfig" Link=".editorconfig" />
-		<None Include="Pages\Monika.razor" />
-		<None Include="Shared\MainLayout.razor" />
-		<None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
-		<None Include="wwwroot\css\open-iconic\FONT-LICENSE" />
-		<None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
-		<None Include="wwwroot\css\open-iconic\ICON-LICENSE" />
-		<None Include="wwwroot\css\open-iconic\README.md" />
-	</ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <DebugType>portable</DebugType>
+        <StartupObject>SilverBotDS.Program</StartupObject>
+        <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
+        <AnalysisLevel>preview</AnalysisLevel>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <UserSecretsId>02ac9d1d-689a-48f6-a136-dc1e8cb28b0d</UserSecretsId>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <OutputPath>bin\Debug\</OutputPath>
+        <DocumentationFile></DocumentationFile>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="Exceptions\NewFile.txt"/>
+        <None Remove="Templates\adventure_time_template.png"/>
+        <None Remove="Templates\happy_new_year_template.png"/>
+        <None Remove="Templates\joker_laugh.gif"/>
+        <None Remove="Templates\motivator_template.png"/>
+        <None Remove="Templates\paint_template.png"/>
+        <None Remove="Templates\weeb_reliable_template.png"/>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Templates\joker_laugh.gif"/>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Templates\adventure_time_template.png"/>
+        <EmbeddedResource Include="Templates\happy_new_year_template.png"/>
+        <EmbeddedResource Include="Templates\motivator_template.png"/>
+        <EmbeddedResource Include="Templates\paint_template.png"/>
+        <EmbeddedResource Include="Templates\weeb_reliable_template.png"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\.editorconfig" Link=".editorconfig"/>
+        <None Include="Pages\Monika.razor"/>
+        <None Include="Shared\MainLayout.razor"/>
+        <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map"/>
+        <None Include="wwwroot\css\open-iconic\FONT-LICENSE"/>
+        <None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.svg"/>
+        <None Include="wwwroot\css\open-iconic\ICON-LICENSE"/>
+        <None Include="wwwroot\css\open-iconic\README.md"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Analytics" Version="3.8.0" />
-		<PackageReference Include="Azure.Identity" Version="1.5.0" />
-		<PackageReference Include="CodenameGenerator" Version="1.2.47" />
-		<PackageReference Include="DSharpPlus" Version="4.2.0-nightly-01051" />
-		<PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-01051" />
-		<PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-01051" />
-		<PackageReference Include="DSharpPlus.SlashCommands" Version="4.2.0-nightly-01051" />
-		<PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-01051" />
-		<PackageReference Include="DSharpPlus.Menus" Version="1.0.3.5" />
-		<PackageReference Include="Fortnite-API-Wrapper" Version="2.3.1" />
-		<PackageReference Include="GiphyDotNet" Version="2.0.0" />
-		<PackageReference Include="GitInfo" Version="2.2.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Humanizer" Version="2.13.14" />
-		<PackageReference Include="IPAddressRange" Version="4.2.0" />
-		<PackageReference Include="Jering.Javascript.NodeJS" Version="6.2.0" />
-		<PackageReference Include="Lavalink4NET.DSharpPlus" Version="2.1.0" />
-		<PackageReference Include="Markdig.Signed" Version="0.26.0" />
-		<PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.ProtectedBrowserStorage" Version="5.0.0-rc.1.20451.17" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.1.0-1.final" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Npgsql" Version="6.0.1" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.1" />
-		<PackageReference Include="NSwag.ApiDescription.Client" Version="13.14.8">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Radzen.Blazor" Version="3.13.3" />
-		<PackageReference Include="ScottPlot" Version="4.1.27" />
-		<PackageReference Include="Serilog" Version="2.11.0-dev-01371" />
-		<PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00241" />
-		<PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
-		<PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
-		<PackageReference Include="SixLabors.ImageSharp" Version="2.0.0-alpha.0.124" />
-		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta13.14" />
-		<PackageReference Include="SpotifyAPI.Web" Version="6.2.2" />
-		<PackageReference Include="SteamStoreQuery" Version="1.0.5" />
-		<PackageReference Include="System.Globalization" Version="4.3.0" />
-		<PackageReference Include="System.Globalization.Calendars" Version="4.3.0" />
-		<PackageReference Include="System.Linq.Async" Version="5.0.0" />
-		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-		<PackageReference Include="System.Runtime" Version="4.3.1" />
-		<PackageReference Include="System.Text.Json" Version="6.0.0" />
-		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-		<PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
-		<PackageReference Include="TimeSpanParserUtil" Version="1.2.0" />
-		<PackageReference Include="TimeZoneConverter" Version="3.5.0" />
-		<PackageReference Include="Wbubbler" Version="1.0.2" />
-		<PackageReference Include="Xabe.FFmpeg" Version="5.0.2" />
-		<PackageReference Include="Xabe.FFmpeg.Downloader" Version="5.0.2" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Analytics" Version="3.8.0"/>
+        <PackageReference Include="Azure.Identity" Version="1.5.0"/>
+        <PackageReference Include="CodenameGenerator" Version="1.2.47"/>
+        <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-01051"/>
+        <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-01051"/>
+        <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-01051"/>
+        <PackageReference Include="DSharpPlus.SlashCommands" Version="4.2.0-nightly-01051"/>
+        <PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-01051"/>
+        <PackageReference Include="DSharpPlus.Menus" Version="1.0.3.5"/>
+        <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.1"/>
+        <PackageReference Include="GiphyDotNet" Version="2.0.0"/>
+        <PackageReference Include="GitInfo" Version="2.2.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Humanizer" Version="2.13.14"/>
+        <PackageReference Include="IPAddressRange" Version="4.2.0"/>
+        <PackageReference Include="Jering.Javascript.NodeJS" Version="6.2.0"/>
+        <PackageReference Include="Lavalink4NET.DSharpPlus" Version="2.1.0"/>
+        <PackageReference Include="Markdig.Signed" Version="0.26.0"/>
+        <PackageReference Include="MathParser.org-mXparser" Version="4.4.2"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.ProtectedBrowserStorage" Version="5.0.0-rc.1.20451.17"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.Azure.SignalR" Version="1.4.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.1.0-1.final"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="Npgsql" Version="6.0.1"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.1"/>
+        <PackageReference Include="NSwag.ApiDescription.Client" Version="13.14.8">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Radzen.Blazor" Version="3.13.3"/>
+        <PackageReference Include="ScottPlot" Version="4.1.27"/>
+        <PackageReference Include="Serilog" Version="2.11.0-dev-01371"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00241"/>
+        <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1"/>
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947"/>
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0-alpha.0.124"/>
+        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta13.14"/>
+        <PackageReference Include="SpotifyAPI.Web" Version="6.2.2"/>
+        <PackageReference Include="SteamStoreQuery" Version="1.0.5"/>
+        <PackageReference Include="System.Globalization" Version="4.3.0"/>
+        <PackageReference Include="System.Globalization.Calendars" Version="4.3.0"/>
+        <PackageReference Include="System.Linq.Async" Version="5.0.0"/>
+        <PackageReference Include="System.Net.Http" Version="4.3.4"/>
+        <PackageReference Include="System.Runtime" Version="4.3.1"/>
+        <PackageReference Include="System.Text.Json" Version="6.0.0"/>
+        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1"/>
+        <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0"/>
+        <PackageReference Include="TimeSpanParserUtil" Version="1.2.0"/>
+        <PackageReference Include="TimeZoneConverter" Version="3.5.0"/>
+        <PackageReference Include="Wbubbler" Version="1.0.2"/>
+        <PackageReference Include="Xabe.FFmpeg" Version="5.0.2"/>
+        <PackageReference Include="Xabe.FFmpeg.Downloader" Version="5.0.2"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\SDBrowser\SDBrowser.csproj" />
-		<ProjectReference Include="..\SDiscordSink\SDiscordSink.csproj" />
-		<ProjectReference Include="..\SnowdPlayer\SnowdPlayer.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SDBrowser\SDBrowser.csproj"/>
+        <ProjectReference Include="..\SDiscordSink\SDiscordSink.csproj"/>
+        <ProjectReference Include="..\SnowdPlayer\SnowdPlayer.csproj"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<Resource Include="Templates\weeb_reliable_template.png" />
-	</ItemGroup>
-	<Target Name="AddAssemblyAliasToReactiveAsync" AfterTargets="ResolveAssemblyReferences">
-		<ItemGroup>
-			<ReferencePath Condition=" '%(FileName)' == 'System.Interactive.Async' ">
-				<Aliases>reactive</Aliases>
-			</ReferencePath>
-		</ItemGroup>
-	</Target>
-	<ItemGroup>
-		<None Update="application.yml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="LICENSE">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="License.txt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-		<TypeScriptTarget>ES5</TypeScriptTarget>
-		<TypeScriptJSXEmit>React</TypeScriptJSXEmit>
-		<TypeScriptModuleKind>None</TypeScriptModuleKind>
-		<TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
-		<TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-		<TypeScriptRemoveComments>False</TypeScriptRemoveComments>
-		<TypeScriptOutFile />
-		<TypeScriptOutDir />
-		<TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
-		<TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
-		<TypeScriptSourceMap>True</TypeScriptSourceMap>
-		<TypeScriptMapRoot />
-		<TypeScriptSourceRoot />
-	</PropertyGroup>
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="echo D | XCOPY &quot;$(ProjectDir)wwwroot&quot; &quot;$(TargetDir)wwwroot&quot; /S /Y&#xD;&#xA;dotnet $(TargetPath) generatelang $(ProjectDir)Languages\en\en.json&#xD;&#xA;echo D | XCOPY &quot;$(ProjectDir)Languages&quot; &quot;$(TargetDir)Languages&quot; /S /Y" />
-	</Target>
-	<ItemGroup>
-		<UpToDateCheckInput Remove="Pages\Monika.razor" />
-	</ItemGroup>
-	<ItemGroup>
-		<_ContentIncludedByDefault Remove="Pages\Monika.razor" />
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="Languages\en\" />
-	</ItemGroup>
+    <ItemGroup>
+        <Resource Include="Templates\weeb_reliable_template.png"/>
+    </ItemGroup>
+    <Target Name="AddAssemblyAliasToReactiveAsync" AfterTargets="ResolveAssemblyReferences">
+        <ItemGroup>
+            <ReferencePath Condition=" '%(FileName)' == 'System.Interactive.Async' ">
+                <Aliases>reactive</Aliases>
+            </ReferencePath>
+        </ItemGroup>
+    </Target>
+    <ItemGroup>
+        <None Update="application.yml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="LICENSE">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="License.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <TypeScriptTarget>ES5</TypeScriptTarget>
+        <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+        <TypeScriptModuleKind>None</TypeScriptModuleKind>
+        <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+        <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+        <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+        <TypeScriptOutFile/>
+        <TypeScriptOutDir/>
+        <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+        <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+        <TypeScriptSourceMap>True</TypeScriptSourceMap>
+        <TypeScriptMapRoot/>
+        <TypeScriptSourceRoot/>
+    </PropertyGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="echo D | XCOPY &quot;$(ProjectDir)wwwroot&quot; &quot;$(TargetDir)wwwroot&quot; /S /Y&#xD;&#xA;dotnet $(TargetPath) generatelang $(ProjectDir)Languages\en\en.json&#xD;&#xA;echo D | XCOPY &quot;$(ProjectDir)Languages&quot; &quot;$(TargetDir)Languages&quot; /S /Y"/>
+    </Target>
+    <ItemGroup>
+        <UpToDateCheckInput Remove="Pages\Monika.razor"/>
+    </ItemGroup>
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="Pages\Monika.razor"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Languages\en\"/>
+    </ItemGroup>
 </Project>

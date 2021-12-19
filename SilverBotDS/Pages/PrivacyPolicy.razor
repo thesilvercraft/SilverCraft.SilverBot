@@ -1,28 +1,38 @@
 ﻿@page "/privacy-policy"
+@using SilverBotDS.Objects
+@inject Config config
 <h1 id="what-information-is-stored-on-commands">
-What information is stored on command execution?
+    What information is stored on command execution?
 </h1>
 <p>
-Statistics for how many times a command was executed is availiable publically.
+    Statistics for how many times a command was executed is availiable publically.
 </p>
 <h1 id="what-information-do-you-store-">What information do you store?</h1>
 <p><br>From user information we store user ID&#39;s along with their language name that they may set using the <code>setlang</code> command in private messages with the bot or on the dashboard, we also store a kind of total message count from the user but <strong>not</strong> the message content itself.<br>From guild information we store:</p>
 <ul>
-<li>The server Id</li>
-<li>The Language name set by the <code>setlang</code> command</li>
-<li>If the guild is opted in to emotes.</li>
-<li>The category Id for statistics</li>
-<li>The statistics string templates</li>
-<li>And if the guild is opted into the silly repeat functions (which can be toggled using the <code>togglerepeat</code> command)<br>Basically this
-<img src="https://user-images.githubusercontent.com/46320280/121704141-c495e480-cad3-11eb-9db4-c7ccdae8fdbf.png" alt="image">
-<img src="https://user-images.githubusercontent.com/46320280/121704172-cb245c00-cad3-11eb-8796-4185fd3a725c.png" alt="image">
-</li></ul>
+    <li>The server Id</li>
+    <li>The Language name set by the <code>setlang</code> command</li>
+    <li>If the guild is opted in to emotes.</li>
+    <li>The category Id for statistics</li>
+    <li>The statistics string templates</li>
+    <li>
+        And if the guild is opted into the silly repeat functions (which can be toggled using the <code>togglerepeat</code> command)<br>Basically this
+        <img src="https://user-images.githubusercontent.com/46320280/121704141-c495e480-cad3-11eb-9db4-c7ccdae8fdbf.png" alt="image">
+    </li>
+</ul>
 <h1 id="what-information-do-you-collect-">What information do you collect?</h1>
-Basically: <ul>
-<li>Server count of the bot</li>
-<li>Count of the members in all servers</li>
-<li>And other stuff that isn't mentioned here.</li>
+Basically:
+<ul>
+    <li>Server count of the bot</li>
+    <li>Count of the members in all servers</li>
+    <li>When a (slash)command is sucessfully executed the user ID and the command's name is sent to segment</li>
+    @if (config.SendErrorsThroughSegment)
+    {
+        <li>When an error is thrown the user ID of the user that executed the (slash)command and the error message is sent to segment</li>
+    }
+    <li>And other stuff that isn't mentioned here.</li>
 </ul>
 <h1 id="what-information-do-you-share-">What information do you share?</h1>
-Only the aforementioned server count of the bot and count of members in all servers combined, this info can be seen publicly on the silverbot dashboard which can be found at <a href="https://silverbot.cf/">https://silverbot.cf/</a> for now.<h1 id="how-can-i-request-for-any-data-to-be-deleted-">How can i request for any data to be deleted?</h1>
-You may request any data to be deleted by direct messaging <code>SilverDiamond#1691</code> on discord.<br>Last updated on 05 December 2021.
+The aforementioned server count of the bot and count of members in all servers combined, this info can be seen publicly on the silverbot dashboard which can be found at <a href="https://silverbot.cf/">https://silverbot.cf/</a> and how often commands are sucessfully executed.
+<h1 id="how-can-i-request-for-any-data-to-be-deleted-">How can i request for any data to be deleted?</h1>
+You may request for any data to be deleted by direct messaging <code>SilverDiamond#1691</code> on discord.<br>Last updated on 11 December 2021.

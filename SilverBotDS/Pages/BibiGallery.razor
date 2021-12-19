@@ -1,6 +1,4 @@
 ﻿@page "/bibigallery"
-@using System.Reflection
-@using SilverBotDS.Commands
 @using SilverBotDS.Objects
 @using System.IO
 @using System.Text.Json
@@ -14,7 +12,20 @@
 }
 
 @code{
-    string[] BibiDescText { get { if (!config.EmulateBubotBibi) { return Array.Empty<string>(); } using StreamReader e = new(config.BibiLibCutOutConfig); return JsonSerializer.Deserialize<string[]>(e.ReadToEnd()); } }
+
+    string[] BibiDescText
+    {
+        get
+        {
+            if (!config.EmulateBubotBibi)
+            {
+                return Array.Empty<string>();
+            }
+            using StreamReader e = new(config.BibiLibCutOutConfig);
+            return JsonSerializer.Deserialize<string[]>(e.ReadToEnd());
+        }
+    }
+
 }
 
 <h1>Bibi pictures</h1>
@@ -66,11 +77,11 @@
     }
 </style>
 <div class="row">
-    @for (int a = 1; a < BibiDescText.Length; a++)
+    @for (var a = 1; a < BibiDescText.Length; a++)
     {
-        string url = string.Format(config.BibiLibCutOut, a);
+        var url = string.Format(config.BibiLibCutOut, a);
         <div class="column">
-            <img src="@url" alt="@BibiDescText[a-1]" onclick="galleryThing(this);">
+            <img src="@url" alt="@BibiDescText[a - 1]" onclick="galleryThing(this);">
         </div>
     }
 </div>

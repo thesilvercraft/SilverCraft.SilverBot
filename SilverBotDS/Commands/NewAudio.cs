@@ -1,4 +1,5 @@
-﻿using DSharpPlus;
+﻿using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -12,771 +13,787 @@ using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using SnowdPlayer;
 using SpotifyAPI.Web;
-using System.Threading.Tasks;
 
-namespace SilverBotDS.Commands
+namespace SilverBotDS.Commands;
+
+[RequireGuild]
+[Category("New Audio")]
+[Group("a")]
+public class NewAudio : SilverBotCommandModule
 {
-    [RequireGuild]
-    [Category("New Audio")]
-    [Group("a")]
-    public class NewAudio : SilverBotCommandModule
+    public SnowService AudioService { private get; set; }
+    public LavalinkNode AudioServicee { private get; set; }
+    public LyricsService LyricsService { private get; set; }
+    public Config Config { private get; set; }
+
+    public SpotifyClient SpotifyClient { private get; set; }
+
+    public override Task<bool> ExecuteRequirements(Config conf)
     {
-        public SnowService AudioService { private get; set; }
-        public LavalinkNode AudioServicee { private get; set; }
-        public LyricsService LyricsService { private get; set; }
-        public override Task<bool> ExecuteRequirements(Config conf)
-        {
-            return Task.FromResult(conf.UseNewAudio);
-        }
-        public Config Config { private get; set; }
+        return Task.FromResult(conf.UseNewAudio);
+    }
 
-        public SpotifyClient SpotifyClient { private get; set; }
+    private bool IsInVc(CommandContext ctx)
+    {
+        return AudioService.HasPlayer(ctx.Guild.Id) &&
+               AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id) is not null &&
+               (AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected ||
+                AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
+    }
 
-        private bool IsInVc(CommandContext ctx) => AudioService.HasPlayer(ctx.Guild.Id) && AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id) is not null && (AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected || AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
-
-        /*
-         private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "", string imageurl = "", string url = "", Language language = null)
+    /*
+     private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "", string imageurl = "", string url = "", Language language = null)
+     {
+         language ??= await Language.GetLanguageFromCtxAsync(ctx);
+         var embedBuilder = new DiscordEmbedBuilder().WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithColor(await ColorUtils.GetSingleAsync());
+         var messageBuilder = new DiscordMessageBuilder();
+         if (!string.IsNullOrEmpty(message))
          {
-             language ??= await Language.GetLanguageFromCtxAsync(ctx);
-             var embedBuilder = new DiscordEmbedBuilder().WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithColor(await ColorUtils.GetSingleAsync());
-             var messageBuilder = new DiscordMessageBuilder();
-             if (!string.IsNullOrEmpty(message))
-             {
-                 embedBuilder.WithDescription(message);
-             }
-             if (!string.IsNullOrEmpty(title))
-             {
-                 embedBuilder.WithTitle(title);
-             }
-             if (!string.IsNullOrEmpty(imageurl))
-             {
-                 embedBuilder.WithImageUrl(imageurl);
-             }
-             if (!string.IsNullOrEmpty(url))
-             {
-                 embedBuilder.WithUrl(url);
-             }
-             await messageBuilder
+             embedBuilder.WithDescription(message);
+         }
+         if (!string.IsNullOrEmpty(title))
+         {
+             embedBuilder.WithTitle(title);
+         }
+         if (!string.IsNullOrEmpty(imageurl))
+         {
+             embedBuilder.WithImageUrl(imageurl);
+         }
+         if (!string.IsNullOrEmpty(url))
+         {
+             embedBuilder.WithUrl(url);
+         }
+         await messageBuilder
+     .WithReply(ctx.Message.Id)
+     .WithEmbed(embedBuilder.Build())
+     .SendAsync(ctx.Channel);
+     }
+
+     private TimeSpan TimeTillSongPlays(QueuedLavalinkPlayer player, int song)
+     {
+         if (player.IsLooping)
+         {
+             return TimeSpan.MaxValue;
+         }
+         TimeSpan time;
+         if (player.CurrentTrack.IsLiveStream)
+         {
+             time = TimeSpan.FromHours(2) - player.TrackPosition;
+         }
+         else
+         {
+             time = player.CurrentTrack.Duration - player.TrackPosition;
+         }
+
+         for (int i = 0; i < song - 1; i++)
+         {
+             time += player.Queue[i].Duration;
+         }
+         return time;
+     }
+
+     [Command("playnext")]
+     [Description("Tell me to play a song next in the queue")]
+     [Aliases("pn")]
+     public async Task PlayNext(CommandContext ctx, [RemainingText] SongORSongs song)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         if (song.Song != null)
+         {
+             await player.PlayTopAsync(song.Song);
+             await new DiscordMessageBuilder()
          .WithReply(ctx.Message.Id)
-         .WithEmbed(embedBuilder.Build())
+         .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+         .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
+         .WithUrl(song.Song.Source)
+         .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
+         .Build())
          .SendAsync(ctx.Channel);
          }
 
-         private TimeSpan TimeTillSongPlays(QueuedLavalinkPlayer player, int song)
+         if (song.GetRestOfSongs is not null)
          {
-             if (player.IsLooping)
+             ulong countofsongs = 0;
+             await foreach (var t in song.GetRestOfSongs)
              {
-                 return TimeSpan.MaxValue;
+                 if (t is not null)
+                 {
+                     await player.PlayTopAsync(t);
+                     countofsongs++;
+                 }
              }
-             TimeSpan time;
-             if (player.CurrentTrack.IsLiveStream)
+             if (countofsongs != 0)
              {
-                 time = TimeSpan.FromHours(2) - player.TrackPosition;
+                 await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, countofsongs));
+             }
+         }
+     }
+
+     [Command("play")]
+     [Description("Tell me to play a song")]
+     [Aliases("p")]
+     public async Task Play(CommandContext ctx)
+     {
+         if (ctx.Message.Attachments.Count == 1)
+         {
+             await Play(ctx, (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.Attachments[0].Url, ctx, typeof(SongORSongs)));
+         }
+         else if (ctx.Message.ReferencedMessage?.Attachments.Count == 1)
+         {
+             await Play(ctx, (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.ReferencedMessage.Attachments[0].Url, ctx, typeof(SongORSongs)));
+         }
+         else
+         {
+             await Resume(ctx);
+         }
+     }
+
+     [Command("play")]
+     public async Task Play(CommandContext ctx, [RemainingText] SongORSongs song)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         if (song.Song != null)
+         {
+             int pos = await player.PlayAsync(song.Song, true, startTime: song.SongStartTime);
+             if (pos == 0)
+             {
+                 await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, song.Song.Title + lang.SongByAuthor + song.Song.Author), url: song.Song.Source, language: lang);
              }
              else
              {
-                 time = player.CurrentTrack.Duration - player.TrackPosition;
-             }
-
-             for (int i = 0; i < song - 1; i++)
-             {
-                 time += player.Queue[i].Duration;
-             }
-             return time;
-         }
-
-         [Command("playnext")]
-         [Description("Tell me to play a song next in the queue")]
-         [Aliases("pn")]
-         public async Task PlayNext(CommandContext ctx, [RemainingText] SongORSongs song)
-         {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             if (song.Song != null)
-             {
-                 await player.PlayTopAsync(song.Song);
                  await new DiscordMessageBuilder()
              .WithReply(ctx.Message.Id)
              .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
              .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
              .WithUrl(song.Song.Source)
-             .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
+             .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
              .Build())
              .SendAsync(ctx.Channel);
              }
-
-             if (song.GetRestOfSongs is not null)
+         }
+         if (song.GetRestOfSongs is not null)
+         {
+             ulong countofsongs = 0;
+             await foreach (var t in song.GetRestOfSongs)
              {
-                 ulong countofsongs = 0;
-                 await foreach (var t in song.GetRestOfSongs)
+                 if (t is not null)
                  {
-                     if (t is not null)
-                     {
-                         await player.PlayTopAsync(t);
-                         countofsongs++;
-                     }
-                 }
-                 if (countofsongs != 0)
-                 {
-                     await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, countofsongs));
+                     await player.PlayAsync(t, true);
+                     countofsongs++;
                  }
              }
-         }
-
-         [Command("play")]
-         [Description("Tell me to play a song")]
-         [Aliases("p")]
-         public async Task Play(CommandContext ctx)
-         {
-             if (ctx.Message.Attachments.Count == 1)
+             if (countofsongs != 0)
              {
-                 await Play(ctx, (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.Attachments[0].Url, ctx, typeof(SongORSongs)));
-             }
-             else if (ctx.Message.ReferencedMessage?.Attachments.Count == 1)
-             {
-                 await Play(ctx, (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.ReferencedMessage.Attachments[0].Url, ctx, typeof(SongORSongs)));
-             }
-             else
-             {
-                 await Resume(ctx);
+                 await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, countofsongs));
              }
          }
+     }
 
-         [Command("play")]
-         public async Task Play(CommandContext ctx, [RemainingText] SongORSongs song)
+     [Command("volume")]
+     [Aliases("vol")]
+     [RequireDJ]
+     [Description("Change the volume 1-100%")]
+     public async Task Volume(CommandContext ctx, ushort volume)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (!IsInVc(ctx))
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             if (song.Song != null)
-             {
-                 int pos = await player.PlayAsync(song.Song, true, startTime: song.SongStartTime);
-                 if (pos == 0)
-                 {
-                     await SendNowPlayingMessage(ctx, string.Format(lang.NowPlaying, song.Song.Title + lang.SongByAuthor + song.Song.Author), url: song.Song.Source, language: lang);
-                 }
-                 else
-                 {
-                     await new DiscordMessageBuilder()
-                 .WithReply(ctx.Message.Id)
-                 .WithEmbed(new DiscordEmbedBuilder().WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
-                 .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
-                 .WithUrl(song.Song.Source)
-                 .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
-                 .Build())
-                 .SendAsync(ctx.Channel);
-                 }
-             }
-             if (song.GetRestOfSongs is not null)
-             {
-                 ulong countofsongs = 0;
-                 await foreach (var t in song.GetRestOfSongs)
-                 {
-                     if (t is not null)
-                     {
-                         await player.PlayAsync(t, true);
-                         countofsongs++;
-                     }
-                 }
-                 if (countofsongs != 0)
-                 {
-                     await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, countofsongs));
-                 }
-             }
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
+         }
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
+         }
+         if (volume is < 0 or > 100)
+         {
+             await SendSimpleMessage(ctx, lang.VolumeNotCorrect, language: lang);
+             return;
+         }
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         await player.SetVolumeAsync(volume / 100f, true);
+     }
+
+     [Command("seek")]
+     [RequireDJ]
+     [Description("Seeks to the specified time")]
+     public async Task Seek(CommandContext ctx, TimeSpan time)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (!IsInVc(ctx))
+         {
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
+         }
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
+         }
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         try
+         {
+             await player.SeekPositionAsync(time);
+         }
+         catch (NotSupportedException)
+         {
+             await SendSimpleMessage(ctx, lang.TrackCanNotBeSeeked, language: lang);
+         }
+     }
+
+     [Command("clearqueue")]
+     [RequireDJ]
+     [Description("Clears the queue")]
+     public async Task ClearQueue(CommandContext ctx)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (!IsInVc(ctx))
+         {
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
+         }
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
          }
 
-         [Command("volume")]
-         [Aliases("vol")]
-         [RequireDJ]
-         [Description("Change the volume 1-100%")]
-         public async Task Volume(CommandContext ctx, ushort volume)
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         if (player.Queue.Count == 0 && player.State != PlayerState.NotPlaying)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             if (volume is < 0 or > 100)
-             {
-                 await SendSimpleMessage(ctx, lang.VolumeNotCorrect, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             await player.SetVolumeAsync(volume / 100f, true);
+             await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
+             return;
+         }
+         int cnt = player.Queue.Clear();
+         await SendSimpleMessage(ctx, string.Format(lang.RemovedXSongOrSongs, cnt, cnt == 1 ? lang.RemovedSong : lang.RemovedSongs), language: lang);
+     }
+
+     [Command("shuffle")]
+     [RequireDJ]
+     [Description("Shuffles the queue")]
+     public async Task Shuffle(CommandContext ctx)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (!IsInVc(ctx))
+         {
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
+         }
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
+         }
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         player.Queue.Shuffle();
+         await SendSimpleMessage(ctx, lang.ShuffledSuccess, language: lang);
+     }
+
+     [Command("export")]
+     [Description("Export the queue")]
+     public async Task ExportQueue(CommandContext ctx, string playlistName = null)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (!IsInVc(ctx))
+         {
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
+         }
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
+         }
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         var queue = player.Queue.Select(x => x.Identifier).ToList();
+         queue.Insert(0, player.CurrentTrack.Identifier);
+         await OwnerOnly.SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new SilverBotPlaylist()
+         {
+             Identifiers = queue.ToArray(),
+             CurrentSongTimems = player.TrackPosition.TotalMilliseconds,
+             PlaylistTitle = playlistName
+         }), filename: "queue.json");
+     }
+
+     [Command("remove")]
+     [Description("Remove song X from the queue. 0 < index > queue length")]
+     public async Task Remove(CommandContext ctx, int songindex)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (!IsInVc(ctx))
+         {
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
+         }
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
+         }
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         if (songindex < 0 || songindex > player.Queue.Count)
+         {
+             await SendSimpleMessage(ctx, lang.SongNotExist, language: lang);
+             return;
+         }
+         var thingy = player.Queue[songindex - 1];
+         player.Queue.RemoveAt(songindex - 1);
+         await SendSimpleMessage(ctx, lang.RemovedFront + thingy.Title + lang.SongByAuthor + thingy.Author, language: lang);
+     }
+
+     [Command("queue")]
+     [Description("check whats playing rn and whats next")]
+     [Aliases("np", "nowplaying", "q")]
+     public async Task Queue(CommandContext ctx)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (!IsInVc(ctx))
+         {
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
+         }
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
          }
 
-         [Command("seek")]
-         [RequireDJ]
-         [Description("Seeks to the specified time")]
-         public async Task Seek(CommandContext ctx, TimeSpan time)
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         if (player.Queue.Count == 0 && player.State != PlayerState.Playing)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             try
-             {
-                 await player.SeekPositionAsync(time);
-             }
-             catch (NotSupportedException)
-             {
-                 await SendSimpleMessage(ctx, lang.TrackCanNotBeSeeked, language: lang);
-             }
+             await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
+             return;
          }
 
-         [Command("clearqueue")]
-         [RequireDJ]
-         [Description("Clears the queue")]
-         public async Task ClearQueue(CommandContext ctx)
+         var pages = new List<Page>
+             {
+                 new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize(culture: lang.GetCultureInfo())))
+             };
+         for (var i = 0; i < player.Queue.Count; i++)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
+             var timetillsongplays = TimeTillSongPlays(player, i + 1);
+             pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title)
+                 .WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync())
+                 .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : timetillsongplays.Humanize(culture: lang.GetCultureInfo()))
+                 .WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
+         }
+         var interactivity = ctx.Client.GetInteractivity();
+         await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
+     }
 
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             if (player.Queue.Count == 0 && player.State != PlayerState.NotPlaying)
-             {
-                 await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
-                 return;
-             }
-             int cnt = player.Queue.Clear();
-             await SendSimpleMessage(ctx, string.Format(lang.RemovedXSongOrSongs, cnt, cnt == 1 ? lang.RemovedSong : lang.RemovedSongs), language: lang);
+     [Command("loop")]
+     [Description("Loop or unloop the current song")]
+     public async Task Loop(CommandContext ctx, LoopSettings settings)
+     {
+         var lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (!IsInVc(ctx))
+         {
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
          }
 
-         [Command("shuffle")]
-         [RequireDJ]
-         [Description("Shuffles the queue")]
-         public async Task Shuffle(CommandContext ctx)
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             player.Queue.Shuffle();
-             await SendSimpleMessage(ctx, lang.ShuffledSuccess, language: lang);
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
          }
 
-         [Command("export")]
-         [Description("Export the queue")]
-         public async Task ExportQueue(CommandContext ctx, string playlistName = null)
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         player.LoopSettings = settings;
+         switch (settings)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             var queue = player.Queue.Select(x => x.Identifier).ToList();
-             queue.Insert(0, player.CurrentTrack.Identifier);
-             await OwnerOnly.SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new SilverBotPlaylist()
-             {
-                 Identifiers = queue.ToArray(),
-                 CurrentSongTimems = player.TrackPosition.TotalMilliseconds,
-                 PlaylistTitle = playlistName
-             }), filename: "queue.json");
+             case LoopSettings.NotLooping:
+                 await SendSimpleMessage(ctx, lang.NotLooping, language: lang);
+                 break;
+
+             case LoopSettings.LoopingSong:
+                 await SendSimpleMessage(ctx, lang.LoopingSong, language: lang);
+                 break;
+
+             case LoopSettings.LoopingQueue:
+                 await SendSimpleMessage(ctx, lang.LoopingQueue, language: lang);
+                 break;
+
+             default:
+                 throw new InvalidOperationException("Unexpected value settings = " + settings);
          }
+     }
 
-         [Command("remove")]
-         [Description("Remove song X from the queue. 0 < index > queue length")]
-         public async Task Remove(CommandContext ctx, int songindex)
+     [Command("pause")]
+     [Description("pause the current song")]
+     public async Task Pause(CommandContext ctx)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+
+         var channel = ctx.Member?.VoiceState?.Channel;
+
+         if (!IsInVc(ctx))
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             if (songindex < 0 || songindex > player.Queue.Count)
-             {
-                 await SendSimpleMessage(ctx, lang.SongNotExist, language: lang);
-                 return;
-             }
-             var thingy = player.Queue[songindex - 1];
-             player.Queue.RemoveAt(songindex - 1);
-             await SendSimpleMessage(ctx, lang.RemovedFront + thingy.Title + lang.SongByAuthor + thingy.Author, language: lang);
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
          }
-
-         [Command("queue")]
-         [Description("check whats playing rn and whats next")]
-         [Aliases("np", "nowplaying", "q")]
-         public async Task Queue(CommandContext ctx)
+         if (channel == null)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             if (player.Queue.Count == 0 && player.State != PlayerState.Playing)
-             {
-                 await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
-                 return;
-             }
-
-             var pages = new List<Page>
-                 {
-                     new Page(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title).WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync()).WithAuthor(string.Format(lang.PageNuget,1,player.Queue.Count+1)).AddField(lang.SongLength,player.CurrentTrack.Duration.ToString()).AddField(lang.SongTimePosition,player.TrackPosition.ToString()).AddField(lang.SongTimeLeft,player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLoopingCurrent:(player.CurrentTrack.Duration - player.TrackPosition).Humanize(culture: lang.GetCultureInfo())))
-                 };
-             for (var i = 0; i < player.Queue.Count; i++)
-             {
-                 var timetillsongplays = TimeTillSongPlays(player, i + 1);
-                 pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title)
-                     .WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync())
-                     .AddField(lang.TimeTillTrackPlays, player.LoopSettings == LoopSettings.LoopingSong ? lang.SongTimeLeftSongLooping : timetillsongplays.Humanize(culture: lang.GetCultureInfo()))
-                     .WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
-             }
-             var interactivity = ctx.Client.GetInteractivity();
-             await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new System.Threading.CancellationToken());
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
          }
-
-         [Command("loop")]
-         [Description("Loop or unloop the current song")]
-         public async Task Loop(CommandContext ctx, LoopSettings settings)
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         if (player.State != PlayerState.Playing)
          {
-             var lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             player.LoopSettings = settings;
-             switch (settings)
-             {
-                 case LoopSettings.NotLooping:
-                     await SendSimpleMessage(ctx, lang.NotLooping, language: lang);
-                     break;
-
-                 case LoopSettings.LoopingSong:
-                     await SendSimpleMessage(ctx, lang.LoopingSong, language: lang);
-                     break;
-
-                 case LoopSettings.LoopingQueue:
-                     await SendSimpleMessage(ctx, lang.LoopingQueue, language: lang);
-                     break;
-
-                 default:
-                     throw new InvalidOperationException("Unexpected value settings = " + settings);
-             }
+             await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
+             return;
          }
+         await player.PauseAsync();
+     }
 
-         [Command("pause")]
-         [Description("pause the current song")]
-         public async Task Pause(CommandContext ctx)
+     [Command("ovh")]
+     [Description("get the lyrics from ovh")]
+     public async Task OVH(CommandContext ctx, string name, string artist)
+     {
+         var lyrics = await LyricsService.GetLyricsAsync(artist, name);
+         if (string.IsNullOrEmpty(lyrics))
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-
-             var channel = ctx.Member?.VoiceState?.Channel;
-
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             if (player.State != PlayerState.Playing)
-             {
-                 await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
-                 return;
-             }
-             await player.PauseAsync();
+             await SendSimpleMessage(ctx, "lyrics go null");
+             return;
          }
+         await SendSimpleMessage(ctx, "Lyrics", $"```{lyrics}```");
+     }
 
-         [Command("ovh")]
-         [Description("get the lyrics from ovh")]
-         public async Task OVH(CommandContext ctx, string name, string artist)
+     [Command("songaliases")]
+     [Description("Get the hardcoded aliases in silverbots code")]
+     public async Task Aliases(CommandContext ctx)
+     {
+         StringBuilder bob = new();
+         foreach (var song in Config.SongAliases)
          {
-             var lyrics = await LyricsService.GetLyricsAsync(artist, name);
-             if (string.IsNullOrEmpty(lyrics))
-             {
-                 await SendSimpleMessage(ctx, "lyrics go null");
-                 return;
-             }
-             await SendSimpleMessage(ctx, "Lyrics", $"```{lyrics}```");
+             bob.Append(Formatter.InlineCode(song.Key)).Append(" - ").AppendLine(Formatter.InlineCode(song.Value));
          }
+         await SendSimpleMessage(ctx, message: bob.ToString());
+     }
 
-         [Command("songaliases")]
-         [Description("Get the hardcoded aliases in silverbots code")]
-         public async Task Aliases(CommandContext ctx)
+     [Command("resume")]
+     [Description("resume the current song")]
+     public async Task Resume(CommandContext ctx)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (!IsInVc(ctx))
          {
-             StringBuilder bob = new();
-             foreach (var song in Config.SongAliases)
-             {
-                 bob.Append(Formatter.InlineCode(song.Key)).Append(" - ").AppendLine(Formatter.InlineCode(song.Value));
-             }
-             await SendSimpleMessage(ctx, message: bob.ToString());
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
          }
-
-         [Command("resume")]
-         [Description("resume the current song")]
-         public async Task Resume(CommandContext ctx)
+         if (channel == null)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             if (player.State != PlayerState.Paused)
-             {
-                 await SendSimpleMessage(ctx, lang.NotPaused, language: lang);
-                 return;
-             }
-             await player.ResumeAsync();
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
          }
-
-         [Command("join")]
-         [Description("Tell me to join your channel of the voice type")]
-         public async Task Join(CommandContext ctx)
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         if (player.State != PlayerState.Paused)
          {
-             await StaticJoin(ctx, AudioService);
+             await SendSimpleMessage(ctx, lang.NotPaused, language: lang);
+             return;
          }
+         await player.ResumeAsync();
+     }
 
-         public static async Task StaticJoin(CommandContext ctx, LavalinkNode audioService)
+     [Command("join")]
+     [Description("Tell me to join your channel of the voice type")]
+     public async Task Join(CommandContext ctx)
+     {
+         await StaticJoin(ctx, AudioService);
+     }
+
+     public static async Task StaticJoin(CommandContext ctx, LavalinkNode audioService)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (audioService.HasPlayer(ctx.Guild.Id) && (audioService.GetPlayer<SnowPlayer>(ctx.Guild.Id) is not null || audioService.GetPlayer<SnowPlayer>(ctx.Guild.Id).State is PlayerState.NotConnected or PlayerState.Destroyed))
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (audioService.HasPlayer(ctx.Guild.Id) && (audioService.GetPlayer<SnowPlayer>(ctx.Guild.Id) is not null || audioService.GetPlayer<SnowPlayer>(ctx.Guild.Id).State is PlayerState.NotConnected or PlayerState.Destroyed))
-             {
-                 await SendSimpleMessage(ctx, lang.AlreadyConnected, language: lang);
-                 return;
-             }
-             if ((ctx.Member?.VoiceState?.Channel) == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             await audioService.JoinAsync<SnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
-             await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name), language: lang);
+             await SendSimpleMessage(ctx, lang.AlreadyConnected, language: lang);
+             return;
          }
-
-         [Command("forceskip")]
-         [Description("skip a song. dj only command")]
-         [RequireDJ]
-         [Aliases("fs")]
-         public async Task Skip(CommandContext ctx)
+         if ((ctx.Member?.VoiceState?.Channel) == null)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-
-             if (player.State != PlayerState.Playing)
-             {
-                 await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
-                 return;
-             }
-             var trackbefore = player.CurrentTrack;
-             await player.SkipAsync(1);
-             var trackafter = player.CurrentTrack;
-             await SendSimpleMessage(ctx, string.Format(lang.SkippedNP, trackbefore.Title, trackafter == null ? "Nothing" : trackafter?.Title), language: lang);
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
          }
+         await audioService.JoinAsync<SnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
+         await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name), language: lang);
+     }
 
-         [Command("voteskip")]
-         [Description("skip a song")]
-         [Aliases("skip")]
-         public async Task VoteSkip(CommandContext ctx)
+     [Command("forceskip")]
+     [Description("skip a song. dj only command")]
+     [RequireDJ]
+     [Aliases("fs")]
+     public async Task Skip(CommandContext ctx)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (!IsInVc(ctx))
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             DiscordChannel channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             if (player.State != PlayerState.Playing)
-             {
-                 await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
-                 return;
-             }
-             var trackbefore = player.CurrentTrack;
-             if (await new RequireDJAttribute().ExecuteCheckAsync(ctx, false))
-             {
-                 await SendSimpleMessage(ctx, lang.CanForceSkip, language: lang);
-             }
-             var thing = await player.VoteAsync(ctx.Member.Id);
-             if (thing.WasSkipped)
-             {
-                 await SendSimpleMessage(ctx, string.Format(lang.SkippedNP, trackbefore.Title, player.CurrentTrack == null ? "Nothing" : player.CurrentTrack.Title), language: lang);
-             }
-             else if (thing.WasAdded)
-             {
-                 await SendSimpleMessage(ctx, lang.Voted, language: lang);
-             }
-             else
-             {
-                 await SendSimpleMessage(ctx, lang.AlreadyVoted, language: lang);
-             }
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
          }
-
-         [Command("forcedisconnect")]
-         [Description("Tell me to leave your channel of the voice type, without checking if its in a vc")]
-         [Aliases("fuckoffisntworking")]
-         [RequireDJ]
-         public async Task ForceDisconnect(CommandContext ctx)
+         if (channel == null)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             await player.DisconnectAsync();
-             await player.DestroyAsync();
-             player.Dispose();
-             await SendSimpleMessage(ctx, string.Format(lang.Left, channel.Name), language: lang);
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
          }
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
 
-         [Command("disconnect")]
-         [Description("Tell me to leave your channel of the voice type")]
-         [Aliases("fuckoff", "minecraftbedrockisbetter", "fockoff", "leave")]
-         [RequireDJ]
-         public async Task Disconnect(CommandContext ctx)
+         if (player.State != PlayerState.Playing)
          {
-             Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-             var channel = ctx.Member?.VoiceState?.Channel;
-             if (!IsInVc(ctx))
-             {
-                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                 return;
-             }
-             if (channel == null)
-             {
-                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                 return;
-             }
-             SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
-             await player.DisconnectAsync();
-             await SendSimpleMessage(ctx, string.Format(lang.Left, channel.Name), language: lang);
-         }*/
+             await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
+             return;
+         }
+         var trackbefore = player.CurrentTrack;
+         await player.SkipAsync(1);
+         var trackafter = player.CurrentTrack;
+         await SendSimpleMessage(ctx, string.Format(lang.SkippedNP, trackbefore.Title, trackafter == null ? "Nothing" : trackafter?.Title), language: lang);
+     }
 
-        public static async Task SendSimpleMessage(CommandContext ctx, string title = "", string message = "", Language language = null)
+     [Command("voteskip")]
+     [Description("skip a song")]
+     [Aliases("skip")]
+     public async Task VoteSkip(CommandContext ctx)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         if (!IsInVc(ctx))
+         {
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
+         }
+         DiscordChannel channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
+         }
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         if (player.State != PlayerState.Playing)
+         {
+             await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
+             return;
+         }
+         var trackbefore = player.CurrentTrack;
+         if (await new RequireDJAttribute().ExecuteCheckAsync(ctx, false))
+         {
+             await SendSimpleMessage(ctx, lang.CanForceSkip, language: lang);
+         }
+         var thing = await player.VoteAsync(ctx.Member.Id);
+         if (thing.WasSkipped)
+         {
+             await SendSimpleMessage(ctx, string.Format(lang.SkippedNP, trackbefore.Title, player.CurrentTrack == null ? "Nothing" : player.CurrentTrack.Title), language: lang);
+         }
+         else if (thing.WasAdded)
+         {
+             await SendSimpleMessage(ctx, lang.Voted, language: lang);
+         }
+         else
+         {
+             await SendSimpleMessage(ctx, lang.AlreadyVoted, language: lang);
+         }
+     }
+
+     [Command("forcedisconnect")]
+     [Description("Tell me to leave your channel of the voice type, without checking if its in a vc")]
+     [Aliases("fuckoffisntworking")]
+     [RequireDJ]
+     public async Task ForceDisconnect(CommandContext ctx)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
+         }
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         await player.DisconnectAsync();
+         await player.DestroyAsync();
+         player.Dispose();
+         await SendSimpleMessage(ctx, string.Format(lang.Left, channel.Name), language: lang);
+     }
+
+     [Command("disconnect")]
+     [Description("Tell me to leave your channel of the voice type")]
+     [Aliases("fuckoff", "minecraftbedrockisbetter", "fockoff", "leave")]
+     [RequireDJ]
+     public async Task Disconnect(CommandContext ctx)
+     {
+         Language lang = await Language.GetLanguageFromCtxAsync(ctx);
+         var channel = ctx.Member?.VoiceState?.Channel;
+         if (!IsInVc(ctx))
+         {
+             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+             return;
+         }
+         if (channel == null)
+         {
+             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+             return;
+         }
+         SnowPlayer player = AudioService.GetPlayer<SnowPlayer>(ctx.Guild.Id);
+         await player.DisconnectAsync();
+         await SendSimpleMessage(ctx, string.Format(lang.Left, channel.Name), language: lang);
+     }*/
+
+    public static async Task SendSimpleMessage(CommandContext ctx, string title = "", string message = "",
+        Language language = null)
+    {
+        language ??= await Language.GetLanguageFromCtxAsync(ctx);
+        var embedBuilder = new DiscordEmbedBuilder()
+            .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+            .WithColor(await ColorUtils.GetSingleAsync());
+        var messageBuilder = new DiscordMessageBuilder();
+        if (!string.IsNullOrEmpty(message)) embedBuilder.WithDescription(message);
+        if (!string.IsNullOrEmpty(title)) embedBuilder.WithTitle(title);
+        await messageBuilder
+            .WithReply(ctx.Message.Id)
+            .WithEmbed(embedBuilder.Build())
+            .SendAsync(ctx.Channel);
+    }
+
+    [Command("stop")]
+    [Description("stops playing the current song")]
+    public async Task Stop(CommandContext ctx)
+    {
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+
+        var channel = ctx.Member?.VoiceState?.Channel;
+
+        if (!IsInVc(ctx))
         {
-            language ??= await Language.GetLanguageFromCtxAsync(ctx);
-            var embedBuilder = new DiscordEmbedBuilder().WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)).WithColor(await ColorUtils.GetSingleAsync());
-            var messageBuilder = new DiscordMessageBuilder();
-            if (!string.IsNullOrEmpty(message))
-            {
-                embedBuilder.WithDescription(message);
-            }
-            if (!string.IsNullOrEmpty(title))
-            {
-                embedBuilder.WithTitle(title);
-            }
-            await messageBuilder
-        .WithReply(ctx.Message.Id)
-        .WithEmbed(embedBuilder.Build())
-        .SendAsync(ctx.Channel);
+            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+            return;
         }
 
-        [Command("stop")]
-        [Description("stops playing the current song")]
-        public async Task Stop(CommandContext ctx)
+        if (channel == null)
         {
-            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-
-            var channel = ctx.Member?.VoiceState?.Channel;
-
-            if (!IsInVc(ctx))
-            {
-                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                return;
-            }
-            if (channel == null)
-            {
-                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                return;
-            }
-            QueuedSnowPlayer player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
-
-            await player.StopAsync();
+            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+            return;
         }
 
-        [Command("disconnect")]
-        [Description("stops playing the current song and leaves")]
-        [RequireDJ]
-        public async Task Disconnect(CommandContext ctx)
+        var player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
+
+        await player.StopAsync();
+    }
+
+    [Command("disconnect")]
+    [Description("stops playing the current song and leaves")]
+    [RequireDJ]
+    public async Task Disconnect(CommandContext ctx)
+    {
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+
+        var channel = ctx.Member?.VoiceState?.Channel;
+
+        if (!IsInVc(ctx))
         {
-            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-
-            var channel = ctx.Member?.VoiceState?.Channel;
-
-            if (!IsInVc(ctx))
-            {
-                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                return;
-            }
-            if (channel == null)
-            {
-                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                return;
-            }
-            QueuedSnowPlayer player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
-
-            await player.DisconnectAsync();
+            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+            return;
         }
 
-        [Command("resume")]
-        [Description("resume the current song")]
-        public async Task Resume(CommandContext ctx)
+        if (channel == null)
         {
-            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-
-            var channel = ctx.Member?.VoiceState?.Channel;
-
-            if (!IsInVc(ctx))
-            {
-                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                return;
-            }
-            if (channel == null)
-            {
-                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                return;
-            }
-            QueuedSnowPlayer player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
-            if (player.State != PlayerState.Paused)
-            {
-                await SendSimpleMessage(ctx, lang.NotPaused, language: lang);
-                return;
-            }
-            await player.ResumeAsync();
+            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+            return;
         }
 
-        [Command("pause")]
-        [Description("pause the current song")]
-        public async Task Pause(CommandContext ctx)
+        var player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
+
+        await player.DisconnectAsync();
+    }
+
+    [Command("resume")]
+    [Description("resume the current song")]
+    public async Task Resume(CommandContext ctx)
+    {
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+
+        var channel = ctx.Member?.VoiceState?.Channel;
+
+        if (!IsInVc(ctx))
         {
-            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-
-            var channel = ctx.Member?.VoiceState?.Channel;
-
-            if (!IsInVc(ctx))
-            {
-                await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-                return;
-            }
-            if (channel == null)
-            {
-                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                return;
-            }
-            QueuedSnowPlayer player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
-            if (player.State != PlayerState.Playing)
-            {
-                await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
-                return;
-            }
-            await player.PauseAsync();
+            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+            return;
         }
 
-        [Command("play")]
-        [Description("sponge bob sponge bob squarepants")]
-        public async Task Test(CommandContext ctx, string tunez)
+        if (channel == null)
         {
-            Language lang = await Language.GetLanguageFromCtxAsync(ctx);
-
-            if ((ctx.Member?.VoiceState?.Channel) == null)
-            {
-                await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-                return;
-            }
-            var pl = AudioService.HasPlayer(ctx.Guild.Id) ? AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id) : await AudioService.JoinAsync<QueuedSnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
-            await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name), language: lang);
-
-            await pl.PlayAsync(await AudioService.GetTrackAsync(tunez));
-            await SendSimpleMessage(ctx, "e", language: lang);
+            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+            return;
         }
+
+        var player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
+        if (player.State != PlayerState.Paused)
+        {
+            await SendSimpleMessage(ctx, lang.NotPaused, language: lang);
+            return;
+        }
+
+        await player.ResumeAsync();
+    }
+
+    [Command("pause")]
+    [Description("pause the current song")]
+    public async Task Pause(CommandContext ctx)
+    {
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+
+        var channel = ctx.Member?.VoiceState?.Channel;
+
+        if (!IsInVc(ctx))
+        {
+            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+            return;
+        }
+
+        if (channel == null)
+        {
+            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+            return;
+        }
+
+        var player = AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id);
+        if (player.State != PlayerState.Playing)
+        {
+            await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
+            return;
+        }
+
+        await player.PauseAsync();
+    }
+
+    [Command("play")]
+    [Description("sponge bob sponge bob squarepants")]
+    public async Task Test(CommandContext ctx, string tunez)
+    {
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+
+        if (ctx.Member?.VoiceState?.Channel == null)
+        {
+            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+            return;
+        }
+
+        var pl = AudioService.HasPlayer(ctx.Guild.Id)
+            ? AudioService.GetPlayer<QueuedSnowPlayer>(ctx.Guild.Id)
+            : await AudioService.JoinAsync<QueuedSnowPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id, true);
+        await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name),
+            language: lang);
+
+        await pl.PlayAsync(await AudioService.GetTrackAsync(tunez));
+        await SendSimpleMessage(ctx, "e", language: lang);
     }
 }

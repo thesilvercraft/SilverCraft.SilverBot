@@ -1,11 +1,8 @@
 ﻿@page "/languageeditor"
-@using System.Text
-@using Microsoft.AspNetCore.Http
-@using SilverBotDS.Objects
-@using DSharpPlus
 @using SilverBotDS.WebHelpers
-@using SilverBotDS
-@using Microsoft.JSInterop
+@using SilverBotDS.Objects
+@using Microsoft.AspNetCore.Http
+@using DSharpPlus
 @inject Config config
 @inject IHttpContextAccessor HttpContextAccessor
 @inject DiscordClient Discord
@@ -14,20 +11,20 @@
 @inject DatabaseContext dbctx
 @inject HttpClient client
 @{
-    if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>
-    (HttpContextAccessor.HttpContext.Session, "accessToken")))
+    if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetObjectFromJson<string>
+        ("accessToken")))
     {
-        uriHelper.NavigateTo("/login", forceLoad: true);
+        uriHelper.NavigateTo("/login", true);
     }
-    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session,client);
+    var thing = HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client);
     var translator = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
     if (translator == null)
     {
-        uriHelper.NavigateTo("/", forceLoad: true);
+        uriHelper.NavigateTo("/", true);
     }
 
     var languages = translator.CustomLanguages.ToList();
-    int a = 0;
+    var a = 0;
 }
 <h1>The custom languages you can edit:</h1>
 <div>
@@ -35,7 +32,6 @@
         <div class="row justify-content-center">
             @foreach (var language in languages)
             {
-
                 <div class="row">
                     <div class="m-2 center col">
                         <a href="/managelanguage/@a">

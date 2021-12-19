@@ -1,72 +1,93 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
-using System.Net.Http;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace SilverBotDS.Commands
+namespace SilverBotDS.Commands;
+
+[Category("Anime")]
+public class Anime : BaseCommandModule
 {
-    [Category("Anime")]
-    public class Anime : BaseCommandModule
+    private const string BaseURL = "https://anime-api.hisoka17.repl.co/";
+    public HttpClient Client { private get; set; }
+
+    private async Task<string> GetAnimeUrl(string endpoint)
     {
-        public HttpClient Client { private get; set; }
-        private const string BaseURL = "https://anime-api.hisoka17.repl.co/";
+        return JsonSerializer
+            .Deserialize<Rootobject>(await (await Client.GetAsync(BaseURL + endpoint)).Content.ReadAsStringAsync()).Url;
+    }
 
-        private async Task<string> GetAnimeUrl(string endpoint)
-        {
-            return JsonSerializer.Deserialize<Rootobject>(await (await Client.GetAsync(BaseURL + endpoint)).Content.ReadAsStringAsync()).Url;
-        }
+    private async Task SendImage(CommandContext ctx, string url)
+    {
+        await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+            .WithEmbed(new DiscordEmbedBuilder().WithImageUrl(url))
+            .SendAsync(ctx.Channel);
+    }
 
-        private async Task SendImage(CommandContext ctx, string url)
-        {
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                                             .WithEmbed(new DiscordEmbedBuilder().WithImageUrl(url))
-                                             .SendAsync(ctx.Channel);
-        }
+    [Command("hug")]
+    [Description("i have no idea what this means")]
+    public async Task Hug(CommandContext ctx)
+    {
+        await SendImage(ctx, await GetAnimeUrl("img/hug"));
+    }
 
-        [Command("hug")]
-        [Description("i have no idea what this means")]
-        public async Task Hug(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/hug"));
+    [Command("kiss")]
+    [Description("i have no idea what this means")]
+    public async Task Kiss(CommandContext ctx)
+    {
+        await SendImage(ctx, await GetAnimeUrl("img/kiss"));
+    }
 
-        [Command("kiss")]
-        [Description("i have no idea what this means")]
-        public async Task Kiss(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/kiss"));
+    [Command("slap")]
+    [Description("i have no idea what this means")]
+    public async Task Slap(CommandContext ctx)
+    {
+        await SendImage(ctx, await GetAnimeUrl("img/slap"));
+    }
 
-        [Command("slap")]
-        [Description("i have no idea what this means")]
-        public async Task Slap(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/slap"));
+    [Command("wink")]
+    [Description("i have no idea what this means")]
+    public async Task Wink(CommandContext ctx)
+    {
+        await SendImage(ctx, await GetAnimeUrl("img/wink"));
+    }
 
-        [Command("wink")]
-        [Description("i have no idea what this means")]
-        public async Task Wink(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/wink"));
+    [Command("pat")]
+    [Description("i have no idea what this means")]
+    public async Task Pat(CommandContext ctx)
+    {
+        await SendImage(ctx, await GetAnimeUrl("img/pat"));
+    }
 
-        [Command("pat")]
-        [Description("i have no idea what this means")]
-        public async Task Pat(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/pat"));
+    [Command("kill")]
+    [Description("the thing im gonna do to bub in fartnite")]
+    public async Task Kill(CommandContext ctx)
+    {
+        await SendImage(ctx, await GetAnimeUrl("img/kill"));
+    }
 
-        [Command("kill")]
-        [Description("the thing im gonna do to bub in fartnite")]
-        public async Task Kill(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/kill"));
+    [Command("cuddle")]
+    [Description("i have no idea what this means")]
+    public async Task Cuddle(CommandContext ctx)
+    {
+        await SendImage(ctx, await GetAnimeUrl("img/cuddle"));
+    }
 
-        [Command("cuddle")]
-        [Description("i have no idea what this means")]
-        public async Task Cuddle(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/cuddle"));
+    [Command("punch")]
+    [Description("i have no idea what this means")]
+    public async Task Punch(CommandContext ctx)
+    {
+        await SendImage(ctx, await GetAnimeUrl("img/punch"));
+    }
 
-        [Command("punch")]
-        [Description("i have no idea what this means")]
-        public async Task Punch(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/punch"));
+    /*[Command("waifu")]
+    [Description("i have no idea what this means")]
+    public async Task Waifu(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/waifu"));*/
 
-        /*[Command("waifu")]
-        [Description("i have no idea what this means")]
-        public async Task Waifu(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/waifu"));*/
-
-        public class Rootobject
-        {
-            [JsonPropertyName("url")]
-            public string Url { get; set; }
-        }
+    public class Rootobject
+    {
+        [JsonPropertyName("url")] public string Url { get; set; }
     }
 }

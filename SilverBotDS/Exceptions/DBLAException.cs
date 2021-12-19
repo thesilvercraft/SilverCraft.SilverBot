@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace SilverBotDS.Exceptions
-{
-    [Serializable]
-    public class DblaException : Exception
-    {
-        public DblaException()
-        {
-        }
+namespace SilverBotDS.Exceptions;
 
-        public DblaException(string error)
-            : base($"DBLA returned an error: {error}")
-        {
-        }
+[Serializable]
+public class DblaException : Exception
+{
+    public DblaException()
+    {
+    }
+
+    public DblaException(string error)
+        : base($"DBLA returned an error: {error}")
+    {
     }
 }

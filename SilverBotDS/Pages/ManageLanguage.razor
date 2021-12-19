@@ -1,41 +1,41 @@
 ﻿@page "/managelanguage/{id:int}"
-@using Microsoft.AspNetCore.Http
-@using SilverBotDS.Objects
-@using DSharpPlus
-@using System.Diagnostics
 @using SilverBotDS.WebHelpers
-@using SilverBotDS
-@using Microsoft.JSInterop
+@using SilverBotDS.Objects
+@using Microsoft.AspNetCore.Http
+@using DSharpPlus
+@using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 @using System.Text.Json
-@using System.Text
 @inject Config config
 @inject IHttpContextAccessor HttpContextAccessor
 @inject DiscordClient Discord
 @inject DatabaseContext dbctx
 @inject IJSRuntime jsRuntime
 @inject NavigationManager uriHelper
-@using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject HttpClient client
+
 @code {
+
     [Parameter]
     public int id { get; set; }
+
     private string bindmaterial;
 }
+
 @{
     JsonSerializerOptions options = new()
     {
         WriteIndented = true
     };
-    if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
+    if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
     {
-        uriHelper.NavigateTo("/login", forceLoad: true);
+        uriHelper.NavigateTo("/login", true);
     }
-    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client);
+    var thing = HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client);
     var translator = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
     if (translator == null)
     {
-        uriHelper.NavigateTo("/", forceLoad: true);
+        uriHelper.NavigateTo("/", true);
     }
 
     var languages = translator.CustomLanguages;
@@ -52,10 +52,12 @@
     {
         await jsRuntime.InvokeVoidAsync("download", json, "language.json", "application/json");
     }
+
     void UpdateHeading()
     {
         bindmaterial = json;
     }
+
     void HandleValidSubmit()
     {
         var o = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
@@ -83,4 +85,4 @@
 <button @onclick="downloadlanguage">
     Download to your computer
 </button>
-<RadzenTextArea @bind-Value=@bindmaterial Style=" width: 100%; height: 100vh;" />
+<RadzenTextArea @bind-Value="@bindmaterial" Style=" width: 100%; height: 100vh;"/>

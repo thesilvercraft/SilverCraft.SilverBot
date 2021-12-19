@@ -1,9 +1,7 @@
-﻿namespace SDBrowser
+﻿namespace SDBrowser;
+
+public enum Browsertype
 {
-    public enum Browsertype
-    {
-        Chrome,
-        Firefox,
-        Edge
-    }
+    Chrome,
+    Firefox
 }

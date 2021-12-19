@@ -1,4 +1,6 @@
-﻿using DSharpPlus;
+﻿using System;
+using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -10,89 +12,101 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
-using System;
-using System.Threading.Tasks;
 
-namespace SilverBotDS.Commands
+namespace SilverBotDS.Commands;
+
+[Group("gif")]
+[Category("Image")]
+public class Giphy : SilverBotCommandModule
 {
-    [Group("gif")]
-    [Category("Image")]
-    public class Giphy : SilverBotCommandModule
+    public static Giphy CreateInstance()
     {
-        public static Giphy CreateInstance()
-        {
-            return new Giphy();
-        }
-       
+        return new Giphy();
+    }
 #pragma warning disable CA1822 // Mark members as static
-        GiphyDotNet.Manager.Giphy giphy = null;
-        public Config config { private get; set; }
-        
-        void MakeSureTokenIsSet()
-        {
-            if(giphy == null)
-            {
-                if (string.IsNullOrEmpty(config.Gtoken) || config.Gtoken == "Giphy_Token_Here" || string.Equals(config.Gtoken, "none", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    giphy = new GiphyDotNet.Manager.Giphy();
-                }
-                else
-                {
-                    giphy = new(config.Gtoken);
-                }
-            }
-        }
-        [Command("random")]
-        public async Task Random(CommandContext ctx)
-        {
-            MakeSureTokenIsSet();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            var gifresult = await giphy.RandomGif(new RandomParameter
-            {
-                Rating = Rating.Pg
-            });
-            var b = new DiscordEmbedBuilder().WithDescription(lang.RandomGif + gifresult.Data.Url).WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/", "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifresult.Data.ImageUrl).WithColor(color: await ColorUtils.GetSingleAsync());
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
-        }
+    private GiphyDotNet.Manager.Giphy giphy;
+    public Config config { private get; set; }
 
-        [Command("search"), Aliases("s")]
-        public async Task Search(CommandContext ctx, [RemainingText] string term)
+    private void MakeSureTokenIsSet()
+    {
+        if (giphy == null)
         {
-            MakeSureTokenIsSet();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
-            var b = new DiscordEmbedBuilder();
-            var searchParameter = new SearchParameter
-            {
-                Query = term,
-                Rating = Rating.Pg,
-            };
-            var gifResult = await giphy.GifSearch(searchParameter);
-            var formated = string.Format(lang.SearchedFor, term);
-            b.WithDescription($"{formated} : {gifResult.Data[0].Url} {string.Format(lang.PageGif, 1, gifResult.Data.Length)}").WithAuthor(
-                lang.PoweredByGiphy, "https://developers.giphy.com/",
-                "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif").WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).WithImageUrl(gifResult.Data[0].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
-            await WaitForNextMessage(ctx, await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText)).SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, 0, formated, gifResult, b);
-        }
-
-        private async Task WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage, InteractivityExtension interactivity, Language lang, int page, string formated, GiphySearchResult gifResult, DiscordEmbedBuilder b = null)
-        {
-            b ??= new DiscordEmbedBuilder();
-            var msg = await oldmessage.WaitForButtonAsync(ctx.User, TimeSpan.FromSeconds(300));
-            if (msg.Result != null)
-            {
-                page++;
-                if (page >= gifResult.Data.Length)
-                {
-                    page = 0;
-                }
-                b.WithDescription($"{formated} : {gifResult.Data[page].Url} {string.Format(lang.PageGif, page + 1, gifResult.Data.Length)}").WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(color: await ColorUtils.GetSingleAsync());
-                await msg.Result.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, new DiscordInteractionResponseBuilder(new DiscordMessageBuilder().WithEmbed(b).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText))));
-                await WaitForNextMessage(ctx, oldmessage, interactivity, lang, page, formated, gifResult, b);
-            }
+            if (string.IsNullOrEmpty(config.Gtoken) || config.Gtoken == "Giphy_Token_Here" ||
+                string.Equals(config.Gtoken, "none", StringComparison.InvariantCultureIgnoreCase))
+                giphy = new GiphyDotNet.Manager.Giphy();
             else
-            {
-                await oldmessage.ModifyAsync(new DiscordMessageBuilder().WithEmbed(b).WithContent(lang.PeriodExpired).AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText, true)));
-            }
+                giphy = new GiphyDotNet.Manager.Giphy(config.Gtoken);
+        }
+    }
+
+    [Command("random")]
+    public async Task Random(CommandContext ctx)
+    {
+        MakeSureTokenIsSet();
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var gifresult = await giphy.RandomGif(new RandomParameter
+        {
+            Rating = Rating.Pg
+        });
+        var b = new DiscordEmbedBuilder().WithDescription(lang.RandomGif + gifresult.Data.Url)
+            .WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/",
+                "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif")
+            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+            .WithImageUrl(gifresult.Data.ImageUrl).WithColor(await ColorUtils.GetSingleAsync());
+        await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
+    }
+
+    [Command("search")]
+    [Aliases("s")]
+    public async Task Search(CommandContext ctx, [RemainingText] string term)
+    {
+        MakeSureTokenIsSet();
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var b = new DiscordEmbedBuilder();
+        var searchParameter = new SearchParameter
+        {
+            Query = term,
+            Rating = Rating.Pg
+        };
+        var gifResult = await giphy.GifSearch(searchParameter);
+        var formated = string.Format(lang.SearchedFor, term);
+        b.WithDescription(
+                $"{formated} : {gifResult.Data[0].Url} {string.Format(lang.PageGif, 1, gifResult.Data.Length)}")
+            .WithAuthor(
+                lang.PoweredByGiphy, "https://developers.giphy.com/",
+                "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif")
+            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+            .WithImageUrl(gifResult.Data[0].Images.Original.Url).WithColor(await ColorUtils.GetSingleAsync());
+        await WaitForNextMessage(ctx,
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build())
+                .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText))
+                .SendAsync(ctx.Channel), ctx.Client.GetInteractivity(), lang, 0, formated, gifResult, b);
+    }
+
+    private async Task WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage,
+        InteractivityExtension interactivity, Language lang, int page, string formated, GiphySearchResult gifResult,
+        DiscordEmbedBuilder b = null)
+    {
+        b ??= new DiscordEmbedBuilder();
+        var msg = await oldmessage.WaitForButtonAsync(ctx.User, TimeSpan.FromSeconds(300));
+        if (msg.Result != null)
+        {
+            page++;
+            if (page >= gifResult.Data.Length) page = 0;
+            b.WithDescription(
+                    $"{formated} : {gifResult.Data[page].Url} {string.Format(lang.PageGif, page + 1, gifResult.Data.Length)}")
+                .WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(await ColorUtils.GetSingleAsync());
+            await msg.Result.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage,
+                new DiscordInteractionResponseBuilder(new DiscordMessageBuilder().WithEmbed(b)
+                    .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif",
+                        lang.PageGifButtonText))));
+            await WaitForNextMessage(ctx, oldmessage, interactivity, lang, page, formated, gifResult, b);
+        }
+        else
+        {
+            await oldmessage.ModifyAsync(new DiscordMessageBuilder().WithEmbed(b).WithContent(lang.PeriodExpired)
+                .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "nextgif", lang.PageGifButtonText,
+                    true)));
         }
     }
 }

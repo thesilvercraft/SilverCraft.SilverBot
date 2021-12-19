@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DSharpPlus.Rest" Version="4.1.0" />
-    <PackageReference Include="Serilog" Version="2.11.0-dev-01371" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="DSharpPlus.Rest" Version="4.1.0"/>
+        <PackageReference Include="Serilog" Version="2.11.0-dev-01371"/>
+    </ItemGroup>
 
 </Project>

@@ -4,67 +4,65 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Numerics;
 
-namespace SilverBotDS.Objects.Database.Classes
+namespace SilverBotDS.Objects.Database.Classes;
+
+public class UserExperience
 {
-    public class UserExperience
+    [Key] public ulong Id { get; init; }
+
+    public string XPString
     {
-        [Key]
-        public ulong Id { get; init; }
+        get => XP.ToString();
+        set => XP = BigInteger.Parse(value, CultureInfo.InvariantCulture);
+    }
 
-        public string XPString
+    [NotMapped] public BigInteger XP { get; set; }
+
+    public void Increase()
+    {
+        try
         {
-            get => XP.ToString(); set => XP = BigInteger.Parse(value, CultureInfo.InvariantCulture);
+            XP++;
         }
-
-        [NotMapped]
-        public BigInteger XP { get; set; }
-
-        public void Increase()
+        catch (OutOfMemoryException)
         {
-            try
-            {
-                XP++;
-            }
-            catch (OutOfMemoryException)
-            {
-                //we ran out of memory
-            }
+            //we ran out of memory
         }
+    }
 
-        public void Increase(ulong count)
+    public void Increase(ulong count)
+    {
+        try
         {
-            try
-            {
-                XP += count;
-            }
-            catch (OutOfMemoryException)
-            {
-                //we ran out of memory
-            }
+            XP += count;
         }
-
-        public void Decrease()
+        catch (OutOfMemoryException)
         {
-            try
-            {
-                XP--;
-            }
-            catch (OutOfMemoryException)
-            {
-                //we ran out of memory
-            }
+            //we ran out of memory
         }
+    }
 
-        public void Decrease(ulong count)
+    public void Decrease()
+    {
+        try
         {
-            try
-            {
-                XP -= count;
-            }
-            catch (OutOfMemoryException)
-            {
-                //we ran out of memory
-            }
+            XP--;
+        }
+        catch (OutOfMemoryException)
+        {
+            //we ran out of memory
+        }
+    }
+
+    public void Decrease(ulong count)
+    {
+        try
+        {
+            XP -= count;
+        }
+        catch (OutOfMemoryException)
+        {
+            //we ran out of memory
         }
     }
 }

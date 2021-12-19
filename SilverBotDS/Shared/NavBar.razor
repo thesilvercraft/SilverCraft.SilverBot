@@ -1,29 +1,29 @@
-﻿@using Microsoft.AspNetCore.Http
-@using SilverBotDS.WebHelpers
+﻿@using SilverBotDS.WebHelpers
+@using Microsoft.AspNetCore.Http
 @using DSharpPlus
-@using DSharpPlus.Entities
 @inject IHttpContextAccessor HttpContextAccessor
 @inject DiscordClient Discord
 @inject HttpClient client
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="font-family: 'Berlin Sans FB', sans-serif;">
-    <a class="navbar-brand" href="#">
-        @if (DateTime.UtcNow.Month == 6)
-        {
-            <img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
-        }
-        else if (DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)
-        {
-            <img src="/halloween/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
-        }
-        else
-        {
-            <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
-        }
-        SilverBot
-        <span class="badge badge-primary">@(DateTime.UtcNow.Month==6?"Pride":((DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)?"Halloween":"Web"))</span>
-    </a>
+<a class="navbar-brand" href="#">
+    @if (DateTime.UtcNow.Month == 6)
+    {
+    
+    <img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+    }
+    else if (DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)
+    {
+    <img src="/halloween/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+    }
+    else
+    {
+    <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+    }
+    SilverBot
+    <span class="badge badge-primary">@(DateTime.UtcNow.Month == 6 ? "Pride" : DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31 ? "Halloween" : "Web")</span>
+</a>
     <ul class="navbar-nav">
-        @if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
+        @if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext?.Session.GetObjectFromJson<string>("accessToken")))
         {
             <li class="nav-item">
                 <a class="nav-link" href="\login">Log in</a>
@@ -33,7 +33,7 @@
         {
             <li class="nav-item">
                 @{
-                    DiscordUser user = Discord.GetUserAsync(SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client).UId).GetAwaiter().GetResult();
+                    var user = Discord.GetUserAsync(HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client).UId).GetAwaiter().GetResult();
                 }
                 <a class="nav-link" href="">Hello @user.Username#@user.Discriminator</a>
             </li>
@@ -48,4 +48,4 @@
             </li>
         }
     </ul>
-</nav>
+    </nav>

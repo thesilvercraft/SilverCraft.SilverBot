@@ -1,37 +1,36 @@
-﻿using DSharpPlus.Entities;
-using SilverBotDS.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using DSharpPlus.Entities;
+using SilverBotDS.Utils;
 
-namespace SilverBotDS.Objects.Database.Classes
+namespace SilverBotDS.Objects.Database.Classes;
+
+public class ServerStatString
 {
-    public class ServerStatString
+    public ServerStatString()
     {
-        public ServerStatString()
-        {
-        }
+    }
 
-        public ServerStatString(string template)
-        {
-            Template = template;
-        }
+    public ServerStatString(string template)
+    {
+        Template = template;
+    }
 
-        public string Template { get; set; }
+    public string Template { get; set; }
 
-        public string Serialize(DiscordGuild guild)
-        {
-            return StringUtils.FormatFromDictionary(Template, GetStringDictionary(guild));
-        }
+    public string Serialize(DiscordGuild guild)
+    {
+        return StringUtils.FormatFromDictionary(Template, GetStringDictionary(guild));
+    }
 
-        public static Dictionary<string, string> GetStringDictionary(DiscordGuild guild)
+    public static Dictionary<string, string> GetStringDictionary(DiscordGuild guild)
+    {
+        return new Dictionary<string, string>
         {
-            return new Dictionary<string, string>
-            {
-                ["AllMembersCount"] = NumberUtils.FormatSize(guild.MemberCount),
-                ["MemberCount"] = NumberUtils.FormatSize(guild.Members.LongCount(x => !x.Value.IsBot)),
-                ["BotsCount"] = NumberUtils.FormatSize(guild.Members.LongCount(x => x.Value.IsBot)),
-                ["BoostCount"] = NumberUtils.FormatSize((int)guild.PremiumSubscriptionCount)
-            };
-        }
+            ["AllMembersCount"] = NumberUtils.FormatSize(guild.MemberCount),
+            ["MemberCount"] = NumberUtils.FormatSize(guild.Members.LongCount(x => !x.Value.IsBot)),
+            ["BotsCount"] = NumberUtils.FormatSize(guild.Members.LongCount(x => x.Value.IsBot)),
+            ["BoostCount"] = NumberUtils.FormatSize((int) guild.PremiumSubscriptionCount)
+        };
     }
 }

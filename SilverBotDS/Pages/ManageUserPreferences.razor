@@ -1,16 +1,9 @@
 ﻿@page "/userpreferences"
-
-@using System.Net
-@using System.Text
-@using System.IO
-@using DSharpPlus.Entities
-@using Microsoft.AspNetCore.Http
-@using SilverBotDS.Objects
-@using DSharpPlus
-@using System.Diagnostics
 @using SilverBotDS.WebHelpers
-@using SilverBotDS
-@using Microsoft.JSInterop
+@using SilverBotDS.Objects
+@using Microsoft.AspNetCore.Http
+@using DSharpPlus
+@using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 
 @inject Config config
 @inject IHttpContextAccessor HttpContextAccessor
@@ -18,23 +11,22 @@
 @inject DatabaseContext dbctx
 @inject IJSRuntime jsRuntime
 @inject NavigationManager uriHelper
-@using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject HttpClient client
 @{
-    if (string.IsNullOrEmpty(SessionHelper.GetObjectFromJson<string>(HttpContextAccessor.HttpContext.Session, "accessToken")))
+    if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
     {
-        uriHelper.NavigateTo("/login", forceLoad: true);
+        uriHelper.NavigateTo("/login", true);
     }
-    var thing = SessionHelper.GetUserInfoFromSession(HttpContextAccessor.HttpContext.Session, client);
+    var thing = HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client);
 
 
-    var userpref = dbctx.userSettings.FirstOrDefault(x=>x.Id == thing.UId);
-    if(userpref== null)
+    var userpref = dbctx.userSettings.FirstOrDefault(x => x.Id == thing.UId);
+    if (userpref == null)
     {
-        userpref = new() { Id = thing.UId, IsBanned = false, LangName = "en", UsesNewMusicPage = false };
+        userpref = new UserSettings {Id = thing.UId, IsBanned = false, LangName = "en", UsesNewMusicPage = false};
         dbctx.userSettings.Add(userpref);
-         dbctx.SaveChanges();
+        dbctx.SaveChanges();
     }
 }
 @if (!dbctx.IsBanned(thing.UId))
@@ -42,15 +34,15 @@
     <p>Welcome to the beta version of the user preferences edit page</p>
 
 
-    <RadzenSwitch @bind-Value=@userpref.UsesNewMusicPage Name="Switch1" Style="margin-bottom: 20px" />
-    <RadzenLabel Text="Use the new Music Controller page" Component="Switch1" Style="margin-left: 5px;" />
-    <br />
+    <RadzenSwitch @bind-Value=@userpref.UsesNewMusicPage Name="Switch1" Style="margin-bottom: 20px"/>
+    <RadzenLabel Text="Use the new Music Controller page" Component="Switch1" Style="margin-left: 5px;"/>
+    <br/>
     <RadzenDropDown AllowClear="false" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@Language.GetLoadedLanguages() @bind-Value=@userpref.LangName
-                                TextProperty="Value.LangName" ValueProperty="Key"  Style="width:300px" />
-    <RadzenLabel Text="Your personal language (used for direct messages and stuff)" Component="Switch2" Style="margin-left: 5px;" />
+                    TextProperty="Value.LangName" ValueProperty="Key" Style="width:300px"/>
+    <RadzenLabel Text="Your personal language (used for direct messages and stuff)" Component="Switch2" Style="margin-left: 5px;"/>
 
-    <br />
-    <RadzenButton Click=@(args => { dbctx.userSettings.Update(userpref); dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px" />
+    <br/>
+    <RadzenButton Click=@(args => { dbctx.userSettings.Update(userpref); dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px"/>
 }
 else
 {

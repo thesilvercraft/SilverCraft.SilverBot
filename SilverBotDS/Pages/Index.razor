@@ -1,18 +1,13 @@
 ﻿@page "/"
-@using SilverBotDS
-@using SilverBotDS.Objects
-@using SilverBotDS.Utils
-@using DSharpPlus
-@using DSharpPlus.Entities
-@using System
-@using System.Threading
-@using System.Diagnostics
 @using Humanizer
+@using SilverBotDS.Objects
+@using DSharpPlus
+@using System.Diagnostics
 @inject Config config
 @inject DiscordClient discord
 <body>
-    <h2>Wasting time in @discord.Guilds.Count servers</h2>
-    <h2>with @discord.Guilds.Values.SelectMany(x => x.Members.Values.Select(y => y.Id)).Distinct().Count() people and stuff</h2>
-    <h2>I have been up for @((DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()).Humanize())</h2>
-    <h2>With @discord.ShardCount @(discord.ShardCount==1?"shard":"shards") and @(Process.GetCurrentProcess().Threads.Count) cpu @(Process.GetCurrentProcess().Threads.Count==1?"thread":"threads")</h2>
+<h2>Wasting time in @discord.Guilds.Count servers</h2>
+<h2>with @discord.Guilds.Values.SelectMany(x => x.Members.Values.Select(y => y.Id)).Distinct().Count() people and stuff</h2>
+<h2>I have been up for @((DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()).Humanize())</h2>
+<h2>With @discord.ShardCount @(discord.ShardCount == 1 ? "shard" : "shards") and @(Process.GetCurrentProcess().Threads.Count) cpu @(Process.GetCurrentProcess().Threads.Count == 1 ? "thread" : "threads")</h2>
 </body>

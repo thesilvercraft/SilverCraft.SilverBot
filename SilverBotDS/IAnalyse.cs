@@ -1,26 +1,25 @@
-﻿using DSharpPlus.Entities;
-using Segment;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
+using Segment;
 
-namespace SilverBotDS
+namespace SilverBotDS;
+
+public interface IAnalyse
 {
-    public interface IAnalyse
+    Task EmitEvent(DiscordUser userId, string eventName, IDictionary<string, object> args);
+}
+
+public class SegmentIo : IAnalyse
+{
+    public SegmentIo(string token)
     {
-        Task EmitEvent(DiscordUser UserId, string EventName, IDictionary<string, object> Args);
+        Analytics.Initialize(token);
     }
 
-    public class SegmentIo : IAnalyse
+    public Task EmitEvent(DiscordUser userId, string eventName, IDictionary<string, object> args)
     {
-        public SegmentIo(string token)
-        {
-            Analytics.Initialize(token);
-        }
-
-        public Task EmitEvent(DiscordUser UserId, string EventName, IDictionary<string, object> Args)
-        {
-            Analytics.Client.Track(UserId.Id.ToString(), EventName, Args);
-            return Task.CompletedTask;
-        }
+        Analytics.Client.Track(userId.Id.ToString(), eventName, args);
+        return Task.CompletedTask;
     }
 }

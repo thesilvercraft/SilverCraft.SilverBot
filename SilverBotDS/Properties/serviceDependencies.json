@@ -1,3 +1,12 @@
 {
-  "dependencies": {}
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "Kestrel:Certificates:Development:Password"
+    },
+    "signalr1": {
+      "type": "signalr",
+      "connectionId": "Azure:SignalR:ConnectionString"
+    }
+  }
 }

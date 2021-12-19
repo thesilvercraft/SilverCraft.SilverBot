@@ -1,35 +1,40 @@
-﻿using DSharpPlus.Entities;
+﻿using System.Collections.Generic;
+using DSharpPlus.Entities;
 using SilverBotDS.Utils;
-using System.Collections.Generic;
 
-namespace SilverBotDS.Objects
+namespace SilverBotDS.Objects;
+
+public class Splash
 {
-    public class Splash
+    public Splash()
     {
-        public Splash()
-        {
-        }
+    }
 
-        public Splash(string namewithparameters, ActivityType type)
-        {
-            Name = namewithparameters;
-            Type = type;
-        }
+    public Splash(string namewithparameters, ActivityType type)
+    {
+        Name = namewithparameters;
+        Type = type;
+    }
 
-        public static Splash GetFromDiscordActivity(DiscordActivity discordActivity) => new()
+    public string Name { get; set; }
+    public ActivityType Type { get; set; }
+    public string StreamUrl { get; set; }
+
+    public static Splash GetFromDiscordActivity(DiscordActivity discordActivity)
+    {
+        return new()
         {
             Name = discordActivity.Name,
             Type = discordActivity.ActivityType,
             StreamUrl = discordActivity.StreamUrl
         };
+    }
 
-        public DiscordActivity GetDiscordActivity(Dictionary<string, string> pairs) => new(StringUtils.FormatFromDictionary(Name, pairs), Type)
+    public DiscordActivity GetDiscordActivity(Dictionary<string, string> pairs)
+    {
+        return new(StringUtils.FormatFromDictionary(Name, pairs), Type)
         {
             StreamUrl = StreamUrl
         };
-
-        public string Name { get; set; }
-        public ActivityType Type { get; set; }
-        public string StreamUrl { get; set; }
     }
 }

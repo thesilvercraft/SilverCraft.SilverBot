@@ -1,20 +1,16 @@
 ﻿@page "/login"
-@using System.Net
-@using System.Text
 @using System.IO
+@using System.Net.Http
+@using System.Text.Json
 @using Microsoft.AspNetCore.Http
 @using SilverBotDS.Objects
-@using DSharpPlus
-@using System.Diagnostics
+@using SilverBotDS.Objects.Classes
 @using SilverBotDS.WebHelpers
-
-@using System.Net.Http
-@using System.Net.Http.Headers
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Config config
 @inject HttpClient client
 @{
-    string code = Request.Query["code"].ToString();
+    var code = Request.Query["code"].ToString();
     if (string.IsNullOrEmpty(code))
     {
         Response.Redirect(config.LoginPageDiscordRedirectUrl);
@@ -22,19 +18,19 @@
     else
     {
         //stolen from https://www.yogihosting.com/discord-api-asp-net/
-        string redirect_url = $"https://{Request.Host}/login";
+        var redirect_url = $"https://{Request.Host}/login";
         var dict = new Dictionary<string, string>();
         dict.Add("client_id", config.LoginPageDiscordClientId.ToString());
-        dict.Add("client_secret", config.LoginPageDiscordClientSecret.ToString());
+        dict.Add("client_secret", config.LoginPageDiscordClientSecret);
         dict.Add("grant_type", "authorization_code");
         dict.Add("code", code);
         dict.Add("redirect_uri", redirect_url);
-        using var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://discordapp.com/api/oauth2/token") {Content = new FormUrlEncodedContent(dict) };
+        using var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://discordapp.com/api/oauth2/token") {Content = new FormUrlEncodedContent(dict)};
         var response = client.Send(requestMessage);
-        StreamReader reader = new StreamReader(response.Content.ReadAsStream());
-        string responseFromServer = reader.ReadToEnd();
-        var token = System.Text.Json.JsonSerializer.Deserialize<SilverBotDS.Objects.Classes.Oauth.Token>(responseFromServer);
-        SessionHelper.SetObjectAsJson(HttpContext.Session, "accessToken", token.AccessToken);
+        var reader = new StreamReader(response.Content.ReadAsStream());
+        var responseFromServer = reader.ReadToEnd();
+        var token = JsonSerializer.Deserialize<Oauth.Token>(responseFromServer);
+        HttpContext.Session.SetObjectAsJson("accessToken", token.AccessToken);
         Response.Redirect("/");
     }
 }

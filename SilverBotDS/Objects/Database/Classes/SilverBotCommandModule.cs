@@ -1,16 +1,16 @@
-﻿using DSharpPlus.CommandsNext;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using DSharpPlus.CommandsNext;
 
-namespace SilverBotDS.Objects.Classes
+namespace SilverBotDS.Objects.Classes;
+
+public class SilverBotCommandModule : BaseCommandModule
 {
-    public class SilverBotCommandModule: BaseCommandModule
+    public virtual Task<bool> ExecuteRequirements(Config conf)
     {
-        public virtual Task<bool> ExecuteRequirements(Config conf)
-        {
-            return Task.FromResult(true);
-        }
+        return Task.FromResult(true);
     }
-    public interface IRequireFonts
-    {
-    }
+}
+
+public interface IRequireFonts
+{
 }

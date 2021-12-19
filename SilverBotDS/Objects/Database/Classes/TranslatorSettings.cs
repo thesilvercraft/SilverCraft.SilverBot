@@ -1,26 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace SilverBotDS.Objects.Database.Classes
+namespace SilverBotDS.Objects.Database.Classes;
+
+public class TranslatorSettings
 {
-    public class TranslatorSettings
-    {
-        public TranslatorSettings()
-        {
-        }
+    [Key] public ulong Id { get; init; }
 
-        [Key]
-        public ulong Id { get; init; }
+    public bool IsTranslator { get; set; }
 
-        public bool IsTranslator { get; set; }
-
-        public Language CurrentCustomLanguage { get; set; }
-        public ICollection<Language> CustomLanguages { get; set; } = new List<Language>();
-    }
+    public Language CurrentCustomLanguage { get; set; }
+    public ICollection<Language> CustomLanguages { get; set; } = new List<Language>();
 }

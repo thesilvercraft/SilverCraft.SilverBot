@@ -94,7 +94,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         lang ??= await Language.GetLanguageFromCtxAsync(ctx);
         content ??= lang.Success;
         await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
-                .WithTitle(content)
+                .WithDescription(content)
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto)))
             .WithFile(filename, outstream).WithReply(ctx.Message.Id).WithAllowedMentions(Mentions.None)
             .SendAsync(ctx.Channel);

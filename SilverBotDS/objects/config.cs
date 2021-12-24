@@ -66,7 +66,8 @@ public class Config
         typeof(ServerStatsCommands).FullName,
         typeof(ImageModule).FullName,
         typeof(Experience).FullName,
-        typeof(AdminCommands).FullName
+        typeof(AdminCommands).FullName,
+        typeof(Webshot).FullName
     };
 
     [XmlDescription("What modules should silverbot load from external dlls")]

@@ -130,7 +130,7 @@
         }
     }
 
-    var ToggleStateText = "report_problem";
+    var toggleStateText = "report_problem";
     var player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
     EventHandler<TrackStartedEventArgs> gamer = async (refr, song) =>
     {
@@ -168,11 +168,11 @@
     //player.OnWebsiteEvent += (refr, parm) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = parm.Item1.Username, Detail = parm.Item2, Duration = 4000 }); };
     if (player?.State is PlayerState.Paused)
     {
-        ToggleStateText = "play_arrow";
+        toggleStateText = "play_arrow";
     }
     else if (player?.State is PlayerState.Playing)
     {
-        ToggleStateText = "pause";
+        toggleStateText = "pause";
     }
 @code
 {
@@ -186,44 +186,44 @@
     if (usenew)
     {
         <div id="audio-player-container">
-            <p id="maintext"><RadzenIcon Icon="volume_up" style="top: 50%;transform: translateY(30%);"/>@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</p>
+           <p id="maintext"><RadzenIcon Icon="volume_up" style="top: 50%;transform: translateY(30%);"/>@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</p>
             <p>
                 Currently playing:
                 <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : player.CurrentTrack.Source)">
                     <strong>@(player.CurrentTrack is null ? "Nothing by Noone" : player.CurrentTrack.Title)</strong>
                 </a>
             </p>
-            <button type="submit" name="ToggleState" id="ToggleState" @onclick="@(async e => { await ToggleStatePress(player); if (player.State is PlayerState.Paused) { ToggleStateText = "play_arrow"; } else if (player.State is PlayerState.Playing) { ToggleStateText = "pause";} })" runat="server">
-                <RadzenIcon Icon="@ToggleStateText"/>
+            <button type="submit" name="ToggleState" title="Play/Pause" id="ToggleState" @onclick="@(async e => { await ToggleStatePress(player); if (player.State is PlayerState.Paused) { toggleStateText = "play_arrow"; } else if (player.State is PlayerState.Playing) { toggleStateText = "pause";} })" runat="server">
+                <RadzenIcon Icon="@toggleStateText"/>
             </button>
-            <button type="submit" name="VoteSkip" id="VoteSkip" @onclick="@(async e => await VoteSkipPress(player))" runat="server">
+            <button type="submit" name="VoteSkip" title="Vote Skip" id="VoteSkip" @onclick="@(async e => await VoteSkipPress(player))" runat="server">
                 <RadzenIcon Icon="how_to_vote"/>
             </button>
             @if (CheckForDj())
             {
-                <button type="submit" name="ForceSkip" id="ForceSkip" @onclick="@(async e => await ForceSkipPress(player))" runat="server">
+                <button type="submit" name="ForceSkip" title="Force Skip" id="ForceSkip" @onclick="@(async e => await ForceSkipPress(player))" runat="server">
                     <RadzenIcon Icon="skip_next"/>
                 </button>
             }
             @if (CheckForDj())
             {
-                <button type="submit" name="Shuffle" id="Shuffle" @onclick="@(e => ShufflePress(player))" runat="server">
+                <button type="submit" name="Shuffle" title="Shuffle"  id="Shuffle" @onclick="@(e => ShufflePress(player))" runat="server">
                     <RadzenIcon Icon="shuffle"/>
                 </button>
             }
-            <button type="submit" name="NoLoop" id="NoLoop" @onclick="@(e => NotLoopingPress(player))" runat="server">
+            <button type="submit" name="NoLoop" title="Cancel Loop" id="NoLoop" @onclick="@(e => NotLoopingPress(player))" runat="server">
                 <RadzenIcon Icon="repeat"/>
             </button>
-            <button type="submit" name="LoopSong" id="LoopSong" @onclick="@(e => LoopingSongPress(player))" runat="server">
+            <button type="submit" name="LoopSong" title="Loop"  id="LoopSong" @onclick="@(e => LoopingSongPress(player))" runat="server">
                 <RadzenIcon Icon="repeat_one"/>
             </button>
-            <button type="submit" name="LoopQueue" id="LoopQueue" @onclick="@(e => LoopingQueuePress(player))" runat="server">
+            <button type="submit" name="LoopQueue" title="Loop Queue" id="LoopQueue" @onclick="@(e => LoopingQueuePress(player))" runat="server">
                 <RadzenIcon Icon="repeat_on"/>
             </button>
-            <button type="submit" name="VolumeDown" id="VolumeDown" @onclick="@(async e => await VolumeDownPress(player))" runat="server">
+            <button type="submit" name="VolumeDown" title="Volume Down" id="VolumeDown" @onclick="@(async e => await VolumeDownPress(player))" runat="server">
                 <RadzenIcon Icon="volume_down"/>
             </button>
-            <button type="submit" name="VolumeUp" id="VolumeUp" @onclick="@(async e => await VolumeUpPress(player))" runat="server">
+            <button type="submit" name="VolumeUp" title="VolumeUp" id="VolumeUp" @onclick="@(async e => await VolumeUpPress(player))" runat="server">
                 <RadzenIcon Icon="volume_up"/>
             </button>
             <!--<span id="current-time" class="time">0:00</span>
@@ -235,51 +235,51 @@
     {
         <div class="window" style="max-width: 720px">
             <div class="title-bar">
-                <div class="title-bar-text">@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
+                <div class="title-bar-text"><RadzenIcon Icon="volume_up" style="top: 50%;transform: translateY(30%);"/> @guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</div>
                 <div class="title-bar-controls">
                     <button aria-label="Close"></button>
                 </div>
             </div>
             <div class="window-body">
-                <p>
-                    Currently playing:
-                    <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : player.CurrentTrack.Source)">
-                        <strong>@(player.CurrentTrack is null ? "nothing" : player.CurrentTrack.Title)</strong>
-                    </a>
-                </p>
-                <button type="submit" name="ToggleState" id="ToggleState" @onclick="@(async e => { await ToggleStatePress(player); if (player.State is PlayerState.Paused) { ToggleStateText = "play_circle_filled"; } else if (player.State is PlayerState.Playing) { ToggleStateText = "pause_circle_filled";} })" runat="server">
-                    <RadzenIcon Icon="@ToggleStateText"/>
+            <p>
+                Currently playing:
+                <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : player.CurrentTrack.Source)">
+                    <strong>@(player.CurrentTrack is null ? "Nothing by Noone" : player.CurrentTrack.Title)</strong>
+                </a>
+            </p>
+            <button type="submit" name="ToggleState" title="Play/Pause" id="ToggleState" @onclick="@(async e => { await ToggleStatePress(player); if (player.State is PlayerState.Paused) { toggleStateText = "play_arrow"; } else if (player.State is PlayerState.Playing) { toggleStateText = "pause";} })" runat="server">
+                <RadzenIcon Icon="@toggleStateText"/>
+            </button>
+            <button type="submit" name="VoteSkip" title="Vote Skip" id="VoteSkip" @onclick="@(async e => await VoteSkipPress(player))" runat="server">
+                <RadzenIcon Icon="how_to_vote"/>
+            </button>
+            @if (CheckForDj())
+            {
+                <button type="submit" name="ForceSkip" title="Force Skip" id="ForceSkip" @onclick="@(async e => await ForceSkipPress(player))" runat="server">
+                    <RadzenIcon Icon="skip_next"/>
                 </button>
-                <button type="submit" name="VoteSkip" id="VoteSkip" @onclick="@(async e => await VoteSkipPress(player))" runat="server">
-                    <RadzenIcon Icon="how_to_vote"/><RadzenIcon Icon="skip_next"/>
+            }
+            @if (CheckForDj())
+            {
+                <button type="submit" name="Shuffle" title="Shuffle"  id="Shuffle" @onclick="@(e => ShufflePress(player))" runat="server">
+                    <RadzenIcon Icon="shuffle"/>
                 </button>
-                @if (CheckForDj())
-                {
-                    <button type="submit" name="ForceSkip" id="ForceSkip" @onclick="@(async e => await ForceSkipPress(player))" runat="server">
-                        <RadzenIcon Icon="skip_next"/>
-                    </button>
-                }
-                @if (CheckForDj())
-                {
-                    <button type="submit" name="Shuffle" id="Shuffle" @onclick="@(e => ShufflePress(player))" runat="server">
-                        <RadzenIcon Icon="shuffle"/>
-                    </button>
-                }
-                <button type="submit" name="NoLoop" id="NoLoop" @onclick="@(e => NotLoopingPress(player))" runat="server">
-                    <RadzenIcon Icon="repeat"/>
-                </button>
-                <button type="submit" name="LoopSong" id="LoopSong" @onclick="@(e => LoopingSongPress(player))" runat="server">
-                    <RadzenIcon Icon="repeat_one"/>
-                </button>
-                <button type="submit" name="LoopQueue" id="LoopQueue" @onclick="@(e => LoopingQueuePress(player))" runat="server">
-                    <RadzenIcon Icon="repeat_on"/>
-                </button>
-                <button type="submit" name="VolumeDown" id="VolumeDown" @onclick="@(async e => await VolumeDownPress(player))" runat="server">
-                    <RadzenIcon Icon="volume_down"/>
-                </button>
-                <button type="submit" name="VolumeUp" id="VolumeUp" @onclick="@(async e => await VolumeUpPress(player))" runat="server">
-                    <RadzenIcon Icon="volume_up"/>
-                </button>
+            }
+            <button type="submit" name="NoLoop" title="Cancel Loop" id="NoLoop" @onclick="@(e => NotLoopingPress(player))" runat="server">
+                <RadzenIcon Icon="repeat"/>
+            </button>
+            <button type="submit" name="LoopSong" title="Loop"  id="LoopSong" @onclick="@(e => LoopingSongPress(player))" runat="server">
+                <RadzenIcon Icon="repeat_one"/>
+            </button>
+            <button type="submit" name="LoopQueue" title="Loop Queue" id="LoopQueue" @onclick="@(e => LoopingQueuePress(player))" runat="server">
+                <RadzenIcon Icon="repeat_on"/>
+            </button>
+            <button type="submit" name="VolumeDown" title="Volume Down" id="VolumeDown" @onclick="@(async e => await VolumeDownPress(player))" runat="server">
+                <RadzenIcon Icon="volume_down"/>
+            </button>
+            <button type="submit" name="VolumeUp" title="Volume Up" id="VolumeUp" @onclick="@(async e => await VolumeUpPress(player))" runat="server">
+                <RadzenIcon Icon="volume_up"/>
+            </button>
             </div>
         </div>
     }

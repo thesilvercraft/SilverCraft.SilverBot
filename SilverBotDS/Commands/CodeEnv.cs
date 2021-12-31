@@ -12,23 +12,23 @@ public class CodeEnv
     public static readonly string L = "л";
     public static readonly string Wbubbler = "вбубблер";
     public static readonly bool IsSilverAWeeb = true;
-    public static readonly string DDLCPlus = "hype";
+    public static readonly string DdlcPlus = "hype";
 
     public CodeEnv(CommandContext context, Config config, DatabaseContext dbctx)
     {
-        ctx = context;
-        Member = ctx.Member;
-        User = ctx.User;
-        Guild = ctx.Guild;
+        Ctx = context;
+        Member = Ctx.Member;
+        User = Ctx.User;
+        Guild = Ctx.Guild;
         VerString = VersionInfo.VNumber;
-        Client = ctx.Client;
+        Client = Ctx.Client;
         Config = config;
         ExConfig = new Config();
-        DBContext = dbctx;
+        DbContext = dbctx;
     }
 
 #pragma warning disable IDE1006 // Naming Styles
-    public CommandContext ctx { get; init; }
+    public CommandContext Ctx { get; init; }
 #pragma warning restore IDE1006 // Naming Styles
     public DiscordMember Member { get; init; }
     public DiscordUser User { get; init; }
@@ -37,5 +37,5 @@ public class CodeEnv
     public Config ExConfig { get; init; }
     public Config Config { get; init; }
     public string VerString { get; init; }
-    public DatabaseContext DBContext { get; init; }
+    public DatabaseContext DbContext { get; init; }
 }

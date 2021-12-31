@@ -10,13 +10,13 @@ namespace SilverBotDS.Commands;
 [Category("Anime")]
 public class Anime : BaseCommandModule
 {
-    private const string BaseURL = "https://anime-api.hisoka17.repl.co/";
+    private const string BaseUrl = "https://anime-api.hisoka17.repl.co/";
     public HttpClient Client { private get; set; }
 
     private async Task<string> GetAnimeUrl(string endpoint)
     {
         return JsonSerializer
-            .Deserialize<Rootobject>(await (await Client.GetAsync(BaseURL + endpoint)).Content.ReadAsStringAsync()).Url;
+            .Deserialize<Rootobject>(await (await Client.GetAsync(BaseUrl + endpoint)).Content.ReadAsStringAsync()).Url;
     }
 
     private async Task SendImage(CommandContext ctx, string url)

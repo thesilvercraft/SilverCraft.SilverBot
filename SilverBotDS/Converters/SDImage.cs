@@ -14,7 +14,7 @@ namespace SilverBotDS.Converters;
 public class SdImage : IDisposable
 {
     private byte[] _bytes;
-    private bool disposedValue;
+    private bool _disposedValue;
     public string Url;
 
     public SdImage()
@@ -47,7 +47,7 @@ public class SdImage : IDisposable
                 return FromAttachments(ctx.Message.ReferencedMessage.Attachments);
             if (ctx.Message.ReferencedMessage.Stickers.Count == 1)
                 return new SdImage(ctx.Message.ReferencedMessage.Stickers[0].StickerUrl);
-            var m = SdImageConverter.URLregex.Match(ctx.Message.Content);
+            var m = SdImageConverter.UrLregex.Match(ctx.Message.Content);
             if (m.Success) return new SdImage(m.Value);
         }
 
@@ -72,11 +72,11 @@ public class SdImage : IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if (!_disposedValue)
         {
             Url = null;
             _bytes = null;
-            disposedValue = true;
+            _disposedValue = true;
         }
     }
 
@@ -94,26 +94,26 @@ public enum AttachmentCountIncorrect : byte
 
 public class SdImageConverter : IArgumentConverter<SdImage>
 {
-    public static readonly Regex URLregex =
+    public static readonly Regex UrLregex =
         new("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private static readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>",
+    private static readonly Regex Emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private static readonly Regex _user = new("<@!(?<id>.+?)>",
+    private static readonly Regex User = new("<@!(?<id>.+?)>",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
     public async Task<Optional<SdImage>> ConvertAsync(string value, CommandContext ctx)
     {
-        var m = _emote.Match(value);
+        var m = Emote.Match(value);
         if (m.Success)
             return Optional.FromValue(new SdImage($"https://cdn.discordapp.com/emojis/{m.Groups["id"].Value}"));
-        var u = _user.Match(value);
+        var u = User.Match(value);
         if (u.Success)
             return Optional.FromValue(
                 new SdImage(await ctx.Client.GetUserAsync(Convert.ToUInt64(u.Groups["id"].Value))));
-        if (URLregex.IsMatch(value)) return Optional.FromValue(new SdImage(value));
+        if (UrLregex.IsMatch(value)) return Optional.FromValue(new SdImage(value));
         return Optional.FromNoValue<SdImage>();
     }
 }

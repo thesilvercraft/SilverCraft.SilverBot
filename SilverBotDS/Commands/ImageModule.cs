@@ -44,13 +44,13 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         Quality = 1
     };
 
-    private readonly FontFamily CaptionFont = SystemFonts.Get("Futura Extra Black Condensed");
+    private readonly FontFamily _captionFont = SystemFonts.Get("Futura Extra Black Condensed");
 
-    private readonly FontFamily JokerFontFamily = SystemFonts.Get("Futura Extra Black Condensed");
+    private readonly FontFamily _jokerFontFamily = SystemFonts.Get("Futura Extra Black Condensed");
 
-    private readonly Font MotivateFont = new(SystemFonts.Get("Times New Roman"), 100);
+    private readonly Font _motivateFont = new(SystemFonts.Get("Times New Roman"), 100);
 
-    private readonly Font SubtitlesFont = new(SystemFonts.Get("Trebuchet MS"), 100);
+    private readonly Font _subtitlesFont = new(SystemFonts.Get("Trebuchet MS"), 100);
 
     public HttpClient HttpClient { private get; set; }
 
@@ -348,15 +348,15 @@ public class ImageModule : BaseCommandModule, IRequireFonts
 
         var text =
             $"{(ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username)}, you truly are a reliable guy.";
-        var size = SubtitlesFont.Size;
-        while (TextMeasurer.Measure(text, new RendererOptions(new Font(SubtitlesFont.Family, size, FontStyle.Bold)))
+        var size = _subtitlesFont.Size;
+        while (TextMeasurer.Measure(text, new RendererOptions(new Font(_subtitlesFont.Family, size, FontStyle.Bold)))
                    .Width > img.Width) size -= 0.05f;
         var dr = new DrawingOptions();
         dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
         img.Mutate(m =>
-            m.DrawText(dr, text, new Font(SubtitlesFont, size), Brushes.Solid(Color.White), new PointF(952, 880)));
+            m.DrawText(dr, text, new Font(_subtitlesFont, size), Brushes.Solid(Color.White), new PointF(952, 880)));
         img.Mutate(m =>
-            m.DrawText(dr, text, new Font(SubtitlesFont, size), Pens.Solid(Color.Black, 3), new PointF(952, 880)));
+            m.DrawText(dr, text, new Font(_subtitlesFont, size), Pens.Solid(Color.Black, 3), new PointF(952, 880)));
         await using MemoryStream outStream = new();
         outStream.Position = 0;
         await img.SaveAsPngAsync(outStream);
@@ -505,12 +505,12 @@ public class ImageModule : BaseCommandModule, IRequireFonts
             img.Mutate(x => x.DrawImage(internalimage, new Point(126, 83), 1));
         }
 
-        var size = SubtitlesFont.Size;
-        while (TextMeasurer.Measure(text, new RendererOptions(new Font(MotivateFont.Family, size, FontStyle.Bold)))
+        var size = _subtitlesFont.Size;
+        while (TextMeasurer.Measure(text, new RendererOptions(new Font(_motivateFont.Family, size, FontStyle.Bold)))
                    .Width > img.Width) size -= 0.05f;
         var dr = new DrawingOptions();
         dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
-        img.Mutate(m => m.DrawText(dr, text, new Font(MotivateFont, size), Brushes.Solid(Color.White),
+        img.Mutate(m => m.DrawText(dr, text, new Font(_motivateFont, size), Brushes.Solid(Color.White),
             new PointF(639.5f, 897.5f)));
         await using MemoryStream outStream = new();
         await img.SaveAsync(outStream, new PngEncoder());
@@ -536,11 +536,11 @@ public class ImageModule : BaseCommandModule, IRequireFonts
                 "SilverBotDS.Templates.joker_laugh.gif"
             )
         );
-        Font JokerFont = new(JokerFontFamily, img.Width / 10);
+        Font jokerFont = new(_jokerFontFamily, img.Width / 10);
         var dr = new DrawingOptions();
         dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
         // x component of pointf is arbitrary and irrelevent since the above alignment option is given
-        img.Mutate(m => m.DrawText(dr, text, JokerFont, Brushes.Solid(Color.Black), new PointF(255f, 20f)));
+        img.Mutate(m => m.DrawText(dr, text, jokerFont, Brushes.Solid(Color.Black), new PointF(255f, 20f)));
         await using MemoryStream outStream = new();
         await img.SaveAsync(outStream, new GifEncoder());
         outStream.Position = 0;
@@ -567,7 +567,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         await using var inStream = new MemoryStream(await image.GetBytesAsync(HttpClient));
         using var bitmap = Image.Load(inStream, out var frmt);
         int x = bitmap.Width, y = bitmap.Height;
-        var font = new Font(CaptionFont, x / 10);
+        var font = new Font(_captionFont, x / 10);
         await using var outStream = new MemoryStream();
         FontRectangle textSize;
         var dr = new DrawingOptions();

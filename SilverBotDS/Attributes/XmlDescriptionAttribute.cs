@@ -5,21 +5,21 @@ namespace SilverBotDS.Attributes;
 [AttributeUsage(AttributeTargets.Property)]
 public class XmlDescriptionAttribute : Attribute
 {
-    public string description;
+    public string Description;
 
     public XmlDescriptionAttribute(string des)
     {
-        description = des;
+        Description = des;
     }
 }
 
 [AttributeUsage(AttributeTargets.Property)]
 public class XmlCommentInsideAttribute : Attribute
 {
-    public string comment;
+    public string Comment;
 
     public XmlCommentInsideAttribute(string des)
     {
-        comment = des;
+        Comment = des;
     }
 }

@@ -11,7 +11,7 @@ using SixLabors.ImageSharp.Formats.Tga;
 
 namespace SilverBotDS.Converters;
 
-internal class IImageFormatConverter : IArgumentConverter<IImageFormat>
+internal class ImageFormatConverter : IArgumentConverter<IImageFormat>
 {
     public Task<Optional<IImageFormat>> ConvertAsync(string value, CommandContext ctx)
     {

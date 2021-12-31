@@ -7,7 +7,7 @@ using DSharpPlus.CommandsNext.Attributes;
 
 namespace SilverBotDS.Converters;
 
-public class RequireDJAttribute : CheckBaseAttribute
+public class RequireDjAttribute : CheckBaseAttribute
 {
     public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
     {

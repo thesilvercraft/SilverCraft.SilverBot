@@ -5,31 +5,31 @@
 @using DSharpPlus
 @using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 
-@inject Config config
-@inject IHttpContextAccessor HttpContextAccessor
-@inject DiscordClient Discord
-@inject DatabaseContext dbctx
-@inject IJSRuntime jsRuntime
-@inject NavigationManager uriHelper
-@inject ProtectedSessionStorage ProtectedSessionStore
-@inject HttpClient client
+@inject Config _config
+@inject IHttpContextAccessor _httpContextAccessor
+@inject DiscordClient _discord
+@inject DatabaseContext _dbctx
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _uriHelper
+@inject ProtectedSessionStorage _protectedSessionStore
+@inject HttpClient _client
 @{
-    if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
+    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
     {
-        uriHelper.NavigateTo("/login", true);
+        _uriHelper.NavigateTo("/login", true);
     }
-    var thing = HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client);
+    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
 
 
-    var userpref = dbctx.userSettings.FirstOrDefault(x => x.Id == thing.UId);
+    var userpref = _dbctx.userSettings.FirstOrDefault(x => x.Id == thing.UId);
     if (userpref == null)
     {
         userpref = new UserSettings {Id = thing.UId, IsBanned = false, LangName = "en", UsesNewMusicPage = false};
-        dbctx.userSettings.Add(userpref);
-        dbctx.SaveChanges();
+        _dbctx.userSettings.Add(userpref);
+        _dbctx.SaveChanges();
     }
 }
-@if (!dbctx.IsBanned(thing.UId))
+@if (!_dbctx.IsBanned(thing.UId))
 {
     <p>Welcome to the beta version of the user preferences edit page</p>
 
@@ -42,7 +42,7 @@
     <RadzenLabel Text="Your personal language (used for direct messages and stuff)" Component="Switch2" Style="margin-left: 5px;"/>
 
     <br/>
-    <RadzenButton Click=@(args => { dbctx.userSettings.Update(userpref); dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px"/>
+    <RadzenButton Click=@(args => { _dbctx.userSettings.Update(userpref); _dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px"/>
 }
 else
 {

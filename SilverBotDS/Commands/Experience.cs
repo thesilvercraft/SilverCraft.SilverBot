@@ -31,10 +31,10 @@ namespace SilverBotDS.Commands;
 [Category("XP")]
 public class Experience : SilverBotCommandModule, IRequireFonts
 {
-    private static readonly IEnumerable<int> range = Enumerable.Range(700, 2000);
-    private readonly SolidBrush BlackBrush = new(Color.Black);
+    private static readonly IEnumerable<int> Range = Enumerable.Range(700, 2000);
+    private readonly SolidBrush _blackBrush = new(Color.Black);
 
-    private readonly Font DiavloLight = new(SystemFonts.Get("Diavlo Light"), 30.0f);
+    private readonly Font _diavloLight = new(SystemFonts.Get("Diavlo Light"), 30.0f);
     public DatabaseContext Database { private get; set; }
     public HttpClient HttpClient { private get; set; }
 
@@ -67,7 +67,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
     }
 
     [Command("xp")]
-    public async Task XPCommand(CommandContext ctx)
+    public async Task XpCommand(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder()
@@ -89,7 +89,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
     }
 
     [Command("xp")]
-    public async Task XPCommand(CommandContext ctx, DiscordMember member)
+    public async Task XpCommand(CommandContext ctx, DiscordMember member)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder()
@@ -111,7 +111,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
 
     [Command("xptop")]
     [RequireGuild]
-    public async Task XPLeaderboard(CommandContext ctx)
+    public async Task XpLeaderboard(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         var o = Database.userExperiences.AsEnumerable().OrderByDescending(x => x.XP);
@@ -123,7 +123,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
             bob.WithTitle(lang.XPCommandLeaderBoardTitle);
             bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             foreach (var person in o)
-                if (range.Contains(stringBuilder.Length))
+                if (Range.Contains(stringBuilder.Length))
                 {
                     bob.WithDescription(stringBuilder.ToString());
                     pages.Add(new Page(embed: bob));
@@ -174,7 +174,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
             {
                 oo.Fill(Color.White);
                 oo.DrawImage(imanidiot, new Point(13, 20), 1);
-                using var img = ImageModule.DrawText($"{user.Username}#{user.Discriminator}", DiavloLight, Color.Black,
+                using var img = ImageModule.DrawText($"{user.Username}#{user.Discriminator}", _diavloLight, Color.Black,
                     Color.Transparent);
                 oo.DrawImage(img, new Point(229, 25), 1);
                 oo.Fill(Color.Black, new Rectangle(new Point(233, 83), new Size(478, 30)));
@@ -184,10 +184,10 @@ public class Experience : SilverBotCommandModule, IRequireFonts
                     var levelcount = GetLevel(o.XP);
                     var progress = 4.76 * GetProgressToNextLevel(o.XP);
                     oo.Fill(Color.LightGreen, new Rectangle(new Point(234, 84), new Size((int) progress, 28)));
-                    oo.DrawText($"{o.XP}XP", DiavloLight, BlackBrush, new PointF((float) (170 + progress), 140));
-                    oo.DrawText($"{GetNeededXpForNextLevel(o.XP)}XP", DiavloLight, BlackBrush,
+                    oo.DrawText($"{o.XP}XP", _diavloLight, _blackBrush, new PointF((float) (170 + progress), 140));
+                    oo.DrawText($"{GetNeededXpForNextLevel(o.XP)}XP", _diavloLight, _blackBrush,
                         new PointF(650.95f, 120));
-                    oo.DrawText($"Level: {levelcount}", DiavloLight, BlackBrush, new PointF(232, 169));
+                    oo.DrawText($"Level: {levelcount}", _diavloLight, _blackBrush, new PointF(232, 169));
                 }
             });
             imge.Save(outStream, new PngEncoder());

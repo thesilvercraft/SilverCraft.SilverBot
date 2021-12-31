@@ -185,7 +185,7 @@ namespace SilverBotDS
             loggerConfiguration
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) //So uh asp.net LOVES spamming logs
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code);
-            if (_config.UseTXTFilesAsLogs)
+            if (_config.UseTxtFilesAsLogs)
             {
                 loggerConfiguration.WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
             }
@@ -410,7 +410,7 @@ namespace SilverBotDS
             commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterConverter(new TimeSpanConverter());
-            commands.RegisterConverter(new IImageFormatConverter());
+            commands.RegisterConverter(new ImageFormatConverter());
             foreach (var module in _config.ModulesToLoad)
             {
                 try
@@ -789,7 +789,7 @@ namespace SilverBotDS
             bool isinguild, CommandErrorEventArgs e)
         {
             var type = checkBase.GetType();
-            if (type == typeof(RequireDJAttribute))
+            if (type == typeof(RequireDjAttribute))
             {
                 return lang.RequireDJCheckFailed;
             }
@@ -850,7 +850,7 @@ namespace SilverBotDS
             bool isinguild, SlashCommandErrorEventArgs e)
         {
             var type = checkBase.GetType();
-            if (type == typeof(RequireDJAttribute))
+            if (type == typeof(RequireDjAttribute))
             {
                 return lang.RequireDJCheckFailed;
             }

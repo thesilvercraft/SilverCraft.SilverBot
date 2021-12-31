@@ -4,20 +4,20 @@
 @using Microsoft.AspNetCore.Http
 @using DSharpPlus
 @using System.Text
-@inject Config config
-@inject IHttpContextAccessor HttpContextAccessor
-@inject DiscordClient Discord
-@inject IJSRuntime jsRuntime
-@inject NavigationManager uriHelper
-@inject HttpClient client
+@inject Config _config
+@inject IHttpContextAccessor _httpContextAccessor
+@inject DiscordClient _discord
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _uriHelper
+@inject HttpClient _client
 @{
-    if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
+    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
     {
-        uriHelper.NavigateTo("/login", true);
+        _uriHelper.NavigateTo("/login", true);
     }
-    var thing = HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client);
-    var servers = from server in HttpContextAccessor.HttpContext.Session.GetGuildsFromSession(client)
-        where Discord.Guilds.ContainsKey(server.UId) && (Discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult().Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner)
+    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
+    var servers = from server in _httpContextAccessor.HttpContext.Session.GetGuildsFromSession(_client)
+        where _discord.Guilds.ContainsKey(server.UId) && (_discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult().Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner)
         select server;
 }
 <h1>The servers you can manage:</h1>
@@ -31,9 +31,9 @@
             <a href="/manageserver/@server.Id">
                 @if (string.IsNullOrEmpty(server.Icon))
                 {
-                    var split_name = server.Name.Split(' ');
+                    var splitName = server.Name.Split(' ');
                     var sb = new StringBuilder();
-                    foreach (var s in split_name)
+                    foreach (var s in splitName)
                     {
                         sb.Append(s[0]);
                     }

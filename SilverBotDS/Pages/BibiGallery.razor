@@ -2,12 +2,12 @@
 @using SilverBotDS.Objects
 @using System.IO
 @using System.Text.Json
-@inject Config config
-@inject NavigationManager nvgmng
+@inject Config _config
+@inject NavigationManager _nvgmng
 @{
-    if (!config.EmulateBubotBibi)
+    if (!_config.EmulateBubotBibi)
     {
-        nvgmng.NavigateTo("/404");
+        _nvgmng.NavigateTo("/404");
     }
 }
 
@@ -17,11 +17,11 @@
     {
         get
         {
-            if (!config.EmulateBubotBibi)
+            if (!_config.EmulateBubotBibi)
             {
                 return Array.Empty<string>();
             }
-            using StreamReader e = new(config.BibiLibCutOutConfig);
+            using StreamReader e = new(_config.BibiLibCutOutConfig);
             return JsonSerializer.Deserialize<string[]>(e.ReadToEnd());
         }
     }
@@ -79,7 +79,7 @@
 <div class="row">
     @for (var a = 1; a < BibiDescText.Length; a++)
     {
-        var url = string.Format(config.BibiLibCutOut, a);
+        var url = string.Format(_config.BibiLibCutOut, a);
         <div class="column">
             <img src="@url" alt="@BibiDescText[a - 1]" onclick="galleryThing(this);">
         </div>

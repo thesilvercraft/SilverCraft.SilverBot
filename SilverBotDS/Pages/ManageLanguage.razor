@@ -5,21 +5,21 @@
 @using DSharpPlus
 @using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 @using System.Text.Json
-@inject Config config
-@inject IHttpContextAccessor HttpContextAccessor
-@inject DiscordClient Discord
-@inject DatabaseContext dbctx
-@inject IJSRuntime jsRuntime
-@inject NavigationManager uriHelper
-@inject ProtectedSessionStorage ProtectedSessionStore
-@inject HttpClient client
+@inject Config _config
+@inject IHttpContextAccessor _httpContextAccessor
+@inject DiscordClient _discord
+@inject DatabaseContext _dbctx
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _uriHelper
+@inject ProtectedSessionStorage _protectedSessionStore
+@inject HttpClient _client
 
 @code {
 
     [Parameter]
-    public int id { get; set; }
+    public int Id { get; set; }
 
-    private string bindmaterial;
+    private string _bindmaterial;
 }
 
 @{
@@ -27,48 +27,48 @@
     {
         WriteIndented = true
     };
-    if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
+    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
     {
-        uriHelper.NavigateTo("/login", true);
+        _uriHelper.NavigateTo("/login", true);
     }
-    var thing = HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client);
-    var translator = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
+    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
+    var translator = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
     if (translator == null)
     {
-        uriHelper.NavigateTo("/", true);
+        _uriHelper.NavigateTo("/", true);
     }
 
     var languages = translator.CustomLanguages;
 
-    if (languages.Count <= id)
+    if (languages.Count <= Id)
     {
-        uriHelper.NavigateTo("/languageeditor");
+        _uriHelper.NavigateTo("/languageeditor");
     }
 
-    var language = translator.CustomLanguages.ToList().ElementAt(id);
+    var language = translator.CustomLanguages.ToList().ElementAt(Id);
     var json = JsonSerializer.Serialize(language, options);
 
-    async Task downloadlanguage()
+    async Task Downloadlanguage()
     {
-        await jsRuntime.InvokeVoidAsync("download", json, "language.json", "application/json");
+        await _jsRuntime.InvokeVoidAsync("download", json, "language.json", "application/json");
     }
 
     void UpdateHeading()
     {
-        bindmaterial = json;
+        _bindmaterial = json;
     }
 
     void HandleValidSubmit()
     {
-        var o = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
+        var o = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
         var p = o.CustomLanguages.ToList();
-        p[id] = JsonSerializer.Deserialize<Language>(bindmaterial);
-        p[id].Id = language.Id;
+        p[Id] = JsonSerializer.Deserialize<Language>(_bindmaterial);
+        p[Id].Id = language.Id;
         o.CustomLanguages = p;
-        dbctx.translatorSettings.Attach(o);
-        dbctx.translatorSettings.Update(o);
-        Console.WriteLine(dbctx.SaveChanges());
-        uriHelper.NavigateTo("/languageeditor");
+        _dbctx.translatorSettings.Attach(o);
+        _dbctx.translatorSettings.Update(o);
+        Console.WriteLine(_dbctx.SaveChanges());
+        _uriHelper.NavigateTo("/languageeditor");
         // Process the valid form
     }
 }
@@ -82,7 +82,7 @@
 <button @onclick="HandleValidSubmit">
     Save
 </button>
-<button @onclick="downloadlanguage">
+<button @onclick="Downloadlanguage">
     Download to your computer
 </button>
-<RadzenTextArea @bind-Value="@bindmaterial" Style=" width: 100%; height: 100vh;"/>
+<RadzenTextArea @bind-Value="@_bindmaterial" Style=" width: 100%; height: 100vh;"/>

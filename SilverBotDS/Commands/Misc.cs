@@ -23,28 +23,28 @@ namespace SilverBotDS.Commands;
 [Category("Miscellaneous")]
 public class MiscCommands : BaseCommandModule
 {
-    private readonly Regex CsharpErrorR = new("CS[0-9][0-9][0-9][0-9]",
+    private readonly Regex _csharpErrorR = new("CS[0-9][0-9][0-9][0-9]",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private readonly Regex DotNetErrorR = new("CA[0-9][0-9][0-9][0-9]",
+    private readonly Regex _dotNetErrorR = new("CA[0-9][0-9][0-9][0-9]",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private readonly Regex FsharpErrorR = new("FS[0-9][0-9][0-9][0-9]",
+    private readonly Regex _fsharpErrorR = new("FS[0-9][0-9][0-9][0-9]",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private readonly Regex IdeErrorR = new("IDE[0-9][0-9][0-9][0-9]",
+    private readonly Regex _ideErrorR = new("IDE[0-9][0-9][0-9][0-9]",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private readonly Regex NuGetErrorR = new("NU[0-9][0-9][0-9][0-9]",
+    private readonly Regex _nuGetErrorR = new("NU[0-9][0-9][0-9][0-9]",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private readonly Regex SerilogErrorR = new("Serilog[0-9][0-9][0-9]",
+    private readonly Regex _serilogErrorR = new("Serilog[0-9][0-9][0-9]",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private readonly Regex SonarErrorR = new("S([0-9][0-9][0-9][0-9])",
+    private readonly Regex _sonarErrorR = new("S([0-9][0-9][0-9][0-9])",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private readonly Regex VbErrorR = new("BC[0-9][0-9][0-9][0-9][0-9]",
+    private readonly Regex _vbErrorR = new("BC[0-9][0-9][0-9][0-9][0-9]",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
     public DatabaseContext Database { private get; set; }
@@ -84,15 +84,15 @@ public class MiscCommands : BaseCommandModule
     [Command("setlang")]
     [Description("set your language")]
     [RequireUserPermissions(Permissions.ManageGuild)]
-    public async Task SetLanguage(CommandContext ctx, string LangName)
+    public async Task SetLanguage(CommandContext ctx, string langName)
     {
         if (Language.LoadedLanguages().AsEnumerable()
-            .Any(x => string.Equals(x, LangName, StringComparison.InvariantCultureIgnoreCase)))
+            .Any(x => string.Equals(x, langName, StringComparison.InvariantCultureIgnoreCase)))
         {
             if (ctx.Channel.IsPrivate)
-                Database.InserOrUpdateLangCodeUser(ctx.User.Id, LangName.ToLowerInvariant());
+                Database.InserOrUpdateLangCodeUser(ctx.User.Id, langName.ToLowerInvariant());
             else
-                Database.InserOrUpdateLangCodeGuild(ctx.Guild.Id, LangName.ToLowerInvariant());
+                Database.InserOrUpdateLangCodeGuild(ctx.Guild.Id, langName.ToLowerInvariant());
             var lang = await Language.GetLanguageFromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                 .WithContent(lang.Success)
@@ -159,11 +159,11 @@ public class MiscCommands : BaseCommandModule
     [Command("translateunknownto")]
     [Aliases("translateto")]
     [Description("translate from an unknown language to a specified one")]
-    public async Task TranlateUnknown(CommandContext ctx, string LanguageTo, [RemainingText] string text)
+    public async Task TranlateUnknown(CommandContext ctx, string languageTo, [RemainingText] string text)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!Translator.ContainsKeyOrVal(LanguageTo)) LanguageTo = LanguageTo.Humanize(LetterCasing.Sentence);
-        if (!Translator.ContainsKeyOrVal(LanguageTo))
+        if (!Translator.ContainsKeyOrVal(languageTo)) languageTo = languageTo.Humanize(LetterCasing.Sentence);
+        if (!Translator.ContainsKeyOrVal(languageTo))
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                 .WithContent(string.Format(lang.NotValidLanguage,
@@ -174,7 +174,7 @@ public class MiscCommands : BaseCommandModule
         }
 
         Translator translator = new(HttpClient);
-        var tranlsation = await translator.TranslateAsync(text, "auto", LanguageTo);
+        var tranlsation = await translator.TranslateAsync(text, "auto", languageTo);
         if (tranlsation.Item1.Length > 4095)
             await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{tranlsation.Item2}>", tranlsation.Item1);
         else
@@ -273,36 +273,36 @@ public class MiscCommands : BaseCommandModule
     [Command("cserrcode")]
     public async Task Csharperror(CommandContext ctx, string error)
     {
-        var NuGetError = NuGetErrorR.Match(error);
-        var DotNetError = DotNetErrorR.Match(error);
-        var CsharpError = CsharpErrorR.Match(error);
-        var FsharpError = FsharpErrorR.Match(error);
-        var VbError = VbErrorR.Match(error);
-        var SerilogError = SerilogErrorR.Match(error);
-        var SonarError = SonarErrorR.Match(error);
-        var IdeError = IdeErrorR.Match(error);
+        var nuGetError = _nuGetErrorR.Match(error);
+        var dotNetError = _dotNetErrorR.Match(error);
+        var csharpError = _csharpErrorR.Match(error);
+        var fsharpError = _fsharpErrorR.Match(error);
+        var vbError = _vbErrorR.Match(error);
+        var serilogError = _serilogErrorR.Match(error);
+        var sonarError = _sonarErrorR.Match(error);
+        var ideError = _ideErrorR.Match(error);
         var link = "Not Found";
-        if (NuGetError.Success)
-            link = $"https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/{NuGetError.Groups[0]}";
-        else if (DotNetError.Success)
+        if (nuGetError.Success)
+            link = $"https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/{nuGetError.Groups[0]}";
+        else if (dotNetError.Success)
             link =
-                $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/{DotNetError.Groups[0]}";
-        else if (CsharpError.Success)
+                $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/{dotNetError.Groups[0]}";
+        else if (csharpError.Success)
             link =
-                $"https://docs.microsoft.com/en-us/dotnet/csharp/misc/{CsharpError.Groups[0]} or https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/{CsharpError.Groups[0]}";
-        else if (FsharpError.Success)
+                $"https://docs.microsoft.com/en-us/dotnet/csharp/misc/{csharpError.Groups[0]} or https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/{csharpError.Groups[0]}";
+        else if (fsharpError.Success)
             link =
-                $"https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/{FsharpError.Groups[0]}";
-        else if (VbError.Success)
-            link = $"https://docs.microsoft.com/en-us/dotnet/visual-basic/misc/{VbError.Groups[0]}";
-        else if (SonarError.Success)
-            link = $"https://rules.sonarsource.com/csharp/RSPEC-{SonarError.Groups[1]}";
-        else if (SerilogError.Success)
+                $"https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/{fsharpError.Groups[0]}";
+        else if (vbError.Success)
+            link = $"https://docs.microsoft.com/en-us/dotnet/visual-basic/misc/{vbError.Groups[0]}";
+        else if (sonarError.Success)
+            link = $"https://rules.sonarsource.com/csharp/RSPEC-{sonarError.Groups[1]}";
+        else if (serilogError.Success)
             link =
-                $"https://github.com/Suchiman/SerilogAnalyzer/blob/master/README.md#:~:text={SerilogError.Groups[0].Value.ToLower()} note: text fragments may not work for you if so search for `{SerilogError.Groups[0].Value.ToLower()}` in the site";
-        else if (IdeError.Success)
+                $"https://github.com/Suchiman/SerilogAnalyzer/blob/master/README.md#:~:text={serilogError.Groups[0].Value.ToLower()} note: text fragments may not work for you if so search for `{serilogError.Groups[0].Value.ToLower()}` in the site";
+        else if (ideError.Success)
             link =
-                $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/{IdeError.Groups[0]}";
+                $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/{ideError.Groups[0]}";
         await new DiscordMessageBuilder()
             .WithReply(ctx.Message.Id)
             .WithContent(link)

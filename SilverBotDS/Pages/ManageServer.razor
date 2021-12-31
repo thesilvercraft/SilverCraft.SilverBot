@@ -5,40 +5,40 @@
 @using DSharpPlus
 @using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 
-@inject Config config
-@inject IHttpContextAccessor HttpContextAccessor
-@inject DiscordClient Discord
-@inject DatabaseContext dbctx
-@inject IJSRuntime jsRuntime
-@inject NavigationManager uriHelper
-@inject ProtectedSessionStorage ProtectedSessionStore
-@inject HttpClient client
+@inject Config _config
+@inject IHttpContextAccessor _httpContextAccessor
+@inject DiscordClient _discord
+@inject DatabaseContext _dbctx
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _uriHelper
+@inject ProtectedSessionStorage _protectedSessionStore
+@inject HttpClient _client
 
 @code {
 
     [Parameter]
-    public long id { get; set; }
+    public long Id { get; set; }
 
 }
 
 @{
-    if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
+    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
     {
-        uriHelper.NavigateTo("/login", true);
+        _uriHelper.NavigateTo("/login", true);
     }
-    var thing = HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client);
-    var servers = from server in HttpContextAccessor.HttpContext.Session.GetGuildsFromSession(client)
-        where Discord.Guilds.ContainsKey(server.UId) && (Discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult().Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner)
+    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
+    var servers = from server in _httpContextAccessor.HttpContext.Session.GetGuildsFromSession(_client)
+        where _discord.Guilds.ContainsKey(server.UId) && (_discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult().Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner)
         select server;
-    if (!servers.Any(x => x.Id == id.ToString()))
+    if (!servers.Any(x => x.Id == Id.ToString()))
     {
-        uriHelper.NavigateTo("/listguilds");
+        _uriHelper.NavigateTo("/listguilds");
     }
-    var ser = servers.First(x => x.Id == id.ToString());
-    var seropt = dbctx.GetServerSettings((ulong) id);
+    var ser = servers.First(x => x.Id == Id.ToString());
+    var seropt = _dbctx.GetServerSettings((ulong) Id);
 
 }
-@if (!dbctx.IsBanned(thing.UId))
+@if (!_dbctx.IsBanned(thing.UId))
 {
     <p>Welcome to the beta version of the server config page</p>
     <p>Currently editing: <strong>@ser.Name</strong></p>
@@ -52,7 +52,7 @@
     <RadzenSwitch @bind-Value=@seropt.WebShot Name="Switch3" Style="margin-bottom: 20px"/>
     <RadzenLabel Text="Opt into WebShot" Component="Switch3" Style="margin-left: 5px;"/>
     <br/>
-    <RadzenButton Click=@(args => { dbctx.serverSettings.Update(seropt); dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px"/>
+    <RadzenButton Click=@(args => { _dbctx.serverSettings.Update(seropt); _dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px"/>
 }
 else
 {

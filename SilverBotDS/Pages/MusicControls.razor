@@ -16,7 +16,7 @@
     {
         _uriHelper.NavigateTo("/", true);
     }
-    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
+    if (_httpContextAccessor.HttpContext == null || string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
     {
         _uriHelper.NavigateTo("/login", true);
     }
@@ -24,22 +24,22 @@
 
 
 <RadzenNotification/>
-@inject DiscordClient Discord
-@inject IJSRuntime jsRuntime
-@inject LavalinkNode Lavalink
-@inject DatabaseContext dbCtx
-@inject NotificationService NotificationService
-@inject HttpClient client
+@inject DiscordClient _discord
+@inject IJSRuntime _jsRuntime
+@inject LavalinkNode _lavalink
+@inject DatabaseContext _dbCtx
+@inject NotificationService _notificationService
+@inject HttpClient _client
 @{
     var usenew = false;
-    var user = Discord.GetUserAsync(_httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client).UId).GetAwaiter().GetResult();
-    var userpref = dbCtx.userSettings.FirstOrDefault(x => x.Id == user.Id);
+    var user = _discord.GetUserAsync(_httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client).UId).GetAwaiter().GetResult();
+    var userpref = _dbCtx.userSettings.FirstOrDefault(x => x.Id == user.Id);
     if (userpref != null)
     {
         usenew = userpref.UsesNewMusicPage;
     }
 }
-@foreach (var guild in Discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null && x.Members[user.Id].VoiceState.Channel is not null && Lavalink.HasPlayer(x.Id) && Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))
+@foreach (var guild in _discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null && x.Members[user.Id].VoiceState.Channel is not null && _lavalink.HasPlayer(x.Id) && _lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))
 {
     bool CheckForDj()
     {
@@ -111,10 +111,10 @@
 
     void ShowNotification(NotificationMessage message)
     {
-        NotificationService.Notify(message);
+        _notificationService.Notify(message);
     }
 
-    async Task VolumeUpPress(BetterVoteLavalinkPlayer player)
+    async Task VolumeUpPress(LavalinkPlayer player)
     {
         if (player.Volume + 0.1f <= 1)
         {
@@ -122,7 +122,7 @@
         }
     }
 
-    async Task VolumeDownPress(BetterVoteLavalinkPlayer player)
+    async Task VolumeDownPress(LavalinkPlayer player)
     {
         if (player.Volume - 0.1f >= 0)
         {
@@ -131,19 +131,7 @@
     }
 
     var toggleStateText = "report_problem";
-    var player = Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
-    EventHandler<TrackStartedEventArgs> gamer = async (refr, song) =>
-    {
-        try
-        {
-            await InvokeAsync(() => { _uriHelper.NavigateTo("/musiccontrols", false); });
-        }
-        catch (Exception)
-        {
-            // ignored
-        }
-    };
-    //player.OnNewTrack += gamer;
+    var player = _lavalink.GetPlayer<BetterVoteLavalinkPlayer>(guild.Id);
     player?.RemoveOnWebsiteEventHandelers(user);
     if (player?.OnWebsiteEvent.ContainsKey(user) == true)
     {
@@ -165,24 +153,15 @@
             });
         }
     }
-    //player.OnWebsiteEvent += (refr, parm) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = parm.Item1.Username, Detail = parm.Item2, Duration = 4000 }); };
-    if (player?.State is PlayerState.Paused)
+    toggleStateText = player?.State switch
     {
-        toggleStateText = "play_arrow";
-    }
-    else if (player?.State is PlayerState.Playing)
-    {
-        toggleStateText = "pause";
-    }
-@code
-{
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-        }
-    }
-}
+        //player.OnWebsiteEvent += (refr, parm) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = parm.Item1.Username, Detail = parm.Item2, Duration = 4000 }); };
+        PlayerState.Paused => "play_arrow",
+        PlayerState.Playing => "pause",
+        _ => toggleStateText,
+        };
+
+
     if (usenew)
     {
         <div id="audio-player-container">

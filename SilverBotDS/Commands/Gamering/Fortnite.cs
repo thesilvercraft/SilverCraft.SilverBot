@@ -15,8 +15,8 @@ namespace SilverBotDS.Commands.Gamering;
 [Group("fortnite")]
 public class Fortnite : SilverBotCommandModule
 {
-    private FortniteApiClient api;
-    public Config config { private get; set; }
+    private FortniteApiClient _api;
+    public Config Config { private get; set; }
 
     public override Task<bool> ExecuteRequirements(Config conf)
     {
@@ -35,7 +35,7 @@ public class Fortnite : SilverBotCommandModule
     /// <param name="apiKey">the key to use</param>
     public void MakeSureApiIsSet()
     {
-        api = new FortniteApiClient(config.FApiToken);
+        _api = new FortniteApiClient(Config.FApiToken);
     }
 
     [Command("fortstats")]
@@ -44,7 +44,7 @@ public class Fortnite : SilverBotCommandModule
     {
         MakeSureApiIsSet();
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        var statsV2V1 = await api.V1.Stats.GetBrV2Async(x =>
+        var statsV2V1 = await _api.V1.Stats.GetBrV2Async(x =>
         {
             x.Name = name;
             x.ImagePlatform = BrStatsV2V1ImagePlatform.All;
@@ -60,7 +60,7 @@ public class Fortnite : SilverBotCommandModule
     public async Task Brnews(CommandContext ctx)
     {
         MakeSureApiIsSet();
-        var newsV2 = await api.V2.News.GetAsync();
+        var newsV2 = await _api.V2.News.GetAsync();
         await ctx.RespondAsync(newsV2.Data.Br.Image.ToString());
     }
 
@@ -69,7 +69,7 @@ public class Fortnite : SilverBotCommandModule
     public async Task Crnews(CommandContext ctx)
     {
         MakeSureApiIsSet();
-        var newsV2 = await api.V2.News.GetAsync();
+        var newsV2 = await _api.V2.News.GetAsync();
         await ctx.RespondAsync(newsV2.Data.Creative.Image.ToString());
     }
 
@@ -78,7 +78,7 @@ public class Fortnite : SilverBotCommandModule
     public async Task Stwnews(CommandContext ctx)
     {
         MakeSureApiIsSet();
-        var newsV2 = await api.V2.News.GetAsync();
+        var newsV2 = await _api.V2.News.GetAsync();
         await ctx.RespondAsync(newsV2.Data.Stw.Image.ToString());
     }
 
@@ -87,7 +87,7 @@ public class Fortnite : SilverBotCommandModule
     public async Task Itm(CommandContext ctx)
     {
         MakeSureApiIsSet();
-        var shop = await api.V2.Shop.GetBrCombinedAsync();
+        var shop = await _api.V2.Shop.GetBrCombinedAsync();
         var sb = new StringBuilder();
         foreach (var thing in shop.Data.Daily.Entries) sb.Append(thing.DevName).Append(Environment.NewLine);
         await ctx.RespondAsync(sb.ToString());

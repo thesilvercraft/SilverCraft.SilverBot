@@ -17,7 +17,7 @@ namespace SilverBotDS;
 
 internal static class CloudFlareConnectingIpMiddleware
 {
-    public const string CLOUDFLARE_CONNECTING_IP_HEADER_NAME = "CF_CONNECTING_IP";
+    public const string CloudflareConnectingIpHeaderName = "CF_CONNECTING_IP";
 
     private static string[] GetStrings(string url)
     {
@@ -25,7 +25,7 @@ internal static class CloudFlareConnectingIpMiddleware
             .Select(s => s.Trim()).ToArray();
     }
 
-    private static string[] GetCloudflareIP()
+    private static string[] GetCloudflareIp()
     {
         try
         {
@@ -68,14 +68,14 @@ internal static class CloudFlareConnectingIpMiddleware
     {
         ForwardedHeadersOptions options = new()
         {
-            ForwardedForHeaderName = CLOUDFLARE_CONNECTING_IP_HEADER_NAME,
+            ForwardedForHeaderName = CloudflareConnectingIpHeaderName,
             ForwardedHeaders = ForwardedHeaders.All
         };
         try
         {
             var urls = builder.ServerFeatures.Get<IServerAddressesFeature>().Addresses;
             if (urls != null && urls.Count != 0)
-                foreach (var line in GetCloudflareIP())
+                foreach (var line in GetCloudflareIp())
                     if (IPAddressRange.TryParse(line, out var range))
                         options.KnownNetworks.Add(new IPNetwork(range.Begin, range.GetPrefixLength()));
         }

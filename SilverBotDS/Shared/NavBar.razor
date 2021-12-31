@@ -1,9 +1,9 @@
 ﻿@using SilverBotDS.WebHelpers
 @using Microsoft.AspNetCore.Http
 @using DSharpPlus
-@inject IHttpContextAccessor HttpContextAccessor
-@inject DiscordClient Discord
-@inject HttpClient client
+@inject IHttpContextAccessor _httpContextAccessor
+@inject DiscordClient _discord
+@inject HttpClient _client
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="font-family: 'Berlin Sans FB', sans-serif;">
 <a class="navbar-brand" href="#">
     @if (DateTime.UtcNow.Month == 6)
@@ -23,7 +23,7 @@
     <span class="badge badge-primary">@(DateTime.UtcNow.Month == 6 ? "Pride" : DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31 ? "Halloween" : "Web")</span>
 </a>
     <ul class="navbar-nav">
-        @if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext?.Session.GetObjectFromJson<string>("accessToken")))
+        @if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext?.Session.GetObjectFromJson<string>("accessToken")))
         {
             <li class="nav-item">
                 <a class="nav-link" href="\login">Log in</a>
@@ -33,7 +33,7 @@
         {
             <li class="nav-item">
                 @{
-                    var user = Discord.GetUserAsync(HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client).UId).GetAwaiter().GetResult();
+                    var user = _discord.GetUserAsync(_httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client).UId).GetAwaiter().GetResult();
                 }
                 <a class="nav-link" href="">Hello @user.Username#@user.Discriminator</a>
             </li>

@@ -14,8 +14,8 @@ namespace SilverBotDS.Commands.Slash;
 
 public class GeneralCommands : ApplicationCommandModule
 {
-    public DatabaseContext DBCTX { private get; set; }
-    public Config CNF { private get; set; }
+    public DatabaseContext Dbctx { private get; set; }
+    public Config Cnf { private get; set; }
 
     [SlashCommand("hello", "A simple hello command")]
     public async Task TestCommand(InteractionContext ctx)
@@ -26,7 +26,7 @@ public class GeneralCommands : ApplicationCommandModule
 
     public async Task WhoIsTask(BaseContext ctx, DiscordUser user)
     {
-        var lang = await Language.GetLanguageFromGuildIdAsync(ctx.Guild.Id, DBCTX);
+        var lang = await Language.GetLanguageFromGuildIdAsync(ctx.Guild.Id, Dbctx);
         var cultureinfo = lang.GetCultureInfo();
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
@@ -34,7 +34,7 @@ public class GeneralCommands : ApplicationCommandModule
                 .WithDescription(lang.InformationAbout + user.Mention)
                 .AddField(lang.Userid, Formatter.InlineCode(user.Id.ToString()), true)
                 .AddField(lang.JoinedSilverCraft,
-                    StringUtils.BoolToEmoteString(await Genericcommands.IsAtSilverCraftAsync(ctx.Client, user, CNF)),
+                    StringUtils.BoolToEmoteString(await Genericcommands.IsAtSilverCraftAsync(ctx.Client, user, Cnf)),
                     true)
                 .AddField(lang.IsAnOwner,
                     StringUtils.BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(user)), true)

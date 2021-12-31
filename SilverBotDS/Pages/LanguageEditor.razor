@@ -3,24 +3,24 @@
 @using SilverBotDS.Objects
 @using Microsoft.AspNetCore.Http
 @using DSharpPlus
-@inject Config config
-@inject IHttpContextAccessor HttpContextAccessor
-@inject DiscordClient Discord
-@inject IJSRuntime jsRuntime
-@inject NavigationManager uriHelper
-@inject DatabaseContext dbctx
-@inject HttpClient client
+@inject Config _config
+@inject IHttpContextAccessor _httpContextAccessor
+@inject DiscordClient _discord
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _uriHelper
+@inject DatabaseContext _dbctx
+@inject HttpClient _client
 @{
-    if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetObjectFromJson<string>
+    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>
         ("accessToken")))
     {
-        uriHelper.NavigateTo("/login", true);
+        _uriHelper.NavigateTo("/login", true);
     }
-    var thing = HttpContextAccessor.HttpContext.Session.GetUserInfoFromSession(client);
-    var translator = dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
+    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
+    var translator = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
     if (translator == null)
     {
-        uriHelper.NavigateTo("/", true);
+        _uriHelper.NavigateTo("/", true);
     }
 
     var languages = translator.CustomLanguages.ToList();

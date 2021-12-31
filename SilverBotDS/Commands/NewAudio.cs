@@ -691,7 +691,7 @@ public class NewAudio : SilverBotCommandModule
 
     [Command("disconnect")]
     [Description("stops playing the current song and leaves")]
-    [RequireDJ]
+    [RequireDj]
     public async Task Disconnect(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);

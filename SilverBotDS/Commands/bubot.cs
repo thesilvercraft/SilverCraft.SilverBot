@@ -38,13 +38,13 @@ public class Bubot : BaseCommandModule
 [Category("Bubot")]
 internal class BibiCommands : SilverBotCommandModule, IRequireFonts
 {
-    private readonly Font BibiFont = new(SystemFonts.Get("Arial"), 30, FontStyle.Bold);
+    private readonly Font _bibiFont = new(SystemFonts.Get("Arial"), 30, FontStyle.Bold);
     public static string[] RequiredFontFamilies => new[] {"Arial"};
-    public Config config { private get; set; }
+    public Config Config { private get; set; }
 
     private int BibiPictureCount
     {
-        get { return Directory.EnumerateFiles(config.LocalBibiPictures).Count(x => x.EndsWith(".png")); }
+        get { return Directory.EnumerateFiles(Config.LocalBibiPictures).Count(x => x.EndsWith(".png")); }
     }
 
     public override Task<bool> ExecuteRequirements(Config conf)
@@ -63,13 +63,13 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
         await ctx.TriggerTypingAsync();
         input = $"bibi is {input}";
         var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
-        using var picture = await Image.LoadAsync($"{config.LocalBibiPictures}{randomnumber}.png");
-        var size = BibiFont.Size;
-        while (TextMeasurer.Measure(input, new RendererOptions(new Font(BibiFont.Family, size, FontStyle.Bold))).Width >
+        using var picture = await Image.LoadAsync($"{Config.LocalBibiPictures}{randomnumber}.png");
+        var size = _bibiFont.Size;
+        while (TextMeasurer.Measure(input, new RendererOptions(new Font(_bibiFont.Family, size, FontStyle.Bold))).Width >
                picture.Width) size -= 0.05f;
         picture.Mutate(
             x => x.DrawText(
-                input, new Font(BibiFont.Family, size, FontStyle.Bold),
+                input, new Font(_bibiFont.Family, size, FontStyle.Bold),
                 randomnumber is 10 or 9 ? Color.Gray : Color.White, new PointF(4, 230)
             )
         );
@@ -87,9 +87,9 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
 [Category("Bubot")]
 internal class BibiLib : SilverBotCommandModule
 {
-    private string[] BibiDescText;
-    private string[] BibiFullDescText;
-    public Config config { private get; set; }
+    private string[] _bibiDescText;
+    private string[] _bibiFullDescText;
+    public Config Config { private get; set; }
 
     public override Task<bool> ExecuteRequirements(Config conf)
     {
@@ -101,19 +101,19 @@ internal class BibiLib : SilverBotCommandModule
 
     private void EnsureCreated()
     {
-        if (BibiDescText == null) BibiDescText = GetBibiDescText();
-        if (BibiFullDescText == null) BibiFullDescText = GetBibiFullDescText();
+        if (_bibiDescText == null) _bibiDescText = GetBibiDescText();
+        if (_bibiFullDescText == null) _bibiFullDescText = GetBibiFullDescText();
     }
 
     private string[] GetBibiDescText()
     {
-        using StreamReader reader = new(config.BibiLibCutOutConfig);
+        using StreamReader reader = new(Config.BibiLibCutOutConfig);
         return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
     }
 
     private string[] GetBibiFullDescText()
     {
-        using StreamReader reader = new(config.BibiLibFullConfig);
+        using StreamReader reader = new(Config.BibiLibFullConfig);
         return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
     }
 
@@ -124,12 +124,12 @@ internal class BibiLib : SilverBotCommandModule
         EnsureCreated();
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         List<Page> pages = new();
-        for (var a = 0; a < BibiDescText.Length; a++)
+        for (var a = 0; a < _bibiDescText.Length; a++)
         {
             var imgurl =
                 $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibCutout/{a + 1}.png?raw=true";
-            pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(BibiDescText[a])
-                .WithDescription($"{imgurl}\n{string.Format(lang.PageNuget, a + 1, BibiDescText.Length)}")
+            pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(_bibiDescText[a])
+                .WithDescription($"{imgurl}\n{string.Format(lang.PageNuget, a + 1, _bibiDescText.Length)}")
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
                 .WithImageUrl(imgurl).WithColor(await ColorUtils.GetSingleAsync())));
         }
@@ -145,12 +145,12 @@ internal class BibiLib : SilverBotCommandModule
         EnsureCreated();
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         List<Page> pages = new();
-        for (var a = 0; a < BibiFullDescText.Length; a++)
+        for (var a = 0; a < _bibiFullDescText.Length; a++)
         {
             var imgurl =
                 $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibFull/{a + 1}.png?raw=true";
-            pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(BibiFullDescText[a])
-                .WithDescription($"{imgurl}\n{string.Format(lang.PageNuget, a + 1, BibiDescText.Length)}")
+            pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(_bibiFullDescText[a])
+                .WithDescription($"{imgurl}\n{string.Format(lang.PageNuget, a + 1, _bibiDescText.Length)}")
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
                 .WithImageUrl(imgurl).WithColor(await ColorUtils.GetSingleAsync())));
         }

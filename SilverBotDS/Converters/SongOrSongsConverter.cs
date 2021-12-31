@@ -38,9 +38,9 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
     {
         var spotifyClient = (SpotifyClient) ctx.CommandsNext.Services.GetService(typeof(SpotifyClient));
         var conf = (Config) ctx.CommandsNext.Services.GetService(typeof(Config));
-        var AudioService = (LavalinkNode) ctx.CommandsNext.Services.GetService(typeof(LavalinkNode));
+        var audioService = (LavalinkNode) ctx.CommandsNext.Services.GetService(typeof(LavalinkNode));
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx, AudioService))
+        if (!IsInVc(ctx, audioService))
         {
             if (ctx.Member?.VoiceState?.Channel == null)
             {
@@ -48,7 +48,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
                 return new Optional<SongORSongs>();
             }
 
-            await Audio.StaticJoin(ctx, AudioService);
+            await Audio.StaticJoin(ctx, audioService);
             await ctx.TriggerTypingAsync();
         }
 
@@ -78,7 +78,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
             {
                 var song = await spotifyClient.Tracks.Get(m.Groups[2].Value);
                 return new Optional<SongORSongs>(new SongORSongs(
-                    await AudioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube), null,
+                    await audioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube), null,
                     null));
             }
 
@@ -87,9 +87,9 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
             {
                 var album = await spotifyClient.Albums.Get(m.Groups[2].Value);
                 return new Optional<SongORSongs>(new SongORSongs(
-                    await AudioService.GetTrackAsync(
+                    await audioService.GetTrackAsync(
                         $"{album.Tracks.Items[0].Name} {album.Tracks.Items[0].Artists[0].Name}", SearchMode.YouTube),
-                    album.Name, GetTracksUsingAlbum(album, AudioService)));
+                    album.Name, GetTracksUsingAlbum(album, audioService)));
             }
 
             m = PlaylistRegex.Match(value);
@@ -98,19 +98,19 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
                 var playlist = await spotifyClient.Playlists.Get(m.Groups[2].Value);
                 var firstsong = (FullTrack) playlist.Tracks.Items.First(e => e.Track is FullTrack).Track;
                 return new Optional<SongORSongs>(new SongORSongs(
-                    await AudioService.GetTrackAsync($"{firstsong.Name} {firstsong.Artists[0].Name}",
-                        SearchMode.YouTube), playlist.Name, GetTracksUsingPlaylist(playlist, AudioService)));
+                    await audioService.GetTrackAsync($"{firstsong.Name} {firstsong.Artists[0].Name}",
+                        SearchMode.YouTube), playlist.Name, GetTracksUsingPlaylist(playlist, audioService)));
             }
         }
 
-        var track = await AudioService.GetTracksAsync(value);
+        var track = await audioService.GetTracksAsync(value);
         if (track?.Any() != true)
         {
-            track = new[] {await AudioService.GetTrackAsync(value, SearchMode.YouTube)};
+            track = new[] {await audioService.GetTrackAsync(value, SearchMode.YouTube)};
 
             if (track?.Any() != true)
             {
-                track = new[] {await AudioService.GetTrackAsync(value, SearchMode.SoundCloud)};
+                track = new[] {await audioService.GetTrackAsync(value, SearchMode.SoundCloud)};
                 if (track?.Any() != true)
                 {
                     await Audio.SendSimpleMessage(ctx, string.Format(lang.NoResults, value), language: lang);
@@ -127,7 +127,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
         return TrackRegex.IsMatch(url) || AlbumRegex.IsMatch(url) || PlaylistRegex.IsMatch(url);
     }
 
-    private async IAsyncEnumerable<LavalinkTrack> GetTracksUsingAlbum(FullAlbum album, LavalinkNode AudioService,
+    private async IAsyncEnumerable<LavalinkTrack> GetTracksUsingAlbum(FullAlbum album, LavalinkNode audioService,
         uint skipsongs = 1)
     {
         foreach (var song in album.Tracks.Items)
@@ -138,13 +138,13 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
                 continue;
             }
 
-            var e = await AudioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube);
+            var e = await audioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube);
             if (e is not null) yield return e;
         }
     }
 
     private async IAsyncEnumerable<LavalinkTrack> GetTracksUsingPlaylist(FullPlaylist playlist,
-        LavalinkNode AudioService, uint skipsongs = 1)
+        LavalinkNode audioService, uint skipsongs = 1)
     {
         foreach (var song in playlist.Tracks.Items)
             if (song.Track is FullTrack track)
@@ -155,16 +155,16 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
                     continue;
                 }
 
-                var e = await AudioService.GetTrackAsync($"{track.Name} {track.Artists[0].Name}", SearchMode.YouTube);
+                var e = await audioService.GetTrackAsync($"{track.Name} {track.Artists[0].Name}", SearchMode.YouTube);
                 if (e is not null) yield return e;
             }
     }
 
-    private bool IsInVc(CommandContext ctx, LavalinkNode AudioService)
+    private bool IsInVc(CommandContext ctx, LavalinkNode audioService)
     {
-        return AudioService.HasPlayer(ctx.Guild.Id) &&
-               AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null &&
-               (AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
-                || AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
+        return audioService.HasPlayer(ctx.Guild.Id) &&
+               audioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null &&
+               (audioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
+                || audioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
     }
 }

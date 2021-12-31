@@ -189,7 +189,7 @@ public class Audio : BaseCommandModule
 
     [Command("volume")]
     [Aliases("vol")]
-    [RequireDJ]
+    [RequireDj]
     [Description("Change the volume 1-100%")]
     public async Task Volume(CommandContext ctx, ushort volume)
     {
@@ -218,7 +218,7 @@ public class Audio : BaseCommandModule
     }
 
     [Command("seek")]
-    [RequireDJ]
+    [RequireDj]
     [Description("Seeks to the specified time")]
     public async Task Seek(CommandContext ctx, TimeSpan time)
     {
@@ -248,7 +248,7 @@ public class Audio : BaseCommandModule
     }
 
     [Command("clearqueue")]
-    [RequireDJ]
+    [RequireDj]
     [Description("Clears the queue")]
     public async Task ClearQueue(CommandContext ctx)
     {
@@ -280,7 +280,7 @@ public class Audio : BaseCommandModule
     }
 
     [Command("shuffle")]
-    [RequireDJ]
+    [RequireDj]
     [Description("Shuffles the queue")]
     public async Task Shuffle(CommandContext ctx)
     {
@@ -525,7 +525,7 @@ public class Audio : BaseCommandModule
 
     [Command("ovh")]
     [Description("get the lyrics from ovh")]
-    public async Task OVH(CommandContext ctx, string name, string artist)
+    public async Task Ovh(CommandContext ctx, string name, string artist)
     {
         var lyrics = await LyricsService.GetLyricsAsync(artist, name);
         if (string.IsNullOrEmpty(lyrics))
@@ -608,7 +608,7 @@ public class Audio : BaseCommandModule
 
     [Command("forceskip")]
     [Description("skip a song. dj only command")]
-    [RequireDJ]
+    [RequireDj]
     [Aliases("fs")]
     public async Task Skip(CommandContext ctx)
     {
@@ -669,7 +669,7 @@ public class Audio : BaseCommandModule
         }
 
         var trackbefore = player.CurrentTrack;
-        if (await new RequireDJAttribute().ExecuteCheckAsync(ctx, false))
+        if (await new RequireDjAttribute().ExecuteCheckAsync(ctx, false))
             await SendSimpleMessage(ctx, lang.CanForceSkip, language: lang);
         var thing = await player.VoteAsync(ctx.Member.Id);
         if (thing.WasSkipped)
@@ -685,7 +685,7 @@ public class Audio : BaseCommandModule
     [Command("forcedisconnect")]
     [Description("Tell me to leave your channel of the voice type, without checking if its in a vc")]
     [Aliases("fuckoffisntworking")]
-    [RequireDJ]
+    [RequireDj]
     public async Task ForceDisconnect(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -706,7 +706,7 @@ public class Audio : BaseCommandModule
     [Command("disconnect")]
     [Description("Tell me to leave your channel of the voice type")]
     [Aliases("fuckoff", "minecraftbedrockisbetter", "fockoff", "leave")]
-    [RequireDJ]
+    [RequireDj]
     public async Task Disconnect(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);

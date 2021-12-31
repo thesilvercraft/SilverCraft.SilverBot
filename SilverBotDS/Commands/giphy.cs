@@ -24,18 +24,18 @@ public class Giphy : SilverBotCommandModule
         return new Giphy();
     }
 #pragma warning disable CA1822 // Mark members as static
-    private GiphyDotNet.Manager.Giphy giphy;
-    public Config config { private get; set; }
+    private GiphyDotNet.Manager.Giphy _giphy;
+    public Config Config { private get; set; }
 
     private void MakeSureTokenIsSet()
     {
-        if (giphy == null)
+        if (_giphy == null)
         {
-            if (string.IsNullOrEmpty(config.Gtoken) || config.Gtoken == "Giphy_Token_Here" ||
-                string.Equals(config.Gtoken, "none", StringComparison.InvariantCultureIgnoreCase))
-                giphy = new GiphyDotNet.Manager.Giphy();
+            if (string.IsNullOrEmpty(Config.Gtoken) || Config.Gtoken == "Giphy_Token_Here" ||
+                string.Equals(Config.Gtoken, "none", StringComparison.InvariantCultureIgnoreCase))
+                _giphy = new GiphyDotNet.Manager.Giphy();
             else
-                giphy = new GiphyDotNet.Manager.Giphy(config.Gtoken);
+                _giphy = new GiphyDotNet.Manager.Giphy(Config.Gtoken);
         }
     }
 
@@ -44,7 +44,7 @@ public class Giphy : SilverBotCommandModule
     {
         MakeSureTokenIsSet();
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        var gifresult = await giphy.RandomGif(new RandomParameter
+        var gifresult = await _giphy.RandomGif(new RandomParameter
         {
             Rating = Rating.Pg
         });
@@ -68,7 +68,7 @@ public class Giphy : SilverBotCommandModule
             Query = term,
             Rating = Rating.Pg
         };
-        var gifResult = await giphy.GifSearch(searchParameter);
+        var gifResult = await _giphy.GifSearch(searchParameter);
         var formated = string.Format(lang.SearchedFor, term);
         b.WithDescription(
                 $"{formated} : {gifResult.Data[0].Url} {string.Format(lang.PageGif, 1, gifResult.Data.Length)}")

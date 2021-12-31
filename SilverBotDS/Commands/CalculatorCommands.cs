@@ -14,7 +14,7 @@ namespace SilverBotDS.Commands;
 [Category("Calculator")]
 public partial class CalculatorCommands : SilverBotCommandModule
 {
-    private const string JSCODE =
+    private const string Jscode =
         "module.exports = (callback, x) => { const mathsteps = require('mathsteps'); const steps = mathsteps.solveEquation(x); class MathStep { constructor(oldval,step, newval ) { this.oldval = oldval; this.step = step; this.newval = newval;  }} var mySteps = []; steps.forEach(step => {mySteps.push(new MathStep(step.oldEquation.ascii(), step.changeType, step.newEquation.ascii()));}); callback(null, mySteps);}";
 
     public override Task<bool> ExecuteRequirements(Config conf)
@@ -37,7 +37,7 @@ public partial class CalculatorCommands : SilverBotCommandModule
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         StringBuilder builder = new("```");
         foreach (var step in
-                 await StaticNodeJSService.InvokeFromStringAsync<MathStep[]>(JSCODE, args: new object[] {input}))
+                 await StaticNodeJSService.InvokeFromStringAsync<MathStep[]>(Jscode, args: new object[] {input}))
             builder.Append(step.OldVal).Append(' ').Append(step.Step).Append(' ').AppendLine(step.NewVal);
         if (string.IsNullOrEmpty(builder.ToString()) || builder.ToString() == "```")
         {

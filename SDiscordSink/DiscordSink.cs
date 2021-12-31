@@ -24,12 +24,12 @@ public static class DiscordSinkExtensions
 
 public class DiscordSink : ILogEventSink
 {
-    private readonly DiscordWebhookClient webhookClient;
+    private readonly DiscordWebhookClient _webhookClient;
 
     public DiscordSink(params Tuple<ulong, string>[] webhooks)
     {
-        webhookClient = new DiscordWebhookClient();
-        foreach (var webhook in webhooks) webhookClient.AddWebhookAsync(webhook.Item1, webhook.Item2).Wait();
+        _webhookClient = new DiscordWebhookClient();
+        foreach (var webhook in webhooks) _webhookClient.AddWebhookAsync(webhook.Item1, webhook.Item2).Wait();
     }
 
     public void Emit(LogEvent logEvent)
@@ -37,7 +37,7 @@ public class DiscordSink : ILogEventSink
         var builder = new DiscordEmbedBuilder();
         var message = logEvent.RenderMessage();
         if (logEvent.Exception != null && message.StartsWith("Error"))
-            webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent($"{message}\n").AddFile(
+            _webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent($"{message}\n").AddFile(
                 "error.cs",
                 new MemoryStream(Encoding.UTF8.GetBytes(
                     $"{logEvent.Exception.Message ?? "null"}\nStack trace:\n{logEvent.Exception.StackTrace ?? "null"}\nSource\n{logEvent.Exception.Source ?? "null"}\nHelp link:\n{logEvent.Exception.HelpLink ?? "null"}")),
@@ -131,7 +131,7 @@ public class DiscordSink : ILogEventSink
         }
 
         builder.WithDescription(sb.ToString());
-        webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().AddEmbed(builder.Build())
+        _webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().AddEmbed(builder.Build())
             .WithUsername("Non-VBU compliant log entry"));
     }
 }

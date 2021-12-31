@@ -34,7 +34,7 @@ public class Config
     public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
 
     [XmlDescription("Should silverbot keep its logs on a log.txt file in its directory")]
-    public bool UseTXTFilesAsLogs { get; set; } = true;
+    public bool UseTxtFilesAsLogs { get; set; } = true;
 
     [XmlDescription("The Discord token, can be had at https://discord.com/developers/")]
     public string Token { get; set; } = "Discord_Token_Here";
@@ -232,7 +232,7 @@ public class Config
 
     [XmlDescription(
         "Allows silverbot to use youtube-dl which is a tool for finding direct download links for streaming services")]
-    public bool AllowYoutubeDL { get; set; } = false;
+    public bool AllowYoutubeDl { get; set; } = false;
 
     public Splash[] Splashes { get; set; } =
     {
@@ -439,10 +439,10 @@ public class Config
         foreach (var e in i.GetCustomAttributes(false))
             if (e.GetType() == typeof(XmlDescriptionAttribute))
                 xmlDocument = XmlUtils.CommentBeforeObject(xmlDocument, $"/Config/{i.Name}",
-                    ((XmlDescriptionAttribute) e).description);
+                    ((XmlDescriptionAttribute) e).Description);
             else if (e.GetType() == typeof(XmlCommentInsideAttribute))
                 xmlDocument = XmlUtils.CommentInObject(xmlDocument, $"/Config/{i.Name}",
-                    ((XmlCommentInsideAttribute) e).comment);
+                    ((XmlCommentInsideAttribute) e).Comment);
 
         return xmlDocument;
     }
@@ -475,6 +475,7 @@ public class Config
         }
     }
 
+    
     public static async Task<Config> GetAsync()
     {
         var serializer = new XmlSerializer(typeof(Config));
@@ -483,45 +484,53 @@ public class Config
             var conf = new Config
             {
                 ConfigVer = CurrentConfVer
-            };
-            /* if (Console.IsInputRedirected)
-             {
-                 Console.WriteLine("Would you like help creating the config? (y/n)");
-                 var key = Console.ReadKey();
-                 if (key.Key == ConsoleKey.Y)
-                 {
-                     Console.WriteLine("Give me the Token of the discord bot.");
-                     conf.Token = Console.ReadLine();
-                     Console.WriteLine("Will you use the link of lava?");
-                     conf.UseLavaLink = Console.ReadKey().Key == ConsoleKey.Y;
-                     conf.BrowserType = 0;
-                     Console.WriteLine("What kind of database will you be using? (1 = postgres , 2 = sqllite, 3 = azure)");
-                     conf.DatabaseType = Convert.ToInt32(Console.ReadLine());
-                 }
-             }*/
+            }; 
+            if (Console.IsInputRedirected && Console.IsOutputRedirected && Environment.UserInteractive && Console.WindowHeight > 0)
+            {
+                Console.WriteLine("Would you like help creating the config? (y/n)");
+                if (ConsoleInputHelper.GetBoolFromConsole())
+                {
+                    Console.WriteLine("Give me the Token of the discord bot.");
+                    conf.Token = Console.ReadLine();
+                    Console.WriteLine("Will you use lavalink?");
+                    conf.UseLavaLink = ConsoleInputHelper.GetBoolFromConsole();
+                    if (conf.UseLavaLink)
+                    {
+                        Console.WriteLine("Do you want silverbot to automatically download and start lavalink?");
+                        conf.AutoDownloadAndStartLavalink = ConsoleInputHelper.GetBoolFromConsole();
+                        if(conf.AutoDownloadAndStartLavalink)
+                        {
+                            Console.WriteLine("Where do you store your java executable? (type java or java.exe if in path) (E.g. C:\\Program Files\\Java\\jdk-11.0.2\\bin\\java.exe)");
+                            conf.JavaLoc = Console.ReadLine();
+                        }
+                    }
+                    conf.BrowserType = 0;
+                    Console.WriteLine("What kind of database will you be using? (1 = postgres, 2 = sqllite (DEFAULT), 3 = azure) (using sqllite is the default and recommended for small instances and other databases might might not work properly)");
+                    conf.DatabaseType =  int.TryParse(Console.ReadLine(), out var dbtype) ? dbtype : 2;
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Please manually review the generated config as this generator is not even close to being finished");
+                }
+            }
             await using (var streamWriter = new StreamWriter("silverbot.xml"))
             {
                 MakeDocumentWithComments(XmlUtils.SerializeToXmlDocument(conf)).Save(streamWriter);
                 streamWriter.Close();
             }
-
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
             Environment.Exit(420);
         }
-
         Config cnf = null;
         using (var fs = new StreamReader("silverbot.xml"))
         {
             cnf = (Config) serializer.Deserialize(fs);
-            if (cnf != null && (cnf.ConfigVer == null || cnf.ConfigVer != CurrentConfVer))
+            if (cnf is {ConfigVer: not CurrentConfVer})
             {
                 fs.Dispose();
                 await OutdatedConfigTask(cnf);
                 return await GetAsync();
             }
         }
-
         return cnf;
     }
 }

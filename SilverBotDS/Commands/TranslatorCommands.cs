@@ -23,15 +23,15 @@ namespace SilverBotDS.Commands;
 [Category("Translation")]
 public class TranslatorCommands : SilverBotCommandModule
 {
-    private readonly Regex customlangregex = new("(?<uid>[0-9]*)-(?<language>.+(-?([a-z]+?))?)-(?<langid>[0-9]+)");
+    private readonly Regex _customlangregex = new("(?<uid>[0-9]*)-(?<language>.+(-?([a-z]+?))?)-(?<langid>[0-9]+)");
 
-    private readonly JsonSerializerOptions options = new()
+    private readonly JsonSerializerOptions _options = new()
     {
         WriteIndented = true
     };
 
-    public DatabaseContext databaseContext { set; private get; }
-    public HttpClient httpClient { get; set; }
+    public DatabaseContext DatabaseContext { set; private get; }
+    public HttpClient HttpClient { get; set; }
 
     [Command("editlangtranslator")]
     [Description("set you're testing language")]
@@ -62,15 +62,15 @@ public class TranslatorCommands : SilverBotCommandModule
         {
             langobj = await Language.GetAsync(lang);
         }
-        else if (customlangregex.IsMatch(lang))
+        else if (_customlangregex.IsMatch(lang))
         {
-            var mtch = customlangregex.Match(lang);
+            var mtch = _customlangregex.Match(lang);
             var usrid = Convert.ToUInt64(mtch.Groups["uid"].Value);
             var langid = Convert.ToInt32(mtch.Groups["langid"].Value);
-            var translator = databaseContext.translatorSettings.FirstOrDefault(x => x.Id == usrid);
+            var translator = DatabaseContext.translatorSettings.FirstOrDefault(x => x.Id == usrid);
             if (translator != null)
             {
-                await databaseContext.Entry(translator).Collection(b => b.CustomLanguages).LoadAsync();
+                await DatabaseContext.Entry(translator).Collection(b => b.CustomLanguages).LoadAsync();
                 if (translator.CustomLanguages.Count >= langid)
                     langobj = translator.CustomLanguages.ElementAt(langid);
                 else
@@ -89,20 +89,20 @@ public class TranslatorCommands : SilverBotCommandModule
             langobj = await Language.GetLanguageFromCtxAsync(ctx);
         }
 
-        var t = databaseContext.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
+        var t = DatabaseContext.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
         if (t == null)
         {
             t = new TranslatorSettings {Id = ctx.User.Id, IsTranslator = true, CustomLanguages = new List<Language>()};
             t.CurrentCustomLanguage = langobj;
-            databaseContext.translatorSettings.Add(t);
+            DatabaseContext.translatorSettings.Add(t);
         }
         else
         {
             t.CurrentCustomLanguage = langobj;
-            databaseContext.translatorSettings.Update(t);
+            DatabaseContext.translatorSettings.Update(t);
         }
 
-        await databaseContext.SaveChangesAsync();
+        await DatabaseContext.SaveChangesAsync();
     }
 
     [Command("uploadlanguage")]
@@ -112,22 +112,22 @@ public class TranslatorCommands : SilverBotCommandModule
         try
         {
             var jsonstring =
-                await (await httpClient.GetAsync(ctx.Message.Attachments[0].Url)).Content.ReadAsStringAsync();
-            var t = databaseContext.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
+                await (await HttpClient.GetAsync(ctx.Message.Attachments[0].Url)).Content.ReadAsStringAsync();
+            var t = DatabaseContext.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
             if (t == null)
             {
                 t = new TranslatorSettings
                     {Id = ctx.User.Id, IsTranslator = true, CustomLanguages = new List<Language>()};
-                databaseContext.translatorSettings.Add(t);
-                await databaseContext.SaveChangesAsync();
+                DatabaseContext.translatorSettings.Add(t);
+                await DatabaseContext.SaveChangesAsync();
             }
 
             var l = JsonSerializer.Deserialize<Language>(jsonstring);
             l.Id = Guid.NewGuid();
             t.CustomLanguages.Add(l);
-            databaseContext.translatorSettings.Attach(t);
-            databaseContext.translatorSettings.Update(t);
-            await databaseContext.SaveChangesAsync();
+            DatabaseContext.translatorSettings.Attach(t);
+            DatabaseContext.translatorSettings.Update(t);
+            await DatabaseContext.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -149,15 +149,15 @@ public class TranslatorCommands : SilverBotCommandModule
         {
             langobj = await Language.GetAsync(lang);
         }
-        else if (customlangregex.IsMatch(lang))
+        else if (_customlangregex.IsMatch(lang))
         {
-            var mtch = customlangregex.Match(lang);
+            var mtch = _customlangregex.Match(lang);
             var usrid = Convert.ToUInt64(mtch.Groups["uid"].Value);
             var langid = Convert.ToInt32(mtch.Groups["langid"].Value);
-            var translator = databaseContext.translatorSettings.FirstOrDefault(x => x.Id == usrid);
+            var translator = DatabaseContext.translatorSettings.FirstOrDefault(x => x.Id == usrid);
             if (translator != null)
             {
-                await databaseContext.Entry(translator).Collection(b => b.CustomLanguages).LoadAsync();
+                await DatabaseContext.Entry(translator).Collection(b => b.CustomLanguages).LoadAsync();
                 if (translator.CustomLanguages.Count > langid)
                 {
                     langobj = translator.CustomLanguages.ToList()[langid];
@@ -189,7 +189,7 @@ public class TranslatorCommands : SilverBotCommandModule
             langobj = await Language.GetLanguageFromCtxAsync(ctx);
         }
 
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(langobj, options)));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(langobj, _options)));
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
             .WithFile("language.json", stream)
             .SendAsync(ctx.Channel);

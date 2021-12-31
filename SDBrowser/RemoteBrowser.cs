@@ -10,7 +10,7 @@ public class RemoteBrowser : IBrowser
 {
     private readonly HttpClient _client;
 
-    private readonly string UrlOfRemote = "https://pagerendererapi.herokuapp.com/";
+    private readonly string _urlOfRemote = "https://pagerendererapi.herokuapp.com/";
 
     public RemoteBrowser(HttpClient client)
     {
@@ -29,7 +29,7 @@ public class RemoteBrowser : IBrowser
 
     public async Task<Stream> RenderUrlAsync(string url, byte waittime = 0)
     {
-        return await (await _client.GetAsync(UrlOfRemote + "renderpage?url=" + HttpUtility.UrlEncode(url) +
+        return await (await _client.GetAsync(_urlOfRemote + "renderpage?url=" + HttpUtility.UrlEncode(url) +
                                              "&waittime=" + waittime)).Content.ReadAsStreamAsync();
     }
 }

@@ -261,7 +261,7 @@ public class OwnerOnly : SilverBotCommandModule
         await channel.SendMessageAsync($"{person.Mention} there m8 that took some time to do");
     }
 
-    private readonly string[] imports =
+    private readonly string[] _imports =
     {
         "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression",
         "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Humanizer",
@@ -311,7 +311,7 @@ public class OwnerOnly : SilverBotCommandModule
             else if (ob.GetType().IsSerializable || ob.GetType().IsArray || ob.GetType().IsEnum ||
                      ob.GetType().FullName == ob.ToString())
             {
-                str = JsonSerializer.Serialize(ob, options);
+                str = JsonSerializer.Serialize(ob, Options);
                 if (str.Length >= 2000)
                 {
                     await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
@@ -343,7 +343,7 @@ public class OwnerOnly : SilverBotCommandModule
         }
     }
 
-    public static readonly JsonSerializerOptions options = new()
+    public static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = true
     };
@@ -379,7 +379,7 @@ public class OwnerOnly : SilverBotCommandModule
             var script = CSharpScript.Create(RemoveCodeBraces(code),
                 ScriptOptions.Default
                     .WithReferences(AppDomain.CurrentDomain.GetAssemblies()
-                        .Where(xa => !xa.IsDynamic && !string.IsNullOrWhiteSpace(xa.Location))).WithImports(imports),
+                        .Where(xa => !xa.IsDynamic && !string.IsNullOrWhiteSpace(xa.Location))).WithImports(_imports),
                 typeof(CodeEnv));
             var diag = script.Compile();
             sw1.Stop();
@@ -458,7 +458,7 @@ public class OwnerOnly : SilverBotCommandModule
     [Command("jsevaluate")]
     [Description("evaluates some js code")]
     [Aliases("jseval", "jsev")]
-    public async Task JSEval(CommandContext ctx, [RemainingText] string code)
+    public async Task JsEval(CommandContext ctx, [RemainingText] string code)
     {
         if (Config.UseNodeJs)
         {

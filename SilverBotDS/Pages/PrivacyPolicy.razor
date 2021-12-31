@@ -1,6 +1,6 @@
 ﻿@page "/privacy-policy"
 @using SilverBotDS.Objects
-@inject Config config
+@inject Config _config
 <h1 id="what-information-is-stored-on-commands">
     What information is stored on command execution?
 </h1>
@@ -26,7 +26,7 @@ Basically:
     <li>Server count of the bot</li>
     <li>Count of the members in all servers</li>
     <li>When a (slash)command is sucessfully executed the user ID and the command's name is sent to segment</li>
-    @if (config.SendErrorsThroughSegment)
+    @if (_config.SendErrorsThroughSegment)
     {
         <li>When an error is thrown the user ID of the user that executed the (slash)command and the error message is sent to segment</li>
     }

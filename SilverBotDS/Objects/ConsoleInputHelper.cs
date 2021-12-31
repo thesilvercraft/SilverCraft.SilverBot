@@ -1,4 +1,6 @@
-﻿class ConsoleInputHelper
+﻿using System;
+
+class ConsoleInputHelper
 {
     public static bool GetBoolFromConsole(bool? defaultValue = null)
     {

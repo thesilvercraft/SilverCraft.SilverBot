@@ -50,7 +50,7 @@ public sealed class SeleniumBrowser : IBrowser
                 break;
             }
             default:
-                throw new NotImplementedException();
+                throw new ArgumentOutOfRangeException(nameof(browsertype), browsertype, null);
         }
     }
 

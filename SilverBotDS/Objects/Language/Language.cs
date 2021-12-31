@@ -628,16 +628,18 @@ public class Language
         if (Directory.Exists(folloc))
         {
             foreach (var folder in Directory.GetDirectories(folloc))
-            foreach (var u in Directory.GetFiles(folder))
             {
-                await using Stream stream = File.OpenRead(u);
-                var reader = new StreamReader(stream);
-                var content = await reader.ReadToEndAsync();
-                reader.Close();
-                reader.Dispose();
-                var asdf = JsonSerializer.Deserialize<Language>(content);
-                var name = Path.GetFileNameWithoutExtension(u);
-                CachedLanguages.Add(name, asdf);
+                foreach (var u in Directory.GetFiles(folder))
+                {
+                    await using Stream stream = File.OpenRead(u);
+                    var reader = new StreamReader(stream);
+                    var content = await reader.ReadToEndAsync();
+                    reader.Close();
+                    reader.Dispose();
+                    var asdf = JsonSerializer.Deserialize<Language>(content);
+                    var name = Path.GetFileNameWithoutExtension(u);
+                    CachedLanguages.Add(name, asdf);
+                }
             }
         }
         else

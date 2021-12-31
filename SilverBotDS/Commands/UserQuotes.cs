@@ -53,8 +53,6 @@ public class UserQuotesModule : BaseCommandModule
     public async Task Add(CommandContext ctx, [RemainingText] string content)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-
-        var uq = Dctx.userQuotes.FirstOrDefault(x => x.UserId == ctx.User.Id);
         var quote = new SBDSODC.UserQuote
         {
             QuoteContent = content,

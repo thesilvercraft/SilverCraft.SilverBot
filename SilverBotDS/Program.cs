@@ -42,7 +42,6 @@ using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using SilverBotDS.Attributes;
-using SilverBotDS.Commands;
 using SilverBotDS.Commands.Slash;
 using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
@@ -71,14 +70,14 @@ namespace SilverBotDS
 
         private static int _lastFriday;
 
-        private static readonly string[] Repeatstrings =
+        private static readonly string[] MessagesToRepeat =
         {
             "anime", "canada", "e",
             "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h",
-            "gaming", "<:kalorichan:839099093552332850>", "kalorichan"
+            "gaming", "<:kalorichan:839099093552332850>", "kalorichan", 
         };
 
-        private static readonly Dictionary<ulong, DateTime> Levellimit = new();
+        private static readonly Dictionary<ulong, DateTime> XpLevelling = new();
         private static readonly TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
         public static ServiceProvider ServiceProvider { get; private set; }
 
@@ -567,7 +566,7 @@ namespace SilverBotDS
                 if (IsNotNullAndIsNotB(_config.FridayTextChannel, 0) &&
                     IsNotNullAndIsNotB(_config.FridayVoiceChannel, 0) && _config.UseLavaLink)
                 {
-                    var waitforfriday = Task.Run(WaitForFridayAsync);
+                    var waitforfriday = Task.Run(()=>WaitForFridayAsync());
                 }
             }
 
@@ -687,7 +686,7 @@ namespace SilverBotDS
             }
 
             var config = ServiceProvider.GetService<Config>();
-            if (config != null && config.SendErrorsThroughSegment)
+            if (config is {SendErrorsThroughSegment: true})
             {
                 var analytics = ServiceProvider.GetService<IAnalyse>();
                 if (analytics is not null)
@@ -755,7 +754,7 @@ namespace SilverBotDS
             }
 
             _log.Error(e.Exception,
-                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserID}`\n```\nNA\n```",e.Exception.GetType().FullName,e.Context.Guild?.Id.ToString() ?? "None",e.Context.Channel?.Id.ToString() ?? "None",e.Context.User?.Id.ToString() ?? "None");
+                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserID}`\n```\nNA\n```",e.Exception.GetType().FullName,e.Context.Guild?.Id.ToString() ?? "None",e.Context.Channel?.Id.ToString(),e.Context.User?.Id.ToString() ?? "None");
         }
 
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
@@ -782,7 +781,7 @@ namespace SilverBotDS
         /// </summary>
         /// <param name="checkBase">The attribute</param>
         /// <param name="lang">The language</param>
-        /// <param name="isinguild">Was the command executed in a guild or in dm's</param>
+        /// <param name="isinguild">Was the command executed in a guild or in direct messages</param>
         /// <param name="e">Gives the raw command error arguments</param>
         /// <returns>A <see cref="string" /> containing the error message</returns>
         private static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang,
@@ -793,19 +792,19 @@ namespace SilverBotDS
             {
                 return lang.RequireDJCheckFailed;
             }
-            else if (type == typeof(RequireGuildAttribute))
+            if (type == typeof(RequireGuildAttribute))
             {
                 return lang.RequireGuildCheckFailed;
             }
-            else if (type == typeof(RequireNsfwAttribute))
+            if (type == typeof(RequireNsfwAttribute))
             {
                 return lang.RequireNsfwCheckFailed;
             }
-            else if (type == typeof(RequireOwnerAttribute))
+            if (type == typeof(RequireOwnerAttribute))
             {
                 return lang.RequireOwnerCheckFailed;
             }
-            else switch (checkBase)
+            switch (checkBase)
             {
                 case RequireRolesAttribute requireRolesAttribute when requireRolesAttribute.RoleNames.Count == 1:
                     return string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]);
@@ -854,19 +853,19 @@ namespace SilverBotDS
             {
                 return lang.RequireDJCheckFailed;
             }
-            else if (type == typeof(RequireGuildAttribute))
+            if (type == typeof(RequireGuildAttribute))
             {
                 return lang.RequireGuildCheckFailed;
             }
-            else if (type == typeof(RequireNsfwAttribute))
+            if (type == typeof(RequireNsfwAttribute))
             {
                 return lang.RequireNsfwCheckFailed;
             }
-            else if (type == typeof(RequireOwnerAttribute))
+            if (type == typeof(RequireOwnerAttribute))
             {
                 return lang.RequireOwnerCheckFailed;
             }
-            else switch (checkBase)
+            switch (checkBase)
             {
                 case RequireRolesAttribute requireRolesAttribute:
                     return requireRolesAttribute.RoleNames.Count == 1 ? string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]) : string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize());
@@ -979,8 +978,8 @@ namespace SilverBotDS
                 }
             }
 
-            _log.Error(exception: e.Exception,
-                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserId}`\n```\n{MessageContent}\n```",e.Exception.GetType().FullName,e.Context.Guild?.Id.ToString() ?? "None",e.Context.Channel?.Id.ToString() ?? "None",e.Context.User?.Id.ToString() ?? "None",e.Context.Message.Content);
+            _log.Error(e.Exception,
+                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserId}`\n```\n{MessageContent}\n```",e.Exception.GetType().FullName,e.Context.Guild?.Id.ToString() ?? "None",e.Context.Channel?.Id.ToString(),e.Context.User?.Id.ToString() ?? "None",e.Context.Message.Content);
         }
 
         public static async Task RunEmojiEvent(PlannedEvent @event)
@@ -1190,43 +1189,54 @@ namespace SilverBotDS
             }
         }
 
-        public static async Task WaitForFridayAsync()
+        public static async Task WaitForFridayAsync(CancellationToken ct = default)
         {
             while (true)
             {
+                ct.ThrowIfCancellationRequested();
                 if (DayOfWeek.Friday == DateTime.Now.DayOfWeek &&
                     (_lastFriday == 0 || _lastFriday != DateTime.Now.DayOfYear))
                 {
                     _lastFriday = DateTime.Now.DayOfYear;
-                    await ExecuteFridayAsync();
+                    await ExecuteFridayAsync(ct:ct);
                 }
                 else
                 {
                     if (_lastFriday == DateTime.Now.DayOfYear - 1)
                     {
-                        await ExecuteFridayAsync(false);
+                        await ExecuteFridayAsync(false,ct);
                         _lastFriday = 0;
                     }
                 }
-
-                await Task.Delay(1000);
+                ct.ThrowIfCancellationRequested();
+                await Task.Delay(1000, ct);
+                ct.ThrowIfCancellationRequested();
             }
         }
 
-        public static async Task ExecuteFridayAsync(bool friday = true)
+        public static async Task ExecuteFridayAsync(bool friday = true,CancellationToken ct=default)
         {
+            ct.ThrowIfCancellationRequested();
             if (friday)
             {
+                ct.ThrowIfCancellationRequested();
                 var channel = await _discord.GetChannelAsync(_config.FridayTextChannel);
+                ct.ThrowIfCancellationRequested();
                 await channel.SendMessageAsync("It is Friday");
+                ct.ThrowIfCancellationRequested();
                 await channel.AddOverwriteAsync(channel.Guild.EveryoneRole, Permissions.SendMessages, reason: "friday");
+                ct.ThrowIfCancellationRequested();
             }
             else
-            {
+            {                
+                ct.ThrowIfCancellationRequested();
                 var channel = await _discord.GetChannelAsync(_config.FridayTextChannel);
+                ct.ThrowIfCancellationRequested();
                 await channel.SendMessageAsync("Friday ended :c");
+                ct.ThrowIfCancellationRequested();
                 await channel.AddOverwriteAsync(channel.Guild.EveryoneRole, deny: Permissions.SendMessages,
                     reason: "not friday");
+                ct.ThrowIfCancellationRequested();
             }
         }
 
@@ -1262,9 +1272,9 @@ namespace SilverBotDS
 
             if (!e.Channel.IsPrivate)
             {
-                if (Levellimit.ContainsKey(e.Author.Id))
+                if (XpLevelling.ContainsKey(e.Author.Id))
                 {
-                    var prev = Levellimit[e.Author.Id];
+                    var prev = XpLevelling[e.Author.Id];
                     if ((DateTime.UtcNow - prev) > MessageLimit)
                     {
                         await IncreaseXp(e.Author.Id);
@@ -1272,7 +1282,7 @@ namespace SilverBotDS
                 }
                 else
                 {
-                    Levellimit.Add(e.Author.Id, DateTime.UtcNow);
+                    XpLevelling.Add(e.Author.Id, DateTime.UtcNow);
                     await IncreaseXp(e.Author.Id);
                 }
             }
@@ -1288,7 +1298,7 @@ namespace SilverBotDS
                      || (o is not default(ServerSettings) && o.RepeatThings && e.Channel
                          .PermissionsFor(await e.Guild.GetMemberAsync(sender.CurrentUser.Id))
                          .HasPermission(Permissions.SendMessages))) &&
-                    Repeatstrings.Contains(e.Message.Content.ToLowerInvariant()))
+                    MessagesToRepeat.Contains(e.Message.Content.ToLowerInvariant()))
                 {
                     if (_config.EmulateBubot)
                     {

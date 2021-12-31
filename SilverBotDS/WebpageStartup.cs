@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,10 +20,10 @@ internal static class CloudFlareConnectingIpMiddleware
 {
     public const string CloudflareConnectingIpHeaderName = "CF_CONNECTING_IP";
 
-    private static string[] GetStrings(string url)
+    private static IEnumerable<string> GetStrings(string url)
     {
         return Program.ServiceProvider.GetService<HttpClient>().GetStringAsync(url).GetAwaiter().GetResult().Split('\n')
-            .Select(s => s.Trim()).ToArray();
+            .Select(s => s.Trim());
     }
 
     private static string[] GetCloudflareIp()
@@ -73,7 +74,7 @@ internal static class CloudFlareConnectingIpMiddleware
         };
         try
         {
-            var urls = builder.ServerFeatures.Get<IServerAddressesFeature>().Addresses;
+            var urls = builder.ServerFeatures.Get<IServerAddressesFeature>()?.Addresses;
             if (urls != null && urls.Count != 0)
                 foreach (var line in GetCloudflareIp())
                     if (IPAddressRange.TryParse(line, out var range))

@@ -74,7 +74,7 @@ public class Config
 
     public SerializableDictionary<string, string> ModulesToLoadExternal { get; set; } = new()
     {
-        {"SilverBotDS.AnimeModule.dll", "SilverBotDS.Commands.Anime"}
+        {"SilverBotDS.AnimeModule.dll", "SilverBotDS.Anime.Anime"}
     };
 
     [XmlDescription("Allow silverbot to use the new experimental snowdplayer")]

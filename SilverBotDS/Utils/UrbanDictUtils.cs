@@ -31,9 +31,9 @@ internal static class UrbanDictUtils
 
         [JsonPropertyName("permalink")] public string Permalink { get; set; }
 
-        [JsonPropertyName("thumbs_up")] public int Thumbs_up { get; set; }
+        [JsonPropertyName("thumbs_up")] public int ThumbsUp { get; set; }
 
-        [JsonPropertyName("sound_urls")] public object[] Sound_urls { get; set; }
+        [JsonPropertyName("sound_urls")] public object[] SoundUrls { get; set; }
 
         [JsonPropertyName("author")] public string Author { get; set; }
 
@@ -41,12 +41,12 @@ internal static class UrbanDictUtils
 
         [JsonPropertyName("defid")] public int Defid { get; set; }
 
-        [JsonPropertyName("current_vote")] public string Current_vote { get; set; }
+        [JsonPropertyName("current_vote")] public string CurrentVote { get; set; }
 
-        [JsonPropertyName("written_on")] public DateTime Written_on { get; set; }
+        [JsonPropertyName("written_on")] public DateTime WrittenOn { get; set; }
 
         [JsonPropertyName("example")] public string Example { get; set; }
 
-        [JsonPropertyName("thumbs_down")] public int Thumbs_down { get; set; }
+        [JsonPropertyName("thumbs_down")] public int ThumbsDown { get; set; }
     }
 }

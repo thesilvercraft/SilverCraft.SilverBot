@@ -8,14 +8,11 @@ public static class RandomGenerator
 {
     public static int Next(int minValue, int maxExclusiveValue)
     {
-        if (minValue >= maxExclusiveValue)
-        {
-            var argumentOutOfRangeException =
-                new ArgumentOutOfRangeException(nameof(minValue), "minValue must be lower than maxExclusiveValue");
-            throw argumentOutOfRangeException;
-        }
+        if (minValue < maxExclusiveValue) return RandomNumberGenerator.GetInt32(minValue, maxExclusiveValue);
+        var argumentOutOfRangeException =
+            new ArgumentOutOfRangeException(nameof(minValue), "minValue must be lower than maxExclusiveValue");
+        throw argumentOutOfRangeException;
 
-        return RandomNumberGenerator.GetInt32(minValue, maxExclusiveValue);
     }
 
     public static uint GetRandomUInt()

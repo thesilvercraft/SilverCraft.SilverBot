@@ -5,7 +5,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
 
-namespace SilverBotDS.Commands;
+namespace SilverBotDS.Anime;
 
 [Category("Anime")]
 public class Anime : BaseCommandModule
@@ -16,7 +16,7 @@ public class Anime : BaseCommandModule
     private async Task<string> GetAnimeUrl(string endpoint)
     {
         return JsonSerializer
-            .Deserialize<Rootobject>(await (await Client.GetAsync(BaseUrl + endpoint)).Content.ReadAsStringAsync()).Url;
+            .Deserialize<RootObject>(await (await Client.GetAsync(BaseUrl + endpoint)).Content.ReadAsStringAsync())!.Url;
     }
 
     private async Task SendImage(CommandContext ctx, string url)
@@ -81,12 +81,7 @@ public class Anime : BaseCommandModule
     {
         await SendImage(ctx, await GetAnimeUrl("img/punch"));
     }
-
-    /*[Command("waifu")]
-    [Description("i have no idea what this means")]
-    public async Task Waifu(CommandContext ctx) => await SendImage(ctx, await GetAnimeUrl("img/waifu"));*/
-
-    public class Rootobject
+    public class RootObject
     {
         [JsonPropertyName("url")] public string Url { get; set; }
     }

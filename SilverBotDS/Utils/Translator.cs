@@ -78,18 +78,18 @@ public class Translator
         {"Yiddish", "yi"}
     };
 
-    private readonly HttpClient httpClient;
+    private readonly HttpClient _httpClient;
 
     public Translator()
     {
         var nhttpClient = new HttpClient();
         _ = nhttpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("SilverBotTranslate");
-        httpClient = nhttpClient;
+        _httpClient = nhttpClient;
     }
 
     public Translator(HttpClient httpClient)
     {
-        this.httpClient = httpClient;
+        this._httpClient = httpClient;
     }
 
     public static IEnumerable<string> Languages => LanguageModeMap.Keys.OrderBy(p => p);
@@ -102,7 +102,7 @@ public class Translator
         StringBuilder translation = new();
         var url =
             $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={LanguageEnumToIdentifier(sourceLanguage)}&tl={LanguageEnumToIdentifier(targetLanguage)}&dt=t&q={HttpUtility.UrlEncode(sourceText)}";
-        using (var response = await httpClient.GetAsync(url))
+        using (var response = await _httpClient.GetAsync(url))
         {
             var text = await response.Content.ReadAsStringAsync();
 

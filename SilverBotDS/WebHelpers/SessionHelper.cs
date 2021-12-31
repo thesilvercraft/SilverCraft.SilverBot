@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -25,8 +27,13 @@ public static class SessionHelper
     {
         if (session.TryGetValue("GuildsCache", out _))
         {
-            var e = session.GetObjectFromJson<Tuple<Guild[], DateTime>>("GuildsCache");
-            if (DateTime.UtcNow - e.Item2 < TimeSpan.FromSeconds(-20)) return e.Item1;
+            var (item1, item2) = session.GetObjectFromJson<Tuple<Guild[], DateTime>>("GuildsCache");
+            if (DateTime.UtcNow - item2 > TimeSpan.FromSeconds(10))
+            {
+                return item1; 
+            }
+
+            Debug.WriteLine(DateTime.UtcNow - item2);
         }
 
         using var requestMessage =
@@ -35,6 +42,10 @@ public static class SessionHelper
             new AuthenticationHeaderValue("Bearer", GetObjectFromJson<string>(session, "accessToken"));
         var response = client.Send(requestMessage);
         StreamReader reader2 = new(response.Content.ReadAsStream());
+        if( response.StatusCode== HttpStatusCode.TooManyRequests)
+        {
+            return null;
+        }
         var guilds = JsonSerializer.Deserialize<Guild[]>(reader2.ReadToEnd());
         session.SetObjectAsJson("GuildsCache", new Tuple<Guild[], DateTime>(guilds, DateTime.UtcNow));
         return guilds;
@@ -45,7 +56,7 @@ public static class SessionHelper
         if (session.TryGetValue("UserCache", out _))
         {
             var (item1, item2) = session.GetObjectFromJson<Tuple<Oauththingy, DateTime>>("UserCache");
-            if (DateTime.UtcNow - item2 < TimeSpan.FromSeconds(-20)) return item1;
+            if (DateTime.UtcNow - item2 > TimeSpan.FromSeconds(10)) return item1;
         }
 
         using var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://discordapp.com/api/users/@me");

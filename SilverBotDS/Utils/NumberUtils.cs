@@ -2,7 +2,7 @@
 
 internal class NumberUtils
 {
-    private static readonly string[] divisors =
+    private static readonly string[] Divisors =
     {
         "",
         "K", // Thousand
@@ -27,6 +27,6 @@ internal class NumberUtils
             counter++;
         }
 
-        return $"{number}{divisors[counter]}";
+        return $"{number}{Divisors[counter]}";
     }
 }

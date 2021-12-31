@@ -65,7 +65,7 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
         var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
         using var picture = await Image.LoadAsync($"{Config.LocalBibiPictures}{randomnumber}.png");
         var size = _bibiFont.Size;
-        while (TextMeasurer.Measure(input, new RendererOptions(new Font(_bibiFont.Family, size, FontStyle.Bold))).Width >
+        while (TextMeasurer.Measure(input, new TextOptions(new Font(_bibiFont.Family, size, FontStyle.Bold))).Width >
                picture.Width) size -= 0.05f;
         picture.Mutate(
             x => x.DrawText(

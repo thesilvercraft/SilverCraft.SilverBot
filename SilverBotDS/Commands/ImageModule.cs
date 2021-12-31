@@ -67,7 +67,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     /// <returns>An <see cref="Image" /></returns>
     public static Image DrawText(string text, Font font, Color textColor, Color backColor)
     {
-        var textSize = TextMeasurer.Measure(text, new RendererOptions(font));
+        var textSize = TextMeasurer.Measure(text, new TextOptions(font));
         Image img = new Image<Rgba32>((int) textSize.Width, (int) textSize.Height);
         img.Mutate(x => x.Fill(backColor));
         img.Mutate(x => x.DrawText(text, font, textColor, new PointF(0, 0)));
@@ -349,14 +349,16 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         var text =
             $"{(ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username)}, you truly are a reliable guy.";
         var size = _subtitlesFont.Size;
-        while (TextMeasurer.Measure(text, new RendererOptions(new Font(_subtitlesFont.Family, size, FontStyle.Bold)))
+        while (TextMeasurer.Measure(text, new TextOptions(new Font(_subtitlesFont.Family, size, FontStyle.Bold)))
                    .Width > img.Width) size -= 0.05f;
-        var dr = new DrawingOptions();
-        dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
+        var dr = new TextOptions(new Font(_subtitlesFont, size));
+        dr.HorizontalAlignment = HorizontalAlignment.Center;
+        dr.VerticalAlignment = VerticalAlignment.Bottom;
+
         img.Mutate(m =>
-            m.DrawText(dr, text, new Font(_subtitlesFont, size), Brushes.Solid(Color.White), new PointF(952, 880)));
+            m.DrawText(dr, text, Brushes.Solid(Color.White)));
         img.Mutate(m =>
-            m.DrawText(dr, text, new Font(_subtitlesFont, size), Pens.Solid(Color.Black, 3), new PointF(952, 880)));
+            m.DrawText(dr, text, Pens.Solid(Color.Black, 3)));
         await using MemoryStream outStream = new();
         outStream.Position = 0;
         await img.SaveAsPngAsync(outStream);
@@ -506,12 +508,12 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         }
 
         var size = _subtitlesFont.Size;
-        while (TextMeasurer.Measure(text, new RendererOptions(new Font(_motivateFont.Family, size, FontStyle.Bold)))
+        while (TextMeasurer.Measure(text, new TextOptions(new Font(_motivateFont.Family, size, FontStyle.Bold)))
                    .Width > img.Width) size -= 0.05f;
-        var dr = new DrawingOptions();
-        dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
-        img.Mutate(m => m.DrawText(dr, text, new Font(_motivateFont, size), Brushes.Solid(Color.White),
-            new PointF(639.5f, 897.5f)));
+        var dr = new TextOptions(new Font(_motivateFont, size));
+        dr.HorizontalAlignment = HorizontalAlignment.Center;
+        dr.VerticalAlignment = VerticalAlignment.Bottom;
+        img.Mutate(m => m.DrawText(dr, text, Brushes.Solid(Color.White)));
         await using MemoryStream outStream = new();
         await img.SaveAsync(outStream, new PngEncoder());
         outStream.Position = 0;
@@ -537,10 +539,10 @@ public class ImageModule : BaseCommandModule, IRequireFonts
             )
         );
         Font jokerFont = new(_jokerFontFamily, img.Width / 10);
-        var dr = new DrawingOptions();
-        dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
-        // x component of pointf is arbitrary and irrelevent since the above alignment option is given
-        img.Mutate(m => m.DrawText(dr, text, jokerFont, Brushes.Solid(Color.Black), new PointF(255f, 20f)));
+        var dr = new TextOptions(jokerFont);
+        dr.HorizontalAlignment = HorizontalAlignment.Center;
+        dr.VerticalAlignment = VerticalAlignment.Top;
+        img.Mutate(m => m.DrawText(dr, text, Brushes.Solid(Color.Black)));
         await using MemoryStream outStream = new();
         await img.SaveAsync(outStream, new GifEncoder());
         outStream.Position = 0;
@@ -570,15 +572,15 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         var font = new Font(_captionFont, x / 10);
         await using var outStream = new MemoryStream();
         FontRectangle textSize;
-        var dr = new DrawingOptions();
-        dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
-        dr.TextOptions.VerticalAlignment = VerticalAlignment.Center;
-        textSize = TextMeasurer.Measure(text, new RendererOptions(font));
+        var dr = new TextOptions(font);
+        dr.HorizontalAlignment = HorizontalAlignment.Center;
+        dr.VerticalAlignment = VerticalAlignment.Center;
+        
+        textSize = TextMeasurer.Measure(text, new TextOptions(font));
         using (var img2 = new Image<Rgba32>(x, y + (int) textSize.Height))
         {
             img2.Mutate(o => o.Fill(Color.FromRgb(255, 255, 255)));
-            img2.Mutate(o => o.DrawText(dr, text, font, Brushes.Solid(Color.FromRgb(0, 0, 0)),
-                new PointF(img2.Width / 2, textSize.Height / 2)));
+            img2.Mutate(o => o.DrawText(dr, text,Color.FromRgb(0, 0, 0)));
             img2.Mutate(o => o.DrawImage(bitmap, new Point(0, (int) textSize.Height), 1));
             img2.Save(outStream, frmt);
         }

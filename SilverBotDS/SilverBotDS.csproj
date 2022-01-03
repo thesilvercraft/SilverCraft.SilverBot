@@ -97,7 +97,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Radzen.Blazor" Version="3.13.12" />
-        <PackageReference Include="ScottPlot" Version="4.1.27" />
+        <PackageReference Include="ScottPlot" Version="4.1.29" />
         <PackageReference Include="Serilog" Version="2.11.0-dev-01377" />
         <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00241" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />

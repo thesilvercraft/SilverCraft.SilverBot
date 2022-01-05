@@ -76,9 +76,13 @@ public class UserQuotesModule : BaseCommandModule
         {
             var q = Dctx.userQuotes.FirstOrDefault(x => x.QuoteId == id && x.UserId == ctx.User.Id);
             if (q is not null)
+            {
                 await PresentQuote(ctx, q, lang);
+            }
             else
+            {
                 await ctx.RespondAsync(lang.QuoteGetNoQuoteWithId);
+            }
         }
         else
         {

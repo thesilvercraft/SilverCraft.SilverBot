@@ -36,6 +36,7 @@ public class SteamCommands : BaseCommandModule
                 tempbuilder.WithTitle(listings[i].Name);
                 tempbuilder.WithUrl(listings[i].StoreLink);
                 if (listings[i].Price == null)
+                {
                     switch (listings[i].SaleType)
                     {
                         case sType.FreeToPlay:
@@ -54,13 +55,20 @@ public class SteamCommands : BaseCommandModule
                             throw new InvalidOperationException(
                                 $"Unexpected value listings[i].SaleType = {listings[i].SaleType}");
                     }
+                }
                 else
+                {
                     tempbuilder.WithAuthor(string.Format(lang.AmericanMoney, listings[i].Price));
+                }
 
                 tempbuilder.WithFooter(
                     $"{lang.RequestedBy}{ctx.User.Username} {string.Format(lang.PageNuget, i + 1, listings.Count)}",
                     ctx.User.GetAvatarUrl(ImageFormat.Png));
-                if (!string.IsNullOrEmpty(listings[i].ImageLink)) tempbuilder.WithThumbnail(listings[i].ImageLink);
+                if (!string.IsNullOrEmpty(listings[i].ImageLink))
+                {
+                    tempbuilder.WithThumbnail(listings[i].ImageLink);
+                }
+
                 pages.Add(new Page(embed: tempbuilder));
             }
 

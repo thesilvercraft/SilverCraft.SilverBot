@@ -33,9 +33,13 @@ public class Giphy : SilverBotCommandModule
         {
             if (string.IsNullOrEmpty(Config.Gtoken) || Config.Gtoken == "Giphy_Token_Here" ||
                 string.Equals(Config.Gtoken, "none", StringComparison.InvariantCultureIgnoreCase))
+            {
                 _giphy = new GiphyDotNet.Manager.Giphy();
+            }
             else
+            {
                 _giphy = new GiphyDotNet.Manager.Giphy(Config.Gtoken);
+            }
         }
     }
 
@@ -92,7 +96,11 @@ public class Giphy : SilverBotCommandModule
         if (msg.Result != null)
         {
             page++;
-            if (page >= gifResult.Data.Length) page = 0;
+            if (page >= gifResult.Data.Length)
+            {
+                page = 0;
+            }
+
             b.WithDescription(
                     $"{formated} : {gifResult.Data[page].Url} {string.Format(lang.PageGif, page + 1, gifResult.Data.Length)}")
                 .WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(await ColorUtils.GetSingleAsync());

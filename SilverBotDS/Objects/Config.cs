@@ -436,13 +436,21 @@ public class Config
     private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
     {
         foreach (var i in typeof(Config).GetMembers())
-        foreach (var e in i.GetCustomAttributes(false))
-            if (e.GetType() == typeof(XmlDescriptionAttribute))
-                xmlDocument = XmlUtils.CommentBeforeObject(xmlDocument, $"/Config/{i.Name}",
+        {
+            foreach (var e in i.GetCustomAttributes(false))
+            {
+                if (e.GetType() == typeof(XmlDescriptionAttribute))
+                {
+                    xmlDocument = XmlUtils.CommentBeforeObject(xmlDocument, $"/Config/{i.Name}",
                     ((XmlDescriptionAttribute) e).Description);
-            else if (e.GetType() == typeof(XmlCommentInsideAttribute))
-                xmlDocument = XmlUtils.CommentInObject(xmlDocument, $"/Config/{i.Name}",
+                }
+                else if (e.GetType() == typeof(XmlCommentInsideAttribute))
+                {
+                    xmlDocument = XmlUtils.CommentInObject(xmlDocument, $"/Config/{i.Name}",
                     ((XmlCommentInsideAttribute) e).Comment);
+                }
+            }
+        }
 
         return xmlDocument;
     }

@@ -41,7 +41,11 @@ public class ColorUtils
     /// <returns>an array of <see cref="DiscordColor" />s</returns>
     public static async Task<DiscordColor[]> GetAsync(bool ignorecache = false, bool useinternal = false)
     {
-        if (useinternal) return Internal;
+        if (useinternal)
+        {
+            return Internal;
+        }
+
         if (ignorecache || cache == null)
         {
             if (File.Exists("colors.json"))

@@ -22,7 +22,11 @@ public sealed class SeleniumBrowser : IBrowser
 
     public SeleniumBrowser(Browsertype browsertype, string location)
     {
-        if (string.IsNullOrEmpty(location)) location = Environment.CurrentDirectory;
+        if (string.IsNullOrEmpty(location))
+        {
+            location = Environment.CurrentDirectory;
+        }
+
         switch (browsertype)
         {
             case Browsertype.Chrome:
@@ -56,32 +60,48 @@ public sealed class SeleniumBrowser : IBrowser
 
     public async Task<Stream> RenderHtmlAsync(string html, byte waittime = 0)
     {
-        while (_isLocked) await Task.Delay(500);
+        while (_isLocked)
+        {
+            await Task.Delay(500);
+        }
+
         _isLocked = true;
         _webDriver.Url = "data:text/html;base64," + Convert.ToBase64String(Encoding.UTF8.GetBytes(html));
         _webDriver.Navigate();
         IWait<IWebDriver> wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(30.00));
-        wait.Until(driver1 =>
+        wait.Until(_ =>
             ((IJavaScriptExecutor) _webDriver).ExecuteScript("return document.readyState").Equals("complete"));
         var ss = ((ITakesScreenshot) _webDriver).GetScreenshot();
-        if (waittime != 0) await Task.Delay(waittime * 1000);
+        if (waittime != 0)
+        {
+            await Task.Delay(waittime * 1000);
+        }
+
         _isLocked = false;
         return new MemoryStream(ss.AsByteArray);
     }
 
     public async Task<Stream> RenderUrlAsync(string url, byte waittime = 0)
     {
-        while (_isLocked) await Task.Delay(500);
+        while (_isLocked)
+        {
+            await Task.Delay(500);
+        }
+
         _isLocked = true;
         try
         {
             _webDriver.Url = url;
             _webDriver.Navigate();
             IWait<IWebDriver> wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(30.00));
-            wait.Until(driver1 => ((IJavaScriptExecutor) _webDriver).ExecuteScript("return document.readyState")
+            wait.Until(_ => ((IJavaScriptExecutor) _webDriver).ExecuteScript("return document.readyState")
                 .Equals("complete"));
             var ss = ((ITakesScreenshot) _webDriver).GetScreenshot();
-            if (waittime != 0) await Task.Delay(waittime * 1000);
+            if (waittime != 0)
+            {
+                await Task.Delay(waittime * 1000);
+            }
+
             _isLocked = false;
             return new MemoryStream(ss.AsByteArray);
         }

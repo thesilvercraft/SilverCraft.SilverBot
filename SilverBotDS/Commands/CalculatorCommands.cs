@@ -38,7 +38,10 @@ public partial class CalculatorCommands : SilverBotCommandModule
         StringBuilder builder = new("```");
         foreach (var step in
                  await StaticNodeJSService.InvokeFromStringAsync<MathStep[]>(Jscode, args: new object[] {input}))
+        {
             builder.Append(step.OldVal).Append(' ').Append(step.Step).Append(' ').AppendLine(step.NewVal);
+        }
+
         if (string.IsNullOrEmpty(builder.ToString()) || builder.ToString() == "```")
         {
             await CalculateOld(ctx, input);

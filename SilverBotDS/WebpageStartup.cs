@@ -76,9 +76,15 @@ internal static class CloudFlareConnectingIpMiddleware
         {
             var urls = builder.ServerFeatures.Get<IServerAddressesFeature>()?.Addresses;
             if (urls != null && urls.Count != 0)
+            {
                 foreach (var line in GetCloudflareIp())
+                {
                     if (IPAddressRange.TryParse(line, out var range))
+                    {
                         options.KnownNetworks.Add(new IPNetwork(range.Begin, range.GetPrefixLength()));
+                    }
+                }
+            }
         }
         catch
         {

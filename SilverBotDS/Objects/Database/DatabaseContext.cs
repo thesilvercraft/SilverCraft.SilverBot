@@ -269,14 +269,21 @@ public class DatabaseContext : DbContext
             var dataTable = new DataTable();
             dataTable.Load(result);
             StringBuilder thing = new(HtmlStart);
-            if (dataTable.Rows.Count == 0) return new Tuple<string, Stream>("nodata", null);
+            if (dataTable.Rows.Count == 0)
+            {
+                return new Tuple<string, Stream>("nodata", null);
+            }
 
             if (browser is null)
             {
                 StringBuilder builder = new("```" + Environment.NewLine);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
-                    foreach (var item in dataRow.ItemArray) builder.Append('|').AppendFormat("{0,5}", item);
+                    foreach (var item in dataRow.ItemArray)
+                    {
+                        builder.Append('|').AppendFormat("{0,5}", item);
+                    }
+
                     builder.AppendLine();
                 }
 
@@ -286,7 +293,11 @@ public class DatabaseContext : DbContext
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 thing.AppendLine("<tr>");
-                foreach (var item in dataRow.ItemArray) thing.Append("<td>").Append(item).AppendLine("</td>");
+                foreach (var item in dataRow.ItemArray)
+                {
+                    thing.Append("<td>").Append(item).AppendLine("</td>");
+                }
+
                 thing.AppendLine("</tr>");
             }
 

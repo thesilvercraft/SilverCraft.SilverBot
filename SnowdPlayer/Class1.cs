@@ -143,7 +143,10 @@ public class SnowQueue : IList<SnowTrack>
         set
         {
             // a track can not be null
-            if (value is null) throw new ArgumentNullException(nameof(value));
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
 
             lock (_syncRoot)
             {
@@ -164,7 +167,10 @@ public class SnowQueue : IList<SnowTrack>
     /// </exception>
     public void Add(SnowTrack track)
     {
-        if (track is null) throw new ArgumentNullException(nameof(track));
+        if (track is null)
+        {
+            throw new ArgumentNullException(nameof(track));
+        }
 
         lock (_syncRoot)
         {
@@ -184,7 +190,10 @@ public class SnowQueue : IList<SnowTrack>
     /// </returns>
     public bool Contains(SnowTrack track)
     {
-        if (track is null) throw new ArgumentNullException(nameof(track));
+        if (track is null)
+        {
+            throw new ArgumentNullException(nameof(track));
+        }
 
         lock (_syncRoot)
         {
@@ -237,7 +246,10 @@ public class SnowQueue : IList<SnowTrack>
     /// </exception>
     public int IndexOf(SnowTrack track)
     {
-        if (track is null) throw new ArgumentNullException(nameof(track));
+        if (track is null)
+        {
+            throw new ArgumentNullException(nameof(track));
+        }
 
         lock (_syncRoot)
         {
@@ -335,7 +347,10 @@ public class SnowQueue : IList<SnowTrack>
     /// </exception>
     public void AddRange(IEnumerable<SnowTrack> tracks)
     {
-        if (tracks is null) throw new ArgumentNullException(nameof(tracks));
+        if (tracks is null)
+        {
+            throw new ArgumentNullException(nameof(tracks));
+        }
 
         lock (_syncRoot)
         {
@@ -374,7 +389,10 @@ public class SnowQueue : IList<SnowTrack>
     {
         lock (_syncRoot)
         {
-            if (_list.Count == 0) throw new InvalidOperationException("No tracks in to dequeue.");
+            if (_list.Count == 0)
+            {
+                throw new InvalidOperationException("No tracks in to dequeue.");
+            }
 
             var track = _list[0];
             _list.RemoveAt(0);
@@ -394,7 +412,10 @@ public class SnowQueue : IList<SnowTrack>
         {
             // no distinct needed, only a single track enqueued (there can not be any duplicate
             // tracks in queue)
-            if (_list.Count <= 1) return;
+            if (_list.Count <= 1)
+            {
+                return;
+            }
 
             // distinct tracks
             var tracks = _list.GroupBy(track => track.Identifier)
@@ -452,7 +473,10 @@ public class SnowQueue : IList<SnowTrack>
         lock (_syncRoot)
         {
             // no shuffling needed
-            if (_list.Count <= 2) return;
+            if (_list.Count <= 2)
+            {
+                return;
+            }
 
             // shuffle tracks
             var tracks = _list.OrderBy(s => Guid.NewGuid()).ToArray();
@@ -571,11 +595,15 @@ public class SnowService : IDisposable
         var player = GetPlayer<TPlayer>(guildId);
 
         if (player is null)
+        {
             Players[guildId] = player = BaseSnowPlayer.CreatePlayer(
                 playerFactory, VoiceNextExtension, guildId, false, UseYoutubeDL);
+        }
 
         if (!player.VoiceChannelId.HasValue || player.VoiceChannelId != voiceChannelId)
+        {
             await player.ConnectAsync(voiceChannelId, selfDeaf, selfMute);
+        }
 
         return player;
     }
@@ -589,8 +617,16 @@ public class SnowService : IDisposable
     public TPlayer GetPlayer<TPlayer>(ulong guildId) where TPlayer : BaseSnowPlayer
     {
         EnsureNotDisposed();
-        if (!Players.ContainsKey(guildId)) return null;
-        if (!Players.TryGetValue(guildId, out var gaming)) return null;
+        if (!Players.ContainsKey(guildId))
+        {
+            return null;
+        }
+
+        if (!Players.TryGetValue(guildId, out var gaming))
+        {
+            return null;
+        }
+
         if (gaming.disposedValue)
         {
             Players.Remove(guildId);
@@ -598,7 +634,10 @@ public class SnowService : IDisposable
         }
 
         if (gaming is TPlayer player)
+        {
             return player;
+        }
+
         throw new InvalidOperationException("A player was found but the player type differs from the found one.");
     }
 
@@ -610,7 +649,10 @@ public class SnowService : IDisposable
 
     private void EnsureNotDisposed()
     {
-        if (disposedValue) throw new ObjectDisposedException(nameof(SnowService));
+        if (disposedValue)
+        {
+            throw new ObjectDisposedException(nameof(SnowService));
+        }
     }
 
     protected virtual void Dispose(bool disposing)
@@ -620,7 +662,11 @@ public class SnowService : IDisposable
             if (disposing)
             {
                 // TODO: dispose managed state (managed objects)
-                foreach (var p in Players) p.Value.Dispose();
+                foreach (var p in Players)
+                {
+                    p.Value.Dispose();
+                }
+
                 Players.Clear();
             }
 
@@ -674,9 +720,11 @@ public class SnowService : IDisposable
         {
             var video = await YouTube.Default.GetVideoAsync(query);
             if (video != null)
+            {
                 return new SnowTrack(query, video.Info.Author, TimeSpan.FromSeconds(video.Info.LengthSeconds ?? 0),
                     video.Info.LengthSeconds == null, true, query, video.Info.Title, YTRgx.Match(query).Groups[1].Value,
                     StreamProvider.YouTube);
+            }
         }
 
         if (Uri.TryCreate(query, UriKind.Absolute, out var result))
@@ -767,9 +815,15 @@ public class QueuedSnowPlayer : BaseSnowPlayer
         // Note: It is intended that 'await base.OnTrackEndAsync(baseSnow,reason,trackidentifier);' is avoided here to
         // suppress the State update
         if (!Queue.IsEmpty)
+        {
             return SkipAsync();
+        }
+
         if (_disconnectOnStop)
+        {
             return DisconnectAsync();
+        }
+
         return StopAsync(false);
     }
 
@@ -839,14 +893,21 @@ public class QueuedSnowPlayer : BaseSnowPlayer
     /// <exception cref="InvalidOperationException">thrown if the player is destroyed</exception>
     public virtual async Task PlayTopAsync(SnowTrack track)
     {
-        if (track is null) throw new ArgumentNullException(nameof(track));
+        if (track is null)
+        {
+            throw new ArgumentNullException(nameof(track));
+        }
 
         // play track if none is playing
         if (State == PlayerState.NotPlaying)
+        {
             await PlayAsync(track, false);
+        }
         // the player is currently playing a track, enqueue the track at top
         else
+        {
             Queue.Insert(0, track);
+        }
     }
 
     /// <summary>
@@ -877,7 +938,10 @@ public class QueuedSnowPlayer : BaseSnowPlayer
         // star track immediately
         if (State == PlayerState.NotPlaying)
         {
-            if (push) return false;
+            if (push)
+            {
+                return false;
+            }
 
             await PlayAsync(track, false);
             return false;
@@ -903,11 +967,16 @@ public class QueuedSnowPlayer : BaseSnowPlayer
     public virtual Task SkipAsync(int count = 1)
     {
         // no tracks to skip
-        if (count <= 0) return Task.CompletedTask;
+        if (count <= 0)
+        {
+            return Task.CompletedTask;
+        }
 
         // the looping option is enabled, repeat current track, does not matter how often we skip
         if (IsLooping && CurrentTrack != null)
+        {
             return PlayAsync(CurrentTrack, false);
+        }
         // tracks are enqueued
 
         if (!Queue.IsEmpty)
@@ -918,8 +987,10 @@ public class QueuedSnowPlayer : BaseSnowPlayer
             {
                 // no more tracks in queue
                 if (Queue.Count < 1)
+                {
                     // no tracks found
                     return DisconnectAsync();
+                }
 
                 // dequeue track
                 track = Queue.Dequeue();
@@ -932,9 +1003,13 @@ public class QueuedSnowPlayer : BaseSnowPlayer
         // no tracks queued, stop player and disconnect if specified
 
         if (_disconnectOnStop)
+        {
             DisconnectAsync();
+        }
         else
+        {
             StopAsync();
+        }
 
         return Task.CompletedTask;
     }
@@ -967,7 +1042,11 @@ public class QueuedSnowPlayer : BaseSnowPlayer
     /// <exception cref="InvalidOperationException">thrown if the player is destroyed</exception>
     public Task StopAsync(bool clearqueue)
     {
-        if (clearqueue) Queue.Clear();
+        if (clearqueue)
+        {
+            Queue.Clear();
+        }
+
         return base.StopAsync();
     }
 }
@@ -1041,7 +1120,11 @@ public class BaseSnowPlayer : IDisposable
         PlayerFactory<T> playerFactory, VoiceNextExtension vne,
         ulong guildId, bool disconnectOnStop, bool useyoutbedl) where T : BaseSnowPlayer
     {
-        if (playerFactory is null) throw new ArgumentNullException(nameof(playerFactory));
+        if (playerFactory is null)
+        {
+            throw new ArgumentNullException(nameof(playerFactory));
+        }
+
         var player = playerFactory();
         player.GuildId = guildId;
         player.DisconnectOnStop = disconnectOnStop;
@@ -1077,7 +1160,11 @@ public class BaseSnowPlayer : IDisposable
             return prc.StandardOutput.ReadToEnd();
         }
 
-        if (track.Provider == StreamProvider.Http || track.Provider == StreamProvider.Local) return track.Source;
+        if (track.Provider == StreamProvider.Http || track.Provider == StreamProvider.Local)
+        {
+            return track.Source;
+        }
+
         return track.Source;
     }
 
@@ -1143,7 +1230,10 @@ public class BaseSnowPlayer : IDisposable
 
     public virtual Task OnTrackEndAsync(BaseSnowPlayer baseSnow, TrackEndReason reason, string trackidentifier)
     {
-        if (DisconnectOnStop) return DisconnectAsync();
+        if (DisconnectOnStop)
+        {
+            return DisconnectAsync();
+        }
 
         // The track ended, set to not playing
         State = PlayerState.NotPlaying;
@@ -1160,7 +1250,11 @@ public class BaseSnowPlayer : IDisposable
             cancellationToken1 = new CancellationTokenSource();
         }
 
-        if (!FFmpeg.HasExited) FFmpeg.Kill();
+        if (!FFmpeg.HasExited)
+        {
+            FFmpeg.Kill();
+        }
+
         vnc.Disconnect();
         State = PlayerState.NotConnected;
         return Task.CompletedTask;
@@ -1205,7 +1299,11 @@ public class BaseSnowPlayer : IDisposable
                 cancellationToken1 = new CancellationTokenSource();
             }
 
-            if (!FFmpeg.HasExited) FFmpeg.Kill();
+            if (!FFmpeg.HasExited)
+            {
+                FFmpeg.Kill();
+            }
+
             State = PlayerState.NotPlaying;
         }
     }

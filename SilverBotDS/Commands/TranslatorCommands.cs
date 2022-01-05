@@ -72,9 +72,13 @@ public class TranslatorCommands : SilverBotCommandModule
             {
                 await DatabaseContext.Entry(translator).Collection(b => b.CustomLanguages).LoadAsync();
                 if (translator.CustomLanguages.Count >= langid)
+                {
                     langobj = translator.CustomLanguages.ElementAt(langid);
+                }
                 else
+                {
                     langobj = await Language.GetLanguageFromCtxAsync(ctx);
+                }
             }
             else
             {

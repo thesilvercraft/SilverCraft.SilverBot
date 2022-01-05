@@ -39,29 +39,55 @@ public class SdImage : IDisposable
 
     public static SdImage FromContext(CommandContext ctx)
     {
-        if (ctx.Message.Attachments.Count == 1) return FromAttachments(ctx.Message.Attachments);
-        if (ctx.Message.Stickers.Count == 1) return new SdImage(ctx.Message.Stickers[0].StickerUrl);
+        if (ctx.Message.Attachments.Count == 1)
+        {
+            return FromAttachments(ctx.Message.Attachments);
+        }
+
+        if (ctx.Message.Stickers.Count == 1)
+        {
+            return new SdImage(ctx.Message.Stickers[0].StickerUrl);
+        }
+
         if (ctx.Message.ReferencedMessage is not null)
         {
             if (ctx.Message.ReferencedMessage.Attachments.Count == 1)
+            {
                 return FromAttachments(ctx.Message.ReferencedMessage.Attachments);
+            }
+
             if (ctx.Message.ReferencedMessage.Stickers.Count == 1)
+            {
                 return new SdImage(ctx.Message.ReferencedMessage.Stickers[0].StickerUrl);
+            }
+
             var m = SdImageConverter.UrLregex.Match(ctx.Message.Content);
-            if (m.Success) return new SdImage(m.Value);
+            if (m.Success)
+            {
+                return new SdImage(m.Value);
+            }
         }
 
         if (ctx.Message.Attachments.Count == 0)
+        {
             throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooLittleAttachments);
+        }
+
         throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooManyAttachments);
     }
 
     public static SdImage FromAttachments(IReadOnlyList<DiscordAttachment> attachments)
     {
-        if (attachments.Count == 1) return new SdImage(attachments[0].Url);
+        if (attachments.Count == 1)
+        {
+            return new SdImage(attachments[0].Url);
+        }
 
         if (attachments.Count == 0)
+        {
             throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooLittleAttachments);
+        }
+
         throw new AttachmentCountIncorrectException(AttachmentCountIncorrect.TooManyAttachments);
     }
 
@@ -108,12 +134,22 @@ public class SdImageConverter : IArgumentConverter<SdImage>
     {
         var m = Emote.Match(value);
         if (m.Success)
+        {
             return Optional.FromValue(new SdImage($"https://cdn.discordapp.com/emojis/{m.Groups["id"].Value}"));
+        }
+
         var u = User.Match(value);
         if (u.Success)
+        {
             return Optional.FromValue(
                 new SdImage(await ctx.Client.GetUserAsync(Convert.ToUInt64(u.Groups["id"].Value))));
-        if (UrLregex.IsMatch(value)) return Optional.FromValue(new SdImage(value));
+        }
+
+        if (UrLregex.IsMatch(value))
+        {
+            return Optional.FromValue(new SdImage(value));
+        }
+
         return Optional.FromNoValue<SdImage>();
     }
 }

@@ -17,7 +17,11 @@ internal static class MinecraftUtils
         var uri = new UriBuilder(string.Format(GetProfileUrl, name));
         var rm = await httpClient.GetAsync(uri.Uri);
         var player = JsonSerializer.Deserialize<Player>(await rm.Content.ReadAsStringAsync());
-        if (player != null && !string.IsNullOrEmpty(player.Error)) throw new MojangException(player.Error, player.ErrorMessage);
+        if (player != null && !string.IsNullOrEmpty(player.Error))
+        {
+            throw new MojangException(player.Error, player.ErrorMessage);
+        }
+
         return player;
     }
 

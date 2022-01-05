@@ -45,12 +45,17 @@ internal class ImageSteps : IDisposable
     {
         Image Bitmap = null;
         foreach (var step in filledsteps)
+        {
             if (step is TemplateStep step2)
             {
                 if (Bitmap is null)
+                {
                     Bitmap = step2.GetImage(client);
+                }
                 else
+                {
                     Bitmap.Mutate(x => x.DrawImage(step2.GetImage(client), new Point(0, 0), 1));
+                }
             }
             else if (step is PictureStep step1)
             {
@@ -59,6 +64,7 @@ internal class ImageSteps : IDisposable
                 using var resizedimg = await Image.LoadAsync(resizedbytes);
                 Bitmap.Mutate(x => x.DrawImage(resizedimg, new Point((int) step.x, (int) step.y), 1));
             }
+        }
 
         return Bitmap;
     }
@@ -68,11 +74,20 @@ internal class ImageSteps : IDisposable
         if (!disposedValue)
         {
             if (disposing)
+            {
                 for (var i = 0; i < steps.Length; i++)
                 {
-                    if (steps[i] is TemplateStep step) step.Dispose();
-                    if (steps[i] is PictureStep step1) step1.Dispose();
+                    if (steps[i] is TemplateStep step)
+                    {
+                        step.Dispose();
+                    }
+
+                    if (steps[i] is PictureStep step1)
+                    {
+                        step1.Dispose();
+                    }
                 }
+            }
 
             steps = null;
             client = null;
@@ -204,7 +219,11 @@ public class PictureStep : Step, IDisposable
 
     public SdImage Image()
     {
-        if (ImageF is null) ImageF = new SdImage(Url);
+        if (ImageF is null)
+        {
+            ImageF = new SdImage(Url);
+        }
+
         return ImageF;
     }
 
@@ -215,7 +234,11 @@ public class PictureStep : Step, IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (disposing) ImageF.Dispose();
+        if (disposing)
+        {
+            ImageF.Dispose();
+        }
+
         Url = null;
         // Cleanup
     }

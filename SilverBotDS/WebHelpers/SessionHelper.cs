@@ -30,7 +30,7 @@ public static class SessionHelper
             var (item1, item2) = session.GetObjectFromJson<Tuple<Guild[], DateTime>>("GuildsCache");
             if (DateTime.UtcNow - item2 > TimeSpan.FromSeconds(10))
             {
-                return item1; 
+                return item1;
             }
 
             Debug.WriteLine(DateTime.UtcNow - item2);
@@ -44,7 +44,7 @@ public static class SessionHelper
         StreamReader reader2 = new(response.Content.ReadAsStream());
         if( response.StatusCode== HttpStatusCode.TooManyRequests)
         {
-            return null;
+            return Array.Empty<Guild>();
         }
         var guilds = JsonSerializer.Deserialize<Guild[]>(reader2.ReadToEnd());
         session.SetObjectAsJson("GuildsCache", new Tuple<Guild[], DateTime>(guilds, DateTime.UtcNow));
@@ -56,7 +56,10 @@ public static class SessionHelper
         if (session.TryGetValue("UserCache", out _))
         {
             var (item1, item2) = session.GetObjectFromJson<Tuple<Oauththingy, DateTime>>("UserCache");
-            if (DateTime.UtcNow - item2 > TimeSpan.FromSeconds(10)) return item1;
+            if (DateTime.UtcNow - item2 > TimeSpan.FromSeconds(10))
+            {
+                return item1;
+            }
         }
 
         using var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://discordapp.com/api/users/@me");

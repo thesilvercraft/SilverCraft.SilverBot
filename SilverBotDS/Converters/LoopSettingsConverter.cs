@@ -12,7 +12,10 @@ internal class LoopSettingsConverter : IArgumentConverter<LoopSettings>
     public Task<Optional<LoopSettings>> ConvertAsync(string value, CommandContext ctx)
     {
         if (Enum.TryParse(typeof(LoopSettings), value, out var boolean))
+        {
             return Task.FromResult(Optional.FromValue((LoopSettings) boolean));
+        }
+
         return value.ToLowerInvariant() switch
         {
             "queue" or "q" => Task.FromResult(Optional.FromValue(LoopSettings.LoopingQueue)),

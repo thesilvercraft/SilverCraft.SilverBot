@@ -115,7 +115,9 @@ public class Translator
                 {
                     var endQuote = text.IndexOf('\"', startQuote + 1);
                     if (endQuote != -1)
+                    {
                         translation = new StringBuilder(text.Substring(startQuote + 1, endQuote - startQuote - 1));
+                    }
                 }
             }
             else

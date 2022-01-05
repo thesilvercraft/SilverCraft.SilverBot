@@ -35,11 +35,14 @@ public class GitHubUtils
         {
             var m = R.Match(url);
             if (m.Success)
+            {
                 return Optional.FromValue(new Repo
                 {
                     User = m.Groups["user"].Value,
                     Reponame = m.Groups["repo"].Value
                 });
+            }
+
             return Optional.FromNoValue<Repo>();
         }
     }
@@ -78,7 +81,10 @@ public class GitHubUtils
             var uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/commits/{branch}");
             var rm = await client.GetAsync(uri.Uri);
             if (rm.StatusCode == HttpStatusCode.OK)
+            {
                 return JsonSerializer.Deserialize<CommitInfo>(await rm.Content.ReadAsStringAsync());
+            }
+
             return await Task.FromException<CommitInfo>(
                 new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}"));
         }
@@ -321,7 +327,10 @@ public class GitHubUtils
             var uri = new UriBuilder($"https://api.github.com/repos/{repo.User}/{repo.Reponame}/releases/latest");
             var rm = await client.GetAsync(uri.Uri);
             if (rm.StatusCode == HttpStatusCode.OK)
+            {
                 return JsonSerializer.Deserialize<Release>(await rm.Content.ReadAsStringAsync());
+            }
+
             return await Task.FromException<Release>(
                 new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}"));
         }

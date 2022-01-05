@@ -67,8 +67,8 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     /// <returns>An <see cref="Image" /></returns>
     public static Image DrawText(string text, Font font, Color textColor, Color backColor)
     {
-        var textSize = TextMeasurer.Measure(text, new TextOptions(font));
-        Image img = new Image<Rgba32>((int) textSize.Width, (int) textSize.Height);
+        var textSize = TextMeasurer.Measure(text, new RendererOptions(font));
+        Image img = new Image<Rgba32>((int)textSize.Width, (int)textSize.Height);
         img.Mutate(x => x.Fill(backColor));
         img.Mutate(x => x.DrawText(text, font, textColor, new PointF(0, 0)));
         return img;
@@ -86,7 +86,6 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         outStream.Position = 0;
         await SendImageStream(ctx, outStream);
     }
-
 
     public static async Task SendImageStream(CommandContext ctx, Stream outstream, string filename = "sbimg.png",
         string content = null, Language lang = null)
@@ -106,15 +105,27 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         IImageFormat? format = null)
     {
         using var img = Image.Load(photoBytes, out var frmt);
-        if (size.Width == 0) size.Width = img.Width;
-        if (size.Height == 0) size.Height = img.Height;
+        if (size.Width == 0)
+        {
+            size.Width = img.Width;
+        }
+
+        if (size.Height == 0)
+        {
+            size.Height = img.Height;
+        }
+
         img.Mutate(x => x.Resize(new ResizeOptions
         {
             Mode = ResizeMode.Max,
             Size = size
         }));
         MemoryStream stream = new();
-        if (format != null) frmt = format;
+        if (format != null)
+        {
+            frmt = format;
+        }
+
         await img.SaveAsync(stream, frmt);
         stream.Position = 0;
         return new Tuple<MemoryStream, string>(stream, frmt.FileExtensions.First());
@@ -169,7 +180,11 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     private static async Task<Tuple<MemoryStream, string>> FilterImgBytes(byte[] photoBytes, EFilter filter)
     {
         using var img = Image.Load(photoBytes, out var frmt);
-        if (filter == EFilter.Grayscale) img.Mutate(x => x.Grayscale());
+        if (filter == EFilter.Grayscale)
+        {
+            img.Mutate(x => x.Grayscale());
+        }
+
         MemoryStream stream = new();
         await img.SaveAsync(stream, frmt);
         return new Tuple<MemoryStream, string>(stream, frmt.FileExtensions.First());
@@ -182,11 +197,15 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         await using var outStream = await Make_jpegnisedAsync(await image.GetBytesAsync(HttpClient));
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream, "silverbotimage.jpeg", lang.JpegSuccess, lang);
+        }
     }
 
     [Command("jpeg")]
@@ -205,11 +224,15 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         var thing = await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(x, y), format);
         if (thing.Item1.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(thing.Item1.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, thing.Item1, $"sbimg.{thing.Item2}", lang.ResizeSuccess, lang);
+        }
     }
 
     [Command("resize")]
@@ -246,11 +269,15 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         await using var outStream = thing.Item1;
         outStream.Position = 0;
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream, $"sbimg.{thing.Item2}", lang.TintSuccess, lang);
+        }
     }
 
     [Command("tint")]
@@ -281,11 +308,15 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         await using var outStream = thing.Item1;
         outStream.Position = 0;
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream, $"sbimg.{thing.Item2}", lang.SilverSuccess, lang);
+        }
     }
 
     [Command("reliable")]
@@ -308,7 +339,11 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     private async Task<byte[]> GetProfilePictureAsync(DiscordUser user, ushort size = 256)
     {
         var discordsize = size;
-        if (discordsize == 0 || (discordsize & (discordsize - 1)) != 0) discordsize = 1024;
+        if (discordsize == 0 || (discordsize & (discordsize - 1)) != 0)
+        {
+            discordsize = 1024;
+        }
+
         await using MemoryStream stream =
             new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordsize)).GetBytesAsync(HttpClient));
         using var image = Image.Load(stream);
@@ -349,27 +384,33 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         var text =
             $"{(ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username)}, you truly are a reliable guy.";
         var size = _subtitlesFont.Size;
-        while (TextMeasurer.Measure(text, new TextOptions(new Font(_subtitlesFont.Family, size, FontStyle.Bold)))
-                   .Width > img.Width) size -= 0.05f;
-        var dr = new TextOptions(new Font(_subtitlesFont, size));
-        dr.HorizontalAlignment = HorizontalAlignment.Center;
-        dr.VerticalAlignment = VerticalAlignment.Bottom;
+        while (TextMeasurer.Measure(text, new RendererOptions(new Font(_subtitlesFont.Family, size, FontStyle.Bold)))
+                   .Width > img.Width)
+        {
+            size -= 0.05f;
+        }
 
+        var dr = new DrawingOptions();
+        dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
         img.Mutate(m =>
-            m.DrawText(dr, text, Brushes.Solid(Color.White)));
+            m.DrawText(dr, text, new Font(_subtitlesFont, size), Brushes.Solid(Color.White), new PointF(952, 880)));
         img.Mutate(m =>
-            m.DrawText(dr, text, Pens.Solid(Color.Black, 3)));
+            m.DrawText(dr, text, new Font(_subtitlesFont, size), Pens.Solid(Color.Black, 3), new PointF(952, 880)));
         await using MemoryStream outStream = new();
         outStream.Position = 0;
         await img.SaveAsPngAsync(outStream);
         outStream.Position = 0;
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream,
                 content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.", lang: lang);
+        }
     }
 
     [Command("happynewyear")]
@@ -400,11 +441,15 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         gamer.Save(outStream, new PngEncoder());
         outStream.Position = 0;
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream, content: "happy new year!", lang: lang);
+        }
     }
 
     [RequireGuild]
@@ -445,14 +490,18 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         img.Save(outStream, new PngEncoder());
         outStream.Position = 0;
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream,
                 content:
                 $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!",
                 lang: lang);
+        }
     }
 
     [Command("mspaint")]
@@ -475,11 +524,15 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         await img.SaveAsync(outStream, new PngEncoder());
         outStream.Position = 0;
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream, "SilverPaint.png", "untitled - Paint", lang);
+        }
     }
 
     [Command("mspaint")]
@@ -508,21 +561,29 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         }
 
         var size = _subtitlesFont.Size;
-        while (TextMeasurer.Measure(text, new TextOptions(new Font(_motivateFont.Family, size, FontStyle.Bold)))
-                   .Width > img.Width) size -= 0.05f;
-        var dr = new TextOptions(new Font(_motivateFont, size));
-        dr.HorizontalAlignment = HorizontalAlignment.Center;
-        dr.VerticalAlignment = VerticalAlignment.Bottom;
-        img.Mutate(m => m.DrawText(dr, text, Brushes.Solid(Color.White)));
+        while (TextMeasurer.Measure(text, new RendererOptions(new Font(_motivateFont.Family, size, FontStyle.Bold)))
+                   .Width > img.Width)
+        {
+            size -= 0.05f;
+        }
+
+        var dr = new DrawingOptions();
+        dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
+        img.Mutate(m => m.DrawText(dr, text, new Font(_motivateFont, size), Brushes.Solid(Color.White),
+            new PointF(639.5f, 897.5f)));
         await using MemoryStream outStream = new();
         await img.SaveAsync(outStream, new PngEncoder());
         outStream.Position = 0;
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream, content: "there", lang: lang);
+        }
     }
 
     [Command("fail")]
@@ -539,19 +600,23 @@ public class ImageModule : BaseCommandModule, IRequireFonts
             )
         );
         Font jokerFont = new(_jokerFontFamily, img.Width / 10);
-        var dr = new TextOptions(jokerFont);
-        dr.HorizontalAlignment = HorizontalAlignment.Center;
-        dr.VerticalAlignment = VerticalAlignment.Top;
-        img.Mutate(m => m.DrawText(dr, text, Brushes.Solid(Color.Black)));
+        var dr = new DrawingOptions();
+        dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
+        // x component of pointf is arbitrary and irrelevent since the above alignment option is given
+        img.Mutate(m => m.DrawText(dr, text, jokerFont, Brushes.Solid(Color.Black), new PointF(255f, 20f)));
         await using MemoryStream outStream = new();
         await img.SaveAsync(outStream, new GifEncoder());
         outStream.Position = 0;
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(
                 ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang
             ).ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream, "sbfail.gif", "there", lang);
+        }
     }
 
     [Command("motivate")]
@@ -572,27 +637,31 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         var font = new Font(_captionFont, x / 10);
         await using var outStream = new MemoryStream();
         FontRectangle textSize;
-        var dr = new TextOptions(font);
-        dr.HorizontalAlignment = HorizontalAlignment.Center;
-        dr.VerticalAlignment = VerticalAlignment.Center;
-        
-        textSize = TextMeasurer.Measure(text, new TextOptions(font));
-        using (var img2 = new Image<Rgba32>(x, y + (int) textSize.Height))
+        var dr = new DrawingOptions();
+        dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
+        dr.TextOptions.VerticalAlignment = VerticalAlignment.Center;
+        textSize = TextMeasurer.Measure(text, new RendererOptions(font));
+        using (var img2 = new Image<Rgba32>(x, y + (int)textSize.Height))
         {
             img2.Mutate(o => o.Fill(Color.FromRgb(255, 255, 255)));
-            img2.Mutate(o => o.DrawText(dr, text,Color.FromRgb(0, 0, 0)));
-            img2.Mutate(o => o.DrawImage(bitmap, new Point(0, (int) textSize.Height), 1));
+            img2.Mutate(o => o.DrawText(dr, text, font, Brushes.Solid(Color.FromRgb(0, 0, 0)),
+                new PointF(img2.Width / 2, textSize.Height / 2)));
+            img2.Mutate(o => o.DrawImage(bitmap, new Point(0, (int)textSize.Height), 1));
             img2.Save(outStream, frmt);
         }
 
         outStream.Position = 0;
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         if (outStream.Length > MaxBytes)
+        {
             await Send_img_plsAsync(ctx,
                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
                 .ConfigureAwait(false);
+        }
         else
+        {
             await SendImageStream(ctx, outStream, content: "there", lang: lang);
+        }
     }
 
     [Command("caption")]

@@ -52,7 +52,11 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
             await ctx.TriggerTypingAsync();
         }
 
-        if (conf.SongAliases.ContainsKey(value)) value = conf.SongAliases[value];
+        if (conf.SongAliases.ContainsKey(value))
+        {
+            value = conf.SongAliases[value];
+        }
+
         await ctx.TriggerTypingAsync();
         if (value.EndsWith(".json"))
         {
@@ -63,8 +67,11 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
                     JsonSerializer.Deserialize<SilverBotPlaylist>(await (await client.GetAsync(value)).Content
                         .ReadAsStringAsync());
                 if (!string.IsNullOrEmpty(tracks.PlaylistTitle))
+                {
                     await Audio.SendSimpleMessage(ctx,
                         string.Format(lang.LoadedSilverBotPlaylistWithTitle, tracks.PlaylistTitle), language: lang);
+                }
+
                 return new Optional<SongORSongs>(new SongORSongs(TrackDecoder.DecodeTrack(tracks.Identifiers[0]), null,
                     tracks.Identifiers.Skip(1).Select(x => TrackDecoder.DecodeTrack(x)).ToAsyncEnumerable(),
                     TimeSpan.FromMilliseconds(tracks.CurrentSongTimems)));
@@ -139,7 +146,10 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
             }
 
             var e = await audioService.GetTrackAsync($"{song.Name} {song.Artists[0].Name}", SearchMode.YouTube);
-            if (e is not null) yield return e;
+            if (e is not null)
+            {
+                yield return e;
+            }
         }
     }
 
@@ -147,6 +157,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
         LavalinkNode audioService, uint skipsongs = 1)
     {
         foreach (var song in playlist.Tracks.Items)
+        {
             if (song.Track is FullTrack track)
             {
                 if (skipsongs != 0)
@@ -156,8 +167,12 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
                 }
 
                 var e = await audioService.GetTrackAsync($"{track.Name} {track.Artists[0].Name}", SearchMode.YouTube);
-                if (e is not null) yield return e;
+                if (e is not null)
+                {
+                    yield return e;
+                }
             }
+        }
     }
 
     private bool IsInVc(CommandContext ctx, LavalinkNode audioService)

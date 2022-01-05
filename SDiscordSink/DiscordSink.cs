@@ -29,7 +29,10 @@ public class DiscordSink : ILogEventSink
     public DiscordSink(params Tuple<ulong, string>[] webhooks)
     {
         _webhookClient = new DiscordWebhookClient();
-        foreach (var webhook in webhooks) _webhookClient.AddWebhookAsync(webhook.Item1, webhook.Item2).Wait();
+        foreach (var webhook in webhooks)
+        {
+            _webhookClient.AddWebhookAsync(webhook.Item1, webhook.Item2).Wait();
+        }
     }
 
     public void Emit(LogEvent logEvent)
@@ -37,11 +40,14 @@ public class DiscordSink : ILogEventSink
         var builder = new DiscordEmbedBuilder();
         var message = logEvent.RenderMessage();
         if (logEvent.Exception != null && message.StartsWith("Error"))
+        {
             _webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent($"{message}\n").AddFile(
                 "error.cs",
                 new MemoryStream(Encoding.UTF8.GetBytes(
                     $"{logEvent.Exception.Message ?? "null"}\nStack trace:\n{logEvent.Exception.StackTrace ?? "null"}\nSource\n{logEvent.Exception.Source ?? "null"}\nHelp link:\n{logEvent.Exception.HelpLink ?? "null"}")),
                 true).WithUsername("sb - Error"));
+        }
+
         string? restMessage = null;
         if (message.Length > 230)
         {
@@ -55,7 +61,11 @@ public class DiscordSink : ILogEventSink
             {
                 builder.WithTitle(message[..firstLineEnd]);
                 if (message[firstLineEnd] == '\r' && message.Length > firstLineEnd + 1 &&
-                    message[firstLineEnd + 1] == '\n') firstLineEnd++;
+                    message[firstLineEnd + 1] == '\n')
+                {
+                    firstLineEnd++;
+                }
+
                 restMessage = message[(firstLineEnd + 1)..];
             }
         }

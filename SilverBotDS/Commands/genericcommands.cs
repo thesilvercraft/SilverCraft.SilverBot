@@ -55,6 +55,7 @@ public sealed class Genericcommands : BaseCommandModule
         {
             var asdf = JsonSerializer.Deserialize<Meme>(await rm.Content.ReadAsStringAsync());
             if (asdf?.Nsfw == false)
+            {
                 b.WithTitle(lang.Meme + asdf.Title)
                     .WithUrl(asdf.PostLink)
                     .WithAuthor($"👍 {asdf.Ups} | r/{asdf.Subreddit}")
@@ -64,9 +65,12 @@ public sealed class Genericcommands : BaseCommandModule
                     .AddField("Author", asdf.Author, true)
                     .WithImageUrl(asdf.Url)
                     .WithColor(await ColorUtils.GetSingleAsync());
+            }
             else
+            {
                 b.WithTitle("Meme returned null")
                     .WithColor(await ColorUtils.GetSingleAsync());
+            }
 
             await new DiscordMessageBuilder()
                 .WithReply(ctx.Message.Id)
@@ -157,9 +161,13 @@ public sealed class Genericcommands : BaseCommandModule
     public async Task DumpMessage(CommandContext ctx)
     {
         if (ctx.Message.ReferencedMessage != null)
+        {
             await DumpMessage(ctx, ctx.Message.ReferencedMessage);
+        }
         else
+        {
             await DumpMessage(ctx, (await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, 1))[0]);
+        }
     }
 
     [Command("duckhosting")]
@@ -187,8 +195,16 @@ public sealed class Genericcommands : BaseCommandModule
             .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
             .WithImageUrl(imageurl).WithColor(await ColorUtils.GetSingleAsync());
         var messageBuilder = new DiscordMessageBuilder();
-        if (title != null) embedBuilder.WithTitle(title);
-        if (content != null) messageBuilder.WithContent(content);
+        if (title != null)
+        {
+            embedBuilder.WithTitle(title);
+        }
+
+        if (content != null)
+        {
+            messageBuilder.WithContent(content);
+        }
+
         await messageBuilder
             .WithReply(ctx.Message.Id)
             .WithEmbed(embedBuilder.Build())
@@ -291,6 +307,7 @@ public sealed class Genericcommands : BaseCommandModule
         var bot = await client.GetViaIdAsync(user.Id);
 
         if (bot == null)
+        {
             await new DiscordMessageBuilder()
                 .WithReply(ctx.Message.Id)
                 .WithEmbed(new DiscordEmbedBuilder()
@@ -299,7 +316,9 @@ public sealed class Genericcommands : BaseCommandModule
                     .WithColor(await ColorUtils.GetSingleAsync())
                     .Build())
                 .SendAsync(ctx.Channel);
+        }
         else
+        {
             await new DiscordMessageBuilder()
                 .WithReply(ctx.Message.Id)
                 .WithEmbed(new DiscordEmbedBuilder()
@@ -312,6 +331,7 @@ public sealed class Genericcommands : BaseCommandModule
                     .WithColor(await ColorUtils.GetSingleAsync())
                     .Build())
                 .SendAsync(ctx.Channel);
+        }
     }
 
     [Command("user")]

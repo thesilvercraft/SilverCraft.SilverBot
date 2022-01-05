@@ -56,18 +56,24 @@ public class AdminCommands : BaseCommandModule
         {
             var client = commandContext.Client;
             if (_pollEmojiCache == null)
+            {
                 _pollEmojiCache = new[]
                 {
                     DiscordEmoji.FromName(client, ":everybodyvotes:"),
                     DiscordEmoji.FromName(client, ":nobodyvotes:")
                 };
+            }
+
             var bob = new DiscordEmbedBuilder();
             bob.WithTitle(question)
                 .WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username,
                     iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png))
                 .WithColor(await ColorUtils.GetSingleAsync());
             var pollStartMessage = await commandContext.RespondAsync(bob.Build());
-            foreach (var emote in _pollEmojiCache) await pollStartMessage.CreateReactionAsync(emote);
+            foreach (var emote in _pollEmojiCache)
+            {
+                await pollStartMessage.CreateReactionAsync(emote);
+            }
 
             await Database.plannedEvents.AddAsync(new PlannedEvent
             {
@@ -132,9 +138,13 @@ public class AdminCommands : BaseCommandModule
                 Emotes = emotes.Take(30).ToArray()
             }), "pack.json");
             if (emotes.Count >= 30)
+            {
                 emotes.RemoveRange(0, 30);
+            }
             else
+            {
                 emotes.Clear();
+            }
         }
 
         await new DiscordMessageBuilder().WithContent("https://support.guilded.gg/hc/en-us/articles/1500000398142")
@@ -150,11 +160,16 @@ public class AdminCommands : BaseCommandModule
         foreach (var emoji in  ctx.Guild.Emojis.Values)
         {
             if (emoji.IsAnimated)
+            {
                 sourceFiles.Add(new SourceFile
                     {Name = emoji.Name, Extension = "gif", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url)});
+            }
             else
+            {
                 sourceFiles.Add(new SourceFile
                     {Name = emoji.Name, Extension = "png", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url)});
+            }
+
             await Task.Delay(50);
         }
 

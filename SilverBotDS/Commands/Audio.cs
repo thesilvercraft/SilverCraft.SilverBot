@@ -50,10 +50,26 @@ public class Audio : BaseCommandModule
             .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
             .WithColor(await ColorUtils.GetSingleAsync());
         var messageBuilder = new DiscordMessageBuilder();
-        if (!string.IsNullOrEmpty(message)) embedBuilder.WithDescription(message);
-        if (!string.IsNullOrEmpty(title)) embedBuilder.WithTitle(title);
-        if (!string.IsNullOrEmpty(imageurl)) embedBuilder.WithImageUrl(imageurl);
-        if (!string.IsNullOrEmpty(url)) embedBuilder.WithUrl(url);
+        if (!string.IsNullOrEmpty(message))
+        {
+            embedBuilder.WithDescription(message);
+        }
+
+        if (!string.IsNullOrEmpty(title))
+        {
+            embedBuilder.WithTitle(title);
+        }
+
+        if (!string.IsNullOrEmpty(imageurl))
+        {
+            embedBuilder.WithImageUrl(imageurl);
+        }
+
+        if (!string.IsNullOrEmpty(url))
+        {
+            embedBuilder.WithUrl(url);
+        }
+
         await messageBuilder
             .WithReply(ctx.Message.Id)
             .WithEmbed(embedBuilder.Build())
@@ -68,8 +84,16 @@ public class Audio : BaseCommandModule
             .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
             .WithColor(await ColorUtils.GetSingleAsync());
         var messageBuilder = new DiscordMessageBuilder();
-        if (!string.IsNullOrEmpty(message)) embedBuilder.WithDescription(message);
-        if (!string.IsNullOrEmpty(title)) embedBuilder.WithTitle(title);
+        if (!string.IsNullOrEmpty(message))
+        {
+            embedBuilder.WithDescription(message);
+        }
+
+        if (!string.IsNullOrEmpty(title))
+        {
+            embedBuilder.WithTitle(title);
+        }
+
         await messageBuilder
             .WithReply(ctx.Message.Id)
             .WithEmbed(embedBuilder.Build())
@@ -78,14 +102,26 @@ public class Audio : BaseCommandModule
 
     private TimeSpan TimeTillSongPlays(QueuedLavalinkPlayer player, int song)
     {
-        if (player.IsLooping) return TimeSpan.MaxValue;
+        if (player.IsLooping)
+        {
+            return TimeSpan.MaxValue;
+        }
+
         TimeSpan time;
         if (player.CurrentTrack.IsLiveStream)
+        {
             time = TimeSpan.FromHours(2) - player.Position.Position;
+        }
         else
+        {
             time = player.CurrentTrack.Duration - player.Position.Position;
+        }
 
-        for (var i = 0; i < song - 1; i++) time += player.Queue[i].Duration;
+        for (var i = 0; i < song - 1; i++)
+        {
+            time += player.Queue[i].Duration;
+        }
+
         return time;
     }
 
@@ -117,14 +153,18 @@ public class Audio : BaseCommandModule
         {
             ulong countofsongs = 0;
             await foreach (var t in song.GetRestOfSongs)
+            {
                 if (t is not null)
                 {
                     await player.PlayTopAsync(t);
                     countofsongs++;
                 }
+            }
 
             if (countofsongs != 0)
+            {
                 await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, countofsongs));
+            }
         }
     }
 
@@ -134,15 +174,21 @@ public class Audio : BaseCommandModule
     public async Task Play(CommandContext ctx)
     {
         if (ctx.Message.Attachments.Count == 1)
+        {
             await Play(ctx,
                 (SongORSongs) await ctx.CommandsNext.ConvertArgument(ctx.Message.Attachments[0].Url, ctx,
                     typeof(SongORSongs)));
+        }
         else if (ctx.Message.ReferencedMessage?.Attachments.Count == 1)
+        {
             await Play(ctx,
                 (SongORSongs) await ctx.CommandsNext.ConvertArgument(ctx.Message.ReferencedMessage.Attachments[0].Url,
                     ctx, typeof(SongORSongs)));
+        }
         else
+        {
             await Resume(ctx);
+        }
     }
 
     [Command("play")]
@@ -154,10 +200,13 @@ public class Audio : BaseCommandModule
         {
             var pos = await player.PlayAsync(song.Song, true, song.SongStartTime);
             if (pos == 0)
+            {
                 await SendNowPlayingMessage(ctx,
                     string.Format(lang.NowPlaying, song.Song.Title + lang.SongByAuthor + song.Song.Author),
                     url: song.Song.Source, language: lang);
+            }
             else
+            {
                 await new DiscordMessageBuilder()
                     .WithReply(ctx.Message.Id)
                     .WithEmbed(new DiscordEmbedBuilder()
@@ -170,20 +219,25 @@ public class Audio : BaseCommandModule
                                 : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
                         .Build())
                     .SendAsync(ctx.Channel);
+            }
         }
 
         if (song.GetRestOfSongs is not null)
         {
             ulong countofsongs = 0;
             await foreach (var t in song.GetRestOfSongs)
+            {
                 if (t is not null)
                 {
                     await player.PlayAsync(t, true);
                     countofsongs++;
                 }
+            }
 
             if (countofsongs != 0)
+            {
                 await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, countofsongs));
+            }
         }
     }
 
@@ -391,10 +445,13 @@ public class Audio : BaseCommandModule
 
         var pages = new List<Page>();
         for (var i = 0; i < player.QueueHistory.Count; i++)
+        {
             pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.QueueHistory[i].Item1.Title)
                 .WithUrl(player.QueueHistory[i].Item1.Source).WithColor(await ColorUtils.GetSingleAsync())
                 .AddField(lang.TimeWhenTrackPlayed, Formatter.Timestamp(player.QueueHistory[i].Item2))
                 .WithAuthor(string.Format(lang.PageNuget, i + 1, player.QueueHistory.Count))));
+        }
+
         var interactivity = ctx.Client.GetInteractivity();
         await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages);
     }
@@ -543,7 +600,10 @@ public class Audio : BaseCommandModule
     {
         StringBuilder bob = new();
         foreach (var song in Config.SongAliases)
+        {
             bob.Append(Formatter.InlineCode(song.Key)).Append(" - ").AppendLine(Formatter.InlineCode(song.Value));
+        }
+
         await SendSimpleMessage(ctx, message: bob.ToString());
     }
 
@@ -670,16 +730,25 @@ public class Audio : BaseCommandModule
 
         var trackbefore = player.CurrentTrack;
         if (await new RequireDjAttribute().ExecuteCheckAsync(ctx, false))
+        {
             await SendSimpleMessage(ctx, lang.CanForceSkip, language: lang);
+        }
+
         var thing = await player.VoteAsync(ctx.Member.Id);
         if (thing.WasSkipped)
+        {
             await SendSimpleMessage(ctx,
                 string.Format(lang.SkippedNP, trackbefore.Title,
                     player.CurrentTrack == null ? "Nothing" : player.CurrentTrack.Title), language: lang);
+        }
         else if (thing.WasAdded)
+        {
             await SendSimpleMessage(ctx, lang.Voted, language: lang);
+        }
         else
+        {
             await SendSimpleMessage(ctx, lang.AlreadyVoted, language: lang);
+        }
     }
 
     [Command("forcedisconnect")]

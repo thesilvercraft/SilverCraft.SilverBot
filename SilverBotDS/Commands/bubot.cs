@@ -49,9 +49,21 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
 
     public override Task<bool> ExecuteRequirements(Config conf)
     {
-        if (!Directory.Exists(conf.LocalBibiPictures)) return Task.FromResult(false);
-        if (!File.Exists(conf.BibiLibCutOutConfig)) return Task.FromResult(false);
-        if (!File.Exists(conf.BibiLibFullConfig)) return Task.FromResult(false);
+        if (!Directory.Exists(conf.LocalBibiPictures))
+        {
+            return Task.FromResult(false);
+        }
+
+        if (!File.Exists(conf.BibiLibCutOutConfig))
+        {
+            return Task.FromResult(false);
+        }
+
+        if (!File.Exists(conf.BibiLibFullConfig))
+        {
+            return Task.FromResult(false);
+        }
+
         return Task.FromResult(true);
     }
 
@@ -65,8 +77,12 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
         var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
         using var picture = await Image.LoadAsync($"{Config.LocalBibiPictures}{randomnumber}.png");
         var size = _bibiFont.Size;
-        while (TextMeasurer.Measure(input, new TextOptions(new Font(_bibiFont.Family, size, FontStyle.Bold))).Width >
-               picture.Width) size -= 0.05f;
+        while (TextMeasurer.Measure(input, new RendererOptions(new Font(_bibiFont.Family, size, FontStyle.Bold))).Width >
+               picture.Width)
+        {
+            size -= 0.05f;
+        }
+
         picture.Mutate(
             x => x.DrawText(
                 input, new Font(_bibiFont.Family, size, FontStyle.Bold),
@@ -93,16 +109,35 @@ internal class BibiLib : SilverBotCommandModule
 
     public override Task<bool> ExecuteRequirements(Config conf)
     {
-        if (!Directory.Exists(conf.LocalBibiPictures)) return Task.FromResult(false);
-        if (!File.Exists(conf.BibiLibCutOutConfig)) return Task.FromResult(false);
-        if (!File.Exists(conf.BibiLibFullConfig)) return Task.FromResult(false);
+        if (!Directory.Exists(conf.LocalBibiPictures))
+        {
+            return Task.FromResult(false);
+        }
+
+        if (!File.Exists(conf.BibiLibCutOutConfig))
+        {
+            return Task.FromResult(false);
+        }
+
+        if (!File.Exists(conf.BibiLibFullConfig))
+        {
+            return Task.FromResult(false);
+        }
+
         return Task.FromResult(true);
     }
 
     private void EnsureCreated()
     {
-        if (_bibiDescText == null) _bibiDescText = GetBibiDescText();
-        if (_bibiFullDescText == null) _bibiFullDescText = GetBibiFullDescText();
+        if (_bibiDescText == null)
+        {
+            _bibiDescText = GetBibiDescText();
+        }
+
+        if (_bibiFullDescText == null)
+        {
+            _bibiFullDescText = GetBibiFullDescText();
+        }
     }
 
     private string[] GetBibiDescText()

@@ -13,13 +13,23 @@ public class RequireAttachmentAttribute : CheckBaseAttribute
     {
         AttachmentCount = attachmentcount;
         if (typeof(Language).GetProperty(lessthen).CanRead)
+        {
             LessThenLang = lessthen;
+        }
         else
+        {
             throw new InvalidOperationException("LessThen must be readable");
+        }
+
         if (typeof(Language).GetProperty(morethen).CanRead)
+        {
             MoreThenLang = morethen;
+        }
         else
+        {
             throw new InvalidOperationException("MoreThen must be readable");
+        }
+
         OverloadCount = argumentCountThatOverloadsCheck;
     }
 

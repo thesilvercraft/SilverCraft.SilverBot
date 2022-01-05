@@ -49,8 +49,16 @@ public class NewAudio : SilverBotCommandModule
             .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
             .WithColor(await ColorUtils.GetSingleAsync());
         var messageBuilder = new DiscordMessageBuilder();
-        if (!string.IsNullOrEmpty(message)) embedBuilder.WithDescription(message);
-        if (!string.IsNullOrEmpty(title)) embedBuilder.WithTitle(title);
+        if (!string.IsNullOrEmpty(message))
+        {
+            embedBuilder.WithDescription(message);
+        }
+
+        if (!string.IsNullOrEmpty(title))
+        {
+            embedBuilder.WithTitle(title);
+        }
+
         await messageBuilder
             .WithReply(ctx.Message.Id)
             .WithEmbed(embedBuilder.Build())

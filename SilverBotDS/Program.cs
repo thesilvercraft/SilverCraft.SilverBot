@@ -135,7 +135,11 @@ namespace SilverBotDS
 
         public static bool CheckIfAllFontsAreHere(string[] requiredFonts)
         {
-            if (requiredFonts == null) throw new ArgumentNullException(nameof(requiredFonts));
+            if (requiredFonts == null)
+            {
+                throw new ArgumentNullException(nameof(requiredFonts));
+            }
+
             var familyNames = SystemFonts.Families.Select(x => x.Name).ToList();
             return requiredFonts.All(font => familyNames.Contains(font));
         }
@@ -656,7 +660,9 @@ namespace SilverBotDS
             {
                 var prefixLength = msg.GetStringPrefixLength(prefix, StringComparison.OrdinalIgnoreCase);
                 if (prefixLength != -1)
+                {
                     return Task.FromResult(prefixLength);
+                }
             }
 
             return Task.FromResult(-1);
@@ -1066,7 +1072,11 @@ namespace SilverBotDS
                     {
                         if (!evnt.Handled)
                         {
-                            if (evnt.Time > DateTime.Now) continue;
+                            if (evnt.Time > DateTime.Now)
+                            {
+                                continue;
+                            }
+
                             try
                             {
                                 switch (evnt.Type)

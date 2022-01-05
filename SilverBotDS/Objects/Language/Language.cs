@@ -459,7 +459,6 @@ public class Language
     public string XPCommandOther { get; set; } = "They have {0} XP, level {1}";
     public string XPCommandGeneralFail { get; set; } = "Ooops the database broke, please dm an SilverBot admin";
 
-
     public string XPCommandFailSelf { get; set; } =
         "It appears that something either went wrong or you do not have any xp.";
 
@@ -620,7 +619,10 @@ public class Language
         if (CachedLanguages.Count != 0)
         {
             if (CachedLanguages.ContainsKey(a))
+            {
                 return CachedLanguages[a];
+            }
+
             return new Language();
         }
 

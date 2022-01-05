@@ -21,7 +21,10 @@ public class RequireConfigVariableAttribute : CheckBaseAttribute
         var conf = (Config) ctx.CommandsNext.Services.GetService(typeof(Config));
         var compareval = typeof(Config).GetProperty(Variable).GetValue(conf);
         if (Equals(compareval, State))
+        {
             return Task.FromResult(true);
+        }
+
         return Task.FromResult(false);
     }
 }

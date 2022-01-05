@@ -74,9 +74,13 @@ public class Emotes : BaseCommandModule
         catch (AttachmentCountIncorrectException acie)
         {
             if (acie.AttachmentCount is AttachmentCountIncorrect.TooLittleAttachments)
+            {
                 await ctx.RespondAsync(lang.NoImageGeneric);
+            }
             else if (acie.AttachmentCount is AttachmentCountIncorrect.TooManyAttachments)
+            {
                 await ctx.RespondAsync(lang.MoreThanOneImageGeneric);
+            }
         }
     }
 
@@ -96,7 +100,11 @@ public class Emotes : BaseCommandModule
         foreach (var a in ctx.Client.Guilds.Values)
         {
             var thing = serverthatareoptedin.Contains(a.Id);
-            if (!thing) continue;
+            if (!thing)
+            {
+                continue;
+            }
+
             builder.AppendFormat(lang.Server, a.Name).AppendLine();
             foreach (var emote in a.Emojis.Values.ToList())
             {
@@ -162,7 +170,10 @@ public class Emotes : BaseCommandModule
                      ":" + x.Name + ":" == emote || x.Name == emote ||
                      Regex.IsMatch(emote, @"^\d+$") && x.Id == Convert.ToUInt64(emote))
                  select emojis)
+        {
             emotes.AddRange(emojis);
+        }
+
         switch (emotes.Count)
         {
             case 0:
@@ -189,7 +200,8 @@ public class Emotes : BaseCommandModule
                 var b = new DiscordEmbedBuilder();
                 var builder = new StringBuilder();
                 foreach (var e in emotes)
-                    if (e.IsAnimated)
+                    {
+                        if (e.IsAnimated)
                     {
                         builder.Append("<a:");
                         builder.Append(e.Name);
@@ -207,8 +219,9 @@ public class Emotes : BaseCommandModule
                         builder.Append('>');
                         builder.AppendLine();
                     }
+                    }
 
-                b.WithTitle(lang.MultipleEmotesFound).WithDescription(builder.ToString())
+                    b.WithTitle(lang.MultipleEmotesFound).WithDescription(builder.ToString())
                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
                 await ctx.RespondAsync(b.Build());
                 break;

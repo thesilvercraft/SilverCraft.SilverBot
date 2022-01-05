@@ -15,7 +15,10 @@ internal static class UrbanDictUtils
         var uri = new UriBuilder($"http://api.urbandictionary.com/v0/define?term={HttpUtility.UrlEncode(word)}");
         var rm = await httpClient.GetAsync(uri.Uri);
         if (rm.StatusCode == HttpStatusCode.OK)
+        {
             return JsonSerializer.Deserialize<Rootobject>(await rm.Content.ReadAsStringAsync()).List;
+        }
+
         return await Task.FromException<Defenition[]>(
             new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}"));
     }

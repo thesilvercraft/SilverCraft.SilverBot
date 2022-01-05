@@ -41,14 +41,25 @@ public static class StringUtils
     /// <returns>An IEnumerable string containing the parts</returns>
     public static IEnumerable<string> SplitInParts(string s, int partLength)
     {
-        if (s == null) throw new ArgumentNullException(nameof(s));
-        if (partLength <= 0) throw new ArgumentException("Part length has to be positive.", nameof(partLength));
+        if (s == null)
+        {
+            throw new ArgumentNullException(nameof(s));
+        }
+
+        if (partLength <= 0)
+        {
+            throw new ArgumentException("Part length has to be positive.", nameof(partLength));
+        }
+
         return SplitInPartsIterator(s, partLength);
     }
 
     private static IEnumerable<string> SplitInPartsIterator(string s, int partLength)
     {
-        for (var i = 0; i < s.Length; i += partLength) yield return s.Substring(i, Math.Min(partLength, s.Length - i));
+        for (var i = 0; i < s.Length; i += partLength)
+        {
+            yield return s.Substring(i, Math.Min(partLength, s.Length - i));
+        }
     }
 
     /// <summary>
@@ -69,17 +80,30 @@ public static class StringUtils
     /// <returns>A string cotnaining the array</returns>
     public static string ArrayToString(string[] arr, string seperator = "")
     {
-        if (arr is null) return string.Empty;
+        if (arr is null)
+        {
+            return string.Empty;
+        }
+
         var sb = new StringBuilder();
         if (!string.IsNullOrEmpty(seperator))
+        {
             for (var e = 0; e < arr.Length; e++)
             {
                 sb.Append(arr[e]);
-                if (e != arr.Length - 1) sb.Append(seperator);
+                if (e != arr.Length - 1)
+                {
+                    sb.Append(seperator);
+                }
             }
+        }
         else
+        {
             foreach (var item in arr)
+            {
                 sb.Append(item);
+            }
+        }
 
         return sb.ToString();
     }

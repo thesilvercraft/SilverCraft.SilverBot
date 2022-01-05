@@ -21,7 +21,11 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IX
         XmlSerializer valueSerializer = new(typeof(TValue));
         var wasEmpty = reader.IsEmptyElement;
         reader.Read();
-        if (wasEmpty) return;
+        if (wasEmpty)
+        {
+            return;
+        }
+
         while (reader.NodeType != XmlNodeType.EndElement)
         {
             reader.ReadStartElement("item");

@@ -123,6 +123,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
             bob.WithTitle(lang.XPCommandLeaderBoardTitle);
             bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
             foreach (var person in o)
+            {
                 if (Range.Contains(stringBuilder.Length))
                 {
                     bob.WithDescription(stringBuilder.ToString());
@@ -134,6 +135,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
                     stringBuilder.Append("<@!").Append(person.Id).Append("> Lvl ").Append(GetLevel(person.XP))
                         .Append(' ').Append(person.XP).AppendLine("XP");
                 }
+            }
 
             bob.WithDescription(stringBuilder.ToString());
             pages.Add(new Page(embed: bob));

@@ -43,10 +43,16 @@ public class CustomHelpFormatter : BaseHelpFormatter
         EmbedBuilder.WithDescription(
             $"{Formatter.InlineCode(command.Name)}: {command.Description ?? Lang.HelpCommandNoDescription}");
         if (command is CommandGroup cgroup && cgroup.IsExecutableWithoutSubcommands)
+        {
             EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\n{Lang.HelpCommandGroupCanBeExecuted}");
+        }
+
         if (command.Aliases?.Any() == true)
+        {
             EmbedBuilder.AddField(Lang.HelpCommandGroupAliases,
                 string.Join(", ", command.Aliases.Select(Formatter.InlineCode)));
+        }
+
         if (command.Overloads?.Any() == true)
         {
             var sb = new StringBuilder();
@@ -54,12 +60,18 @@ public class CustomHelpFormatter : BaseHelpFormatter
             {
                 sb.Append('`').Append(command.QualifiedName);
                 foreach (var arg in ovl)
+                {
                     sb.Append(arg.IsOptional || arg.IsCatchAll ? " [" : " <").Append(arg.Name)
                         .Append(arg.IsCatchAll ? "..." : "").Append(arg.IsOptional || arg.IsCatchAll ? ']' : '>');
+                }
+
                 sb.Append("`\n");
                 foreach (var arg in ovl)
+                {
                     sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type))
                         .Append(")`: ").Append(arg.Description ?? Lang.HelpCommandNoDescription).Append('\n');
+                }
+
                 sb.Append('\n');
             }
 
@@ -82,28 +94,46 @@ public class CustomHelpFormatter : BaseHelpFormatter
             foreach (var command in subcommands)
             {
                 if (command.CustomAttributes.Any(x => x.GetType() == typeof(CategoryAttribute)))
+                {
                     foreach (var attribute in command.CustomAttributes.Where(x =>
                                  x.GetType() == typeof(CategoryAttribute)))
-                    foreach (var category in ((CategoryAttribute) attribute).Category)
                     {
-                        if (!commands.ContainsKey(category)) commands.Add(category, new HashSet<string>());
-                        commands[category].Add(command.Name);
+                        foreach (var category in ((CategoryAttribute) attribute).Category)
+                    {
+                        if (!commands.ContainsKey(category))
+                            {
+                                commands.Add(category, new HashSet<string>());
+                            }
+
+                            commands[category].Add(command.Name);
                     }
+                    }
+                }
 
                 if (command.Module.ModuleType.GetCustomAttributes(true)
                     .Any(x => x.GetType() == typeof(CategoryAttribute)))
+                {
                     foreach (var attribute in command.Module.ModuleType.GetCustomAttributes(true)
                                  .Where(x => x is CategoryAttribute))
-                    foreach (var category in ((CategoryAttribute) attribute).Category)
                     {
-                        if (!commands.ContainsKey(category)) commands.Add(category, new HashSet<string>());
-                        commands[category].Add(command.Name);
+                        foreach (var category in ((CategoryAttribute) attribute).Category)
+                    {
+                        if (!commands.ContainsKey(category))
+                            {
+                                commands.Add(category, new HashSet<string>());
+                            }
+
+                            commands[category].Add(command.Name);
                     }
+                    }
+                }
             }
 
             foreach (var category in commands.Keys)
+            {
                 EmbedBuilder.AddField(category,
                     string.Join(", ", commands[category].Select(x => Formatter.InlineCode(x))));
+            }
         }
         else
         {
@@ -120,7 +150,11 @@ public class CustomHelpFormatter : BaseHelpFormatter
     /// <returns>Data for the help message.</returns>
     public override CommandHelpMessage Build()
     {
-        if (Command == null) EmbedBuilder.WithDescription(Lang.HelpCommandGroupListingAllCommands);
+        if (Command == null)
+        {
+            EmbedBuilder.WithDescription(Lang.HelpCommandGroupListingAllCommands);
+        }
+
         var colortask = ColorUtils.GetSingleAsync();
         colortask.Wait();
         EmbedBuilder.Color = colortask.Result;

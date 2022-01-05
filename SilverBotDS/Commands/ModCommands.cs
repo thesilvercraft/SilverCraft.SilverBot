@@ -64,10 +64,17 @@ public class ModCommands : BaseCommandModule
                 up = ctx.Member.Hierarchy,
                 ap = (await ctx.Guild.GetMemberAsync(a.Id)).Hierarchy;
             if (up < ap)
+            {
                 thing = lang.UserHasLowerRole + lang.Ban;
+            }
             else if (up == ap)
+            {
                 thing = lang.UserHasLowerRole + lang.Ban;
-            else if (ap > bp) thing = lang.BotHasLowerRole + lang.Ban;
+            }
+            else if (ap > bp)
+            {
+                thing = lang.BotHasLowerRole + lang.Ban;
+            }
         }
 
         if (string.IsNullOrEmpty(thing))
@@ -87,9 +94,14 @@ public class ModCommands : BaseCommandModule
     public async Task Kms(CommandContext ctx, [Description("hardcore")] bool ban = false)
     {
         if (ban)
+        {
             await ctx.Member.BanAsync(reason: "asked lol");
+        }
         else
+        {
             await ctx.Member.RemoveAsync("asked lol");
+        }
+
         await ctx.RespondAsync($"'{ctx.Member.Mention} took the easy way out' - michael de santa gta five");
     }
 

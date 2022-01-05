@@ -50,9 +50,13 @@ public class Fortnite : SilverBotCommandModule
             x.ImagePlatform = BrStatsV2V1ImagePlatform.All;
         });
         if (statsV2V1.IsSuccess)
+        {
             await ctx.RespondAsync(statsV2V1.Data.Image.ToString());
+        }
         else
+        {
             await ctx.RespondAsync(lang.SearchFail);
+        }
     }
 
     [Command("fortbrnews")]
@@ -89,7 +93,11 @@ public class Fortnite : SilverBotCommandModule
         MakeSureApiIsSet();
         var shop = await _api.V2.Shop.GetBrCombinedAsync();
         var sb = new StringBuilder();
-        foreach (var thing in shop.Data.Daily.Entries) sb.Append(thing.DevName).Append(Environment.NewLine);
+        foreach (var thing in shop.Data.Daily.Entries)
+        {
+            sb.Append(thing.DevName).Append(Environment.NewLine);
+        }
+
         await ctx.RespondAsync(sb.ToString());
     }
 }

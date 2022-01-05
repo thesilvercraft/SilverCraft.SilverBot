@@ -34,7 +34,6 @@ namespace SilverBotDS.Commands;
 [Category("Owner")]
 public class OwnerOnly : SilverBotCommandModule
 {
-#pragma warning disable CA1822 // Mark members as static
     public DatabaseContext Database { private get; set; }
     public IBrowser Browser { private get; set; }
     public Config Config { private get; set; }
@@ -56,6 +55,7 @@ public class OwnerOnly : SilverBotCommandModule
         var name = Path.GetFileName(loc);
         var videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
         for (var i = 0; i < times; i++)
+        {
             await FFmpeg.Conversions.New()
                 .AddStream(videoStream)
                 .ExtractNthFrame(
@@ -66,6 +66,7 @@ public class OwnerOnly : SilverBotCommandModule
                     (VideoCodec) Enum.Parse(typeof(VideoCodec), decoder, true),
                     (VideoCodec) Enum.Parse(typeof(VideoCodec), encoder, true))
                 .Start();
+        }
 
         await ctx.RespondAsync("done?");
     }
@@ -83,10 +84,13 @@ public class OwnerOnly : SilverBotCommandModule
     public async Task ReloadColors(CommandContext ctx)
     {
         if (!Config.ColorConfig)
+        {
             await new DiscordMessageBuilder()
                 .WithEmbed(new DiscordEmbedBuilder().WithTitle("Reloading does nothing lololol")
                     .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png)).Build())
                 .WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+        }
+
         await ColorUtils.ReloadConfig();
         await new DiscordMessageBuilder()
             .WithEmbed(new DiscordEmbedBuilder().WithTitle("Reloaded the colors")
@@ -98,7 +102,11 @@ public class OwnerOnly : SilverBotCommandModule
     [Description("less gooo baybae")]
     public Task Stress(CommandContext ctx)
     {
-        foreach (var url in _urls) _ = Webshot(ctx, url);
+        foreach (var url in _urls)
+        {
+            _ = Webshot(ctx, url);
+        }
+
         return Task.CompletedTask;
     }
 
@@ -126,9 +134,13 @@ public class OwnerOnly : SilverBotCommandModule
             {
                 var n = (SilverBotCommandModule)Activator.CreateInstance(type);
                 if (await n.ExecuteRequirements(Config))
+                {
                     ctx.CommandsNext.RegisterCommands(type);
+                }
                 else
+                {
                     await ctx.RespondAsync($"Module {mod} won't be loaded as its requirements weren't met");
+                }
             }
             else
             {
@@ -270,16 +282,56 @@ public class OwnerOnly : SilverBotCommandModule
 
     public static string RemoveCodeBraces(string str)
     {
-        if (str.StartsWith("```csharp")) str = str.Remove(0, 9);
-        if (str.StartsWith("```cs")) str = str.Remove(0, 5);
-        if (str.StartsWith("```js")) str = str.Remove(0, 5);
-        if (str.StartsWith("```javascript")) str = str.Remove(0, 14);
-        if (str.StartsWith("```")) str = str.Remove(0, 3);
-        if (str.StartsWith("``")) str = str.Remove(0, 2);
-        if (str.StartsWith("`")) str = str.Remove(0, 1);
-        if (str.EndsWith("```")) str = str.Remove(str.Length - 3, 3);
-        if (str.EndsWith("``")) str = str.Remove(str.Length - 2, 2);
-        if (str.EndsWith("`")) str = str.Remove(str.Length - 1, 1);
+        if (str.StartsWith("```csharp"))
+        {
+            str = str.Remove(0, 9);
+        }
+
+        if (str.StartsWith("```cs"))
+        {
+            str = str.Remove(0, 5);
+        }
+
+        if (str.StartsWith("```js"))
+        {
+            str = str.Remove(0, 5);
+        }
+
+        if (str.StartsWith("```javascript"))
+        {
+            str = str.Remove(0, 14);
+        }
+
+        if (str.StartsWith("```"))
+        {
+            str = str.Remove(0, 3);
+        }
+
+        if (str.StartsWith("``"))
+        {
+            str = str.Remove(0, 2);
+        }
+
+        if (str.StartsWith("`"))
+        {
+            str = str.Remove(0, 1);
+        }
+
+        if (str.EndsWith("```"))
+        {
+            str = str.Remove(str.Length - 3, 3);
+        }
+
+        if (str.EndsWith("``"))
+        {
+            str = str.Remove(str.Length - 2, 2);
+        }
+
+        if (str.EndsWith("`"))
+        {
+            str = str.Remove(str.Length - 1, 1);
+        }
+
         return str;
     }
 
@@ -353,12 +405,20 @@ public class OwnerOnly : SilverBotCommandModule
     public async Task Dependencies(CommandContext ctx)
     {
         StringBuilder sb = new();
-        foreach (var dependancy in AppDomain.CurrentDomain.GetAssemblies()) sb.AppendLine(dependancy.FullName);
+        foreach (var dependancy in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            sb.AppendLine(dependancy.FullName);
+        }
+
         if (sb.Length > 1958)
+        {
             await SendStringFileWithContent(ctx, "stuff", sb.ToString(), "stuff.txt");
+        }
         else
+        {
             await new DiscordMessageBuilder().WithContent(Formatter.BlockCode(RemoveCodeBraces(sb.ToString())))
                 .SendAsync(ctx.Channel);
+        }
     }
 
     /// <summary>
@@ -386,13 +446,18 @@ public class OwnerOnly : SilverBotCommandModule
             if (diag.Length != 0)
             {
                 if (diag.Humanize().Length > 1958)
+                {
                     await SendStringFileWithContent(ctx, "Compilation Diagnostics showed up:", diag.Humanize(),
                         "diag.txt");
+                }
                 else
+                {
                     await new DiscordMessageBuilder()
                         .WithContent(
                             $"Compilation Diagnostics showed up: {Formatter.BlockCode(RemoveCodeBraces(diag.Humanize()), "cs")}")
                         .SendAsync(ctx.Channel);
+                }
+
                 var errcount = diag.LongCount(x => x.Severity == DiagnosticSeverity.Error);
                 if (errcount != 0)
                 {
@@ -411,17 +476,26 @@ public class OwnerOnly : SilverBotCommandModule
             var sw2 = Stopwatch.StartNew();
             var result = await script.RunAsync(new CodeEnv(ctx, Config, Database));
             if (result.ReturnValue is not null)
+            {
                 await SendBestRepresentationAsync(result.ReturnValue, ctx);
+            }
             else
+            {
                 await new DiscordMessageBuilder().WithContent("The evaluated code returned a `null`.")
                     .SendAsync(ctx.Channel);
+            }
+
             if (!string.IsNullOrEmpty(sw.ToString()))
             {
                 if (sw.ToString().Length > 1978)
+                {
                     await SendStringFileWithContent(ctx, "Console Output:", sw.ToString(), "console.txt");
+                }
                 else
+                {
                     await new DiscordMessageBuilder()
                         .WithContent($"Console Output: {Formatter.BlockCode(sw.ToString())}").SendAsync(ctx.Channel);
+                }
             }
 
             sw.Close();
@@ -439,13 +513,18 @@ public class OwnerOnly : SilverBotCommandModule
         {
             Console.SetOut(console);
             if (e.Diagnostics.Humanize().Length > 1958)
+            {
                 await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Diagnostics.Humanize(),
                     "error.txt");
+            }
             else
+            {
                 await new DiscordMessageBuilder()
                     .WithContent(
                         $"Compilation Error occurred: {Formatter.BlockCode(RemoveCodeBraces(e.Diagnostics.Humanize()), "cs")}")
                     .SendAsync(ctx.Channel);
+            }
+
             throw;
         }
         catch (Exception)
@@ -473,16 +552,25 @@ public class OwnerOnly : SilverBotCommandModule
                 await new DiscordMessageBuilder().WithContent($"Ran the code in {(aftercompile - start).Humanize(6)}")
                     .SendAsync(ctx.Channel);
                 if (script is not null)
+                {
                     await SendBestRepresentationAsync(script, ctx);
+                }
                 else
+                {
                     await new DiscordMessageBuilder().WithContent("Got a `null`").SendAsync(ctx.Channel);
+                }
+
                 if (!string.IsNullOrEmpty(sw.ToString()))
                 {
                     if (sw.ToString().Length > 1979)
+                    {
                         await SendStringFileWithContent(ctx, "Console Output", sw.ToString(), "console.txt");
+                    }
                     else
+                    {
                         await new DiscordMessageBuilder()
                             .WithContent($"Console Output {Formatter.BlockCode(sw.ToString())}").SendAsync(ctx.Channel);
+                    }
                 }
 
                 sw.Close();
@@ -493,13 +581,18 @@ public class OwnerOnly : SilverBotCommandModule
             {
                 Console.SetOut(console);
                 if (e.Diagnostics.Humanize().Length > 1958)
+                {
                     await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Diagnostics.Humanize(),
                         "error.txt");
+                }
                 else
+                {
                     await new DiscordMessageBuilder()
                         .WithContent(
                             $"Compilation Error occurred: {Formatter.BlockCode(RemoveCodeBraces(e.Diagnostics.Humanize()), "cs")}")
                         .SendAsync(ctx.Channel);
+                }
+
                 throw;
             }
             catch (Exception)
@@ -551,7 +644,10 @@ public class OwnerOnly : SilverBotCommandModule
                 await Task.Delay(2000);
             }
 
-            if (main.HasExited) timesexited++;
+            if (main.HasExited)
+            {
+                timesexited++;
+            }
         }
     }
 
@@ -582,8 +678,11 @@ public class OwnerOnly : SilverBotCommandModule
     {
         var a = Config.BrowserType == 0;
         if (a)
+        {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent("no browser specified")
                 .SendAsync(ctx.Channel);
+        }
+
         return a;
     }
 
@@ -591,7 +690,11 @@ public class OwnerOnly : SilverBotCommandModule
     [Description("screenshots a webpage")]
     public async Task Webshot(CommandContext ctx, string html)
     {
-        if (await IsBrowserNotSpecifed(ctx)) return;
+        if (await IsBrowserNotSpecifed(ctx))
+        {
+            return;
+        }
+
         var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png")
             .WithFooter($"Requested by {ctx.User.Username}", ctx.User.GetAvatarUrl(ImageFormat.Png))
             .WithColor(DiscordColor.Green);
@@ -700,8 +803,11 @@ public class OwnerOnly : SilverBotCommandModule
     {
         StringBuilder bob = new();
         foreach (var guild in ctx.Client.Guilds.Values)
+        {
             bob.Append(guild.Name).Append(" | ").Append(guild.Owner.DisplayName).Append(" | ").Append(guild.MemberCount)
                 .Append(" | ").Append(guild.Id).AppendLine();
+        }
+
         await ctx.RespondAsync(bob.ToString());
     }
 
@@ -733,7 +839,11 @@ public class OwnerOnly : SilverBotCommandModule
     [Description("screenshot a webpage")]
     public async Task Html(CommandContext ctx, string html)
     {
-        if (await IsBrowserNotSpecifed(ctx)) return;
+        if (await IsBrowserNotSpecifed(ctx))
+        {
+            return;
+        }
+
         var bob = new DiscordEmbedBuilder();
         bob.WithImageUrl("attachment://html.png")
             .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));

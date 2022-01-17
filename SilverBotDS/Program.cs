@@ -60,7 +60,6 @@ namespace SilverBotDS
     {
         public static readonly char DirSlash = Environment.OSVersion.Platform == PlatformID.Win32NT ? '\\' : '/';
         private static Config _config;
-        private static IHost _host;
 
         private static DiscordClient _discord;
         private static LavalinkNode _audioService;
@@ -74,12 +73,14 @@ namespace SilverBotDS
         {
             "anime", "canada", "e",
             "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h",
-            "gaming", "<:kalorichan:839099093552332850>", "kalorichan", 
+            "gaming", "<:kalorichan:839099093552332850>", "kalorichan",
         };
 
         private static readonly Dictionary<ulong, DateTime> XpLevelling = new();
         private static readonly TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
         public static ServiceProvider ServiceProvider { get; private set; }
+        private static readonly Dictionary<string, Tuple<Task, CancellationTokenSource>> RunningTasks = new();
+        private static readonly Dictionary<Guid, Tuple<Task, CancellationTokenSource>> RunningTasksOfSecondRow = new();
 
         private static void Main(string[] args)
         {
@@ -179,10 +180,12 @@ namespace SilverBotDS
                 case LogLevel.Critical:
                     loggerConfiguration = loggerConfiguration.MinimumLevel.Fatal();
                     break;
+
                 case LogLevel.None:
                     break;
+
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(_config.MinimumLogLevel));
+                    throw new NotImplementedException(nameof(_config.MinimumLogLevel));
             }
 
             loggerConfiguration
@@ -195,7 +198,7 @@ namespace SilverBotDS
 
             if (!(id == null || string.IsNullOrEmpty(token)))
             {
-                loggerConfiguration.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong) id, token));
+                loggerConfiguration.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
 
             _log = loggerConfiguration.CreateLogger();
@@ -245,38 +248,38 @@ namespace SilverBotDS
             switch (_config.BrowserType)
             {
                 case 0:
-                {
-                    _log.Verbose("Not using a browser");
-                    break;
-                }
+                    {
+                        _log.Verbose("Not using a browser");
+                        break;
+                    }
                 case 1:
-                {
-                    _log.Verbose("Launching chrome");
-                    services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Chrome,
-                        string.IsNullOrEmpty(_config.DriverLocation)
-                            ? Environment.CurrentDirectory
-                            : _config.DriverLocation));
-                    break;
-                }
+                    {
+                        _log.Verbose("Launching chrome");
+                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Chrome,
+                            string.IsNullOrEmpty(_config.DriverLocation)
+                                ? Environment.CurrentDirectory
+                                : _config.DriverLocation));
+                        break;
+                    }
                 case 2:
-                {
-                    _log.Verbose("Launching firefox");
-                    services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Firefox,
-                        string.IsNullOrEmpty(_config.DriverLocation)
-                            ? Environment.CurrentDirectory
-                            : _config.DriverLocation));
-                    break;
-                }
+                    {
+                        _log.Verbose("Launching firefox");
+                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Firefox,
+                            string.IsNullOrEmpty(_config.DriverLocation)
+                                ? Environment.CurrentDirectory
+                                : _config.DriverLocation));
+                        break;
+                    }
                 case 3:
-                {
-                    _log.Verbose("Using the remoteBrowser");
-                    services.AddSingleton<IBrowser>(new RemoteBrowser(HttpClient));
-                    break;
-                }
+                    {
+                        _log.Verbose("Using the remoteBrowser");
+                        services.AddSingleton<IBrowser>(new RemoteBrowser(HttpClient));
+                        break;
+                    }
                 default:
-                {
-                    throw new NotSupportedException();
-                }
+                    {
+                        throw new NotSupportedException();
+                    }
             }
 
             #endregion Browser fun stuff
@@ -291,39 +294,39 @@ namespace SilverBotDS
             switch (_config.DatabaseType)
             {
                 case 1:
-                {
-                    if (_config != null && !string.IsNullOrEmpty(_config.ConnString))
                     {
-                        services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(_config.ConnString),
-                            ServiceLifetime.Transient);
-                    }
-                    else
-                    {
-                        Uri tmp = new(Environment.GetEnvironmentVariable("DATABASE_URL") ??
-                                      throw new InvalidOperationException());
-                        string[] usernameandpass = tmp.UserInfo.Split(":");
-                        services.AddDbContext<DatabaseContext>(
-                            options => options.UseNpgsql(
-                                $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}"),
-                            ServiceLifetime.Transient);
-                    }
+                        if (_config != null && !string.IsNullOrEmpty(_config.ConnString))
+                        {
+                            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(_config.ConnString),
+                                ServiceLifetime.Transient);
+                        }
+                        else
+                        {
+                            Uri tmp = new(Environment.GetEnvironmentVariable("DATABASE_URL") ??
+                                          throw new InvalidOperationException());
+                            string[] usernameandpass = tmp.UserInfo.Split(":");
+                            services.AddDbContext<DatabaseContext>(
+                                options => options.UseNpgsql(
+                                    $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}"),
+                                ServiceLifetime.Transient);
+                        }
 
-                    break;
-                }
+                        break;
+                    }
                 case 2:
-                {
-                    services.AddDbContext<DatabaseContext>(
-                        options => options.UseSqlite("Filename=./silverbotdatabasev2.db"), ServiceLifetime.Transient);
-                    break;
-                }
+                    {
+                        services.AddDbContext<DatabaseContext>(
+                            options => options.UseSqlite("Filename=./silverbotdatabasev2.db"), ServiceLifetime.Transient);
+                        break;
+                    }
                 case 3:
-                {
-                    var conn = configurationBuilder.GetConnectionString("Kestrel:Certificates:Development:Password");
-                    conn ??= _config.ConnString;
-                    services.AddDbContext<DatabaseContext>(options =>
-                        options.UseSqlServer(conn));
-                    break;
-                }
+                    {
+                        var conn = configurationBuilder.GetConnectionString("Kestrel:Certificates:Development:Password");
+                        conn ??= _config.ConnString;
+                        services.AddDbContext<DatabaseContext>(options =>
+                            options.UseSqlServer(conn));
+                        break;
+                    }
             }
 
             #endregion Database fun stuff
@@ -378,7 +381,7 @@ namespace SilverBotDS
                     services.AddSingleton(_trackingService);
                 }
 
-                services.AddSingleton(new LyricsService(new LyricsOptions {UserAgent = "SilverBot"}));
+                services.AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
             }
 
             if (IsNotNullAndIsNotB(_config.SpotifyClientId, "Spotify_CLIENT_ID") &&
@@ -394,14 +397,14 @@ namespace SilverBotDS
             services.AddSingleton(_log);
             ServiceProvider = services.BuildServiceProvider();
             var context = ServiceProvider.GetService<DatabaseContext>();
-            //Do stuff with the database making sure its up to date. 
+            //Do stuff with the database making sure its up to date.
             await context?.Database.MigrateAsync()!;
             var commands = _discord.UseCommandsNext(new CommandsNextConfiguration
             {
                 Services = ServiceProvider,
                 PrefixResolver = ResolvePrefixAsync
             });
-            var slash = _discord.UseSlashCommands(new SlashCommandsConfiguration() {Services = ServiceProvider});
+            var slash = _discord.UseSlashCommands(new SlashCommandsConfiguration() { Services = ServiceProvider });
             slash.SlashCommandErrored += Slash_SlashCommandErrored;
 
             #region Registering Commands
@@ -421,7 +424,7 @@ namespace SilverBotDS
                     var type = Type.GetType(module);
                     if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
                     {
-                        var fonts = (string[]) type.GetProperty("RequiredFontFamilies").GetValue(null);
+                        var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
                         if (!CheckIfAllFontsAreHere(fonts))
                         {
                             _log.Information(
@@ -432,7 +435,7 @@ namespace SilverBotDS
 
                     if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
                     {
-                        var n = (SilverBotCommandModule) Activator.CreateInstance(type);
+                        var n = (SilverBotCommandModule)Activator.CreateInstance(type);
                         if (await n.ExecuteRequirements(_config))
                         {
                             commands.RegisterCommands(type);
@@ -449,7 +452,7 @@ namespace SilverBotDS
                 }
                 catch (Exception ex)
                 {
-                    _log.Error(ex,"Failed to load module {Module} Exception occured", module);
+                    _log.Error(ex, "Failed to load module {Module} Exception occured", module);
                 }
             }
 
@@ -465,7 +468,7 @@ namespace SilverBotDS
                             var type = assembly.GetType(module.Value);
                             if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
                             {
-                                var fonts = (string[]) type.GetProperty("RequiredFontFamilies").GetValue(null);
+                                var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
                                 if (!CheckIfAllFontsAreHere(fonts))
                                 {
                                     _log.Information(
@@ -476,7 +479,7 @@ namespace SilverBotDS
 
                             if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
                             {
-                                SilverBotCommandModule n = (SilverBotCommandModule) Activator.CreateInstance(type);
+                                SilverBotCommandModule n = (SilverBotCommandModule)Activator.CreateInstance(type);
                                 if (await n.ExecuteRequirements(_config))
                                 {
                                     commands.RegisterCommands(type);
@@ -494,7 +497,7 @@ namespace SilverBotDS
                         }
                         catch (Exception ex)
                         {
-                            _log.Error(ex,"Failed to load module {Module} Exception occured", module.Value);
+                            _log.Error(ex, "Failed to load module {Module} Exception occured", module.Value);
                         }
                     }
                 }
@@ -568,9 +571,10 @@ namespace SilverBotDS
                     _trackingService.BeginTracking();
                 }
                 if (IsNotNullAndIsNotB(_config.FridayTextChannel, 0) &&
-                    IsNotNullAndIsNotB(_config.FridayVoiceChannel, 0) && _config.UseLavaLink)
+                    IsNotNullAndIsNotB(_config.FridayVoiceChannel, 0))
                 {
-                    var waitforfriday = Task.Run(()=>WaitForFridayAsync());
+                    CancellationTokenSource s = new();
+                    RunningTasks.Add("WaitForFridayTask", new(Task.Run(() => WaitForFridayAsync(s.Token), s.Token), s));
                 }
             }
 
@@ -578,43 +582,73 @@ namespace SilverBotDS
                 ActivityType.Watching));
             if (_config.EnableServerStatistics)
             {
-                var statisticsinstance = Task.Run(() => StatisticsMainAsync());
+                CancellationTokenSource s = new();
+                RunningTasks.Add("StatisticsTask", new(Task.Run(() => StatisticsMainAsync(s.Token), s.Token), s));
             }
+            CancellationTokenSource ets = new();
+            RunningTasks.Add("EventsTask", new(Task.Run(RunEventsAsync, ets.Token), ets));
 
-            var eventsinstance = Task.Run(RunEventsAsync);
-            await _discord.UpdateStatusAsync(new("console logs while launching the website module",
-                ActivityType.Watching));
+            if (_config.HostWebsite)
+            {
+                await _discord.UpdateStatusAsync(new("console logs while launching the website module",
+               ActivityType.Watching));
+                _log.Information("Creating host");
 
-            #region Website Fun Time
+                #region Website Fun Time
 
-            _host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
+                var _host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
                 {
                     foreach (var e in services)
                     {
+                        _log.Verbose("Giving an instance of {svcname} to the host", e.ServiceType.Name);
                         s.Add(e);
                     }
+                    _log.Verbose("Giving an instance of the discord client to the host");
+
                     s.AddSingleton(_discord);
-                    /*if (config.UseLavaLink)
-                    {
-                        s.AddSingleton(audioService);
-                    }*/
                     if (_config.AzureSignalR)
                     {
+                        _log.Verbose("Adding azure signalr");
                         services.AddSignalR().AddAzureSignalR();
                     }
                 })
-                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<WebpageStartup>()).UseSerilog(_log)
-                .Build();
+                    .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<WebpageStartup>()).UseSerilog(_log)
+                    .Build();
 
-            #endregion Website Fun Time
+                #endregion Website Fun Time
 
-            var hostwebsite = Task.Run(async () => await _host.RunAsync());
+                CancellationTokenSource wts = new();
+                RunningTasks.Add("WebsiteTask", new(Task.Run(async () => await _host.RunAsync(wts.Token), wts.Token), wts));
+            }
             while (true)
             {
                 _log.Verbose("Updating the status to a random one");
                 //update the status to some random one
                 await _discord.UpdateStatusAsync(ArrayUtils.RandomFromArray(_config.Splashes)
                     .GetDiscordActivity(GetStringDictionary(_discord)));
+                if (_config.CallGCOnSplashChange)
+                {
+                    _log.Verbose("Calling the garbage collector");
+                    GC.Collect();
+                }
+                if (_config.ClearTasks)
+                {
+                    _log.Verbose("Going through the task lists");
+                    foreach (var task in RunningTasks)
+                    {
+                        if (task.Value.Item1.IsCompleted)
+                        {
+                            RunningTasks.Remove(task.Key);
+                        }
+                    }
+                    foreach (var task in RunningTasksOfSecondRow)
+                    {
+                        if (task.Value.Item1.IsCompleted)
+                        {
+                            RunningTasksOfSecondRow.Remove(task.Key);
+                        }
+                    }
+                }
                 //wait the specified time
                 _log.Verbose("Waiting {V}", new TimeSpan(0, 0, 0, 0, _config.MsInterval).Humanize(precision: 5));
                 await Task.Delay(_config.MsInterval);
@@ -630,7 +664,7 @@ namespace SilverBotDS
             }
 
             var db = ServiceProvider.GetService<DatabaseContext>();
-            if (db != null && db.IsBanned(msg.Author.Id))
+            if (db?.IsBanned(msg.Author.Id) == true)
             {
                 return Task.FromResult(-1);
             }
@@ -692,7 +726,7 @@ namespace SilverBotDS
             }
 
             var config = ServiceProvider.GetService<Config>();
-            if (config is {SendErrorsThroughSegment: true})
+            if (config is { SendErrorsThroughSegment: true })
             {
                 var analytics = ServiceProvider.GetService<IAnalyse>();
                 if (analytics is not null)
@@ -723,35 +757,41 @@ namespace SilverBotDS
                             await RespondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
                                 e.Context.Guild != null, e));
                             break;
+
                         case ChecksFailedException cfe:
-                        {
-                            var builder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
-                            var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: builder
-                                    .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
-                                    .WithDescription(
-                                        RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
-                                .ToList();
-                            var interactivity = e.Context.Client.GetInteractivity();
-                            await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
-                                token: new CancellationToken());
-                            break;
-                        }
+                            {
+                                var builder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
+                                var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: builder
+                                        .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
+                                        .WithDescription(
+                                            RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
+                                    .ToList();
+                                var interactivity = e.Context.Client.GetInteractivity();
+                                await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
+                                    token: new CancellationToken());
+                                break;
+                            }
                         case InvalidOverloadException:
-                        case ArgumentException {Message: "Could not find a suitable overload for the command."}:
+                        case ArgumentException { Message: "Could not find a suitable overload for the command." }:
                             await RespondWithContent(string.Format(lang.InvalidOverload, e.Context.CommandName));
                             break;
-                        case InvalidOperationException {Message: "No matching subcommands were found, and this group is not executable."}:
+
+                        case InvalidOperationException { Message: "No matching subcommands were found, and this group is not executable." }:
                             await RespondWithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable);
                             break;
+
                         case UnknownImageFormatException:
                             await RespondWithContent(lang.UnknownImageFormat);
                             break;
+
                         case AttachmentCountIncorrectException aa when aa.AttachmentCount == AttachmentCountIncorrect.TooManyAttachments:
                             await RespondWithContent(lang.WrongImageCount);
                             break;
+
                         case AttachmentCountIncorrectException:
                             await RespondWithContent(lang.NoImageGeneric);
                             break;
+
                         default:
                             await RespondWithContent(lang.GeneralException);
                             break;
@@ -760,7 +800,7 @@ namespace SilverBotDS
             }
 
             _log.Error(e.Exception,
-                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserID}`\n```\nNA\n```",e.Exception.GetType().FullName,e.Context.Guild?.Id.ToString() ?? "None",e.Context.Channel?.Id.ToString(),e.Context.User?.Id.ToString() ?? "None");
+                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserID}`\n```\nNA\n```", e.Exception.GetType().FullName, e.Context.Guild?.Id.ToString() ?? "None", e.Context.Channel?.Id.ToString(), e.Context.User?.Id.ToString() ?? "None");
         }
 
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
@@ -814,38 +854,50 @@ namespace SilverBotDS
             {
                 case RequireRolesAttribute requireRolesAttribute when requireRolesAttribute.RoleNames.Count == 1:
                     return string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]);
+
                 case RequireRolesAttribute requireRolesAttribute:
                     return string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize());
+
                 case RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild):
                     return lang.RequireGuildCheckFailed;
+
                 case RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
                                                                                requireBotPermissions.Permissions != Permissions.All:
                     return string.Format(lang.RequireBotPermisionsCheckFailedSG,
                         requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequireBotPermissionsAttribute requireBotPermissions:
                     return string.Format(lang.RequireBotPermisionsCheckFailedPL,
                         requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild):
                     return lang.RequireGuildCheckFailed;
+
                 case RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All:
                     return string.Format(lang.RequireUserPermisionsCheckFailedSG,
                         userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequireUserPermissionsAttribute userPermissions:
                     return string.Format(lang.RequireUserPermisionsCheckFailedPL,
                         userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild):
                     return lang.RequireGuildCheckFailed;
+
                 case RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
                                                                             userAndBotPermissions.Permissions != Permissions.All:
                     return string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
                         userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequirePermissionsAttribute userAndBotPermissions:
                     return string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
                         userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount:
-                    return (string) typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang);
+                    return (string)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang);
+
                 case RequireAttachmentAttribute attachmentAttribute:
-                    return (string) typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang);
+                    return (string)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang);
             }
 
             return string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize());
@@ -875,32 +927,42 @@ namespace SilverBotDS
             {
                 case RequireRolesAttribute requireRolesAttribute:
                     return requireRolesAttribute.RoleNames.Count == 1 ? string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]) : string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize());
+
                 case RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild):
                     return lang.RequireGuildCheckFailed;
+
                 case RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
                                                                                requireBotPermissions.Permissions != Permissions.All:
                     return string.Format(lang.RequireBotPermisionsCheckFailedSG,
                         requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequireBotPermissionsAttribute requireBotPermissions:
                     return string.Format(lang.RequireBotPermisionsCheckFailedPL,
                         requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild):
                     return lang.RequireGuildCheckFailed;
+
                 case RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All:
                     return string.Format(lang.RequireUserPermisionsCheckFailedSG,
                         userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequireUserPermissionsAttribute userPermissions:
                     return string.Format(lang.RequireUserPermisionsCheckFailedPL,
                         userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild):
                     return lang.RequireGuildCheckFailed;
+
                 case RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
                                                                             userAndBotPermissions.Permissions != Permissions.All:
                     return string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
                         userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequirePermissionsAttribute userAndBotPermissions:
                     return string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
                         userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
+
                 case RequireAttachmentAttribute:
                     throw new NotSupportedException("Attachment checks are not supported for slash commands.");
             }
@@ -949,34 +1011,40 @@ namespace SilverBotDS
                             await RespondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
                                 e.Context.Guild != null, e));
                             break;
-                        case ChecksFailedException cfe:
-                        {
-                            var embedBuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
-                            var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: embedBuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
-                                    .WithDescription(RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
-                                .ToList();
 
-                            var interactivity = e.Context.Client.GetInteractivity();
-                            await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
-                                token: new CancellationToken());
-                            break;
-                        }
+                        case ChecksFailedException cfe:
+                            {
+                                var embedBuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
+                                var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: embedBuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
+                                        .WithDescription(RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
+                                    .ToList();
+
+                                var interactivity = e.Context.Client.GetInteractivity();
+                                await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
+                                    token: new CancellationToken());
+                                break;
+                            }
                         case InvalidOverloadException:
-                        case ArgumentException {Message: "Could not find a suitable overload for the command."}:
+                        case ArgumentException { Message: "Could not find a suitable overload for the command." }:
                             await RespondWithContent(string.Format(lang.InvalidOverload, e.Context.Command.Name));
                             break;
-                        case InvalidOperationException {Message: "No matching subcommands were found, and this group is not executable."}:
+
+                        case InvalidOperationException { Message: "No matching subcommands were found, and this group is not executable." }:
                             await RespondWithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable);
                             break;
+
                         case UnknownImageFormatException:
                             await RespondWithContent(lang.UnknownImageFormat);
                             break;
-                        case AttachmentCountIncorrectException {AttachmentCount: AttachmentCountIncorrect.TooManyAttachments}:
+
+                        case AttachmentCountIncorrectException { AttachmentCount: AttachmentCountIncorrect.TooManyAttachments }:
                             await RespondWithContent(lang.WrongImageCount);
                             break;
+
                         case AttachmentCountIncorrectException aa:
                             await RespondWithContent(lang.NoImageGeneric);
                             break;
+
                         default:
                             await RespondWithContent(lang.GeneralException);
                             break;
@@ -985,20 +1053,24 @@ namespace SilverBotDS
             }
 
             _log.Error(e.Exception,
-                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserId}`\n```\n{MessageContent}\n```",e.Exception.GetType().FullName,e.Context.Guild?.Id.ToString() ?? "None",e.Context.Channel?.Id.ToString(),e.Context.User?.Id.ToString() ?? "None",e.Context.Message.Content);
+                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserId}`\n```\n{MessageContent}\n```", e.Exception.GetType().FullName, e.Context.Guild?.Id.ToString() ?? "None", e.Context.Channel?.Id.ToString(), e.Context.User?.Id.ToString() ?? "None", e.Context.Message.Content);
         }
 
-        public static async Task RunEmojiEvent(PlannedEvent @event)
+        public static Task RunEmojiEvent(PlannedEvent @event)
         {
             if (@event.Type != PlannedEventType.EmojiPoll)
             {
                 throw new ArgumentException("The parameter @event needs to be an EmojiPoll", nameof(@event));
             }
+            return RunEmojiEventAsync(@event);
+        }
 
+        public static async Task RunEmojiEventAsync(PlannedEvent @event)
+        {
             var channel = await _discord.GetChannelAsync(@event.ChannelID);
             if (@event.ResponseMessageID != null)
             {
-                var msg = await channel.GetMessageAsync((ulong) @event.ResponseMessageID);
+                var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
                 var bob = new DiscordEmbedBuilder(msg.Embeds[0]);
                 var yesVotes =
                     (await msg.GetReactionsAsync(DiscordEmoji.FromName(_discord, ":everybodyvotes:"))).Count(x =>
@@ -1026,37 +1098,38 @@ namespace SilverBotDS
                 bob.WithDescription(pollResultText.ToString());
                 await msg.ModifyAsync(bob.Build());
             }
-
             @event.Handled = true;
         }
 
-        public static async Task RunGiveAwayEvent(PlannedEvent @event)
+        public static Task RunGiveAwayEvent(PlannedEvent @event)
         {
-            if (@event.Type != PlannedEventType.GiveAway)
+            if (@event.Type != PlannedEventType.EmojiPoll)
             {
                 throw new ArgumentException("The parameter evnt needs to be an GiveAway", nameof(@event));
             }
+            return RunGiveAwayEventAsync(@event);
+        }
 
+        public static async Task RunGiveAwayEventAsync(PlannedEvent @event)
+        {
             var channel = await _discord.GetChannelAsync(@event.ChannelID);
             if (@event.ResponseMessageID != null)
             {
-                var msg = await channel.GetMessageAsync((ulong) @event.ResponseMessageID);
-                var bob = new DiscordEmbedBuilder(msg.Embeds[0]);
+                var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
                 var people =
                     (await msg.GetReactionsAsync(DiscordEmoji.FromName(_discord, ":everybodyvotes:"))).Where(x =>
                         x.Id != _discord.CurrentUser.Id && !x.IsBot);
                 var discordUsers = people as DiscordUser[] ?? people.ToArray();
-                if (!discordUsers.Any())
+                if (discordUsers.Length == 0)
                 {
                     await channel.SendMessageAsync("Nobody reacted in time :(");
                 }
                 else
                 {
                     await channel.SendMessageAsync(
-                        $"{discordUsers.ElementAt(RandomGenerator.Next(0, discordUsers.Count())).Mention} won {msg.Embeds[0].Title}");
+                        $"{discordUsers[RandomGenerator.Next(0, discordUsers.Length)].Mention} won {msg.Embeds[0].Title}");
                 }
             }
-
             @event.Handled = true;
         }
 
@@ -1082,11 +1155,13 @@ namespace SilverBotDS
                                 switch (evnt.Type)
                                 {
                                     case PlannedEventType.EmojiPoll:
-                                        var emjiev = Task.Run(() => RunEmojiEvent(evnt));
+                                        CancellationTokenSource cts = new(15 * 1000);
+                                        RunningTasksOfSecondRow.Add(Guid.NewGuid(), new(Task.Run(() => RunEmojiEvent(evnt), cts.Token), cts));
                                         break;
 
                                     case PlannedEventType.GiveAway:
-                                        var gvev = Task.Run(() => RunGiveAwayEvent(evnt));
+                                        CancellationTokenSource cts2 = new(15 * 1000);
+                                        RunningTasksOfSecondRow.Add(Guid.NewGuid(), new(Task.Run(() => RunGiveAwayEvent(evnt), cts2.Token), cts2));
                                         break;
 
                                     case PlannedEventType.Reminder:
@@ -1102,7 +1177,7 @@ namespace SilverBotDS
                         }
                         else
                         {
-                            _log.Verbose("removed an {EventType}",evnt.Type);
+                            _log.Verbose("removed an {EventType}", evnt.Type);
                             dbctx.plannedEvents.Remove(evnt);
                             await dbctx.SaveChangesAsync();
                         }
@@ -1117,10 +1192,11 @@ namespace SilverBotDS
             }
         }
 
-        public static async Task StatisticsMainAsync()
+        public static async Task StatisticsMainAsync(CancellationToken ct = default)
         {
             while (true)
             {
+                ct.ThrowIfCancellationRequested();
                 try
                 {
                     _log.Debug("Entered statistics method");
@@ -1138,7 +1214,7 @@ namespace SilverBotDS
                             _log.Debug("Getting the channel with the id {Id}", item2);
                             try
                             {
-                                var category = server.Channels[(ulong) item2];
+                                var category = server.Channels[(ulong)item2];
                                 _log.Debug("Got the channel with the id {Id}", item2);
                                 if (category.Type is ChannelType.Category)
                                 {
@@ -1176,7 +1252,6 @@ namespace SilverBotDS
                                 catch (UnauthorizedException)
                                 {
                                     dbctx.SetServerStatsCategory(item1, null);
-                                    await server.LeaveAsync();
                                     await dbctx.SaveChangesAsync();
                                 }
                             }
@@ -1193,9 +1268,11 @@ namespace SilverBotDS
                 catch (Exception e)
                 {
                     _log.Error(e, "exception happened in stats thread");
+                    ct.ThrowIfCancellationRequested();
                 }
-
-                await Task.Delay(1800000);
+                ct.ThrowIfCancellationRequested();
+                await Task.Delay(1800000, ct);
+                ct.ThrowIfCancellationRequested();
             }
         }
 
@@ -1208,13 +1285,13 @@ namespace SilverBotDS
                     (_lastFriday == 0 || _lastFriday != DateTime.Now.DayOfYear))
                 {
                     _lastFriday = DateTime.Now.DayOfYear;
-                    await ExecuteFridayAsync(ct:ct);
+                    await ExecuteFridayAsync(ct: ct);
                 }
                 else
                 {
                     if (_lastFriday == DateTime.Now.DayOfYear - 1)
                     {
-                        await ExecuteFridayAsync(false,ct);
+                        await ExecuteFridayAsync(false, ct);
                         _lastFriday = 0;
                     }
                 }
@@ -1224,7 +1301,7 @@ namespace SilverBotDS
             }
         }
 
-        public static async Task ExecuteFridayAsync(bool friday = true,CancellationToken ct=default)
+        public static async Task ExecuteFridayAsync(bool friday = true, CancellationToken ct = default)
         {
             ct.ThrowIfCancellationRequested();
             if (friday)
@@ -1238,7 +1315,7 @@ namespace SilverBotDS
                 ct.ThrowIfCancellationRequested();
             }
             else
-            {                
+            {
                 ct.ThrowIfCancellationRequested();
                 var channel = await _discord.GetChannelAsync(_config.FridayTextChannel);
                 ct.ThrowIfCancellationRequested();
@@ -1265,7 +1342,7 @@ namespace SilverBotDS
                 }
                 else
                 {
-                    o = new UserExperience {Id = id, XP = 1};
+                    o = new UserExperience { Id = id, XP = 1 };
                     context.userExperiences.Add(o);
                     await context.SaveChangesAsync();
                 }

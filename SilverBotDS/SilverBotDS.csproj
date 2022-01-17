@@ -20,6 +20,7 @@
     <ItemGroup>
         <None Remove="Exceptions\NewFile.txt" />
         <None Remove="Templates\adventure_time_template.png" />
+        <None Remove="Templates\cement-seal-clear.gif" />
         <None Remove="Templates\happy_new_year_template.png" />
         <None Remove="Templates\joker_laugh.gif" />
         <None Remove="Templates\motivator_template.png" />
@@ -27,6 +28,7 @@
         <None Remove="Templates\weeb_reliable_template.png" />
     </ItemGroup>
     <ItemGroup>
+        <EmbeddedResource Include="Templates\cement-seal-clear.gif" />
         <EmbeddedResource Include="Templates\joker_laugh.gif" />
     </ItemGroup>
     <ItemGroup>

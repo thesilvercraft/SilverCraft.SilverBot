@@ -79,10 +79,7 @@ public class Language
     /// </summary>
     public string DblaReturnedNull { get; set; } = "Something went wrong, it's probably on my end.";
 
-    /// <summary>
-    ///     must be EN or DE for useless facts
-    /// </summary>
-    public string LangCodeForUselessFacts { get; set; } = "en";
+  
 
     //Music related
     /// <summary>
@@ -458,7 +455,7 @@ public class Language
     public string XPCommandSelf { get; set; } = "You have {0} XP, level {1}";
     public string XPCommandOther { get; set; } = "They have {0} XP, level {1}";
     public string XPCommandGeneralFail { get; set; } = "Ooops the database broke, please dm an SilverBot admin";
-
+    public string XPCommandCardSuccess { get; set; } = "Here is your xp card";
     public string XPCommandFailSelf { get; set; } =
         "It appears that something either went wrong or you do not have any xp.";
 

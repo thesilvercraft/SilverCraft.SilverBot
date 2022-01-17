@@ -20,7 +20,6 @@ namespace SilverBotDS.Commands;
 [Category("General")]
 public sealed class Genericcommands : BaseCommandModule
 {
-#pragma warning disable CA1822 // Mark members as static
 
     public Config Config { private get; set; }
     public HttpClient HttpClient { private get; set; }
@@ -99,7 +98,7 @@ public sealed class Genericcommands : BaseCommandModule
     }
 
     [Command("invite")]
-    [Description("Invite me to your place")]
+    [Description("Invite me to your server")]
     public async Task Invite(CommandContext ctx)
     {
         await new DiscordMessageBuilder()
@@ -108,28 +107,6 @@ public sealed class Genericcommands : BaseCommandModule
                 $"{ctx.User.Mention} https://discord.com/api/oauth2/authorize?client_id={ctx.Client.CurrentUser.Id}&permissions=1278602326&scope=bot%20applications.commands")
             .WithAllowedMentions(Mentions.None)
             .SendAsync(ctx.Channel);
-    }
-
-    [Command("reality")]
-    [Description("JUST MONIKA")]
-    [Hidden]
-    public async Task Reality(CommandContext ctx)
-    {
-        await new DiscordMessageBuilder()
-            .WithReply(ctx.Message.Id)
-            .WithContent(
-                "Every day, I imagine a future where I can be with you\nIn my hand is a pen that will write a poem of me and you\nThe ink flows down into a dark puddle.\nJust move your hand - write the way into his heart!\nBut in this world of infinite choices,\nWhat will it take just to find that special day?\nHave I found everybody a fun assignment to do today?\nWhen you're here, everything that we do is fun for them anyway.\nWhen I can't even read my own feelings\nWhat good are words when a smile says it all?\nAnd if this world won't write me an ending\nWhat will it take just for me to end it all?\nDoes my pen only write bitter words for those who are dear to me?\nIs it love if I take you, or is it love if I set you free?\nThe ink flows down into a dark puddle\nHow can I write love into reality?\nAnd in your reality, if I don't know how to love you\nI'll leave you be")
-            .SendAsync(ctx.Channel);
-    }
-
-    [Command("monika")]
-    [Description("JUST MONIKA")]
-    [Hidden]
-    public async Task Monika(CommandContext ctx)
-    {
-        await SimpleImageMeme(ctx,
-            "https://static.wikia.nocookie.net/doki-doki-literature-club/images/e/ef/Monika_Illustration.png/revision/latest?cb=20190319051314",
-            "Monika", "Just monika");
     }
 
     [Command("ping")]
@@ -210,37 +187,6 @@ public sealed class Genericcommands : BaseCommandModule
             .WithEmbed(embedBuilder.Build())
             .SendAsync(ctx.Channel);
     }
-
-    [Command("nou")]
-    public async Task No_U(CommandContext ctx)
-    {
-        await SimpleImageMeme(ctx, "https://i.kym-cdn.com/photos/images/facebook/001/441/633/3c5.jpg");
-    }
-
-    [Command("nou")]
-    public async Task No_U(CommandContext ctx, DiscordMember member)
-    {
-        await SimpleImageMeme(ctx, "https://i.kym-cdn.com/photos/images/facebook/001/441/633/3c5.jpg",
-            content: member.Mention);
-    }
-
-    [Command("ejectmax")]
-    public async Task EjectMax(CommandContext ctx)
-    {
-        await SimpleImageMeme(ctx,
-            "https://cdn.discordapp.com/attachments/736664393630220289/786297198404304987/eject.gif");
-    }
-
-    [Command("booty")]
-    [Hidden]
-    public async Task Booty(CommandContext ctx)
-    {
-        await SimpleImageMeme(ctx,
-            "https://media1.tenor.com/images/ce2e9a0a24f384a9486acfac9bf7f5c1/tenor.gif?itemid=17561816",
-            content:
-            "picture📸my🙋\u200D♂️booty🍑up🆙in 3D🤩I'll 🙋\u2000♂️shake🤝 my🙋\u200D♂️ booty🍑in my🙋\u200D♂️own movie");
-    }
-
     [Command("monke")]
     [Aliases(":monkey:", "🐒", "🐵", ":monkey_face:")]
     [Description("Reject humanity return to monke")]
@@ -248,92 +194,12 @@ public sealed class Genericcommands : BaseCommandModule
     {
         await SimpleImageMeme(ctx, "https://i.kym-cdn.com/photos/images/newsfeed/001/867/677/40d.jpg");
     }
-
-    [Command("uselessfact")]
-    [Description("Wanna hear some useless fact? Just ask me")]
-    public async Task UselessFact(CommandContext ctx)
-    {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        var client = HttpClient;
-        var rm = await client.GetAsync(
-            $"https://uselessfacts.jsph.pl/random.md?language={lang.LangCodeForUselessFacts}");
-        await new DiscordMessageBuilder()
-            .WithReply(ctx.Message.Id)
-            .WithEmbed(new DiscordEmbedBuilder()
-                .WithTitle(lang.UselessFact)
-                .WithDescription(await rm.Content.ReadAsStringAsync())
-                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
-                .WithColor(await ColorUtils.GetSingleAsync())
-                .Build())
-            .SendAsync(ctx.Channel);
-    }
-
     public static async Task<bool> IsAtSilverCraftAsync(DiscordClient discord, DiscordUser b, Config cnf)
     {
         return (await discord.GetGuildAsync(cnf.ServerId)).Members.ContainsKey(b.Id);
     }
 
-    [Command("bot")]
-    [Description("Don't know what some new bot your friends invited here but you dont want to google? just ask me ")]
-    public async Task WhoIsBot(CommandContext ctx, [Description("the bot")] DiscordUser user)
-    {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (string.IsNullOrEmpty(Config.TopggSidToken) ||
-            string.Equals(Config.TopggSidToken, "none", StringComparison.OrdinalIgnoreCase))
-        {
-            await new DiscordMessageBuilder()
-                .WithReply(ctx.Message.Id)
-                .WithEmbed(new DiscordEmbedBuilder()
-                    .WithTitle(lang.CommandIsDisabled)
-                    .WithColor(await ColorUtils.GetSingleAsync()))
-                .SendAsync(ctx.Channel);
-            return;
-        }
-
-        if (!user.IsBot)
-        {
-            await new DiscordMessageBuilder()
-                .WithReply(ctx.Message.Id)
-                .WithEmbed(new DiscordEmbedBuilder()
-                    .WithTitle(lang.UserIsntBot)
-                    .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
-                    .WithColor(await ColorUtils.GetSingleAsync())
-                    .Build())
-                .SendAsync(ctx.Channel);
-            return;
-        }
-
-        Dbla.Client client = new(Config.TopggSidToken, Config.TopggIsSelfbot);
-        var bot = await client.GetViaIdAsync(user.Id);
-
-        if (bot == null)
-        {
-            await new DiscordMessageBuilder()
-                .WithReply(ctx.Message.Id)
-                .WithEmbed(new DiscordEmbedBuilder()
-                    .WithTitle(lang.DblaReturnedNull)
-                    .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
-                    .WithColor(await ColorUtils.GetSingleAsync())
-                    .Build())
-                .SendAsync(ctx.Channel);
-        }
-        else
-        {
-            await new DiscordMessageBuilder()
-                .WithReply(ctx.Message.Id)
-                .WithEmbed(new DiscordEmbedBuilder()
-                    .WithAuthor(user.Username, bot.Website, user.GetAvatarUrl(ImageFormat.Auto))
-                    .WithThumbnail(user.GetAvatarUrl(ImageFormat.Auto))
-                    .WithDescription(bot.Shortdesc)
-                    .AddField(lang.PrefixUsedTopgg, "`" + bot.Prefix + "`")
-                    .WithUrl(bot.Website)
-                    .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
-                    .WithColor(await ColorUtils.GetSingleAsync())
-                    .Build())
-                .SendAsync(ctx.Channel);
-        }
-    }
-
+    //TODO reimplement "bot" command
     [Command("user")]
     [Description("Get the info I know about a specified user")]
     public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
@@ -366,5 +232,4 @@ public sealed class Genericcommands : BaseCommandModule
         await Userinfo(ctx, ctx.User);
     }
 
-#pragma warning restore CA1822 // Mark members as static
 }

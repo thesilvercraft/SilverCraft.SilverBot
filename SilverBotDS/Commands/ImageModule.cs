@@ -428,8 +428,9 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         Font jokerFont = new(_jokerFontFamily, img.Width / 10);
         var dr = new DrawingOptions();
         dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
+        dr.TextOptions.VerticalAlignment = VerticalAlignment.Center;
         dr.TextOptions.WrapTextWidth = img.Width;
-        img.Mutate(m => m.DrawText(dr, text, jokerFont, Brushes.Solid(Color.Black), new PointF(0, 20f)));
+        img.Mutate(m => m.DrawText(dr, text, jokerFont, Brushes.Solid(Color.Black), new PointF(0, 124f)));
         await using MemoryStream outStream = new();
         await img.SaveAsync(outStream, new GifEncoder());
         outStream.Position = 0;

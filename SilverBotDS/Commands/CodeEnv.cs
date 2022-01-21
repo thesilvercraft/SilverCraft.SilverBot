@@ -7,13 +7,6 @@ namespace SilverBotDS.Commands;
 
 public class CodeEnv
 {
-    public static readonly string Monika = "Just Monika.";
-    public static readonly string Waifu = Monika;
-    public static readonly string L = "л";
-    public static readonly string Wbubbler = "вбубблер";
-    public static readonly bool IsSilverAWeeb = true;
-    public static readonly string DdlcPlus = "hype";
-
     public CodeEnv(CommandContext context, Config config, DatabaseContext dbctx)
     {
         Ctx = context;

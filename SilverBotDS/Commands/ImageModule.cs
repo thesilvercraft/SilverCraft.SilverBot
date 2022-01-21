@@ -249,7 +249,6 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     }
 
     [Command("resize")]
-    //[RequireAttachment(argumentCountThatOverloadsCheck: 3)]
     public async Task Resize(CommandContext ctx, [Description("Width")] int x = 0, [Description("Height")] int y = 0,
         IImageFormat format = null)
     {
@@ -410,6 +409,40 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         {
             await SendImageStream(ctx, outStream,
                 content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.", lang: lang);
+        }
+    }
+
+    [Command("seal")]
+    [Description("He was forced to use Microsoft Windows when he was 6")]
+    public async Task Seal(CommandContext ctx, [RemainingText] string text)
+    {
+        await ctx.TriggerTypingAsync();
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        using var img = await Image.LoadAsync(
+            Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                "SilverBotDS.Templates.cement-seal-clear.gif"
+            ) ?? throw new TemplateReturningNullException(
+                "SilverBotDS.Templates.cement-seal-clear.gif"
+            )
+        );
+        Font jokerFont = new(_jokerFontFamily, img.Width / 10);
+        var dr = new DrawingOptions();
+        dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
+        dr.TextOptions.VerticalAlignment = VerticalAlignment.Center;
+        dr.TextOptions.WrapTextWidth = img.Width;
+        img.Mutate(m => m.DrawText(dr, text, jokerFont, Brushes.Solid(Color.Black), new PointF(0, 124f)));
+        await using MemoryStream outStream = new();
+        await img.SaveAsync(outStream, new GifEncoder());
+        outStream.Position = 0;
+        if (outStream.Length > MaxBytes)
+        {
+            await Send_img_plsAsync(
+                ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang
+            ).ConfigureAwait(false);
+        }
+        else
+        {
+            await SendImageStream(ctx, outStream, "sbfail.gif", "there", lang);
         }
     }
 

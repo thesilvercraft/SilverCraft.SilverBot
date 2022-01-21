@@ -17,7 +17,7 @@ namespace SilverBotDS.Objects;
 [Serializable]
 public class Config
 {
-    private const ulong CurrentConfVer = 36;
+    private const ulong CurrentConfVer = 41;
 
     [XmlDescription("Array of prefixes the bot will respond to")]
     public string[] Prefix { get; set; } =
@@ -70,11 +70,13 @@ public class Config
         typeof(Webshot).FullName
     };
 
-    [XmlDescription("What modules should silverbot load from external dlls")]
+    [XmlDescription("What services should silverbot load from external dlls")]
+    public SerializableDictionary<string, string> ServicesToLoadExternal { get; set; } = new();
 
+    [XmlDescription("What modules should silverbot load from external dlls")]
     public SerializableDictionary<string, string> ModulesToLoadExternal { get; set; } = new()
     {
-        {"SilverBotDS.AnimeModule.dll", "SilverBotDS.Anime.Anime"}
+        { "SilverBotDS.AnimeModule.dll", "SilverBotDS.Anime.Anime" }
     };
 
     [XmlDescription("Allow silverbot to use the new experimental snowdplayer")]
@@ -92,6 +94,15 @@ public class Config
     [XmlDescription("(ulong)Id of main server")]
     public ulong ServerId { get; set; } = 679353407667961877;
 
+    [XmlDescription("Call the garbage collector when the splash changes (the gc is just snake oil)")]
+    public bool CallGCOnSplashChange { get; set; } = false;
+
+    [XmlDescription("Should this instance of silverbot host a webserver?")]
+    public bool HostWebsite { get; set; } = true;
+
+    [XmlDescription("Should this instance of silverbot clear dead tasks? (answer is usually yes unless you are debugging)")]
+    public bool ClearTasks { get; set; } = true;
+
     [XmlDescription(
         "Interval to use so discord dont ban us, in ms, is int32 so use -1 if you want no splash changes, defaults to 30m (1800000ms)")]
     public int MsInterval { get; set; } = 1800000;
@@ -105,8 +116,8 @@ public class Config
     [XmlDescription("Webhook for logging")]
     public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
 
-    [XmlDescription("Token used for bot command, leave 'None' to disable")]
-    public string TopggSidToken { get; set; } = "None";
+    [XmlDescription("Url used for bot command, leave 'None' to disable")]
+    public string BotInfoUrl { get; set; } = "https://silverdiamond.cf/silvercraftbot/bots/{id}.md";
 
     [XmlDescription("Set true if its a sid cookie, false if a bot one")]
     public bool TopggIsSelfbot { get; set; } = true;
@@ -212,22 +223,28 @@ public class Config
     public string SegmentPublicSource { get; set; } = "Segment_Key";
     public bool SendErrorsThroughSegment { get; set; } = false;
 
+    [XmlDescription("Webhooks for archiving")]
+    public string[] ArchiveWebhooks { get; set; } = new[] { "https://discordapp.com/api/webhooks/id/key" };
+
+    [XmlDescription("Where the hell do we get our data from")]
+    public ulong[] ChannelsToArchivePicturesFrom { get; set; } = new[] { 929056836005560421uL };
+
     [XmlDescription(
         "Song aliases, It can be any kind of url or search term (It also supports SilverBotPlaylist files)")]
     public SerializableDictionary<string, string> SongAliases { get; set; } = new()
     {
-        {"special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8"},
-        {"meme playlist", "https://www.youtube.com/playlist?list=PLiiTWcm0RsKj8toM1CoxDbjDZftLYDFo1"},
-        {"evening mix", "https://www.youtube.com/playlist?list=PLiiTWcm0RsKhoGLQA84m1ag9QV5AH1usW"},
-        {"kae chill beats", "https://www.youtube.com/playlist?list=PLB7khNwMQ_sPGMqBYhS3_3u57U33JK2jB"},
-        {"spirit phone", "https://music.youtube.com/playlist?list=OLAK5uy_k-gjwrMLQJbpBbYgWuTv0FYiws5aXkoG0"},
-        {"mouth moods", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e57ElPzTNKW0XHE1wisqr5H"},
-        {"mouth silence", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e6F0to07duRPcEclXq_bYta"},
-        {"mouth sounds", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e5p_f8YmH2jk23Zvq_h-UE-"},
-        {"view monster", "https://www.youtube.com/playlist?list=PL621AB9949A35F306"},
-        {"doug stream music", "https://www.youtube.com/playlist?list=PLzTxt5iYdhzifPXw_g0hWp0YgFetgazuv"},
-        {"ninja tuna", "https://music.youtube.com/playlist?list=OLAK5uy_lYrDqWbPEMCqxcBSOdaMWonNJzP24mLhA"},
-        {"antenna5", "http://antenna5stream.neotel.mk:8000/live128"}
+        { "special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8" },
+        { "meme playlist", "https://www.youtube.com/playlist?list=PLiiTWcm0RsKj8toM1CoxDbjDZftLYDFo1" },
+        { "evening mix", "https://www.youtube.com/playlist?list=PLiiTWcm0RsKhoGLQA84m1ag9QV5AH1usW" },
+        { "kae chill beats", "https://www.youtube.com/playlist?list=PLB7khNwMQ_sPGMqBYhS3_3u57U33JK2jB" },
+        { "spirit phone", "https://music.youtube.com/playlist?list=OLAK5uy_k-gjwrMLQJbpBbYgWuTv0FYiws5aXkoG0" },
+        { "mouth moods", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e57ElPzTNKW0XHE1wisqr5H" },
+        { "mouth silence", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e6F0to07duRPcEclXq_bYta" },
+        { "mouth sounds", "https://www.youtube.com/playlist?list=PL4Nm4rhtI5e5p_f8YmH2jk23Zvq_h-UE-" },
+        { "view monster", "https://www.youtube.com/playlist?list=PL621AB9949A35F306" },
+        { "doug stream music", "https://www.youtube.com/playlist?list=PLzTxt5iYdhzifPXw_g0hWp0YgFetgazuv" },
+        { "ninja tuna", "https://music.youtube.com/playlist?list=OLAK5uy_lYrDqWbPEMCqxcBSOdaMWonNJzP24mLhA" },
+        { "antenna5", "http://antenna5stream.neotel.mk:8000/live128" }
     };
 
     [XmlDescription(
@@ -442,12 +459,12 @@ public class Config
                 if (e.GetType() == typeof(XmlDescriptionAttribute))
                 {
                     xmlDocument = XmlUtils.CommentBeforeObject(xmlDocument, $"/Config/{i.Name}",
-                    ((XmlDescriptionAttribute) e).Description);
+                    ((XmlDescriptionAttribute)e).Description);
                 }
                 else if (e.GetType() == typeof(XmlCommentInsideAttribute))
                 {
                     xmlDocument = XmlUtils.CommentInObject(xmlDocument, $"/Config/{i.Name}",
-                    ((XmlCommentInsideAttribute) e).Comment);
+                    ((XmlCommentInsideAttribute)e).Comment);
                 }
             }
         }
@@ -483,7 +500,6 @@ public class Config
         }
     }
 
-    
     public static async Task<Config> GetAsync()
     {
         var serializer = new XmlSerializer(typeof(Config));
@@ -492,7 +508,7 @@ public class Config
             var conf = new Config
             {
                 ConfigVer = CurrentConfVer
-            }; 
+            };
             if (Console.IsInputRedirected && Console.IsOutputRedirected && Environment.UserInteractive && Console.WindowHeight > 0)
             {
                 Console.WriteLine("Would you like help creating the config? (y/n)");
@@ -506,7 +522,7 @@ public class Config
                     {
                         Console.WriteLine("Do you want silverbot to automatically download and start lavalink?");
                         conf.AutoDownloadAndStartLavalink = ConsoleInputHelper.GetBoolFromConsole();
-                        if(conf.AutoDownloadAndStartLavalink)
+                        if (conf.AutoDownloadAndStartLavalink)
                         {
                             Console.WriteLine("Where do you store your java executable? (type java or java.exe if in path) (E.g. C:\\Program Files\\Java\\jdk-11.0.2\\bin\\java.exe)");
                             conf.JavaLoc = Console.ReadLine();
@@ -514,7 +530,7 @@ public class Config
                     }
                     conf.BrowserType = 0;
                     Console.WriteLine("What kind of database will you be using? (1 = postgres, 2 = sqllite (DEFAULT), 3 = azure) (using sqllite is the default and recommended for small instances and other databases might might not work properly)");
-                    conf.DatabaseType =  int.TryParse(Console.ReadLine(), out var dbtype) ? dbtype : 2;
+                    conf.DatabaseType = int.TryParse(Console.ReadLine(), out var dbtype) ? dbtype : 2;
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Please manually review the generated config as this generator is not even close to being finished");
                 }
@@ -531,8 +547,8 @@ public class Config
         Config cnf = null;
         using (var fs = new StreamReader("silverbot.xml"))
         {
-            cnf = (Config) serializer.Deserialize(fs);
-            if (cnf is {ConfigVer: not CurrentConfVer})
+            cnf = (Config)serializer.Deserialize(fs);
+            if (cnf is { ConfigVer: not CurrentConfVer })
             {
                 fs.Dispose();
                 await OutdatedConfigTask(cnf);

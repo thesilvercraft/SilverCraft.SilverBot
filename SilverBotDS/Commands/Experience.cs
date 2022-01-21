@@ -196,7 +196,8 @@ public class Experience : SilverBotCommandModule, IRequireFonts
         }
 
         outStream.Position = 0;
-        await ImageModule.SendImageStream(ctx, outStream);
+        var lang = await  Language.GetLanguageFromCtxAsync(ctx);
+        await ImageModule.SendImageStream(ctx, outStream,lang:lang,content:lang.XPCommandCardSuccess);
     }
 
     [Command("xpcard")]
@@ -208,7 +209,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
     private BigInteger GetNeededXpForNextLevel(BigInteger xp)
     {
         BigInteger e = 69;
-        var l = 1;
+        BigInteger l = 1;
         while (xp / e != 0)
         {
             l++;
@@ -221,7 +222,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
     private double GetProgressToNextLevel(BigInteger xp)
     {
         BigInteger e = 69;
-        var l = 1;
+        BigInteger l = 1;
         while (xp / e != 0)
         {
             l++;
@@ -234,7 +235,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
     private BigInteger GetLevel(BigInteger xp)
     {
         BigInteger e = 69;
-        var l = 1;
+        BigInteger l = 1;
         while (xp / e != 0)
         {
             l++;

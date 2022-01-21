@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -395,6 +398,99 @@ namespace SilverBotDS
             }
 
             services.AddSingleton(_log);
+            object CreateInstance(Type t, IServiceProvider services)
+            {
+                var ti = t.GetTypeInfo();
+                var constructors = ti.DeclaredConstructors
+                    .Where(xci => xci.IsPublic)
+                    .ToArray();
+
+                if (constructors.Length != 1)
+                    throw new ArgumentException("Specified type does not contain a public constructor or contains more than one public constructor.");
+
+                var constructor = constructors[0];
+                var constructorArgs = constructor.GetParameters();
+                var args = new object[constructorArgs.Length];
+
+                if (constructorArgs.Length != 0 && services == null)
+                    throw new InvalidOperationException("Dependency collection needs to be specified for parameterized constructors.");
+
+                // inject via constructor
+                if (constructorArgs.Length != 0)
+                    for (var i = 0; i < args.Length; i++)
+                        args[i] = services.GetRequiredService(constructorArgs[i].ParameterType);
+
+                var moduleInstance = Activator.CreateInstance(t, args);
+
+                // inject into properties
+                var props = t.GetRuntimeProperties().Where(xp => xp.CanWrite && xp.SetMethod != null && !xp.SetMethod.IsStatic && xp.SetMethod.IsPublic);
+                foreach (var prop in props)
+                {
+                    if (prop.GetCustomAttribute<DSharpPlus.CommandsNext.Attributes.DontInjectAttribute>() != null)
+                        continue;
+
+                    var service = services.GetService(prop.PropertyType);
+                    if (service == null)
+                        continue;
+
+                    prop.SetValue(moduleInstance, service);
+                }
+
+                // inject into fields
+                var fields = t.GetRuntimeFields().Where(xf => !xf.IsInitOnly && !xf.IsStatic && xf.IsPublic);
+                foreach (var field in fields)
+                {
+                    if (field.GetCustomAttribute<DSharpPlus.CommandsNext.Attributes.DontInjectAttribute>() != null)
+                        continue;
+
+                    var service = services.GetService(field.FieldType);
+                    if (service == null)
+                        continue;
+
+                    field.SetValue(moduleInstance, service);
+                }
+
+                return moduleInstance;
+            }
+            foreach (var group in _config.ServicesToLoadExternal.GroupBy(x => x.Key))
+            {
+                if (File.Exists(group.Key))
+                {
+                    var assembly = Assembly.LoadFrom(group.Key);
+                    foreach (var module in group)
+                    {
+                        try
+                        {
+                            var t = assembly.GetType(module.Value);
+                            if (t.GetInterfaces().Contains(typeof(IRequireFonts)))
+                            {
+                                var fonts = (string[])t.GetProperty("RequiredFontFamilies").GetValue(null);
+                                if (!CheckIfAllFontsAreHere(fonts))
+                                {
+                                    _log.Information(
+                                        "Module {Module} won't be loaded as its requirements weren't met, the font/fonts {Fonts} is/are missing",
+                                        module, string.Join(',', fonts));
+                                }
+                            }
+
+                            if (t.GetInterfaces().Contains(typeof(IService)))
+                            {
+                                var thing = CreateInstance(t, services.BuildServiceProvider());
+                                await ((IService)thing).Start();
+                                services.AddSingleton(thing);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _log.Error(ex, "Failed to load service {Module} Exception occured", module.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    _log.Information("Services from the {File} won't be loaded as its file doesn't exist", group.Key);
+                }
+            }
             ServiceProvider = services.BuildServiceProvider();
             var context = ServiceProvider.GetService<DatabaseContext>();
             //Do stuff with the database making sure its up to date.
@@ -580,6 +676,100 @@ namespace SilverBotDS
 
             await _discord.UpdateStatusAsync(new("console logs while configuring server statistics",
                 ActivityType.Watching));
+
+            if (_config.ChannelsToArchivePicturesFrom.Length > 0 && (_config.ArchiveWebhooks.Length > 1 || (_config.ArchiveWebhooks.Length == 1 && _config.ArchiveWebhooks[0] != "https://discordapp.com/api/webhooks/id/key")))
+            {
+                DiscordWebhookClient webhookClient = new();
+                foreach (var aa in _config.ArchiveWebhooks)
+                {
+                    WebHookUtils.ParseWebhookUrlNullable(aa, out ulong? ida, out string tokena);
+                    if (ida is not null && !string.IsNullOrWhiteSpace(tokena))
+                    {
+                        await webhookClient.AddWebhookAsync(ida.Value, tokena);
+                    }
+                }
+                _log.Information("Archive webhooks configured");
+                async Task OnDiscordOnMessagewhatever(DiscordClient e, DiscordMessage a)
+                {
+                    if (_config.ChannelsToArchivePicturesFrom.Contains(a.Channel.Id))
+                    {
+                        Dictionary<string, Stream> files = new();
+                        foreach (var attachment in a.Attachments)
+                        {
+                            await HttpClient.GetAsync(attachment.Url)
+                                .ContinueWith(async (t) =>
+                                {
+                                    if (t.IsCompletedSuccessfully)
+                                    {
+                                        files.Add(attachment.FileName, await t.Result.Content.ReadAsStreamAsync());
+                                    }
+                                });
+                        }
+
+                        if (a.Embeds.Count > 0)
+                        {
+                            foreach (var embed in a.Embeds)
+                            {
+                                if (embed.Image != null)
+                                {
+                                    await HttpClient.GetAsync(embed.Image.Url.ToUri())
+                                        .ContinueWith(async (t) =>
+                                        {
+                                            if (t.IsCompletedSuccessfully)
+                                            {
+                                                files.Add(Path.GetFileName(embed.Image.Url.ToUri().AbsolutePath), await t.Result.Content.ReadAsStreamAsync());
+                                            }
+                                        });
+                                }
+                                if (embed.Thumbnail != null)
+                                {
+                                    await HttpClient.GetAsync(embed.Thumbnail.Url.ToUri())
+                                        .ContinueWith(async (t) =>
+                                        {
+                                            if (t.IsCompletedSuccessfully)
+                                            {
+                                                files.Add(Path.GetFileName(embed.Thumbnail.Url.ToUri().AbsolutePath), await t.Result.Content.ReadAsStreamAsync());
+                                            }
+                                        });
+                                }
+                            }
+                        }
+                        if (a.Content.Length > 0)
+                        {
+                            files.Add("message.txt", new MemoryStream(Encoding.UTF8.GetBytes(a.Content)));
+                        }
+                        files.Add("message.json", new MemoryStream(Encoding.UTF8.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(a))));
+                        var zipFile = new MemoryStream();
+                        var zip = new ZipArchive(zipFile, ZipArchiveMode.Create, true);
+                        foreach (var (key, value) in files)
+                        {
+                            var entry = zip.CreateEntry(key);
+                            var stream = entry.Open();
+                            value.Position = 0;
+                            await value.CopyToAsync(stream);
+                            stream.Close();
+                        }
+                        var dwb = new DiscordWebhookBuilder();
+                        foreach (var file in files)
+                        {
+                            file.Value.Position = 0;
+                            dwb.AddFile(file.Key, file.Value);
+                        }
+                        zipFile.Position = 0;
+                        dwb.AddFile("message.zip", zipFile);
+                        dwb.AddEmbeds(a.Embeds);
+                        dwb.WithContent(a.Content);
+                        await webhookClient.BroadcastMessageAsync(dwb);
+                        await zipFile.DisposeAsync();
+                        foreach (var file in files)
+                        {
+                            await file.Value.DisposeAsync();
+                        }
+                    }
+                }
+                _discord.MessageCreated += (e, a) => OnDiscordOnMessagewhatever(e, a.Message);
+                _discord.MessageUpdated += (e, a) => OnDiscordOnMessagewhatever(e, a.Message);
+            }
             if (_config.EnableServerStatistics)
             {
                 CancellationTokenSource s = new();
@@ -620,6 +810,7 @@ namespace SilverBotDS
                 CancellationTokenSource wts = new();
                 RunningTasks.Add("WebsiteTask", new(Task.Run(async () => await _host.RunAsync(wts.Token), wts.Token), wts));
             }
+            _log.Information("Booted up");
             while (true)
             {
                 _log.Verbose("Updating the status to a random one");
@@ -634,19 +825,13 @@ namespace SilverBotDS
                 if (_config.ClearTasks)
                 {
                     _log.Verbose("Going through the task lists");
-                    foreach (var task in RunningTasks)
+                    foreach (var task in RunningTasks.Where(task => task.Value.Item1.IsCompleted))
                     {
-                        if (task.Value.Item1.IsCompleted)
-                        {
-                            RunningTasks.Remove(task.Key);
-                        }
+                        RunningTasks.Remove(task.Key);
                     }
-                    foreach (var task in RunningTasksOfSecondRow)
+                    foreach (var task in RunningTasksOfSecondRow.Where(task => task.Value.Item1.IsCompleted))
                     {
-                        if (task.Value.Item1.IsCompleted)
-                        {
-                            RunningTasksOfSecondRow.Remove(task.Key);
-                        }
+                        RunningTasksOfSecondRow.Remove(task.Key);
                     }
                 }
                 //wait the specified time

@@ -17,7 +17,7 @@ namespace SilverBotDS.Objects;
 [Serializable]
 public class Config
 {
-    private const ulong CurrentConfVer = 39;
+    private const ulong CurrentConfVer = 41;
 
     [XmlDescription("Array of prefixes the bot will respond to")]
     public string[] Prefix { get; set; } =
@@ -69,6 +69,9 @@ public class Config
         typeof(AdminCommands).FullName,
         typeof(Webshot).FullName
     };
+
+    [XmlDescription("What services should silverbot load from external dlls")]
+    public SerializableDictionary<string, string> ServicesToLoadExternal { get; set; } = new();
 
     [XmlDescription("What modules should silverbot load from external dlls")]
     public SerializableDictionary<string, string> ModulesToLoadExternal { get; set; } = new()
@@ -219,6 +222,12 @@ public class Config
 
     public string SegmentPublicSource { get; set; } = "Segment_Key";
     public bool SendErrorsThroughSegment { get; set; } = false;
+
+    [XmlDescription("Webhooks for archiving")]
+    public string[] ArchiveWebhooks { get; set; } = new[] { "https://discordapp.com/api/webhooks/id/key" };
+
+    [XmlDescription("Where the hell do we get our data from")]
+    public ulong[] ChannelsToArchivePicturesFrom { get; set; } = new[] { 929056836005560421uL };
 
     [XmlDescription(
         "Song aliases, It can be any kind of url or search term (It also supports SilverBotPlaylist files)")]

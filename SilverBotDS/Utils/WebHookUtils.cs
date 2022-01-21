@@ -32,7 +32,7 @@ public static class WebHookUtils
         }
 
         // thrown when groups are not populated/valid, or when there is no match
-        ArgumentException ex(string reason = null)
+        static ArgumentException ex(string reason = null)
         {
             return new ArgumentException($"The given webhook Url was not in a valid format. {reason}",
                 nameof(webhookUrl));

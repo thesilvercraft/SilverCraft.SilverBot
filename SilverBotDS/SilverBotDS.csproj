@@ -20,6 +20,7 @@
     <ItemGroup>
         <None Remove="Exceptions\NewFile.txt" />
         <None Remove="Templates\adventure_time_template.png" />
+        <None Remove="Templates\cement-seal-clear.gif" />
         <None Remove="Templates\happy_new_year_template.png" />
         <None Remove="Templates\joker_laugh.gif" />
         <None Remove="Templates\motivator_template.png" />
@@ -27,6 +28,7 @@
         <None Remove="Templates\weeb_reliable_template.png" />
     </ItemGroup>
     <ItemGroup>
+        <EmbeddedResource Include="Templates\cement-seal-clear.gif" />
         <EmbeddedResource Include="Templates\joker_laugh.gif" />
     </ItemGroup>
     <ItemGroup>
@@ -38,7 +40,6 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="..\.editorconfig" Link=".editorconfig" />
-        <None Include="Pages\Monika.razor" />
         <None Include="Shared\MainLayout.razor" />
         <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
         <None Include="wwwroot\css\open-iconic\FONT-LICENSE" />
@@ -50,13 +51,11 @@
     <ItemGroup>
         <PackageReference Include="Analytics" Version="3.8.0" />
         <PackageReference Include="Azure.Identity" Version="1.5.0" />
-        <PackageReference Include="CodenameGenerator" Version="1.2.47" />
-        <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-01056" />
-        <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-01056" />
-        <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-01056" />
-        <PackageReference Include="DSharpPlus.SlashCommands" Version="4.2.0-nightly-01056" />
-        <PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-01056" />
-        <PackageReference Include="DSharpPlus.Menus" Version="1.0.3.5" />
+        <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-01062" />
+        <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-01061" />
+        <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-01061" />
+        <PackageReference Include="DSharpPlus.SlashCommands" Version="4.2.0-nightly-01061" />
+        <PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-01061" />
         <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.2" />
         <PackageReference Include="GiphyDotNet" Version="2.0.0" />
         <PackageReference Include="GitInfo" Version="2.2.0">
@@ -66,12 +65,12 @@
         <PackageReference Include="Humanizer" Version="2.13.14" />
         <PackageReference Include="IPAddressRange" Version="4.2.0" />
         <PackageReference Include="Jering.Javascript.NodeJS" Version="6.3.0" />
-        <PackageReference Include="Lavalink4NET.DSharpPlus" Version="2.1.0" />
+        <PackageReference Include="Lavalink4NET.DSharpPlus" Version="2.1.1" />
         <PackageReference Include="Markdig.Signed" Version="0.26.0" />
         <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
         <PackageReference Include="Microsoft.AspNetCore.Components.ProtectedBrowserStorage" Version="5.0.0-rc.1.20451.17" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Azure.SignalR" Version="1.14.0" />
+        <PackageReference Include="Microsoft.Azure.SignalR" Version="1.15.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.1.0-1.final" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
@@ -96,10 +95,10 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Radzen.Blazor" Version="3.13.12" />
-        <PackageReference Include="ScottPlot" Version="4.1.29" />
+        <PackageReference Include="Radzen.Blazor" Version="3.14.2" />
+        <PackageReference Include="ScottPlot" Version="4.1.31" />
         <PackageReference Include="Serilog" Version="2.11.0-dev-01377" />
-        <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00241" />
+        <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00250" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
@@ -116,10 +115,9 @@
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
         <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
         <PackageReference Include="TimeSpanParserUtil" Version="1.2.0" />
-        <PackageReference Include="TimeZoneConverter" Version="3.5.0" />
         <PackageReference Include="Wbubbler" Version="1.0.2" />
-        <PackageReference Include="Xabe.FFmpeg" Version="5.0.2" />
-        <PackageReference Include="Xabe.FFmpeg.Downloader" Version="5.0.2" />
+        <PackageReference Include="Xabe.FFmpeg" Version="5.1.0" />
+        <PackageReference Include="Xabe.FFmpeg.Downloader" Version="5.1.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -167,12 +165,6 @@
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="echo D | XCOPY &quot;$(ProjectDir)wwwroot&quot; &quot;$(TargetDir)wwwroot&quot; /S /Y&#xD;&#xA;dotnet $(TargetPath) generatelang $(ProjectDir)Languages\en\en.json&#xD;&#xA;echo D | XCOPY &quot;$(ProjectDir)Languages&quot; &quot;$(TargetDir)Languages&quot; /S /Y" />
     </Target>
-    <ItemGroup>
-        <UpToDateCheckInput Remove="Pages\Monika.razor" />
-    </ItemGroup>
-    <ItemGroup>
-        <_ContentIncludedByDefault Remove="Pages\Monika.razor" />
-    </ItemGroup>
     <ItemGroup>
         <Folder Include="Languages\en\" />
     </ItemGroup>

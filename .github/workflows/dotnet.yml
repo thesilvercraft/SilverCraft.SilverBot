@@ -20,6 +20,8 @@ jobs:
       run: dotnet publish -c Release -p:PublishProfile=FolderProfile 
     - name: Copy SilverBotDS.AnimeModule to publish directory
       run: copy "SilverBotDS.AnimeModule\bin\Release\net6.0\SilverBotDS.AnimeModule*" "SilverBotDS\bin\Release\net6.0\publish"
+    - name: Copy SilverBotDS.PixelsArchiver to publish directory
+      run: copy "SilverBotDS.PixelsArchiver\bin\Release\net6.0\SilverBotDS.PixelsArchiver*" "SilverBotDS\bin\Release\net6.0\publish"
     - name: Zip 
       shell: powershell
       run: Compress-7Zip "SilverBotDS\bin\Release\net6.0\publish" -ArchiveFileName "silverbot.zip" -Format Zip
@@ -69,4 +71,14 @@ jobs:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
          asset_path: .\SilverBotDS.AnimeModule\bin\Release\net6.0\publish\SilverBotDS.AnimeModule.dll
          asset_name: SilverBotDS.AnimeModule.dll
+         asset_content_type: application/octet-stream
+    - name: Upload Release Dll of Pixel module
+      id: upload-release-dll-pixel
+      uses: actions/upload-release-asset@v1
+      env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: .\SilverBotDS.PixelsArchiver\bin\Release\net6.0\publish\SilverBotDS.PixelsArchiver.dll
+         asset_name: SilverBotDS.PixelsArchiver.dll
          asset_content_type: application/octet-stream

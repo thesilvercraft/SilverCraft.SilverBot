@@ -1,5 +1,7 @@
 ﻿using System;
 
+namespace SilverBotDS;
+
 public static class ConsoleInputHelper
 {
     public static bool GetBoolFromConsole(bool? defaultValue = null)

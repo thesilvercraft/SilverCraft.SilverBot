@@ -60,16 +60,12 @@ public class PixelsArchiverConfig
 
     public static async Task OutdatedConfigTask(PixelsArchiverConfig readconfig)
     {
-        using (var streamReader = new StreamReader(ConfigLocation))
-        {
-            await using (var streamWriter = new StreamWriter(OldConfigLocation, false))
-            {
-                await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
-            }
-        }
+        using var streamReader = new StreamReader(ConfigLocation);
+        await using var streamWriter = new StreamWriter(OldConfigLocation, false);
+        await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
     }
 
-    public static async Task<PixelsArchiverConfig> GetAsync()
+    public static async Task<PixelsArchiverConfig?> GetAsync()
     {
         var serializer = new XmlSerializer(typeof(PixelsArchiverConfig));
         if (!File.Exists(ConfigLocation))

@@ -17,7 +17,7 @@ namespace SilverBotDS.Objects;
 [Serializable]
 public class Config
 {
-    private const ulong CurrentConfVer = 41;
+    private const ulong CurrentConfVer = 42;
 
     [XmlDescription("Array of prefixes the bot will respond to")]
     public string[] Prefix { get; set; } =
@@ -97,6 +97,9 @@ public class Config
     [XmlDescription("Call the garbage collector when the splash changes (the gc is just snake oil)")]
     public bool CallGCOnSplashChange { get; set; } = false;
 
+    [XmlDescription("Enable reaction role related functions, essential if you load SilverBotDS.Commands.ReactionRoleCommands")]
+    public bool ReactionRolesEnabled { get; set; } = false;
+
     [XmlDescription("Should this instance of silverbot host a webserver?")]
     public bool HostWebsite { get; set; } = true;
 
@@ -152,8 +155,6 @@ public class Config
     [XmlDescription("Friday text channel. leave 0 to disable")]
     public ulong FridayTextChannel { get; set; }
 
-    [XmlDescription("Friday voice channel. leave 0 to disable")]
-    public ulong FridayVoiceChannel { get; set; }
 
     [XmlDescription(
         "What kind of database to use, 1 for postgresql (https://cdn.discordapp.com/attachments/636085718002958336/841264673868873769/postgres.png), 2 for sqllite (easier if you are unable to host postgresql)), 3 for azuredb")]
@@ -254,38 +255,26 @@ public class Config
     public Splash[] Splashes { get; set; } =
     {
         new("D̶U̶K̶T̶  Silver Hosting", ActivityType.Watching),
-        new(".NET gang", ActivityType.Watching),
-        new("C# gang", ActivityType.Watching),
         new("畂桳栠摩琠敨映捡獴", ActivityType.Watching),
-        new("As seen on TV!", ActivityType.Playing),
         new("100% pure!", ActivityType.Playing),
         new("20 GOTO 10!", ActivityType.Playing),
         new("Déjà vu!", ActivityType.Playing),
         new("Déjà vu!", ActivityType.Playing),
         new("Does barrel rolls!", ActivityType.Playing),
-        new("Follow the train, CJ!", ActivityType.Playing),
         new("NOT Google anlyticsed!", ActivityType.Playing),
-        new("Beta!", ActivityType.Playing),
         new("Internet enabled!", ActivityType.Playing),
-        new("David please look at your table", ActivityType.Playing),
-        new("Its a bot!", ActivityType.Playing),
-        new("Made in Macedonia", ActivityType.Playing),
         new("Now supports emoji 😉", ActivityType.Playing),
-        new("Creeper aw man.", ActivityType.Playing),
         new("if not OK then return end", ActivityType.Playing),
         new("Now on {platform}.", ActivityType.Playing),
-        new("silverbot.xml", ActivityType.Playing),
-        new("Limited edition!", ActivityType.Playing),
         new("Should not be texted while driving", ActivityType.Playing),
         new("Should not be tested while driving", ActivityType.Playing),
         new("Try it!", ActivityType.Playing),
         new("Have you finished your homework?", ActivityType.Playing),
-        new("UwU whats dis", ActivityType.Playing),
         new("Digital Dancing!", ActivityType.Playing),
         new("5 is best number!", ActivityType.Playing),
         new("C#!", ActivityType.Playing),
         new("Plastic Guns!", ActivityType.Playing),
-        new("Lines from 2004!", ActivityType.Playing),
+        new("Lines from 2019!", ActivityType.Playing),
         new("Absolutely no sarcasm!", ActivityType.Playing),
         new("Thinking involved!", ActivityType.Playing),
         new("huehuehue", ActivityType.Playing),
@@ -294,7 +283,7 @@ public class Config
         new("Sharpshooter!", ActivityType.Playing),
         new("Tsar Bomba!", ActivityType.Playing),
         new("Vive l'atome!", ActivityType.Playing),
-        new("10% Milk!", ActivityType.Playing),
+        new("0% Milk!", ActivityType.Playing),
         new("Available in stores!", ActivityType.Playing),
         new("Gluten Free!", ActivityType.Playing),
         new("But wait there's more!", ActivityType.Playing),
@@ -302,14 +291,12 @@ public class Config
         new("RREEEEE", ActivityType.Playing),
         new("except in nebraska", ActivityType.Playing),
         new("Above Average Man!", ActivityType.Playing),
-        new("ThinThick is better than Swag", ActivityType.Playing),
         new("Glorified Drift Wood!", ActivityType.Playing),
         new("T0P K3K", ActivityType.Playing),
         new("Maximizing Profits!", ActivityType.Playing),
         new("Somewhat Persuasive!", ActivityType.Playing),
         new("am vary smert", ActivityType.Playing),
         new("Blue!", ActivityType.Playing),
-        new("splashes.json", ActivityType.Playing),
         new("Green!", ActivityType.Playing),
         new("1nd Floor!", ActivityType.Playing),
         new("noice", ActivityType.Playing),
@@ -328,17 +315,12 @@ public class Config
         new("Move now, think later!", ActivityType.Playing),
         new("*teleports behind you*", ActivityType.Playing),
         new("4 Letters!", ActivityType.Playing),
-        new("Brandon yes", ActivityType.Playing),
         new("Less than Minimum!", ActivityType.Playing),
         new("****need copy and link****", ActivityType.Playing),
-        new("Flatter than Kansas!", ActivityType.Playing),
-        new("Not a Fan of Fuzzies!", ActivityType.Playing),
-        new("Consider Fullscreen!", ActivityType.Playing),
         new("The Exits are... Irrelevant!", ActivityType.Playing),
         new("The facts they dont want you to know", ActivityType.Playing),
-        new("max should not be trusted", ActivityType.Playing),
         new("LE:L", ActivityType.Playing),
-        new("requires additional pylons", ActivityType.Playing),
+        new("requires additional threads", ActivityType.Playing),
         new("THAT FACE DOWN", ActivityType.Playing),
         new("Heterogeneous Greens!", ActivityType.Playing),
         new("Old White French House!", ActivityType.Playing),
@@ -346,22 +328,19 @@ public class Config
         new("Two Ups Thumb!", ActivityType.Playing),
         new("Gilden Ultra Cotton Pocket Tee!", ActivityType.Playing),
         new("Crazy Cool Coincidence!", ActivityType.Playing),
-        new("Over the mountains, into Terrellia!", ActivityType.Playing),
-        new("Your content is good!", ActivityType.Playing),
-        new("striker disapproves", ActivityType.Playing),
+        new("Over the mountains, into Terraria!", ActivityType.Playing),
         new("Fools' Gold!", ActivityType.Playing),
-        new("Powered by Wind!", ActivityType.Playing),
+        new("Powered by Azure!", ActivityType.Playing),
         new("Globular Resources!", ActivityType.Playing),
         new("Falcon Heavy!", ActivityType.Playing),
         new("shoutout to you", ActivityType.Playing),
         new("Acid Trips!", ActivityType.Playing),
-        new("lttstore.com", ActivityType.Playing),
         new("Wonder-filly-ful!", ActivityType.Playing),
         new("Nostalgic!", ActivityType.Playing),
         new("Giv quadratic formula or I game end", ActivityType.Playing),
         new("T-shape is cancer", ActivityType.Playing),
         new("som splashes for u ^_^", ActivityType.Playing),
-        new("1% less memory!", ActivityType.Playing),
+        new("20% more memory!", ActivityType.Playing),
         new("Kalorichen has invited you to play Minecraft", ActivityType.ListeningTo),
         new("ThePajamaSlime! ThePajamaSlime! ThePajamaSlime!", ActivityType.Playing),
         new("Xbox 360 Edition", ActivityType.Playing),
@@ -385,7 +364,6 @@ public class Config
         new("GIMP FTW", ActivityType.Playing),
         new("Bush hid the facts", ActivityType.Playing),
         new("ugh, finally, no more sugar", ActivityType.Playing),
-        new("1 splash per update?", ActivityType.Playing),
         new("uploading...41%", ActivityType.Playing),
         new("my stuff stuff", ActivityType.Playing),
         new("teleporting-porter-pearl", ActivityType.Playing),
@@ -402,7 +380,6 @@ public class Config
         new("pretend the sun is real", ActivityType.Playing),
         new("people hate people", ActivityType.Playing),
         new("north of what?", ActivityType.Playing),
-        new("non-lethal stabbing", ActivityType.Playing),
         new("pertrify yourself!", ActivityType.Playing),
         new("pay the poor", ActivityType.Playing),
         new("check your spam!", ActivityType.Playing),
@@ -413,41 +390,8 @@ public class Config
         new("max is bad?", ActivityType.Playing),
         new("Smash Mouth - All Star", ActivityType.ListeningTo),
         new("indentation error", ActivityType.Watching),
-        new("in 5,4,3,2,1 I know you see", ActivityType.Playing),
-        new("the world will change for me", ActivityType.Playing),
-        new("and be so wonderful", ActivityType.Playing),
-        new("https://www.youtube.com/watch?v=HPM05dQgdig", ActivityType.ListeningTo),
-        new("RIP XBOX360", ActivityType.Playing),
-        new("https://catjam.tk/", ActivityType.Playing),
-        new("Leave it all to me", ActivityType.ListeningTo),
-        new("Thanks ThePajamaSlime!", ActivityType.Playing),
-        new("10000000% c# by 1969", ActivityType.Playing),
-        new("Proudly European", ActivityType.Playing),
-        new("@everyone", ActivityType.Playing),
-        new("2 meters apart", ActivityType.Playing),
-        new("ERROR", ActivityType.Playing),
         new("THE CAKE IS A LIE", ActivityType.Playing),
         new("ThE CaKe Is A lIe", ActivityType.Playing),
-        new("Developers", ActivityType.ListeningTo),
-        new("Developers music video", ActivityType.ListeningTo),
-        new("GREAT SUCCESS!", ActivityType.Playing),
-        new("Doki Doki literature club", ActivityType.Playing),
-        new("Doki Doki literature club plus", ActivityType.Playing),
-        new("Doki Doki Literature Club!", ActivityType.ListeningTo),
-        new("Ohayou Sayori!", ActivityType.ListeningTo),
-        new("Dreams of Love and Literature", ActivityType.ListeningTo),
-        new("Okay, Everyone!", ActivityType.ListeningTo),
-        new("Play with Me", ActivityType.ListeningTo),
-        new("Poem Panic!", ActivityType.ListeningTo),
-        new("Daijoubu!", ActivityType.ListeningTo),
-        new("My Feelings", ActivityType.ListeningTo),
-        new("My Confession", ActivityType.ListeningTo),
-        new("Sayo-Nara", ActivityType.ListeningTo),
-        new("Just Monika.", ActivityType.ListeningTo),
-        new("I Still Love You", ActivityType.ListeningTo),
-        new("Your Reality", ActivityType.ListeningTo),
-        new("Poems Are Forever (feat. SHOJI)", ActivityType.ListeningTo),
-        new("Doki Doki (feat. Nick Kaelar)", ActivityType.ListeningTo)
     };
 
     private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)

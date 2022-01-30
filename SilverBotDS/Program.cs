@@ -85,6 +85,12 @@ namespace SilverBotDS
         private static readonly Dictionary<string, Tuple<Task, CancellationTokenSource>> RunningTasks = new();
         private static readonly Dictionary<Guid, Tuple<Task, CancellationTokenSource>> RunningTasksOfSecondRow = new();
 
+        /// <summary>
+        /// tell efcore to die for now
+        /// </summary>
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        => null;
+
         private static void Main(string[] args)
         {
             if (args.Length == 2 && args[0] == "generatelang")
@@ -108,6 +114,18 @@ namespace SilverBotDS
             }
 
             MainAsync(args).GetAwaiter().GetResult();
+        }
+
+        public static void CancelTasks()
+        {
+            foreach (var task in RunningTasksOfSecondRow)
+            {
+                task.Value.Item2.Cancel();
+            }
+            foreach (var task in RunningTasks)
+            {
+                task.Value.Item2.Cancel();
+            }
         }
 
         public static void SendLog(Exception exception)
@@ -191,15 +209,13 @@ namespace SilverBotDS
                     throw new NotImplementedException(nameof(_config.MinimumLogLevel));
             }
 
-            loggerConfiguration
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) //So uh asp.net LOVES spamming logs
-                .WriteTo.Console(theme: AnsiConsoleTheme.Code);
+            loggerConfiguration.WriteTo.Console(theme: AnsiConsoleTheme.Code);
             if (_config.UseTxtFilesAsLogs)
             {
                 loggerConfiguration.WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
             }
 
-            if (!(id == null || string.IsNullOrEmpty(token)))
+            if (!(id == null || string.IsNullOrEmpty(token) || Debugger.IsAttached))
             {
                 loggerConfiguration.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
             }
@@ -319,7 +335,11 @@ namespace SilverBotDS
                 case 2:
                     {
                         services.AddDbContext<DatabaseContext>(
-                            options => options.UseSqlite("Filename=./silverbotdatabasev2.db"), ServiceLifetime.Transient);
+                            options =>
+                            {
+                                options.UseSqlite("Filename=./silverbotdatabasev2.db");
+                                if (Debugger.IsAttached) { options.EnableSensitiveDataLogging(); }
+                            }, ServiceLifetime.Transient);
                         break;
                     }
                 case 3:
@@ -396,7 +416,6 @@ namespace SilverBotDS
                         new ClientCredentialsRequest(_config.SpotifyClientId, _config.SpotifyClientSecret)))
                     .AccessToken)));
             }
-
             services.AddSingleton(_log);
             object CreateInstance(Type t, IServiceProvider services)
             {
@@ -555,7 +574,6 @@ namespace SilverBotDS
                     _log.Error(ex, "Failed to load module {Module} Exception occured", module);
                 }
             }
-
             foreach (var group in _config.ModulesToLoadExternal.GroupBy(x => x.Key))
             {
                 if (File.Exists(group.Key))
@@ -663,18 +681,17 @@ namespace SilverBotDS
             }
             await Task.Delay(2000);
             await _discord.UpdateStatusAsync(new("console logs while connecting to lavalink", ActivityType.Watching));
+            if (IsNotNullAndIsNotB(_config.FridayTextChannel, 0))
+            {
+                CancellationTokenSource s = new();
+                RunningTasks.Add("WaitForFridayTask", new(Task.Run(() => WaitForFridayAsync(s.Token), s.Token), s));
+            }
             if (_config.UseLavaLink)
             {
                 await _audioService.InitializeAsync();
                 if (!_config.SitInVc)
                 {
                     _trackingService.BeginTracking();
-                }
-                if (IsNotNullAndIsNotB(_config.FridayTextChannel, 0) &&
-                    IsNotNullAndIsNotB(_config.FridayVoiceChannel, 0))
-                {
-                    CancellationTokenSource s = new();
-                    RunningTasks.Add("WaitForFridayTask", new(Task.Run(() => WaitForFridayAsync(s.Token), s.Token), s));
                 }
             }
 
@@ -773,6 +790,10 @@ namespace SilverBotDS
                 }
                 _discord.MessageCreated += (e, a) => OnDiscordOnMessagewhatever(e, a.Message);
                 _discord.MessageUpdated += (e, a) => OnDiscordOnMessagewhatever(e, a.Message);
+            }
+            if (_config.ReactionRolesEnabled)
+            {
+                _discord.AddReactionRolesHandlers();
             }
             if (_config.EnableServerStatistics)
             {
@@ -1007,7 +1028,6 @@ namespace SilverBotDS
             {
                 a = a[..a.LastIndexOf(sub, StringComparison.Ordinal)];
             }
-
             return a;
         }
 

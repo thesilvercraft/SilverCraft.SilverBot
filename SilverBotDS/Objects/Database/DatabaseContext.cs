@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SDBrowser;
 using SilverBotDS.Objects.Database.Classes;
+using SilverBotDS.Objects.Database.Classes.ReactionRole;
 
 namespace SilverBotDS.Objects;
 
@@ -80,7 +81,7 @@ public class DatabaseContext : DbContext
         }
 
         var plannedevents = await plannedEvents.Where(x => x.UserID == userId).ToListAsync();
-        if (plannedevents != null && plannedevents.Count > 0)
+        if (plannedevents?.Count > 0)
         {
             plannedEvents.RemoveRange(plannedevents);
             await SaveChangesAsync();
@@ -338,5 +339,6 @@ public class DatabaseContext : DbContext
     public DbSet<UserQuote> userQuotes { get; set; }
     public DbSet<PlannedEvent> plannedEvents { get; set; }
     public DbSet<TranslatorSettings> translatorSettings { get; set; }
+    public DbSet<ReactionRoleMapping> ReactionRoleMappings { get; set; }
 #pragma warning restore IDE1006 // Naming Styles
 }

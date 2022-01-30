@@ -60,11 +60,11 @@ public class OwnerOnly : SilverBotCommandModule
                 .AddStream(videoStream)
                 .ExtractNthFrame(
                     RandomGenerator.Next(1,
-                        (int) (info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)),
+                        (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)),
                     _ => $"Extracts{Program.DirSlash}{name}{i}.png")
                 .UseHardwareAcceleration(HardwareAccelerator.auto,
-                    (VideoCodec) Enum.Parse(typeof(VideoCodec), decoder, true),
-                    (VideoCodec) Enum.Parse(typeof(VideoCodec), encoder, true))
+                    (VideoCodec)Enum.Parse(typeof(VideoCodec), decoder, true),
+                    (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
                 .Start();
         }
 
@@ -117,10 +117,10 @@ public class OwnerOnly : SilverBotCommandModule
     }
 
     [Command("RegisterModule")]
-    public async Task RegMod(CommandContext ctx, string mod, bool skipcheck=false)
+    public async Task RegMod(CommandContext ctx, string mod, bool skipcheck = false)
     {
         var type = Type.GetType(mod);
-        if(!skipcheck)
+        if (!skipcheck)
         {
             if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
             {
@@ -191,7 +191,7 @@ public class OwnerOnly : SilverBotCommandModule
     [Hidden]
     [RequireOwner]
     public async Task Sudo(CommandContext ctx, [Description("Member to execute as.")] DiscordMember member,
-        [RemainingText] [Description("Command text to execute.")] string command)
+        [RemainingText][Description("Command text to execute.")] string command)
     {
         await ctx.TriggerTypingAsync();
         var cmd = ctx.CommandsNext.FindCommand(command, out var customArgs);
@@ -619,35 +619,28 @@ public class OwnerOnly : SilverBotCommandModule
         main.StartInfo.RedirectStandardInput = true;
         DiscordMessage msg = null;
         main.Start();
-        ushort timesexited = 0;
+
         StringBuilder content = new();
-        while (timesexited != 2)
+
+        while (main.StandardOutput.Peek() != -1 || main.StandardError.Peek() != -1)
         {
-            while (main.StandardOutput.Peek() != -1)
+            var readline = await main.StandardOutput.ReadToEndAsync() + await main.StandardError.ReadToEndAsync();
+            if (msg is null || msg.Content.Length + readline.Length + 7 >= 2000)
             {
-                var readline = await main.StandardOutput.ReadToEndAsync() + await main.StandardError.ReadToEndAsync();
-                if (msg is null || msg.Content.Length + readline.Length + 7 >= 2000)
+                foreach (var part in StringUtils.SplitInParts(readline, 1991))
                 {
-                    foreach (var part in StringUtils.SplitInParts(readline, 1991))
-                    {
-                        msg = await ctx.Channel.SendMessageAsync(Formatter.BlockCode(part));
-                        content.Clear();
-                        content.AppendLine(part);
-                    }
+                    msg = await ctx.Channel.SendMessageAsync(Formatter.BlockCode(part));
+                    content.Clear();
+                    content.AppendLine(part);
                 }
-                else
-                {
-                    await msg.ModifyAsync(Formatter.BlockCode($"{content}{readline}"));
-                    content.AppendLine(readline);
-                }
-
-                await Task.Delay(2000);
+            }
+            else
+            {
+                await msg.ModifyAsync(Formatter.BlockCode($"{content}{readline}"));
+                content.AppendLine(readline);
             }
 
-            if (main.HasExited)
-            {
-                timesexited++;
-            }
+            await Task.Delay(2000);
         }
     }
 
@@ -823,6 +816,15 @@ public class OwnerOnly : SilverBotCommandModule
     [Description("kill the bot")]
     public async Task Reloadsplashes(CommandContext ctx)
     {
+        await ctx.RespondAsync("bye and try using shutdowngrace next time");
+        Environment.Exit(469);
+    }
+
+    [Command("shutdowngrace")]
+    [Description("kill the bot but shutdown the tasks first")]
+    public async Task Reloadsplashesas(CommandContext ctx)
+    {
+        Program.CancelTasks();
         await ctx.RespondAsync("bye");
         Environment.Exit(469);
     }

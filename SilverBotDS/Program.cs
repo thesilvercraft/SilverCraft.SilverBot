@@ -417,13 +417,17 @@ namespace SilverBotDS
 
                 // inject via constructor
                 if (constructorArgs.Length != 0)
+                {
                     for (var i = 0; i < args.Length; i++)
+                    {
                         args[i] = services.GetRequiredService(constructorArgs[i].ParameterType);
+                    }
+                }
 
                 var moduleInstance = Activator.CreateInstance(t, args);
 
                 // inject into properties
-                var props = t.GetRuntimeProperties().Where(xp => xp.CanWrite && xp.SetMethod != null && !xp.SetMethod.IsStatic && xp.SetMethod.IsPublic);
+                var props = t.GetRuntimeProperties().Where(xp => xp.CanWrite && xp.SetMethod?.IsStatic == false && xp.SetMethod.IsPublic);
                 foreach (var prop in props)
                 {
                     if (prop.GetCustomAttribute<DSharpPlus.CommandsNext.Attributes.DontInjectAttribute>() != null)
@@ -1035,57 +1039,31 @@ namespace SilverBotDS
             {
                 return lang.RequireOwnerCheckFailed;
             }
-            switch (checkBase)
+            return checkBase switch
             {
-                case RequireRolesAttribute requireRolesAttribute when requireRolesAttribute.RoleNames.Count == 1:
-                    return string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]);
-
-                case RequireRolesAttribute requireRolesAttribute:
-                    return string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize());
-
-                case RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild):
-                    return lang.RequireGuildCheckFailed;
-
-                case RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
-                                                                               requireBotPermissions.Permissions != Permissions.All:
-                    return string.Format(lang.RequireBotPermisionsCheckFailedSG,
-                        requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequireBotPermissionsAttribute requireBotPermissions:
-                    return string.Format(lang.RequireBotPermisionsCheckFailedPL,
-                        requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild):
-                    return lang.RequireGuildCheckFailed;
-
-                case RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All:
-                    return string.Format(lang.RequireUserPermisionsCheckFailedSG,
-                        userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequireUserPermissionsAttribute userPermissions:
-                    return string.Format(lang.RequireUserPermisionsCheckFailedPL,
-                        userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild):
-                    return lang.RequireGuildCheckFailed;
-
-                case RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
-                                                                            userAndBotPermissions.Permissions != Permissions.All:
-                    return string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
-                        userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequirePermissionsAttribute userAndBotPermissions:
-                    return string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
-                        userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount:
-                    return (string)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang);
-
-                case RequireAttachmentAttribute attachmentAttribute:
-                    return (string)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang);
-            }
-
-            return string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize());
+                RequireRolesAttribute requireRolesAttribute when requireRolesAttribute.RoleNames.Count == 1 => string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]),
+                RequireRolesAttribute requireRolesAttribute => string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize()),
+                RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
+                RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
+requireBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotPermisionsCheckFailedSG,
+requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireBotPermissionsAttribute requireBotPermissions => string.Format(lang.RequireBotPermisionsCheckFailedPL,
+requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
+                RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All => string.Format(lang.RequireUserPermisionsCheckFailedSG,
+userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireUserPermissionsAttribute userPermissions => string.Format(lang.RequireUserPermisionsCheckFailedPL,
+userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
+                RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
+userAndBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
+userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
+userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount => (string)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang),
+                RequireAttachmentAttribute attachmentAttribute => (string)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang),
+                _ => string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize()),
+            };
         }
 
         private static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang,
@@ -1108,51 +1086,29 @@ namespace SilverBotDS
             {
                 return lang.RequireOwnerCheckFailed;
             }
-            switch (checkBase)
+            return checkBase switch
             {
-                case RequireRolesAttribute requireRolesAttribute:
-                    return requireRolesAttribute.RoleNames.Count == 1 ? string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]) : string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize());
-
-                case RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild):
-                    return lang.RequireGuildCheckFailed;
-
-                case RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
-                                                                               requireBotPermissions.Permissions != Permissions.All:
-                    return string.Format(lang.RequireBotPermisionsCheckFailedSG,
-                        requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequireBotPermissionsAttribute requireBotPermissions:
-                    return string.Format(lang.RequireBotPermisionsCheckFailedPL,
-                        requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild):
-                    return lang.RequireGuildCheckFailed;
-
-                case RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All:
-                    return string.Format(lang.RequireUserPermisionsCheckFailedSG,
-                        userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequireUserPermissionsAttribute userPermissions:
-                    return string.Format(lang.RequireUserPermisionsCheckFailedPL,
-                        userPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild):
-                    return lang.RequireGuildCheckFailed;
-
-                case RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
-                                                                            userAndBotPermissions.Permissions != Permissions.All:
-                    return string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
-                        userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequirePermissionsAttribute userAndBotPermissions:
-                    return string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
-                        userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase));
-
-                case RequireAttachmentAttribute:
-                    throw new NotSupportedException("Attachment checks are not supported for slash commands.");
-            }
-
-            return string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize());
+                RequireRolesAttribute requireRolesAttribute => requireRolesAttribute.RoleNames.Count == 1 ? string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]) : string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize()),
+                RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
+                RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
+requireBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotPermisionsCheckFailedSG,
+requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireBotPermissionsAttribute requireBotPermissions => string.Format(lang.RequireBotPermisionsCheckFailedPL,
+requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
+                RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All => string.Format(lang.RequireUserPermisionsCheckFailedSG,
+userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireUserPermissionsAttribute userPermissions => string.Format(lang.RequireUserPermisionsCheckFailedPL,
+userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
+                RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
+userAndBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
+userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
+userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireAttachmentAttribute => throw new NotSupportedException("Attachment checks are not supported for slash commands."),
+                _ => string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize()),
+            };
         }
 
         private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
@@ -1432,12 +1388,12 @@ namespace SilverBotDS
                                     await dmChannel.SendMessageAsync(
                                         $"Hello SilverBot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work as something broke.");
                                     dbctx.SetServerStatsCategory(item1, null);
-                                    await dbctx.SaveChangesAsync();
+                                    await dbctx.SaveChangesAsync(CancellationToken.None);
                                 }
                                 catch (UnauthorizedException)
                                 {
                                     dbctx.SetServerStatsCategory(item1, null);
-                                    await dbctx.SaveChangesAsync();
+                                    await dbctx.SaveChangesAsync(CancellationToken.None);
                                 }
                             }
                         }
@@ -1446,7 +1402,7 @@ namespace SilverBotDS
                         {
                             var serverSettings = dbctx.serverSettings.FirstOrDefault(x => x.ServerId == item1);
                             dbctx.serverSettings.Remove(serverSettings);
-                            await dbctx.SaveChangesAsync();
+                            await dbctx.SaveChangesAsync(CancellationToken.None);
                         }
                     }
                 }

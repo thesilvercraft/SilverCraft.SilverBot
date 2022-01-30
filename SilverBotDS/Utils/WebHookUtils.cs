@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace SilverBotDS.Utils;
 
-public class WebHookUtils
+public static class WebHookUtils
 {
     private static readonly Regex WebhookUrlRegex =
         new(@"^.*(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-z0-9_-]+)$",
@@ -32,7 +32,7 @@ public class WebHookUtils
         }
 
         // thrown when groups are not populated/valid, or when there is no match
-        ArgumentException ex(string reason = null)
+        static ArgumentException ex(string reason = null)
         {
             return new ArgumentException($"The given webhook Url was not in a valid format. {reason}",
                 nameof(webhookUrl));

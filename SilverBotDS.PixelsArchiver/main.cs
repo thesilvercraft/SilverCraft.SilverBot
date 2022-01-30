@@ -10,9 +10,9 @@ namespace SilverBotDS.PixelsArchiver
 {
     public class PixelArchiverService : SilverBotDS.Objects.IService
     {
-        private Timer timer;
-        private DiscordWebhookClient webhookClient;
-        public HttpClient client { set; private get; }
+        private Timer? timer;
+        private DiscordWebhookClient? webhookClient;
+        public HttpClient? Client { set; private get; }
 
         public async Task Start()
         {
@@ -38,16 +38,21 @@ namespace SilverBotDS.PixelsArchiver
         {
             Dictionary<string, Stream> strm = new();
             foreach (var urls in ((PixelsArchiverConfig)gaming).ApisToArchivePicturesFrom)
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, urls.Key))
+            {   
+                try
                 {
+                    using var request = new HttpRequestMessage(HttpMethod.Get, urls.Key);
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", urls.Value);
-                    var response = await client.SendAsync(request);
+                    var response = await Client.SendAsync(request);
                     if (response.IsSuccessStatusCode)
                     {
                         var stuffineed = JsonSerializer.Deserialize<Rootobject>(await response.Content.ReadAsStringAsync());
                         strm.Add(new Uri(urls.Key).DnsSafeHost + RandomGenerator.RandomAbcString(6) + ".png", new MemoryStream(Convert.FromBase64String(stuffineed.DataURL[22..])));
                     }
+                }
+                catch(Exception e)
+                {
+                    //the api's can get a bit quirky at night
                 }
             }
             var zipFile = new MemoryStream();

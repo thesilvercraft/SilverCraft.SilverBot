@@ -539,7 +539,10 @@ public class Language
 
     public string UnknownImageFormat { get; set; } =
         "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.";
-
+    public string AttributeDataBaseCheckNoDirectMessages { get; set; } =
+     "This command can only be run in a server";
+    public string AttributeDataBaseCheckWebShot { get; set; } =
+     "This command can only be run in a server where webshot is enabled";
     public string JpegSuccess { get; set; } = "There ya go a jpegnized image";
     public string SilverSuccess { get; set; } = "There ya go a silver image";
     public string ComicSuccess { get; set; } = "There ya go a image with the comic filter";

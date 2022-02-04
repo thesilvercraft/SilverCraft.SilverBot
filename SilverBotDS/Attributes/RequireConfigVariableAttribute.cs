@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using SilverBotDS.Objects;
@@ -24,7 +25,6 @@ public class RequireConfigVariableAttribute : CheckBaseAttribute
         {
             return Task.FromResult(true);
         }
-
         return Task.FromResult(false);
     }
 }

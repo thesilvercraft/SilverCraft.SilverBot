@@ -139,6 +139,8 @@
   "RequireBotAndUserPermisionsCheckFailedPL": "We both must have the permisions {0} for you to use that.",
   "RequireBotAndUserPermisionsCheckFailedSG": "We both must have the permision {0} for you to use that.",
   "UnknownImageFormat": "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.",
+  "AttributeDataBaseCheckNoDirectMessages": "This command can only be run in a server",
+  "AttributeDataBaseCheckWebShot": "This command can only be run in a server where webshot is enabled",
   "JpegSuccess": "There ya go a jpegnized image",
   "SilverSuccess": "There ya go a silver image",
   "ComicSuccess": "There ya go a image with the comic filter",

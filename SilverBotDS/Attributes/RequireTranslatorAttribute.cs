@@ -24,9 +24,9 @@ public class RequireTranslatorAttribute : CheckBaseAttribute
 
     public static async Task<bool> IsTranslator(Config cnf, DiscordClient client, ulong userid, ulong? channelid = null)
     {
-        return (await client.GetGuildAsync(cnf.ServerId)).Members.ContainsKey(userid)
-               && (await client.GetGuildAsync(cnf.ServerId)).Members[userid].Roles
-               .Any(x => x.Id == cnf.TranslatorRoleId)
-               && (!channelid.HasValue || channelid == cnf.TranslatorModeChannel);
+        var gld = await client.GetGuildAsync(cnf.ServerId);
+        return (!channelid.HasValue || channelid == cnf.TranslatorModeChannel) && gld.Members.ContainsKey(userid)
+               && gld.Members[userid].Roles
+               .Any(x => x.Id == cnf.TranslatorRoleId);
     }
 }

@@ -50,17 +50,16 @@ public class RequireGuildDatabaseValueSlashAttribute : SlashCheckBaseAttribute
         AllowDirectMessages = allowdms;
     }
 
-    private string Variable { get; }
-    private object State { get; }
-    private bool AllowDirectMessages { get; }
+    public string Variable { get; }
+    public object State { get; }
+    public bool AllowDirectMessages { get; }
 
     public override Task<bool> ExecuteChecksAsync(InteractionContext ctx)
     {
-        if (ctx.Guild == null)
+        if (ctx.Interaction.GuildId == null)
         {
             return Task.FromResult(AllowDirectMessages);
         }
-
         using var dbctx = (DatabaseContext) ctx.Services.GetService(typeof(DatabaseContext));
         var guildsettings = dbctx.GetServerSettings(ctx.Guild.Id);
         var compareval = typeof(ServerSettings).GetProperty(Variable).GetValue(guildsettings);
@@ -68,7 +67,6 @@ public class RequireGuildDatabaseValueSlashAttribute : SlashCheckBaseAttribute
         {
             return Task.FromResult(true);
         }
-
         return Task.FromResult(false);
     }
 }

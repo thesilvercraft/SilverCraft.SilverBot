@@ -13,7 +13,7 @@ namespace SilverBotDS.PixelsArchiver
         private Timer? timer;
         private DiscordWebhookClient? webhookClient;
         public HttpClient? Client { set; private get; }
-
+        
         public async Task Start()
         {
             PixelsArchiverConfig config = await PixelsArchiverConfig.GetAsync();
@@ -36,6 +36,7 @@ namespace SilverBotDS.PixelsArchiver
 
         private async void Tick(object? gaming)
         {
+            
             Dictionary<string, Stream> strm = new();
             foreach (var urls in ((PixelsArchiverConfig)gaming).ApisToArchivePicturesFrom)
             {   

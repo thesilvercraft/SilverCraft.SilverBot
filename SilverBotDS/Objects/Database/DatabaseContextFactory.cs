@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace SilverBotDS.Objects.Database;
 
-public class BloggingContextFactory : IDesignTimeDbContextFactory<DatabaseContext>
+public class DatabaseContextFactory : IDesignTimeDbContextFactory<DatabaseContext>
 {
     public DatabaseContext CreateDbContext(string[] args)
     {

@@ -85,6 +85,22 @@ namespace SilverBotDS
         private static readonly Dictionary<string, Tuple<Task, CancellationTokenSource>> RunningTasks = new();
         private static readonly Dictionary<Guid, Tuple<Task, CancellationTokenSource>> RunningTasksOfSecondRow = new();
 
+        public static Task RunningTasksOfSecondRowAdd(Guid a, Tuple<Task, CancellationTokenSource> b)
+        {
+            RunningTasksOfSecondRow.Add(a,b);
+            return Task.CompletedTask;
+        }
+        public static Task RunningTasksAdd(string a , Tuple<Task, CancellationTokenSource> b)
+        {
+            RunningTasks.Add(a, b);
+            return Task.CompletedTask;
+        }
+        /// <summary>
+        /// tell efcore to die for now
+        /// </summary>
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        => null;
+
         private static void Main(string[] args)
         {
             if (args.Length == 2 && args[0] == "generatelang")
@@ -108,6 +124,18 @@ namespace SilverBotDS
             }
 
             MainAsync(args).GetAwaiter().GetResult();
+        }
+
+        public static void CancelTasks()
+        {
+            foreach (var task in RunningTasksOfSecondRow)
+            {
+                task.Value.Item2.Cancel();
+            }
+            foreach (var task in RunningTasks)
+            {
+                task.Value.Item2.Cancel();
+            }
         }
 
         public static void SendLog(Exception exception)
@@ -156,7 +184,7 @@ namespace SilverBotDS
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
-            WebHookUtils.ParseWebhookUrlNullable(_config.LogWebhook, out ulong? id, out string token);
+           // WebHookUtils.ParseWebhookUrlNullable(_config.LogWebhook, out ulong? id, out string token);
             var loggerConfiguration = new LoggerConfiguration();
             switch (_config.MinimumLogLevel)
             {
@@ -191,18 +219,16 @@ namespace SilverBotDS
                     throw new NotImplementedException(nameof(_config.MinimumLogLevel));
             }
 
-            loggerConfiguration
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) //So uh asp.net LOVES spamming logs
-                .WriteTo.Console(theme: AnsiConsoleTheme.Code);
+            loggerConfiguration.WriteTo.Console(theme: AnsiConsoleTheme.Code);
             if (_config.UseTxtFilesAsLogs)
             {
                 loggerConfiguration.WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
             }
 
-            if (!(id == null || string.IsNullOrEmpty(token)))
+           /* if (!(id == null || string.IsNullOrEmpty(token) || Debugger.IsAttached))
             {
                 loggerConfiguration.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
-            }
+            }*/
 
             _log = loggerConfiguration.CreateLogger();
             if (_config.EnableUpdateChecking)
@@ -242,7 +268,7 @@ namespace SilverBotDS
                 PaginationBehaviour = PaginationBehaviour.WrapAround
             });
             //set up XP and repeating things
-            _discord.MessageCreated += Discord_MessageCreated;
+            //_discord.MessageCreated += Discord_MessageCreated;
             _log.Verbose("Initializing Commands");
             ServiceCollection services = new();
 
@@ -319,7 +345,11 @@ namespace SilverBotDS
                 case 2:
                     {
                         services.AddDbContext<DatabaseContext>(
-                            options => options.UseSqlite("Filename=./silverbotdatabasev2.db"), ServiceLifetime.Transient);
+                            options =>
+                            {
+                                options.UseSqlite("Filename=./silverbotdatabasev2.db");
+                                if (Debugger.IsAttached) { options.EnableSensitiveDataLogging(); }
+                            }, ServiceLifetime.Transient);
                         break;
                     }
                 case 3:
@@ -396,7 +426,6 @@ namespace SilverBotDS
                         new ClientCredentialsRequest(_config.SpotifyClientId, _config.SpotifyClientSecret)))
                     .AccessToken)));
             }
-
             services.AddSingleton(_log);
             object CreateInstance(Type t, IServiceProvider services)
             {
@@ -505,7 +534,7 @@ namespace SilverBotDS
                 PrefixResolver = ResolvePrefixAsync
             });
             var slash = _discord.UseSlashCommands(new SlashCommandsConfiguration() { Services = ServiceProvider });
-            slash.SlashCommandErrored += Slash_SlashCommandErrored;
+            
 
             #region Registering Commands
 
@@ -530,6 +559,7 @@ namespace SilverBotDS
                             _log.Information(
                                 "Module {Module} won't be loaded as its requirements weren't met: the font/fonts {Fonts} is/are missing",
                                 module, string.Join(',', fonts));
+                            continue;
                         }
                     }
 
@@ -555,7 +585,6 @@ namespace SilverBotDS
                     _log.Error(ex, "Failed to load module {Module} Exception occured", module);
                 }
             }
-
             foreach (var group in _config.ModulesToLoadExternal.GroupBy(x => x.Key))
             {
                 if (File.Exists(group.Key))
@@ -574,6 +603,7 @@ namespace SilverBotDS
                                     _log.Information(
                                         "Module {Module} won't be loaded as its requirements weren't met, the font/fonts {Fonts} is/are missing",
                                         module, string.Join(',', fonts));
+                                    continue;
                                 }
                             }
 
@@ -606,9 +636,9 @@ namespace SilverBotDS
                     _log.Information("Modules from the {File} won't be loaded as its file doesn't exist", group.Key);
                 }
             }
-
-            commands.CommandErrored += Commands_CommandErrored;
             commands.CommandExecuted += Commands_CommandExecuted;
+            await SlashErrorHandler.RegisterErrorHandler(ServiceProvider,_log,slash);
+            await CommandErrorHandler.RegisterErrorHandler(ServiceProvider, _log, commands);
 
             #endregion Registering Commands
 
@@ -663,18 +693,17 @@ namespace SilverBotDS
             }
             await Task.Delay(2000);
             await _discord.UpdateStatusAsync(new("console logs while connecting to lavalink", ActivityType.Watching));
+            if (IsNotNullAndIsNotB(_config.FridayTextChannel, 0))
+            {
+                CancellationTokenSource s = new();
+                RunningTasks.Add("WaitForFridayTask", new(Task.Run(() => WaitForFridayAsync(s.Token), s.Token), s));
+            }
             if (_config.UseLavaLink)
             {
                 await _audioService.InitializeAsync();
                 if (!_config.SitInVc)
                 {
                     _trackingService.BeginTracking();
-                }
-                if (IsNotNullAndIsNotB(_config.FridayTextChannel, 0) &&
-                    IsNotNullAndIsNotB(_config.FridayVoiceChannel, 0))
-                {
-                    CancellationTokenSource s = new();
-                    RunningTasks.Add("WaitForFridayTask", new(Task.Run(() => WaitForFridayAsync(s.Token), s.Token), s));
                 }
             }
 
@@ -774,13 +803,18 @@ namespace SilverBotDS
                 _discord.MessageCreated += (e, a) => OnDiscordOnMessagewhatever(e, a.Message);
                 _discord.MessageUpdated += (e, a) => OnDiscordOnMessagewhatever(e, a.Message);
             }
+            if (_config.ReactionRolesEnabled)
+            {
+                _discord.AddReactionRolesHandlers();
+            }
             if (_config.EnableServerStatistics)
             {
                 CancellationTokenSource s = new();
                 RunningTasks.Add("StatisticsTask", new(Task.Run(() => StatisticsMainAsync(s.Token), s.Token), s));
             }
             CancellationTokenSource ets = new();
-            RunningTasks.Add("EventsTask", new(Task.Run(RunEventsAsync, ets.Token), ets));
+            EventsRunner.InjectEvents(ServiceProvider, _log);
+            RunningTasks.Add("EventsTask", new(Task.Run(EventsRunner.RunEventsAsync, ets.Token), ets));
 
             if (_config.HostWebsite)
             {
@@ -906,91 +940,6 @@ namespace SilverBotDS
             }
         }
 
-        private static async Task Slash_SlashCommandErrored(SlashCommandsExtension sender, SlashCommandErrorEventArgs e)
-        {
-            async Task RespondWithContent(string content, bool ephermal = true)
-            {
-                await e.Context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
-                    new DiscordInteractionResponseBuilder().AsEphemeral(ephermal).WithContent(content));
-            }
-
-            var config = ServiceProvider.GetService<Config>();
-            if (config is { SendErrorsThroughSegment: true })
-            {
-                var analytics = ServiceProvider.GetService<IAnalyse>();
-                if (analytics is not null)
-                {
-                    await analytics.EmitEvent(e.Context.User, "SlashCommandErrored", new Dictionary<string, object>()
-                    {
-                        {"commandname", e.Context.CommandName},
-                        {"error", e.Exception}
-                    });
-                }
-            }
-
-            if (e.Context.Channel.IsPrivate || e.Context.Channel
-                    .PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id))
-                    .HasPermission(Permissions.SendMessages))
-            {
-                if (e.Exception is CommandNotFoundException)
-                {
-                    //we do not do anything if it is a nonexistent command, i would have liked it to be a user only visible message but discord is shit
-                    return;
-                }
-                else
-                {
-                    var lang = await Language.GetLanguageFromCtxAsync(e.Context);
-                    switch (e.Exception)
-                    {
-                        case ChecksFailedException cfe when cfe.FailedChecks.Count is 1:
-                            await RespondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
-                                e.Context.Guild != null, e));
-                            break;
-
-                        case ChecksFailedException cfe:
-                            {
-                                var builder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
-                                var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: builder
-                                        .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
-                                        .WithDescription(
-                                            RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
-                                    .ToList();
-                                var interactivity = e.Context.Client.GetInteractivity();
-                                await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
-                                    token: new CancellationToken());
-                                break;
-                            }
-                        case InvalidOverloadException:
-                        case ArgumentException { Message: "Could not find a suitable overload for the command." }:
-                            await RespondWithContent(string.Format(lang.InvalidOverload, e.Context.CommandName));
-                            break;
-
-                        case InvalidOperationException { Message: "No matching subcommands were found, and this group is not executable." }:
-                            await RespondWithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable);
-                            break;
-
-                        case UnknownImageFormatException:
-                            await RespondWithContent(lang.UnknownImageFormat);
-                            break;
-
-                        case AttachmentCountIncorrectException aa when aa.AttachmentCount == AttachmentCountIncorrect.TooManyAttachments:
-                            await RespondWithContent(lang.WrongImageCount);
-                            break;
-
-                        case AttachmentCountIncorrectException:
-                            await RespondWithContent(lang.NoImageGeneric);
-                            break;
-
-                        default:
-                            await RespondWithContent(lang.GeneralException);
-                            break;
-                    }
-                }
-            }
-
-            _log.Error(e.Exception,
-                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserID}`\n```\nNA\n```", e.Exception.GetType().FullName, e.Context.Guild?.Id.ToString() ?? "None", e.Context.Channel?.Id.ToString(), e.Context.User?.Id.ToString() ?? "None");
-        }
 
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
         {
@@ -1001,337 +950,7 @@ namespace SilverBotDS
             };
         }
 
-        private static string RemoveStringFromEnd(string a, string sub)
-        {
-            if (a.EndsWith(sub))
-            {
-                a = a[..a.LastIndexOf(sub, StringComparison.Ordinal)];
-            }
-
-            return a;
-        }
-
-        /// <summary>
-        ///     Render the error message for an Attribute
-        /// </summary>
-        /// <param name="checkBase">The attribute</param>
-        /// <param name="lang">The language</param>
-        /// <param name="isinguild">Was the command executed in a guild or in direct messages</param>
-        /// <param name="e">Gives the raw command error arguments</param>
-        /// <returns>A <see cref="string" /> containing the error message</returns>
-        private static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang,
-            bool isinguild, CommandErrorEventArgs e)
-        {
-            var type = checkBase.GetType();
-            if (type == typeof(RequireDjAttribute))
-            {
-                return lang.RequireDJCheckFailed;
-            }
-            if (type == typeof(RequireGuildAttribute))
-            {
-                return lang.RequireGuildCheckFailed;
-            }
-            if (type == typeof(RequireNsfwAttribute))
-            {
-                return lang.RequireNsfwCheckFailed;
-            }
-            if (type == typeof(RequireOwnerAttribute))
-            {
-                return lang.RequireOwnerCheckFailed;
-            }
-            return checkBase switch
-            {
-                RequireRolesAttribute requireRolesAttribute when requireRolesAttribute.RoleNames.Count == 1 => string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]),
-                RequireRolesAttribute requireRolesAttribute => string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize()),
-                RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
-requireBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotPermisionsCheckFailedSG,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireBotPermissionsAttribute requireBotPermissions => string.Format(lang.RequireBotPermisionsCheckFailedPL,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All => string.Format(lang.RequireUserPermisionsCheckFailedSG,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireUserPermissionsAttribute userPermissions => string.Format(lang.RequireUserPermisionsCheckFailedPL,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
-userAndBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount => (string)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang),
-                RequireAttachmentAttribute attachmentAttribute => (string)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang),
-                _ => string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize()),
-            };
-        }
-
-        private static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang,
-            bool isinguild, SlashCommandErrorEventArgs e)
-        {
-            var type = checkBase.GetType();
-            if (type == typeof(RequireDjAttribute))
-            {
-                return lang.RequireDJCheckFailed;
-            }
-            if (type == typeof(RequireGuildAttribute))
-            {
-                return lang.RequireGuildCheckFailed;
-            }
-            if (type == typeof(RequireNsfwAttribute))
-            {
-                return lang.RequireNsfwCheckFailed;
-            }
-            if (type == typeof(RequireOwnerAttribute))
-            {
-                return lang.RequireOwnerCheckFailed;
-            }
-            return checkBase switch
-            {
-                RequireRolesAttribute requireRolesAttribute => requireRolesAttribute.RoleNames.Count == 1 ? string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]) : string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize()),
-                RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
-requireBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotPermisionsCheckFailedSG,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireBotPermissionsAttribute requireBotPermissions => string.Format(lang.RequireBotPermisionsCheckFailedPL,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All => string.Format(lang.RequireUserPermisionsCheckFailedSG,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireUserPermissionsAttribute userPermissions => string.Format(lang.RequireUserPermisionsCheckFailedPL,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
-userAndBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireAttachmentAttribute => throw new NotSupportedException("Attachment checks are not supported for slash commands."),
-                _ => string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize()),
-            };
-        }
-
-        private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
-        {
-            async Task RespondWithContent(string content)
-            {
-                await new DiscordMessageBuilder()
-                    .WithReply(e.Context.Message.Id)
-                    .WithContent(content)
-                    .SendAsync(e.Context.Channel);
-            }
-
-            if (_config.SendErrorsThroughSegment)
-            {
-                var analytics = ServiceProvider.GetService<IAnalyse>();
-                if (analytics is not null)
-                {
-                    await analytics.EmitEvent(e.Context.User, "SlashCommandErrored", new Dictionary<string, object>()
-                    {
-                        {"commandname", e.Context.Command.Name},
-                        {"error", e.Exception}
-                    });
-                }
-            }
-
-            if (e.Context.Channel.IsPrivate || e.Context.Channel
-                    .PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id))
-                    .HasPermission(Permissions.SendMessages))
-            {
-                if (e.Exception is CommandNotFoundException)
-                {
-                    //we do not do anything if it is a nonexistent command, i would have liked it to be a user only visible message but discord is shit
-                    return;
-                }
-                else
-                {
-                    var lang = await Language.GetLanguageFromCtxAsync(e.Context);
-                    switch (e.Exception)
-                    {
-                        case ChecksFailedException cfe when cfe.FailedChecks.Count is 1:
-                            await RespondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
-                                e.Context.Guild != null, e));
-                            break;
-
-                        case ChecksFailedException cfe:
-                            {
-                                var embedBuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
-                                var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: embedBuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
-                                        .WithDescription(RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
-                                    .ToList();
-
-                                var interactivity = e.Context.Client.GetInteractivity();
-                                await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
-                                    token: new CancellationToken());
-                                break;
-                            }
-                        case InvalidOverloadException:
-                        case ArgumentException { Message: "Could not find a suitable overload for the command." }:
-                            await RespondWithContent(string.Format(lang.InvalidOverload, e.Context.Command.Name));
-                            break;
-
-                        case InvalidOperationException { Message: "No matching subcommands were found, and this group is not executable." }:
-                            await RespondWithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable);
-                            break;
-
-                        case UnknownImageFormatException:
-                            await RespondWithContent(lang.UnknownImageFormat);
-                            break;
-
-                        case AttachmentCountIncorrectException { AttachmentCount: AttachmentCountIncorrect.TooManyAttachments }:
-                            await RespondWithContent(lang.WrongImageCount);
-                            break;
-
-                        case AttachmentCountIncorrectException aa:
-                            await RespondWithContent(lang.NoImageGeneric);
-                            break;
-
-                        default:
-                            await RespondWithContent(lang.GeneralException);
-                            break;
-                    }
-                }
-            }
-
-            _log.Error(e.Exception,
-                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserId}`\n```\n{MessageContent}\n```", e.Exception.GetType().FullName, e.Context.Guild?.Id.ToString() ?? "None", e.Context.Channel?.Id.ToString(), e.Context.User?.Id.ToString() ?? "None", e.Context.Message.Content);
-        }
-
-        public static Task RunEmojiEvent(PlannedEvent @event)
-        {
-            if (@event.Type != PlannedEventType.EmojiPoll)
-            {
-                throw new ArgumentException("The parameter @event needs to be an EmojiPoll", nameof(@event));
-            }
-            return RunEmojiEventAsync(@event);
-        }
-
-        public static async Task RunEmojiEventAsync(PlannedEvent @event)
-        {
-            var channel = await _discord.GetChannelAsync(@event.ChannelID);
-            if (@event.ResponseMessageID != null)
-            {
-                var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
-                var bob = new DiscordEmbedBuilder(msg.Embeds[0]);
-                var yesVotes =
-                    (await msg.GetReactionsAsync(DiscordEmoji.FromName(_discord, ":everybodyvotes:"))).Count(x =>
-                        x.Id != _discord.CurrentUser.Id && !x.IsBot);
-                var noVotes =
-                    (await msg.GetReactionsAsync(DiscordEmoji.FromName(_discord, ":nobodyvotes:"))).Count(x =>
-                        x.Id != _discord.CurrentUser.Id && !x.IsBot);
-                var pollResultText = new StringBuilder();
-                pollResultText.Append("Poll result: **");
-                if (yesVotes > noVotes)
-                {
-                    pollResultText.Append("Yes");
-                }
-                else if (yesVotes == noVotes)
-                {
-                    pollResultText.Append("Undecided");
-                }
-                else
-                {
-                    pollResultText.Append("No");
-                }
-
-                pollResultText.Append("**\nYes:").Append(yesVotes).Append(" No:").Append(noVotes).Append(" Undecided: ")
-                    .Append(channel.Guild.Members.Count(x => !x.Value.IsBot) - (yesVotes + noVotes));
-                bob.WithDescription(pollResultText.ToString());
-                await msg.ModifyAsync(bob.Build());
-            }
-            @event.Handled = true;
-        }
-
-        public static Task RunGiveAwayEvent(PlannedEvent @event)
-        {
-            if (@event.Type != PlannedEventType.EmojiPoll)
-            {
-                throw new ArgumentException("The parameter evnt needs to be an GiveAway", nameof(@event));
-            }
-            return RunGiveAwayEventAsync(@event);
-        }
-
-        public static async Task RunGiveAwayEventAsync(PlannedEvent @event)
-        {
-            var channel = await _discord.GetChannelAsync(@event.ChannelID);
-            if (@event.ResponseMessageID != null)
-            {
-                var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
-                var people =
-                    (await msg.GetReactionsAsync(DiscordEmoji.FromName(_discord, ":everybodyvotes:"))).Where(x =>
-                        x.Id != _discord.CurrentUser.Id && !x.IsBot);
-                var discordUsers = people as DiscordUser[] ?? people.ToArray();
-                if (discordUsers.Length == 0)
-                {
-                    await channel.SendMessageAsync("Nobody reacted in time :(");
-                }
-                else
-                {
-                    await channel.SendMessageAsync(
-                        $"{discordUsers[RandomGenerator.Next(0, discordUsers.Length)].Mention} won {msg.Embeds[0].Title}");
-                }
-            }
-            @event.Handled = true;
-        }
-
-        public static async Task RunEventsAsync()
-        {
-            var dbctx = ServiceProvider.GetRequiredService<DatabaseContext>();
-            while (true)
-            {
-                try
-                {
-                    var arr = dbctx.plannedEvents.ToArray();
-                    foreach (var evnt in arr)
-                    {
-                        if (!evnt.Handled)
-                        {
-                            if (evnt.Time > DateTime.Now)
-                            {
-                                continue;
-                            }
-
-                            try
-                            {
-                                switch (evnt.Type)
-                                {
-                                    case PlannedEventType.EmojiPoll:
-                                        CancellationTokenSource cts = new(15 * 1000);
-                                        RunningTasksOfSecondRow.Add(Guid.NewGuid(), new(Task.Run(() => RunEmojiEvent(evnt), cts.Token), cts));
-                                        break;
-
-                                    case PlannedEventType.GiveAway:
-                                        CancellationTokenSource cts2 = new(15 * 1000);
-                                        RunningTasksOfSecondRow.Add(Guid.NewGuid(), new(Task.Run(() => RunGiveAwayEvent(evnt), cts2.Token), cts2));
-                                        break;
-
-                                    case PlannedEventType.Reminder:
-                                        throw new NotImplementedException();
-                                    default:
-                                        throw new ArgumentOutOfRangeException(nameof(evnt.Type));
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                _log.Error(e, "exception happened in events thread in the switch case");
-                            }
-                        }
-                        else
-                        {
-                            _log.Verbose("removed an {EventType}", evnt.Type);
-                            dbctx.plannedEvents.Remove(evnt);
-                            await dbctx.SaveChangesAsync();
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    _log.Error(e, "exception happened in events thread");
-                }
-
-                await Task.Delay(3000);
-            }
-        }
+        
 
         public static async Task StatisticsMainAsync(CancellationToken ct = default)
         {

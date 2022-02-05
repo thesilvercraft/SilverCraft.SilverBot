@@ -539,7 +539,10 @@ public class Language
 
     public string UnknownImageFormat { get; set; } =
         "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.";
-
+    public string AttributeDataBaseCheckNoDirectMessages { get; set; } =
+     "This command can only be run in a server";
+    public string AttributeDataBaseCheckWebShot { get; set; } =
+     "This command can only be run in a server where webshot is enabled";
     public string JpegSuccess { get; set; } = "There ya go a jpegnized image";
     public string SilverSuccess { get; set; } = "There ya go a silver image";
     public string ComicSuccess { get; set; } = "There ya go a image with the comic filter";
@@ -567,7 +570,18 @@ public class Language
 
     public string EmojiEnd { get; set; } =
         "i went through {0} messages in {1}(including download) {2}(excluding download)\nEmote usage data:";
+    
+    public string ReactionRoleNoPermManageRoles { get; set; } = "Please give me the permission to manage roles so this feature works";
+    public string ReactionRoleIntro { get; set; } = "Welcome to the text guided reaction role menu creator. Do you want the menu to be an embed? (**y**es/**n**o)";
+    public string ReactionRoleTitle { get; set; } = "ok now what do you want the title to be? (eg. `***Role Menu***`)";
+    public string[] ReactionRoleResponseYes{ get; set; } = new[]{"yes", "y"};
+    public string[] ReactionRoleResponseNo{ get; set; } = new[]{"no", "n"};
+    public string ReactionRoleRolesAdded { get; set; } = "Roles added:";
+    public string ReactionRoleDone {get;set;} = "done";
+    public string ReactionRoleNone {get;set;} = "none";
 
+    public string ReactionRoleMainLoop { get; set; } = "What roles do you want to add to the menu? ping the role or add it's id first, add ok thanks a space and add an emoji and optionally hit space again and send a type of reaction role by its name or number ```\nAdd the role when the user reacts to the emoji and remove when unreacting | Normal | 16 \nRemove the role when the user reacts to the emoji and add when unreacting | Inverse | 2\nAdd the role when the user reacts to the emoji BUT DO NOT REMOVE WHEN UNREACTING | Sticky | 4\nDO NOT ADD THE ROLE but remove it when the user unreacts | Vanishing | 8\n``` send many messages similar to this\n```\n@role 🥲 Sticky\n@anotherrole 😳\n``` (don't put items in code blocks) say `done` you're done";
+    public string ReactionRoleEmbedColour {get; set; } = "What color do you want for the embed?";
     public string FreeToPlayGameType { get; set; } = "F2P";
     public string NotAvailableGameType { get; set; } = "Not Available";
     public string CostsMoneyGameTypeBug { get; set; } = "It costs merica bucks but idk how much";

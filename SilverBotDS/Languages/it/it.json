@@ -139,6 +139,8 @@
   "RequireBotAndUserPermisionsCheckFailedPL": "Abbiamo gli stessi permessi {0} per usarlo.",
   "RequireBotAndUserPermisionsCheckFailedSG": "Dobbiamo entrambi avere il permesso {0} per fartelo usare.",
   "UnknownImageFormat": "Non so come leggere quel format, so solo leggere foto BMP, TIFF, GIF, PNG, TGA e JPEG.",
+  "AttributeDataBaseCheckNoDirectMessages": "This command can only be run in a server",
+  "AttributeDataBaseCheckWebShot": "This command can only be run in a server where webshot is enabled",
   "JpegSuccess": "Ecco qui un immagine jpeg-zata",
   "SilverSuccess": "Ecco qui un immagine silver",
   "ComicSuccess": "Ecco qui un immagine con il filtro comic",

@@ -15,7 +15,7 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes.ReactionRole;
-
+using System.Linq;
 namespace SilverBotDS.Commands;
 
 [RequireGuild]
@@ -59,7 +59,7 @@ public class ReactionRoleCommands : SilverBotCommandModule
         }
         var result = await ctx.Message.GetNextMessageAsync(m =>
         {
-            var ctl=m.Trim().ToLower();
+            var ctl=m.Content.Trim().ToLower();
             return lang.ReactionRoleResponseYes.Contains(ctl) || lang.ReactionRoleResponseNo.Contains(ctl);
         });
 
@@ -80,7 +80,7 @@ public class ReactionRoleCommands : SilverBotCommandModule
                 result = await ctx.Message.GetNextMessageAsync(m => m.Content.Length > 0, TimeSpan.FromMinutes(5));
                 if (result.TimedOut)
                 {
-                    msg = await msg.DeleteAsync();
+                    await msg.DeleteAsync();
                     return;
                 }
                 if (string.Equals(result.Result.Content, lang.ReactionRoleDone, StringComparison.OrdinalIgnoreCase))

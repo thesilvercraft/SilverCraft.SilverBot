@@ -111,9 +111,10 @@ public class OwnerOnly : SilverBotCommandModule
     }
 
     [Command("UnRegisterCommand")]
-    public async Task UnRegCmd(CommandContext ctx, [RemainingText] string cmdwithparm)
+    public Task UnRegCmd(CommandContext ctx, [RemainingText] string cmdwithparm)
     {
         ctx.CommandsNext.UnregisterCommands(ctx.CommandsNext.FindCommand(cmdwithparm, out _));
+        return Task.CompletedTask;
     }
 
     [Command("RegisterModule")]

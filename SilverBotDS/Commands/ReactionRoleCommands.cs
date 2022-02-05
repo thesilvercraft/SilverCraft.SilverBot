@@ -37,45 +37,42 @@ public class ReactionRoleCommands : SilverBotCommandModule
     [Command("addmenu")]
     public async Task ReactionRoleAdd(CommandContext ctx)
     {
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
         if (!(ctx.Guild.Permissions?.HasPermission(Permissions.ManageRoles) == true || ctx.Guild.CurrentMember.Roles.MaxBy(x => x.Position)!.CheckPermission(Permissions.ManageRoles) == PermissionLevel.Allowed))
         {
-            await ctx.RespondAsync("pls give perms to manage roles or feature will not work");
+            await ctx.RespondAsync(lang.ReactionRoleNoPermManageRoles);
         }
-        var msg = await ctx.RespondAsync("Welcome to the text guided reaction role menu creator thingy. Do you want the menu to be an embed? (**y**es/**n**o)");
+        var msg = await ctx.RespondAsync(lang.ReactionRoleIntro);
 
         bool GetFromContent(string content)
         {
-            return content.ToLower() switch
+            var ctl=content.ToLower().Trim();
+            if(lang.ReactionRoleResponseYes.Contains(ctl))
             {
-                "y" => true,
-                "yes" => true,
-                "n" => true,
-                "no" => true,
-                _ => false
-            };
+                return true;
+            }
+            else if(lang.ReactionRoleResponseNo.Contains(ctl))
+            {
+                return false;
+            }
+            return false;
         }
         var result = await ctx.Message.GetNextMessageAsync(m =>
         {
-            return m.Content.ToLower() switch
-            {
-                "y" => true,
-                "yes" => true,
-                "n" => true,
-                "no" => true,
-                _ => false
-            };
+            var ctl=m.Trim().ToLower();
+            return lang.ReactionRoleResponseYes.Contains(ctl) || lang.ReactionRoleResponseNo.Contains(ctl);
         });
 
         if (!result.TimedOut)
         {
             bool useembed = GetFromContent(result.Result.Content);
             await result.Result.DeleteAsync();
-            msg = await msg.ModifyAsync("ok now what do you want the title to be? (eg. `***Role Menu***`)");
+            msg = await msg.ModifyAsync(lang.ReactionRoleTitle);
             result = await ctx.Message.GetNextMessageAsync(m => m.Content.Length > 0);
             var title = result.Result.Content;
             await result.Result.DeleteAsync();
-            msg = await msg.ModifyAsync("what roles do you want to add to the menu? ping the role or add its id first, add a space and add an emoji and optionally hit space again and send a type of reaction role by its name or number ```\nAdd the role when the user reacts to the emoji and remove when unreacting | Normal | 16 \nRemove the role when the user reacts to the emoji and add when unreacting | Inverse | 2\nAdd the role when the user reacts to the emoji BUT DO NOT REMOVE WHEN UNREACTING | Sticky | 4\nDO NOT ADD THE ROLE but remove it when the user unreacts | Vanishing | 8\n``` send many messages similar to this\n```\n@role 🥲 Sticky\n@anotherrole 😳\n``` (do not put things in code blocks ok thanks) say `done` youre done");
-            var nmsg = await ctx.Channel.SendMessageAsync("roles and stuff added: nothing");
+            msg = await msg.ModifyAsync(lang.ReactionRoleMainLoop);
+            var nmsg = await ctx.Channel.SendMessageAsync($"{lang.ReactionRoleRolesAdded} {lang.ReactionRoleNone}");
             //get the roles in a loop
             var roles = new Dictionary<DiscordRole, Tuple<DiscordEmoji, ReactionRoleType>>();
             while (true)
@@ -83,10 +80,10 @@ public class ReactionRoleCommands : SilverBotCommandModule
                 result = await ctx.Message.GetNextMessageAsync(m => m.Content.Length > 0, TimeSpan.FromMinutes(5));
                 if (result.TimedOut)
                 {
-                    msg = await msg.ModifyAsync("you are WAY WAY TOO SLOW");
+                    msg = await msg.DeleteAsync();
                     return;
                 }
-                if (string.Equals(result.Result.Content, "done", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(result.Result.Content, lang.ReactionRoleDone, StringComparison.OrdinalIgnoreCase))
                 {
                     await result.Result.DeleteAsync();
                     break;
@@ -138,7 +135,7 @@ public class ReactionRoleCommands : SilverBotCommandModule
                     msg = await msg.ModifyAsync(e.Message);
                 }
                 await result.Result.DeleteAsync();
-                StringBuilder asasasasas = new($"roles and stuff added ({roles.Count}):\n");
+                StringBuilder asasasasas = new($"{lang.ReactionRoleRolesAdded} ({roles.Count}):\n");
                 foreach (var role in roles)
                 {
                     asasasasas.Append(role.Value.Item1).Append(' ').Append(role.Key.Name).Append(' ').AppendLine(role.Value.Item2.Humanize());
@@ -166,15 +163,11 @@ public class ReactionRoleCommands : SilverBotCommandModule
             var mb = new DiscordMessageBuilder();
             if (useembed)
             {
-                msg = await msg.ModifyAsync("ay sorry to bother ya but what color do you want for the embed");
+                msg = await msg.ModifyAsync(lang.ReactionRoleEmbedColour);
                 result = await ctx.Message.GetNextMessageAsync(m => m.Content.Length > 0, TimeSpan.FromMinutes(2));
                 DiscordColor colour = DiscordColor.Red;
-                if (result.TimedOut)
-                {
-                    msg = await msg.ModifyAsync("nvm");
-                }
-                else
-                {
+                if (!result.TimedOut)
+                {                
                     colour = new DiscordColor(SixLabors.ImageSharp.Color.Parse(result.Result.Content).ToHex()[..6]);
                 }
                 mb = mb.WithEmbed(new DiscordEmbedBuilder().WithTitle(title).WithDescription(asasadsadsasas.ToString())
@@ -191,7 +184,7 @@ public class ReactionRoleCommands : SilverBotCommandModule
                 _ = nnmsg.CreateReactionAsync(role.Value.Item1);
             }
             dbCtx.SaveChanges();
-            await msg.ModifyAsync("done???");
+            await msg.DeleteAsync();
         }
     }
 }

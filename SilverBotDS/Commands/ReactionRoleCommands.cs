@@ -46,12 +46,12 @@ public class ReactionRoleCommands : SilverBotCommandModule
 
         bool GetFromContent(string content)
         {
-            var ctl=content.ToLower().Trim();
-            if(lang.ReactionRoleResponseYes.Contains(ctl))
+            var ctl=content.ToLowerInvariant().Trim();
+            if(lang.ReactionRoleResponseYes == ctl || lang.ReactionRoleResponseYes2 == ctl  || lang.ReactionRoleResponseYes3 == ctl)
             {
                 return true;
             }
-            else if(lang.ReactionRoleResponseNo.Contains(ctl))
+            else if(lang.ReactionRoleResponseNo==ctl || lang.ReactionRoleResponseNo2 == ctl|| lang.ReactionRoleResponseNo3 == ctl)
             {
                 return false;
             }
@@ -60,7 +60,7 @@ public class ReactionRoleCommands : SilverBotCommandModule
         var result = await ctx.Message.GetNextMessageAsync(m =>
         {
             var ctl=m.Content.Trim().ToLower();
-            return lang.ReactionRoleResponseYes.Contains(ctl) || lang.ReactionRoleResponseNo.Contains(ctl);
+            return lang.ReactionRoleResponseYes==(ctl) || lang.ReactionRoleResponseYes2==(ctl) || lang.ReactionRoleResponseYes3==(ctl) || lang.ReactionRoleResponseNo==(ctl) || lang.ReactionRoleResponseNo2==(ctl) || lang.ReactionRoleResponseNo3==(ctl);
         });
 
         if (!result.TimedOut)

@@ -574,8 +574,13 @@ public class Language
     public string ReactionRoleNoPermManageRoles { get; set; } = "Please give me the permission to manage roles so this feature works";
     public string ReactionRoleIntro { get; set; } = "Welcome to the text guided reaction role menu creator. Do you want the menu to be an embed? (**y**es/**n**o)";
     public string ReactionRoleTitle { get; set; } = "ok now what do you want the title to be? (eg. `***Role Menu***`)";
-    public string[] ReactionRoleResponseYes{ get; set; } = new[]{"yes", "y"};
-    public string[] ReactionRoleResponseNo{ get; set; } = new[]{"no", "n"};
+    public string ReactionRoleResponseYes{ get; set; } = "yes";
+    public string ReactionRoleResponseYes2 { get; set; } = "y";
+    public string ReactionRoleResponseYes3 { get; set; } = "yup";
+
+    public string ReactionRoleResponseNo{ get; set; } ="no";
+    public string ReactionRoleResponseNo2 { get; set; } = "n";
+    public string ReactionRoleResponseNo3 { get; set; } = "nah";
     public string ReactionRoleRolesAdded { get; set; } = "Roles added:";
     public string ReactionRoleDone {get;set;} = "done";
     public string ReactionRoleNone {get;set;} = "none";

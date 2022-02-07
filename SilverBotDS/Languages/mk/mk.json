@@ -160,7 +160,7 @@
   "EmojiMessageDownloadStart": "Симнувам {0} пораќи што ќе трае {1}",
   "EmojiMessageDownloadEnd": "Симнав {0} додека очекував {1}, очекував да трае {2} додека траеше {3}, ако ми кажеше точно колку пораки да симнам мислам дека ќе траеше {4}",
   "EmojiEnd": "Отидов преку {0} пораки во {1} вклучувајќи симнување {2} исклучувајќи симнување\nИнфромации за емојиња:",
-  "ReactionRoleNoPermManageRoles": "Please give me the permission to manage roles so this feature works",
+  "ReactionRoleNoPermManageRoles": "Ве молам дадете ми дозвола да комтролирам улоги за ова да работи",
   "ReactionRoleIntro": "Welcome to the text guided reaction role menu creator. Do you want the menu to be an embed? (**y**es/**n**o)",
   "ReactionRoleTitle": "ok now what do you want the title to be? (eg. `***Role Menu***`)",
   "ReactionRoleResponseYes": "yes",

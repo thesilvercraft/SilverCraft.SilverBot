@@ -265,7 +265,7 @@ public class Config
         new("Internet enabled!", ActivityType.Playing),
         new("Now supports emoji 😉", ActivityType.Playing),
         new("if not OK then return end", ActivityType.Playing),
-        new("Now on {platform}.", ActivityType.Playing),
+        new("Now on {Platform}.", ActivityType.Playing),
         new("Should not be texted while driving", ActivityType.Playing),
         new("Should not be tested while driving", ActivityType.Playing),
         new("Try it!", ActivityType.Playing),

@@ -698,7 +698,7 @@ public class Audio : BaseCommandModule
         await player.SkipAsync();
         var trackafter = player.CurrentTrack;
         await SendSimpleMessage(ctx,
-            string.Format(lang.SkippedNP, trackbefore.Title, trackafter == null ? "Nothing" : trackafter?.Title),
+            string.Format(lang.SkippedNP, trackbefore.Title, trackafter == null ? lang.QueueNothing : trackafter?.Title),
             language: lang);
     }
 
@@ -739,7 +739,7 @@ public class Audio : BaseCommandModule
         {
             await SendSimpleMessage(ctx,
                 string.Format(lang.SkippedNP, trackbefore.Title,
-                    player.CurrentTrack == null ? "Nothing" : player.CurrentTrack.Title), language: lang);
+                    player.CurrentTrack == null ? lang.QueueNothing : player.CurrentTrack.Title), language: lang);
         }
         else if (thing.WasAdded)
         {

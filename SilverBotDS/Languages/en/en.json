@@ -187,5 +187,20 @@
   "GitCommitHash": "Git Commit hash",
   "GitBranch": "Git Branch",
   "IsDirty": "Is dirty",
-  "CLR": "CLR"
+  "CLR": "CLR",
+  "ReminderErrorNoContent": "The reminder\u0027s content can\u0027t be empty",
+  "ReminderSuccess": "Set a reminder {0} from now ({1})\nView reminders with the \u0060listreminders\u0060 command",
+  "ListReminderNone": "You do not have any set reminders",
+  "ListReminderStart": "Listing all reminders",
+  "ListReminderListMore": "And {0} more not shown here",
+  "ReminderContent": "Reminder content:",
+  "PollResultsStart": "Poll result:",
+  "PollResultsResultYes": "Yes",
+  "PollResultsResultNo": "No",
+  "PollResultsResultUndecided": "Undecided",
+  "PollErrorQuestionNull": "The question can\u0027t be empty",
+  "GiveawayResultsNoReactions": "Nooone reacted in time",
+  "GiveawayItemNull": "The item can\u0027t be empty",
+  "GiveawayResultsWon": "{0} won {1}",
+  "QueueNothing": "Nothing"
 }

@@ -15,7 +15,6 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes.ReactionRole;
-using System.Linq;
 namespace SilverBotDS.Commands;
 
 [RequireGuild]
@@ -50,7 +49,7 @@ public class ReactionRoleCommands : SilverBotCommandModule
             if(lang.ReactionRoleResponseYes == ctl || lang.ReactionRoleResponseYes2 == ctl  || lang.ReactionRoleResponseYes3 == ctl)
             {
                 return true;
-            }
+        }
             else if(lang.ReactionRoleResponseNo==ctl || lang.ReactionRoleResponseNo2 == ctl|| lang.ReactionRoleResponseNo3 == ctl)
             {
                 return false;
@@ -167,7 +166,7 @@ public class ReactionRoleCommands : SilverBotCommandModule
                 result = await ctx.Message.GetNextMessageAsync(m => m.Content.Length > 0, TimeSpan.FromMinutes(2));
                 DiscordColor colour = DiscordColor.Red;
                 if (!result.TimedOut)
-                {                
+                {
                     colour = new DiscordColor(SixLabors.ImageSharp.Color.Parse(result.Result.Content).ToHex()[..6]);
                 }
                 mb = mb.WithEmbed(new DiscordEmbedBuilder().WithTitle(title).WithDescription(asasadsadsasas.ToString())

@@ -602,6 +602,24 @@ public class Language
     public string IsDirty { get; set; } = "Is dirty";
     public string CLR { get; set; } = "CLR";
 
+    public string ReminderErrorNoContent { get; set; }  = "The reminder's content can't be empty";
+    public string ReminderSuccess { get; set; }  = "Set a reminder {0} from now ({1})\nView reminders with the `listreminders` command";
+    public string ListReminderNone { get; set; }  = "You do not have any set reminders";
+    public string ListReminderStart { get; set; }  = "Listing all reminders";
+    public string ListReminderListMore { get; set; }  = "And {0} more not shown here";
+    public string ReminderContent { get; set; } = "Reminder content:";
+
+    public string PollResultsStart { get; set; } = "Poll result:";
+    public string PollResultsResultYes { get; set; } = "Yes";
+    public string PollResultsResultNo { get; set; } = "No";
+    public string PollResultsResultUndecided { get; set; } = "Undecided";
+    public string PollErrorQuestionNull { get; set; } = "The question can't be empty";
+
+    public string GiveawayResultsNoReactions { get; set; } = "Nooone reacted in time";
+    public string GiveawayItemNull { get; set; } = "The item can't be empty";
+    public string GiveawayResultsWon { get; set; } = "{0} won {1}";
+    public string QueueNothing { get; set; } = "Nothing";
+
     public CultureInfo GetCultureInfo()
     {
         return new CultureInfo(CultureInfo);

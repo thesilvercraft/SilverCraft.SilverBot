@@ -86,7 +86,8 @@ public class AdminCommands : BaseCommandModule
         }
         else
         {
-            await commandContext.RespondAsync("Error: the question can't be empty");
+            var lang = await Language.GetLanguageFromCtxAsync(commandContext);
+            await commandContext.RespondAsync(lang.PollErrorQuestionNull);
         }
     }
 
@@ -119,7 +120,8 @@ public class AdminCommands : BaseCommandModule
         }
         else
         {
-            await commandContext.RespondAsync("Error: the item can't be empty");
+            var lang = await Language.GetLanguageFromCtxAsync(commandContext);
+            await commandContext.RespondAsync(lang.GiveawayItemNull);
         }
     }
 

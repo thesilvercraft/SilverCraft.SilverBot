@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SilverBotDS.Objects;
 
@@ -10,9 +11,10 @@ using SilverBotDS.Objects;
 namespace SilverBotDS.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220208172508_Add data fields to events")]
+    partial class Adddatafieldstoevents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
@@ -300,15 +302,6 @@ namespace SilverBotDS.Migrations
                             b1.Property<string>("GitRepo")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("GiveawayItemNull")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("GiveawayResultsNoReactions")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("GiveawayResultsWon")
-                                .HasColumnType("TEXT");
-
                             b1.Property<string>("HelpCommandGroupAliases")
                                 .HasColumnType("TEXT");
 
@@ -370,15 +363,6 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Left")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ListReminderListMore")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ListReminderNone")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ListReminderStart")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LoadedSilverBotPlaylistWithTitle")
@@ -480,21 +464,6 @@ namespace SilverBotDS.Migrations
                             b1.Property<string>("PeriodExpired")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("PollErrorQuestionNull")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("PollResultsResultNo")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("PollResultsResultUndecided")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("PollResultsResultYes")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("PollResultsStart")
-                                .HasColumnType("TEXT");
-
                             b1.Property<string>("PoweredByGiphy")
                                 .HasColumnType("TEXT");
 
@@ -517,9 +486,6 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgedBySilverBotReason")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("QueueNothing")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuoteGetNoBook")
@@ -577,15 +543,6 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleTitle")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ReminderContent")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ReminderErrorNoContent")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ReminderSuccess")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedFront")
@@ -932,15 +889,6 @@ namespace SilverBotDS.Migrations
                             b1.Property<string>("GitRepo")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("GiveawayItemNull")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("GiveawayResultsNoReactions")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("GiveawayResultsWon")
-                                .HasColumnType("TEXT");
-
                             b1.Property<string>("HelpCommandGroupAliases")
                                 .HasColumnType("TEXT");
 
@@ -999,15 +947,6 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Left")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ListReminderListMore")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ListReminderNone")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ListReminderStart")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LoadedSilverBotPlaylistWithTitle")
@@ -1109,21 +1048,6 @@ namespace SilverBotDS.Migrations
                             b1.Property<string>("PeriodExpired")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("PollErrorQuestionNull")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("PollResultsResultNo")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("PollResultsResultUndecided")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("PollResultsResultYes")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("PollResultsStart")
-                                .HasColumnType("TEXT");
-
                             b1.Property<string>("PoweredByGiphy")
                                 .HasColumnType("TEXT");
 
@@ -1146,9 +1070,6 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgedBySilverBotReason")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("QueueNothing")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuoteGetNoBook")
@@ -1206,15 +1127,6 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleTitle")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ReminderContent")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ReminderErrorNoContent")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("ReminderSuccess")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedFront")

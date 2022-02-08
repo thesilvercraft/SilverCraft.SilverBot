@@ -29,14 +29,16 @@ namespace SilverBotDS
         private static Logger _log { get; set; }
         private static bool useSegment { get; set; }
         private static CommandsNextExtension E { get; set; }
-        public static async Task RegisterErrorHandler(ServiceProvider sp,Logger log, CommandsNextExtension e)
+        public static Task RegisterErrorHandler(ServiceProvider sp,Logger log, CommandsNextExtension e)
         {
             ServiceProvider = sp;
             _log = log;
             E = e;
             E.CommandErrored += Commands_CommandErrored;
             useSegment = sp.GetRequiredService<Config>().SendErrorsThroughSegment;
+            return Task.CompletedTask;
         }
+
         public static void Reload()
         {
             E.CommandErrored -= Commands_CommandErrored;

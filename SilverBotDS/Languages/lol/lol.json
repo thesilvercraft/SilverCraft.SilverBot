@@ -187,5 +187,20 @@
   "GitCommitHash": "GIT COMMIT HASH",
   "GitBranch": "GIT BRANCH",
   "IsDirty": "IZ DIRTY",
-  "CLR": "COMMON KAT PLAYTIME"
+  "CLR": "COMMON KAT PLAYTIME",
+  "ReminderErrorNoContent": "The reminder's content can't be empty",
+  "ReminderSuccess": "Set a reminder {0} from now ({1})\nView reminders with the `listreminders` command",
+  "ListReminderNone": "You do not have any set reminders",
+  "ListReminderStart": "Listing all reminders",
+  "ListReminderListMore": "And {0} more not shown here",
+  "ReminderContent": "Reminder content:",
+  "PollResultsStart": "Poll result:",
+  "PollResultsResultYes": "Yes",
+  "PollResultsResultNo": "No",
+  "PollResultsResultUndecided": "Undecided",
+  "PollErrorQuestionNull": "The question can't be empty",
+  "GiveawayResultsNoReactions": "Nooone reacted in time",
+  "GiveawayItemNull": "The item can't be empty",
+  "GiveawayResultsWon": "{0} won {1}",
+  "QueueNothing": "Nothing"
 }

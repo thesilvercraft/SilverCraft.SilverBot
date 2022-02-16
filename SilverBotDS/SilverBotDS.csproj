@@ -50,7 +50,7 @@
 
     <ItemGroup>
         <PackageReference Include="Analytics" Version="3.8.0" />
-        <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-01064">
+        <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-01072">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-01064" />

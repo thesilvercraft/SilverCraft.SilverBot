@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -18,6 +12,12 @@ using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 
@@ -39,7 +39,7 @@ public class Bubot : BaseCommandModule
 internal class BibiCommands : SilverBotCommandModule, IRequireFonts
 {
     private readonly Font _bibiFont = new(SystemFonts.Get("Arial"), 30, FontStyle.Bold);
-    public static string[] RequiredFontFamilies => new[] {"Arial"};
+    public static string[] RequiredFontFamilies => new[] { "Arial" };
     public Config Config { private get; set; }
 
     private int BibiPictureCount
@@ -70,7 +70,7 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
     [Command("bibi")]
     [Description("Makes a image with the great cat Bibi.")]
     [Cooldown(1, 2, CooldownBucketType.User)]
-    public async Task Bibi(CommandContext ctx, [RemainingText] [Description("Bibi is")] string input)
+    public async Task Bibi(CommandContext ctx, [RemainingText][Description("Bibi is")] string input)
     {
         await ctx.TriggerTypingAsync();
         input = $"bibi is {input}";

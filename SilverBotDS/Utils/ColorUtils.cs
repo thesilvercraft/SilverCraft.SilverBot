@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DSharpPlus.Entities;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using DSharpPlus.Entities;
 
 namespace SilverBotDS.Utils;
 
@@ -16,16 +16,6 @@ public class ColorUtils
         DiscordColor.Red,
         DiscordColor.Green,
         DiscordColor.Blue,
-        //miku colors
-        new(149, 207, 208),
-        new(208, 236, 244),
-        //popular colors
-        new(127, 255, 212),
-        new(138, 43, 226),
-        new(255, 69, 0),
-        new(0, 128, 0),
-        //monika
-        new(206, 138, 128)
     };
 
     public static ColorUtils CreateInstance()
@@ -65,7 +55,6 @@ public class ColorUtils
                 options));
             return Internal;
         }
-
         return cache;
     }
 
@@ -112,7 +101,7 @@ public class ColorUtils
 
         public static SdColor FromDiscordColor(DiscordColor color)
         {
-            return new SdColor {R = color.R, G = color.G, B = color.B};
+            return new SdColor { R = color.R, G = color.G, B = color.B };
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SilverBotDS.Converters;
+using System;
 using System.Runtime.Serialization;
-using SilverBotDS.Converters;
 
 namespace SilverBotDS.Exceptions;
 

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using Lavalink4NET;
@@ -16,6 +9,13 @@ using SilverBotDS.Commands;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SpotifyAPI.Web;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Converters;
 
@@ -36,9 +36,9 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
 
     public async Task<Optional<SongORSongs>> ConvertAsync(string value, CommandContext ctx)
     {
-        var spotifyClient = (SpotifyClient) ctx.CommandsNext.Services.GetService(typeof(SpotifyClient));
-        var conf = (Config) ctx.CommandsNext.Services.GetService(typeof(Config));
-        var audioService = (LavalinkNode) ctx.CommandsNext.Services.GetService(typeof(LavalinkNode));
+        var spotifyClient = (SpotifyClient)ctx.CommandsNext.Services.GetService(typeof(SpotifyClient));
+        var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
+        var audioService = (LavalinkNode)ctx.CommandsNext.Services.GetService(typeof(LavalinkNode));
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         if (!IsInVc(ctx, audioService))
         {
@@ -60,7 +60,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
         await ctx.TriggerTypingAsync();
         if (value.EndsWith(".json"))
         {
-            var client = (HttpClient) ctx.CommandsNext.Services.GetService(typeof(HttpClient));
+            var client = (HttpClient)ctx.CommandsNext.Services.GetService(typeof(HttpClient));
             if (client is not null)
             {
                 var tracks =
@@ -103,7 +103,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
             if (m.Success)
             {
                 var playlist = await spotifyClient.Playlists.Get(m.Groups[2].Value);
-                var firstsong = (FullTrack) playlist.Tracks.Items.First(e => e.Track is FullTrack).Track;
+                var firstsong = (FullTrack)playlist.Tracks.Items.First(e => e.Track is FullTrack).Track;
                 return new Optional<SongORSongs>(new SongORSongs(
                     await audioService.GetTrackAsync($"{firstsong.Name} {firstsong.Artists[0].Name}",
                         SearchMode.YouTube), playlist.Name, GetTracksUsingPlaylist(playlist, audioService)));
@@ -113,11 +113,11 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
         var track = await audioService.GetTracksAsync(value);
         if (track?.Any() != true)
         {
-            track = new[] {await audioService.GetTrackAsync(value, SearchMode.YouTube)};
+            track = new[] { await audioService.GetTrackAsync(value, SearchMode.YouTube) };
 
             if (track?.Any() != true)
             {
-                track = new[] {await audioService.GetTrackAsync(value, SearchMode.SoundCloud)};
+                track = new[] { await audioService.GetTrackAsync(value, SearchMode.SoundCloud) };
                 if (track?.Any() != true)
                 {
                     await Audio.SendSimpleMessage(ctx, string.Format(lang.NoResults, value), language: lang);

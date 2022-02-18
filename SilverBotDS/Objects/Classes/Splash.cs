@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using DSharpPlus.Entities;
+﻿using DSharpPlus.Entities;
 using SilverBotDS.Utils;
+using System.Collections.Generic;
 
 namespace SilverBotDS.Objects;
 

@@ -1,4 +1,9 @@
-﻿using System;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.SlashCommands;
+using Microsoft.EntityFrameworkCore;
+using SilverBotDS.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
@@ -7,11 +12,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using DSharpPlus;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.SlashCommands;
-using Microsoft.EntityFrameworkCore;
-using SilverBotDS.Attributes;
 
 namespace SilverBotDS.Objects;
 
@@ -79,7 +79,7 @@ public class Language
     /// </summary>
     public string DblaReturnedNull { get; set; } = "Something went wrong, it's probably on my end.";
 
-  
+
 
     //Music related
     /// <summary>
@@ -570,23 +570,23 @@ public class Language
 
     public string EmojiEnd { get; set; } =
         "i went through {0} messages in {1}(including download) {2}(excluding download)\nEmote usage data:";
-    
+
     public string ReactionRoleNoPermManageRoles { get; set; } = "Please give me the permission to manage roles so this feature works";
     public string ReactionRoleIntro { get; set; } = "Welcome to the text guided reaction role menu creator. Do you want the menu to be an embed? (**y**es/**n**o)";
     public string ReactionRoleTitle { get; set; } = "ok now what do you want the title to be? (eg. `***Role Menu***`)";
-    public string ReactionRoleResponseYes{ get; set; } = "yes";
+    public string ReactionRoleResponseYes { get; set; } = "yes";
     public string ReactionRoleResponseYes2 { get; set; } = "y";
     public string ReactionRoleResponseYes3 { get; set; } = "yup";
 
-    public string ReactionRoleResponseNo{ get; set; } ="no";
+    public string ReactionRoleResponseNo { get; set; } = "no";
     public string ReactionRoleResponseNo2 { get; set; } = "n";
     public string ReactionRoleResponseNo3 { get; set; } = "nah";
     public string ReactionRoleRolesAdded { get; set; } = "Roles added:";
-    public string ReactionRoleDone {get;set;} = "done";
-    public string ReactionRoleNone {get;set;} = "none";
+    public string ReactionRoleDone { get; set; } = "done";
+    public string ReactionRoleNone { get; set; } = "none";
 
     public string ReactionRoleMainLoop { get; set; } = "What roles do you want to add to the menu? ping the role or add it's id first, add ok thanks a space and add an emoji and optionally hit space again and send a type of reaction role by its name or number ```\nAdd the role when the user reacts to the emoji and remove when unreacting | Normal | 16 \nRemove the role when the user reacts to the emoji and add when unreacting | Inverse | 2\nAdd the role when the user reacts to the emoji BUT DO NOT REMOVE WHEN UNREACTING | Sticky | 4\nDO NOT ADD THE ROLE but remove it when the user unreacts | Vanishing | 8\n``` send many messages similar to this\n```\n@role 🥲 Sticky\n@anotherrole 😳\n``` (don't put items in code blocks) say `done` you're done";
-    public string ReactionRoleEmbedColour {get; set; } = "What color do you want for the embed?";
+    public string ReactionRoleEmbedColour { get; set; } = "What color do you want for the embed?";
     public string FreeToPlayGameType { get; set; } = "F2P";
     public string NotAvailableGameType { get; set; } = "Not Available";
     public string CostsMoneyGameTypeBug { get; set; } = "It costs merica bucks but idk how much";
@@ -602,11 +602,11 @@ public class Language
     public string IsDirty { get; set; } = "Is dirty";
     public string CLR { get; set; } = "CLR";
 
-    public string ReminderErrorNoContent { get; set; }  = "The reminder's content can't be empty";
-    public string ReminderSuccess { get; set; }  = "Set a reminder {0} from now ({1})\nView reminders with the `listreminders` command";
-    public string ListReminderNone { get; set; }  = "You do not have any set reminders";
-    public string ListReminderStart { get; set; }  = "Listing all reminders";
-    public string ListReminderListMore { get; set; }  = "And {0} more not shown here";
+    public string ReminderErrorNoContent { get; set; } = "The reminder's content can't be empty";
+    public string ReminderSuccess { get; set; } = "Set a reminder {0} from now ({1})\nView reminders with the `listreminders` command";
+    public string ListReminderNone { get; set; } = "You do not have any set reminders";
+    public string ListReminderStart { get; set; } = "Listing all reminders";
+    public string ListReminderListMore { get; set; } = "And {0} more not shown here";
     public string ReminderContent { get; set; } = "Reminder content:";
 
     public string PollResultsStart { get; set; } = "Poll result:";
@@ -707,8 +707,8 @@ public class Language
 
     public static async Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
     {
-        using var db = (DatabaseContext) ctx.Services.GetService(typeof(DatabaseContext));
-        var conf = (Config) ctx.CommandsNext.Services.GetService(typeof(Config));
+        using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
+        var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
         if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
         {
             var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
@@ -727,8 +727,8 @@ public class Language
 
     public static async Task<Language> GetLanguageFromCtxAsync(BaseContext ctx)
     {
-        using var db = (DatabaseContext) ctx.Services.GetService(typeof(DatabaseContext));
-        var conf = (Config) ctx.Services.GetService(typeof(Config));
+        using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
+        var conf = (Config)ctx.Services.GetService(typeof(Config));
         if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
         {
             var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);

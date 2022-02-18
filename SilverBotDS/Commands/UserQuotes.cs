@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -9,6 +6,9 @@ using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using SBDSODC = SilverBotDS.Objects.Database.Classes;
 
 namespace SilverBotDS.Commands;

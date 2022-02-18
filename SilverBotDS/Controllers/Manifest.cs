@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace SilverBotDS.Controlllers;
 
@@ -13,8 +13,12 @@ public class Manifest : Controller
     {
         var obj = new Rootobject
         {
-            Name = "SilverBot", ShortName = "Silverbot", StartUrl = "/", BackgroundColor = "#C0C0C0",
-            ThemeColor = "#01dff0", Display = "standalone"
+            Name = "SilverBot",
+            ShortName = "Silverbot",
+            StartUrl = "/",
+            BackgroundColor = "#C0C0C0",
+            ThemeColor = "#01dff0",
+            Display = "standalone"
         };
         if (DateTime.UtcNow.Month == 6)
         {

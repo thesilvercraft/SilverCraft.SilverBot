@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -14,9 +6,16 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
 using SilverBotDS.Attributes;
-using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 
@@ -202,7 +201,7 @@ public class MiscCommands : BaseCommandModule
     [Aliases("urbandict", "urban")]
     [RequireNsfw]
     [Description("Search up definitions for words on urban dictionary, pls dont kill me urban")]
-    public async Task Urban(CommandContext ctx, [Description("the name of the package")] [RemainingText] string query)
+    public async Task Urban(CommandContext ctx, [Description("the name of the package")][RemainingText] string query)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         try

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 
@@ -18,7 +18,7 @@ public class ModCommands : BaseCommandModule
     [Description("Kick a specified user")]
     [RequirePermissions(Permissions.KickMembers)]
     public async Task Kick(CommandContext ctx, [Description("the user like duh")] DiscordMember a,
-        [Description("the reason")] [RemainingText] string reason = "The kick boot has spoken")
+        [Description("the reason")][RemainingText] string reason = "The kick boot has spoken")
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder();
@@ -53,7 +53,7 @@ public class ModCommands : BaseCommandModule
     [Description("bans a specified user")]
     [RequirePermissions(Permissions.BanMembers)]
     public async Task Ban(CommandContext ctx, [Description("the user like duh")] DiscordUser a,
-        [Description("the reason")] [RemainingText] string reason = "The ban hammer has spoken")
+        [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder();

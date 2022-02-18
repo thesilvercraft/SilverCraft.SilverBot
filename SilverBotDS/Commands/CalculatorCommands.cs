@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Jering.Javascript.NodeJS;
@@ -8,6 +6,8 @@ using org.mariuszgromada.math.mxparser;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 
@@ -37,7 +37,7 @@ public partial class CalculatorCommands : SilverBotCommandModule
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         StringBuilder builder = new("```");
         foreach (var step in
-                 await StaticNodeJSService.InvokeFromStringAsync<MathStep[]>(Jscode, args: new object[] {input}))
+                 await StaticNodeJSService.InvokeFromStringAsync<MathStep[]>(Jscode, args: new object[] { input }))
         {
             builder.Append(step.OldVal).Append(' ').Append(step.Step).Append(' ').AppendLine(step.NewVal);
         }

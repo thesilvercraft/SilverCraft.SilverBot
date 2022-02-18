@@ -1,9 +1,3 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -24,6 +18,12 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Processing.Processors.Filters;
+using System;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -15,6 +9,12 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes.ReactionRole;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 namespace SilverBotDS.Commands;
 
 [RequireGuild]
@@ -23,7 +23,7 @@ namespace SilverBotDS.Commands;
 [RequireUserPermissions(Permissions.Administrator)]
 public class ReactionRoleCommands : SilverBotCommandModule
 {
-    public DatabaseContext dbCtx { private get; set; }
+    public DatabaseContext DbCtx { private get; set; }
 
     public override Task<bool> ExecuteRequirements(Config conf)
     {
@@ -45,12 +45,12 @@ public class ReactionRoleCommands : SilverBotCommandModule
 
         bool GetFromContent(string content)
         {
-            var ctl=content.ToLowerInvariant().Trim();
-            if(lang.ReactionRoleResponseYes == ctl || lang.ReactionRoleResponseYes2 == ctl  || lang.ReactionRoleResponseYes3 == ctl)
+            var ctl = content.ToLowerInvariant().Trim();
+            if (lang.ReactionRoleResponseYes == ctl || lang.ReactionRoleResponseYes2 == ctl || lang.ReactionRoleResponseYes3 == ctl)
             {
                 return true;
-        }
-            else if(lang.ReactionRoleResponseNo==ctl || lang.ReactionRoleResponseNo2 == ctl|| lang.ReactionRoleResponseNo3 == ctl)
+            }
+            else if (lang.ReactionRoleResponseNo == ctl || lang.ReactionRoleResponseNo2 == ctl || lang.ReactionRoleResponseNo3 == ctl)
             {
                 return false;
             }
@@ -58,8 +58,8 @@ public class ReactionRoleCommands : SilverBotCommandModule
         }
         var result = await ctx.Message.GetNextMessageAsync(m =>
         {
-            var ctl=m.Content.Trim().ToLower();
-            return lang.ReactionRoleResponseYes==(ctl) || lang.ReactionRoleResponseYes2==(ctl) || lang.ReactionRoleResponseYes3==(ctl) || lang.ReactionRoleResponseNo==(ctl) || lang.ReactionRoleResponseNo2==(ctl) || lang.ReactionRoleResponseNo3==(ctl);
+            var ctl = m.Content.Trim().ToLower();
+            return lang.ReactionRoleResponseYes == (ctl) || lang.ReactionRoleResponseYes2 == (ctl) || lang.ReactionRoleResponseYes3 == (ctl) || lang.ReactionRoleResponseNo == (ctl) || lang.ReactionRoleResponseNo2 == (ctl) || lang.ReactionRoleResponseNo3 == (ctl);
         });
 
         if (!result.TimedOut)
@@ -179,10 +179,10 @@ public class ReactionRoleCommands : SilverBotCommandModule
             var nnmsg = await ctx.Channel.SendMessageAsync(mb);
             foreach (var role in roles)
             {
-                dbCtx.ReactionRoleMappings.Add(new ReactionRoleMapping { Emoji = role.Value.Item1.Name, EmojiId = role.Value.Item1.Id, RoleId = role.Key.Id, MessageId = nnmsg.Id, ChannelId = ctx.Channel.Id, MappingId = Guid.NewGuid(), Mode = role.Value.Item2 });
+                DbCtx.ReactionRoleMappings.Add(new ReactionRoleMapping { Emoji = role.Value.Item1.Name, EmojiId = role.Value.Item1.Id, RoleId = role.Key.Id, MessageId = nnmsg.Id, ChannelId = ctx.Channel.Id, MappingId = Guid.NewGuid(), Mode = role.Value.Item2 });
                 _ = nnmsg.CreateReactionAsync(role.Value.Item1);
             }
-            dbCtx.SaveChanges();
+            DbCtx.SaveChanges();
             await msg.DeleteAsync();
         }
     }

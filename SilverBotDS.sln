@@ -18,11 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDBrowser", "SDBrowser\SDBr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDiscordSink", "SDiscordSink\SDiscordSink.csproj", "{D1B1C5F1-7763-45B3-AAF9-F656214E6AD6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowdPlayer", "SnowdPlayer\SnowdPlayer.csproj", "{8C269328-1541-4626-BC66-EA3E0276508E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverBotDS.AnimeModule", "SilverBotDS.AnimeModule\SilverBotDS.AnimeModule.csproj", "{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverBotDS.PixelsArchiver", "SilverBotDS.PixelsArchiver\SilverBotDS.PixelsArchiver.csproj", "{9039F7F2-4B26-49F6-A85D-8551F6345DB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverBotDS.PixelsArchiver", "SilverBotDS.PixelsArchiver\SilverBotDS.PixelsArchiver.csproj", "{9039F7F2-4B26-49F6-A85D-8551F6345DB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,10 +40,6 @@ Global
 		{D1B1C5F1-7763-45B3-AAF9-F656214E6AD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1B1C5F1-7763-45B3-AAF9-F656214E6AD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1B1C5F1-7763-45B3-AAF9-F656214E6AD6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C269328-1541-4626-BC66-EA3E0276508E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C269328-1541-4626-BC66-EA3E0276508E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C269328-1541-4626-BC66-EA3E0276508E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C269328-1541-4626-BC66-EA3E0276508E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}.Release|Any CPU.ActiveCfg = Release|Any CPU

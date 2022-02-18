@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SteamStoreQuery;
+﻿using SteamStoreQuery;
+using System.Collections.Generic;
 
 namespace SilverBotDS.Objects;
 

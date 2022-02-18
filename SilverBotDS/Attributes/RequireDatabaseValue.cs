@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.SlashCommands;
 using SilverBotDS.Objects;
+using System;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Attributes;
 
@@ -28,7 +28,7 @@ public class RequireGuildDatabaseValueAttribute : CheckBaseAttribute
             return Task.FromResult(AllowDirectMessages);
         }
 
-        using var dbctx = (DatabaseContext) ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));
+        using var dbctx = (DatabaseContext)ctx.CommandsNext.Services.GetService(typeof(DatabaseContext));
         var guildsettings = dbctx.GetServerSettings(ctx.Guild.Id);
         var compareval = typeof(ServerSettings).GetProperty(Variable).GetValue(guildsettings);
         if (Equals(compareval, State))
@@ -60,7 +60,7 @@ public class RequireGuildDatabaseValueSlashAttribute : SlashCheckBaseAttribute
         {
             return Task.FromResult(AllowDirectMessages);
         }
-        using var dbctx = (DatabaseContext) ctx.Services.GetService(typeof(DatabaseContext));
+        using var dbctx = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
         var guildsettings = dbctx.GetServerSettings(ctx.Guild.Id);
         var compareval = typeof(ServerSettings).GetProperty(Variable).GetValue(guildsettings);
         if (Equals(compareval, State))

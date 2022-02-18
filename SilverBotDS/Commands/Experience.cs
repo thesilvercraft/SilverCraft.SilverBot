@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Numerics;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -25,6 +16,15 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Numerics;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 
@@ -38,7 +38,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
     public DatabaseContext Database { private get; set; }
     public HttpClient HttpClient { private get; set; }
 
-    public static string[] RequiredFontFamilies => new[] {"Diavlo Light"};
+    public static string[] RequiredFontFamilies => new[] { "Diavlo Light" };
 
     [Command("givexpbecausedowntimepercent")]
     [RequireOwner]
@@ -141,7 +141,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
             pages.Add(new Page(embed: bob));
             var pages1 = pages.ToArray();
             pages.Clear();
-            for (ulong a = 0; a < (ulong) pages1.Length; a++)
+            for (ulong a = 0; a < (ulong)pages1.Length; a++)
             {
                 var embedbuilder = new DiscordEmbedBuilder(pages1[a].Embed);
                 embedbuilder.WithAuthor(string.Format(lang.PageNuget, a + 1, pages1.Length));
@@ -185,8 +185,8 @@ public class Experience : SilverBotCommandModule, IRequireFonts
                 {
                     var levelcount = GetLevel(o.XP);
                     var progress = 4.76 * GetProgressToNextLevel(o.XP);
-                    oo.Fill(Color.LightGreen, new Rectangle(new Point(234, 84), new Size((int) progress, 28)));
-                    oo.DrawText($"{o.XP}XP", _diavloLight, _blackBrush, new PointF((float) (170 + progress), 140));
+                    oo.Fill(Color.LightGreen, new Rectangle(new Point(234, 84), new Size((int)progress, 28)));
+                    oo.DrawText($"{o.XP}XP", _diavloLight, _blackBrush, new PointF((float)(170 + progress), 140));
                     oo.DrawText($"{GetNeededXpForNextLevel(o.XP)}XP", _diavloLight, _blackBrush,
                         new PointF(650.95f, 120));
                     oo.DrawText($"Level: {levelcount}", _diavloLight, _blackBrush, new PointF(232, 169));
@@ -196,8 +196,8 @@ public class Experience : SilverBotCommandModule, IRequireFonts
         }
 
         outStream.Position = 0;
-        var lang = await  Language.GetLanguageFromCtxAsync(ctx);
-        await ImageModule.SendImageStream(ctx, outStream,lang:lang,content:lang.XPCommandCardSuccess);
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        await ImageModule.SendImageStream(ctx, outStream, lang: lang, content: lang.XPCommandCardSuccess);
     }
 
     [Command("xpcard")]
@@ -229,7 +229,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
             e *= l;
         }
 
-        return (double) xp / (double) e * 100d;
+        return (double)xp / (double)e * 100d;
     }
 
     private BigInteger GetLevel(BigInteger xp)

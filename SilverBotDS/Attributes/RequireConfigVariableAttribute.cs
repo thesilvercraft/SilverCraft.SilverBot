@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using SilverBotDS.Objects;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Attributes;
 
@@ -19,7 +18,7 @@ public class RequireConfigVariableAttribute : CheckBaseAttribute
 
     public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
     {
-        var conf = (Config) ctx.CommandsNext.Services.GetService(typeof(Config));
+        var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
         var compareval = typeof(Config).GetProperty(Variable).GetValue(conf);
         if (Equals(compareval, State))
         {

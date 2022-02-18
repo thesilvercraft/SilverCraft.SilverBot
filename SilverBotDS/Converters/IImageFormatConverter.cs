@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using SixLabors.ImageSharp.Formats;
@@ -8,6 +7,7 @@ using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Tga;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Converters;
 

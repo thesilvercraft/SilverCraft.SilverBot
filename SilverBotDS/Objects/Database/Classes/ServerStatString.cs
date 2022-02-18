@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DSharpPlus.Entities;
+﻿using DSharpPlus.Entities;
 using SilverBotDS.Utils;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SilverBotDS.Objects.Database.Classes;
 
@@ -30,7 +30,7 @@ public class ServerStatString
             ["AllMembersCount"] = NumberUtils.FormatSize(guild.MemberCount),
             ["MemberCount"] = NumberUtils.FormatSize(guild.Members.LongCount(x => !x.Value.IsBot)),
             ["BotsCount"] = NumberUtils.FormatSize(guild.Members.LongCount(x => x.Value.IsBot)),
-            ["BoostCount"] = NumberUtils.FormatSize((int) guild.PremiumSubscriptionCount)
+            ["BoostCount"] = NumberUtils.FormatSize((int)guild.PremiumSubscriptionCount)
         };
     }
 }

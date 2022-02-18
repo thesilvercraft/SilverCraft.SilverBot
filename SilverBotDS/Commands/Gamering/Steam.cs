@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -11,6 +7,10 @@ using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SteamStoreQuery.Enums;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands.Gamering;
 
@@ -23,7 +23,7 @@ public class SteamCommands : BaseCommandModule
     [Command("search")]
     [Aliases("s")]
     [Description("Search about a game")]
-    public async Task Search(CommandContext ctx, [RemainingText] [Description("The game")] string game)
+    public async Task Search(CommandContext ctx, [RemainingText][Description("The game")] string game)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         try

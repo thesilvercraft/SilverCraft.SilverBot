@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using Serilog;
@@ -25,7 +27,6 @@ public static class DiscordSinkExtensions
 public class DiscordSink : ILogEventSink
 {
     private readonly DiscordWebhookClient _webhookClient;
-
     public DiscordSink(params Tuple<ulong, string>[] webhooks)
     {
         _webhookClient = new DiscordWebhookClient();
@@ -34,18 +35,29 @@ public class DiscordSink : ILogEventSink
             _webhookClient.AddWebhookAsync(webhook.Item1, webhook.Item2).Wait();
         }
     }
-
+    private readonly Dictionary<LogEventLevel, Tuple<string, DiscordColor?>> k = new()
+    {
+        { LogEventLevel.Verbose, new("[VER]", DiscordColor.DarkGray) },
+        { LogEventLevel.Debug, new("[DEB]", null) },
+        { LogEventLevel.Information, new("[INF]", DiscordColor.DarkBlue) },
+        { LogEventLevel.Warning, new("[WRN]", DiscordColor.Orange) },
+        { LogEventLevel.Error, new("[ERR]", DiscordColor.DarkRed) },
+        { LogEventLevel.Fatal, new("[FTL]", DiscordColor.Red) }
+    };
+    private readonly Regex VBUErr = new(@"^Error `(P<error>.+?)` encountered.\nGuild `(P<guild_id>\d+|None)`, channel `(P<channel_id>\d+|None)`, user `(P<user_id>\d+|None)`\n```\n(P<command_invoke>.+?)\n```$", RegexOptions.Multiline | RegexOptions.Compiled);
     public void Emit(LogEvent logEvent)
     {
         var builder = new DiscordEmbedBuilder();
         var message = logEvent.RenderMessage();
-        if (logEvent.Exception != null && message.StartsWith("Error"))
+        if (logEvent.Exception != null && VBUErr.IsMatch(message))
         {
-            _webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent($"{message}\n").AddFile(
-                "error.cs",
+            var msc = $"{logEvent.Exception.Message ?? "null"}\nStack trace:\n{logEvent.Exception.StackTrace ?? "null"}\nSource\n{logEvent.Exception.Source ?? "null"}\nHelp link:\n{logEvent.Exception.HelpLink ?? "null"}";
+            var dwb = new DiscordWebhookBuilder().WithContent("Test content").AddFile(
+            "error.cs",
                 new MemoryStream(Encoding.UTF8.GetBytes(
-                    $"{logEvent.Exception.Message ?? "null"}\nStack trace:\n{logEvent.Exception.StackTrace ?? "null"}\nSource\n{logEvent.Exception.Source ?? "null"}\nHelp link:\n{logEvent.Exception.HelpLink ?? "null"}")),
-                true).WithUsername("sb - Error"));
+                   msc)),
+               true).WithUsername("sb - Error");
+            _webhookClient.BroadcastMessageAsync(dwb);
         }
         else
         {
@@ -74,45 +86,21 @@ public class DiscordSink : ILogEventSink
             {
                 builder.WithTitle(message);
             }
-
             var sb = new StringBuilder();
             sb.Append('`');
-            switch (logEvent.Level)
+            if (k.ContainsKey(logEvent.Level))
             {
-                case LogEventLevel.Verbose:
-                    builder.WithColor(DiscordColor.DarkGray);
-                    sb.Append("[VER]");
-                    break;
-
-                case LogEventLevel.Debug:
-                    sb.Append("[DEB]");
-                    break;
-
-                case LogEventLevel.Information:
-                    builder.WithColor(DiscordColor.DarkBlue);
-                    sb.Append("[INF]");
-                    break;
-
-                case LogEventLevel.Warning:
-                    builder.WithColor(DiscordColor.Orange);
-                    sb.Append("[WRN]");
-                    break;
-
-                case LogEventLevel.Error:
-                    sb.Append("[ERR]");
-                    builder.WithColor(DiscordColor.DarkRed);
-                    break;
-
-                case LogEventLevel.Fatal:
-                    sb.Append("[FTL]");
-                    builder.WithColor(DiscordColor.Red);
-                    break;
-
-                default:
-                    sb.Append("[DEF]");
-                    break;
+                var a = k[logEvent.Level];
+                sb.Append(a.Item1);
+                if (a.Item2 != null)
+                {
+                    builder.WithColor((DiscordColor)a.Item2);
+                }
             }
-
+            else
+            {
+                sb.Append("[DEF]");
+            }
             sb.Append("` | ");
             sb.Append(Formatter.Timestamp(logEvent.Timestamp.LocalDateTime, TimestampFormat.LongDateTime));
             if (logEvent.Exception != null)
@@ -124,25 +112,23 @@ public class DiscordSink : ILogEventSink
                 var exMessage = logEvent.Exception.Message;
                 sb.Append(exMessage?.Length <= 1024 ? exMessage : exMessage?[..1024]);
             }
-
             if (restMessage != null)
             {
-                if (sb.Length + restMessage.Length < 2030)
+                if (sb.Length + restMessage.Length < 2020)
                 {
                     sb.Insert(0, '\n');
                     sb.Insert(0, restMessage);
                 }
                 else
                 {
-                    var capacity = 2030 - sb.Length;
+                    var capacity = 2020 - sb.Length;
                     sb.Insert(0, '\n');
                     sb.Insert(0, "…");
                     sb.Insert(0, restMessage.AsSpan(0, capacity));
                 }
             }
             builder.WithDescription(sb.ToString());
-            _webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().AddEmbed(builder.Build())
-                .WithUsername("Non-VBU compliant log entry"));
+            _webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().AddEmbed(builder.Build()));
         }
     }
 }

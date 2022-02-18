@@ -1,14 +1,14 @@
-﻿using System;
+﻿using SilverBotDS.Commands;
+using SilverBotDS.Converters;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using SilverBotDS.Commands;
-using SilverBotDS.Converters;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Processing;
 
 namespace SilverBotDS.Objects;
 
@@ -36,7 +36,7 @@ internal class ImageSteps : IDisposable
         var rm = await c.GetAsync(url);
         var ist = new ImageSteps();
         using StringReader stringReader = new(await rm.Content.ReadAsStringAsync());
-        ist.steps = (Step[]) serializer.Deserialize(stringReader);
+        ist.steps = (Step[])serializer.Deserialize(stringReader);
         ist.SetClient(c);
         return ist;
     }
@@ -60,9 +60,9 @@ internal class ImageSteps : IDisposable
             else if (step is PictureStep step1)
             {
                 using var resizedbytes = (await ImageModule.ResizeAsync(await step1.Image().GetBytesAsync(client),
-                    new Size((int) step1.xSize, (int) step1.ySize), PngFormat.Instance)).Item1;
+                    new Size((int)step1.xSize, (int)step1.ySize), PngFormat.Instance)).Item1;
                 using var resizedimg = await Image.LoadAsync(resizedbytes);
-                Bitmap.Mutate(x => x.DrawImage(resizedimg, new Point((int) step.x, (int) step.y), 1));
+                Bitmap.Mutate(x => x.DrawImage(resizedimg, new Point((int)step.x, (int)step.y), 1));
             }
         }
 

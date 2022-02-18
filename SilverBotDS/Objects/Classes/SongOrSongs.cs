@@ -1,6 +1,6 @@
+using Lavalink4NET.Player;
 using System;
 using System.Collections.Generic;
-using Lavalink4NET.Player;
 
 #nullable enable
 

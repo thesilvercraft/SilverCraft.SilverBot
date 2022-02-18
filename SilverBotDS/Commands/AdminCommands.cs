@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -14,6 +6,14 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Utils;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using static SilverBotDS.Commands.OwnerOnly;
 
 namespace SilverBotDS.Commands;
@@ -50,7 +50,7 @@ public class AdminCommands : BaseCommandModule
     [Cooldown(2, 30, CooldownBucketType.Guild)]
     public async Task EmojiPollAsync(CommandContext commandContext,
         [Description("How long should the poll last. (e.g. 1m = 1 minute)")] TimeSpan duration,
-        [Description("Poll question")] [RemainingText] string question)
+        [Description("Poll question")][RemainingText] string question)
     {
         if (!string.IsNullOrEmpty(question))
         {
@@ -77,9 +77,13 @@ public class AdminCommands : BaseCommandModule
 
             await Database.plannedEvents.AddAsync(new PlannedEvent
             {
-                ChannelID = commandContext.Channel.Id, EventID = RandomGenerator.RandomAbcString(20), Handled = false,
-                MessageID = commandContext.Message.Id, Time = DateTime.Now + duration,
-                Type = PlannedEventType.EmojiPoll, UserID = commandContext.User.Id,
+                ChannelID = commandContext.Channel.Id,
+                EventID = RandomGenerator.RandomAbcString(20),
+                Handled = false,
+                MessageID = commandContext.Message.Id,
+                Time = DateTime.Now + duration,
+                Type = PlannedEventType.EmojiPoll,
+                UserID = commandContext.User.Id,
                 ResponseMessageID = pollStartMessage.Id
             });
             await Database.SaveChangesAsync();
@@ -95,7 +99,7 @@ public class AdminCommands : BaseCommandModule
     [Description("Start a simple giveaway")]
     public async Task GiveAway(CommandContext commandContext,
         [Description("How long should the giveaway last. (e.g. 1m = 1 minute)")] TimeSpan duration,
-        [Description("Giveaway content")] [RemainingText] string item)
+        [Description("Giveaway content")][RemainingText] string item)
     {
         if (!string.IsNullOrEmpty(item))
         {
@@ -112,9 +116,14 @@ public class AdminCommands : BaseCommandModule
             await pollStartMessage.CreateReactionAsync(_pollEmojiCache[0]);
             await Database.plannedEvents.AddAsync(new PlannedEvent
             {
-                ChannelID = commandContext.Channel.Id, EventID = RandomGenerator.RandomAbcString(20), Handled = false,
-                MessageID = commandContext.Message.Id, Time = DateTime.Now + duration, Type = PlannedEventType.GiveAway,
-                UserID = commandContext.User.Id, ResponseMessageID = pollStartMessage.Id
+                ChannelID = commandContext.Channel.Id,
+                EventID = RandomGenerator.RandomAbcString(20),
+                Handled = false,
+                MessageID = commandContext.Message.Id,
+                Time = DateTime.Now + duration,
+                Type = PlannedEventType.GiveAway,
+                UserID = commandContext.User.Id,
+                ResponseMessageID = pollStartMessage.Id
             });
             await Database.SaveChangesAsync();
         }
@@ -130,7 +139,7 @@ public class AdminCommands : BaseCommandModule
     [RequireGuild]
     public async Task ExportEmotesToGuilded(CommandContext ctx)
     {
-        var emotes = ctx.Guild.Emojis.Values.Select(emoji => new Emote {Name = emoji.Name, Url = emoji.Url}).ToList();
+        var emotes = ctx.Guild.Emojis.Values.Select(emoji => new Emote { Name = emoji.Name, Url = emoji.Url }).ToList();
         while (emotes.Count != 0)
         {
             await SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new Rootobject
@@ -159,17 +168,17 @@ public class AdminCommands : BaseCommandModule
     {
         await ctx.TriggerTypingAsync();
         List<SourceFile> sourceFiles = new();
-        foreach (var emoji in  ctx.Guild.Emojis.Values)
+        foreach (var emoji in ctx.Guild.Emojis.Values)
         {
             if (emoji.IsAnimated)
             {
                 sourceFiles.Add(new SourceFile
-                    {Name = emoji.Name, Extension = "gif", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url)});
+                { Name = emoji.Name, Extension = "gif", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url) });
             }
             else
             {
                 sourceFiles.Add(new SourceFile
-                    {Name = emoji.Name, Extension = "png", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url)});
+                { Name = emoji.Name, Extension = "png", FileBytes = await HttpClient.GetByteArrayAsync(emoji.Url) });
             }
 
             await Task.Delay(50);

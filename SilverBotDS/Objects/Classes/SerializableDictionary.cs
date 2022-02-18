@@ -30,10 +30,10 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IX
         {
             reader.ReadStartElement("item");
             reader.ReadStartElement("key");
-            var key = (TKey) keySerializer.Deserialize(reader);
+            var key = (TKey)keySerializer.Deserialize(reader);
             reader.ReadEndElement();
             reader.ReadStartElement("value");
-            var value = (TValue) valueSerializer.Deserialize(reader);
+            var value = (TValue)valueSerializer.Deserialize(reader);
             reader.ReadEndElement();
             Add(key, value);
             reader.ReadEndElement();

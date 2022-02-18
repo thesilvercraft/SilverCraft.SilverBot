@@ -1,16 +1,16 @@
-﻿using System;
+﻿using DSharpPlus.Entities;
+using Microsoft.Extensions.Logging;
+using SilverBotDS.Attributes;
+using SilverBotDS.Commands;
+using SilverBotDS.Commands.Gamering;
+using SilverBotDS.Utils;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using DSharpPlus.Entities;
-using Microsoft.Extensions.Logging;
-using SilverBotDS.Attributes;
-using SilverBotDS.Commands;
-using SilverBotDS.Commands.Gamering;
-using SilverBotDS.Utils;
 
 namespace SilverBotDS.Objects;
 
@@ -50,7 +50,6 @@ public class Config
         typeof(Emotes).FullName,
         typeof(ModCommands).FullName,
         typeof(Giphy).FullName,
-        typeof(NewAudio).FullName,
         typeof(OwnerOnly).FullName,
         typeof(SteamCommands).FullName,
         typeof(Fortnite).FullName,
@@ -79,8 +78,6 @@ public class Config
         { "SilverBotDS.AnimeModule.dll", "SilverBotDS.Anime.Anime" }
     };
 
-    [XmlDescription("Allow silverbot to use the new experimental snowdplayer")]
-    public bool UseNewAudio { get; set; } = false;
 
     [XmlDescription("The Giphy token, can be got from https://developers.giphy.com/")]
     public string Gtoken { get; set; } = "Giphy_Token_Here";

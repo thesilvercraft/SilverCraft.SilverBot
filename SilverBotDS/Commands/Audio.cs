@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -20,6 +14,12 @@ using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using SpotifyAPI.Web;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 
@@ -176,13 +176,13 @@ public class Audio : BaseCommandModule
         if (ctx.Message.Attachments.Count == 1)
         {
             await Play(ctx,
-                (SongORSongs) await ctx.CommandsNext.ConvertArgument(ctx.Message.Attachments[0].Url, ctx,
+                (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.Attachments[0].Url, ctx,
                     typeof(SongORSongs)));
         }
         else if (ctx.Message.ReferencedMessage?.Attachments.Count == 1)
         {
             await Play(ctx,
-                (SongORSongs) await ctx.CommandsNext.ConvertArgument(ctx.Message.ReferencedMessage.Attachments[0].Url,
+                (SongORSongs)await ctx.CommandsNext.ConvertArgument(ctx.Message.ReferencedMessage.Attachments[0].Url,
                     ctx, typeof(SongORSongs)));
         }
         else

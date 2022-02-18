@@ -1,22 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Exceptions;
@@ -25,8 +8,6 @@ using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.EventHandling;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
-using DSharpPlus.SlashCommands.EventArgs;
-using DSharpPlus.VoiceNext;
 using Humanizer;
 using Lavalink4NET;
 using Lavalink4NET.DSharpPlus;
@@ -42,20 +23,28 @@ using SDBrowser;
 using SDiscordSink;
 using Serilog;
 using Serilog.Core;
-using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
-using SilverBotDS.Attributes;
 using SilverBotDS.Commands.Slash;
 using SilverBotDS.Converters;
-using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Utils;
 using SixLabors.Fonts;
-using SixLabors.ImageSharp;
-using SnowdPlayer;
 using SpotifyAPI.Web;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Net.Http;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace SilverBotDS
 {
@@ -87,10 +76,10 @@ namespace SilverBotDS
 
         public static Task RunningTasksOfSecondRowAdd(Guid a, Tuple<Task, CancellationTokenSource> b)
         {
-            RunningTasksOfSecondRow.Add(a,b);
+            RunningTasksOfSecondRow.Add(a, b);
             return Task.CompletedTask;
         }
-        public static Task RunningTasksAdd(string a , Tuple<Task, CancellationTokenSource> b)
+        public static Task RunningTasksAdd(string a, Tuple<Task, CancellationTokenSource> b)
         {
             RunningTasks.Add(a, b);
             return Task.CompletedTask;
@@ -243,7 +232,7 @@ namespace SilverBotDS
             {
                 LoggerFactory = logFactory,
                 Token = _config.Token,
-                Intents = DiscordIntents.All
+                Intents = DiscordIntents.All.RemoveIntent(DiscordIntents.GuildPresences)
             });
             _log.Verbose("Initializing interactivity");
             _discord.UseInteractivity(new InteractivityConfiguration
@@ -388,12 +377,6 @@ namespace SilverBotDS
                     }
                 }.Start();
             }
-
-            if (_config.UseNewAudio)
-            {
-                services.AddSingleton(new SnowService(_discord.UseVoiceNext(), false, true));
-            }
-
             _log.Verbose("Waiting 6s");
             await Task.Delay(6000);
             if (_config.UseLavaLink)
@@ -636,7 +619,7 @@ namespace SilverBotDS
                 }
             }
             commands.CommandExecuted += Commands_CommandExecuted;
-            await SlashErrorHandler.RegisterErrorHandler(ServiceProvider,_log,slash);
+            await SlashErrorHandler.RegisterErrorHandler(ServiceProvider, _log, slash);
             await CommandErrorHandler.RegisterErrorHandler(ServiceProvider, _log, commands);
 
             #endregion Registering Commands
@@ -948,206 +931,6 @@ namespace SilverBotDS
                 ["Platform"] = RuntimeInformation.ProcessArchitecture.ToString()
             };
         }
-
-        private static string RemoveStringFromEnd(string a, string sub)
-        {
-            if (a.EndsWith(sub))
-            {
-                a = a[..a.LastIndexOf(sub, StringComparison.Ordinal)];
-            }
-
-            return a;
-        }
-
-        /// <summary>
-        ///     Render the error message for an Attribute
-        /// </summary>
-        /// <param name="checkBase">The attribute</param>
-        /// <param name="lang">The language</param>
-        /// <param name="isinguild">Was the command executed in a guild or in direct messages</param>
-        /// <param name="e">Gives the raw command error arguments</param>
-        /// <returns>A <see cref="string" /> containing the error message</returns>
-        private static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang,
-            bool isinguild, CommandErrorEventArgs e)
-        {
-            var type = checkBase.GetType();
-            if (type == typeof(RequireDjAttribute))
-            {
-                return lang.RequireDJCheckFailed;
-            }
-            if (type == typeof(RequireGuildAttribute))
-            {
-                return lang.RequireGuildCheckFailed;
-            }
-            if (type == typeof(RequireNsfwAttribute))
-            {
-                return lang.RequireNsfwCheckFailed;
-            }
-            if (type == typeof(RequireOwnerAttribute))
-            {
-                return lang.RequireOwnerCheckFailed;
-            }
-            return checkBase switch
-            {
-                RequireRolesAttribute requireRolesAttribute when requireRolesAttribute.RoleNames.Count == 1 => string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]),
-                RequireRolesAttribute requireRolesAttribute => string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize()),
-                RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
-requireBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotPermisionsCheckFailedSG,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireBotPermissionsAttribute requireBotPermissions => string.Format(lang.RequireBotPermisionsCheckFailedPL,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All => string.Format(lang.RequireUserPermisionsCheckFailedSG,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireUserPermissionsAttribute userPermissions => string.Format(lang.RequireUserPermisionsCheckFailedPL,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
-userAndBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount => (string)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang),
-                RequireAttachmentAttribute attachmentAttribute => (string)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang),
-                _ => string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize()),
-            };
-        }
-
-        private static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang,
-            bool isinguild, SlashCommandErrorEventArgs e)
-        {
-            var type = checkBase.GetType();
-            if (type == typeof(RequireDjAttribute))
-            {
-                return lang.RequireDJCheckFailed;
-            }
-            if (type == typeof(RequireGuildAttribute))
-            {
-                return lang.RequireGuildCheckFailed;
-            }
-            if (type == typeof(RequireNsfwAttribute))
-            {
-                return lang.RequireNsfwCheckFailed;
-            }
-            if (type == typeof(RequireOwnerAttribute))
-            {
-                return lang.RequireOwnerCheckFailed;
-            }
-            return checkBase switch
-            {
-                RequireRolesAttribute requireRolesAttribute => requireRolesAttribute.RoleNames.Count == 1 ? string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]) : string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize()),
-                RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
-requireBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotPermisionsCheckFailedSG,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireBotPermissionsAttribute requireBotPermissions => string.Format(lang.RequireBotPermisionsCheckFailedPL,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All => string.Format(lang.RequireUserPermisionsCheckFailedSG,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireUserPermissionsAttribute userPermissions => string.Format(lang.RequireUserPermisionsCheckFailedPL,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
-userAndBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireAttachmentAttribute => throw new NotSupportedException("Attachment checks are not supported for slash commands."),
-                _ => string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize()),
-            };
-        }
-
-        private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
-        {
-            async Task RespondWithContent(string content)
-            {
-                await new DiscordMessageBuilder()
-                    .WithReply(e.Context.Message.Id)
-                    .WithContent(content)
-                    .SendAsync(e.Context.Channel);
-            }
-
-            if (_config.SendErrorsThroughSegment)
-            {
-                var analytics = ServiceProvider.GetService<IAnalyse>();
-                if (analytics is not null)
-                {
-                    await analytics.EmitEvent(e.Context.User, "SlashCommandErrored", new Dictionary<string, object>()
-                    {
-                        {"commandname", e.Context.Command.Name},
-                        {"error", e.Exception}
-                    });
-                }
-            }
-
-            if (e.Context.Channel.IsPrivate || e.Context.Channel
-                    .PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id))
-                    .HasPermission(Permissions.SendMessages))
-            {
-                if (e.Exception is CommandNotFoundException)
-                {
-                    //we do not do anything if it is a nonexistent command, i would have liked it to be a user only visible message but discord is shit
-                    return;
-                }
-                else
-                {
-                    var lang = await Language.GetLanguageFromCtxAsync(e.Context);
-                    switch (e.Exception)
-                    {
-                        case ChecksFailedException cfe when cfe.FailedChecks.Count is 1:
-                            await RespondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
-                                e.Context.Guild != null, e));
-                            break;
-
-                        case ChecksFailedException cfe:
-                            {
-                                var embedBuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
-                                var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: embedBuilder.WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
-                                        .WithDescription(RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
-                                    .ToList();
-
-                                var interactivity = e.Context.Client.GetInteractivity();
-                                await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
-                                    token: new CancellationToken());
-                                break;
-                            }
-                        case InvalidOverloadException:
-                        case ArgumentException { Message: "Could not find a suitable overload for the command." }:
-                            await RespondWithContent(string.Format(lang.InvalidOverload, e.Context.Command.Name));
-                            break;
-
-                        case InvalidOperationException { Message: "No matching subcommands were found, and this group is not executable." }:
-                            await RespondWithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable);
-                            break;
-
-                        case UnknownImageFormatException:
-                            await RespondWithContent(lang.UnknownImageFormat);
-                            break;
-
-                        case AttachmentCountIncorrectException { AttachmentCount: AttachmentCountIncorrect.TooManyAttachments }:
-                            await RespondWithContent(lang.WrongImageCount);
-                            break;
-
-                        case AttachmentCountIncorrectException aa:
-                            await RespondWithContent(lang.NoImageGeneric);
-                            break;
-
-                        default:
-                            await RespondWithContent(lang.GeneralException);
-                            break;
-                    }
-                }
-            }
-
-            _log.Error(e.Exception,
-                "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserId}`\n```\n{MessageContent}\n```", e.Exception.GetType().FullName, e.Context.Guild?.Id.ToString() ?? "None", e.Context.Channel?.Id.ToString(), e.Context.User?.Id.ToString() ?? "None", e.Context.Message.Content);
-        }
-
-        
-
-      
         public static async Task StatisticsMainAsync(CancellationToken ct = default)
         {
             while (true)

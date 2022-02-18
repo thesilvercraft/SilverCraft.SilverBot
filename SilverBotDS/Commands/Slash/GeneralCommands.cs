@@ -1,14 +1,14 @@
-﻿using System;
+﻿using DSharpPlus;
+using DSharpPlus.Entities;
+using DSharpPlus.SlashCommands;
+using SilverBotDS.Objects;
+using SilverBotDS.Utils;
+using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using DSharpPlus;
-using DSharpPlus.Entities;
-using DSharpPlus.SlashCommands;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
 
 namespace SilverBotDS.Commands.Slash;
 

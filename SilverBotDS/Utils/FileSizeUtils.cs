@@ -2,13 +2,9 @@
 
 namespace SilverBotDS.Utils;
 
-internal class FileSizeUtils
+public static class FileSizeUtils
 {
-    protected FileSizeUtils()
-    {
-    }
-
-    public static string FormatSize(long bytes)
+    public static string FormatSize(this long bytes)
     {
         var counter = 0;
         decimal number = bytes;

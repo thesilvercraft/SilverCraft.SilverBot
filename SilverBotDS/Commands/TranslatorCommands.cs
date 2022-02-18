@@ -1,4 +1,12 @@
-﻿using System;
+﻿using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
+using Microsoft.EntityFrameworkCore;
+using SilverBotDS.Attributes;
+using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
+using SilverBotDS.Objects.Database.Classes;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,14 +15,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
-using Microsoft.EntityFrameworkCore;
-using SilverBotDS.Attributes;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
-using SilverBotDS.Objects.Database.Classes;
 
 namespace SilverBotDS.Commands;
 
@@ -96,7 +96,7 @@ public class TranslatorCommands : SilverBotCommandModule
         var t = DatabaseContext.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
         if (t == null)
         {
-            t = new TranslatorSettings {Id = ctx.User.Id, IsTranslator = true, CustomLanguages = new List<Language>()};
+            t = new TranslatorSettings { Id = ctx.User.Id, IsTranslator = true, CustomLanguages = new List<Language>() };
             t.CurrentCustomLanguage = langobj;
             DatabaseContext.translatorSettings.Add(t);
         }
@@ -121,7 +121,7 @@ public class TranslatorCommands : SilverBotCommandModule
             if (t == null)
             {
                 t = new TranslatorSettings
-                    {Id = ctx.User.Id, IsTranslator = true, CustomLanguages = new List<Language>()};
+                { Id = ctx.User.Id, IsTranslator = true, CustomLanguages = new List<Language>() };
                 DatabaseContext.translatorSettings.Add(t);
                 await DatabaseContext.SaveChangesAsync();
             }

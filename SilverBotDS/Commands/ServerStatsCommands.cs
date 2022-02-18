@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -11,6 +6,11 @@ using Humanizer;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Database.Classes;
+using System;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 

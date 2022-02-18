@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DSharpPlus.Entities;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using DSharpPlus.Entities;
 
 namespace SilverBotDS.Utils;
 

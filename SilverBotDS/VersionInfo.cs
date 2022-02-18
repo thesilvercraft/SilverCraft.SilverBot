@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Serilog.Core;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Serilog.Core;
 using static SilverBotDS.Utils.GitHubUtils;
 using File = System.IO.File;
 
@@ -45,29 +45,29 @@ internal static class VersionInfo
                         switch (Environment.OSVersion.Platform)
                         {
                             case PlatformID.Unix:
-                            {
-                                ProcessStartInfo processInfo = new()
                                 {
-                                    Arguments =
-                                        $"-c \"echo \\\"./{gamer}\\\" \\\"{rls.Assets[0].BrowserDownloadUrl}\\\" | at now\"",
-                                    CreateNoWindow = true,
-                                    FileName = "/bin/bash",
-                                    UseShellExecute = false,
-                                    WindowStyle = ProcessWindowStyle.Hidden
-                                };
-                                Process.Start(processInfo);
-                                break;
-                            }
+                                    ProcessStartInfo processInfo = new()
+                                    {
+                                        Arguments =
+                                            $"-c \"echo \\\"./{gamer}\\\" \\\"{rls.Assets[0].BrowserDownloadUrl}\\\" | at now\"",
+                                        CreateNoWindow = true,
+                                        FileName = "/bin/bash",
+                                        UseShellExecute = false,
+                                        WindowStyle = ProcessWindowStyle.Hidden
+                                    };
+                                    Process.Start(processInfo);
+                                    break;
+                                }
                             case PlatformID.Win32NT:
-                            {
-                                //TODO: Add working Windows support
-                                Process p = new();
-                                p.StartInfo.FileName = "CMD.exe";
-                                p.StartInfo.Arguments = $"{gamer} \"{rls.Assets[0].BrowserDownloadUrl}\"";
-                                p.StartInfo.CreateNoWindow = false;
-                                p.Start();
-                                break;
-                            }
+                                {
+                                    //TODO: Add working Windows support
+                                    Process p = new();
+                                    p.StartInfo.FileName = "CMD.exe";
+                                    p.StartInfo.Arguments = $"{gamer} \"{rls.Assets[0].BrowserDownloadUrl}\"";
+                                    p.StartInfo.CreateNoWindow = false;
+                                    p.Start();
+                                    break;
+                                }
                         }
                     }
                 }

@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using SDBrowser;
 using SilverBotDS.Attributes;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands.Slash;
 
@@ -25,7 +25,7 @@ public class WebshotSlash : ApplicationCommandModule
         var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png")
             .WithFooter($"Requested by {ctx.User.Username}", ctx.User.GetAvatarUrl(ImageFormat.Png))
             .WithColor(DiscordColor.Green);
-        using var e = await Browser.RenderUrlAsync(url, (byte) waittime);
+        using var e = await Browser.RenderUrlAsync(url, (byte)waittime);
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddFile("html.png", e).AddEmbed(bob.Build()));
     }
 }

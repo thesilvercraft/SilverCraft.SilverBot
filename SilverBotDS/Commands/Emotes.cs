@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
-using DSharpPlus.Interactivity;
-using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using SixLabors.ImageSharp;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 

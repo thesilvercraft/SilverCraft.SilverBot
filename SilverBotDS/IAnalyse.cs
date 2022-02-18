@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using DSharpPlus.Entities;
+﻿using DSharpPlus.Entities;
 using Segment;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SilverBotDS;
 

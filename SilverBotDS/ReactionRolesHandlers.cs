@@ -1,13 +1,12 @@
 ﻿using DSharpPlus;
-using System.Threading.Tasks;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
+using SilverBotDS.Objects;
+using SilverBotDS.Objects.Database.Classes.ReactionRole;
 using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using SilverBotDS.Objects;
-using DSharpPlus.CommandsNext;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using SilverBotDS.Objects.Database.Classes.ReactionRole;
+using System.Threading.Tasks;
 
 namespace SilverBotDS
 {

@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using SilverBotDS.Objects;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Attributes;
 
@@ -18,13 +18,13 @@ public class RequireTranslatorAttribute : CheckBaseAttribute
 
     public override async Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
     {
-        var conf = (Config) ctx.CommandsNext.Services.GetService(typeof(Config));
+        var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
         return await IsTranslator(conf, ctx.Client, ctx.User.Id, InChannel ? ctx.Channel.Id : null);
     }
 
     public static async Task<bool> IsTranslator(Config cnf, DiscordClient client, ulong userid, ulong? channelid = null)
     {
-        if(!(!channelid.HasValue || channelid == cnf.TranslatorModeChannel))
+        if (!(!channelid.HasValue || channelid == cnf.TranslatorModeChannel))
         {
             return false;
         }

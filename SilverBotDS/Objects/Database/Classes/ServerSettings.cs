@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using SilverBotDS.Objects.Database.Classes;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
-using SilverBotDS.Objects.Database.Classes;
-using SilverBotDS.Objects.Database.Classes.ReactionRole;
 
 namespace SilverBotDS.Objects;
 

@@ -2,18 +2,14 @@
 
 namespace SilverBotDS.Utils;
 
-internal class FileUtils
+public static class FileUtils
 {
-    protected FileUtils()
-    {
-    }
-
     /// <summary>
     ///     https://stackoverflow.com/questions/23228378/is-there-any-way-to-get-the-file-extension-from-a-url
     /// </summary>
     /// <param name="url">the url</param>
     /// <returns>the extension</returns>
-    public static string GetFileExtensionFromUrl(string url)
+    public static string GetFileExtensionFromUrl(this string url)
     {
         url = url.Split('?')[0];
         url = url.Split('/').Last();

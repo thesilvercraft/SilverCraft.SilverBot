@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using Microsoft.AspNetCore.Http;
 using static SilverBotDS.Objects.Classes.Oauth;
 
 namespace SilverBotDS.WebHelpers;
@@ -42,7 +42,7 @@ public static class SessionHelper
             new AuthenticationHeaderValue("Bearer", GetObjectFromJson<string>(session, "accessToken"));
         var response = client.Send(requestMessage);
         StreamReader reader2 = new(response.Content.ReadAsStream());
-        if( response.StatusCode== HttpStatusCode.TooManyRequests)
+        if (response.StatusCode == HttpStatusCode.TooManyRequests)
         {
             return Array.Empty<Guild>();
         }

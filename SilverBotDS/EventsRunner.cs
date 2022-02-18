@@ -16,12 +16,12 @@ namespace SilverBotDS
 {
     public static class EventsRunner
     {
-        
+
         private static ServiceProvider ServiceProvider { get; set; }
-        private static Logger _log { get; set; }
+        private static Logger Log { get; set; }
         public static void InjectEvents(ServiceProvider sp, Logger log)
         {
-            _log = log;
+            Log = log;
             ServiceProvider = sp;
         }
         public static Task RunEmojiEvent(PlannedEvent @event, DatabaseContext dbctx)
@@ -33,7 +33,7 @@ namespace SilverBotDS
 
         public static async Task RunEmojiEventAsync(PlannedEvent @event, DatabaseContext dbctx)
         {
-            var _discordClient= (DiscordClient)ServiceProvider.GetService(typeof(DiscordClient));
+            var _discordClient = (DiscordClient)ServiceProvider.GetService(typeof(DiscordClient));
             var channel = await _discordClient.GetChannelAsync(@event.ChannelID);
             if (@event.ResponseMessageID != null)
             {
@@ -95,7 +95,7 @@ namespace SilverBotDS
         {
             return @event.Type != PlannedEventType.EmojiPoll
                 ? throw new ArgumentException("The parameter evnt needs to be an GiveAway", nameof(@event))
-                : dbctx == null ? throw new ArgumentNullException(nameof(dbctx)) : RunGiveAwayEventAsync(@event,dbctx);
+                : dbctx == null ? throw new ArgumentNullException(nameof(dbctx)) : RunGiveAwayEventAsync(@event, dbctx);
         }
 
         public static async Task RunGiveAwayEventAsync(PlannedEvent @event, DatabaseContext dbctx)
@@ -147,7 +147,7 @@ namespace SilverBotDS
                                 switch (evnt.Type)
                                 {
                                     case PlannedEventType.EmojiPoll:
-                                        
+
                                         await Program.RunningTasksOfSecondRowAdd(Guid.NewGuid(), new(Task.Run(() => RunEmojiEvent(evnt, dbctx), cts.Token), cts));
                                         break;
 
@@ -155,7 +155,7 @@ namespace SilverBotDS
                                         await Program.RunningTasksOfSecondRowAdd(Guid.NewGuid(), new(Task.Run(() => RunGiveAwayEvent(evnt, dbctx), cts.Token), cts));
                                         break;
 
-                                    case PlannedEventType.Reminder:                                     
+                                    case PlannedEventType.Reminder:
                                         await Program.RunningTasksOfSecondRowAdd(Guid.NewGuid(), new(Task.Run(() => RunReminderEvent(evnt, dbctx), cts.Token), cts));
                                         break;
                                     default:
@@ -164,12 +164,12 @@ namespace SilverBotDS
                             }
                             catch (Exception e)
                             {
-                                _log.Error(e, "exception happened in events thread in the switch case");
+                                Log.Error(e, "exception happened in events thread in the switch case");
                             }
                         }
                         else
                         {
-                            _log.Verbose("removed an {EventType}", evnt.Type);
+                            Log.Verbose("removed an {EventType}", evnt.Type);
                             dbctx.plannedEvents.Remove(evnt);
                             await dbctx.SaveChangesAsync();
                         }
@@ -177,7 +177,7 @@ namespace SilverBotDS
                 }
                 catch (Exception e)
                 {
-                    _log.Error(e, "exception happened in events thread");
+                    Log.Error(e, "exception happened in events thread");
                 }
 
                 await Task.Delay(3000);

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using SilverBotDS.Objects.Classes;
+using System;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Converters;
 
@@ -13,7 +13,7 @@ internal class LoopSettingsConverter : IArgumentConverter<LoopSettings>
     {
         if (Enum.TryParse(typeof(LoopSettings), value, out var boolean))
         {
-            return Task.FromResult(Optional.FromValue((LoopSettings) boolean));
+            return Task.FromResult(Optional.FromValue((LoopSettings)boolean));
         }
 
         return value.ToLowerInvariant() switch

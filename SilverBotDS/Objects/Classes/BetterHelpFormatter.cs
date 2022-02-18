@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.CommandsNext.Entities;
 using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
 using SilverBotDS.Utils;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace SilverBotDS.Objects.Classes;
 
@@ -98,15 +98,15 @@ public class CustomHelpFormatter : BaseHelpFormatter
                     foreach (var attribute in command.CustomAttributes.Where(x =>
                                  x.GetType() == typeof(CategoryAttribute)))
                     {
-                        foreach (var category in ((CategoryAttribute) attribute).Category)
-                    {
-                        if (!commands.ContainsKey(category))
+                        foreach (var category in ((CategoryAttribute)attribute).Category)
+                        {
+                            if (!commands.ContainsKey(category))
                             {
                                 commands.Add(category, new HashSet<string>());
                             }
 
                             commands[category].Add(command.Name);
-                    }
+                        }
                     }
                 }
 
@@ -116,15 +116,15 @@ public class CustomHelpFormatter : BaseHelpFormatter
                     foreach (var attribute in command.Module.ModuleType.GetCustomAttributes(true)
                                  .Where(x => x is CategoryAttribute))
                     {
-                        foreach (var category in ((CategoryAttribute) attribute).Category)
-                    {
-                        if (!commands.ContainsKey(category))
+                        foreach (var category in ((CategoryAttribute)attribute).Category)
+                        {
+                            if (!commands.ContainsKey(category))
                             {
                                 commands.Add(category, new HashSet<string>());
                             }
 
                             commands[category].Add(command.Name);
-                    }
+                        }
                     }
                 }
             }

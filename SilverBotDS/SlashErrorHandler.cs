@@ -24,12 +24,13 @@ namespace SilverBotDS
     public static class SlashErrorHandler
     {
         private static ServiceProvider ServiceProvider { get; set; }
-        private static Logger _log { get; set; }
-        public static async Task RegisterErrorHandler(ServiceProvider sp,Logger log, SlashCommandsExtension e)
+        private static Logger Log { get; set; }
+        public static Task RegisterErrorHandler(ServiceProvider sp, Logger log, SlashCommandsExtension e)
         {
             ServiceProvider = sp;
-            _log = log;
+            Log = log;
             e.SlashCommandErrored += Slash_SlashCommandErrored;
+            return Task.CompletedTask;
         }
         private static string RemoveStringFromEnd(string a, string sub)
         {
@@ -86,7 +87,7 @@ namespace SilverBotDS
             {
                 if (e.Exception is CommandNotFoundException)
                 {
-                   await RespondWithContent("404 Not Found");
+                    await RespondWithContent("404 Not Found");
                 }
                 else
                 {
@@ -135,7 +136,7 @@ namespace SilverBotDS
                 }
             }
 
-            _log.Error(e.Exception,
+            Log.Error(e.Exception,
                 "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserID}`\n```\nNA\n```", e.Exception.GetType().FullName, e.Context.Guild?.Id.ToString() ?? "None", e.Context.Channel?.Id.ToString(), e.Context.User?.Id.ToString() ?? "None");
         }
     }

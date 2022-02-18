@@ -5,8 +5,6 @@ using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
-using DSharpPlus.SlashCommands;
-using DSharpPlus.SlashCommands.EventArgs;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
@@ -14,6 +12,7 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
+using SilverBotDS.Utils;
 using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
@@ -26,33 +25,26 @@ namespace SilverBotDS
     public static class CommandErrorHandler
     {
         private static ServiceProvider ServiceProvider { get; set; }
-        private static Logger _log { get; set; }
-        private static bool useSegment { get; set; }
+        private static Logger Log { get; set; }
+        private static bool UseSegment { get; set; }
         private static CommandsNextExtension E { get; set; }
-        public static Task RegisterErrorHandler(ServiceProvider sp,Logger log, CommandsNextExtension e)
+        public static Task RegisterErrorHandler(ServiceProvider sp, Logger log, CommandsNextExtension e)
         {
             ServiceProvider = sp;
-            _log = log;
+            Log = log;
             E = e;
             E.CommandErrored += Commands_CommandErrored;
-            useSegment = sp.GetRequiredService<Config>().SendErrorsThroughSegment;
+            UseSegment = sp.GetRequiredService<Config>().SendErrorsThroughSegment;
             return Task.CompletedTask;
         }
 
         public static void Reload()
         {
             E.CommandErrored -= Commands_CommandErrored;
-            useSegment = ServiceProvider.GetRequiredService<Config>().SendErrorsThroughSegment;
+            UseSegment = ServiceProvider.GetRequiredService<Config>().SendErrorsThroughSegment;
             E.CommandErrored += Commands_CommandErrored;
         }
-        private static string RemoveStringFromEnd(string a, string sub)
-        {
-            if (a.EndsWith(sub))
-            {
-                a = a[..a.LastIndexOf(sub, StringComparison.Ordinal)];
-            }
-            return a;
-        }
+
         /// <summary>
         ///     Render the error message for an Attribute
         /// </summary>
@@ -104,7 +96,7 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
 userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                 RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount => (string)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang),
                 RequireAttachmentAttribute attachmentAttribute => (string)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang),
-                _ => string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize()),
+                _ => string.Format(lang.CheckFailed, type.Name.RemoveStringFromEnd("Attribute").Humanize()),
             };
         }
 
@@ -119,7 +111,7 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                     .SendAsync(e.Context.Channel);
             }
 
-            if (useSegment)
+            if (UseSegment)
             {
                 var analytics = ServiceProvider.GetService<IAnalyse>();
                 if (analytics is not null)
@@ -191,7 +183,7 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                 }
             }
 
-            _log.Error(e.Exception,
+            Log.Error(e.Exception,
                 "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserId}`\n```\n{MessageContent}\n```", e.Exception.GetType().FullName, e.Context.Guild?.Id.ToString() ?? "None", e.Context.Channel?.Id.ToString(), e.Context.User?.Id.ToString() ?? "None", e.Context.Message.Content);
         }
 

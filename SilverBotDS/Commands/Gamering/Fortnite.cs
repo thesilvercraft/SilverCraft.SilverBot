@@ -1,13 +1,13 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using Fortnite_API;
 using Fortnite_API.Objects.V1;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
+using System;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands.Gamering;
 
@@ -40,7 +40,7 @@ public class Fortnite : SilverBotCommandModule
 
     [Command("fortstats")]
     [Description("Get the stats of a person using their username")]
-    public async Task Stats(CommandContext ctx, [Description("The username of the person")] [RemainingText] string name)
+    public async Task Stats(CommandContext ctx, [Description("The username of the person")][RemainingText] string name)
     {
         MakeSureApiIsSet();
         var lang = await Language.GetLanguageFromCtxAsync(ctx);

@@ -1,6 +1,6 @@
 ﻿namespace SilverBotDS.Utils;
 
-internal class NumberUtils
+public static class NumberUtils
 {
     private static readonly string[] Divisors =
     {
@@ -13,11 +13,8 @@ internal class NumberUtils
         "Qi" // Quintillion
     };
 
-    protected NumberUtils()
-    {
-    }
 
-    public static string FormatSize(long bytes)
+    public static string FormatSize(this long bytes)
     {
         var counter = 0;
         var number = bytes;

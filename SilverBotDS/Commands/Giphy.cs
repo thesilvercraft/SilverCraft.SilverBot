@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -12,6 +10,8 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
+using System;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
 
@@ -23,7 +23,6 @@ public class Giphy : SilverBotCommandModule
     {
         return new Giphy();
     }
-#pragma warning disable CA1822 // Mark members as static
     private GiphyDotNet.Manager.Giphy _giphy;
     public Config Config { private get; set; }
 

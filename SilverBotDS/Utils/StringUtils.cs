@@ -12,12 +12,12 @@ public static class StringUtils
     /// </summary>
     /// <param name="vs">the array</param>
     /// <returns>A random string from the array</returns>
-    public static string RandomFromArray(string[] vs)
+    public static string RandomFromArray(this string[] vs)
     {
         return ArrayUtils.RandomFromArray(vs);
     }
 
-    public static string FormatFromDictionary(string formatString, Dictionary<string, string> valueDict)
+    public static string FormatFromDictionary(this string formatString, Dictionary<string, string> valueDict)
     {
         ulong i = 0;
         StringBuilder newFormatString = new(formatString);
@@ -39,7 +39,7 @@ public static class StringUtils
     /// <param name="s">The string</param>
     /// <param name="partLength">The length</param>
     /// <returns>An IEnumerable string containing the parts</returns>
-    public static IEnumerable<string> SplitInParts(string s, int partLength)
+    public static IEnumerable<string> SplitInParts(this string s, int partLength)
     {
         if (s == null)
         {
@@ -54,7 +54,7 @@ public static class StringUtils
         return SplitInPartsIterator(s, partLength);
     }
 
-    private static IEnumerable<string> SplitInPartsIterator(string s, int partLength)
+    private static IEnumerable<string> SplitInPartsIterator(this string s, int partLength)
     {
         for (var i = 0; i < s.Length; i += partLength)
         {
@@ -71,6 +71,20 @@ public static class StringUtils
     {
         return b ? ":white_check_mark:" : ":x:";
     }
+    /// <summary>
+    /// Removes a substring if it is found at the end
+    /// </summary>
+    /// <param name="a">the source string</param>
+    /// <param name="sub">the substring</param>
+    /// <returns>the original string with the substring removed if the substring was at the end</returns>
+    public static string RemoveStringFromEnd(this string a, string sub)
+    {
+        if (!a.EndsWith(sub))
+        {
+            return a;
+        }
+        return a[..a.LastIndexOf(sub, StringComparison.Ordinal)];
+    }
 
     /// <summary>
     ///     Converts an String[] to String by combining all the strings
@@ -78,7 +92,7 @@ public static class StringUtils
     /// <param name="arr">The array to convert</param>
     /// <param name="seperator">The seperator to use if any</param>
     /// <returns>A string cotnaining the array</returns>
-    public static string ArrayToString(string[] arr, string seperator = "")
+    public static string ArrayToString(this string[] arr, string seperator = "")
     {
         if (arr is null)
         {

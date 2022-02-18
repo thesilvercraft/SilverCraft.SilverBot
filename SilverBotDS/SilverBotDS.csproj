@@ -114,7 +114,7 @@
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
         <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta13.14" />
         <PackageReference Include="SpotifyAPI.Web" Version="6.2.2" />
         <PackageReference Include="SteamStoreQuery" Version="1.0.5" />

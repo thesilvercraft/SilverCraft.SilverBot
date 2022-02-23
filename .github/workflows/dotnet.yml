@@ -21,21 +21,17 @@ jobs:
       run: copy "SilverBotDS.PixelsArchiver\bin\Release\net6.0\SilverBotDS.PixelsArchiver*" "SilverBotDS\bin\Release\net6.0\publish"
     - name: Zip 
       shell: powershell
-      run: Compress-Archive -Path "SilverBotDS\bin\Release\net6.0\publish" -DestinationPath "silverbot.zip" -CompressionLevel Optimal -Force
-    - name: Make a random name
-      id: E
-      shell: powershell
       run: |
-          $e =Get-Random
-          echo "::set-output name=Random::$e"
+           [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") \
+           [System.IO.Compression.ZipFile]::CreateFromDirectory('SilverBotDS\bin\Release\net6.0\publish', 'silverbot.zip', 'Optimal', $false) 
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-         tag_name: ${{ steps.E.outputs.Random }}
-         release_name: ${{ steps.E.outputs.Random }}
+         tag_name: ${GITHUB_SHA::10}
+         release_name: ${GITHUB_SHA::10}
          body: Automated release, a release will be created for every single push on the master branch. this one is for ${{ github.sha }}, As always zipped releases should contain most things the program needs to run and that means it has to contains the license info of every dependency contained within it
          draft: true
          prerelease: false

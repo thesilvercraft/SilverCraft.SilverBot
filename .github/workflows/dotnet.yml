@@ -22,7 +22,7 @@ jobs:
     - name: Zip 
       shell: powershell
       run: |
-           [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") \
+           [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") &&
            [System.IO.Compression.ZipFile]::CreateFromDirectory('SilverBotDS\bin\Release\net6.0\publish', 'silverbot.zip', 'Optimal', $false) 
     - name: Create Release
       id: create_release

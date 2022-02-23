@@ -137,19 +137,23 @@ public class Audio : BaseCommandModule
         if (song.Song != null)
         {
             await player.PlayTopAsync(song.Song);
-            await new DiscordMessageBuilder()
-                .WithReply(ctx.Message.Id)
-                .WithEmbed(new DiscordEmbedBuilder()
+            var dmb = new DiscordEmbedBuilder()
                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                     .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
                     .WithUrl(song.Song.Source)
-                    .WithThumbnail(await ArtworkService.ResolveAsync(song.Song))
+
                     .AddField(lang.TimeTillTrackPlays,
                         player.LoopSettings == LoopSettings.LoopingSong
                             ? lang.SongTimeLeftSongLooping
-                            : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()))
-                    .Build())
-                .SendAsync(ctx.Channel);
+                            : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()));
+
+            var art = await ArtworkService.ResolveAsync(song.Song);
+            if (art != null)
+            {
+                dmb.WithThumbnail(art);
+            }
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+          .WithEmbed(dmb).SendAsync(ctx.Channel);
         }
 
         if (song.GetRestOfSongs is not null)
@@ -211,18 +215,22 @@ public class Audio : BaseCommandModule
             }
             else
             {
-                await new DiscordMessageBuilder()
-                    .WithReply(ctx.Message.Id)
-                    .WithEmbed(new DiscordEmbedBuilder()
+                var emb = new DiscordEmbedBuilder()
                         .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                         .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
                         .WithUrl(song.Song.Source)
-                        .WithThumbnail(await ArtworkService.ResolveAsync(song.Song))
                         .AddField(lang.TimeTillTrackPlays,
                             player.LoopSettings == LoopSettings.LoopingSong
                                 ? lang.SongTimeLeftSongLooping
-                                : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()))
-                        .Build())
+                                : TimeTillSongPlays(player, pos).Humanize(culture: lang.GetCultureInfo()));
+                var trkart = await ArtworkService.ResolveAsync(song.Song);
+                if (trkart != null)
+                {
+                    emb.WithThumbnail(trkart);
+                }
+                await new DiscordMessageBuilder()
+                    .WithReply(ctx.Message.Id)
+                    .WithEmbed(emb)
                     .SendAsync(ctx.Channel);
             }
         }
@@ -485,31 +493,42 @@ public class Audio : BaseCommandModule
             await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
             return;
         }
-
-        var pages = new List<Page>
-        {
-            new(embed: new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title)
+        var e = new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title)
                 .WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync())
                 .WithAuthor(string.Format(lang.PageNuget, 1, player.Queue.Count + 1))
                 .AddField(lang.SongLength, player.CurrentTrack.Duration.ToString())
-                .WithThumbnail(await ArtworkService.ResolveAsync(player.CurrentTrack))
+
                 .AddField(lang.SongTimePosition, player.Position.Position.ToString()).AddField(lang.SongTimeLeft,
                     player.LoopSettings == LoopSettings.LoopingSong
                         ? lang.SongTimeLeftSongLoopingCurrent
                         : (player.CurrentTrack.Duration - player.Position.Position).Humanize(
-                            culture: lang.GetCultureInfo())))
+                            culture: lang.GetCultureInfo()));
+        var url = await ArtworkService.ResolveAsync(player.CurrentTrack);
+        if (url != null)
+        {
+            e.WithThumbnail(url);
+        }
+        var pages = new List<Page>
+        {
+           new(embed:e)
         };
         for (var i = 0; i < player.Queue.Count; i++)
         {
             var timetillsongplays = TimeTillSongPlays(player, i + 1);
-            pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title)
+            var em = new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title)
                 .WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync())
-                .WithThumbnail(await ArtworkService.ResolveAsync(player.CurrentTrack))
+
                 .AddField(lang.TimeTillTrackPlays,
                     player.LoopSettings == LoopSettings.LoopingSong
                         ? lang.SongTimeLeftSongLooping
                         : timetillsongplays.Humanize(culture: lang.GetCultureInfo()))
-                .WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1))));
+                .WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1));
+            var artwrk = await ArtworkService.ResolveAsync(player.CurrentTrack);
+            if (artwrk != null)
+            {
+                em.WithThumbnail(artwrk);
+            }
+            pages.Add(new Page(embed: em));
         }
 
         var interactivity = ctx.Client.GetInteractivity();
@@ -702,7 +721,7 @@ public class Audio : BaseCommandModule
         var trackafter = player.CurrentTrack;
         await SendSimpleMessage(ctx,
             string.Format(lang.SkippedNP, trackbefore.Title, trackafter == null ? lang.QueueNothing : trackafter?.Title),
-            language: lang);
+            language: lang, image: (trackafter == null ? null : (await ArtworkService.ResolveAsync(trackafter)).ToString()));
     }
 
     [Command("voteskip")]

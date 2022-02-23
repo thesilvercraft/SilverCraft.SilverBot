@@ -9,9 +9,6 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
     - uses: actions/checkout@v2
-    - name: Install 7Zip PowerShell Module
-      shell: powershell
-      run: Install-Module 7Zip4PowerShell -Force
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
@@ -24,7 +21,7 @@ jobs:
       run: copy "SilverBotDS.PixelsArchiver\bin\Release\net6.0\SilverBotDS.PixelsArchiver*" "SilverBotDS\bin\Release\net6.0\publish"
     - name: Zip 
       shell: powershell
-      run: Compress-7Zip "SilverBotDS\bin\Release\net6.0\publish" -ArchiveFileName "silverbot.zip" -Format Zip
+      run: Compress-Archive -Path "SilverBotDS\bin\Release\net6.0\publish" -DestinationPath "silverbot.zip" -CompressionLevel Optimal -Force
     - name: Make a random name
       id: E
       shell: powershell

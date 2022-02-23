@@ -29,7 +29,7 @@ jobs:
     - name: Shorten the SHA
       id: shas
       shell: powershell
-      run:  echo "::set-output name=sha_short::$(git rev-parse --short=10 {{ github.sha }})"
+      run:  echo "::set-output name=sha_short::$(git rev-parse --short=10 ${{ github.sha }})"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1

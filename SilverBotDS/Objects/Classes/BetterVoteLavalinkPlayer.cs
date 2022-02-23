@@ -26,11 +26,6 @@ public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
     public ulong LoopTimes { get; set; } = 0;
     public List<Tuple<LavalinkTrack, DateTime, bool>> QueueHistory { get; set; } = new();
 
-    public override Task SkipAsync(int count = 1)
-    {
-        return SkipAsync(count, true);
-    }
-
     public override Task<int> PlayAsync(LavalinkTrack track, bool enqueue, TimeSpan? startTime = null,
         TimeSpan? endTime = null, bool noReplace = false)
     {
@@ -40,6 +35,11 @@ public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
         }
 
         return base.PlayAsync(track, enqueue, startTime, endTime, noReplace);
+    }
+
+    public override Task SkipAsync(int count = 1)
+    {
+        return SkipAsync(count, true);
     }
 
     public Task SkipAsync(int count, bool command)

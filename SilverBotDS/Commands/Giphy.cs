@@ -23,6 +23,7 @@ public class Giphy : SilverBotCommandModule
     {
         return new Giphy();
     }
+
     private GiphyDotNet.Manager.Giphy _giphy;
     public Config Config { private get; set; }
 

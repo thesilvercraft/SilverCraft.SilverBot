@@ -1,9 +1,9 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SilverBotDS.Anime;
 
@@ -81,6 +81,7 @@ public class Anime : BaseCommandModule
     {
         await SendImage(ctx, await GetAnimeUrl("img/punch"));
     }
+
     public class RootObject
     {
         [JsonPropertyName("url")] public string Url { get; set; }

@@ -21,7 +21,6 @@ public class ReminderCommands : SilverBotCommandModule
 {
     public DatabaseContext DbCtx { private get; set; }
 
-
     [Command("remindme")]
     [Description("simple reminder")]
     public async Task RemindCommand(CommandContext ctx,
@@ -52,9 +51,9 @@ public class ReminderCommands : SilverBotCommandModule
             await ctx.RespondAsync(lang.ReminderErrorNoContent);
         }
     }
+
     [Command("listreminders")]
     [Description("lists all reminders")]
-
     public async Task ListReminders(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
@@ -74,14 +73,10 @@ public class ReminderCommands : SilverBotCommandModule
                 bob.Append(even.EventID).Append("   ").Append(Formatter.Timestamp(even.Time, TimestampFormat.RelativeTime)).Append("    ").Append(Formatter.Timestamp(even.Time, TimestampFormat.LongDateTime)).AppendLine("```").Append(even.Data).AppendLine("```");
             }
             await new DiscordMessageBuilder().WithContent(bob.ToString()).WithAllowedMentions(Mentions.None).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
-
         }
         else
         {
             await new DiscordMessageBuilder().WithContent(lang.ListReminderNone).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
-
         }
     }
-
-
 }

@@ -10,6 +10,7 @@ using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using Humanizer;
 using Lavalink4NET;
+using Lavalink4NET.Artwork;
 using Lavalink4NET.DSharpPlus;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Tracking;
@@ -79,11 +80,13 @@ namespace SilverBotDS
             RunningTasksOfSecondRow.Add(a, b);
             return Task.CompletedTask;
         }
+
         public static Task RunningTasksAdd(string a, Tuple<Task, CancellationTokenSource> b)
         {
             RunningTasks.Add(a, b);
             return Task.CompletedTask;
         }
+
         /// <summary>
         /// tell efcore to die for now
         /// </summary>
@@ -216,7 +219,7 @@ namespace SilverBotDS
 
             if (!(id == null || string.IsNullOrEmpty(token) || Debugger.IsAttached))
             {
-                loggerConfiguration.WriteTo.DiscordSink(new Tuple<ulong, string>((ulong)id, token));
+                loggerConfiguration.WriteTo.DiscordSink((ulong)id, token);
             }
 
             _log = loggerConfiguration.CreateLogger();
@@ -362,7 +365,7 @@ namespace SilverBotDS
                 {
                     //file not found time to download lavalink
                     _log.Information("Downloading lavalink");
-                    await (await GitHubUtils.Release.GetLatestFromRepoAsync(new("freyacodes", "Lavalink"), HttpClient))
+                    await (await GitHubUtils.Release.GetLatestFromRepoAsync(new(_config.LavalinkBuildsSourceGitHubUser, _config.LavalinkBuildsSourceGitHubRepo), HttpClient))
                         .DownloadLatestAsync(HttpClient);
                 }
 
@@ -392,6 +395,7 @@ namespace SilverBotDS
                 _trackingService = new InactivityTrackingService(_audioService, discordClientWrapper,
                     new InactivityTrackingOptions());
                 services.AddSingleton(_audioService);
+                services.AddSingleton(new ArtworkService());
                 if (!_config.SitInVc)
                 {
                     services.AddSingleton(_trackingService);
@@ -518,6 +522,7 @@ namespace SilverBotDS
                 PrefixResolver = ResolvePrefixAsync
             });
             var slash = _discord.UseSlashCommands(new SlashCommandsConfiguration() { Services = ServiceProvider });
+
             #region Registering Commands
 
             commands.SetHelpFormatter<CustomHelpFormatter>();
@@ -526,7 +531,6 @@ namespace SilverBotDS
             commands.RegisterConverter(new SColorConverter());
             commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
-            commands.RegisterConverter(new TimeSpanConverter());
             commands.RegisterConverter(new ImageFormatConverter());
             foreach (var module in _config.ModulesToLoad)
             {
@@ -922,7 +926,6 @@ namespace SilverBotDS
             }
         }
 
-
         public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
         {
             return new Dictionary<string, string>
@@ -931,6 +934,7 @@ namespace SilverBotDS
                 ["Platform"] = RuntimeInformation.ProcessArchitecture.ToString()
             };
         }
+
         public static async Task StatisticsMainAsync(CancellationToken ct = default)
         {
             while (true)
@@ -949,6 +953,7 @@ namespace SilverBotDS
                         try
                         {
                             var server = await _discord.GetGuildAsync(item1);
+                            var dict = await ServerStatString.GetStringDictionaryAsync(server);
                             _log.Debug("Got the guild with the id {Id}", item1);
                             _log.Debug("Getting the channel with the id {Id}", item2);
                             try
@@ -964,7 +969,7 @@ namespace SilverBotDS
                                         if (item3.Length > e)
                                         {
                                             _log.Debug("Updating {Id}", child.Id);
-                                            await child.ModifyAsync(a => a.Name = item3[e].Serialize(server));
+                                            await child.ModifyAsync(a => a.Name = item3[e].Serialize(dict));
                                         }
 
                                         e++;

@@ -79,8 +79,6 @@ public class Language
     /// </summary>
     public string DblaReturnedNull { get; set; } = "Something went wrong, it's probably on my end.";
 
-
-
     //Music related
     /// <summary>
     ///     I'm already in a voice channel!
@@ -456,6 +454,7 @@ public class Language
     public string XPCommandOther { get; set; } = "They have {0} XP, level {1}";
     public string XPCommandGeneralFail { get; set; } = "Ooops the database broke, please dm an SilverBot admin";
     public string XPCommandCardSuccess { get; set; } = "Here is your xp card";
+
     public string XPCommandFailSelf { get; set; } =
         "It appears that something either went wrong or you do not have any xp.";
 
@@ -539,10 +538,13 @@ public class Language
 
     public string UnknownImageFormat { get; set; } =
         "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.";
+
     public string AttributeDataBaseCheckNoDirectMessages { get; set; } =
      "This command can only be run in a server";
+
     public string AttributeDataBaseCheckWebShot { get; set; } =
      "This command can only be run in a server where webshot is enabled";
+
     public string JpegSuccess { get; set; } = "There ya go a jpegnized image";
     public string SilverSuccess { get; set; } = "There ya go a silver image";
     public string ComicSuccess { get; set; } = "There ya go a image with the comic filter";

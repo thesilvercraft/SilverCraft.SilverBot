@@ -318,18 +318,6 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         }
     }
 
-    [Command("reliable")]
-    public async Task Reliable(CommandContext ctx)
-    {
-        await Reliable(ctx, ctx.User, ctx.Client.CurrentUser);
-    }
-
-    [Command("reliable")]
-    public async Task Reliable(CommandContext ctx, DiscordUser koichi)
-    {
-        await Reliable(ctx, ctx.User, koichi);
-    }
-
     /// <summary>
     ///     Gets the profile picture of a discord user in a 256x256 bitmap saved to a byte array
     /// </summary>
@@ -357,6 +345,18 @@ public class ImageModule : BaseCommandModule, IRequireFonts
             (await ResizeAsync(stream.ToArray(), new Size(size, size), PngFormat.Instance)).Item1;
         resizedstream.Position = 0;
         return resizedstream.ToArray();
+    }
+
+    [Command("reliable")]
+    public async Task Reliable(CommandContext ctx)
+    {
+        await Reliable(ctx, ctx.User, ctx.Client.CurrentUser);
+    }
+
+    [Command("reliable")]
+    public async Task Reliable(CommandContext ctx, DiscordUser koichi)
+    {
+        await Reliable(ctx, ctx.User, koichi);
     }
 
     [Command("reliable")]
@@ -619,6 +619,14 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         }
     }
 
+    [Command("motivate")]
+    [RequireAttachment(argumentCountThatOverloadsCheck: 1)]
+    public async Task Motivate(CommandContext ctx, [RemainingText] string text)
+    {
+        var image = SdImage.FromContext(ctx);
+        await Motivate(ctx, image, text);
+    }
+
     [Command("fail")]
     [Description("epic embed fail")]
     public async Task JokerLaugh(CommandContext ctx, [RemainingText] string text)
@@ -650,14 +658,6 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         {
             await SendImageStream(ctx, outStream, "sbfail.gif", "there", lang);
         }
-    }
-
-    [Command("motivate")]
-    [RequireAttachment(argumentCountThatOverloadsCheck: 1)]
-    public async Task Motivate(CommandContext ctx, [RemainingText] string text)
-    {
-        var image = SdImage.FromContext(ctx);
-        await Motivate(ctx, image, text);
     }
 
     [Command("caption")]

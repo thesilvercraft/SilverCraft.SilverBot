@@ -6,6 +6,7 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
 using Lavalink4NET;
+using Lavalink4NET.Artwork;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
 using SilverBotDS.Attributes;
@@ -33,14 +34,12 @@ public class Audio : BaseCommandModule
     public Config Config { private get; set; }
 
     public SpotifyClient SpotifyClient { private get; set; }
+    public ArtworkService ArtworkService { private get; set; }
 
-    private bool IsInVc(CommandContext ctx)
-    {
-        return AudioService.HasPlayer(ctx.Guild.Id) &&
-               AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null &&
-               (AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.NotConnected
-                || AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State != PlayerState.Destroyed);
-    }
+    private bool IsInVc(CommandContext ctx) => IsInVc(ctx, AudioService);
+
+    private static bool IsInVc(CommandContext ctx, LavalinkNode lavalinkNode) => lavalinkNode.HasPlayer(ctx.Guild.Id) &&
+               lavalinkNode.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null and not { State: PlayerState.NotConnected } and not { State: PlayerState.Destroyed };
 
     private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "",
         string imageurl = "", string url = "", Language language = null)
@@ -62,7 +61,7 @@ public class Audio : BaseCommandModule
 
         if (!string.IsNullOrEmpty(imageurl))
         {
-            embedBuilder.WithImageUrl(imageurl);
+            embedBuilder.WithThumbnail(imageurl);
         }
 
         if (!string.IsNullOrEmpty(url))
@@ -76,7 +75,7 @@ public class Audio : BaseCommandModule
             .SendAsync(ctx.Channel);
     }
 
-    public static async Task SendSimpleMessage(CommandContext ctx, string title = "", string message = "",
+    public static async Task SendSimpleMessage(CommandContext ctx, string title = "", string message = "", string image = "",
         Language language = null)
     {
         language ??= await Language.GetLanguageFromCtxAsync(ctx);
@@ -93,7 +92,10 @@ public class Audio : BaseCommandModule
         {
             embedBuilder.WithTitle(title);
         }
-
+        if (!string.IsNullOrEmpty(image))
+        {
+            embedBuilder.WithThumbnail(image);
+        }
         await messageBuilder
             .WithReply(ctx.Message.Id)
             .WithEmbed(embedBuilder.Build())
@@ -141,6 +143,7 @@ public class Audio : BaseCommandModule
                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                     .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
                     .WithUrl(song.Song.Source)
+                    .WithThumbnail(await ArtworkService.ResolveAsync(song.Song))
                     .AddField(lang.TimeTillTrackPlays,
                         player.LoopSettings == LoopSettings.LoopingSong
                             ? lang.SongTimeLeftSongLooping
@@ -201,9 +204,10 @@ public class Audio : BaseCommandModule
             var pos = await player.PlayAsync(song.Song, true, song.SongStartTime);
             if (pos == 0)
             {
+                var artworkUri = await ArtworkService.ResolveAsync(song.Song);
                 await SendNowPlayingMessage(ctx,
                     string.Format(lang.NowPlaying, song.Song.Title + lang.SongByAuthor + song.Song.Author),
-                    url: song.Song.Source, language: lang);
+                    url: song.Song.Source, imageurl: artworkUri.ToString(), language: lang);
             }
             else
             {
@@ -213,6 +217,7 @@ public class Audio : BaseCommandModule
                         .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                         .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
                         .WithUrl(song.Song.Source)
+                        .WithThumbnail(await ArtworkService.ResolveAsync(song.Song))
                         .AddField(lang.TimeTillTrackPlays,
                             player.LoopSettings == LoopSettings.LoopingSong
                                 ? lang.SongTimeLeftSongLooping
@@ -282,7 +287,6 @@ public class Audio : BaseCommandModule
             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
             return;
         }
-
         var channel = ctx.Member?.VoiceState?.Channel;
         if (channel == null)
         {
@@ -488,6 +492,7 @@ public class Audio : BaseCommandModule
                 .WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync())
                 .WithAuthor(string.Format(lang.PageNuget, 1, player.Queue.Count + 1))
                 .AddField(lang.SongLength, player.CurrentTrack.Duration.ToString())
+                .WithThumbnail(await ArtworkService.ResolveAsync(player.CurrentTrack))
                 .AddField(lang.SongTimePosition, player.Position.Position.ToString()).AddField(lang.SongTimeLeft,
                     player.LoopSettings == LoopSettings.LoopingSong
                         ? lang.SongTimeLeftSongLoopingCurrent
@@ -499,6 +504,7 @@ public class Audio : BaseCommandModule
             var timetillsongplays = TimeTillSongPlays(player, i + 1);
             pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title)
                 .WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync())
+                .WithThumbnail(await ArtworkService.ResolveAsync(player.CurrentTrack))
                 .AddField(lang.TimeTillTrackPlays,
                     player.LoopSettings == LoopSettings.LoopingSong
                         ? lang.SongTimeLeftSongLooping
@@ -587,7 +593,7 @@ public class Audio : BaseCommandModule
         var lyrics = await LyricsService.GetLyricsAsync(artist, name);
         if (string.IsNullOrEmpty(lyrics))
         {
-            await SendSimpleMessage(ctx, "lyrics go null");
+            await SendSimpleMessage(ctx, "Lyrics not found");
             return;
         }
 
@@ -645,10 +651,7 @@ public class Audio : BaseCommandModule
     public static async Task StaticJoin(CommandContext ctx, LavalinkNode audioService)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (audioService.HasPlayer(ctx.Guild.Id) &&
-            (audioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null ||
-             audioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id).State is PlayerState.NotConnected
-                 or PlayerState.Destroyed))
+        if (IsInVc(ctx, audioService))
         {
             await SendSimpleMessage(ctx, lang.AlreadyConnected, language: lang);
             return;
@@ -739,7 +742,7 @@ public class Audio : BaseCommandModule
         {
             await SendSimpleMessage(ctx,
                 string.Format(lang.SkippedNP, trackbefore.Title,
-                    player.CurrentTrack == null ? lang.QueueNothing : player.CurrentTrack.Title), language: lang);
+                    player.CurrentTrack == null ? lang.QueueNothing : player.CurrentTrack.Title), image: (await ArtworkService.ResolveAsync(player.CurrentTrack)).ToString(), language: lang);
         }
         else if (thing.WasAdded)
         {

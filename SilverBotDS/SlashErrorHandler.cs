@@ -25,6 +25,7 @@ namespace SilverBotDS
     {
         private static ServiceProvider ServiceProvider { get; set; }
         private static Logger Log { get; set; }
+
         public static Task RegisterErrorHandler(ServiceProvider sp, Logger log, SlashCommandsExtension e)
         {
             ServiceProvider = sp;
@@ -32,6 +33,7 @@ namespace SilverBotDS
             e.SlashCommandErrored += Slash_SlashCommandErrored;
             return Task.CompletedTask;
         }
+
         private static string RemoveStringFromEnd(string a, string sub)
         {
             if (a.EndsWith(sub))
@@ -40,6 +42,7 @@ namespace SilverBotDS
             }
             return a;
         }
+
         /// <summary>
         ///     Render the error message for an Attribute
         /// </summary>
@@ -59,6 +62,7 @@ namespace SilverBotDS
                 _ => string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize()),
             };
         }
+
         private static async Task Slash_SlashCommandErrored(SlashCommandsExtension sender, SlashCommandErrorEventArgs e)
         {
             async Task RespondWithContent(string content, bool ephermal = true)

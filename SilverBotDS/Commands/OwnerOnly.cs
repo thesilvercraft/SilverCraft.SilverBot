@@ -2,13 +2,11 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
 using Jering.Javascript.NodeJS;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using ScottPlot;
 using SDBrowser;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
@@ -25,8 +23,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Xabe.FFmpeg;
-using Xabe.FFmpeg.Downloader;
 
 namespace SilverBotDS.Commands;
 
@@ -44,40 +40,6 @@ public class OwnerOnly : SilverBotCommandModule
         "https://silverdiamond.cf", "https://vfl.gg", "https://github.com/silverdimond", "https://cmpc.live",
         "https://silverbot.cf", "https://oscie.net"
     };
-
-    [Command("riprandomframes")]
-    [Description("rips times count of frames from a file")]
-    public async Task RipRandomFrames(CommandContext ctx, int times, string loc, string decoder = "hevc",
-        string encoder = "hevc")
-    {
-        var info = await FFmpeg.GetMediaInfo(loc).ConfigureAwait(false);
-        await ctx.RespondAsync($"its {info.Duration.Humanize()} ({info.Duration}) long");
-        var name = Path.GetFileName(loc);
-        var videoStream = info.VideoStreams.First()?.SetCodec(VideoCodec.png);
-        for (var i = 0; i < times; i++)
-        {
-            await FFmpeg.Conversions.New()
-                .AddStream(videoStream)
-                .ExtractNthFrame(
-                    RandomGenerator.Next(1,
-                        (int)(info.VideoStreams.First().Framerate * info.VideoStreams.First().Duration.TotalSeconds)),
-                    _ => $"Extracts{Program.DirSlash}{name}{i}.png")
-                .UseHardwareAcceleration(HardwareAccelerator.auto,
-                    (VideoCodec)Enum.Parse(typeof(VideoCodec), decoder, true),
-                    (VideoCodec)Enum.Parse(typeof(VideoCodec), encoder, true))
-                .Start();
-        }
-
-        await ctx.RespondAsync("done?");
-    }
-
-    [Command("downloadffmpeg")]
-    [Description("downloads ffmpeg")]
-    public async Task Downloadffmpeg(CommandContext ctx)
-    {
-        await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
-        await ctx.RespondAsync("done?");
-    }
 
     [Command("reloadcolors")]
     [Description("reloads the colors.json")]
@@ -152,39 +114,6 @@ public class OwnerOnly : SilverBotCommandModule
         {
             ctx.CommandsNext.RegisterCommands(type);
         }
-    }
-
-    [Command("plot")]
-    [Description("plot a thingy")]
-    public async Task Plot(CommandContext ctx)
-    {
-        var interactivity = ctx.Client.GetInteractivity();
-        await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("send x data"));
-        var msg = await interactivity.WaitForMessageAsync(a => a.Author.Id == ctx.User.Id);
-        if (msg.TimedOut)
-        {
-            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("nvm your too slow"));
-            return;
-        }
-
-        var xdata = Array.ConvertAll(msg.Result.Content.Split(' '), double.Parse);
-        await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("send y data"));
-        msg = await interactivity.WaitForMessageAsync(a => a.Author.Id == ctx.User.Id);
-        if (msg.TimedOut)
-        {
-            await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("nvm your too slow"));
-            return;
-        }
-
-        var ydata = Array.ConvertAll(msg.Result.Content.Split(' '), double.Parse);
-        var plt = new Plot(1920, 1080);
-        plt.AddScatter(xdata, ydata);
-        var bitmap = plt.Render();
-        await using var outStream = new MemoryStream();
-        bitmap.Save(outStream, System.Drawing.Imaging.ImageFormat.Png);
-        outStream.Position = 0;
-        await ctx.RespondAsync(new DiscordMessageBuilder().WithContent("plotted that")
-            .WithFile("silverbotimage.png", outStream));
     }
 
     [Command("sudo")]

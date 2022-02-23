@@ -71,6 +71,7 @@ public static class StringUtils
     {
         return b ? ":white_check_mark:" : ":x:";
     }
+
     /// <summary>
     /// Removes a substring if it is found at the end
     /// </summary>

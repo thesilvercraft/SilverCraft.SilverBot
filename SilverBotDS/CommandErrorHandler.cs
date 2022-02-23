@@ -28,6 +28,7 @@ namespace SilverBotDS
         private static Logger Log { get; set; }
         private static bool UseSegment { get; set; }
         private static CommandsNextExtension E { get; set; }
+
         public static Task RegisterErrorHandler(ServiceProvider sp, Logger log, CommandsNextExtension e)
         {
             ServiceProvider = sp;
@@ -99,7 +100,6 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                 _ => string.Format(lang.CheckFailed, type.Name.RemoveStringFromEnd("Attribute").Humanize()),
             };
         }
-
 
         private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
@@ -186,6 +186,5 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
             Log.Error(e.Exception,
                 "Error `{ExceptionName}` encountered.\nGuild `{GuildId}`, channel `{ChannelId}`, user `{UserId}`\n```\n{MessageContent}\n```", e.Exception.GetType().FullName, e.Context.Guild?.Id.ToString() ?? "None", e.Context.Channel?.Id.ToString(), e.Context.User?.Id.ToString() ?? "None", e.Context.Message.Content);
         }
-
     }
 }

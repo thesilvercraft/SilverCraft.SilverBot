@@ -20,7 +20,6 @@ namespace SilverBotDS.Commands;
 [Category("General")]
 public sealed class Genericcommands : BaseCommandModule
 {
-
     public Config Config { private get; set; }
     public HttpClient HttpClient { private get; set; }
 
@@ -187,6 +186,7 @@ public sealed class Genericcommands : BaseCommandModule
             .WithEmbed(embedBuilder.Build())
             .SendAsync(ctx.Channel);
     }
+
     [Command("monke")]
     [Aliases(":monkey:", "🐒", "🐵", ":monkey_face:")]
     [Description("Reject humanity return to monke")]
@@ -194,6 +194,7 @@ public sealed class Genericcommands : BaseCommandModule
     {
         await SimpleImageMeme(ctx, "https://i.kym-cdn.com/photos/images/newsfeed/001/867/677/40d.jpg");
     }
+
     public static async Task<bool> IsAtSilverCraftAsync(DiscordClient discord, DiscordUser b, Config cnf)
     {
         return (await discord.GetGuildAsync(cnf.ServerId)).Members.ContainsKey(b.Id);
@@ -231,5 +232,4 @@ public sealed class Genericcommands : BaseCommandModule
     {
         await Userinfo(ctx, ctx.User);
     }
-
 }

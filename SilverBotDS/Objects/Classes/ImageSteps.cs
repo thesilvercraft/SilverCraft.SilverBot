@@ -180,7 +180,7 @@ public class TemplateStep : Step, IDisposable
     {
         if (disposing)
         {
-            //((IDisposable)_image).Dispose();
+            _image.Dispose();
         }
 
         template = null;

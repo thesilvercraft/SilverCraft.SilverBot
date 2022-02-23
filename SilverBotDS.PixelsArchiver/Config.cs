@@ -1,16 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using SilverBotDS.Attributes;
+using SilverBotDS.Utils;
 using System.Xml;
 using System.Xml.Serialization;
-using DSharpPlus.Entities;
-using Microsoft.Extensions.Logging;
-using SilverBotDS.Attributes;
-using SilverBotDS.Commands;
-using SilverBotDS.Commands.Gamering;
-using SilverBotDS.Utils;
 
 namespace SilverBotDS.PixelsArchiver.Objects;
 

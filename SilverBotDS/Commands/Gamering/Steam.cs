@@ -18,8 +18,6 @@ namespace SilverBotDS.Commands.Gamering;
 [Group("steam")]
 public class SteamCommands : BaseCommandModule
 {
-#pragma warning disable CA1822 // Mark members as static
-
     [Command("search")]
     [Aliases("s")]
     [Description("Search about a game")]

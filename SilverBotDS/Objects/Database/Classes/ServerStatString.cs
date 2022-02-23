@@ -2,6 +2,7 @@
 using SilverBotDS.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects.Database.Classes;
 
@@ -18,18 +19,19 @@ public class ServerStatString
 
     public string Template { get; set; }
 
-    public string Serialize(DiscordGuild guild)
+    public string Serialize(Dictionary<string, string> dict)
     {
-        return StringUtils.FormatFromDictionary(Template, GetStringDictionary(guild));
+        return StringUtils.FormatFromDictionary(Template, dict);
     }
 
-    public static Dictionary<string, string> GetStringDictionary(DiscordGuild guild)
+    public static async Task<Dictionary<string, string>> GetStringDictionaryAsync(DiscordGuild guild)
     {
+        var allmembers = await guild.GetAllMembersAsync();
         return new Dictionary<string, string>
         {
             ["AllMembersCount"] = NumberUtils.FormatSize(guild.MemberCount),
-            ["MemberCount"] = NumberUtils.FormatSize(guild.Members.LongCount(x => !x.Value.IsBot)),
-            ["BotsCount"] = NumberUtils.FormatSize(guild.Members.LongCount(x => x.Value.IsBot)),
+            ["MemberCount"] = NumberUtils.FormatSize(allmembers.LongCount(x => !x.IsBot)),
+            ["BotsCount"] = NumberUtils.FormatSize(allmembers.LongCount(x => x.IsBot)),
             ["BoostCount"] = NumberUtils.FormatSize((int)guild.PremiumSubscriptionCount)
         };
     }

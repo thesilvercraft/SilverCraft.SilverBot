@@ -16,19 +16,26 @@ namespace SilverBotDS
 {
     public static class EventsRunner
     {
-
         private static ServiceProvider ServiceProvider { get; set; }
         private static Logger Log { get; set; }
+
         public static void InjectEvents(ServiceProvider sp, Logger log)
         {
             Log = log;
             ServiceProvider = sp;
         }
+
         public static Task RunEmojiEvent(PlannedEvent @event, DatabaseContext dbctx)
         {
-            return @event.Type != PlannedEventType.EmojiPoll
-                ? throw new ArgumentException("The parameter @event needs to be an EmojiPoll", nameof(@event))
-                : dbctx == null ? throw new ArgumentNullException(nameof(dbctx)) : RunEmojiEventAsync(@event, dbctx);
+            if (@event.Type != PlannedEventType.EmojiPoll)
+            {
+                throw new ArgumentException("The parameter @event needs to be an EmojiPoll", nameof(@event));
+            }
+            if (dbctx == null)
+            {
+                throw new ArgumentNullException(nameof(dbctx));
+            }
+            return RunEmojiEventAsync(@event, dbctx);
         }
 
         public static async Task RunEmojiEventAsync(PlannedEvent @event, DatabaseContext dbctx)
@@ -68,11 +75,18 @@ namespace SilverBotDS
             }
             @event.Handled = true;
         }
+
         public static Task RunReminderEvent(PlannedEvent @event, DatabaseContext dbctx)
         {
-            return @event.Type != PlannedEventType.Reminder
-                ? throw new ArgumentException("The parameter @event needs to be an Reminder", nameof(@event))
-                : dbctx == null ? throw new ArgumentNullException(nameof(dbctx)) : RunReminderEventAsync(@event, dbctx);
+            if (@event.Type != PlannedEventType.Reminder)
+            {
+                throw new ArgumentException("The parameter @event needs to be an Reminder", nameof(@event));
+            }
+            if (dbctx == null)
+            {
+                throw new ArgumentNullException(nameof(dbctx));
+            }
+            return RunReminderEventAsync(@event, dbctx);
         }
 
         public static async Task RunReminderEventAsync(PlannedEvent @event, DatabaseContext dbctx)
@@ -80,7 +94,7 @@ namespace SilverBotDS
             var _discordClient = (DiscordClient)ServiceProvider.GetService(typeof(DiscordClient));
             var channel = await _discordClient.GetChannelAsync(@event.ChannelID);
             var lang = await Language.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
-            if (@event.Handled != true)
+            if (!@event.Handled)
             {
                 DiscordMessageBuilder a = new();
                 a.WithReply(@event.MessageID, true);
@@ -93,9 +107,15 @@ namespace SilverBotDS
 
         public static Task RunGiveAwayEvent(PlannedEvent @event, DatabaseContext dbctx)
         {
-            return @event.Type != PlannedEventType.EmojiPoll
-                ? throw new ArgumentException("The parameter evnt needs to be an GiveAway", nameof(@event))
-                : dbctx == null ? throw new ArgumentNullException(nameof(dbctx)) : RunGiveAwayEventAsync(@event, dbctx);
+            if (@event.Type != PlannedEventType.GiveAway)
+            {
+                throw new ArgumentException("The parameter @event needs to be an GiveAway", nameof(@event));
+            }
+            if (dbctx == null)
+            {
+                throw new ArgumentNullException(nameof(dbctx));
+            }
+            return RunGiveAwayEventAsync(@event, dbctx);
         }
 
         public static async Task RunGiveAwayEventAsync(PlannedEvent @event, DatabaseContext dbctx)
@@ -158,6 +178,7 @@ namespace SilverBotDS
                                     case PlannedEventType.Reminder:
                                         await Program.RunningTasksOfSecondRowAdd(Guid.NewGuid(), new(Task.Run(() => RunReminderEvent(evnt, dbctx), cts.Token), cts));
                                         break;
+
                                     default:
                                         throw new ArgumentOutOfRangeException(nameof(evnt.Type));
                                 }

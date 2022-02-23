@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 
 #nullable enable
 
@@ -22,11 +21,24 @@ public static class DiscordSinkExtensions
     {
         return loggerConfiguration.Sink(new DiscordSink(webhooks));
     }
+
+    public static LoggerConfiguration DiscordSink(
+       this LoggerSinkConfiguration loggerConfiguration, ulong id, string token)
+    {
+        return loggerConfiguration.Sink(new DiscordSink(id, token));
+    }
 }
 
 public class DiscordSink : ILogEventSink
 {
     private readonly DiscordWebhookClient _webhookClient;
+
+    public DiscordSink(ulong id, string token)
+    {
+        _webhookClient = new DiscordWebhookClient();
+        _webhookClient.AddWebhookAsync(id, token).Wait();
+    }
+
     public DiscordSink(params Tuple<ulong, string>[] webhooks)
     {
         _webhookClient = new DiscordWebhookClient();
@@ -35,6 +47,7 @@ public class DiscordSink : ILogEventSink
             _webhookClient.AddWebhookAsync(webhook.Item1, webhook.Item2).Wait();
         }
     }
+
     private readonly Dictionary<LogEventLevel, Tuple<string, DiscordColor?>> k = new()
     {
         { LogEventLevel.Verbose, new("[VER]", DiscordColor.DarkGray) },
@@ -44,7 +57,9 @@ public class DiscordSink : ILogEventSink
         { LogEventLevel.Error, new("[ERR]", DiscordColor.DarkRed) },
         { LogEventLevel.Fatal, new("[FTL]", DiscordColor.Red) }
     };
+
     private readonly Regex VBUErr = new(@"^Error `(P<error>.+?)` encountered.\nGuild `(P<guild_id>\d+|None)`, channel `(P<channel_id>\d+|None)`, user `(P<user_id>\d+|None)`\n```\n(P<command_invoke>.+?)\n```$", RegexOptions.Multiline | RegexOptions.Compiled);
+
     public void Emit(LogEvent logEvent)
     {
         var builder = new DiscordEmbedBuilder();

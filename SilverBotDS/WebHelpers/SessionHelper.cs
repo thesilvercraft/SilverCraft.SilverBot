@@ -35,7 +35,7 @@ public static class SessionHelper
 
             Debug.WriteLine(DateTime.UtcNow - item2);
         }
-
+        //TODO: MIGRATE TO V9
         using var requestMessage =
             new HttpRequestMessage(HttpMethod.Get, "https://discordapp.com/api/v8/users/@me/guilds");
         requestMessage.Headers.Authorization =

@@ -78,7 +78,6 @@ public class Config
         { "SilverBotDS.AnimeModule.dll", "SilverBotDS.Anime.Anime" }
     };
 
-
     [XmlDescription("The Giphy token, can be got from https://developers.giphy.com/")]
     public string Gtoken { get; set; } = "Giphy_Token_Here";
 
@@ -140,6 +139,12 @@ public class Config
         "Allow silverbot to download and start Lavalink, if you disable this your responsible for launching lavalink")]
     public bool AutoDownloadAndStartLavalink { get; set; } = true;
 
+    [XmlDescription(
+       "If AutoDownloadAndStartLavalink is set to true then you have to set this and LavalinkBuildsSourceGitHubRepo to a valid github repo with releases that contain jar files, Some examples are the official repo that is freyacodes/Lavalink (Official source) or Cog-Creators/Lavalink-Jars (Contains native libraries for ARM and some other platforms not nativly supported by lavalink officially)")]
+    public string LavalinkBuildsSourceGitHubUser { get; set; } = "freyacodes";
+
+    public string LavalinkBuildsSourceGitHubRepo { get; set; } = "Lavalink";
+
     [XmlDescription("The Lavalink Node restful HTTP api URI.")]
     public string LavalinkRestUri { get; set; } = "http://localhost:2333/";
 
@@ -151,7 +156,6 @@ public class Config
 
     [XmlDescription("Friday text channel. leave 0 to disable")]
     public ulong FridayTextChannel { get; set; }
-
 
     [XmlDescription(
         "What kind of database to use, 1 for postgresql (https://cdn.discordapp.com/attachments/636085718002958336/841264673868873769/postgres.png), 2 for sqllite (easier if you are unable to host postgresql)), 3 for azuredb")]

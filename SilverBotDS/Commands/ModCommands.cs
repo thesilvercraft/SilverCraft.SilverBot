@@ -109,7 +109,7 @@ public class ModCommands : BaseCommandModule
     [Aliases("clean", "clear")]
     [Description("Downloads and removes X messages from the current channel.")]
     [RequirePermissions(Permissions.ManageMessages)]
-    public async Task Ban(CommandContext ctx, [Description("number of messages")] int amount)
+    public async Task Purge(CommandContext ctx, [Description("number of messages")] int amount)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         if (amount is < 0 or 0)

@@ -32,9 +32,19 @@ internal static class VersionInfo
                 log.Information(
                     "You are running {VNumber} which DOES NOT HAVE the same Sha as the newest commit on master ({Sha1} | {Sha2})",
                     VNumber, info.Sha, ThisAssembly.Git.Sha);
-                var gamer = File.Exists("autoupdater.sh") ? "autoupdater.sh" :
-                    File.Exists("autoupdater.cmd") ? "autoupdater.cmd" :
-                    File.Exists("autoupdater.bat") ? "autoupdater.bat" : string.Empty;
+                string gamer = string.Empty;
+                if (File.Exists("autoupdater.sh"))
+                {
+                    gamer = "autoupdater.sh";
+                }
+                else if (File.Exists("autoupdater.cmd"))
+                {
+                    gamer = "autoupdater.cmd";
+                }
+                else if (File.Exists("autoupdater.bat"))
+                {
+                    gamer = "autoupdater.bat";
+                }
                 if (!string.IsNullOrEmpty(gamer))
                 {
                     var rls = await Release.GetLatestFromRepoAsync(repo, client);

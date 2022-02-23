@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Entities;
+using Microsoft.Extensions.Logging;
 using SilverBotDS.PixelsArchiver.Objects;
 using SilverBotDS.Utils;
 using System.IO.Compression;
@@ -13,10 +14,11 @@ namespace SilverBotDS.PixelsArchiver
         private Timer? timer;
         private DiscordWebhookClient? webhookClient;
         public HttpClient? Client { set; private get; }
-        
+        public ILogger<PixelArchiverService>? Log { set; private get; }
+
         public async Task Start()
         {
-            PixelsArchiverConfig config = await PixelsArchiverConfig.GetAsync();
+            PixelsArchiverConfig? config = await PixelsArchiverConfig.GetAsync();
             if (config is null)
             {
                 await Stop();
@@ -36,23 +38,44 @@ namespace SilverBotDS.PixelsArchiver
 
         private async void Tick(object? gaming)
         {
-            
+            if (gaming is null)
+            {
+                await Stop();
+                return;
+            }
+
             Dictionary<string, Stream> strm = new();
             foreach (var urls in ((PixelsArchiverConfig)gaming).ApisToArchivePicturesFrom)
-            {   
+            {
+                HttpResponseMessage? response = null;
                 try
                 {
                     using var request = new HttpRequestMessage(HttpMethod.Get, urls.Key);
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", urls.Value);
-                    var response = await Client.SendAsync(request);
-                    if (response.IsSuccessStatusCode)
+                    if (Client != null)
                     {
-                        var stuffineed = JsonSerializer.Deserialize<Rootobject>(await response.Content.ReadAsStringAsync());
-                        strm.Add(new Uri(urls.Key).DnsSafeHost + RandomGenerator.RandomAbcString(6) + ".png", new MemoryStream(Convert.FromBase64String(stuffineed.DataURL[22..])));
+                        response = await Client.SendAsync(request) ?? null;
+                        if (response != null && response.IsSuccessStatusCode)
+                        {
+                            var stuffineed = JsonSerializer.Deserialize<Rootobject>(await response.Content.ReadAsStringAsync());
+                            strm.Add(new Uri(urls.Key).DnsSafeHost + RandomGenerator.RandomAbcString(6) + ".png", new MemoryStream(Convert.FromBase64String(stuffineed!.DataURL[22..])));
+                        }
+                    }
+                    else
+                    {
+                        throw new NullReferenceException("The client supplied was null");
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
+                    if (Log != null)
+                    {
+                        Log.LogError(new EventId(((int?)response?.StatusCode) ?? 696, "PixelsArchiverError"), e, "The service PixelsArchiverService encountered an error in its loop");
+                    }
+                    else
+                    {
+                        Console.WriteLine("[Error] The service PixelsArchiverService encountered an error in its loop \n" + e.Message);
+                    }
                     //the api's can get a bit quirky at night
                 }
             }
@@ -74,7 +97,21 @@ namespace SilverBotDS.PixelsArchiver
                 dwb.AddFile(file.Key, file.Value);
             }
             zipFile.Position = 0;
-            await webhookClient.BroadcastMessageAsync(dwb);
+            if (webhookClient != null)
+            {
+                await webhookClient.BroadcastMessageAsync(dwb);
+            }
+            else
+            {
+                if (Log != null)
+                {
+                    Log.LogWarning("The webhook client was null");
+                }
+                else
+                {
+                    Console.WriteLine("[WARNING] The webhook client and the logger were null");
+                }
+            }
             if (((PixelsArchiverConfig)gaming).SaveZip)
             {
                 Directory.CreateDirectory("PixelsArchive/" + DateTime.Now.ToString("yyyy/MM/ddd/HH/mm/ss/"));
@@ -91,7 +128,7 @@ namespace SilverBotDS.PixelsArchiver
 
         public Task Stop()
         {
-            timer.Dispose();
+            timer?.Dispose();
             webhookClient = null;
             return Task.CompletedTask;
         }

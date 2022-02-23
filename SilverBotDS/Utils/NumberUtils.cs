@@ -13,7 +13,6 @@ public static class NumberUtils
         "Qi" // Quintillion
     };
 
-
     public static string FormatSize(this long bytes)
     {
         var counter = 0;

@@ -12,13 +12,17 @@ public class BrowserConfig : Controller
 {
     public browserconfig Index()
     {
-        var obj = new browserconfig();
-        obj.msapplication = new browserconfigMsapplication();
-        obj.msapplication.tile = new browserconfigMsapplicationTile();
-        obj.msapplication.tile.square70x70logo = new browserconfigMsapplicationTileSquare70x70logo();
-        obj.msapplication.tile.square150x150logo = new browserconfigMsapplicationTileSquare150x150logo();
-        obj.msapplication.tile.square310x310logo = new browserconfigMsapplicationTileSquare310x310logo();
-        obj.msapplication.tile.wide310x150logo = new browserconfigMsapplicationTileWide310x150logo();
+        var obj = new browserconfig
+        {
+            msapplication = new browserconfigMsapplication()
+        };
+        obj.msapplication.tile = new browserconfigMsapplicationTile
+        {
+            square70x70logo = new browserconfigMsapplicationTileSquare70x70logo(),
+            square150x150logo = new browserconfigMsapplicationTileSquare150x150logo(),
+            square310x310logo = new browserconfigMsapplicationTileSquare310x310logo(),
+            wide310x150logo = new browserconfigMsapplicationTileWide310x150logo()
+        };
         if (DateTime.UtcNow.Month == 6)
         {
             obj.msapplication.tile.square70x70logo.src = "/pride/mstile-70x70.png?v=69";

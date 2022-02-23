@@ -40,10 +40,12 @@ public class PlannedEvent
     ///     The id of the first response from the bot, optional.
     /// </summary>
     public ulong? ResponseMessageID { get; set; }
+
     /// <summary>
     /// A short string represting data related to this event
     /// </summary>
     public string Data { get; set; }
+
     /// <summary>
     ///     A boolean that keeps track if something is finished, this should be set to true the millisecond something has been
     ///     finished and this class should be DELETED from the database.

@@ -26,17 +26,22 @@ jobs:
       run: |
            [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") 
            [System.IO.Compression.ZipFile]::CreateFromDirectory('SilverBotDS\bin\Release\net6.0\publish', 'silverbot.zip', 'Optimal', $false) 
+    - name: Shorten the SHA
+      id: shas
+      shell: powershell
+      run:  echo "::set-output name=sha_short::$(git rev-parse --short=10 {{ github.sha }})"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-         tag_name: ${{${GITHUB_SHA::10}}}
-         release_name:  ${{${GITHUB_SHA::10}}}
+         tag_name: ${{ steps.shas.outputs.sha_short }}
+         release_name:  ${{ steps.shas.outputs.sha_short }}
          body: Automated release, a release will be created for every single push on the master branch. this one is for ${{ github.sha }}, As always zipped releases should contain most things the program needs to run and that means it has to contains the license info of every dependency contained within it
          draft: true
          prerelease: false
+
     - name: Upload Release Asset
       id: upload-release-asset
       uses: actions/upload-release-asset@v1

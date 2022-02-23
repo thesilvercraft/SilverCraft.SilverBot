@@ -442,7 +442,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         }
         else
         {
-            await SendImageStream(ctx, outStream, "sbfail.gif", "there", lang);
+            await SendImageStream(ctx, outStream, "sbseal.gif", "there", lang);
         }
     }
 

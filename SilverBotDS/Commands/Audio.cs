@@ -211,7 +211,7 @@ public class Audio : BaseCommandModule
                 var artworkUri = await ArtworkService.ResolveAsync(song.Song);
                 await SendNowPlayingMessage(ctx,
                     string.Format(lang.NowPlaying, song.Song.Title + lang.SongByAuthor + song.Song.Author),
-                    url: song.Song.Source, imageurl: artworkUri.ToString(), language: lang);
+                    url: song.Song.Source, imageurl: artworkUri?.ToString(), language: lang);
             }
             else
             {
@@ -721,7 +721,7 @@ public class Audio : BaseCommandModule
         var trackafter = player.CurrentTrack;
         await SendSimpleMessage(ctx,
             string.Format(lang.SkippedNP, trackbefore.Title, trackafter == null ? lang.QueueNothing : trackafter?.Title),
-            language: lang, image: (trackafter == null ? null : (await ArtworkService.ResolveAsync(trackafter)).ToString()));
+            language: lang, image: (trackafter == null ? null : (await ArtworkService.ResolveAsync(trackafter))?.ToString()));
     }
 
     [Command("voteskip")]
@@ -761,7 +761,7 @@ public class Audio : BaseCommandModule
         {
             await SendSimpleMessage(ctx,
                 string.Format(lang.SkippedNP, trackbefore.Title,
-                    player.CurrentTrack == null ? lang.QueueNothing : player.CurrentTrack.Title), image: (await ArtworkService.ResolveAsync(player.CurrentTrack)).ToString(), language: lang);
+                    player.CurrentTrack == null ? lang.QueueNothing : player.CurrentTrack.Title), image: (await ArtworkService.ResolveAsync(player.CurrentTrack))?.ToString(), language: lang);
         }
         else if (thing.WasAdded)
         {

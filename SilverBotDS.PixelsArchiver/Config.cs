@@ -75,10 +75,10 @@ public class PixelsArchiverConfig
             Console.WriteLine($"{ConfigLocation} should exist in the CWD, edit it, save it and restart silverbot OR reenable PixelsArchiver");
             return null;
         }
-        PixelsArchiverConfig cnf = null;
+        PixelsArchiverConfig? cnf = null;
         using (var fs = new StreamReader(ConfigLocation))
         {
-            cnf = (PixelsArchiverConfig)serializer.Deserialize(fs);
+            cnf = (PixelsArchiverConfig?)serializer.Deserialize(fs);
             if (cnf is { ConfigVer: not CurrentConfVer })
             {
                 fs.Dispose();

@@ -56,7 +56,7 @@ namespace SilverBotDS
                             break;
 
                         default:
-                            throw new ArgumentOutOfRangeException();
+                            throw new ArgumentOutOfRangeException("rrrm.Mode");
                     }
                 }
             }
@@ -94,7 +94,7 @@ namespace SilverBotDS
                             break;
 
                         default:
-                            throw new ArgumentOutOfRangeException();
+                            throw new ArgumentOutOfRangeException("rrrm.Mode");
                     }
                 }
             }

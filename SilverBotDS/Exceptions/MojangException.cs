@@ -13,4 +13,8 @@ public class MojangException : Exception
         : base($"Mojang returned an error: {error} {errormessage}")
     {
     }
+
+    public MojangException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+    {
+    }
 }

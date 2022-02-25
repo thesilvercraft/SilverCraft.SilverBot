@@ -207,7 +207,7 @@ public class OwnerOnly : SilverBotCommandModule
     {
         "System", "System.Collections.Generic", "System.Diagnostics", "System.IO", "System.IO.Compression",
         "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "System.Linq", "Humanizer",
-        "TimeSpanParserUtil", "Xabe.FFmpeg", "ScottPlot"
+        "System.Globalization", "System.Globalization.Calendars","System.Text.Json","Serilog",
     };
 
     public static string RemoveCodeBraces(string str)

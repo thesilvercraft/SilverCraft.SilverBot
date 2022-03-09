@@ -47,6 +47,8 @@ public class Webshot : BaseCommandModule
 
         var e = Database.GetServerSettings(ctx.Guild.Id);
         e.WebShot = toggle;
+        Database.serverSettings.Update(e);
+        await Database.SaveChangesAsync();
         var b = new DiscordEmbedBuilder();
         b.WithTitle(toggle ? lang.OptedInWebshot : lang.OptedOutWebshot)
             .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));

@@ -7,7 +7,6 @@
 @inject DiscordClient _discord
 <body>
 <h2>Wasting time in @_discord.Guilds.Count servers</h2>
-<h2>with @_discord.Guilds.Values.SelectMany(x => x.Members.Values.Select(y => y.Id)).Distinct().Count() people and stuff</h2>
 <h2>I have been up for @((DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()).Humanize())</h2>
 <h2>With @_discord.ShardCount @(_discord.ShardCount == 1 ? "shard" : "shards") and @(Process.GetCurrentProcess().Threads.Count) cpu @(Process.GetCurrentProcess().Threads.Count == 1 ? "thread" : "threads")</h2>
 </body>

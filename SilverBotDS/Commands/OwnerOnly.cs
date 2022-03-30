@@ -157,7 +157,7 @@ public class OwnerOnly : SilverBotCommandModule
             }
         };
         var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders,
-            $"Added by SilverBot as requested by {ctx.User.Username}");
+            reason: $"Added by SilverBot as requested by {ctx.User.Username}");
         var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category,
             reason: $"Added by SilverBot as requested by {ctx.User.Username}");
         _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category,
@@ -195,7 +195,7 @@ public class OwnerOnly : SilverBotCommandModule
             }
         };
         var category = await ctx.Guild.CreateChannelCategoryAsync(name, builders,
-            $"Added by SilverBot as requested by {ctx.User.Username}");
+            reason: $"Added by SilverBot as requested by {ctx.User.Username}");
         var channel = await ctx.Guild.CreateChannelAsync(name, ChannelType.Text, category,
             reason: $"Added by SilverBot as requested by {ctx.User.Username}");
         _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category,

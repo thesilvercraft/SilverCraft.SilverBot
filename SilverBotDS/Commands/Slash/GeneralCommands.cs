@@ -27,7 +27,6 @@ public class GeneralCommands : ApplicationCommandModule
     public async Task WhoIsTask(BaseContext ctx, DiscordUser user)
     {
         var lang = await Language.GetLanguageFromGuildIdAsync(ctx.Guild.Id, Dbctx);
-        var cultureinfo = lang.GetCultureInfo();
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
                 .WithTitle(lang.User + user.Username)
@@ -39,10 +38,10 @@ public class GeneralCommands : ApplicationCommandModule
                 .AddField(lang.IsAnOwner,
                     StringUtils.BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(user)), true)
                 .AddField(lang.IsABot, StringUtils.BoolToEmoteString(user.IsBot), true)
-                .AddField(lang.AccountCreationDate, user.CreationTimestamp.ToString(cultureinfo), true)
+                .AddField(lang.AccountCreationDate, user.CreationTimestamp.UtcDateTime.DateTimeToTimeStamp(TimestampFormat.LongDateTime), true)
                 .AddField(lang.AccountJoinDate,
                     ctx.Guild?.Members.ContainsKey(user.Id) == true
-                        ? ctx.Guild?.Members[user.Id].JoinedAt.ToString(cultureinfo)
+                        ? ctx.Guild?.Members[user.Id].JoinedAt.UtcDateTime.DateTimeToTimeStamp(TimestampFormat.LongDateTime)
                         : "NA", true)
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .WithThumbnail(user.GetAvatarUrl(ImageFormat.Png))

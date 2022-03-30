@@ -92,7 +92,7 @@ public sealed class Genericcommands : BaseCommandModule
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         await new DiscordMessageBuilder()
             .WithReply(ctx.Message.Id)
-            .WithContent(string.Format(lang.TimeInUtc, DateTime.UtcNow.ToString(lang.GetCultureInfo())))
+            .WithContent(string.Format(lang.TimeInUtc, DateTime.UtcNow.DateTimeToTimeStamp(TimestampFormat.LongDateTime)))
             .SendAsync(ctx.Channel);
     }
 
@@ -206,7 +206,6 @@ public sealed class Genericcommands : BaseCommandModule
     public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        var cultureinfo = lang.GetCultureInfo();
         await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
             .WithTitle(lang.User + a.Username)
             .WithDescription(lang.InformationAbout + a.Mention)
@@ -215,10 +214,10 @@ public sealed class Genericcommands : BaseCommandModule
                 true)
             .AddField(lang.IsAnOwner, BoolToEmoteString(ctx.Client.CurrentApplication.Owners.Contains(a)), true)
             .AddField(lang.IsABot, BoolToEmoteString(a.IsBot), true)
-            .AddField(lang.AccountCreationDate, a.CreationTimestamp.ToString(cultureinfo), true)
+            .AddField(lang.AccountCreationDate, a.CreationTimestamp.UtcDateTime.DateTimeToTimeStamp(TimestampFormat.LongDateTime), true)
             .AddField(lang.AccountJoinDate,
                 ctx.Guild?.Members.ContainsKey(a.Id) == true
-                    ? ctx.Guild?.Members[a.Id].JoinedAt.ToString(cultureinfo)
+                    ? ctx.Guild?.Members[a.Id].JoinedAt.UtcDateTime.DateTimeToTimeStamp(TimestampFormat.LongDateTime)
                     : "NA", true)
             .WithColor(await ColorUtils.GetSingleAsync())
             .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))

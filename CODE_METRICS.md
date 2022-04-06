@@ -456,9 +456,9 @@ The `SilverBotDS.PixelsArchiver` namespace contains 2 named types.
 The *SilverBotDS.csproj* project file contains:
 
 - 18 namespaces.
-- 168 named types.
-- 24,826 total lines of source code.
-- Approximately 8,715 lines of executable code.
+- 169 named types.
+- 24,846 total lines of source code.
+- Approximately 8,720 lines of executable code.
 - The highest cyclomatic complexity is 110 :exploding_head:.
 
 <details>
@@ -1162,8 +1162,8 @@ The `SilverBotDS.Objects.Database.Classes` namespace contains 6 named types.
 The `SilverBotDS.Commands` namespace contains 26 named types.
 
 - 26 named types.
-- 4,417 total lines of source code.
-- Approximately 1,872 lines of executable code.
+- 4,416 total lines of source code.
+- Approximately 1,871 lines of executable code.
 - The highest cyclomatic complexity is 33 :exploding_head:.
 
 <details>
@@ -1511,8 +1511,8 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 <br>
 
 - The `Genericcommands` contains 16 members.
-- 216 total lines of source code.
-- Approximately 70 lines of executable code.
+- 215 total lines of source code.
+- Approximately 69 lines of executable code.
 - The highest cyclomatic complexity is 4 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
@@ -1530,9 +1530,9 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 | Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L193' title='Task Genericcommands.Monke(CommandContext ctx)'>193</a> | 76 | 1 :heavy_check_mark: | 0 | 7 | 7 / 4 |
 | Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L112' title='Task Genericcommands.Ping(CommandContext ctx)'>112</a> | 88 | 1 :heavy_check_mark: | 0 | 5 | 6 / 2 |
 | Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L166' title='Task Genericcommands.SimpleImageMeme(CommandContext ctx, string imageurl, string title = null, string content = null, Language language = null)'>166</a> | 60 | 3 :heavy_check_mark: | 0 | 9 | 23 / 11 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L90' title='Task Genericcommands.Time(CommandContext ctx)'>90</a> | 76 | 1 :heavy_check_mark: | 0 | 8 | 10 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L206' title='Task Genericcommands.Userinfo(CommandContext ctx, DiscordUser a)'>206</a> | 68 | 4 :heavy_check_mark: | 0 | 13 | 25 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L231' title='Task Genericcommands.Userinfo(CommandContext ctx)'>231</a> | 83 | 1 :heavy_check_mark: | 0 | 5 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L90' title='Task Genericcommands.Time(CommandContext ctx)'>90</a> | 77 | 1 :heavy_check_mark: | 0 | 8 | 10 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L206' title='Task Genericcommands.Userinfo(CommandContext ctx, DiscordUser a)'>206</a> | 70 | 4 :heavy_check_mark: | 0 | 13 | 24 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L230' title='Task Genericcommands.Userinfo(CommandContext ctx)'>230</a> | 83 | 1 :heavy_check_mark: | 0 | 5 | 6 / 3 |
 
 <a href="#Genericcommands-class-diagram">:link: to `Genericcommands` class diagram</a>
 
@@ -4427,8 +4427,8 @@ The `SilverBotDS` namespace contains 14 named types.
 The `SilverBotDS.Commands.Slash` namespace contains 2 named types.
 
 - 2 named types.
-- 122 total lines of source code.
-- Approximately 25 lines of executable code.
+- 121 total lines of source code.
+- Approximately 24 lines of executable code.
 - The highest cyclomatic complexity is 4 :heavy_check_mark:.
 
 <details>
@@ -4440,21 +4440,21 @@ The `SilverBotDS.Commands.Slash` namespace contains 2 named types.
 <br>
 
 - The `GeneralCommands` contains 9 members.
-- 96 total lines of source code.
-- Approximately 18 lines of executable code.
+- 95 total lines of source code.
+- Approximately 17 lines of executable code.
 - The highest cyclomatic complexity is 4 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L18' title='Config GeneralCommands.Cnf'>18</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L17' title='DatabaseContext GeneralCommands.Dbctx'>17</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L87' title='Task GeneralCommands.DuktHostingCommand(InteractionContext ctx)'>87</a> | 78 | 1 :heavy_check_mark: | 0 | 10 | 13 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L101' title='Task GeneralCommands.DumpCommand(ContextMenuContext ctx)'>101</a> | 80 | 1 :heavy_check_mark: | 0 | 6 | 10 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L86' title='Task GeneralCommands.DuktHostingCommand(InteractionContext ctx)'>86</a> | 78 | 1 :heavy_check_mark: | 0 | 10 | 13 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L100' title='Task GeneralCommands.DumpCommand(ContextMenuContext ctx)'>100</a> | 80 | 1 :heavy_check_mark: | 0 | 6 | 10 / 3 |
 | Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L21' title='Task GeneralCommands.TestCommand(InteractionContext ctx)'>21</a> | 86 | 1 :heavy_check_mark: | 0 | 5 | 6 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L60' title='Task GeneralCommands.UserMenu(ContextMenuContext ctx)'>60</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L66' title='Task GeneralCommands.VersionInfoCommand(InteractionContext ctx)'>66</a> | 76 | 1 :heavy_check_mark: | 0 | 11 | 20 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L54' title='Task GeneralCommands.WhoIsCommand(InteractionContext ctx, DiscordUser user)'>54</a> | 86 | 1 :heavy_check_mark: | 0 | 5 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L27' title='Task GeneralCommands.WhoIsTask(BaseContext ctx, DiscordUser user)'>27</a> | 73 | 4 :heavy_check_mark: | 0 | 12 | 25 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L59' title='Task GeneralCommands.UserMenu(ContextMenuContext ctx)'>59</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L65' title='Task GeneralCommands.VersionInfoCommand(InteractionContext ctx)'>65</a> | 76 | 1 :heavy_check_mark: | 0 | 11 | 20 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L53' title='Task GeneralCommands.WhoIsCommand(InteractionContext ctx, DiscordUser user)'>53</a> | 86 | 1 :heavy_check_mark: | 0 | 5 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L27' title='Task GeneralCommands.WhoIsTask(BaseContext ctx, DiscordUser user)'>27</a> | 77 | 4 :heavy_check_mark: | 0 | 12 | 24 / 2 |
 
 <a href="#GeneralCommands-class-diagram">:link: to `GeneralCommands` class diagram</a>
 
@@ -4496,11 +4496,11 @@ The `SilverBotDS.Commands.Slash` namespace contains 2 named types.
 </summary>
 <br>
 
-The `SilverBotDS.Utils` namespace contains 41 named types.
+The `SilverBotDS.Utils` namespace contains 42 named types.
 
-- 41 named types.
-- 1,307 total lines of source code.
-- Approximately 600 lines of executable code.
+- 42 named types.
+- 1,329 total lines of source code.
+- Approximately 607 lines of executable code.
 - The highest cyclomatic complexity is 6 :heavy_check_mark:.
 
 <details>
@@ -4843,6 +4843,30 @@ The `SilverBotDS.Utils` namespace contains 41 named types.
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Utils/NuGetUtils.cs#L38' title='string Context.Vocab'>38</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
 
 <a href="#NuGetUtils.Context-class-diagram">:link: to `NuGetUtils.Context` class diagram</a>
+
+<a href="#silverbotds-utils">:top: back to SilverBotDS.Utils</a>
+
+</details>
+
+<details>
+<summary>
+  <strong id="datetimeutils">
+    DateTimeUtils :heavy_check_mark:
+  </strong>
+</summary>
+<br>
+
+- The `DateTimeUtils` contains 2 members.
+- 19 total lines of source code.
+- Approximately 7 lines of executable code.
+- The highest cyclomatic complexity is 2 :heavy_check_mark:.
+
+| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Utils/DateTimeUtils.cs#L8' title='string DateTimeUtils.DateTimeToTimeStamp(DateTime? dt, TimestampFormat tf = null, string def = "NA")'>8</a> | 71 | 2 :heavy_check_mark: | 0 | 4 | 11 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Utils/DateTimeUtils.cs#L20' title='string DateTimeUtils.DateTimeToTimeStamp(DateTime dt, TimestampFormat tf = null)'>20</a> | 86 | 1 :heavy_check_mark: | 0 | 3 | 4 / 2 |
+
+<a href="#DateTimeUtils-class-diagram">:link: to `DateTimeUtils` class diagram</a>
 
 <a href="#silverbotds-utils">:top: back to SilverBotDS.Utils</a>
 
@@ -8502,6 +8526,19 @@ classDiagram
 class Context{
     +string Vocab
     +string Base
+}
+
+```
+
+<div id="DateTimeUtils-class-diagram"></div>
+
+##### `DateTimeUtils` class diagram
+
+```mermaid
+classDiagram
+class DateTimeUtils{
+    +DateTimeToTimeStamp(DateTime? dt, TimestampFormat tf = null, string def = "NA")$ string
+    +DateTimeToTimeStamp(DateTime dt, TimestampFormat tf = null)$ string
 }
 
 ```

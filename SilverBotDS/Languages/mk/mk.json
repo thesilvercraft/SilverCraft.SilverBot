@@ -202,5 +202,9 @@
   "GiveawayResultsNoReactions": "Никој не реагираше на време",
   "GiveawayItemNull": "Предметот неможе да е ништо",
   "GiveawayResultsWon": "{0} освој {1}",
-  "QueueNothing": "Ништо"
+  "QueueNothing": "Ништо",
+  "CancelReminderErrorNoEvent": "The event was nout found",
+  "CancelReminderErrorMultiple": "Internal error, try again later",
+  "CancelReminderErrorAlreadyHandled": "You can not cancel a reminder that has already passed",
+  "CancelReminderSuccess": "Deleted the reminder"
 }

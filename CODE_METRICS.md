@@ -456,9 +456,9 @@ The `SilverBotDS.PixelsArchiver` namespace contains 2 named types.
 The *SilverBotDS.csproj* project file contains:
 
 - 18 namespaces.
-- 169 named types.
-- 24,846 total lines of source code.
-- Approximately 8,720 lines of executable code.
+- 170 named types.
+- 26,547 total lines of source code.
+- Approximately 9,300 lines of executable code.
 - The highest cyclomatic complexity is 110 :exploding_head:.
 
 <details>
@@ -1162,8 +1162,8 @@ The `SilverBotDS.Objects.Database.Classes` namespace contains 6 named types.
 The `SilverBotDS.Commands` namespace contains 26 named types.
 
 - 26 named types.
-- 4,416 total lines of source code.
-- Approximately 1,871 lines of executable code.
+- 4,512 total lines of source code.
+- Approximately 1,926 lines of executable code.
 - The highest cyclomatic complexity is 33 :exploding_head:.
 
 <details>
@@ -1813,16 +1813,19 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 </summary>
 <br>
 
-- The `ReminderCommands` contains 3 members.
-- 66 total lines of source code.
-- Approximately 29 lines of executable code.
-- The highest cyclomatic complexity is 6 :heavy_check_mark:.
+- The `ReminderCommands` contains 6 members.
+- 163 total lines of source code.
+- Approximately 84 lines of executable code.
+- The highest cyclomatic complexity is 7 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L22' title='DatabaseContext ReminderCommands.DbCtx'>22</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L57' title='Task ReminderCommands.ListReminders(CommandContext ctx)'>57</a> | 56 | 6 :heavy_check_mark: | 0 | 14 | 27 / 15 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L26' title='Task ReminderCommands.RemindCommand(CommandContext ctx, TimeSpan duration, string item)'>26</a> | 60 | 2 :heavy_check_mark: | 0 | 16 | 30 / 10 |
+| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L23' title='DatabaseContext ReminderCommands.DbCtx'>23</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L115' title='Task ReminderCommands.DeleteReminder(CommandContext ctx, string id)'>115</a> | 56 | 7 :heavy_check_mark: | 0 | 12 | 31 / 16 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L148' title='Task ReminderCommands.DeleteReminderF(CommandContext ctx, string id)'>148</a> | 54 | 7 :heavy_check_mark: | 0 | 13 | 34 / 19 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L58' title='Task ReminderCommands.ListReminders(CommandContext ctx)'>58</a> | 56 | 6 :heavy_check_mark: | 0 | 14 | 27 / 15 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L87' title='Task ReminderCommands.ListRemindersG(CommandContext ctx)'>87</a> | 54 | 6 :heavy_check_mark: | 0 | 15 | 28 / 18 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L27' title='Task ReminderCommands.RemindCommand(CommandContext ctx, TimeSpan duration, string item)'>27</a> | 60 | 2 :heavy_check_mark: | 0 | 16 | 30 / 10 |
 
 <a href="#ReminderCommands-class-diagram">:link: to `ReminderCommands` class diagram</a>
 
@@ -2755,11 +2758,11 @@ The `SilverBotDS.Commands.Gamering` namespace contains 3 named types.
 </summary>
 <br>
 
-The `SilverBotDS.Migrations` namespace contains 17 named types.
+The `SilverBotDS.Migrations` namespace contains 18 named types.
 
-- 17 named types.
-- 13,245 total lines of source code.
-- Approximately 4,178 lines of executable code.
+- 18 named types.
+- 14,845 total lines of source code.
+- Approximately 4,699 lines of executable code.
 - The highest cyclomatic complexity is 1 :heavy_check_mark:.
 
 <details>
@@ -3046,13 +3049,13 @@ The `SilverBotDS.Migrations` namespace contains 17 named types.
 <br>
 
 - The `DatabaseContextModelSnapshot` contains 1 members.
-- 1,436 total lines of source code.
-- Approximately 483 lines of executable code.
+- 1,463 total lines of source code.
+- Approximately 492 lines of executable code.
 - The highest cyclomatic complexity is 1 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Migrations/DatabaseContextModelSnapshot.cs#L15' title='void DatabaseContextModelSnapshot.BuildModel(ModelBuilder modelBuilder)'>15</a> | 13 | 1 :heavy_check_mark: | 0 | 2 | 1,432 / 481 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Migrations/DatabaseContextModelSnapshot.cs#L15' title='void DatabaseContextModelSnapshot.BuildModel(ModelBuilder modelBuilder)'>15</a> | 13 | 1 :heavy_check_mark: | 0 | 2 | 1,459 / 490 |
 
 <a href="#DatabaseContextModelSnapshot-class-diagram">:link: to `DatabaseContextModelSnapshot` class diagram</a>
 
@@ -3105,6 +3108,31 @@ The `SilverBotDS.Migrations` namespace contains 17 named types.
 | Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Migrations/20210512081422_InitialCreate.cs#L7' title='void InitialCreate.Up(MigrationBuilder migrationBuilder)'>7</a> | 55 | 1 :heavy_check_mark: | 0 | 2 | 56 / 15 |
 
 <a href="#InitialCreate-class-diagram">:link: to `InitialCreate` class diagram</a>
+
+<a href="#silverbotds-migrations">:top: back to SilverBotDS.Migrations</a>
+
+</details>
+
+<details>
+<summary>
+  <strong id="reminders">
+    Reminders :heavy_check_mark:
+  </strong>
+</summary>
+<br>
+
+- The `Reminders` contains 3 members.
+- 1,563 total lines of source code.
+- Approximately 512 lines of executable code.
+- The highest cyclomatic complexity is 1 :heavy_check_mark:.
+
+| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Migrations/20220406204231_Reminders.Designer.cs#L17' title='void Reminders.BuildTargetModel(ModelBuilder modelBuilder)'>17</a> | 13 | 1 :heavy_check_mark: | 0 | 2 | 1,459 / 490 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Migrations/20220406204231_Reminders.cs#L67' title='void Reminders.Down(MigrationBuilder migrationBuilder)'>67</a> | 65 | 1 :heavy_check_mark: | 0 | 2 | 38 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Migrations/20220406204231_Reminders.cs#L9' title='void Reminders.Up(MigrationBuilder migrationBuilder)'>9</a> | 63 | 1 :heavy_check_mark: | 0 | 2 | 57 / 9 |
+
+<a href="#Reminders-class-diagram">:link: to `Reminders` class diagram</a>
 
 <a href="#silverbotds-migrations">:top: back to SilverBotDS.Migrations</a>
 
@@ -3198,8 +3226,8 @@ The `SilverBotDS.Migrations` namespace contains 17 named types.
 The `SilverBotDS.Objects` namespace contains 14 named types.
 
 - 14 named types.
-- 1,999 total lines of source code.
-- Approximately 725 lines of executable code.
+- 2,004 total lines of source code.
+- Approximately 729 lines of executable code.
 - The highest cyclomatic complexity is 11 :radioactive:.
 
 <details>
@@ -3401,9 +3429,9 @@ The `SilverBotDS.Objects` namespace contains 14 named types.
 </summary>
 <br>
 
-- The `Language` contains 216 members.
-- 731 total lines of source code.
-- Approximately 260 lines of executable code.
+- The `Language` contains 220 members.
+- 735 total lines of source code.
+- Approximately 264 lines of executable code.
 - The highest cyclomatic complexity is 6 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
@@ -3423,6 +3451,10 @@ The `SilverBotDS.Objects` namespace contains 14 named types.
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L301' title='string Language.BotHasLowerRole'>301</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L448' title='string Language.BotKickedUser'>448</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Field | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L21' title='Dictionary<string, Language> Language.CachedLanguages'>21</a> | 93 | 0 :heavy_check_mark: | 0 | 1 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L626' title='string Language.CancelReminderErrorAlreadyHandled'>626</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L625' title='string Language.CancelReminderErrorMultiple'>625</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L624' title='string Language.CancelReminderErrorNoEvent'>624</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L627' title='string Language.CancelReminderSuccess'>627</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L385' title='string Language.CanForceSkip'>385</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L564' title='string Language.CategorySetSuccess'>564</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L476' title='string Language.CheckFailed'>476</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
@@ -3444,12 +3476,12 @@ The `SilverBotDS.Objects` namespace contains 14 named types.
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L375' title='string Language.Enqueued'>375</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L592' title='string Language.FreeToPlayGameType'>592</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L491' title='string Language.GeneralException'>491</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L652' title='Task<Language> Language.GetAsync(string a)'>652</a> | 54 | 6 :heavy_check_mark: | 0 | 8 | 40 / 20 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L625' title='CultureInfo Language.GetCultureInfo()'>625</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L710' title='Task<Language> Language.GetLanguageFromCtxAsync(CommandContext ctx)'>710</a> | 63 | 6 :heavy_check_mark: | 0 | 8 | 19 / 9 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L730' title='Task<Language> Language.GetLanguageFromCtxAsync(BaseContext ctx)'>730</a> | 63 | 6 :heavy_check_mark: | 0 | 8 | 18 / 9 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L705' title='Task<Language> Language.GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)'>705</a> | 91 | 1 :heavy_check_mark: | 0 | 3 | 4 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L630' title='Dictionary<string, Language> Language.GetLoadedLanguages()'>630</a> | 76 | 2 :heavy_check_mark: | 0 | 3 | 10 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L656' title='Task<Language> Language.GetAsync(string a)'>656</a> | 54 | 6 :heavy_check_mark: | 0 | 8 | 40 / 20 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L629' title='CultureInfo Language.GetCultureInfo()'>629</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L714' title='Task<Language> Language.GetLanguageFromCtxAsync(CommandContext ctx)'>714</a> | 63 | 6 :heavy_check_mark: | 0 | 8 | 19 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L734' title='Task<Language> Language.GetLanguageFromCtxAsync(BaseContext ctx)'>734</a> | 63 | 6 :heavy_check_mark: | 0 | 8 | 18 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L709' title='Task<Language> Language.GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)'>709</a> | 91 | 1 :heavy_check_mark: | 0 | 3 | 4 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L634' title='Dictionary<string, Language> Language.GetLoadedLanguages()'>634</a> | 76 | 2 :heavy_check_mark: | 0 | 3 | 10 / 4 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L603' title='string Language.GitBranch'>603</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L602' title='string Language.GitCommitHash'>602</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L601' title='string Language.GitRepo'>601</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
@@ -3480,7 +3512,7 @@ The `SilverBotDS.Objects` namespace contains 14 named types.
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L611' title='string Language.ListReminderListMore'>611</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L609' title='string Language.ListReminderNone'>609</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L610' title='string Language.ListReminderStart'>610</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L641' title='string[] Language.LoadedLanguages()'>641</a> | 76 | 2 :heavy_check_mark: | 0 | 3 | 10 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L645' title='string[] Language.LoadedLanguages()'>645</a> | 76 | 2 :heavy_check_mark: | 0 | 3 | 10 / 4 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L440' title='string Language.LoadedSilverBotPlaylistWithTitle'>440</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L155' title='string Language.LoopingQueue'>155</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L150' title='string Language.LoopingSong'>150</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
@@ -3574,8 +3606,8 @@ The `SilverBotDS.Objects` namespace contains 14 named types.
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L412' title='string Language.SearchFail'>412</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L422' title='string Language.SearchFailDescription'>422</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L417' title='string Language.SearchFailTitle'>417</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L699' title='void Language.SerialiseDefault(string loc)'>699</a> | 86 | 1 :heavy_check_mark: | 0 | 3 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L693' title='Task Language.SerialiseDefaultAsync(string loc)'>693</a> | 86 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L703' title='void Language.SerialiseDefault(string loc)'>703</a> | 86 | 1 :heavy_check_mark: | 0 | 3 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L697' title='Task Language.SerialiseDefaultAsync(string loc)'>697</a> | 86 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L265' title='string Language.Server'>265</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L561' title='string Language.SetToDefaultStrings'>561</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Language/Language.cs#L560' title='string Language.SetToProvidedStrings'>560</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
@@ -3702,8 +3734,8 @@ The `SilverBotDS.Objects` namespace contains 14 named types.
 </summary>
 <br>
 
-- The `ServerSettings` contains 11 members.
-- 40 total lines of source code.
+- The `ServerSettings` contains 12 members.
+- 41 total lines of source code.
 - Approximately 10 lines of executable code.
 - The highest cyclomatic complexity is 3 :heavy_check_mark:.
 
@@ -3712,8 +3744,9 @@ The `SilverBotDS.Objects` namespace contains 14 named types.
 | Method | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L11' title='ServerSettings.ServerSettings()'>11</a> | 70 | 1 :heavy_check_mark: | 0 | 2 | 9 / 6 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L24' title='bool ServerSettings.EmotesOptin'>24</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L23' title='string ServerSettings.LangName'>23</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L41' title='string[] ServerSettings.Prefixes'>41</a> | 95 | 3 :heavy_check_mark: | 0 | 2 | 6 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L47' title='string ServerSettings.PrefixesInJson'>47</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L42' title='string[] ServerSettings.Prefixes'>42</a> | 95 | 3 :heavy_check_mark: | 0 | 2 | 6 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L48' title='string ServerSettings.PrefixesInJson'>48</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L39' title='bool ServerSettings.Reminders'>39</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L37' title='bool ServerSettings.RepeatThings'>37</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L21' title='ulong ServerSettings.ServerId'>21</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Objects/Database/Classes/ServerSettings.cs#L25' title='ulong? ServerSettings.ServerStatsCategoryId'>25</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
@@ -6748,6 +6781,9 @@ class ReminderCommands{
     +DatabaseContext DbCtx
     +RemindCommand(CommandContext ctx, TimeSpan duration, string item) Task
     +ListReminders(CommandContext ctx) Task
+    +ListRemindersG(CommandContext ctx) Task
+    +DeleteReminder(CommandContext ctx, string id) Task
+    +DeleteReminderF(CommandContext ctx, string id) Task
 }
 
 ```
@@ -7407,6 +7443,20 @@ class InitialCreate{
 
 ```
 
+<div id="Reminders-class-diagram"></div>
+
+##### `Reminders` class diagram
+
+```mermaid
+classDiagram
+class Reminders{
+    +Up(MigrationBuilder migrationBuilder) void
+    +Down(MigrationBuilder migrationBuilder) void
+    +BuildTargetModel(ModelBuilder modelBuilder) void
+}
+
+```
+
 <div id="RR-class-diagram"></div>
 
 ##### `RR` class diagram
@@ -7810,6 +7860,10 @@ class Language{
     +string GiveawayItemNull
     +string GiveawayResultsWon
     +string QueueNothing
+    +string CancelReminderErrorNoEvent
+    +string CancelReminderErrorMultiple
+    +string CancelReminderErrorAlreadyHandled
+    +string CancelReminderSuccess
     +GetCultureInfo() CultureInfo
     + Language.GetLoadedLanguages()$ Dictionary<string,
     +LoadedLanguages()$ string[]
@@ -7880,6 +7934,7 @@ class ServerSettings{
     +string ServerStatsTemplatesInJson
     +bool RepeatThings
     +bool WebShot
+    +bool Reminders
     +string[] Prefixes
     +string PrefixesInJson
     +.ctor() ServerSettings

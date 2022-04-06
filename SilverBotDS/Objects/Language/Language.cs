@@ -621,6 +621,10 @@ public class Language
     public string GiveawayItemNull { get; set; } = "The item can't be empty";
     public string GiveawayResultsWon { get; set; } = "{0} won {1}";
     public string QueueNothing { get; set; } = "Nothing";
+    public string CancelReminderErrorNoEvent { get; set; } = "The event was nout found";
+    public string CancelReminderErrorMultiple { get; set; } = "Internal error, try again later";
+    public string CancelReminderErrorAlreadyHandled { get; set; } = "You can not cancel a reminder that has already passed";
+    public string CancelReminderSuccess { get; set; } = "Deleted the reminder";
 
     public CultureInfo GetCultureInfo()
     {

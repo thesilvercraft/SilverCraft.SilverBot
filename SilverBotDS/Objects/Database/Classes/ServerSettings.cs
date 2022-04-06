@@ -36,6 +36,7 @@ public class ServerSettings
     public string ServerStatsTemplatesInJson { get; set; }
     public bool RepeatThings { get; set; }
     public bool WebShot { get; set; }
+    public bool Reminders { get; set; }
 
     [NotMapped]
     public string[] Prefixes

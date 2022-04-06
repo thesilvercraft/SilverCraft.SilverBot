@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Attributes;
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
 public class RequireGuildDatabaseValueAttribute : CheckBaseAttribute
 {
     public RequireGuildDatabaseValueAttribute(string variable, object state, bool allowdms)
@@ -40,7 +40,7 @@ public class RequireGuildDatabaseValueAttribute : CheckBaseAttribute
     }
 }
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
 public class RequireGuildDatabaseValueSlashAttribute : SlashCheckBaseAttribute
 {
     public RequireGuildDatabaseValueSlashAttribute(string variable, object state, bool allowdms)

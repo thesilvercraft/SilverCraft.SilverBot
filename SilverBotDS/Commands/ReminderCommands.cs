@@ -17,6 +17,7 @@ namespace SilverBotDS.Commands;
 [RequireGuild]
 [Category("Reminder")]
 [RequireUserPermissions(Permissions.SendMessages)]
+[RequireGuildDatabaseValue("Reminders", true, true)]
 public class ReminderCommands : SilverBotCommandModule
 {
     public DatabaseContext DbCtx { private get; set; }
@@ -30,7 +31,7 @@ public class ReminderCommands : SilverBotCommandModule
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         if (!string.IsNullOrEmpty(item))
         {
-            var s = RandomGenerator.RandomAbcString(20);
+            var s = RandomGenerator.RandomString(20);
             var t = DateTime.Now + duration;
             await DbCtx.plannedEvents.AddAsync(new PlannedEvent
             {
@@ -77,6 +78,102 @@ public class ReminderCommands : SilverBotCommandModule
         else
         {
             await new DiscordMessageBuilder().WithContent(lang.ListReminderNone).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+        }
+    }
+
+    [Command("listremindersguild")]
+    [Description("lists all reminders here")]
+    [RequireUserPermissions(Permissions.Administrator)]
+    public async Task ListRemindersG(CommandContext ctx)
+    {
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var channels = (await ctx.Guild.GetChannelsAsync()).Select(xa => xa.Id).ToArray();
+        var events = DbCtx.plannedEvents.Where(a => channels.Contains(a.ChannelID) && a.Type == PlannedEventType.Reminder && !a.Handled).ToList();
+        if (events.Count > 0)
+        {
+            StringBuilder bob = new(lang.ListReminderStart);
+            bob.AppendLine();
+            foreach (var even in events)
+            {
+                if (bob.Length > 1888)
+                {
+                    bob.AppendFormat(lang.ListReminderListMore, events.Count - (events.IndexOf(even) + 1));
+                    break;
+                }
+                bob.Append(even.EventID).Append("   ").Append(Formatter.Timestamp(even.Time, TimestampFormat.RelativeTime)).Append("    ").Append(Formatter.Timestamp(even.Time, TimestampFormat.LongDateTime)).AppendLine("```").Append(even.Data).AppendLine("```");
+            }
+            await new DiscordMessageBuilder().WithContent(bob.ToString()).WithAllowedMentions(Mentions.None).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+        }
+        else
+        {
+            await new DiscordMessageBuilder().WithContent(lang.ListReminderNone).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+        }
+    }
+
+    [Command("cancelreminder")]
+    [Description("deletes a specific reminder")]
+    public async Task DeleteReminder(CommandContext ctx, [RemainingText] string id)
+    {
+        if (id.Length < 10)
+        {
+            await ctx.RespondAsync("Invalid ID");
+            return;
+        }
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var a = DbCtx.plannedEvents.Where(a => a.UserID == ctx.User.Id && a.Type == PlannedEventType.Reminder && a.EventID == id).ToList();
+        if (a.Count == 0)
+        {
+            await ctx.RespondAsync(lang.CancelReminderErrorNoEvent);
+        }
+        else if (a.Count == 1)
+        {
+            if (a[0].Handled)
+            {
+                await ctx.RespondAsync(lang.CancelReminderErrorAlreadyHandled);
+                return;
+            }
+            DbCtx.plannedEvents.Remove(a[0]);
+            await DbCtx.SaveChangesAsync();
+            await ctx.RespondAsync(lang.CancelReminderSuccess);
+        }
+        else
+        {
+            await ctx.RespondAsync(lang.CancelReminderErrorMultiple);
+        }
+    }
+
+    [Command("cancelreminderf")]
+    [Description("deletes a reminder with force")]
+    [RequireUserPermissions(Permissions.Administrator)]
+    public async Task DeleteReminderF(CommandContext ctx, [RemainingText] string id)
+    {
+        if (id.Length < 10)
+        {
+            await ctx.RespondAsync("Invalid ID");
+            return;
+        }
+        var channels = (await ctx.Guild.GetChannelsAsync()).Select(xa => xa.Id).ToArray();
+
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var a = DbCtx.plannedEvents.Where(a => channels.Contains(a.ChannelID) && a.Type == PlannedEventType.Reminder && a.EventID == id).ToList();
+        if (a.Count == 0)
+        {
+            await ctx.RespondAsync(lang.CancelReminderErrorNoEvent);
+        }
+        else if (a.Count == 1)
+        {
+            if (a[0].Handled)
+            {
+                await ctx.RespondAsync(lang.CancelReminderErrorAlreadyHandled);
+                return;
+            }
+            DbCtx.plannedEvents.Remove(a[0]);
+            await DbCtx.SaveChangesAsync();
+            await ctx.RespondAsync(lang.CancelReminderSuccess);
+        }
+        else
+        {
+            await ctx.RespondAsync(lang.CancelReminderErrorMultiple);
         }
     }
 }

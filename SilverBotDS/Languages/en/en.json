@@ -202,5 +202,9 @@
   "GiveawayResultsNoReactions": "Nooone reacted in time",
   "GiveawayItemNull": "The item can\u0027t be empty",
   "GiveawayResultsWon": "{0} won {1}",
-  "QueueNothing": "Nothing"
+  "QueueNothing": "Nothing",
+  "CancelReminderErrorNoEvent": "The event was nout found",
+  "CancelReminderErrorMultiple": "Internal error, try again later",
+  "CancelReminderErrorAlreadyHandled": "You can not cancel a reminder that has already passed",
+  "CancelReminderSuccess": "Deleted the reminder"
 }

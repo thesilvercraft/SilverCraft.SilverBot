@@ -17,8 +17,8 @@ public class Webshot : BaseCommandModule
 
     [Command("webshot")]
     [Description("screenshots a webpage")]
-    [RequireConfigVariableAttribute("AllowPublicWebshot", true)]
-    [RequireGuildDatabaseValueAttribute("WebShot", true, true)]
+    [RequireConfigVariable("AllowPublicWebshot", true)]
+    [RequireGuildDatabaseValue("WebShot", true, true)]
     public async Task WebshotCommand(CommandContext ctx, string html, byte waittime = 0)
     {
         var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png")

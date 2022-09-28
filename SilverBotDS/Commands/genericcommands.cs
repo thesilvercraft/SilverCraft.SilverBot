@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static SilverBotDS.Utils.StringUtils;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 

@@ -134,7 +134,6 @@ public class WebpageStartup
         services.AddServerSideBlazor();
         services.AddDistributedMemoryCache();
         services.AddHttpContextAccessor();
-        services.AddProtectedBrowserStorage();
         services.AddScoped<BrowserService>();
         services.AddControllers();
         services.AddSession(options =>

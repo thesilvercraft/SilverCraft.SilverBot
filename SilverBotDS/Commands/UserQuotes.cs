@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SBDSODC = SilverBotDS.Objects.Database.Classes;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 

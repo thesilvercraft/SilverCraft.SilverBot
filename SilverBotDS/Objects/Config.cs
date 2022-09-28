@@ -17,13 +17,14 @@ namespace SilverBotDS.Objects;
 [Serializable]
 public class Config
 {
-    private const ulong CurrentConfVer = 42;
+    private const ulong CurrentConfVer = 44;
 
     [XmlDescription("Array of prefixes the bot will respond to")]
     public string[] Prefix { get; set; } =
     {
         "sd!",
         "sb!",
+        "~",
         "hey silverbot",
         "ok silverbot",
         "this is so sad silverbot"
@@ -41,7 +42,7 @@ public class Config
 
     [XmlDescription(
         "Allow silverbot to use the shitty commands discord is pushing down our throats, this uses the DSharpPlus.SlashCommands library made by IDoEverything")]
-    public bool UseSlashCommands { get; set; } = false;
+    public bool UseSlashCommands { get; set; } = true;
 
     [XmlDescription("What modules should silverbot load")]
     public string[] ModulesToLoad { get; set; } =
@@ -61,12 +62,14 @@ public class Config
         typeof(MinecraftModule).FullName,
         typeof(UserQuotesModule).FullName,
         typeof(TranslatorCommands).FullName,
-        typeof(CalculatorCommands).FullName,
         typeof(ServerStatsCommands).FullName,
         typeof(ImageModule).FullName,
         typeof(Experience).FullName,
         typeof(AdminCommands).FullName,
-        typeof(Webshot).FullName
+        typeof(AdminCommands).FullName,
+        typeof(ReactionRoleCommands).FullName,
+        typeof(ReminderCommands).FullName,
+
     };
 
     [XmlDescription("What services should silverbot load from external dlls")]
@@ -94,7 +97,7 @@ public class Config
     public bool CallGCOnSplashChange { get; set; } = false;
 
     [XmlDescription("Enable reaction role related functions, essential if you load SilverBotDS.Commands.ReactionRoleCommands")]
-    public bool ReactionRolesEnabled { get; set; } = false;
+    public bool ReactionRolesEnabled { get; set; } = true;
 
     [XmlDescription("Should this instance of silverbot host a webserver?")]
     public bool HostWebsite { get; set; } = true;
@@ -115,21 +118,11 @@ public class Config
     [XmlDescription("Webhook for logging")]
     public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
 
-    [XmlDescription("Url used for bot command, leave 'None' to disable")]
-    public string BotInfoUrl { get; set; } = "https://silverdiamond.cf/silvercraftbot/bots/{id}.md";
-
-    [XmlDescription("Set true if its a sid cookie, false if a bot one")]
-    public bool TopggIsSelfbot { get; set; } = true;
-
-    [XmlDescription("Gives everyone the ability to use webshot")]
-    public bool AllowPublicWebshot { get; set; } = false;
 
     [XmlDescription(
         "What kind of browser to use, 0 for no browser, 1 for chrome (chromedriver), 2 for firefox (geckodriver), 3 should be the remotebrowser(uses pagerendererapi)")]
     public int BrowserType { get; set; } = 1;
 
-    [XmlDescription("Location of that browser's driver, leave blank for CWD(current working directory)")]
-    public string DriverLocation { get; set; } = "";
 
     [XmlDescription(
         "Allow silverbot to connect to lavalink and use audio commands, useful if you have lavalink installed or if you allowed silverbot to install and run lavalink (requires java)")]
@@ -218,18 +211,14 @@ public class Config
     [XmlDescription("Do we check github for a newer commit")]
     public bool EnableUpdateChecking { get; set; } = false;
 
-    [XmlDescription(
-        "2 segment keys for science, they can be duplicates if you like exposing your keys to the entire world")]
-    public string SegmentPrivateSource { get; set; } = "Segment_Key";
-
-    public string SegmentPublicSource { get; set; } = "Segment_Key";
+    
     public bool SendErrorsThroughSegment { get; set; } = false;
 
     [XmlDescription("Webhooks for archiving")]
-    public string[] ArchiveWebhooks { get; set; } = new[] { "https://discordapp.com/api/webhooks/id/key" };
+    public string[] ArchiveWebhooks { get; set; } = Array.Empty<string>();
 
     [XmlDescription("Where the hell do we get our data from")]
-    public ulong[] ChannelsToArchivePicturesFrom { get; set; } = new[] { 929056836005560421uL };
+    public ulong[] ChannelsToArchivePicturesFrom { get; set; } = Array.Empty<ulong>();
 
     [XmlDescription(
         "Song aliases, It can be any kind of url or search term (It also supports SilverBotPlaylist files)")]
@@ -249,9 +238,7 @@ public class Config
         { "antenna5", "http://antenna5stream.neotel.mk:8000/live128" }
     };
 
-    [XmlDescription(
-        "Allows silverbot to use youtube-dl which is a tool for finding direct download links for streaming services")]
-    public bool AllowYoutubeDl { get; set; } = false;
+   
 
     public Splash[] Splashes { get; set; } =
     {

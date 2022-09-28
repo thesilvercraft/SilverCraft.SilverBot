@@ -8,6 +8,7 @@ using SilverBotDS.Utils;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 

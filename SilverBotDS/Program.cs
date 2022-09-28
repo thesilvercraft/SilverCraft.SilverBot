@@ -20,7 +20,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SDBrowser;
 using SDiscordSink;
 using Serilog;
 using Serilog.Core;
@@ -264,51 +263,11 @@ namespace SilverBotDS
             _log.Verbose("Initializing Commands");
             ServiceCollection services = new();
 
-            #region Browser fun stuff
-
-            switch (_config.BrowserType)
-            {
-                case 0:
-                    {
-                        _log.Verbose("Not using a browser");
-                        break;
-                    }
-                case 1:
-                    {
-                        _log.Verbose("Launching chrome");
-                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Chrome,
-                            string.IsNullOrEmpty(_config.DriverLocation)
-                                ? Environment.CurrentDirectory
-                                : _config.DriverLocation));
-                        break;
-                    }
-                case 2:
-                    {
-                        _log.Verbose("Launching firefox");
-                        services.AddSingleton<IBrowser>(new SeleniumBrowser(Browsertype.Firefox,
-                            string.IsNullOrEmpty(_config.DriverLocation)
-                                ? Environment.CurrentDirectory
-                                : _config.DriverLocation));
-                        break;
-                    }
-                case 3:
-                    {
-                        _log.Verbose("Using the remoteBrowser");
-                        services.AddSingleton<IBrowser>(new RemoteBrowser(HttpClient));
-                        break;
-                    }
-                default:
-                    {
-                        throw new NotSupportedException();
-                    }
-            }
-
-            #endregion Browser fun stuff
-
-            if (IsNotNullAndIsNotB(_config.SegmentPrivateSource, "Segment_Key"))
+          
+           /* if (IsNotNullAndIsNotB(_config.SegmentPrivateSource, "Segment_Key"))
             {
                 services.AddSingleton<IAnalyse>(new SegmentIo(_config.SegmentPrivateSource));
-            }
+            }*/
 
             #region Database fun stuff
 
@@ -628,41 +587,7 @@ namespace SilverBotDS
 
             #endregion Registering Commands
 
-            if (_config.UseSlashCommands)
-            {
-                if (Debugger.IsAttached)
-                {
-                    slash.RegisterCommands<GeneralCommands>(_config.ServerId);
-                    if (_config.AllowPublicWebshot)
-                    {
-                        if (_config.BrowserType == 0)
-                        {
-                            _log.Information(
-                                "You have not set-up a browser for silverbot to use. As such the public webshot slash-command will not be registered");
-                        }
-                        else
-                        {
-                            slash.RegisterCommands<WebshotSlash>(_config.ServerId);
-                        }
-                    }
-                }
-                else
-                {
-                    slash.RegisterCommands<GeneralCommands>();
-                    if (_config.AllowPublicWebshot)
-                    {
-                        if (_config.BrowserType == 0)
-                        {
-                            _log.Information(
-                                "You have not set-up a browser for silverbot to use. As such the public webshot slash-command will not be registered");
-                        }
-                        else
-                        {
-                            slash.RegisterCommands<WebshotSlash>();
-                        }
-                    }
-                }
-            }
+           
             //🥁🥁🥁 drum-roll
             _log.Information("Connecting to discord");
             var isConnected = false;

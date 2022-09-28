@@ -27,6 +27,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 [Category("XP")]
 public class Experience : SilverBotCommandModule, IRequireFonts
@@ -197,7 +198,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
 
         outStream.Position = 0;
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        await ImageModule.SendImageStream(ctx, outStream, lang: lang, content: lang.XPCommandCardSuccess);
+        await ImageModule.SendImageStream(ctx, outStream, content: lang.XPCommandCardSuccess);
     }
 
     [Command("xpcard")]

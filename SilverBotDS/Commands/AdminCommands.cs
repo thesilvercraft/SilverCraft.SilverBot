@@ -15,6 +15,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static SilverBotDS.Commands.OwnerOnly;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 

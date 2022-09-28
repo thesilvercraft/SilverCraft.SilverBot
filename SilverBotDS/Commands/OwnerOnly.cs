@@ -3,11 +3,9 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Humanizer;
-using Jering.Javascript.NodeJS;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using SDBrowser;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
@@ -23,6 +21,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
@@ -31,7 +30,6 @@ namespace SilverBotDS.Commands;
 public class OwnerOnly : SilverBotCommandModule
 {
     public DatabaseContext Database { private get; set; }
-    public IBrowser Browser { private get; set; }
     public Config Config { private get; set; }
     public HttpClient HttpClient { private get; set; }
 
@@ -60,18 +58,7 @@ public class OwnerOnly : SilverBotCommandModule
                 .WithColor(await ColorUtils.GetSingleAsync()).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
     }
 
-    [Command("stress")]
-    [Description("less gooo baybae")]
-    public Task Stress(CommandContext ctx)
-    {
-        foreach (var url in _urls)
-        {
-            _ = Webshot(ctx, url);
-        }
-
-        return Task.CompletedTask;
-    }
-
+  
     [Command("UnRegisterCommand")]
     public Task UnRegCmd(CommandContext ctx, [RemainingText] string cmdwithparm)
     {
@@ -464,78 +451,6 @@ public class OwnerOnly : SilverBotCommandModule
         }
     }
 
-    [Command("jsevaluate")]
-    [Description("evaluates some js code")]
-    [Aliases("jseval", "jsev")]
-    public async Task JsEval(CommandContext ctx, [RemainingText] string code)
-    {
-        if (Config.UseNodeJs)
-        {
-            var console = Console.Out;
-            try
-            {
-                using var sw = new StringWriter();
-                Console.SetOut(sw);
-                var start = DateTime.Now;
-                var script = await StaticNodeJSService.InvokeFromStringAsync<string>(RemoveCodeBraces(code));
-                var aftercompile = DateTime.Now;
-                await new DiscordMessageBuilder().WithContent($"Ran the code in {(aftercompile - start).Humanize(6)}")
-                    .SendAsync(ctx.Channel);
-                if (script is not null)
-                {
-                    await SendBestRepresentationAsync(script, ctx);
-                }
-                else
-                {
-                    await new DiscordMessageBuilder().WithContent("Got a `null`").SendAsync(ctx.Channel);
-                }
-
-                if (!string.IsNullOrEmpty(sw.ToString()))
-                {
-                    if (sw.ToString().Length > 1979)
-                    {
-                        await SendStringFileWithContent(ctx, "Console Output", sw.ToString(), "console.txt");
-                    }
-                    else
-                    {
-                        await new DiscordMessageBuilder()
-                            .WithContent($"Console Output {Formatter.BlockCode(sw.ToString())}").SendAsync(ctx.Channel);
-                    }
-                }
-
-                sw.Close();
-                Console.SetOut(console);
-                script = null;
-            }
-            catch (CompilationErrorException e)
-            {
-                Console.SetOut(console);
-                if (e.Diagnostics.Humanize().Length > 1958)
-                {
-                    await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Diagnostics.Humanize(),
-                        "error.txt");
-                }
-                else
-                {
-                    await new DiscordMessageBuilder()
-                        .WithContent(
-                            $"Compilation Error occurred: {Formatter.BlockCode(RemoveCodeBraces(e.Diagnostics.Humanize()), "cs")}")
-                        .SendAsync(ctx.Channel);
-                }
-
-                throw;
-            }
-            catch (Exception)
-            {
-                Console.SetOut(console);
-                throw;
-            }
-        }
-        else
-        {
-            await new DiscordMessageBuilder().WithContent("Nodejs is disabled in the config").SendAsync(ctx.Channel);
-        }
-    }
 
     [Command("sh")]
     [Description("runs some commands")]
@@ -557,7 +472,7 @@ public class OwnerOnly : SilverBotCommandModule
             var readline = await main.StandardOutput.ReadToEndAsync() + await main.StandardError.ReadToEndAsync();
             if (msg is null || msg.Content.Length + readline.Length + 7 >= 2000)
             {
-                foreach (var part in StringUtils.SplitInParts(readline, 1991))
+                foreach (var part in readline.SplitInParts(1991))
                 {
                     msg = await ctx.Channel.SendMessageAsync(Formatter.BlockCode(part));
                     content.Clear();
@@ -578,53 +493,15 @@ public class OwnerOnly : SilverBotCommandModule
     [Description("runs some sql")]
     public async Task Runsql(CommandContext ctx, [RemainingText] string sql)
     {
-        var thing = await Database.RunSqlAsync(sql, Browser);
-        if (thing.Item1 != null && thing.Item2 == null)
-        {
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent(thing.Item1).SendAsync(ctx.Channel);
-            return;
-        }
-
-        if (thing.Item1 == null && thing.Item2 != null)
-        {
-            var bob = new DiscordEmbedBuilder();
-            bob.WithImageUrl("attachment://html.png").WithFooter($"Requested by {ctx.User.Username}",
-                ctx.User.GetAvatarUrl(ImageFormat.Png));
-            thing.Item2.Position = 0;
-            await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", thing.Item2)
-                .SendAsync(ctx.Channel);
-            thing.Item2.Dispose();
-        }
+        var thing = await Database.RunSqlAsync(sql);
+        
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent(thing).SendAsync(ctx.Channel);
+       
     }
 
-    private async Task<bool> IsBrowserNotSpecifed(CommandContext ctx)
-    {
-        var a = Config.BrowserType == 0;
-        if (a)
-        {
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent("no browser specified")
-                .SendAsync(ctx.Channel);
-        }
+   
 
-        return a;
-    }
-
-    [Command("webshotown")]
-    [Description("screenshots a webpage")]
-    public async Task Webshot(CommandContext ctx, string html)
-    {
-        if (await IsBrowserNotSpecifed(ctx))
-        {
-            return;
-        }
-
-        var bob = new DiscordEmbedBuilder().WithImageUrl("attachment://html.png")
-            .WithFooter($"Requested by {ctx.User.Username}", ctx.User.GetAvatarUrl(ImageFormat.Png))
-            .WithColor(DiscordColor.Green);
-        using var e = await Browser.RenderUrlAsync(html);
-        await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithReply(ctx.Message.Id).WithFile("html.png", e)
-            .SendAsync(ctx.Channel);
-    }
+   
 
     public class Rootobject
     {
@@ -668,7 +545,7 @@ public class OwnerOnly : SilverBotCommandModule
             return;
         }
 
-        if (FileUtils.GetFileExtensionFromUrl(ctx.Message.Attachments[0].Url) != ".zip")
+        if (ctx.Message.Attachments[0].Url.GetFileExtensionFromUrl() != ".zip")
         {
             await ctx.RespondAsync("please use a zip");
             return;
@@ -767,21 +644,5 @@ public class OwnerOnly : SilverBotCommandModule
         await ctx.RespondAsync($"All traces of {userid.Id} have been removed from the database.");
     }
 
-    [Command("screenshothtml")]
-    [Description("screenshot a webpage")]
-    public async Task Html(CommandContext ctx, string html)
-    {
-        if (await IsBrowserNotSpecifed(ctx))
-        {
-            return;
-        }
-
-        var bob = new DiscordEmbedBuilder();
-        bob.WithImageUrl("attachment://html.png")
-            .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
-        using var e = await Browser.RenderHtmlAsync(html);
-
-        e.Position = 0;
-        await new DiscordMessageBuilder().WithEmbed(bob.Build()).WithFile("html.png", e).SendAsync(ctx.Channel);
-    }
+   
 }

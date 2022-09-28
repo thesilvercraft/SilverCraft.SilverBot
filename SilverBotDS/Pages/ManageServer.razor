@@ -4,7 +4,6 @@
 @using Microsoft.AspNetCore.Http
 @using DSharpPlus
 @using DSharpPlus.CommandsNext
-@using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 
 @inject Config _config
 @inject IHttpContextAccessor _httpContextAccessor
@@ -12,7 +11,6 @@
 @inject DatabaseContext _dbctx
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _uriHelper
-@inject ProtectedSessionStorage _protectedSessionStore
 @inject HttpClient _client
 
 @code {
@@ -50,10 +48,8 @@
     <RadzenSwitch @bind-Value=@seropt.RepeatThings Name="Switch2" Style="margin-bottom: 20px"/>
     <RadzenLabel Text="Opt into repeating of phrases" Component="Switch2" Style="margin-left: 5px;"/>
     <br/>
-    <RadzenSwitch @bind-Value=@seropt.WebShot Name="Switch3" Style="margin-bottom: 20px"/>
-    <RadzenLabel Text="Opt into WebShot" Component="Switch3" Style="margin-left: 5px;"/>
-    <br/>
-    @if(_discord.GetCommandsNext().RegisteredCommands.Any(x=>x.Key=="remindme" && x.Value.Description=="simple reminder"))
+    
+    @if(_discord.GetCommandsNext().RegisteredCommands.Any(x=>x.Key=="remindme"))
     {
         <RadzenSwitch @bind-Value=@seropt.Reminders Name="Switch4" Style="margin-bottom: 20px"/>
     <RadzenLabel Text="Opt into Reminders" Component="Switch4" Style="margin-left: 5px;"/>

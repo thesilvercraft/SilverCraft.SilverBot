@@ -8,6 +8,7 @@ using SilverBotDS.Objects.Classes;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands.Gamering;
 

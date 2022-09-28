@@ -12,6 +12,7 @@ using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using System;
 using System.Threading.Tasks;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
@@ -34,7 +35,7 @@ public class Giphy : SilverBotCommandModule
             if (string.IsNullOrEmpty(Config.Gtoken) || Config.Gtoken == "Giphy_Token_Here" ||
                 string.Equals(Config.Gtoken, "none", StringComparison.InvariantCultureIgnoreCase))
             {
-                _giphy = new GiphyDotNet.Manager.Giphy();
+                _giphy = new GiphyDotNet.Manager.Giphy("dc6zaTOxFJmzC");
             }
             else
             {
@@ -56,7 +57,7 @@ public class Giphy : SilverBotCommandModule
             .WithAuthor(lang.PoweredByGiphy, "https://developers.giphy.com/",
                 "https://cdn.discordapp.com/attachments/728360861483401240/747894851814817863/Poweredby_640px_Badge.gif")
             .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-            .WithImageUrl(gifresult.Data.ImageUrl).WithColor(await ColorUtils.GetSingleAsync());
+            .WithImageUrl(gifresult.Data.ContentUrl).WithColor(await ColorUtils.GetSingleAsync());
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
     }
 

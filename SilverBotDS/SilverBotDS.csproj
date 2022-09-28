@@ -49,18 +49,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Analytics" Version="3.8.0" />
-        <PackageReference Include="DSharpPlus" Version="4.2.0-nightly-01107">
+        <PackageReference Include="DSharpPlus" Version="4.3.0-nightly-01171">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="DSharpPlus.CommandsNext" Version="4.2.0-nightly-01107" />
-        <PackageReference Include="DSharpPlus.Interactivity" Version="4.2.0-nightly-01107" />
-        <PackageReference Include="DSharpPlus.SlashCommands" Version="4.2.0-nightly-01107" />
-        <PackageReference Include="DSharpPlus.VoiceNext" Version="4.2.0-nightly-01107">
+        <PackageReference Include="DSharpPlus.CommandsNext" Version="4.3.0-nightly-01171" />
+        <PackageReference Include="DSharpPlus.Interactivity" Version="4.3.0-nightly-01171" />
+        <PackageReference Include="DSharpPlus.SlashCommands" Version="4.3.0-nightly-01171" />
+        <PackageReference Include="DSharpPlus.VoiceNext" Version="4.3.0-nightly-01171">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.2" />
-        <PackageReference Include="GiphyDotNet" Version="2.0.0" />
+        <PackageReference Include="GiphyDotNet" Version="2.4.0" />
         <PackageReference Include="GitInfo" Version="2.2.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -69,52 +68,50 @@
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="IPAddressRange" Version="4.2.0" />
-        <PackageReference Include="Jering.Javascript.NodeJS" Version="6.3.0" />
-        <PackageReference Include="Lavalink4NET.DSharpPlus" Version="2.1.1-preview.6" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.ProtectedBrowserStorage" Version="5.0.0-rc.1.20451.17" />
-        <PackageReference Include="Microsoft.Azure.SignalR" Version="1.16.1" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.2.0-2.final" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2">
+        <PackageReference Include="Lavalink4NET.DSharpPlus" Version="3.0.0-preview.12" />
+        <PackageReference Include="Microsoft.Azure.SignalR" Version="1.18.3" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.3.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.2">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.2">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.9">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.2">
+        <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.9">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
-        <PackageReference Include="NSwag.ApiDescription.Client" Version="13.15.10">
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
+        <PackageReference Include="NSwag.ApiDescription.Client" Version="13.17.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Radzen.Blazor" Version="3.17.3" />
-        <PackageReference Include="Serilog" Version="2.11.0-dev-01380">
+        <PackageReference Include="Radzen.Blazor" Version="4.1.4" />
+        <PackageReference Include="Serilog" Version="2.12.0">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+        <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890">
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
-        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta13.14" />
-        <PackageReference Include="SpotifyAPI.Web" Version="6.2.2" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
+        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
+        <PackageReference Include="SpotifyAPI.Web" Version="6.3.0" />
         <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
         <PackageReference Include="System.Globalization" Version="4.3.0">
           <TreatAsUsed>true</TreatAsUsed>
@@ -129,7 +126,7 @@
         <PackageReference Include="System.Runtime" Version="4.3.1">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="System.Text.Json" Version="6.0.2">
+        <PackageReference Include="System.Text.Json" Version="6.0.6">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1">
@@ -141,7 +138,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SDBrowser\SDBrowser.csproj" />
         <ProjectReference Include="..\SDiscordSink\SDiscordSink.csproj" />
     </ItemGroup>
 
@@ -164,6 +160,180 @@
         </None>
         <None Update="License.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\1.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\10.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\11.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\12.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\13.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\14.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\15.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\17.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\18.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\19.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\2.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\20.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\21.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\22.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\3.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\4.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\5.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\6.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\7.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\8.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibCutout\9.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\1.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\10.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\11.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\12.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\13.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\14.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\15.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\17.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\18.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\19.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\2.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\3.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\4.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\5.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\6.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\7.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\8.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\9.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\1.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\10.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\11.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\12.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\13.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\14.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\15.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\17.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\2.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\3.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\4.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\5.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\6.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\7.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\8.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\Bibi\9.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
     <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -197,6 +367,11 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <Content Update="Templates\BibiLibCutout\Titles.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Update="Properties\Resources.resx">

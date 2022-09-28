@@ -1,5 +1,4 @@
 ﻿using DSharpPlus.Entities;
-using Segment;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,16 +9,11 @@ public interface IAnalyse
     Task EmitEvent(DiscordUser userId, string eventName, IDictionary<string, object> args);
 }
 
-public class SegmentIo : IAnalyse
+public class ConsoleAnalytics : IAnalyse
 {
-    public SegmentIo(string token)
-    {
-        Analytics.Initialize(token);
-    }
-
     public Task EmitEvent(DiscordUser userId, string eventName, IDictionary<string, object> args)
     {
-        Analytics.Client.Track(userId.Id.ToString(), eventName, args);
+        //do nothing for now
         return Task.CompletedTask;
     }
 }

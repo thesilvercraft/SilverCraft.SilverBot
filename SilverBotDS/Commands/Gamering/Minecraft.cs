@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands.Gamering;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 [Category("Gaming")]
 [Group("minecraft")]

@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
@@ -140,7 +141,7 @@ public class Audio : BaseCommandModule
             var dmb = new DiscordEmbedBuilder()
                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                     .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
-                    .WithUrl(song.Song.Source)
+                    .WithUrl(song.Song.Uri.ToString())
 
                     .AddField(lang.TimeTillTrackPlays,
                         player.LoopSettings == LoopSettings.LoopingSong
@@ -211,14 +212,14 @@ public class Audio : BaseCommandModule
                 var artworkUri = await ArtworkService.ResolveAsync(song.Song);
                 await SendNowPlayingMessage(ctx,
                     string.Format(lang.NowPlaying, song.Song.Title + lang.SongByAuthor + song.Song.Author),
-                    url: song.Song.Source, imageurl: artworkUri?.ToString(), language: lang);
+                    url: song.Song.Uri.ToString(), imageurl: artworkUri?.ToString(), language: lang);
             }
             else
             {
                 var emb = new DiscordEmbedBuilder()
                         .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                         .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
-                        .WithUrl(song.Song.Source)
+                        .WithUrl(song.Song.Uri.ToString())
                         .AddField(lang.TimeTillTrackPlays,
                             player.LoopSettings == LoopSettings.LoopingSong
                                 ? lang.SongTimeLeftSongLooping
@@ -459,7 +460,7 @@ public class Audio : BaseCommandModule
         for (var i = 0; i < player.QueueHistory.Count; i++)
         {
             pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.QueueHistory[i].Item1.Title)
-                .WithUrl(player.QueueHistory[i].Item1.Source).WithColor(await ColorUtils.GetSingleAsync())
+                .WithUrl(player.QueueHistory[i].Item1.Uri.ToString()).WithColor(await ColorUtils.GetSingleAsync())
                 .AddField(lang.TimeWhenTrackPlayed, Formatter.Timestamp(player.QueueHistory[i].Item2))
                 .WithAuthor(string.Format(lang.PageNuget, i + 1, player.QueueHistory.Count))));
         }
@@ -494,7 +495,7 @@ public class Audio : BaseCommandModule
             return;
         }
         var e = new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title)
-                .WithUrl(player.CurrentTrack.Source).WithColor(await ColorUtils.GetSingleAsync())
+                .WithUrl(player.CurrentTrack.Uri.ToString()).WithColor(await ColorUtils.GetSingleAsync())
                 .WithAuthor(string.Format(lang.PageNuget, 1, player.Queue.Count + 1))
                 .AddField(lang.SongLength, player.CurrentTrack.Duration.ToString())
 
@@ -516,7 +517,7 @@ public class Audio : BaseCommandModule
         {
             var timetillsongplays = TimeTillSongPlays(player, i + 1);
             var em = new DiscordEmbedBuilder().WithTitle(player.Queue[i].Title)
-                .WithUrl(player.Queue[i].Source).WithColor(await ColorUtils.GetSingleAsync())
+                .WithUrl(player.Queue[i].Uri.ToString()).WithColor(await ColorUtils.GetSingleAsync())
 
                 .AddField(lang.TimeTillTrackPlays,
                     player.LoopSettings == LoopSettings.LoopingSong

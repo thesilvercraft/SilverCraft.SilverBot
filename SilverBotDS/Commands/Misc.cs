@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
@@ -197,120 +198,9 @@ public class MiscCommands : BaseCommandModule
         }
     }
 
-    [Command("urbandictionary")]
-    [Aliases("urbandict", "urban")]
-    [RequireNsfw]
-    [Description("Search up definitions for words on urban dictionary, pls dont kill me urban")]
-    public async Task Urban(CommandContext ctx, [Description("the name of the package")][RemainingText] string query)
-    {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        try
-        {
-            var data = await UrbanDictUtils.GetDefenition(query, HttpClient);
-            var pages = new List<Page>();
-            for (var i = 0; i < data.Length; i++)
-            {
-                Console.WriteLine(data[i].Definition.Length);
-                var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Word).WithUrl(data[i].Permalink)
-                    .WithColor(await ColorUtils.GetSingleAsync()).WithDescription(data[i].Definition.Length > 2048
-                        ? data[i].Definition.Remove(2045, data[i].Definition.Length - 2045) + "..."
-                        : data[i].Definition);
-                if (!string.IsNullOrEmpty(data[i].Example))
-                {
-                    tempbuilder.AddField(lang.UrbanExample, data[i].Example);
-                }
+    
 
-                tempbuilder.WithFooter(
-                    $"{lang.RequestedBy}{ctx.User.Username} {string.Format(lang.PageNuget, i + 1, data.Length)}",
-                    ctx.User.GetAvatarUrl(ImageFormat.Png));
-                pages.Add(new Page(embed: tempbuilder));
-            }
-
-            var interactivity = ctx.Client.GetInteractivity();
-            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new CancellationToken());
-        }
-        catch (Exception)
-        {
-            var bob = new DiscordEmbedBuilder().WithTitle(lang.SearchFailTitle)
-                .WithDescription(lang.SearchFailDescription).WithColor(await ColorUtils.GetSingleAsync());
-            await ctx.RespondAsync(bob.Build());
-            throw;
-        }
-    }
-
-    [Command("nuget")]
-    [Aliases("nu")]
-    [Description("Search up packages on the NuGet")]
-    public async Task Nuget(CommandContext ctx, [Description("the name of the package")] string query)
-    {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        try
-        {
-            var data = await NuGetUtils.SearchAsync(query, HttpClient);
-            var pages = new List<Page>();
-            for (var i = 0; i < data.Length; i++)
-            {
-                var tempbuilder = new DiscordEmbedBuilder().WithTitle(data[i].Title)
-                    .WithUrl($"https://www.nuget.org/packages/{data[i].Id}")
-                    .WithColor(await ColorUtils.GetSingleAsync());
-                if (data[i].Authors is null)
-                {
-                    tempbuilder.WithAuthor(string.Format(lang.SomethingsContributors, data[i].Title),
-                        data[i].ProjectUrl);
-                }
-                else
-                {
-                    tempbuilder.WithAuthor(StringUtils.ArrayToString(data[i].Authors, ", "), data[i].ProjectUrl);
-                }
-
-                tempbuilder.WithFooter(
-                    lang.RequestedBy + ctx.User.Username + " " + string.Format(lang.PageNuget, i + 1, data.Length),
-                    ctx.User.GetAvatarUrl(ImageFormat.Png));
-                if (!string.IsNullOrEmpty(data[i].IconUrl))
-                {
-                    tempbuilder.WithThumbnail(data[i].IconUrl);
-                }
-
-                if (!string.IsNullOrEmpty(data[i].Description))
-                {
-                    tempbuilder.WithDescription(data[i].Description);
-                }
-
-                if (data[i].Verified is not null)
-                {
-                    tempbuilder.AddField(lang.NuGetVerified, StringUtils.BoolToEmoteString(data[i].Verified == true),
-                        true);
-                }
-
-                if (!string.IsNullOrEmpty(data[i].Type))
-                {
-                    tempbuilder.AddField(lang.Type, data[i].Type, true);
-                }
-
-                if (data[i].TotalDownloads is not null)
-                {
-                    tempbuilder.AddField(lang.Downloads, data[i].TotalDownloads.ToString(), true);
-                }
-
-                if (!string.IsNullOrEmpty(data[i].Version))
-                {
-                    tempbuilder.AddField(lang.Version, data[i].Version, true);
-                }
-
-                pages.Add(new Page(embed: tempbuilder));
-            }
-
-            var interactivity = ctx.Client.GetInteractivity();
-            await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new CancellationToken());
-        }
-        catch (Exception)
-        {
-            var bob = new DiscordEmbedBuilder().WithTitle(lang.SearchFailTitle)
-                .WithDescription(lang.SearchFailDescription).WithColor(await ColorUtils.GetSingleAsync());
-            await ctx.RespondAsync(bob.Build());
-            throw;
-        }
-    }
+  
 
     [Command("cserrcode")]
     public async Task Csharperror(CommandContext ctx, string error)

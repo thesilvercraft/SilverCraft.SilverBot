@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
@@ -96,8 +97,13 @@ public class TranslatorCommands : SilverBotCommandModule
         var t = DatabaseContext.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
         if (t == null)
         {
-            t = new TranslatorSettings { Id = ctx.User.Id, IsTranslator = true, CustomLanguages = new List<Language>() };
-            t.CurrentCustomLanguage = langobj;
+            t = new TranslatorSettings
+            {
+                Id = ctx.User.Id,
+                IsTranslator = true,
+                CustomLanguages = new List<Language>(),
+                CurrentCustomLanguage = langobj
+            };
             DatabaseContext.translatorSettings.Add(t);
         }
         else

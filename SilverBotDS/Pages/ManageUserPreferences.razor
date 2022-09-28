@@ -3,7 +3,6 @@
 @using SilverBotDS.Objects
 @using Microsoft.AspNetCore.Http
 @using DSharpPlus
-@using Microsoft.AspNetCore.Components.ProtectedBrowserStorage
 
 @inject Config _config
 @inject IHttpContextAccessor _httpContextAccessor
@@ -11,7 +10,6 @@
 @inject DatabaseContext _dbctx
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _uriHelper
-@inject ProtectedSessionStorage _protectedSessionStore
 @inject HttpClient _client
 @{
     if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SDBrowser;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Objects.Database.Classes.ReactionRole;
 using System;
@@ -259,7 +258,7 @@ public class DatabaseContext : DbContext
         SaveChanges();
     }
 
-    public async Task<Tuple<string, Stream>> RunSqlAsync(string sql, IBrowser browser)
+    public async Task<string> RunSqlAsync(string sql)
     {
         await using var cmd = Database.GetDbConnection().CreateCommand();
         cmd.CommandText = sql;
@@ -272,11 +271,10 @@ public class DatabaseContext : DbContext
             StringBuilder thing = new(HtmlStart);
             if (dataTable.Rows.Count == 0)
             {
-                return new Tuple<string, Stream>("nodata", null);
+                return "nodata";
             }
 
-            if (browser is null)
-            {
+            
                 StringBuilder builder = new("```" + Environment.NewLine);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -288,27 +286,13 @@ public class DatabaseContext : DbContext
                     builder.AppendLine();
                 }
 
-                return new Tuple<string, Stream>(builder.Append("```").ToString(), null);
-            }
-
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                thing.AppendLine("<tr>");
-                foreach (var item in dataRow.ItemArray)
-                {
-                    thing.Append("<td>").Append(item).AppendLine("</td>");
-                }
-
-                thing.AppendLine("</tr>");
-            }
-
-            thing.AppendLine("</table></body></html>");
-            return new Tuple<string, Stream>(null, await browser.RenderHtmlAsync(thing.ToString()));
+                return builder.Append("```").ToString();
+           
         }
         catch (Exception e)
         {
             Program.SendLog(e);
-            return new Tuple<string, Stream>("Error", null);
+            return "Error";
         }
     }
 

@@ -1,7 +1,3 @@
-## :exclamation::exclamation::exclamation:💀EOL NOTICE
-SilverBot and all of its successors made by us will enter a End OF Life state soon, you may self host using the guide below but no guarantees of any kind will be made.  
-
-
 # SilverBot
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f1f2a69af2b341238cd40b2f54684095)](https://app.codacy.com/gh/thesilvercraft/SilverBot?utm_source=github.com&utm_medium=referral&utm_content=thesilvercraft/SilverBot&utm_campaign=Badge_Grade_Settings)

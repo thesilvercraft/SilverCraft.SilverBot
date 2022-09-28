@@ -4,6 +4,7 @@ using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Anime;
 

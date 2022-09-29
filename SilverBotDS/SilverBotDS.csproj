@@ -23,6 +23,7 @@
         <None Remove="Templates\cement-seal-clear.gif" />
         <None Remove="Templates\happy_new_year_template.png" />
         <None Remove="Templates\joker_laugh.gif" />
+        <None Remove="Templates\linus-linus-torvalds.gif" />
         <None Remove="Templates\motivator_template.png" />
         <None Remove="Templates\paint_template.png" />
         <None Remove="Templates\weeb_reliable_template.png" />
@@ -34,6 +35,7 @@
     <ItemGroup>
         <EmbeddedResource Include="Templates\adventure_time_template.png" />
         <EmbeddedResource Include="Templates\happy_new_year_template.png" />
+        <EmbeddedResource Include="Templates\linus-linus-torvalds.gif" />
         <EmbeddedResource Include="Templates\motivator_template.png" />
         <EmbeddedResource Include="Templates\paint_template.png" />
         <EmbeddedResource Include="Templates\weeb_reliable_template.png" />
@@ -70,7 +72,7 @@
         <PackageReference Include="IPAddressRange" Version="4.2.0" />
         <PackageReference Include="Lavalink4NET.DSharpPlus" Version="3.0.0-preview.12" />
         <PackageReference Include="Microsoft.Azure.SignalR" Version="1.18.3" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.3.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.4.0-2.final" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
@@ -97,7 +99,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Radzen.Blazor" Version="4.1.4" />
+        <PackageReference Include="Radzen.Blazor" Version="4.1.5" />
         <PackageReference Include="Serilog" Version="2.12.0">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
@@ -109,8 +111,8 @@
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
-        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.0.0-alpha.0.54" />
+        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15.1" />
         <PackageReference Include="SpotifyAPI.Web" Version="6.3.0" />
         <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
         <PackageReference Include="System.Globalization" Version="4.3.0">

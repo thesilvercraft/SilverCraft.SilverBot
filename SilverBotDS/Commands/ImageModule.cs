@@ -74,7 +74,46 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         img.Mutate(x => x.DrawText(text, font, textColor, new PointF(0, 0)));
         return img;
     }
+    [Command("caption")]
+    [Description("Captions an image")]
+    public async Task CaptionImage(CommandContext ctx, SdImage image, [RemainingText] string text)
+    {
+        await ctx.TriggerTypingAsync();
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        using var loadedimg = Image.Load(await image.GetBytesAsync(HttpClient), out var frmt);
+        Font JokerFont = new(_captionFont, loadedimg.Width / 10);
 
+        var dr = new TextOptions(JokerFont)
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Origin = new PointF(loadedimg.Width / 2, 7f),
+            WrappingLength= loadedimg.Width,
+            WordBreaking=WordBreaking.BreakAll
+        };
+        var s = TextMeasurer.Measure(text, dr);
+        loadedimg.Mutate(m => m.Resize(new ResizeOptions() { Position = AnchorPositionMode.Bottom, Size = new(loadedimg.Width, loadedimg.Height + (int)(s.Height + 5)), Mode=ResizeMode.BoxPad}));
+        loadedimg.Mutate(m=>m.FillPolygon(new SolidBrush(Color.White), new PointF(0, 0), new PointF(loadedimg.Width, 0), new PointF(loadedimg.Width, s.Height+5), new PointF(0, s.Height + 5)));
+        loadedimg.Mutate(m => m.DrawText(dr, text, Color.Black));
+        await using MemoryStream outStream = new();
+        await loadedimg.SaveAsync(outStream, frmt);
+        outStream.Position = 0;
+        if (outStream.Length > MaxBytes)
+        {
+            await Send_img_plsAsync(
+                ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))
+            ).ConfigureAwait(false);
+        }
+        else
+        {
+            await SendImageStream(ctx, outStream, filename: "sbimgcaption."+ frmt.FileExtensions.First(), content: "there");
+        }
+    }
+    [Command("caption")]
+    public async Task CaptionImage(CommandContext ctx, [RemainingText] string text)
+    {
+        var image = SdImage.FromContext(ctx);
+        await CaptionImage(ctx, image, text);
+    }
     [Command("text")]
     public async Task DrawText(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light",
         float size = 30.0f)
@@ -310,13 +349,13 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         }
     }
 
-    /*
+    
     /// <summary>
     ///     Gets the profile picture of a discord user in a 256x256 bitmap saved to a byte array
     /// </summary>
     /// <param name="user">the user</param>
     /// <returns>a 256x256 bitmap in byte[] format</returns>
-    private async Task<byte[]> GetProfilePictureAsync(ITrinityUser user, ushort size = 256)
+    private async Task<byte[]> GetProfilePictureAsync(DiscordUser user, ushort size = 256)
     {
         var discordsize = size;
         if (discordsize == 0 || (discordsize & (discordsize - 1)) != 0)
@@ -336,27 +375,27 @@ public class ImageModule : BaseCommandModule, IRequireFonts
             (await ResizeAsync(stream.ToArray(), new Size(size, size), PngFormat.Instance)).Item1;
         resizedstream.Position = 0;
         return resizedstream.ToArray();
-    }*/
+    }
 
-    /* [Command("reliable")]
+    [Command("reliable")]
      public async Task Reliable(CommandContext ctx)
      {
          await Reliable(ctx, ctx.User, ctx.Client.CurrentUser);
      }
      [Command("reliable")]
-     public async Task Reliable(CommandContext ctx, ITrinityUser koichi)
+     public async Task Reliable(CommandContext ctx, DiscordUser koichi)
      {
          await Reliable(ctx, ctx.User, koichi);
      }
      [Command("reliable")]
-     public async Task Reliable(CommandContext ctx, ITrinityUser jotaro, ITrinityUser koichi)
+     public async Task Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)
      {
          await ctx.TriggerTypingAsync();
          var lang = await Language.GetLanguageFromCtxAsync(ctx);
          using var img = await Image.LoadAsync(
              Assembly.GetExecutingAssembly()
-                 .GetManifestResourceStream("RollingBot.SB.Modules.ImageModule.Templates.weeb_reliable_template.png") ??
-             throw new TemplateReturningNullException("RollingBot.SB.Modules.ImageModule.Templates.weeb_reliable_template.png"));
+                 .GetManifestResourceStream("SilverBotDS.Templates.weeb_reliable_template.png") ??
+             throw new TemplateReturningNullException("SilverBotDS.Templates.weeb_reliable_template.png"));
          await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(koichi));
          await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(jotaro));
          using (var internalimage = await Image.LoadAsync(resizedstreama))
@@ -370,17 +409,18 @@ public class ImageModule : BaseCommandModule, IRequireFonts
          var text =
              $"{(ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username)}, you truly are a reliable guy.";
          var size = _subtitlesFont.Size;
-         while (TextMeasurer.Measure(text, new RendererOptions(new Font(_subtitlesFont.Family, size, FontStyle.Bold)))
+         while (TextMeasurer.Measure(text, new TextOptions(new Font(_subtitlesFont.Family, size, FontStyle.Bold)))
                     .Width > img.Width)
          {
              size -= 0.05f;
          }
-         var dr = new DrawingOptions();
-         dr.TextOptions.HorizontalAlignment = HorizontalAlignment.Center;
+         var dr = new TextOptions(new Font(_subtitlesFont, size));
+         dr.HorizontalAlignment = HorizontalAlignment.Center;
+        dr.Origin = new PointF(952, 880);
          img.Mutate(m =>
-             m.DrawText(dr, text, new Font(_subtitlesFont, size), Brushes.Solid(Color.White), new PointF(952, 880)));
-         img.Mutate(m =>
-             m.DrawText(dr, text, new Font(_subtitlesFont, size), Pens.Solid(Color.Black, 3), new PointF(952, 880)));
+             m.DrawText(dr, text, Color.White));
+        img.Mutate(m =>
+             m.DrawText(dr, text, null, new Pen(Color.Black,3)));
          await using MemoryStream outStream = new();
          outStream.Position = 0;
          await img.SaveAsPngAsync(outStream);
@@ -388,15 +428,15 @@ public class ImageModule : BaseCommandModule, IRequireFonts
          if (outStream.Length > MaxBytes)
          {
              await Send_img_plsAsync(ctx,
-                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
+                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)))
                  .ConfigureAwait(false);
          }
          else
          {
              await SendImageStream(ctx, outStream,
-                 content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.", lang: lang);
+                 content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.");
          }
-     }*/
+     }
 
     private async Task CommonCodeWithTemplate(CommandContext ctx, string template, Func<Image, Task<Tuple<bool, Image>>> func, bool TriggerTyping = true, string filename = "sbimg.png", IImageEncoder encoder = null)
     {
@@ -434,7 +474,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     [Description("He was forced to use Microsoft Windows when he was 6")]
     public async Task Seal(CommandContext ctx, [RemainingText] string text)
     {
-        await CommonCodeWithTemplate(ctx, "RollingBot.SB.Modules.ImageModule.Templates.cement-seal-clear.gif", (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.cement-seal-clear.gif", (img) =>
         {
             Font jokerFont = new(_jokerFontFamily, img.Width / 10);
             var dr = new TextOptions(jokerFont)
@@ -454,7 +494,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     [Description("NVIDIA, fuck you.")]
     public async Task Linus(CommandContext ctx, [RemainingText][Description("company,or thing you want linus to swear at")] string company = "NVIDIA")
     {
-        await CommonCodeWithTemplate(ctx, "RollingBot.SB.Modules.ImageModule.Templates.linus-linus-torvalds.gif", (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.linus-linus-torvalds.gif", (img) =>
         {
             Font font = new(_subtitlesFont.Family, img.Width / 20);
             var dr = new TextOptions(font)
@@ -481,8 +521,8 @@ public class ImageModule : BaseCommandModule, IRequireFonts
          var lang = await Language.GetLanguageFromCtxAsync(ctx);
          using var img = await Image.LoadAsync(
              Assembly.GetExecutingAssembly()
-                 .GetManifestResourceStream("RollingBot.SB.Modules.ImageModule.Templates.happy_new_year_template.png") ??
-             throw new TemplateReturningNullException("RollingBot.SB.Modules.ImageModule.Templates.happy_new_year_template.png"));
+                 .GetManifestResourceStream("SilverBotDS.Templates.happy_new_year_template.png") ??
+             throw new TemplateReturningNullException("SilverBotDS.Templates.happy_new_year_template.png"));
          await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person, 350));
          using var gamer = new Image<Rgba32>(img.Width, img.Height);
          using (var internalimage = await Image.LoadAsync(resizedstreama))
@@ -523,8 +563,8 @@ public class ImageModule : BaseCommandModule, IRequireFonts
          var lang = await Language.GetLanguageFromCtxAsync(ctx);
          var img = await Image.LoadAsync(
              Assembly.GetExecutingAssembly()
-                 .GetManifestResourceStream("RollingBot.SB.Modules.ImageModule.Templates.adventure_time_template.png") ??
-             throw new TemplateReturningNullException("RollingBot.SB.Modules.ImageModule.Templates.adventure_time_template.png"));
+                 .GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png") ??
+             throw new TemplateReturningNullException("SilverBotDS.Templates.adventure_time_template.png"));
          await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person));
          await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(friendo));
          using (var internalimage = await Image.LoadAsync(resizedstreamb))
@@ -557,7 +597,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     [Command("mspaint")]
     public async Task Paint(CommandContext ctx, SdImage image)
     {
-        await CommonCodeWithTemplate(ctx, "RollingBot.SB.Modules.ImageModule.Templates.paint_template.png", async (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.paint_template.png", async (img) =>
         {
             await using var resizedstream =
             (await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(1771, 984), PngFormat.Instance)).Item1;
@@ -581,7 +621,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     [RequireAttachment(0)]
     public async Task Motivate(CommandContext ctx, SdImage image, [RemainingText] string text)
     {
-        await CommonCodeWithTemplate(ctx, "RollingBot.SB.Modules.ImageModule.Templates.motivator_template.png", async (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.motivator_template.png", async (img) =>
         {
             await using var resizedstream =
             (await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(1027, 684), PngFormat.Instance)).Item1;
@@ -618,7 +658,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     [Description("epic embed fail")]
     public async Task JokerLaugh(CommandContext ctx, [RemainingText] string text)
     {
-        await CommonCodeWithTemplate(ctx, "RollingBot.SB.Modules.ImageModule.Templates.joker_laugh.gif", (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.joker_laugh.gif", (img) =>
         {
             Font jokerFont = new(_jokerFontFamily, img.Width / 10);
             var dr = new TextOptions(jokerFont)
@@ -634,49 +674,5 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         }, filename: "sbfail.gif", encoder: new GifEncoder());
     }
 
-    [Command("caption")]
-    public async Task Caption(CommandContext ctx, SdImage image, [RemainingText] string text)
-    {
-        await ctx.TriggerTypingAsync();
-        await using var inStream = new MemoryStream(await image.GetBytesAsync(HttpClient));
-        using var bitmap = Image.Load(inStream, out var frmt);
-        int x = bitmap.Width, y = bitmap.Height;
-        var font = new Font(_captionFont, x / 10);
-        await using var outStream = new MemoryStream();
-        FontRectangle textSize;
-        var dr = new TextOptions(font)
-        {
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            Origin = new System.Numerics.Vector2(bitmap.Width / 2, 20)
-        };
-        textSize = TextMeasurer.Measure(text, dr);
-        using (var img2 = new Image<Rgba32>(x, y + (int)textSize.Height))
-        {
-            img2.Mutate(o => o.Fill(Color.FromRgb(255, 255, 255)));
-            img2.Mutate(o => o.DrawText(dr, text, Brushes.Solid(Color.Black)));
-            img2.Mutate(o => o.DrawImage(bitmap, new Point(0, (int)textSize.Height), 1));
-            img2.Save(outStream, frmt);
-        }
-
-        outStream.Position = 0;
-        if (outStream.Length > MaxBytes)
-        {
-            await Send_img_plsAsync(ctx,
-                    string.Format(OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)))
-                .ConfigureAwait(false);
-        }
-        else
-        {
-            await SendImageStream(ctx, outStream, content: "there");
-        }
-    }
-
-    [Command("caption")]
-    [RequireAttachment]
-    public async Task Caption(CommandContext ctx, [RemainingText] string text)
-    {
-        var image = SdImage.FromContext(ctx);
-        await Caption(ctx, image, text);
-    }
+  
 }

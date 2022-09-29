@@ -54,11 +54,13 @@ public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
         if (!command && LoopSettings == LoopSettings.LoopingSong && CurrentTrack != null)
         {
             QueueHistory.Add(new Tuple<LavalinkTrack, DateTime, bool>(CurrentTrack, DateTime.UtcNow, false));
+            LoopTimes++;
             return PlayAsync(CurrentTrack, false);
         }
 
         if (!Queue.IsEmpty)
         {
+            LoopTimes = 0;
             LavalinkTrack? track = null;
             while (count-- > 0)
             {

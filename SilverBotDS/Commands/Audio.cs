@@ -509,6 +509,10 @@ public class Audio : BaseCommandModule
         {
             e.WithThumbnail(url);
         }
+        if (player.LoopTimes > 0)
+        {
+            e.AddField(lang.TimesTrackLooped, player.LoopTimes + (player.LoopTimes != 1 ? " times" : " time"));
+        }
         var pages = new List<Page>
         {
            new(embed:e)

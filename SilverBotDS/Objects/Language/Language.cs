@@ -405,6 +405,8 @@ public class Language
     public string TimeTillTrackPlays { get; set; } = "Estimated time till it plays:";
 
     public string TimeWhenTrackPlayed { get; set; } = "Time when the track started:";
+    public string TimesTrackLooped { get; set; } = "Times track has looped:";
+
 
     /// <summary>
     ///     Uh oh something went wrong. Please try again a little bit later.

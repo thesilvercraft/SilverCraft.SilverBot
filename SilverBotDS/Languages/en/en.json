@@ -78,6 +78,7 @@
   "AlreadyVoted": "Your vote was counted already",
   "TimeTillTrackPlays": "Estimated time till it plays:",
   "TimeWhenTrackPlayed": "Time when the track started:",
+  "TimesTrackLooped": "Times track has looped:",
   "SearchFail": "Uh oh something went wrong. Please try again a little bit later.",
   "SearchFailTitle": "Uh oh something went wrong.",
   "SearchFailDescription": "Please try again a little bit later.",

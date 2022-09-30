@@ -11,7 +11,7 @@
     </PackageReference>
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.3.0-nightly-01171" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.3.0-nightly-01171" />
-    <PackageReference Include="DSharpPlus.SlashCommands" Version="4.3.0-nightly-01171" />
+    <PackageReference Include="DSharpPlus.SlashCommands" Version="4.3.0-nightly-01173" />
     <PackageReference Include="DSharpPlus.VoiceNext" Version="4.3.0-nightly-01171">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>

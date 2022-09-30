@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SilverBotDS.Objects;
 
@@ -10,9 +11,10 @@ using SilverBotDS.Objects;
 namespace SilverBotDS.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220929175113_New language strings")]
+    partial class Newlanguagestrings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -26,7 +28,6 @@ namespace SilverBotDS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Data")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Handled")
@@ -62,7 +63,6 @@ namespace SilverBotDS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Emoji")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<ulong?>("EmojiId")
@@ -103,7 +103,6 @@ namespace SilverBotDS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("XPString")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -117,7 +116,6 @@ namespace SilverBotDS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("QuoteContent")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("TimeStamp")
@@ -141,11 +139,9 @@ namespace SilverBotDS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LangName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PrefixesInJson")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Reminders")
@@ -158,7 +154,6 @@ namespace SilverBotDS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ServerStatsTemplatesInJson")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("WebShot")
@@ -179,7 +174,6 @@ namespace SilverBotDS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LangName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("UsesNewMusicPage")
@@ -198,842 +192,633 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("INTEGER");
 
                             b1.Property<string>("AccountCreationDate")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AccountJoinDate")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AddedXAmountOfSongs")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AllAvailibleEmotes")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AlreadyConnected")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AlreadyOptedIn")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AlreadyVoted")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AmericanMoney")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AttributeDataBaseCheckNoDirectMessages")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AttributeDataBaseCheckWebShot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Ban")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("BotBannedUser")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("BotHasLowerRole")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("BotKickedUser")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CLR")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CanForceSkip")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CancelReminderErrorAlreadyHandled")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CancelReminderErrorMultiple")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CancelReminderErrorNoEvent")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CancelReminderSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CategorySetSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ChecksFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ComicSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CommandIsDisabled")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CostsMoneyGameTypeBug")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CultureInfo")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("DblaReturnedNull")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("DisabledRepeatedPhrases")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Downloads")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("DsharpplusVersion")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EmojiEnd")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EmojiMessageDownloadEnd")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EmojiMessageDownloadStart")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EmoteWasLargerThan256K")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EnableRepeatedPhrases")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Enqueued")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("FreeToPlayGameType")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GeneralException")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GitBranch")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GitCommitHash")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GitRepo")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GiveawayItemNull")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GiveawayResultsNoReactions")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GiveawayResultsWon")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupAliases")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupArguments")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupCanBeExecuted")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupListingAllCommands")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupSubcommands")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandHelpString")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandNoDescription")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Hi")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<Guid>("Id")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("InformationAbout")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("InvalidOverload")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("IsABot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("IsAnOwner")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("IsDirty")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Joined")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("JoinedSilverCraft")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("JpegSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Kick")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LangCodeGoogleTranslate")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LangName")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Left")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ListReminderListMore")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ListReminderNone")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ListReminderStart")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LoadedSilverBotPlaylistWithTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LoopingQueue")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LoopingSong")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MathSteps")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Meme")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MoreThanOneImageGeneric")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MultipleEmotesFound")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoEmotesFound")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoGamesWereReturned")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoGamesWereReturnedDescription")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoImageGeneric")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoMatchingSubcommandsAndGroupNotExecutable")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoPerm")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoResults")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotAvailableGameType")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotConnected")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotLooping")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotPaused")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotPlaying")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotValidLanguage")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NothingInQueue")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NothingInQueueHistory")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NowPlaying")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NuGetVerified")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OS")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OptedIn")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OptedInWebshot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OptedOutWebshot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OutputFileLargerThan8M")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PageGif")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PageGifButtonText")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PageNuget")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PeriodExpired")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollErrorQuestionNull")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollResultsResultNo")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollResultsResultUndecided")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollResultsResultYes")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollResultsStart")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PoweredByGiphy")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PrefixUsedTopgg")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeNothingToDelete")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeNumberNegative")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeRemovedFront")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeRemovedPlural")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeRemovedSingle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgedBySilverBotReason")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QueueNothing")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuoteGetNoBook")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuoteGetNoQuoteWithId")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuotePreviewDeleteSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuotePreviewQuoteID")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RandomGif")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleDone")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleEmbedColour")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleIntro")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleMainLoop")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleNoPermManageRoles")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleNone")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseNo")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseNo2")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseNo3")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseYes")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseYes2")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseYes3")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleRolesAdded")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReminderContent")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReminderErrorNoContent")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReminderSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedFront")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedSong")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedSongs")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedXSongOrSongs")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequestedBy")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireBotAndUserPermisionsCheckFailedPL")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireBotAndUserPermisionsCheckFailedSG")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireBotPermisionsCheckFailedPL")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireBotPermisionsCheckFailedSG")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireDJCheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireGuildCheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireNsfwCheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireOwnerCheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireRolesCheckFailedPL")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireRolesCheckFailedSG")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireUserPermisionsCheckFailedPL")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireUserPermisionsCheckFailedSG")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ResizeSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Results")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SearchFail")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SearchFailDescription")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SearchFailTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SearchedFor")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Server")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SetToDefaultStrings")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SetToProvidedStrings")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ShuffledSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SilverSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SilverhostingJokeDescription")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SilverhostingJokeTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SkippedNP")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SomethingsContributors")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongByAuthor")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongLength")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongNotExist")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongTimeLeft")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongTimeLeftSongLooping")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongTimeLeftSongLoopingCurrent")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongTimePosition")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Success")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TimeInUtc")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TimeTillTrackPlays")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TimeWhenTrackPlayed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TimesTrackLooped")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TintSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TrackCanNotBeSeeked")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TrackingStarted")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TrackingStopped")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Type")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UnknownImageFormat")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UrbanExample")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UselessFact")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("User")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UserHasLowerRole")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UserIsBannedFromSilversocial")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UserIsntBot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UserNotConnected")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Userid")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Version")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("VersionInfoTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("VersionNumber")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("VolumeNotCorrect")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Voted")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("WrongImageCount")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandCardSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandFailOther")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandFailSelf")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandGeneralFail")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandLeaderBoardPerson")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandLeaderBoardTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandOther")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandSelf")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.HasKey("TranslatorSettingsId");
@@ -1054,839 +839,630 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AccountCreationDate")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AccountJoinDate")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AddedXAmountOfSongs")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AllAvailibleEmotes")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AlreadyConnected")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AlreadyOptedIn")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AlreadyVoted")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AmericanMoney")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AttributeDataBaseCheckNoDirectMessages")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AttributeDataBaseCheckWebShot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Ban")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("BotBannedUser")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("BotHasLowerRole")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("BotKickedUser")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CLR")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CanForceSkip")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CancelReminderErrorAlreadyHandled")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CancelReminderErrorMultiple")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CancelReminderErrorNoEvent")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CancelReminderSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CategorySetSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ChecksFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ComicSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CommandIsDisabled")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CostsMoneyGameTypeBug")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("CultureInfo")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("DblaReturnedNull")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("DisabledRepeatedPhrases")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Downloads")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("DsharpplusVersion")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EmojiEnd")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EmojiMessageDownloadEnd")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EmojiMessageDownloadStart")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EmoteWasLargerThan256K")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("EnableRepeatedPhrases")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Enqueued")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("FreeToPlayGameType")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GeneralException")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GitBranch")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GitCommitHash")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GitRepo")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GiveawayItemNull")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GiveawayResultsNoReactions")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("GiveawayResultsWon")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupAliases")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupArguments")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupCanBeExecuted")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupListingAllCommands")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandGroupSubcommands")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandHelpString")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("HelpCommandNoDescription")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Hi")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("InformationAbout")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("InvalidOverload")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("IsABot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("IsAnOwner")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("IsDirty")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Joined")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("JoinedSilverCraft")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("JpegSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Kick")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LangCodeGoogleTranslate")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LangName")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Left")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ListReminderListMore")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ListReminderNone")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ListReminderStart")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LoadedSilverBotPlaylistWithTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LoopingQueue")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("LoopingSong")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MathSteps")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Meme")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MoreThanOneImageGeneric")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("MultipleEmotesFound")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoEmotesFound")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoGamesWereReturned")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoGamesWereReturnedDescription")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoImageGeneric")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoMatchingSubcommandsAndGroupNotExecutable")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoPerm")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NoResults")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotAvailableGameType")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotConnected")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotLooping")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotPaused")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotPlaying")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NotValidLanguage")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NothingInQueue")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NothingInQueueHistory")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NowPlaying")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("NuGetVerified")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OS")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OptedIn")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OptedInWebshot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OptedOutWebshot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("OutputFileLargerThan8M")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PageGif")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PageGifButtonText")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PageNuget")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PeriodExpired")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollErrorQuestionNull")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollResultsResultNo")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollResultsResultUndecided")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollResultsResultYes")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PollResultsStart")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PoweredByGiphy")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PrefixUsedTopgg")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeNothingToDelete")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeNumberNegative")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeRemovedFront")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeRemovedPlural")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgeRemovedSingle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PurgedBySilverBotReason")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QueueNothing")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuoteGetNoBook")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuoteGetNoQuoteWithId")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuotePreviewDeleteSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("QuotePreviewQuoteID")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RandomGif")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleDone")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleEmbedColour")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleIntro")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleMainLoop")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleNoPermManageRoles")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleNone")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseNo")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseNo2")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseNo3")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseYes")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseYes2")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleResponseYes3")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleRolesAdded")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReactionRoleTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReminderContent")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReminderErrorNoContent")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ReminderSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedFront")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedSong")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedSongs")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RemovedXSongOrSongs")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequestedBy")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireBotAndUserPermisionsCheckFailedPL")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireBotAndUserPermisionsCheckFailedSG")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireBotPermisionsCheckFailedPL")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireBotPermisionsCheckFailedSG")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireDJCheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireGuildCheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireNsfwCheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireOwnerCheckFailed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireRolesCheckFailedPL")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireRolesCheckFailedSG")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireUserPermisionsCheckFailedPL")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("RequireUserPermisionsCheckFailedSG")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ResizeSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Results")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SearchFail")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SearchFailDescription")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SearchFailTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SearchedFor")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Server")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SetToDefaultStrings")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SetToProvidedStrings")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("ShuffledSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SilverSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SilverhostingJokeDescription")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SilverhostingJokeTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SkippedNP")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SomethingsContributors")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongByAuthor")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongLength")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongNotExist")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongTimeLeft")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongTimeLeftSongLooping")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongTimeLeftSongLoopingCurrent")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SongTimePosition")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Success")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TimeInUtc")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TimeTillTrackPlays")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TimeWhenTrackPlayed")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TimesTrackLooped")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TintSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TrackCanNotBeSeeked")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TrackingStarted")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("TrackingStopped")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Type")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UnknownImageFormat")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UrbanExample")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UselessFact")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("User")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UserHasLowerRole")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UserIsBannedFromSilversocial")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UserIsntBot")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("UserNotConnected")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Userid")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Version")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("VersionInfoTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("VersionNumber")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("VolumeNotCorrect")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Voted")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("WrongImageCount")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandCardSuccess")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandFailOther")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandFailSelf")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandGeneralFail")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandLeaderBoardPerson")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandLeaderBoardTitle")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandOther")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("XPCommandSelf")
-                                .IsRequired()
                                 .HasColumnType("TEXT");
 
                             b1.HasKey("TranslatorSettingsId", "Id");
@@ -1897,8 +1473,7 @@ namespace SilverBotDS.Migrations
                                 .HasForeignKey("TranslatorSettingsId");
                         });
 
-                    b.Navigation("CurrentCustomLanguage")
-                        .IsRequired();
+                    b.Navigation("CurrentCustomLanguage");
 
                     b.Navigation("CustomLanguages");
                 });

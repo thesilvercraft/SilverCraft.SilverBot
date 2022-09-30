@@ -1,0 +1,48 @@
+﻿@page "/userpreferences"
+@using SilverBotDS.WebHelpers
+@using SilverBotDS.Objects
+@using Microsoft.AspNetCore.Http
+@using DSharpPlus
+
+@inject Config _config
+@inject IHttpContextAccessor _httpContextAccessor
+@inject DiscordClient _discord
+@inject DatabaseContext _dbctx
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _uriHelper
+@inject HttpClient _client
+@{
+    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
+    {
+        _uriHelper.NavigateTo("/login", true);
+    }
+    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
+
+
+    var userpref = _dbctx.userSettings.FirstOrDefault(x => x.Id == thing.UId);
+    if (userpref == null)
+    {
+        userpref = new UserSettings {Id = thing.UId, IsBanned = false, LangName = "en", UsesNewMusicPage = false};
+        _dbctx.userSettings.Add(userpref);
+        _dbctx.SaveChanges();
+    }
+}
+@if (!_dbctx.IsBanned(thing.UId))
+{
+    <p>Welcome to the beta version of the user preferences edit page</p>
+
+
+    <RadzenSwitch @bind-Value=@userpref.UsesNewMusicPage Name="Switch1" Style="margin-bottom: 20px"/>
+    <RadzenLabel Text="Use the new Music Controller page" Component="Switch1" Style="margin-left: 5px;"/>
+    <br/>
+    <RadzenDropDown AllowClear="false" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@Language.GetLoadedLanguages() @bind-Value=@userpref.LangName
+                    TextProperty="Value.LangName" ValueProperty="Key" Style="width:300px"/>
+    <RadzenLabel Text="Your personal language (used for direct messages and stuff)" Component="Switch2" Style="margin-left: 5px;"/>
+
+    <br/>
+    <RadzenButton Click=@(args => { _dbctx.userSettings.Update(userpref); _dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px"/>
+}
+else
+{
+    <h1>Oh no an error has occured, please contact the person that owns this instance of Silverbot.</h1>
+}

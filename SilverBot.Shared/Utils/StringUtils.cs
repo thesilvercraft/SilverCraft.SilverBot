@@ -14,7 +14,7 @@ public static class StringUtils
     /// <returns>A random string from the array</returns>
     public static string RandomFromArray(this string[] vs)
     {
-        return ArrayUtils.RandomFromArray(vs);
+        return vs.RandomFrom();
     }
 
     public static string FormatFromDictionary(this string formatString, Dictionary<string, string> valueDict)

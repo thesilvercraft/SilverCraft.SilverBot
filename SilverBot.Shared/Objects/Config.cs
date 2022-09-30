@@ -1,14 +1,8 @@
 ﻿using DSharpPlus.Entities;
 using Microsoft.Extensions.Logging;
 using SilverBotDS.Attributes;
-using SilverBotDS.Commands;
-using SilverBotDS.Commands.Gamering;
 using SilverBotDS.Utils;
-using System;
-using System.IO;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -17,7 +11,7 @@ namespace SilverBotDS.Objects;
 [Serializable]
 public class Config
 {
-    private const ulong CurrentConfVer = 44;
+    private const ulong CurrentConfVer = 45;
 
     [XmlDescription("Array of prefixes the bot will respond to")]
     public string[] Prefix { get; set; } =
@@ -40,36 +34,31 @@ public class Config
     [XmlDescription("The Discord token, can be had at https://discord.com/developers/")]
     public string Token { get; set; } = "Discord_Token_Here";
 
-    [XmlDescription(
-        "Allow silverbot to use the shitty commands discord is pushing down our throats, this uses the DSharpPlus.SlashCommands library made by IDoEverything")]
-    public bool UseSlashCommands { get; set; } = true;
 
     [XmlDescription("What modules should silverbot load")]
     public string[] ModulesToLoad { get; set; } =
     {
-        typeof(Genericcommands).FullName,
-        typeof(Emotes).FullName,
-        typeof(ModCommands).FullName,
-        typeof(Giphy).FullName,
-        typeof(OwnerOnly).FullName,
-        typeof(SteamCommands).FullName,
-        typeof(Fortnite).FullName,
-        typeof(Bubot).FullName,
-        typeof(BibiCommands).FullName,
-        typeof(BibiLib).FullName,
-        typeof(Audio).FullName,
-        typeof(MiscCommands).FullName,
-        typeof(MinecraftModule).FullName,
-        typeof(UserQuotesModule).FullName,
-        typeof(TranslatorCommands).FullName,
-        typeof(ServerStatsCommands).FullName,
-        typeof(ImageModule).FullName,
-        typeof(Experience).FullName,
-        typeof(AdminCommands).FullName,
-        typeof(AdminCommands).FullName,
-        typeof(ReactionRoleCommands).FullName,
-        typeof(ReminderCommands).FullName,
-
+        "SilverBotDS.Commands.Genericcommands",
+        "SilverBotDS.Commands.Emotes",
+        "SilverBotDS.Commands.ModCommands",
+        "SilverBotDS.Commands.Giphy",
+        "SilverBotDS.Commands.OwnerOnly",
+        "SilverBotDS.Commands.Gamering.SteamCommands",
+        "SilverBotDS.Commands.Gamering.Fortnite",
+        "SilverBotDS.Commands.Bubot",
+        "SilverBotDS.Commands.BibiCommands",
+        "SilverBotDS.Commands.BibiLib",
+        "SilverBotDS.Commands.Audio",
+        "SilverBotDS.Commands.MiscCommands",
+        "SilverBotDS.Commands.Gamering.MinecraftModule",
+        "SilverBotDS.Commands.UserQuotesModule",
+        "SilverBotDS.Commands.TranslatorCommands",
+        "SilverBotDS.Commands.ServerStatsCommands",
+        "SilverBotDS.Commands.ImageModule",
+        "SilverBotDS.Commands.Experience",
+        "SilverBotDS.Commands.AdminCommands",
+        "SilverBotDS.Commands.ReactionRoleCommands",
+        "SilverBotDS.Commands.ReminderCommands",
     };
 
     [XmlDescription("What services should silverbot load from external dlls")]
@@ -112,16 +101,13 @@ public class Config
     [XmlDescription("The current config version, don't change unless insctructed by dev")]
     public ulong? ConfigVer { get; set; }
 
-    [XmlDescription("use the microsoft azure service for signalr")]
-    public bool AzureSignalR { get; set; } = false;
+ 
 
     [XmlDescription("Webhook for logging")]
     public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
 
 
-    [XmlDescription(
-        "What kind of browser to use, 0 for no browser, 1 for chrome (chromedriver), 2 for firefox (geckodriver), 3 should be the remotebrowser(uses pagerendererapi)")]
-    public int BrowserType { get; set; } = 1;
+ 
 
 
     [XmlDescription(
@@ -150,15 +136,7 @@ public class Config
     [XmlDescription("Friday text channel. leave 0 to disable")]
     public ulong FridayTextChannel { get; set; }
 
-    [XmlDescription(
-        "What kind of database to use, 1 for postgresql (https://cdn.discordapp.com/attachments/636085718002958336/841264673868873769/postgres.png), 2 for sqllite (easier if you are unable to host postgresql)), 3 for azuredb")]
-    public int DatabaseType { get; set; } = 1;
-
-    [XmlDescription("Conection string for database, Unused if using sqllite, make null if stored in DATABASE_URL")]
-    public string ConnString { get; set; } = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
-
-    [XmlDescription("Uses Jering.Javascript.NodeJS to execute some javascript code")]
-    public bool UseNodeJs { get; set; } = false;
+  
 
     [XmlDescription("Allow silverbot to load (or make) a colors config, useful if you plan on adding colors")]
     public bool ColorConfig { get; set; } = true;
@@ -211,7 +189,6 @@ public class Config
     [XmlDescription("Do we check github for a newer commit")]
     public bool EnableUpdateChecking { get; set; } = false;
 
-    
     public bool SendErrorsThroughSegment { get; set; } = false;
 
     [XmlDescription("Webhooks for archiving")]
@@ -237,8 +214,6 @@ public class Config
         { "ninja tuna", "https://music.youtube.com/playlist?list=OLAK5uy_lYrDqWbPEMCqxcBSOdaMWonNJzP24mLhA" },
         { "antenna5", "http://antenna5stream.neotel.mk:8000/live128" }
     };
-
-   
 
     public Splash[] Splashes { get; set; } =
     {
@@ -408,13 +383,8 @@ public class Config
     {
         using (var streamReader = new StreamReader("silverbot.xml"))
         {
-            await using (var streamWriter = new StreamWriter("silverbotold.xml", false))
-            {
-                await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
-                streamWriter.Close();
-            }
-
-            streamReader.Close();
+            await using var streamWriter = new StreamWriter("silverbotold.xml", false);
+            await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
         }
 
         await using (var streamWriter = new StreamWriter("silverbot.xml"))
@@ -428,7 +398,6 @@ public class Config
 
             readconfig.ConfigVer = CurrentConfVer;
             MakeDocumentWithComments(XmlUtils.SerializeToXmlDocument(readconfig)).Save(streamWriter);
-            streamWriter.Close();
         }
     }
 
@@ -460,9 +429,6 @@ public class Config
                             conf.JavaLoc = Console.ReadLine();
                         }
                     }
-                    conf.BrowserType = 0;
-                    Console.WriteLine("What kind of database will you be using? (1 = postgres, 2 = sqllite (DEFAULT), 3 = azure) (using sqllite is the default and recommended for small instances and other databases might might not work properly)");
-                    conf.DatabaseType = int.TryParse(Console.ReadLine(), out var dbtype) ? dbtype : 2;
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Please manually review the generated config as this generator is not even close to being finished");
                 }

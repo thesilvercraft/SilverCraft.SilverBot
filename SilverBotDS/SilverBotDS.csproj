@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -7,10 +7,11 @@
     <PropertyGroup>
         <DebugType>portable</DebugType>
         <StartupObject>SilverBotDS.Program</StartupObject>
-        <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
+        <ApplicationIcon>favicon.ico</ApplicationIcon>
         <AnalysisLevel>preview</AnalysisLevel>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <UserSecretsId>02ac9d1d-689a-48f6-a136-dc1e8cb28b0d</UserSecretsId>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <OutputPath>bin\Debug\</OutputPath>
@@ -42,33 +43,17 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="..\.editorconfig" Link=".editorconfig" />
-        <None Include="Shared\MainLayout.razor" />
-        <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
-        <None Include="wwwroot\css\open-iconic\FONT-LICENSE" />
-        <None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
-        <None Include="wwwroot\css\open-iconic\ICON-LICENSE" />
-        <None Include="wwwroot\css\open-iconic\README.md" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DSharpPlus" Version="4.3.0-nightly-01171">
-          <TreatAsUsed>true</TreatAsUsed>
-        </PackageReference>
-        <PackageReference Include="DSharpPlus.CommandsNext" Version="4.3.0-nightly-01171" />
-        <PackageReference Include="DSharpPlus.Interactivity" Version="4.3.0-nightly-01171" />
-        <PackageReference Include="DSharpPlus.SlashCommands" Version="4.3.0-nightly-01171" />
-        <PackageReference Include="DSharpPlus.VoiceNext" Version="4.3.0-nightly-01171">
-          <TreatAsUsed>true</TreatAsUsed>
-        </PackageReference>
+        
         <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.2" />
         <PackageReference Include="GiphyDotNet" Version="2.4.0" />
         <PackageReference Include="GitInfo" Version="2.2.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Humanizer" Version="2.14.1">
-          <TreatAsUsed>true</TreatAsUsed>
-        </PackageReference>
+        <PackageReference Include="Humanizer" Version="2.14.1" />
         <PackageReference Include="IPAddressRange" Version="4.2.0" />
         <PackageReference Include="Lavalink4NET.DSharpPlus" Version="3.0.0-preview.12" />
         <PackageReference Include="Microsoft.Azure.SignalR" Version="1.18.3" />
@@ -82,10 +67,8 @@
             <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.9">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.9" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -99,48 +82,38 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Radzen.Blazor" Version="4.1.5" />
         <PackageReference Include="Serilog" Version="2.12.0">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+       
         <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.0.0-alpha.0.54" />
-        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15.1" />
+
         <PackageReference Include="SpotifyAPI.Web" Version="6.3.0" />
         <PackageReference Include="SteamStoreQuery" Version="1.0.5" />
         <PackageReference Include="System.Globalization" Version="4.3.0">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="System.Globalization.Calendars" Version="4.3.0">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="System.Linq.Async" Version="6.0.1" />
         <PackageReference Include="System.Net.Http" Version="4.3.4">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="System.Runtime" Version="4.3.1">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="System.Text.Json" Version="6.0.6">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
         <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0">
-          <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\SDiscordSink\SDiscordSink.csproj" />
+        <ProjectReference Include="..\SilverBot.Shared\SilverBot.Shared.csproj" />
+        <ProjectReference Include="..\SilverBotDS.AnimeModule\SilverBotDS.AnimeModule.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -229,6 +202,9 @@
         <None Update="Templates\BibiLibCutout\9.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="Templates\BibiLibCutout\Titles.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Update="Templates\BibiLibFull\1.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -284,6 +260,9 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Templates\BibiLibFull\9.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Templates\BibiLibFull\Titles.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Templates\Bibi\1.png">

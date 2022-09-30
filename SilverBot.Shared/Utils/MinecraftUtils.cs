@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS.Utils;
 
-internal static class MinecraftUtils
+public static class MinecraftUtils
 {
     private const string GetProfileUrl = "https://api.mojang.com/users/profiles/minecraft/{0}";
     private const string CrafatarBaseUrl = "https://crafatar.com/";

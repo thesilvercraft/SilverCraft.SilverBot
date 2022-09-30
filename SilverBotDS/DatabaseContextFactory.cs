@@ -9,7 +9,7 @@ public class DatabaseContextFactory : IDesignTimeDbContextFactory<DatabaseContex
     {
         //should only be used by Add-Migration
         var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-        optionsBuilder.UseSqlite("Data Source=test.db");
+        optionsBuilder.UseSqlite("Data Source=test.db", b => b.MigrationsAssembly("SilverBotDS"));
         return new DatabaseContext(optionsBuilder.Options);
     }
 }

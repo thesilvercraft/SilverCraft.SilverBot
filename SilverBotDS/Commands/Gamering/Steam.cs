@@ -27,7 +27,7 @@ public class SteamCommands : BaseCommandModule
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         try
         {
-            var listings = Steam.Search(game);
+            var listings = SteamStoreQuery.Query.Search(game);
             var pages = new List<Page>();
             for (var i = 0; i < listings.Count; i++)
             {

@@ -1,0 +1,65 @@
+﻿@page "/manageserver/{id:long}"
+@using SilverBotDS.WebHelpers
+@using SilverBotDS.Objects
+@using Microsoft.AspNetCore.Http
+@using DSharpPlus
+@using DSharpPlus.CommandsNext
+
+@inject Config _config
+@inject IHttpContextAccessor _httpContextAccessor
+@inject DiscordClient _discord
+@inject DatabaseContext _dbctx
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _uriHelper
+@inject HttpClient _client
+
+@code {
+
+    [Parameter]
+    public long Id { get; set; }
+
+}
+
+@{
+    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
+    {
+        _uriHelper.NavigateTo("/login", true);
+    }
+    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
+    var servers = from server in _httpContextAccessor.HttpContext.Session.GetGuildsFromSession(_client)
+        where _discord.Guilds.ContainsKey(server.UId) && (_discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult().Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner)
+        select server;
+    if (!servers.Any(x => x.Id == Id.ToString()))
+    {
+        _uriHelper.NavigateTo("/listguilds");
+    }
+    var ser = servers.First(x => x.Id == Id.ToString());
+    var seropt = _dbctx.GetServerSettings((ulong) Id);
+
+}
+@if (!_dbctx.IsBanned(thing.UId))
+{
+    <p>Welcome to the beta version of the server config page</p>
+    <p>Currently editing: <strong>@ser.Name</strong></p>
+
+    <RadzenSwitch @bind-Value=@seropt.EmotesOptin Name="Switch1" Style="margin-bottom: 20px"/>
+    <RadzenLabel Text="Opt into emotes" Component="Switch1" Style="margin-left: 5px;"/>
+    <br/>
+    <RadzenSwitch @bind-Value=@seropt.RepeatThings Name="Switch2" Style="margin-bottom: 20px"/>
+    <RadzenLabel Text="Opt into repeating of phrases" Component="Switch2" Style="margin-left: 5px;"/>
+    <br/>
+    
+    @if(_discord.GetCommandsNext().RegisteredCommands.Any(x=>x.Key=="remindme"))
+    {
+        <RadzenSwitch @bind-Value=@seropt.Reminders Name="Switch4" Style="margin-bottom: 20px"/>
+    <RadzenLabel Text="Opt into Reminders" Component="Switch4" Style="margin-left: 5px;"/>
+        
+        <br/>
+    }
+     
+    <RadzenButton Click=@(args => { _dbctx.serverSettings.Update(seropt); _dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px"/>
+}
+else
+{
+    <h1>Oh no an error has occured, please contact the person that owns this instance of Silverbot.</h1>
+}

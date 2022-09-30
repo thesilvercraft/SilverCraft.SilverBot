@@ -2,9 +2,9 @@
 
 namespace SilverBotDS.Utils;
 
-internal static class ArrayUtils
+public static class ArrayUtils
 {
-    public static T RandomFromArray<T>(T[] vs)
+    public static T RandomFrom<T>(this T[] vs)
     {
         return vs.Length == 0
             ? throw new ArgumentOutOfRangeException(nameof(vs), "Array must not be empty")

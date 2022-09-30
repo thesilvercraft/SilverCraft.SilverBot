@@ -552,7 +552,7 @@ public class OwnerOnly : SilverBotCommandModule
         }
 
         var client = HttpClient;
-        var ziploc = $"{Environment.CurrentDirectory}{Program.DirSlash}temp.zip";
+        var ziploc = Path.Combine(Environment.CurrentDirectory,"temp.zip");
         var rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
         await using (var fs = new FileStream(
                          ziploc,
@@ -561,7 +561,7 @@ public class OwnerOnly : SilverBotCommandModule
             await rm.Content.CopyToAsync(fs);
         }
 
-        var foldername = $"{Environment.CurrentDirectory}{Program.DirSlash}temp";
+        var foldername = Path.Combine(Environment.CurrentDirectory,"temp");
         if (!Directory.Exists(foldername))
         {
             Directory.CreateDirectory(foldername);

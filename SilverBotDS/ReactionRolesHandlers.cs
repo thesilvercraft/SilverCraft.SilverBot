@@ -5,7 +5,6 @@ using SilverBotDS.Objects;
 using SilverBotDS.Objects.Database.Classes.ReactionRole;
 using System;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace SilverBotDS

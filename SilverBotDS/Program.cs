@@ -14,7 +14,6 @@ using Lavalink4NET.Artwork;
 using Lavalink4NET.DSharpPlus;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Tracking;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +23,6 @@ using SDiscordSink;
 using Serilog;
 using Serilog.Core;
 using Serilog.Sinks.SystemConsole.Themes;
-using SilverBotDS.Commands.Slash;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
@@ -44,13 +42,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace SilverBotDS
 {
     internal static class Program
     {
-        public static readonly char DirSlash = Environment.OSVersion.Platform == PlatformID.Win32NT ? '\\' : '/';
+
         private static Config _config;
 
         private static DiscordClient _discord;
@@ -65,7 +62,7 @@ namespace SilverBotDS
         {
             "anime", "canada", "e",
             "https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif", "h",
-            "gaming", "<:kalorichan:839099093552332850>", "kalorichan",
+            "gaming", "<:kalorichan:839099093552332850>", "kalorichan", "silver face"
         };
 
         private static readonly Dictionary<ulong, DateTime> XpLevelling = new();
@@ -85,12 +82,12 @@ namespace SilverBotDS
             RunningTasks.Add(a, b);
             return Task.CompletedTask;
         }
-
         /// <summary>
-        /// tell efcore to die for now
+        /// EFCore Scaring mesure
         /// </summary>
         public static IHostBuilder CreateHostBuilder(string[] args)
         => null;
+
 
         private static void Main(string[] args)
         {
@@ -262,58 +259,16 @@ namespace SilverBotDS
             _discord.MessageCreated += Discord_MessageCreated;
             _log.Verbose("Initializing Commands");
             ServiceCollection services = new();
+            services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
 
-          
-           /* if (IsNotNullAndIsNotB(_config.SegmentPrivateSource, "Segment_Key"))
-            {
-                services.AddSingleton<IAnalyse>(new SegmentIo(_config.SegmentPrivateSource));
-            }*/
 
-            #region Database fun stuff
+            services.AddDbContext<DatabaseContext>(
+                              options =>
+                              {
+                                  options.UseSqlite("Filename=./silverbotdatabasev2.db", b => b.MigrationsAssembly("SilverBotDS"));
+                                  if (Debugger.IsAttached) { options.EnableSensitiveDataLogging(); }
 
-            switch (_config.DatabaseType)
-            {
-                case 1:
-                    {
-                        if (_config != null && !string.IsNullOrEmpty(_config.ConnString))
-                        {
-                            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(_config.ConnString),
-                                ServiceLifetime.Transient);
-                        }
-                        else
-                        {
-                            Uri tmp = new(Environment.GetEnvironmentVariable("DATABASE_URL") ??
-                                          throw new InvalidOperationException());
-                            string[] usernameandpass = tmp.UserInfo.Split(":");
-                            services.AddDbContext<DatabaseContext>(
-                                options => options.UseNpgsql(
-                                    $"Host={tmp.Host};Username={usernameandpass[0]};Password={usernameandpass[1]};Database={HttpUtility.UrlDecode(tmp.AbsolutePath).Remove(0, 1)}"),
-                                ServiceLifetime.Transient);
-                        }
-
-                        break;
-                    }
-                case 2:
-                    {
-                        services.AddDbContext<DatabaseContext>(
-                            options =>
-                            {
-                                options.UseSqlite("Filename=./silverbotdatabasev2.db");
-                                if (Debugger.IsAttached) { options.EnableSensitiveDataLogging(); }
-                            }, ServiceLifetime.Transient);
-                        break;
-                    }
-                case 3:
-                    {
-                        var conn = configurationBuilder.GetConnectionString("Kestrel:Certificates:Development:Password");
-                        conn ??= _config.ConnString;
-                        services.AddDbContext<DatabaseContext>(options =>
-                            options.UseSqlServer(conn));
-                        break;
-                    }
-            }
-
-            #endregion Database fun stuff
+                              }, ServiceLifetime.Transient);
 
             services.AddSingleton(_config);
             services.AddSingleton(HttpClient);
@@ -328,19 +283,23 @@ namespace SilverBotDS
                         .DownloadLatestAsync(HttpClient);
                 }
 
-                _log.Information("Launching lavalink");
-                new Process
+                if (!Debugger.IsAttached)
                 {
-                    StartInfo = new ProcessStartInfo
+                    _log.Information("Launching lavalink");
+
+                    new Process
                     {
-                        FileName = _config.JavaLoc,
-                        Arguments = "-jar Lavalink.jar",
-                        UseShellExecute = true
-                    }
-                }.Start();
+                        StartInfo = new ProcessStartInfo
+                        {
+                            FileName = _config.JavaLoc,
+                            Arguments = "-jar Lavalink.jar",
+                            UseShellExecute = true
+                        }
+                    }.Start();
+                }
             }
-            _log.Verbose("Waiting 6s");
-            await Task.Delay(6000);
+            _log.Verbose("Waiting 2s");
+            await Task.Delay(2000);
             if (_config.UseLavaLink)
             {
                 _log.Information("Making a lavalinknode");
@@ -474,7 +433,7 @@ namespace SilverBotDS
             ServiceProvider = services.BuildServiceProvider();
             var context = ServiceProvider.GetService<DatabaseContext>();
             //Do stuff with the database making sure its up to date.
-            await context?.Database.MigrateAsync()!;
+            await context!.Database!.MigrateAsync()!;
             var commands = _discord.UseCommandsNext(new CommandsNextConfiguration
             {
                 Services = ServiceProvider,
@@ -520,7 +479,11 @@ namespace SilverBotDS
                             _log.Information("Module {Module} won't be loaded as its requirements weren't met", module);
                         }
                     }
-                    else
+                    else if (type.IsSubclassOf(typeof(ApplicationCommandModule)))
+                    {
+                        slash.RegisterCommands(type);
+                    }
+                    else if (type.IsSubclassOf(typeof(BaseCommandModule)))
                     {
                         commands.RegisterCommands(type);
                     }
@@ -587,7 +550,7 @@ namespace SilverBotDS
 
             #endregion Registering Commands
 
-           
+
             //🥁🥁🥁 drum-roll
             _log.Information("Connecting to discord");
             var isConnected = false;
@@ -733,38 +696,13 @@ namespace SilverBotDS
                ActivityType.Watching));
                 _log.Information("Creating host");
 
-                #region Website Fun Time
-
-                var _host = Host.CreateDefaultBuilder(args).ConfigureServices(s =>
-                {
-                    foreach (var e in services)
-                    {
-                        _log.Verbose("Giving an instance of {svcname} to the host", e.ServiceType.Name);
-                        s.Add(e);
-                    }
-                    _log.Verbose("Giving an instance of the discord client to the host");
-
-                    s.AddSingleton(_discord);
-                    if (_config.AzureSignalR)
-                    {
-                        _log.Verbose("Adding azure signalr");
-                        services.AddSignalR().AddAzureSignalR();
-                    }
-                })
-                    .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<WebpageStartup>()).UseSerilog(_log)
-                    .Build();
-
-                #endregion Website Fun Time
-
-                CancellationTokenSource wts = new();
-                RunningTasks.Add("WebsiteTask", new(Task.Run(async () => await _host.RunAsync(wts.Token), wts.Token), wts));
             }
             _log.Information("Booted up");
             while (true)
             {
                 _log.Verbose("Updating the status to a random one");
                 //update the status to some random one
-                await _discord.UpdateStatusAsync(ArrayUtils.RandomFromArray(_config.Splashes)
+                await _discord.UpdateStatusAsync(_config.Splashes.RandomFrom()
                     .GetDiscordActivity(GetStringDictionary(_discord)));
                 if (_config.CallGCOnSplashChange)
                 {
@@ -1063,6 +1001,9 @@ namespace SilverBotDS
                             case "kalorichan":
                             case "<:kalorichan:839099093552332850>":
                                 await e.Message.RespondAsync("<:kalorichan:839099093552332850>");
+                                return;
+                            case "silver face":
+                                await e.Message.RespondAsync("<:silverface:853297508632756234>");
                                 return;
                         }
                     }

@@ -64,7 +64,7 @@ public class ColorUtils
     /// <returns>Nothing</returns>
     public static async Task ReloadConfig()
     {
-        await GetAsync(true, !Program.GetConfig().ColorConfig);
+        await GetAsync(true);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public class ColorUtils
     /// <returns>a single (random) <see cref="DiscordColor" /></returns>
     public static async Task<DiscordColor> GetSingleAsync()
     {
-        return await GetSingleAsyncInternal(useinternal: !Program.GetConfig().ColorConfig);
+        return await GetSingleAsyncInternal();
     }
 
     /// <summary>

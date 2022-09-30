@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Serilog;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Objects.Database.Classes.ReactionRole;
 using System;
@@ -217,7 +218,7 @@ public class DatabaseContext : DbContext
         SaveChanges();
     }
 
-    internal void ToggleBanUser(ulong id, bool BAN)
+    public void ToggleBanUser(ulong id, bool BAN)
     {
         var usersettings = userSettings.FirstOrDefault(x => x.Id == id);
         if (usersettings is not null)
@@ -237,7 +238,7 @@ public class DatabaseContext : DbContext
         SaveChanges();
     }
 
-    internal void InserOrUpdateLangCodeUser(ulong id, string lang)
+    public void InserOrUpdateLangCodeUser(ulong id, string lang)
     {
         var usersettings = userSettings.FirstOrDefault(x => x.Id == id);
         if (usersettings is not null)
@@ -287,16 +288,15 @@ public class DatabaseContext : DbContext
                 }
 
                 return builder.Append("```").ToString();
-           
         }
         catch (Exception e)
         {
-            Program.SendLog(e);
+            Log.Error(e,"Error in dbCtx.RunSQL");
             return "Error";
         }
     }
 
-    internal void InserOrUpdateLangCodeGuild(ulong id, string lang)
+    public void InserOrUpdateLangCodeGuild(ulong id, string lang)
     {
         var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == id);
         if (serversettings is not null)

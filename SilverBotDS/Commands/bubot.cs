@@ -50,22 +50,7 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
 
     public override Task<bool> ExecuteRequirements(Config conf)
     {
-        if (!Directory.Exists(conf.LocalBibiPictures))
-        {
-            return Task.FromResult(false);
-        }
-
-        if (!File.Exists(conf.BibiLibCutOutConfig))
-        {
-            return Task.FromResult(false);
-        }
-
-        if (!File.Exists(conf.BibiLibFullConfig))
-        {
-            return Task.FromResult(false);
-        }
-
-        return Task.FromResult(true);
+        return Task.FromResult(Directory.Exists(conf.LocalBibiPictures));
     }
 
     [Command("bibi")]
@@ -124,6 +109,8 @@ internal class BibiLib : SilverBotCommandModule
         {
             return Task.FromResult(false);
         }
+
+       
 
         return Task.FromResult(true);
     }

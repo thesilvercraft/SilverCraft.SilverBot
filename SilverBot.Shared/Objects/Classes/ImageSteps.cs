@@ -1,5 +1,4 @@
-﻿using SilverBotDS.Commands;
-using SilverBotDS.Converters;
+﻿using SilverBotDS.Converters;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
@@ -41,33 +40,7 @@ internal class ImageSteps : IDisposable
         return ist;
     }
 
-    public async Task<Image> ExecuteStepsAsync(Step[] filledsteps)
-    {
-        Image Bitmap = null;
-        foreach (var step in filledsteps)
-        {
-            if (step is TemplateStep step2)
-            {
-                if (Bitmap is null)
-                {
-                    Bitmap = step2.GetImage(client);
-                }
-                else
-                {
-                    Bitmap.Mutate(x => x.DrawImage(step2.GetImage(client), new Point(0, 0), 1));
-                }
-            }
-            else if (step is PictureStep step1)
-            {
-                using var resizedbytes = (await ImageModule.ResizeAsync(await step1.Image().GetBytesAsync(client),
-                    new Size((int)step1.xSize, (int)step1.ySize), PngFormat.Instance)).Item1;
-                using var resizedimg = await Image.LoadAsync(resizedbytes);
-                Bitmap.Mutate(x => x.DrawImage(resizedimg, new Point((int)step.x, (int)step.y), 1));
-            }
-        }
-
-        return Bitmap;
-    }
+   
 
     protected virtual void Dispose(bool disposing)
     {

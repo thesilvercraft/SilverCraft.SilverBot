@@ -654,7 +654,6 @@ public class Language
 
         return CachedLanguages.Keys.ToArray();
     }
-
     public static async Task<Language> GetAsync(string a)
     {
         a = a.Trim();
@@ -668,7 +667,7 @@ public class Language
             return new Language();
         }
 
-        var folloc = $"{Environment.CurrentDirectory}{Program.DirSlash}Languages{Program.DirSlash}";
+        var folloc = Path.Combine(Environment.CurrentDirectory,"Languages") ;
         if (Directory.Exists(folloc))
         {
             foreach (var folder in Directory.GetDirectories(folloc))
@@ -688,9 +687,9 @@ public class Language
         }
         else
         {
-            Directory.CreateDirectory(folloc + $"{Program.DirSlash}en");
+            Directory.CreateDirectory(Path.Combine(folloc ,"en"));
             await SerialiseDefaultAsync(
-                $"{Environment.CurrentDirectory}{Program.DirSlash}languages{Program.DirSlash}en{Program.DirSlash}en.json");
+                Path.Combine(Environment.CurrentDirectory,"languages","en","en.json"));
         }
 
         return await GetAsync(a);

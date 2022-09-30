@@ -312,7 +312,7 @@ public class GitHubUtils
             var uri = new Uri(release.Assets[0].BrowserDownloadUrl);
             var filename = Path.GetFileName(uri.LocalPath);
             await using var fs = new FileStream(
-                Environment.CurrentDirectory + $"{Program.DirSlash}{filename}",
+                Path.Combine(Environment.CurrentDirectory,filename),
                 FileMode.CreateNew);
             await rm.Content.CopyToAsync(fs);
         }

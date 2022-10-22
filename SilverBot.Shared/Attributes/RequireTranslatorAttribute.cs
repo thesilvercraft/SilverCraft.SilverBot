@@ -2,8 +2,6 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using SilverBotDS.Objects;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SilverBotDS.Attributes;
 

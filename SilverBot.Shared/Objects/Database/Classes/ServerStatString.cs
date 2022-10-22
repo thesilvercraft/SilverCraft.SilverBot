@@ -1,8 +1,5 @@
 ﻿using DSharpPlus.Entities;
 using SilverBotDS.Utils;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects.Database.Classes;
 
@@ -18,10 +15,9 @@ public class ServerStatString
     }
 
     public string Template { get; set; }
-
     public string Serialize(Dictionary<string, string> dict)
     {
-        return StringUtils.FormatFromDictionary(Template, dict);
+        return Template.FormatFromDictionary(dict);
     }
 
     public static async Task<Dictionary<string, string>> GetStringDictionaryAsync(DiscordGuild guild)

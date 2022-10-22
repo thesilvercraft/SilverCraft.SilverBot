@@ -12,6 +12,7 @@
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <UserSecretsId>02ac9d1d-689a-48f6-a136-dc1e8cb28b0d</UserSecretsId>
         <OutputType>Exe</OutputType>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <OutputPath>bin\Debug\</OutputPath>

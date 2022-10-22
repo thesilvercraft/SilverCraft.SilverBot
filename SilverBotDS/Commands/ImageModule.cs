@@ -22,6 +22,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Threading.Tasks;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
@@ -37,8 +38,16 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         Grayscale,
         Comic
     }
-
-    private const int MaxBytes = 8388246;
+    private const int MegaByte = 1000000;
+    private int MaxBytes(CommandContext ctx)
+    {
+        return (ctx?.Guild?.PremiumTier) switch
+        {
+            PremiumTier.Tier_2 => 50 * MegaByte,
+            PremiumTier.Tier_3 => 100 * MegaByte,
+            _ => 8 * MegaByte,
+        };
+    }
 
     private static readonly JpegEncoder BadJpegEncoder = new()
     {
@@ -74,46 +83,38 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         img.Mutate(x => x.DrawText(text, font, textColor, new PointF(0, 0)));
         return img;
     }
+
     [Command("caption")]
     [Description("Captions an image")]
     public async Task CaptionImage(CommandContext ctx, SdImage image, [RemainingText] string text)
     {
         await ctx.TriggerTypingAsync();
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
         using var loadedimg = Image.Load(await image.GetBytesAsync(HttpClient), out var frmt);
         Font JokerFont = new(_captionFont, loadedimg.Width / 10);
-
         var dr = new TextOptions(JokerFont)
         {
             HorizontalAlignment = HorizontalAlignment.Center,
             Origin = new PointF(loadedimg.Width / 2, 7f),
-            WrappingLength= loadedimg.Width,
-            WordBreaking=WordBreaking.BreakAll
+            WrappingLength = loadedimg.Width,
+            WordBreaking = WordBreaking.BreakAll
         };
         var s = TextMeasurer.Measure(text, dr);
-        loadedimg.Mutate(m => m.Resize(new ResizeOptions() { Position = AnchorPositionMode.Bottom, Size = new(loadedimg.Width, loadedimg.Height + (int)(s.Height + 5)), Mode=ResizeMode.BoxPad}));
-        loadedimg.Mutate(m=>m.FillPolygon(new SolidBrush(Color.White), new PointF(0, 0), new PointF(loadedimg.Width, 0), new PointF(loadedimg.Width, s.Height+5), new PointF(0, s.Height + 5)));
+        loadedimg.Mutate(m => m.Resize(new ResizeOptions() { Position = AnchorPositionMode.Bottom, Size = new(loadedimg.Width, loadedimg.Height + (int)(s.Height + 5)), Mode = ResizeMode.BoxPad }));
+        loadedimg.Mutate(m => m.FillPolygon(new SolidBrush(Color.White), new PointF(0, 0), new PointF(loadedimg.Width, 0), new PointF(loadedimg.Width, s.Height + 5), new PointF(0, s.Height + 5)));
         loadedimg.Mutate(m => m.DrawText(dr, text, Color.Black));
         await using MemoryStream outStream = new();
         await loadedimg.SaveAsync(outStream, frmt);
         outStream.Position = 0;
-        if (outStream.Length > MaxBytes)
-        {
-            await Send_img_plsAsync(
-                ctx, string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))
-            ).ConfigureAwait(false);
-        }
-        else
-        {
-            await SendImageStream(ctx, outStream, filename: "sbimgcaption."+ frmt.FileExtensions.First(), content: "there");
-        }
+        await SendImageStreamIfAllowed(ctx, outStream, Filename: "sbimgcaption." + frmt.FileExtensions.First(), content: "there");
     }
+
     [Command("caption")]
     public async Task CaptionImage(CommandContext ctx, [RemainingText] string text)
     {
         var image = SdImage.FromContext(ctx);
         await CaptionImage(ctx, image, text);
     }
+
     [Command("text")]
     public async Task DrawText(CommandContext ctx, [Description("the text")] string text, string font = "Diavlo Light",
         float size = 30.0f)
@@ -128,7 +129,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     }
 
     public static async Task SendImageStream(CommandContext ctx, Stream outstream, string filename = "sbimg.png",
-        string content = null)
+        string? content = null)
     {
         content ??= "Command executed with result";
         await new DiscordMessageBuilder().WithContent(content)
@@ -183,6 +184,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     {
         await new DiscordMessageBuilder()
             .WithContent(message ?? "Please send one image")
+            .WithReply(ctx.Message.Id)
             .SendAsync(ctx.Channel);
     }
 
@@ -223,27 +225,30 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         return new Tuple<MemoryStream, string>(stream, frmt.FileExtensions.First());
     }
 
-    private const string OutputFileLargerThan8M = "output is too large (8MB max, got {0})";
-
+    public async Task SendImageStreamIfAllowed(CommandContext ctx, Stream image, string Filename="sbimg.png",string? content=null, Language lang=null)
+    {
+        lang ??= await Language.GetLanguageFromCtxAsync(ctx);
+        if (image.Length > MaxBytes(ctx))
+        {
+            await Send_img_plsAsync(ctx,
+                    string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(image.Length)))
+                .ConfigureAwait(false);
+        }
+        else
+        {
+            await SendImageStream(ctx, image, Filename, content);
+        }
+    }
     [Command("jpeg")]
     public async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SdImage image)
     {
         await ctx.TriggerTypingAsync();
         await using var outStream = await Make_jpegnisedAsync(await image.GetBytesAsync(HttpClient));
-        if (outStream.Length > MaxBytes)
-        {
-            await Send_img_plsAsync(ctx,
-                    string.Format(OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)))
-                .ConfigureAwait(false);
-        }
-        else
-        {
-            await SendImageStream(ctx, outStream, "silverbotimage.jpeg", "There you go");
-        }
+        await SendImageStreamIfAllowed(ctx, outStream, "sbimg.jpeg", "There you go");
     }
 
     [Command("jpeg")]
-    [RequireAttachment(argumentCountThatOverloadsCheck: 1)]
+    //[RequireAttachment(argumentCountThatOverloadsCheck: 1)]
     public async Task Jpegize(CommandContext ctx)
     {
         var image = SdImage.FromContext(ctx);
@@ -256,16 +261,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     {
         await ctx.TriggerTypingAsync();
         var thing = await ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(x, y), format);
-        if (thing.Item1.Length > MaxBytes)
-        {
-            await Send_img_plsAsync(ctx,
-                    string.Format(OutputFileLargerThan8M, FileSizeUtils.FormatSize(thing.Item1.Length)))
-                .ConfigureAwait(false);
-        }
-        else
-        {
-            await SendImageStream(ctx, thing.Item1, $"sbimg.{thing.Item2}", "there you go");
-        }
+        await SendImageStreamIfAllowed(ctx, thing.Item1, $"sbimg.{thing.Item2}", "There you go");
     }
 
     [Command("resize")]
@@ -290,6 +286,8 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     }
 
     [Command("tint")]
+   // [RequireAttachment(argumentCountThatOverloadsCheck: 2)]
+
     public async Task Tint(CommandContext ctx, [Description("the url of the image")] SdImage image,
         [Description(
             "https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Color.html#SixLabors_ImageSharp_Color_TryParse_System_String_SixLabors_ImageSharp_Color__")]
@@ -299,20 +297,10 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         var thing = await TintAsync(await image.GetBytesAsync(HttpClient), color);
         await using var outStream = thing.Item1;
         outStream.Position = 0;
-        if (outStream.Length > MaxBytes)
-        {
-            await Send_img_plsAsync(ctx,
-                    string.Format(OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)))
-                .ConfigureAwait(false);
-        }
-        else
-        {
-            await SendImageStream(ctx, outStream, $"sbimg.{thing.Item2}", "There you go");
-        }
+        await SendImageStreamIfAllowed(ctx, outStream, $"sbimg.{thing.Item2}", "There you go");
     }
 
     [Command("tint")]
-    [RequireAttachment(argumentCountThatOverloadsCheck: 2)]
     public async Task Tint(CommandContext ctx,
         [Description(
             "https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Color.html#SixLabors_ImageSharp_Color_TryParse_System_String_SixLabors_ImageSharp_Color__")]
@@ -323,7 +311,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     }
 
     [Command("silver")]
-    [RequireAttachment(argumentCountThatOverloadsCheck: 1)]
+    //[RequireAttachment(argumentCountThatOverloadsCheck: 1)]
     public async Task Grayscale(CommandContext ctx)
     {
         var image = SdImage.FromContext(ctx);
@@ -337,19 +325,9 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         var thing = await FilterImgBytes(await image.GetBytesAsync(HttpClient), EFilter.Grayscale);
         await using var outStream = thing.Item1;
         outStream.Position = 0;
-        if (outStream.Length > MaxBytes)
-        {
-            await Send_img_plsAsync(ctx,
-                    string.Format(OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)))
-                .ConfigureAwait(false);
-        }
-        else
-        {
-            await SendImageStream(ctx, outStream, $"sbimg.{thing.Item2}", "there you go");
-        }
+        await SendImageStreamIfAllowed(ctx, outStream, $"sbimg.{thing.Item2}", "There you go");
     }
 
-    
     /// <summary>
     ///     Gets the profile picture of a discord user in a 256x256 bitmap saved to a byte array
     /// </summary>
@@ -378,65 +356,59 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     }
 
     [Command("reliable")]
-     public async Task Reliable(CommandContext ctx)
-     {
-         await Reliable(ctx, ctx.User, ctx.Client.CurrentUser);
-     }
-     [Command("reliable")]
-     public async Task Reliable(CommandContext ctx, DiscordUser koichi)
-     {
-         await Reliable(ctx, ctx.User, koichi);
-     }
-     [Command("reliable")]
-     public async Task Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)
-     {
-         await ctx.TriggerTypingAsync();
-         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-         using var img = await Image.LoadAsync(
-             Assembly.GetExecutingAssembly()
-                 .GetManifestResourceStream("SilverBotDS.Templates.weeb_reliable_template.png") ??
-             throw new TemplateReturningNullException("SilverBotDS.Templates.weeb_reliable_template.png"));
-         await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(koichi));
-         await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(jotaro));
-         using (var internalimage = await Image.LoadAsync(resizedstreama))
-         {
-             img.Mutate(m => m.DrawImage(internalimage, new Point(276, 92), 1));
-         }
-         using (var internalimage = await Image.LoadAsync(resizedstreamb))
-         {
-             img.Mutate(m => m.DrawImage(internalimage, new Point(1138, 369), 1));
-         }
-         var text =
-             $"{(ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username)}, you truly are a reliable guy.";
-         var size = _subtitlesFont.Size;
-         while (TextMeasurer.Measure(text, new TextOptions(new Font(_subtitlesFont.Family, size, FontStyle.Bold)))
-                    .Width > img.Width)
-         {
-             size -= 0.05f;
-         }
-         var dr = new TextOptions(new Font(_subtitlesFont, size));
-         dr.HorizontalAlignment = HorizontalAlignment.Center;
-        dr.Origin = new PointF(952, 880);
-         img.Mutate(m =>
-             m.DrawText(dr, text, Color.White));
+    public async Task Reliable(CommandContext ctx)
+    {
+        await Reliable(ctx, ctx.User, ctx.Client.CurrentUser);
+    }
+
+    [Command("reliable")]
+    public async Task Reliable(CommandContext ctx, DiscordUser koichi)
+    {
+        await Reliable(ctx, ctx.User, koichi);
+    }
+
+    [Command("reliable")]
+    public async Task Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)
+    {
+        await ctx.TriggerTypingAsync();
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        using var img = await Image.LoadAsync(
+            Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("SilverBotDS.Templates.weeb_reliable_template.png") ??
+            throw new TemplateReturningNullException("SilverBotDS.Templates.weeb_reliable_template.png"));
+        await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(koichi));
+        await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(jotaro));
+        using (var internalimage = await Image.LoadAsync(resizedstreama))
+        {
+            img.Mutate(m => m.DrawImage(internalimage, new Point(276, 92), 1));
+        }
+        using (var internalimage = await Image.LoadAsync(resizedstreamb))
+        {
+            img.Mutate(m => m.DrawImage(internalimage, new Point(1138, 369), 1));
+        }
+        var text =
+            $"{(ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username)}, you truly are a reliable guy.";
+        var size = _subtitlesFont.Size;
+        while (TextMeasurer.Measure(text, new TextOptions(new Font(_subtitlesFont.Family, size, FontStyle.Bold)))
+                   .Width > img.Width)
+        {
+            size -= 0.05f;
+        }
+        var dr = new TextOptions(new Font(_subtitlesFont, size))
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Origin = new PointF(952, 880)
+        };
         img.Mutate(m =>
-             m.DrawText(dr, text, null, new Pen(Color.Black,3)));
-         await using MemoryStream outStream = new();
-         outStream.Position = 0;
-         await img.SaveAsPngAsync(outStream);
-         outStream.Position = 0;
-         if (outStream.Length > MaxBytes)
-         {
-             await Send_img_plsAsync(ctx,
-                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)))
-                 .ConfigureAwait(false);
-         }
-         else
-         {
-             await SendImageStream(ctx, outStream,
-                 content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.");
-         }
-     }
+            m.DrawText(dr, text, Color.White));
+        img.Mutate(m =>
+             m.DrawText(dr, text, null, new Pen(Color.Black, 3)));
+        await using MemoryStream outStream = new();
+        outStream.Position = 0;
+        await img.SaveAsPngAsync(outStream);
+        outStream.Position = 0;
+        await SendImageStreamIfAllowed(ctx, outStream, content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.");
+    }
 
     private async Task CommonCodeWithTemplate(CommandContext ctx, string template, Func<Image, Task<Tuple<bool, Image>>> func, bool TriggerTyping = true, string filename = "sbimg.png", IImageEncoder encoder = null)
     {
@@ -458,16 +430,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         await using MemoryStream outStream = new();
         r.Item2.Save(outStream, encoder);
         outStream.Position = 0;
-        if (outStream.Length > MaxBytes)
-        {
-            await Send_img_plsAsync(
-                ctx, string.Format(OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length))
-            ).ConfigureAwait(false);
-        }
-        else
-        {
-            await SendImageStream(ctx, outStream, filename, "there");
-        }
+        await SendImageStreamIfAllowed(ctx, outStream, filename, "there");
     }
 
     [Command("seal")]
@@ -509,90 +472,68 @@ public class ImageModule : BaseCommandModule, IRequireFonts
         }, filename: "sblinus.gif", encoder: new GifEncoder());
     }
 
-    /* [Command("happynewyear")]
-     public async Task HappyNewYear(CommandContext ctx)
-     {
-         await HappyNewYear(ctx, ctx.User);
-     }
-     [Command("happynewyear")]
-     public async Task HappyNewYear(CommandContext ctx, DiscordUser person)
-     {
-         await ctx.TriggerTypingAsync();
-         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-         using var img = await Image.LoadAsync(
-             Assembly.GetExecutingAssembly()
-                 .GetManifestResourceStream("SilverBotDS.Templates.happy_new_year_template.png") ??
-             throw new TemplateReturningNullException("SilverBotDS.Templates.happy_new_year_template.png"));
-         await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person, 350));
-         using var gamer = new Image<Rgba32>(img.Width, img.Height);
-         using (var internalimage = await Image.LoadAsync(resizedstreama))
-         {
-             gamer.Mutate(m => m.DrawImage(internalimage, new Point(19, 70), 1));
-             gamer.Mutate(m => m.DrawImage(img, 1));
-         }
-         await using MemoryStream outStream = new();
-         outStream.Position = 0;
-         gamer.Save(outStream, new PngEncoder());
-         outStream.Position = 0;
-         if (outStream.Length > MaxBytes)
-         {
-             await Send_img_plsAsync(ctx,
-                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
-                 .ConfigureAwait(false);
-         }
-         else
-         {
-             await SendImageStream(ctx, outStream, content: "happy new year!", lang: lang);
-         }
-     }
-     [RequireGuild]
-     [Command("adventuretime")]
-     public async Task AdventureTime(CommandContext ctx)
-     {
-         await AdventureTime(ctx, ctx.Guild.CurrentMember);
-     }
-     [Command("adventuretime")]
-     public async Task AdventureTime(CommandContext ctx, DiscordUser friendo)
-     {
-         await AdventureTime(ctx, ctx.Member, friendo);
-     }
-     [Command("adventuretime")]
-     public async Task AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)
-     {
-         await ctx.TriggerTypingAsync();
-         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-         var img = await Image.LoadAsync(
-             Assembly.GetExecutingAssembly()
-                 .GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png") ??
-             throw new TemplateReturningNullException("SilverBotDS.Templates.adventure_time_template.png"));
-         await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person));
-         await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(friendo));
-         using (var internalimage = await Image.LoadAsync(resizedstreamb))
-         {
-             img.Mutate(x => x.DrawImage(internalimage, new Point(22, 948), 1));
-         }
-         using (var internalimage = await Image.LoadAsync(resizedstreama))
-         {
-             img.Mutate(x => x.DrawImage(internalimage, new Point(557, 699), 1));
-         }
-         await using MemoryStream outStream = new();
-         img.Save(outStream, new PngEncoder());
-         outStream.Position = 0;
-         if (outStream.Length > MaxBytes)
-         {
-             await Send_img_plsAsync(ctx,
-                     string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(outStream.Length)), lang)
-                 .ConfigureAwait(false);
-         }
-         else
-         {
-             await SendImageStream(ctx, outStream,
-                 content:
-                 $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!",
-                 lang: lang);
-         }
-     }
-    */
+    [Command("happynewyear")]
+    public async Task HappyNewYear(CommandContext ctx)
+    {
+        await HappyNewYear(ctx, ctx.User);
+    }
+    [Command("happynewyear")]
+    public async Task HappyNewYear(CommandContext ctx, DiscordUser person)
+    {
+        await ctx.TriggerTypingAsync();
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        using var img = await Image.LoadAsync(
+            Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("SilverBotDS.Templates.happy_new_year_template.png") ??
+            throw new TemplateReturningNullException("SilverBotDS.Templates.happy_new_year_template.png"));
+        await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person, 350));
+        using var gamer = new Image<Rgba32>(img.Width, img.Height);
+        using (var internalimage = await Image.LoadAsync(resizedstreama))
+        {
+            gamer.Mutate(m => m.DrawImage(internalimage, new Point(19, 70), 1));
+            gamer.Mutate(m => m.DrawImage(img, 1));
+        }
+        await using MemoryStream outStream = new();
+        outStream.Position = 0;
+        gamer.Save(outStream, new PngEncoder());
+        outStream.Position = 0;
+        await SendImageStreamIfAllowed(ctx, outStream, content: "happy new year!");
+    }
+    [RequireGuild]
+    [Command("adventuretime")]
+    public async Task AdventureTime(CommandContext ctx)
+    {
+        await AdventureTime(ctx, ctx.Guild.CurrentMember);
+    }
+    [Command("adventuretime")]
+    public async Task AdventureTime(CommandContext ctx, DiscordUser friendo)
+    {
+        await AdventureTime(ctx, ctx.Member, friendo);
+    }
+    [Command("adventuretime")]
+    public async Task AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)
+    {
+        await ctx.TriggerTypingAsync();
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var img = await Image.LoadAsync(
+            Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png") ??
+            throw new TemplateReturningNullException("SilverBotDS.Templates.adventure_time_template.png"));
+        await using MemoryStream resizedstreama = new(await GetProfilePictureAsync(person));
+        await using MemoryStream resizedstreamb = new(await GetProfilePictureAsync(friendo));
+        using (var internalimage = await Image.LoadAsync(resizedstreamb))
+        {
+            img.Mutate(x => x.DrawImage(internalimage, new Point(22, 948), 1));
+        }
+        using (var internalimage = await Image.LoadAsync(resizedstreama))
+        {
+            img.Mutate(x => x.DrawImage(internalimage, new Point(557, 699), 1));
+        }
+        await using MemoryStream outStream = new();
+        img.Save(outStream, new PngEncoder());
+        outStream.Position = 0;
+        await SendImageStreamIfAllowed(ctx, outStream, content: $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!");
+    }
 
     [Command("mspaint")]
     public async Task Paint(CommandContext ctx, SdImage image)
@@ -610,7 +551,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     }
 
     [Command("mspaint")]
-    [RequireAttachment(argumentCountThatOverloadsCheck: 1)]
+    //[RequireAttachment(argumentCountThatOverloadsCheck: 1)]
     public async Task Paint(CommandContext ctx)
     {
         var image = SdImage.FromContext(ctx);
@@ -618,7 +559,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     }
 
     [Command("motivate")]
-    [RequireAttachment(0)]
+    //[RequireAttachment(0)]
     public async Task Motivate(CommandContext ctx, SdImage image, [RemainingText] string text)
     {
         await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.motivator_template.png", async (img) =>
@@ -647,7 +588,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
     }
 
     [Command("motivate")]
-    [RequireAttachment(argumentCountThatOverloadsCheck: 1)]
+    //[RequireAttachment(argumentCountThatOverloadsCheck: 1)]
     public async Task Motivate(CommandContext ctx, [RemainingText] string text)
     {
         var image = SdImage.FromContext(ctx);
@@ -673,6 +614,4 @@ public class ImageModule : BaseCommandModule, IRequireFonts
             return Task.FromResult(new Tuple<bool, Image>(true, img));
         }, filename: "sbfail.gif", encoder: new GifEncoder());
     }
-
-  
 }

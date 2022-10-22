@@ -6,7 +6,6 @@ using Humanizer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
@@ -58,7 +57,6 @@ public class OwnerOnly : SilverBotCommandModule
                 .WithColor(await ColorUtils.GetSingleAsync()).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
     }
 
-  
     [Command("UnRegisterCommand")]
     public Task UnRegCmd(CommandContext ctx, [RemainingText] string cmdwithparm)
     {
@@ -149,8 +147,10 @@ public class OwnerOnly : SilverBotCommandModule
             reason: $"Added by SilverBot as requested by {ctx.User.Username}");
         _ = await ctx.Guild.CreateChannelAsync(name, ChannelType.Voice, category,
             reason: $"Added by SilverBot as requested by {ctx.User.Username}");
-        DiscordMessageBuilder discordMessage = new();
-        discordMessage.Content = $"{ctx.User.Mention} there m8 that took some time to do";
+        DiscordMessageBuilder discordMessage = new()
+        {
+            Content = $"{ctx.User.Mention} there m8 that took some time to do"
+        };
         await channel.SendMessageAsync(discordMessage);
     }
 
@@ -451,7 +451,6 @@ public class OwnerOnly : SilverBotCommandModule
         }
     }
 
-
     [Command("sh")]
     [Description("runs some commands")]
     public async Task RunConsole(CommandContext ctx, [RemainingText] string command)
@@ -494,14 +493,9 @@ public class OwnerOnly : SilverBotCommandModule
     public async Task Runsql(CommandContext ctx, [RemainingText] string sql)
     {
         var thing = await Database.RunSqlAsync(sql);
-        
-            await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent(thing).SendAsync(ctx.Channel);
-       
+
+        await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent(thing).SendAsync(ctx.Channel);
     }
-
-   
-
-   
 
     public class Rootobject
     {
@@ -552,7 +546,7 @@ public class OwnerOnly : SilverBotCommandModule
         }
 
         var client = HttpClient;
-        var ziploc = Path.Combine(Environment.CurrentDirectory,"temp.zip");
+        var ziploc = Path.Combine(Environment.CurrentDirectory, "temp.zip");
         var rm = await client.GetAsync(ctx.Message.Attachments[0].Url);
         await using (var fs = new FileStream(
                          ziploc,
@@ -561,7 +555,7 @@ public class OwnerOnly : SilverBotCommandModule
             await rm.Content.CopyToAsync(fs);
         }
 
-        var foldername = Path.Combine(Environment.CurrentDirectory,"temp");
+        var foldername = Path.Combine(Environment.CurrentDirectory, "temp");
         if (!Directory.Exists(foldername))
         {
             Directory.CreateDirectory(foldername);
@@ -643,6 +637,4 @@ public class OwnerOnly : SilverBotCommandModule
         await Database.SaveChangesAsync();
         await ctx.RespondAsync($"All traces of {userid.Id} have been removed from the database.");
     }
-
-   
 }

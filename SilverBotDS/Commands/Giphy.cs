@@ -6,7 +6,6 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using GiphyDotNet.Model.Parameters;
 using GiphyDotNet.Model.Results;
-using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
@@ -90,7 +89,7 @@ public class Giphy : SilverBotCommandModule
 
     private async Task WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage,
         InteractivityExtension interactivity, Language lang, int page, string formated, GiphySearchResult gifResult,
-        DiscordEmbedBuilder b = null)
+        DiscordEmbedBuilder? b = null)
     {
         b ??= new DiscordEmbedBuilder();
         var msg = await oldmessage.WaitForButtonAsync(ctx.User, TimeSpan.FromSeconds(300));

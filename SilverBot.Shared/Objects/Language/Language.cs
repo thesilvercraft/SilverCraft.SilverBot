@@ -3,15 +3,10 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.SlashCommands;
 using Microsoft.EntityFrameworkCore;
 using SilverBotDS.Attributes;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects;
 
@@ -334,12 +329,12 @@ public class Language
     public string MoreThanOneImageGeneric { get; set; } = "You attached more than one image";
 
     /// <summary>
-    ///     The output file is larger than 8mb, its {0}
+    ///     The output file is larger than allowed, its {0}
     /// </summary>
     /// <remarks>
     ///     Ment to be used when there isn't a more better term
     /// </remarks>
-    public string OutputFileLargerThan8M { get; set; } = "The output file is larger than 8mb, its {0}";
+    public string OutputFileLargerThan8M { get; set; } = "The output file is larger than allowed, its {0}";
 
     /// <summary>
     ///     Page {0}/{1} Use `next` in the next 5 min to see the next page
@@ -406,7 +401,6 @@ public class Language
 
     public string TimeWhenTrackPlayed { get; set; } = "Time when the track started:";
     public string TimesTrackLooped { get; set; } = "Times track has looped:";
-
 
     /// <summary>
     ///     Uh oh something went wrong. Please try again a little bit later.
@@ -654,6 +648,7 @@ public class Language
 
         return CachedLanguages.Keys.ToArray();
     }
+
     public static async Task<Language> GetAsync(string a)
     {
         a = a.Trim();
@@ -667,7 +662,7 @@ public class Language
             return new Language();
         }
 
-        var folloc = Path.Combine(Environment.CurrentDirectory,"Languages") ;
+        var folloc = Path.Combine(Environment.CurrentDirectory, "Languages");
         if (Directory.Exists(folloc))
         {
             foreach (var folder in Directory.GetDirectories(folloc))
@@ -687,9 +682,9 @@ public class Language
         }
         else
         {
-            Directory.CreateDirectory(Path.Combine(folloc ,"en"));
+            Directory.CreateDirectory(Path.Combine(folloc, "en"));
             await SerialiseDefaultAsync(
-                Path.Combine(Environment.CurrentDirectory,"languages","en","en.json"));
+                Path.Combine(Environment.CurrentDirectory, "languages", "en", "en.json"));
         }
 
         return await GetAsync(a);

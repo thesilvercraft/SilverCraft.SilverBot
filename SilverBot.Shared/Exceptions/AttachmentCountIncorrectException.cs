@@ -1,5 +1,4 @@
 ﻿using SilverBotDS.Converters;
-using System;
 using System.Runtime.Serialization;
 
 namespace SilverBotDS.Exceptions;

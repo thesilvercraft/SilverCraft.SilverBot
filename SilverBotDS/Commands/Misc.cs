@@ -2,19 +2,14 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.Interactivity;
-using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
-using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
@@ -176,7 +171,7 @@ public class MiscCommands : BaseCommandModule
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                 .WithContent(string.Format(lang.NotValidLanguage,
-                    StringUtils.ArrayToString(Translator.Languages.ToArray(), ", ")))
+                    Translator.Languages.ToArray().ArrayToString(", ")))
                 .WithAllowedMentions(Mentions.None)
                 .SendAsync(ctx.Channel);
             return;
@@ -198,10 +193,6 @@ public class MiscCommands : BaseCommandModule
         }
     }
 
-    
-
-  
-
     [Command("cserrcode")]
     public async Task Csharperror(CommandContext ctx, string error)
     {
@@ -216,26 +207,26 @@ public class MiscCommands : BaseCommandModule
         var link = "Not Found";
         if (nuGetError.Success)
         {
-            link = $"https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/{nuGetError.Groups[0]}";
+            link = $"https://learn.microsoft.com/en-us/nuget/reference/errors-and-warnings/{nuGetError.Groups[0]}";
         }
         else if (dotNetError.Success)
         {
             link =
-                $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/{dotNetError.Groups[0]}";
+                $"https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/{dotNetError.Groups[0]}";
         }
         else if (csharpError.Success)
         {
             link =
-                $"https://docs.microsoft.com/en-us/dotnet/csharp/misc/{csharpError.Groups[0]} or https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/{csharpError.Groups[0]}";
+                $"https://learn.microsoft.com/en-us/dotnet/csharp/misc/{csharpError.Groups[0]} or https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/{csharpError.Groups[0]}";
         }
         else if (fsharpError.Success)
         {
             link =
-                $"https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/{fsharpError.Groups[0]}";
+                $"https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/{fsharpError.Groups[0]}";
         }
         else if (vbError.Success)
         {
-            link = $"https://docs.microsoft.com/en-us/dotnet/visual-basic/misc/{vbError.Groups[0]}";
+            link = $"https://learn.microsoft.com/en-us/dotnet/visual-basic/misc/{vbError.Groups[0]}";
         }
         else if (sonarError.Success)
         {
@@ -249,7 +240,7 @@ public class MiscCommands : BaseCommandModule
         else if (ideError.Success)
         {
             link =
-                $"https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/{ideError.Groups[0]}";
+                $"https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/{ideError.Groups[0]}";
         }
 
         await new DiscordMessageBuilder()

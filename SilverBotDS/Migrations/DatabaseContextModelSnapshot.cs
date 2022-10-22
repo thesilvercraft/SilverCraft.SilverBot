@@ -62,7 +62,6 @@ namespace SilverBotDS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Emoji")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<ulong?>("EmojiId")
@@ -77,7 +76,12 @@ namespace SilverBotDS.Migrations
                     b.Property<ulong>("RoleId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid>("ServerSettingsId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("MappingId");
+
+                    b.HasIndex("ServerSettingsId");
 
                     b.ToTable("ReactionRoleMappings");
                 });
@@ -133,9 +137,9 @@ namespace SilverBotDS.Migrations
 
             modelBuilder.Entity("SilverBotDS.Objects.ServerSettings", b =>
                 {
-                    b.Property<ulong>("ServerId")
+                    b.Property<Guid>("ServerSettingsId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("EmotesOptin")
                         .HasColumnType("INTEGER");
@@ -154,6 +158,9 @@ namespace SilverBotDS.Migrations
                     b.Property<bool>("RepeatThings")
                         .HasColumnType("INTEGER");
 
+                    b.Property<ulong>("ServerId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<ulong?>("ServerStatsCategoryId")
                         .HasColumnType("INTEGER");
 
@@ -161,10 +168,7 @@ namespace SilverBotDS.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("WebShot")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ServerId");
+                    b.HasKey("ServerSettingsId");
 
                     b.ToTable("serverSettings");
                 });
@@ -188,6 +192,17 @@ namespace SilverBotDS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("userSettings");
+                });
+
+            modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.ReactionRole.ReactionRoleMapping", b =>
+                {
+                    b.HasOne("SilverBotDS.Objects.ServerSettings", "ServerSettings")
+                        .WithMany("Mappings")
+                        .HasForeignKey("ServerSettingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServerSettings");
                 });
 
             modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.TranslatorSettings", b =>
@@ -1901,6 +1916,11 @@ namespace SilverBotDS.Migrations
                         .IsRequired();
 
                     b.Navigation("CustomLanguages");
+                });
+
+            modelBuilder.Entity("SilverBotDS.Objects.ServerSettings", b =>
+                {
+                    b.Navigation("Mappings");
                 });
 #pragma warning restore 612, 618
         }

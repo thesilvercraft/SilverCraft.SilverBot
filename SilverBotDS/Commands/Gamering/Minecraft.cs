@@ -1,12 +1,12 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using SilverBotDS.Attributes;
 using SilverBotDS.Utils;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands.Gamering;
+
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 [Category("Gaming")]

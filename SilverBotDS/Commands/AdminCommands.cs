@@ -2,7 +2,6 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Utils;
@@ -56,14 +55,11 @@ public class AdminCommands : BaseCommandModule
         if (!string.IsNullOrEmpty(question))
         {
             var client = commandContext.Client;
-            if (_pollEmojiCache == null)
-            {
-                _pollEmojiCache = new[]
+            _pollEmojiCache ??= new[]
                 {
                     DiscordEmoji.FromName(client, ":everybodyvotes:"),
                     DiscordEmoji.FromName(client, ":nobodyvotes:")
                 };
-            }
 
             var bob = new DiscordEmbedBuilder();
             bob.WithTitle(question)

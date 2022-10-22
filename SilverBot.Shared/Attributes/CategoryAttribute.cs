@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SilverBotDS.Attributes;
+﻿namespace SilverBotDS.Attributes;
 
 [AttributeUsage(AttributeTargets.All)]
 public class CategoryAttribute : Attribute

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SilverBotDS;
+﻿namespace SilverBotDS;
 
 public static class ConsoleInputHelper
 {

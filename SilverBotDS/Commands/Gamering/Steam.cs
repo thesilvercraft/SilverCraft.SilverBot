@@ -4,7 +4,6 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
-using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SteamStoreQuery.Enums;
 using System;

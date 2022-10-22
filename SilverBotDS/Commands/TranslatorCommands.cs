@@ -20,7 +20,7 @@ using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 namespace SilverBotDS.Commands;
 
 [RequireTranslator(true)]
-[ModuleLifespan(ModuleLifespan.Transient)]
+//[ModuleLifespan(ModuleLifespan.Transient)]
 [Category("Translation")]
 public class TranslatorCommands : SilverBotCommandModule
 {
@@ -147,7 +147,7 @@ public class TranslatorCommands : SilverBotCommandModule
 
     [Command("generatelangtemplate")]
     [Description("make a template for translation")]
-    public async Task GenerateLanguageTemplate(CommandContext ctx, string lang = null)
+    public async Task GenerateLanguageTemplate(CommandContext ctx, string? lang = null)
     {
         Language langobj;
         if (lang == null)

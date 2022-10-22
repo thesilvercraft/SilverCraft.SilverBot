@@ -2,7 +2,6 @@
 using DSharpPlus.CommandsNext.Attributes;
 using Fortnite_API;
 using Fortnite_API.Objects.V1;
-using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using System;

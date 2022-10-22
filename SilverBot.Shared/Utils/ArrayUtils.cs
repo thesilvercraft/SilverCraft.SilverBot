@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SilverBotDS.Utils;
+﻿namespace SilverBotDS.Utils;
 
 public static class ArrayUtils
 {

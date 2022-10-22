@@ -1,10 +1,7 @@
 ﻿using DSharpPlus.Entities;
 using Lavalink4NET.Events;
 using Lavalink4NET.Player;
-using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
 #nullable enable
 

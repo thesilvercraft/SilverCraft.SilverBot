@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SilverBotDS.Exceptions;
+﻿namespace SilverBotDS.Exceptions;
 
 [Serializable]
 public class MojangException : Exception

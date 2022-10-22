@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace SilverBotDS.Utils;
+﻿namespace SilverBotDS.Utils;
 
 public static class FileUtils
 {

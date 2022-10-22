@@ -1,5 +1,5 @@
 ﻿using SilverBotDS.Objects.Database.Classes;
-using System;
+using SilverBotDS.Objects.Database.Classes.ReactionRole;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
@@ -8,21 +8,12 @@ namespace SilverBotDS.Objects;
 
 public class ServerSettings
 {
-    public ServerSettings()
-    {
-        LangName = "en";
-        EmotesOptin = false;
-        ServerStatsCategoryId = null;
-        RepeatThings = false;
-        WebShot = false;
-        Prefixes = Array.Empty<string>();
-    }
+    [Key] public Guid ServerSettingsId { get; set; }
+    public ulong ServerId { get; set; }
 
-    [Key] public ulong ServerId { get; init; }
-
-    public string LangName { get; set; }
+    public string LangName { get; set; } = "en";
     public bool EmotesOptin { get; set; }
-    public ulong? ServerStatsCategoryId { get; set; }
+    public ulong? ServerStatsCategoryId { get; set; } = null;
 
     [NotMapped]
     public ServerStatString[] ServerStatsTemplates
@@ -33,9 +24,8 @@ public class ServerSettings
         set => ServerStatsTemplatesInJson = JsonSerializer.Serialize(value);
     }
 
-    public string ServerStatsTemplatesInJson { get; set; }
+    public string ServerStatsTemplatesInJson { get; set; } = "[]";
     public bool RepeatThings { get; set; }
-    public bool WebShot { get; set; }
     public bool Reminders { get; set; }
 
     [NotMapped]
@@ -45,5 +35,6 @@ public class ServerSettings
         set => PrefixesInJson = JsonSerializer.Serialize(value);
     }
 
-    public string PrefixesInJson { get; set; }
+    public string PrefixesInJson { get; set; } = "[]";
+    public virtual List<ReactionRoleMapping> Mappings { get; set; }
 }

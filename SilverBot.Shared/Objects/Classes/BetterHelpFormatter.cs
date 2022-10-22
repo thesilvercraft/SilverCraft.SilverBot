@@ -5,8 +5,6 @@ using DSharpPlus.CommandsNext.Entities;
 using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
 using SilverBotDS.Utils;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace SilverBotDS.Objects.Classes;

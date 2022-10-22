@@ -2,41 +2,13 @@
 using Serilog;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Objects.Database.Classes.ReactionRole;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects;
 
 public class DatabaseContext : DbContext
 {
-    public static readonly string HtmlStart = "<html>" +
-                                              "<head>" +
-                                              "<style>" +
-                                              "table, th, td {" +
-                                              "border: 2px solid white;" +
-                                              "border-collapse: collapse;" +
-                                              "}" +
-                                              "table{" +
-                                              "width: 100%;" +
-                                              "height: 100%;" +
-                                              "}" +
-                                              "th,tr{" +
-                                              "color:#ffffff;" +
-                                              "font-size: 25px;" +
-                                              "}" +
-                                              "body{" +
-                                              "background-color:2C2F33;" +
-                                              "}" +
-                                              "</style>" +
-                                              "</head>" +
-                                              "<body>" +
-                                              "<table style=\"width: 100 % \">";
-
     private readonly ServerStatString[] StatsTemplates =
     {
         new("All Members: {AllMembersCount}"), new("Members: {MemberCount}"), new("Bots: {BotsCount}"),
@@ -269,29 +241,26 @@ public class DatabaseContext : DbContext
         {
             var dataTable = new DataTable();
             dataTable.Load(result);
-            StringBuilder thing = new(HtmlStart);
             if (dataTable.Rows.Count == 0)
             {
                 return "nodata";
             }
-
-            
-                StringBuilder builder = new("```" + Environment.NewLine);
-                foreach (DataRow dataRow in dataTable.Rows)
+            StringBuilder builder = new("```" + Environment.NewLine);
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                foreach (var item in dataRow.ItemArray)
                 {
-                    foreach (var item in dataRow.ItemArray)
-                    {
-                        builder.Append('|').AppendFormat("{0,5}", item);
-                    }
-
-                    builder.AppendLine();
+                    builder.Append('|').AppendFormat("{0,5}", item);
                 }
 
-                return builder.Append("```").ToString();
+                builder.AppendLine();
+            }
+
+            return builder.Append("```").ToString();
         }
         catch (Exception e)
         {
-            Log.Error(e,"Error in dbCtx.RunSQL");
+            Log.Error(e, "Error in dbCtx.RunSQL");
             return "Error";
         }
     }
@@ -317,12 +286,12 @@ public class DatabaseContext : DbContext
     }
 
 #pragma warning disable IDE1006 // Naming Styles
-    public DbSet<ServerSettings> serverSettings { get; set; }
-    public DbSet<UserSettings> userSettings { get; set; }
-    public DbSet<UserExperience> userExperiences { get; set; }
-    public DbSet<UserQuote> userQuotes { get; set; }
-    public DbSet<PlannedEvent> plannedEvents { get; set; }
-    public DbSet<TranslatorSettings> translatorSettings { get; set; }
-    public DbSet<ReactionRoleMapping> ReactionRoleMappings { get; set; }
+    public DbSet<ServerSettings> serverSettings => Set<ServerSettings>();
+    public DbSet<UserSettings> userSettings => Set<UserSettings>();
+    public DbSet<UserExperience> userExperiences => Set<UserExperience>();
+    public DbSet<UserQuote> userQuotes => Set<UserQuote>();
+    public DbSet<PlannedEvent> plannedEvents => Set<PlannedEvent>();
+    public DbSet<TranslatorSettings> translatorSettings => Set<TranslatorSettings>();
+    public DbSet<ReactionRoleMapping> ReactionRoleMappings => Set<ReactionRoleMapping>();
 #pragma warning restore IDE1006 // Naming Styles
 }

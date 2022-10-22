@@ -4,7 +4,6 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
-using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
@@ -95,37 +94,13 @@ internal class BibiLib : SilverBotCommandModule
 
     public override Task<bool> ExecuteRequirements(Config conf)
     {
-        if (!Directory.Exists(conf.LocalBibiPictures))
-        {
-            return Task.FromResult(false);
-        }
-
-        if (!File.Exists(conf.BibiLibCutOutConfig))
-        {
-            return Task.FromResult(false);
-        }
-
-        if (!File.Exists(conf.BibiLibFullConfig))
-        {
-            return Task.FromResult(false);
-        }
-
-       
-
-        return Task.FromResult(true);
+        return Task.FromResult(Directory.Exists(conf.LocalBibiPictures) && File.Exists(conf.BibiLibCutOutConfig) && File.Exists(conf.BibiLibFullConfig));
     }
 
     private void EnsureCreated()
     {
-        if (_bibiDescText == null)
-        {
-            _bibiDescText = GetBibiDescText();
-        }
-
-        if (_bibiFullDescText == null)
-        {
-            _bibiFullDescText = GetBibiFullDescText();
-        }
+        _bibiDescText ??= GetBibiDescText();
+        _bibiFullDescText ??= GetBibiFullDescText();
     }
 
     private string[] GetBibiDescText()

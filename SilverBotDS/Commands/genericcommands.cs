@@ -2,7 +2,6 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
@@ -164,8 +163,8 @@ public sealed class Genericcommands : BaseCommandModule
             .SendAsync(ctx.Channel);
     }
 
-    private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string title = null,
-        string content = null, Language language = null)
+    private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string? title = null,
+        string? content = null, Language? language = null)
     {
         language ??= await Language.GetLanguageFromCtxAsync(ctx);
         var embedBuilder = new DiscordEmbedBuilder()

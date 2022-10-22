@@ -9,7 +9,6 @@ using Lavalink4NET;
 using Lavalink4NET.Artwork;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
-using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
@@ -43,7 +42,7 @@ public class Audio : BaseCommandModule
                lavalinkNode.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null and not { State: PlayerState.NotConnected } and not { State: PlayerState.Destroyed };
 
     private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "",
-        string imageurl = "", string url = "", Language language = null)
+        string imageurl = "", string url = "", Language? language = null)
     {
         language ??= await Language.GetLanguageFromCtxAsync(ctx);
         var embedBuilder = new DiscordEmbedBuilder()
@@ -77,7 +76,7 @@ public class Audio : BaseCommandModule
     }
 
     public static async Task SendSimpleMessage(CommandContext ctx, string title = "", string message = "", string image = "",
-        Language language = null)
+        Language? language = null)
     {
         language ??= await Language.GetLanguageFromCtxAsync(ctx);
         var embedBuilder = new DiscordEmbedBuilder()
@@ -113,7 +112,7 @@ public class Audio : BaseCommandModule
         TimeSpan time;
         if (player.CurrentTrack.IsLiveStream)
         {
-            time = TimeSpan.FromHours(2) - player.Position.Position;
+            time = TimeSpan.FromHours(20) - player.Position.Position;
         }
         else
         {
@@ -142,7 +141,6 @@ public class Audio : BaseCommandModule
                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                     .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
                     .WithUrl(song.Song.Uri.ToString())
-
                     .AddField(lang.TimeTillTrackPlays,
                         player.LoopSettings == LoopSettings.LoopingSong
                             ? lang.SongTimeLeftSongLooping
@@ -372,7 +370,7 @@ public class Audio : BaseCommandModule
 
     [Command("export")]
     [Description("Export the queue")]
-    public async Task ExportQueue(CommandContext ctx, string playlistName = null)
+    public async Task ExportQueue(CommandContext ctx, string? playlistName = null)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         if (!IsInVc(ctx))
@@ -726,7 +724,7 @@ public class Audio : BaseCommandModule
         var trackafter = player.CurrentTrack;
         await SendSimpleMessage(ctx,
             string.Format(lang.SkippedNP, trackbefore.Title, trackafter == null ? lang.QueueNothing : trackafter?.Title),
-            language: lang, image: (trackafter == null ? null : (await ArtworkService.ResolveAsync(trackafter))?.ToString()));
+            language: lang, image: trackafter == null ? null : (await ArtworkService.ResolveAsync(trackafter))?.ToString());
     }
 
     [Command("voteskip")]

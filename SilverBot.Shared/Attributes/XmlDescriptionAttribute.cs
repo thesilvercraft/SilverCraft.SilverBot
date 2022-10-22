@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SilverBotDS.Attributes;
+﻿namespace SilverBotDS.Attributes;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class XmlDescriptionAttribute : Attribute

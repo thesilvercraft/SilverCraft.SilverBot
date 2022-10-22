@@ -180,7 +180,8 @@ namespace SilverBotDS
                                         break;
 
                                     default:
-                                        throw new ArgumentOutOfRangeException(nameof(evnt.Type));
+                                        Log.Warning("[SUS] DB event with unknown type was ignored, Type: {Type}", evnt.Type);
+                                        break;
                                 }
                             }
                             catch (Exception e)

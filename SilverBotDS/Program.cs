@@ -47,7 +47,6 @@ namespace SilverBotDS
 {
     internal static class Program
     {
-
         private static Config _config;
 
         private static DiscordClient _discord;
@@ -82,12 +81,12 @@ namespace SilverBotDS
             RunningTasks.Add(a, b);
             return Task.CompletedTask;
         }
+
         /// <summary>
         /// EFCore Scaring mesure
         /// </summary>
         public static IHostBuilder CreateHostBuilder(string[] args)
         => null;
-
 
         private static void Main(string[] args)
         {
@@ -261,13 +260,11 @@ namespace SilverBotDS
             ServiceCollection services = new();
             services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
 
-
             services.AddDbContext<DatabaseContext>(
                               options =>
                               {
-                                  options.UseSqlite("Filename=./silverbotdatabasev2.db", b => b.MigrationsAssembly("SilverBotDS"));
+                                  options.UseLazyLoadingProxies().UseSqlite("Filename=./silverbotdatabasev3.db", b => b.MigrationsAssembly("SilverBotDS"));
                                   if (Debugger.IsAttached) { options.EnableSensitiveDataLogging(); }
-
                               }, ServiceLifetime.Transient);
 
             services.AddSingleton(_config);
@@ -283,7 +280,7 @@ namespace SilverBotDS
                         .DownloadLatestAsync(HttpClient);
                 }
 
-                if (!Debugger.IsAttached)
+                if (!Process.GetProcesses().Any(x=>x.ProcessName.Contains("java")))
                 {
                     _log.Information("Launching lavalink");
 
@@ -450,47 +447,55 @@ namespace SilverBotDS
             commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterConverter(new ImageFormatConverter());
+            async Task ProcessModuleType(Type? type)
+            {
+                if(type == null)
+                {
+                    return;
+                }
+                if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
+                {
+                    var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
+                    if (!CheckIfAllFontsAreHere(fonts))
+                    {
+                        _log.Information(
+                            "Module {Module} won't be loaded as its requirements weren't met: the font/fonts {Fonts} is/are missing",
+                            type.Name, string.Join(',', fonts));
+                        return;
+                    }
+                }
+
+                if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
+                {
+                    var n = (SilverBotCommandModule)Activator.CreateInstance(type);
+                    if (await n.ExecuteRequirements(_config))
+                    {
+                        commands.RegisterCommands(type);
+                    }
+                    else
+                    {
+                        _log.Information("Module {Module} won't be loaded as its requirements weren't met", type.Name);
+                    }
+                }
+                else if (type.IsSubclassOf(typeof(ApplicationCommandModule)))
+                {
+                    slash.RegisterCommands(type);
+                }
+                else if (type.IsSubclassOf(typeof(BaseCommandModule)))
+                {
+                    commands.RegisterCommands(type);
+                }
+            }
+
             foreach (var module in _config.ModulesToLoad)
             {
                 try
                 {
-                    var type = Type.GetType(module);
-                    if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
-                    {
-                        var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
-                        if (!CheckIfAllFontsAreHere(fonts))
-                        {
-                            _log.Information(
-                                "Module {Module} won't be loaded as its requirements weren't met: the font/fonts {Fonts} is/are missing",
-                                module, string.Join(',', fonts));
-                            continue;
-                        }
-                    }
-
-                    if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
-                    {
-                        var n = (SilverBotCommandModule)Activator.CreateInstance(type);
-                        if (await n.ExecuteRequirements(_config))
-                        {
-                            commands.RegisterCommands(type);
-                        }
-                        else
-                        {
-                            _log.Information("Module {Module} won't be loaded as its requirements weren't met", module);
-                        }
-                    }
-                    else if (type.IsSubclassOf(typeof(ApplicationCommandModule)))
-                    {
-                        slash.RegisterCommands(type);
-                    }
-                    else if (type.IsSubclassOf(typeof(BaseCommandModule)))
-                    {
-                        commands.RegisterCommands(type);
-                    }
+                    await ProcessModuleType(Type.GetType(module));
                 }
                 catch (Exception ex)
                 {
-                    _log.Error(ex, "Failed to load module {Module} Exception occured", module);
+                    _log.Error(ex, "Failed to load internal module {Module} Exception occured", module);
                 }
             }
             foreach (var group in _config.ModulesToLoadExternal.GroupBy(x => x.Key))
@@ -502,40 +507,11 @@ namespace SilverBotDS
                     {
                         try
                         {
-                            var type = assembly.GetType(module.Value);
-                            if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
-                            {
-                                var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
-                                if (!CheckIfAllFontsAreHere(fonts))
-                                {
-                                    _log.Information(
-                                        "Module {Module} won't be loaded as its requirements weren't met, the font/fonts {Fonts} is/are missing",
-                                        module, string.Join(',', fonts));
-                                    continue;
-                                }
-                            }
-
-                            if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
-                            {
-                                SilverBotCommandModule n = (SilverBotCommandModule)Activator.CreateInstance(type);
-                                if (await n.ExecuteRequirements(_config))
-                                {
-                                    commands.RegisterCommands(type);
-                                }
-                                else
-                                {
-                                    _log.Information("Module {Module} won't be loaded as its requirements weren't met",
-                                        module.Value);
-                                }
-                            }
-                            else
-                            {
-                                commands.RegisterCommands(type);
-                            }
+                            await ProcessModuleType(assembly.GetType(module.Value));
                         }
                         catch (Exception ex)
                         {
-                            _log.Error(ex, "Failed to load module {Module} Exception occured", module.Value);
+                            _log.Error(ex, "Failed to load external module {Module} Exception occured", module.Value);
                         }
                     }
                 }
@@ -549,7 +525,6 @@ namespace SilverBotDS
             await CommandErrorHandler.RegisterErrorHandler(ServiceProvider, _log, commands);
 
             #endregion Registering Commands
-
 
             //🥁🥁🥁 drum-roll
             _log.Information("Connecting to discord");
@@ -695,7 +670,6 @@ namespace SilverBotDS
                 await _discord.UpdateStatusAsync(new("console logs while launching the website module",
                ActivityType.Watching));
                 _log.Information("Creating host");
-
             }
             _log.Information("Booted up");
             while (true)
@@ -800,9 +774,8 @@ namespace SilverBotDS
 
         public static async Task StatisticsMainAsync(CancellationToken ct = default)
         {
-            while (true)
+            while (!ct.IsCancellationRequested)
             {
-                ct.ThrowIfCancellationRequested();
                 try
                 {
                     _log.Debug("Entered statistics method");
@@ -875,19 +848,15 @@ namespace SilverBotDS
                 catch (Exception e)
                 {
                     _log.Error(e, "exception happened in stats thread");
-                    ct.ThrowIfCancellationRequested();
                 }
-                ct.ThrowIfCancellationRequested();
                 await Task.Delay(1800000, ct);
-                ct.ThrowIfCancellationRequested();
             }
         }
 
         public static async Task WaitForFridayAsync(CancellationToken ct = default)
         {
-            while (true)
+            while (!ct.IsCancellationRequested)
             {
-                ct.ThrowIfCancellationRequested();
                 if (DayOfWeek.Friday == DateTime.Now.DayOfWeek &&
                     (_lastFriday == 0 || _lastFriday != DateTime.Now.DayOfYear))
                 {
@@ -902,9 +871,7 @@ namespace SilverBotDS
                         _lastFriday = 0;
                     }
                 }
-                ct.ThrowIfCancellationRequested();
                 await Task.Delay(1000, ct);
-                ct.ThrowIfCancellationRequested();
             }
         }
 
@@ -1002,6 +969,7 @@ namespace SilverBotDS
                             case "<:kalorichan:839099093552332850>":
                                 await e.Message.RespondAsync("<:kalorichan:839099093552332850>");
                                 return;
+
                             case "silver face":
                                 await e.Message.RespondAsync("<:silverface:853297508632756234>");
                                 return;

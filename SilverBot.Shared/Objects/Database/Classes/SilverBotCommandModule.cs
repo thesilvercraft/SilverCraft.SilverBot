@@ -1,5 +1,4 @@
 ﻿using DSharpPlus.CommandsNext;
-using System.Threading.Tasks;
 
 namespace SilverBotDS.Objects.Classes;
 

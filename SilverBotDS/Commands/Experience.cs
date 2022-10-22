@@ -5,7 +5,6 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Microsoft.EntityFrameworkCore;
-using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
@@ -27,6 +26,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace SilverBotDS.Commands;
+
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 [Category("XP")]

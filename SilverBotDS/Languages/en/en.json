@@ -63,7 +63,7 @@
   "NoImageGeneric": "You didn\u0027t attach a image",
   "EmoteWasLargerThan256K": "Bruv discord no likey you need something less than 256kb you sent {0}",
   "MoreThanOneImageGeneric": "You attached more than one image",
-  "OutputFileLargerThan8M": "The output file is larger than 8mb, its {0}",
+  "OutputFileLargerThan8M": "The output file is larger than allowed, its {0}",
   "PageGif": "Page {0}/{1} Click on the \u0060Next\u0060 button in the next 5 min to see the next page",
   "PageGifButtonText": "Next",
   "PageNuget": "Page {0}/{1}",

@@ -6,6 +6,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
+using ImageMagick;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
 using SilverBotDS.Attributes;
@@ -13,7 +14,6 @@ using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
-using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -164,8 +164,22 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                             await RespondWithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable);
                             break;
 
-                        case UnknownImageFormatException:
+                        /*case UnknownImageFormatException:
                             await RespondWithContent(lang.UnknownImageFormat);
+                            break;*/
+                        case MagickMissingDelegateErrorException ty :
+                            var encode = "no encode delegate for this image format ";
+                            if (ty.Message.StartsWith(encode))
+                            {
+                                await RespondWithContent($"The bot can not encode `{ty.Message[(encode.Length+1)..(encode.Length + 4)]}` images.");
+                            }
+                            break;
+                        case MagickCoderErrorException imgerr:
+                            var zip = "ZIP compression not supported";
+                            if(imgerr.Message.StartsWith(zip))
+                            {
+                                await RespondWithContent($"The bot can not decode this image because it uses ZIP compression.");
+                            }
                             break;
 
                         case AttachmentCountIncorrectException { AttachmentCount: AttachmentCountIncorrect.TooManyAttachments }:

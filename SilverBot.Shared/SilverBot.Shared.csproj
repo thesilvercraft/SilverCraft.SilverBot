@@ -16,6 +16,7 @@
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
     <PackageReference Include="Lavalink4NET.DSharpPlus" Version="3.0.0-preview.12" />
+    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="12.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9">
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
@@ -40,7 +41,5 @@
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0">
     </PackageReference>
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.0-alpha.0.54" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15.1" />
   </ItemGroup>
 </Project>

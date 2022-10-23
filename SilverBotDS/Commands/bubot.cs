@@ -4,19 +4,21 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using ImageMagick;
+using Microsoft.AspNetCore.Components.Forms;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
-using SixLabors.Fonts;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.Processing;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using static SilverBotDS.Utils.ColorUtils;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
@@ -38,7 +40,6 @@ public class Bubot : BaseCommandModule
 [Category("Bubot")]
 internal class BibiCommands : SilverBotCommandModule, IRequireFonts
 {
-    private readonly Font _bibiFont = new(SystemFonts.Get("Arial"), 30, FontStyle.Bold);
     public static string[] RequiredFontFamilies => new[] { "Arial" };
     public Config Config { private get; set; }
 
@@ -51,7 +52,7 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
     {
         return Task.FromResult(Directory.Exists(conf.LocalBibiPictures));
     }
-
+    
     [Command("bibi")]
     [Description("Makes a image with the great cat Bibi.")]
     [Cooldown(1, 2, CooldownBucketType.User)]
@@ -60,25 +61,22 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
         await ctx.TriggerTypingAsync();
         input = $"bibi is {input}";
         var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
-        using var picture = await Image.LoadAsync($"{Config.LocalBibiPictures}{randomnumber}.png");
-        var size = _bibiFont.Size;
-        while (TextMeasurer.Measure(input, new TextOptions(new Font(_bibiFont.Family, size, FontStyle.Bold))).Width >
-               picture.Width)
+        using var file = File.OpenRead(Path.Combine(Config.LocalBibiPictures,$"{randomnumber}.png"));
+        using var picture = new MagickImage(file);
+        MagickReadSettings settings = new()
         {
-            size -= 0.05f;
-        }
-
-        picture.Mutate(
-            x => x.DrawText(
-                input, new Font(_bibiFont.Family, size, FontStyle.Bold),
-                randomnumber is 10 or 9 ? Color.Gray : Color.White, new PointF(4, 230)
-            )
-        );
+            FillColor = randomnumber is 10 or 9 ? MagickColors.Gray : MagickColors.White,
+            Font = RequiredFontFamilies[0],
+            FontPointsize= picture.Width / 14,
+            BackgroundColor= MagickColors.Transparent,
+            Width= picture.Width,
+        };
+        using var label = new MagickImage($"caption:{input}", settings);
+        picture.Composite(label, 4, 230, CompositeOperator.Over);
         await using var outStream = new MemoryStream();
-        await picture.SaveAsPngAsync(outStream);
+        await picture.WriteAsync(outStream, MagickFormat.Png);
         outStream.Position = 0;
-        randomnumber = 0;
-        await ImageModule.SendImageStream(ctx, outStream, content: input);
+        await ImageModule.SendImageStreamIfAllowed(ctx, outStream, content: input);
     }
 }
 

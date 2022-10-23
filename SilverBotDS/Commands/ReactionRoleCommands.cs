@@ -5,6 +5,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
 using Microsoft.EntityFrameworkCore;
+using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes.ReactionRole;
@@ -168,7 +169,8 @@ public class ReactionRoleCommands : SilverBotCommandModule
                 DiscordColor colour = DiscordColor.Red;
                 if (!result.TimedOut)
                 {
-                    colour = new DiscordColor(SixLabors.ImageSharp.Color.Parse(result.Result.Content).ToHex()[..6]);
+                    var c = ColorConverter.Convert(result.Result.Content);
+                    colour = new DiscordColor(c.R,c.G,c.B);
                 }
                 mb = mb.WithEmbed(new DiscordEmbedBuilder().WithTitle(title).WithDescription(asasadsadsasas.ToString())
                     .WithColor(colour));

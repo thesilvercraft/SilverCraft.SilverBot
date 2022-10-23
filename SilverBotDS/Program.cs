@@ -9,6 +9,7 @@ using DSharpPlus.Interactivity.EventHandling;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using Humanizer;
+using ImageMagick;
 using Lavalink4NET;
 using Lavalink4NET.Artwork;
 using Lavalink4NET.DSharpPlus;
@@ -28,7 +29,6 @@ using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Utils;
-using SixLabors.Fonts;
 using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
@@ -159,7 +159,7 @@ namespace SilverBotDS
                 throw new ArgumentNullException(nameof(requiredFonts));
             }
 
-            var familyNames = SystemFonts.Families.Select(x => x.Name).ToList();
+            var familyNames = MagickNET.FontFamilies.ToList();
             return requiredFonts.All(font => familyNames.Contains(font));
         }
 
@@ -403,7 +403,7 @@ namespace SilverBotDS
                                 if (!CheckIfAllFontsAreHere(fonts))
                                 {
                                     _log.Information(
-                                        "Module {Module} won't be loaded as its requirements weren't met, the font/fonts {Fonts} is/are missing",
+                                        "Module {Module} might not work properly as its requirements weren't met, the font/fonts {Fonts} is/are missing",
                                         module, string.Join(',', fonts));
                                 }
                             }
@@ -455,13 +455,12 @@ namespace SilverBotDS
                 }
                 if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
                 {
-                    var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
+                    var fonts = (string[]?)type.GetProperty("RequiredFontFamilies").GetValue(null);
                     if (!CheckIfAllFontsAreHere(fonts))
                     {
                         _log.Information(
-                            "Module {Module} won't be loaded as its requirements weren't met: the font/fonts {Fonts} is/are missing",
+                            "Module {Module} might not work properly as its requirements weren't met: the font/fonts {Fonts} is/are missing",
                             type.Name, string.Join(',', fonts));
-                        return;
                     }
                 }
 

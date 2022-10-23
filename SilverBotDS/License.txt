@@ -170,7 +170,7 @@ You may add additional accurate notices of copyright ownership.
 Exhibit B - "Incompatible With Secondary Licenses" Notice
 
 This Source Code Form is "Incompatible With Secondary Licenses", as defined by the Mozilla Public License, v. 2.0.
-Javascript.NodeJS's source code, Microsoft.Extensions.ApiDescription.Client, Microsoft.EntityFrameworkCore, Serilog and SixLabors.ImageSharp are licensed under the Apache License Version 2.0 
+Javascript.NodeJS's source code, Microsoft.Extensions.ApiDescription.Client, Microsoft.EntityFrameworkCore, Serilog and Magick.NET are licensed under the Apache License Version 2.0 
 Apache License
 Version 2.0, January 2004
 http://www.apache.org/licenses/

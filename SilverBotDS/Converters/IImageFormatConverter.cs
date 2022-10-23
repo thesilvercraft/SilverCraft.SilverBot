@@ -1,28 +1,31 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
-using SixLabors.ImageSharp.Formats;
-using SixLabors.ImageSharp.Formats.Bmp;
-using SixLabors.ImageSharp.Formats.Gif;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Formats.Tga;
+using ImageMagick;
 using System.Threading.Tasks;
-
 namespace SilverBotDS.Converters;
 
-internal class ImageFormatConverter : IArgumentConverter<IImageFormat>
+internal class ImageFormatConverter : IArgumentConverter<MagickFormat>
 {
-    public Task<Optional<IImageFormat>> ConvertAsync(string value, CommandContext ctx)
+    public Task<Optional<MagickFormat>> ConvertAsync(string value, CommandContext ctx)
     {
         return value.ToLowerInvariant() switch
         {
-            "png" => Task.FromResult(Optional.FromValue<IImageFormat>(PngFormat.Instance)),
-            "jpeg" or "jpg" => Task.FromResult(Optional.FromValue<IImageFormat>(JpegFormat.Instance)),
-            "gif" => Task.FromResult(Optional.FromValue<IImageFormat>(GifFormat.Instance)),
-            "tga" => Task.FromResult(Optional.FromValue<IImageFormat>(TgaFormat.Instance)),
-            "bmp" => Task.FromResult(Optional.FromValue<IImageFormat>(BmpFormat.Instance)),
-            _ => Task.FromResult(Optional.FromNoValue<IImageFormat>())
+            "bmp" => Task.FromResult(Optional.FromValue(MagickFormat.Bmp)),
+            "gif" => Task.FromResult(Optional.FromValue(MagickFormat.Gif)),
+            "ico" => Task.FromResult(Optional.FromValue(MagickFormat.Ico)),
+            "jpeg" or "jpg" => Task.FromResult(Optional.FromValue(MagickFormat.Jpeg)),
+            "png" => Task.FromResult(Optional.FromValue(MagickFormat.Png)),
+            "wbmp" => Task.FromResult(Optional.FromValue(MagickFormat.Wbmp)),
+            "webp" => Task.FromResult(Optional.FromValue(MagickFormat.WebP)),
+            "dng" => Task.FromResult(Optional.FromValue(MagickFormat.Dng)),
+            "tga" => Task.FromResult(Optional.FromValue(MagickFormat.Tga)),
+            "tiff" or "tif" => Task.FromResult(Optional.FromValue(MagickFormat.Tiff)),
+            "xcf"  => Task.FromResult(Optional.FromValue(MagickFormat.Xcf)),
+            "heif" => Task.FromResult(Optional.FromValue(MagickFormat.Heif)),
+            "avif" => Task.FromResult(Optional.FromValue(MagickFormat.Avif)),
+            _ => Task.FromResult(Optional.FromNoValue<MagickFormat>())
         };
     }
 }
+

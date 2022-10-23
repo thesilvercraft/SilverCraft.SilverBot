@@ -12,7 +12,6 @@ using SilverBotDS.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
-using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,9 +120,9 @@ namespace SilverBotDS
                             await RespondWithContent(string.Format(lang.InvalidOverload, e.Context.CommandName));
                             break;
 
-                        case UnknownImageFormatException:
+                        /*case UnknownImageFormatException:
                             await RespondWithContent(lang.UnknownImageFormat);
-                            break;
+                            break;*/
 
                         case AttachmentCountIncorrectException aa when aa.AttachmentCount == AttachmentCountIncorrect.TooManyAttachments:
                             await RespondWithContent(lang.WrongImageCount);

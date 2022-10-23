@@ -75,7 +75,7 @@ public class OwnerOnly : SilverBotCommandModule
                 var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
                 if (!Program.CheckIfAllFontsAreHere(fonts))
                 {
-                    await ctx.RespondAsync($"Module {mod} won't be loaded as its requirements weren't met: the font/fonts {string.Join(',', fonts)} is/are missing");
+                    await ctx.RespondAsync($"Module {mod} might not work properly as its requirements weren't met: the font/fonts {string.Join(',', fonts)} is/are missing");
                 }
             }
             if (type.IsSubclassOf(typeof(SilverBotCommandModule)))

@@ -19,8 +19,6 @@ jobs:
       run: dotnet publish -c Release -p:PublishProfile=FolderProfile 
     - name: Copy SilverBotDS.AnimeModule to publish directory
       run: copy "SilverBotDS.AnimeModule\bin\Release\net6.0\SilverBotDS.AnimeModule*" "SilverBotDS\bin\Release\net6.0\publish"
-    - name: Copy SilverBotDS.PixelsArchiver to publish directory
-      run: copy "SilverBotDS.PixelsArchiver\bin\Release\net6.0\SilverBotDS.PixelsArchiver*" "SilverBotDS\bin\Release\net6.0\publish"
     - name: Zip 
       shell: powershell
       run: |

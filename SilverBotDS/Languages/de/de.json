@@ -63,7 +63,7 @@
   "NoImageGeneric": "Du hast kein Bild angehangen",
   "EmoteWasLargerThan256K": "Bruv discord ist nicht nett du brauchst etwas das kleiner als 256kb ist. Das was du gesendet hast ist {0}kb groß",
   "MoreThanOneImageGeneric": "Du hast mehr als ein Bild angehangen",
-  "OutputFileLargerThan8M": "Die Ausgabedatei ist größer als 8mb, sie ist {0} groß",
+  "OutputFileLargerThan8M": "The output file is larger than allowed, its {0}",
   "PageGif": "Seite {0}/{1} Drücke den `Next` Knopf in den nächsten 5 Minuten um die nächste Seite zu sehen",
   "PageGifButtonText": "Weiter",
   "PageNuget": "Seite {0}/{1}",

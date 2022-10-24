@@ -170,7 +170,7 @@ public class ReactionRoleCommands : SilverBotCommandModule
                 if (!result.TimedOut)
                 {
                     var c = ColorConverter.Convert(result.Result.Content);
-                    colour = new DiscordColor(c.R,c.G,c.B);
+                    colour = new DiscordColor(c.Value.R, c.Value.G,c.Value.B);
                 }
                 mb = mb.WithEmbed(new DiscordEmbedBuilder().WithTitle(title).WithDescription(asasadsadsasas.ToString())
                     .WithColor(colour));

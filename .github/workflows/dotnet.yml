@@ -72,13 +72,23 @@ jobs:
          asset_path: .\SilverBotDS.AnimeModule\bin\Release\net6.0\publish\SilverBotDS.AnimeModule.dll
          asset_name: SilverBotDS.AnimeModule.dll
          asset_content_type: application/octet-stream
-    - name: Upload Release Dll of Pixel module
+    - name: Upload Release Dll of Shared
       id: upload-release-dll-pixel
       uses: actions/upload-release-asset@v1
       env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBotDS.PixelsArchiver\bin\Release\net6.0\publish\SilverBotDS.PixelsArchiver.dll
-         asset_name: SilverBotDS.PixelsArchiver.dll
+         asset_path: .\SilverBot.Shared\bin\Release\net6.0\publish\SilverBot.Shared.dll
+         asset_name: SilverBot.Shared.dll
+         asset_content_type: application/octet-stream
+    - name: Upload Release PDB of Shared
+      id: upload-release-dll-pixel
+      uses: actions/upload-release-asset@v1
+      env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: .\SilverBot.Shared\bin\Release\net6.0\publish\SilverBot.Shared.pdb
+         asset_name: SilverBot.Shared.pdb
          asset_content_type: application/octet-stream

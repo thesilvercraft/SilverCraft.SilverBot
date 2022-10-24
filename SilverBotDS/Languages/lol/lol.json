@@ -63,7 +63,7 @@
   "NoImageGeneric": "U DIDNT ATTACH IMAGE",
   "EmoteWasLargerThan256K": "DISCORD NO LIKEY U NED SOMETHIN LES THAN 256KB U SENT {0}",
   "MoreThanOneImageGeneric": "U ATTACHD MOAR THAN WAN IMAGE",
-  "OutputFileLargerThan8M": "TEH OUTPUT FILE IZ LARGR THAN 8MB, ITZ {0}",
+  "OutputFileLargerThan8M": "The output file is larger than allowed, its {0}",
   "PageGif": "PAEG {0}/{1} CLICK ON TEH `NEXT` BUTN IN DA NEXT 5 MIN 2 C TEH NEXT PAEG",
   "PageGifButtonText": "NEXT",
   "PageNuget": "PAEG {0}/{1}",

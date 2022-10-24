@@ -63,7 +63,7 @@
   "NoImageGeneric": "Non hai mandato un immagine",
   "EmoteWasLargerThan256K": "Fra a discord non piace, ti serve un file che ha meno di 256kb e tu hai mandato {0}",
   "MoreThanOneImageGeneric": "Hai mandato più di un immagine",
-  "OutputFileLargerThan8M": "Il file risultato è più grande di 8mb, è {0}",
+  "OutputFileLargerThan8M": "The output file is larger than allowed, its {0}",
   "PageGif": "Pagina {0}/{1} Clicca il bottone 'Next' entro nei prossimi 5 minuti per vedere la prossima pagina",
   "PageGifButtonText": "Prossimo",
   "PageNuget": "Pagina {0}/{1}",

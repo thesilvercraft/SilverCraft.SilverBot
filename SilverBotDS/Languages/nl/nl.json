@@ -63,7 +63,7 @@
   "NoImageGeneric": "Je hebt geen foto erbij geplakt",
   "EmoteWasLargerThan256K": "Sorry man maar maakt het lager dan 256kb {0}",
   "MoreThanOneImageGeneric": "Je hebt te veel foto's erbij geplakt",
-  "OutputFileLargerThan8M": "De output file is groter dan 8mb, het is {0}",
+  "OutputFileLargerThan8M": "The output file is larger than allowed, its {0}",
   "PageGif": "Pagina {0}/{1} gebruik `next` in de volgende 5 min om de volgende pagina te zien",
   "PageGifButtonText": "Next",
   "PageNuget": "Pagina {0}/{1}",

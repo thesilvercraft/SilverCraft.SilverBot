@@ -63,7 +63,7 @@
   "NoImageGeneric": "You didn't attach a image",
   "EmoteWasLargerThan256K": "YOUR EMOTE IS TOO LARGE BITCH I NEED SOME SHIT THAT IS LESS THAN 256KB. YOU SENT ME {0}",
   "MoreThanOneImageGeneric": "BITCH I CAN'T HANDLE ALL THIS SHIT, JUST SEND ME ONE IMAGE OK",
-  "OutputFileLargerThan8M": "OH GOD DAMMIT THE OUTPUT FILE EXCEEDED THE FUCKING DISCORD LIMIT OF 8MB, ITS {0}",
+  "OutputFileLargerThan8M": "The output file is larger than allowed, its {0}",
   "PageGif": "Page {0}/{1} Click on the `Next` button in the next 5 min to see the next page",
   "PageGifButtonText": "Next",
   "PageNuget": "Page {0}/{1}",

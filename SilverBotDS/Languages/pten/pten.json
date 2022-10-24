@@ -63,7 +63,7 @@
   "NoImageGeneric": "Ye did nay attach a image",
   "EmoteWasLargerThan256K": "Your treasure is too big for the ship give something that is smaller than 256kb you gave {0}",
   "MoreThanOneImageGeneric": "Ye gave more than one treasure",
-  "OutputFileLargerThan8M": "The output file be larger than 8mb, its {0}",
+  "OutputFileLargerThan8M": "The output file is larger than allowed, its {0}",
   "PageGif": "Page {0}/{1} Click on the `Next` button in the next 5 min to see the next page",
   "PageGifButtonText": "Next",
   "PageNuget": "Page {0}/{1}",

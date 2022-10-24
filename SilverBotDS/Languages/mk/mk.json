@@ -63,7 +63,7 @@
   "NoImageGeneric": "Не прикачи слика",
   "EmoteWasLargerThan256K": "Сликата мора да е помала од 256kb ти прати {0}",
   "MoreThanOneImageGeneric": "Прати повеќе од една слика",
-  "OutputFileLargerThan8M": "Сликата е поголема од 8mb, таа е {0}",
+  "OutputFileLargerThan8M": "The output file is larger than allowed, its {0}",
   "PageGif": "Страна {0}/{1} Кликни на `Следна страна` во следниве 5 минути за да ја видиш следната страна",
   "PageGifButtonText": "Следна страна",
   "PageNuget": "Страна {0}/{1}",

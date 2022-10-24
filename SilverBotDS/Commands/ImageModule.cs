@@ -293,7 +293,7 @@ public class ImageModule : BaseCommandModule, IRequireFonts
             width: loadedimg.Width - ((loadedimg.Width / 25) * 2),
             rgba: true,
             align: Align.Centre, fontfile: "twemoji.otf");
-        using var textimgb = textimga.Equal(new int[] { 0, 0, 0, 0 }).BandAnd().Ifthenelse(new int[] { 255, 255, 255, 255 }, textimga);
+        using var textimgb = textimga.Equal(new int[] { 0, 0, 0, 0 }).BandAnd().Ifthenelse(new int[] { 255, 255, 255, 255 }, textimga).Embed(2,2,textimga.Width+4,textimga.Height+4,Extend.White);
         if (loadedimg.Contains("n-pages") && loadedimg.Contains("page-height"))
         {
             var nPages = (int)loadedimg.Get("n-pages");

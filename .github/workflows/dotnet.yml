@@ -73,7 +73,7 @@ jobs:
          asset_name: SilverBotDS.AnimeModule.dll
          asset_content_type: application/octet-stream
     - name: Upload Release Dll of Shared
-      id: upload-release-dll-pixel
+      id: upload-release-dll-shared
       uses: actions/upload-release-asset@v1
       env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -83,7 +83,7 @@ jobs:
          asset_name: SilverBot.Shared.dll
          asset_content_type: application/octet-stream
     - name: Upload Release PDB of Shared
-      id: upload-release-dll-pixel
+      id: upload-release-pdb-shared
       uses: actions/upload-release-asset@v1
       env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

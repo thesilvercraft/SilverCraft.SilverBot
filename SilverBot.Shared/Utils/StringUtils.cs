@@ -83,7 +83,20 @@ public static class StringUtils
         }
         return a[..a.LastIndexOf(sub, StringComparison.Ordinal)];
     }
-
+    /// <summary>
+    /// Removes a substring if it is found at the start
+    /// </summary>
+    /// <param name="a">the source string</param>
+    /// <param name="sub">the substring</param>
+    /// <returns>the original string with the substring removed if the substring was at the start</returns>
+    public static string RemoveStringFromStart(this string a, string sub)
+    {
+        if (!a.StartsWith(sub))
+        {
+            return a;
+        }
+        return a[sub.Length..];
+    }
     /// <summary>
     ///     Converts an String[] to String by combining all the strings
     /// </summary>

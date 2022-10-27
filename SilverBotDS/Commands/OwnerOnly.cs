@@ -70,12 +70,18 @@ public class OwnerOnly : SilverBotCommandModule
         var type = Type.GetType(mod);
         if (!skipcheck)
         {
-            if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
+            if (type.GetInterfaces().Contains(typeof(IRequireAssets)))
             {
-                var fonts = (string[])type.GetProperty("RequiredFontFamilies").GetValue(null);
-                if (!Program.CheckIfAllFontsAreHere(fonts))
+                var assets = (string[]?)type.GetProperty("RequiredAssets").GetValue(null);
+                if (assets != null)
                 {
-                    await ctx.RespondAsync($"Module {mod} might not work properly as its requirements weren't met: the font/fonts {string.Join(',', fonts)} is/are missing");
+                    var missingassets = Program.GetMissingAssets(assets);
+                    if (missingassets.Any())
+                    {
+                        await ctx.RespondAsync(
+                                                                $"Module {type.Name} might not work properly as its requirements weren't met, the asset/s {string.Join(',', missingassets)} is/are missing"
+                                                                 );
+                    }
                 }
             }
             if (type.IsSubclassOf(typeof(SilverBotCommandModule)))

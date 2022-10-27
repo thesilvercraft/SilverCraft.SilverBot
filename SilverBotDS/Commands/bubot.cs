@@ -38,9 +38,13 @@ public class Bubot : BaseCommandModule
 }
 
 [Category("Bubot")]
-internal class BibiCommands : SilverBotCommandModule, IRequireFonts
+internal class BibiCommands : SilverBotCommandModule, IRequireAssets
 {
-    public static string[] RequiredFontFamilies => new[] { "Arial" };
+    public static string[] RequiredAssets => new[]
+    {
+        "font://Arial",
+    };
+
     public Config Config { private get; set; }
 
     private int BibiPictureCount
@@ -66,7 +70,7 @@ internal class BibiCommands : SilverBotCommandModule, IRequireFonts
         MagickReadSettings settings = new()
         {
             FillColor = randomnumber is 10 or 9 ? MagickColors.Gray : MagickColors.White,
-            Font = RequiredFontFamilies[0],
+            Font = "Arial",
             FontPointsize= picture.Width / 14,
             BackgroundColor= MagickColors.Transparent,
             Width= picture.Width,

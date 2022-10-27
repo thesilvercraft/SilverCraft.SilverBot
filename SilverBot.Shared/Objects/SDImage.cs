@@ -123,7 +123,7 @@ public class SdImageConverter : IArgumentConverter<SdImage>
     private static readonly Regex Emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private static readonly Regex User = new("<@!(?<id>.+?)>",
+    private static readonly Regex User = new("<@(?<id>.+?)>",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
     public async Task<Optional<SdImage>> ConvertAsync(string value, CommandContext ctx)

@@ -10,6 +10,6 @@ public class SilverBotCommandModule : BaseCommandModule
     }
 }
 
-public interface IRequireFonts
+public interface IRequireAssets
 {
 }

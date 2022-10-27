@@ -20,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NetVips;
 using SDiscordSink;
 using Serilog;
 using Serilog.Core;
@@ -152,15 +153,23 @@ namespace SilverBotDS
             return !(a is null || a == b);
         }
 
-        public static bool CheckIfAllFontsAreHere(string[] requiredFonts)
+        public static IEnumerable<string> GetMissingAssets(string[] required)
         {
-            if (requiredFonts == null)
+            return required.Where(x => !AssetPresent(x));
+        }
+        public static bool AssetPresent(string asset)
+        {
+            if(asset.StartsWith("font://"))
             {
-                throw new ArgumentNullException(nameof(requiredFonts));
+                var font = asset.RemoveStringFromStart("font://").Replace(' ','-');
+                return MagickNET.FontNames.Contains(font);
             }
-
-            var familyNames = MagickNET.FontFamilies.ToList();
-            return requiredFonts.All(font => familyNames.Contains(font));
+            else if(asset.StartsWith("file://"))
+            {
+                var file = asset.RemoveStringFromStart("file://");
+                return File.Exists(file);
+            }
+            return false;
         }
 
         private static async Task MainAsync(string[] args)
@@ -387,6 +396,7 @@ namespace SilverBotDS
 
                 return moduleInstance;
             }
+
             foreach (var group in _config.ServicesToLoadExternal.GroupBy(x => x.Key))
             {
                 if (File.Exists(group.Key))
@@ -397,14 +407,31 @@ namespace SilverBotDS
                         try
                         {
                             var t = assembly.GetType(module.Value);
-                            if (t.GetInterfaces().Contains(typeof(IRequireFonts)))
+                            if (t.GetInterfaces().Contains(typeof(IRequireAssets)))
                             {
-                                var fonts = (string[])t.GetProperty("RequiredFontFamilies").GetValue(null);
-                                if (!CheckIfAllFontsAreHere(fonts))
+                                var assets = (string[]?)t.GetProperty("RequiredAssets").GetValue(null);
+                                if(assets!=null)
                                 {
-                                    _log.Information(
-                                        "Module {Module} might not work properly as its requirements weren't met, the font/fonts {Fonts} is/are missing",
-                                        module, string.Join(',', fonts));
+                                    var missingassets = GetMissingAssets(assets);
+                                    if(missingassets.Any())
+                                    {
+                                        _log.Information(
+                                                                                "Module {Module} might not work properly as its requirements weren't met, the asset/s {MissingAssets} is/are missing",
+                                                                                module, string.Join(',', missingassets));
+                                        var autofix = t.GetMethod("AutoFixRequiredAssets");
+                                        if (autofix!=null)
+                                        {
+                                            try
+                                            {
+                                                _log.Information("Trying to autofix {Module}'s dependancies", module.Value);
+                                                autofix.Invoke(null, null);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                _log.Error(ex, "Failed to autofix {Module}'s dependancies Exception occured", module.Value);
+                                            }
+                                        }
+                                    }
                                 }
                             }
 
@@ -453,14 +480,31 @@ namespace SilverBotDS
                 {
                     return;
                 }
-                if (type.GetInterfaces().Contains(typeof(IRequireFonts)))
+                if (type.GetInterfaces().Contains(typeof(IRequireAssets)))
                 {
-                    var fonts = (string[]?)type.GetProperty("RequiredFontFamilies").GetValue(null);
-                    if (!CheckIfAllFontsAreHere(fonts))
+                    var assets = (string[]?)type.GetProperty("RequiredAssets").GetValue(null);
+                    if (assets != null)
                     {
-                        _log.Information(
-                            "Module {Module} might not work properly as its requirements weren't met: the font/fonts {Fonts} is/are missing",
-                            type.Name, string.Join(',', fonts));
+                        var missingassets = GetMissingAssets(assets);
+                        if (missingassets.Any())
+                        {
+                            _log.Information(
+                                                                    "Module {Module} might not work properly as its requirements weren't met, the asset/s {MissingAssets} is/are missing",
+                                                                    type.Name, string.Join(',', missingassets));
+                            var autofix = type.GetMethod("AutoFixRequiredAssets");
+                            if (autofix != null)
+                            {
+                                try
+                                {
+                                    _log.Information("Trying to autofix {Module}'s dependancies", type.Name);
+                                    autofix.Invoke(null, new object[] { missingassets });
+                                }
+                                catch (Exception ex)
+                                {
+                                    _log.Error(ex, "Failed to autofix {Module}'s dependancies Exception occured", type.Name);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -485,7 +529,7 @@ namespace SilverBotDS
                     commands.RegisterCommands(type);
                 }
             }
-
+           
             foreach (var module in _config.ModulesToLoad)
             {
                 try

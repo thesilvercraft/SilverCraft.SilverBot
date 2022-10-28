@@ -235,8 +235,8 @@ The *SilverBot.Shared.csproj* project file contains:
 
 - 9 namespaces.
 - 86 named types.
-- 3,986 total lines of source code.
-- Approximately 1,647 lines of executable code.
+- 3,990 total lines of source code.
+- Approximately 1,648 lines of executable code.
 - The highest cyclomatic complexity is 17 :exploding_head:.
 
 <details>
@@ -940,8 +940,8 @@ The `SilverBotDS.Objects.Database.Classes` namespace contains 6 named types.
 The `SilverBotDS.Converters` namespace contains 4 named types.
 
 - 4 named types.
-- 157 total lines of source code.
-- Approximately 45 lines of executable code.
+- 161 total lines of source code.
+- Approximately 46 lines of executable code.
 - The highest cyclomatic complexity is 8 :warning:.
 
 <details>
@@ -959,8 +959,8 @@ The `SilverBotDS.Converters` namespace contains 4 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L114' title='AttachmentCountIncorrect.TooLittleAttachments'>114</a> | 100 | 0 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L113' title='AttachmentCountIncorrect.TooManyAttachments'>113</a> | 100 | 0 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L118' title='AttachmentCountIncorrect.TooLittleAttachments'>118</a> | 100 | 0 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L117' title='AttachmentCountIncorrect.TooManyAttachments'>117</a> | 100 | 0 :heavy_check_mark: | 0 | 0 | 1 / 0 |
 
 <a href="#AttachmentCountIncorrect-class-diagram">:link: to `AttachmentCountIncorrect` class diagram</a>
 
@@ -999,9 +999,9 @@ The `SilverBotDS.Converters` namespace contains 4 named types.
 </summary>
 <br>
 
-- The `SdImage` contains 12 members.
-- 100 total lines of source code.
-- Approximately 30 lines of executable code.
+- The `SdImage` contains 13 members.
+- 104 total lines of source code.
+- Approximately 31 lines of executable code.
 - The highest cyclomatic complexity is 8 :warning:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
@@ -1012,11 +1012,12 @@ The `SilverBotDS.Converters` namespace contains 4 named types.
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L20' title='SdImage.SdImage(string url)'>20</a> | 96 | 1 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L25' title='SdImage.SdImage(DiscordUser user)'>25</a> | 94 | 1 :heavy_check_mark: | 0 | 2 | 4 / 1 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L30' title='void SdImage.Dispose()'>30</a> | 93 | 1 :heavy_check_mark: | 0 | 1 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L95' title='void SdImage.Dispose(bool disposing)'>95</a> | 76 | 2 :heavy_check_mark: | 0 | 1 | 9 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L105' title='SdImage.~SdImage()'>105</a> | 100 | 1 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L99' title='void SdImage.Dispose(bool disposing)'>99</a> | 76 | 2 :heavy_check_mark: | 0 | 1 | 9 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L109' title='SdImage.~SdImage()'>109</a> | 100 | 1 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L75' title='SdImage SdImage.FromAttachments(IReadOnlyList<DiscordAttachment> attachments)'>75</a> | 73 | 3 :heavy_check_mark: | 0 | 6 | 14 / 5 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L36' title='SdImage SdImage.FromContext(CommandContext ctx)'>36</a> | 58 | 8 :warning: | 0 | 7 | 38 / 15 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L90' title='Task<byte[]> SdImage.GetBytesAsync(HttpClient httpClient)'>90</a> | 93 | 1 :heavy_check_mark: | 0 | 3 | 4 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L94' title='Task<Stream> SdImage.GetByteStream(HttpClient httpClient)'>94</a> | 90 | 2 :heavy_check_mark: | 0 | 5 | 4 / 1 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L14' title='string SdImage.Url'>14</a> | 100 | 0 :heavy_check_mark: | 0 | 0 | 1 / 0 |
 
 <a href="#SdImage-class-diagram">:link: to `SdImage` class diagram</a>
@@ -1040,10 +1041,10 @@ The `SilverBotDS.Converters` namespace contains 4 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L129' title='Task<Optional<SdImage>> SdImageConverter.ConvertAsync(string value, CommandContext ctx)'>129</a> | 65 | 4 :heavy_check_mark: | 0 | 6 | 22 / 9 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L123' title='Regex SdImageConverter.Emote'>123</a> | 90 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L119' title='Regex SdImageConverter.UrLregex'>119</a> | 90 | 0 :heavy_check_mark: | 0 | 2 | 2 / 1 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L126' title='Regex SdImageConverter.User'>126</a> | 90 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L133' title='Task<Optional<SdImage>> SdImageConverter.ConvertAsync(string value, CommandContext ctx)'>133</a> | 65 | 4 :heavy_check_mark: | 0 | 6 | 22 / 9 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L127' title='Regex SdImageConverter.Emote'>127</a> | 90 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L123' title='Regex SdImageConverter.UrLregex'>123</a> | 90 | 0 :heavy_check_mark: | 0 | 2 | 2 / 1 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/SDImage.cs#L130' title='Regex SdImageConverter.User'>130</a> | 90 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
 
 <a href="#SdImageConverter-class-diagram">:link: to `SdImageConverter` class diagram</a>
 
@@ -3713,8 +3714,8 @@ The *SilverBotDS.csproj* project file contains:
 
 - 7 namespaces.
 - 40 named types.
-- 10,463 total lines of source code.
-- Approximately 3,472 lines of executable code.
+- 10,561 total lines of source code.
+- Approximately 3,505 lines of executable code.
 - The highest cyclomatic complexity is 91 :exploding_head:.
 
 <details>
@@ -3728,8 +3729,8 @@ The *SilverBotDS.csproj* project file contains:
 The `SilverBotDS.Commands` namespace contains 20 named types.
 
 - 20 named types.
-- 3,773 total lines of source code.
-- Approximately 1,609 lines of executable code.
+- 3,871 total lines of source code.
+- Approximately 1,642 lines of executable code.
 - The highest cyclomatic complexity is 33 :exploding_head:.
 
 <details>
@@ -4028,18 +4029,18 @@ The `SilverBotDS.Commands` namespace contains 20 named types.
 </summary>
 <br>
 
-- The `ImageModule` contains 48 members.
-- 593 total lines of source code.
-- Approximately 302 lines of executable code.
+- The `ImageModule` contains 51 members.
+- 691 total lines of source code.
+- Approximately 335 lines of executable code.
 - The highest cyclomatic complexity is 11 :radioactive:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L206' title='string ImageModule._captionFont'>206</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L209' title='string ImageModule._subtitlesFont'>209</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L415' title='Task ImageModule.AdventureTime(CommandContext ctx)'>415</a> | 89 | 1 :heavy_check_mark: | 0 | 5 | 3 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L417' title='Task ImageModule.AdventureTime(CommandContext ctx, DiscordUser friendo)'>417</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L419' title='Task ImageModule.AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)'>419</a> | 58 | 4 :heavy_check_mark: | 0 | 10 | 20 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L513' title='Task ImageModule.AdventureTime(CommandContext ctx)'>513</a> | 89 | 1 :heavy_check_mark: | 0 | 5 | 3 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L515' title='Task ImageModule.AdventureTime(CommandContext ctx, DiscordUser friendo)'>515</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L517' title='Task ImageModule.AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)'>517</a> | 58 | 4 :heavy_check_mark: | 0 | 10 | 20 / 14 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L221' title='void ImageModule.AutoFixRequiredAssets(IEnumerable<string> missing)'>221</a> | 58 | 4 :heavy_check_mark: | 0 | 5 | 22 / 15 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L277' title='Task<Image> ImageModule.Caption(Image loadedimg, string text, string font = null)'>277</a> | 52 | 6 :heavy_check_mark: | 0 | 5 | 43 / 18 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L245' title='Task ImageModule.CaptionAndSend(CommandContext ctx, Stream input, string text, string extension, string font = null)'>245</a> | 76 | 1 :heavy_check_mark: | 0 | 6 | 5 / 3 |
@@ -4048,41 +4049,44 @@ The `SilverBotDS.Commands` namespace contains 20 named types.
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L336' title='Task ImageModule.CaptionImage(CommandContext ctx, SdImage image, string text)'>336</a> | 71 | 1 :heavy_check_mark: | 0 | 8 | 10 / 6 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L346' title='Task ImageModule.CaptionImage(CommandContext ctx, string text)'>346</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 2 / 2 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L105' title='Task ImageModule.CommonCodeWithTemplate(CommandContext ctx, string template, Func<Image, Task<Tuple<bool, Image>>> func, bool TriggerTyping = true, string filename = "sbimg.png", string? encoder = null, string msgcontent = "there")'>105</a> | 55 | 5 :heavy_check_mark: | 0 | 12 | 24 / 16 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L438' title='Task ImageModule.CommonCodeWithTemplateGIFMagick(CommandContext ctx, string template, Func<MagickImageCollection, Task<Tuple<bool, MagickImageCollection>>> func, bool TriggerTyping = true, string filename = "sbimg.png", MagickFormat? encoder = null, int quality = 75)'>438</a> | 56 | 5 :heavy_check_mark: | 0 | 13 | 22 / 15 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L536' title='Task ImageModule.CommonCodeWithTemplateGIFMagick(CommandContext ctx, string template, Func<MagickImageCollection, Task<Tuple<bool, MagickImageCollection>>> func, bool TriggerTyping = true, string filename = "sbimg.png", MagickFormat? encoder = null, int quality = 75)'>536</a> | 56 | 5 :heavy_check_mark: | 0 | 13 | 22 / 15 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L407' title='Task<Image> ImageModule.EpicGifComposite(Image img, SdImage img2, Tuple<int, int, int>[] gaming)'>407</a> | 49 | 10 :radioactive: | 0 | 9 | 43 / 25 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L135' title='Task<Image> ImageModule.GetProfilePictureAsyncStatic(DiscordUser user, ushort size = null)'>135</a> | 58 | 6 :heavy_check_mark: | 0 | 7 | 27 / 13 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L608' title='Task ImageModule.Grayscale(CommandContext ctx)'>608</a> | 82 | 1 :heavy_check_mark: | 0 | 4 | 7 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L615' title='Task ImageModule.Grayscale(CommandContext ctx, SdImage image)'>615</a> | 70 | 1 :heavy_check_mark: | 0 | 10 | 9 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L597' title='Task<Tuple<MemoryStream, string>> ImageModule.GrayScaleAsync(byte[] photoBytes, string extension)'>597</a> | 74 | 1 :heavy_check_mark: | 0 | 5 | 8 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L587' title='Task ImageModule.HappyNewYear(CommandContext ctx)'>587</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L589' title='Task ImageModule.HappyNewYear(CommandContext ctx, DiscordUser person)'>589</a> | 73 | 1 :heavy_check_mark: | 0 | 8 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L706' title='Task ImageModule.Grayscale(CommandContext ctx)'>706</a> | 82 | 1 :heavy_check_mark: | 0 | 4 | 7 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L713' title='Task ImageModule.Grayscale(CommandContext ctx, SdImage image)'>713</a> | 70 | 1 :heavy_check_mark: | 0 | 10 | 9 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L695' title='Task<Tuple<MemoryStream, string>> ImageModule.GrayScaleAsync(byte[] photoBytes, string extension)'>695</a> | 74 | 1 :heavy_check_mark: | 0 | 5 | 8 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L685' title='Task ImageModule.HappyNewYear(CommandContext ctx)'>685</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L687' title='Task ImageModule.HappyNewYear(CommandContext ctx, DiscordUser person)'>687</a> | 73 | 1 :heavy_check_mark: | 0 | 8 | 7 / 4 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L211' title='HttpClient ImageModule.HttpClient'>211</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L174' title='bool ImageModule.IsAnimated(byte[] bytes)'>174</a> | 83 | 7 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L350' title='Task ImageModule.JokerLaugh(CommandContext ctx, string text)'>350</a> | 76 | 1 :heavy_check_mark: | 0 | 9 | 7 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L357' title='Task ImageModule.Jpegize(CommandContext ctx, SdImage image)'>357</a> | 76 | 1 :heavy_check_mark: | 0 | 8 | 7 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L366' title='Task ImageModule.Jpegize(CommandContext ctx)'>366</a> | 82 | 1 :heavy_check_mark: | 0 | 4 | 7 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L455' title='Task ImageModule.Jpegize(CommandContext ctx, SdImage image)'>455</a> | 76 | 1 :heavy_check_mark: | 0 | 8 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L464' title='Task ImageModule.Jpegize(CommandContext ctx)'>464</a> | 82 | 1 :heavy_check_mark: | 0 | 4 | 7 / 3 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L320' title='MemoryStream ImageModule.JPEGSpecialSauce(byte[] photoBytes)'>320</a> | 70 | 1 :heavy_check_mark: | 0 | 3 | 14 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L470' title='Task ImageModule.Linus(CommandContext ctx, string company = "NVIDIA")'>470</a> | 64 | 1 :heavy_check_mark: | 0 | 10 | 19 / 8 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L568' title='Task ImageModule.Linus(CommandContext ctx, string company = "NVIDIA")'>568</a> | 64 | 1 :heavy_check_mark: | 0 | 10 | 19 / 8 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L157' title='Image ImageModule.LoadFromStream(Stream s, bool? gif = null)'>157</a> | 57 | 10 :radioactive: | 0 | 5 | 17 / 11 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L66' title='int ImageModule.MaxBytes(CommandContext ctx)'>66</a> | 88 | 3 :heavy_check_mark: | 0 | 2 | 6 / 1 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L64' title='int ImageModule.MegaByte'>64</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L534' title='Task ImageModule.Reliable(CommandContext ctx)'>534</a> | 88 | 1 :heavy_check_mark: | 0 | 4 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L537' title='Task ImageModule.Reliable(CommandContext ctx, DiscordUser koichi)'>537</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L540' title='Task ImageModule.Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)'>540</a> | 46 | 11 :radioactive: | 0 | 10 | 47 / 28 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L632' title='Task ImageModule.Reliable(CommandContext ctx)'>632</a> | 88 | 1 :heavy_check_mark: | 0 | 4 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L635' title='Task ImageModule.Reliable(CommandContext ctx, DiscordUser koichi)'>635</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L638' title='Task ImageModule.Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)'>638</a> | 46 | 11 :radioactive: | 0 | 10 | 47 / 28 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L213' title='string[] ImageModule.RequiredAssets'>213</a> | 91 | 2 :heavy_check_mark: | 0 | 0 | 8 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L489' title='Task ImageModule.Resize(CommandContext ctx, SdImage image, int x = 0, int y = 0, MagickFormat? format = null)'>489</a> | 65 | 1 :heavy_check_mark: | 0 | 9 | 8 / 7 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L525' title='Task ImageModule.Resize(CommandContext ctx, SdImage image, MagickFormat? format)'>525</a> | 84 | 1 :heavy_check_mark: | 0 | 7 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L528' title='Task ImageModule.Resize(CommandContext ctx, MagickFormat? format)'>528</a> | 85 | 1 :heavy_check_mark: | 0 | 6 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L531' title='Task ImageModule.Resize(CommandContext ctx, int x = 0, int y = 0, MagickFormat? format = null)'>531</a> | 70 | 1 :heavy_check_mark: | 0 | 7 | 3 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L587' title='Task ImageModule.Resize(CommandContext ctx, SdImage image, int x = 0, int y = 0, MagickFormat? format = null)'>587</a> | 65 | 1 :heavy_check_mark: | 0 | 9 | 8 / 7 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L623' title='Task ImageModule.Resize(CommandContext ctx, SdImage image, MagickFormat? format)'>623</a> | 84 | 1 :heavy_check_mark: | 0 | 7 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L626' title='Task ImageModule.Resize(CommandContext ctx, MagickFormat? format)'>626</a> | 85 | 1 :heavy_check_mark: | 0 | 6 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L629' title='Task ImageModule.Resize(CommandContext ctx, int x = 0, int y = 0, MagickFormat? format = null)'>629</a> | 70 | 1 :heavy_check_mark: | 0 | 7 | 3 / 5 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L179' title='Stream ImageModule.ResizeAsyncOP(byte[] photoBytes, int x, int y)'>179</a> | 60 | 3 :heavy_check_mark: | 0 | 6 | 27 / 14 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L497' title='Tuple<Stream, string> ImageModule.ResizeAsyncOP(byte[] bytes, int x, int y, MagickFormat? format)'>497</a> | 59 | 7 :heavy_check_mark: | 0 | 9 | 26 / 14 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L462' title='Task ImageModule.Seal(CommandContext ctx, string text)'>462</a> | 76 | 1 :heavy_check_mark: | 0 | 9 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L595' title='Tuple<Stream, string> ImageModule.ResizeAsyncOP(byte[] bytes, int x, int y, MagickFormat? format)'>595</a> | 59 | 7 :heavy_check_mark: | 0 | 9 | 26 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L560' title='Task ImageModule.Seal(CommandContext ctx, string text)'>560</a> | 76 | 1 :heavy_check_mark: | 0 | 9 | 7 / 4 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L73' title='Task ImageModule.Send_img_plsAsync(CommandContext ctx, string message)'>73</a> | 93 | 2 :heavy_check_mark: | 0 | 4 | 7 / 1 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L96' title='Task ImageModule.SendImageStream(CommandContext ctx, Stream outstream, string filename = "sbimg.png", string? content = null)'>96</a> | 73 | 1 :heavy_check_mark: | 0 | 6 | 8 / 4 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L81' title='Task ImageModule.SendImageStreamIfAllowed(CommandContext ctx, Stream image, string Filename = "sbimg.png", string? content = null, Language lang = null)'>81</a> | 65 | 2 :heavy_check_mark: | 0 | 6 | 14 / 7 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L396' title='Task ImageModule.Tint(CommandContext ctx, SdImage image, Color color)'>396</a> | 70 | 1 :heavy_check_mark: | 0 | 11 | 14 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L409' title='Task ImageModule.Tint(CommandContext ctx, Color color)'>409</a> | 87 | 1 :heavy_check_mark: | 0 | 6 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L371' title='Task<Tuple<MemoryStream, string>> ImageModule.TintAsync(byte[] photoBytes, Color color)'>371</a> | 58 | 2 :heavy_check_mark: | 0 | 7 | 22 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L469' title='Tuple<MemoryStream, string> ImageModule.Tint(byte[] photoBytes, Color color)'>469</a> | 58 | 2 :heavy_check_mark: | 0 | 6 | 22 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L494' title='Task ImageModule.Tint(CommandContext ctx, SdImage image, Color color)'>494</a> | 70 | 1 :heavy_check_mark: | 0 | 8 | 14 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L507' title='Task ImageModule.Tint(CommandContext ctx, Color color)'>507</a> | 87 | 1 :heavy_check_mark: | 0 | 6 | 5 / 2 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L267' title='void ImageModule.WriteImageToStream(Image w, Stream s, string extension)'>267</a> | 73 | 2 :heavy_check_mark: | 0 | 4 | 10 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L357' title='Task ImageModule.Yeet(CommandContext ctx)'>357</a> | 84 | 1 :heavy_check_mark: | 0 | 5 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L360' title='Task ImageModule.Yeet(CommandContext ctx, SdImage img2)'>360</a> | 63 | 1 :heavy_check_mark: | 0 | 10 | 48 / 5 |
 
 <a href="#ImageModule-class-diagram">:link: to `ImageModule` class diagram</a>
 
@@ -5564,6 +5568,7 @@ class SdImage{
     +FromContext(CommandContext ctx)$ SdImage
     +FromAttachments(IReadOnlyList<DiscordAttachment> attachments)$ SdImage
     +GetBytesAsync(HttpClient httpClient) Task<byte[]>
+    +GetByteStream(HttpClient httpClient) Task<Stream>
     +Dispose(bool disposing) void
     +age() void
 }
@@ -7316,7 +7321,7 @@ IRequireAssets <|-- ImageModule : implements
 class ImageModule{
     -int MegaByte$
     -string _captionFont$
-    -string _subtitlesFont
+    -string _subtitlesFont$
     +HttpClient HttpClient
     +string[] RequiredAssets$
     +MaxBytes(CommandContext ctx)$ int
@@ -7338,9 +7343,12 @@ class ImageModule{
     +CaptionImage(CommandContext ctx, SdImage image, string text) Task
     +CaptionImage(CommandContext ctx, string text) Task
     +JokerLaugh(CommandContext ctx, string text) Task
+    +Yeet(CommandContext ctx) Task
+    +Yeet(CommandContext ctx, SdImage img2) Task
+    +EpicGifComposite(Image img, SdImage img2, Tuple<int, int, int>[] gaming) Task<Image>
     +Jpegize(CommandContext ctx, SdImage image) Task
     +Jpegize(CommandContext ctx) Task
-    +TintAsync(byte[] photoBytes, Color color)$ Task<Tuple<MemoryStream, string>>
+    +Tint(byte[] photoBytes, Color color)$ Tuple<MemoryStream, string>
     +Tint(CommandContext ctx, SdImage image, Color color) Task
     +Tint(CommandContext ctx, Color color) Task
     +AdventureTime(CommandContext ctx) Task

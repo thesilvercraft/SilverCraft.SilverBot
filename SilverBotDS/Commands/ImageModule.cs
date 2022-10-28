@@ -206,7 +206,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     private const string _captionFont = "Futura Extra Black Condensed";
 
 
-    private readonly string _subtitlesFont = "Trebuchet MS";
+    private const string _subtitlesFont = "Trebuchet MS";
 
     public HttpClient HttpClient { private get; set; }
 
@@ -352,6 +352,104 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         {
             return new Tuple<bool, Image>(true, await Caption(img, text));
         }, filename: "sbfail.gif", encoder: ".gif");
+    [Command("syeet")]
+    [Description("YEET")]
+    public Task Yeet(CommandContext ctx) => Yeet(ctx, SdImage.FromContext(ctx));
+    [Command("syeet")]
+    [Description("YEET")]
+    public async Task Yeet(CommandContext ctx, SdImage img2) =>
+    await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.simba-toss.gif", async (img) =>
+    { var x = new Tuple<int, int, int>[] {
+    new(143,59,80),
+    new(143,59,80),
+    new(90,8,80),
+    new(55,-25,80),
+    new(0,0,0),
+    new(0,0,0),
+    new(245,93,90),
+    new(215,89,80),
+    new(178,66,100),
+    new(135,32,100),
+    new(57,-41,100),//11
+    new(0,0,0),//12
+    new(120,66,15),//13
+    new(115,52,15),//14
+    new(123,32,15),//15
+    new(143,29,15),//16
+    new(162,38,15),//17
+    new(167,49,15),//18
+    new(169,66,15),//19
+    new(168,71,15),//20
+    new(165,76,15),//21
+    new(164,79,15),//22
+    new(162,82,15),//23
+    new(159,83,15),//24
+    new(161,84,15),//25
+    new(160,84,15),//26
+    new(161,85,15),//27
+    new(162,84,15),//28
+    new(154,55,24),
+    new(154,40,24),
+    new(154,34,24),
+    new(75,24,24),
+    new(34,13,24),
+    new(15,14,24),
+    new(0,17,24),
+    new(0,0,0),
+    new(0,0,0),
+    new(0,0,0),
+    //after throw, feel free to PR
+    new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0)
+    };
+        return new Tuple<bool, Image>(true, await EpicGifComposite(img, img2, x));
+    }, filename: "sbYEET.gif", encoder: ".gif");
+
+    private async Task<Image> EpicGifComposite(Image img, SdImage img2, Tuple<int, int, int>[] gaming )
+    {
+        if (img.Contains("n-pages") && img.Contains("page-height"))
+        {
+            if(!img.HasAlpha())
+            {
+                img = img.Bandjoin(255);
+            }
+            var img2r = LoadFromStream(await img2.GetByteStream(HttpClient));
+            var nPages = (int)img.Get("n-pages");
+            if(gaming.Length<nPages)
+            {
+                nPages = gaming.Length;
+            }
+            Dictionary<int, Image> imgss = new();
+            var sizes = gaming.Select(x => x.Item3).Distinct();
+            foreach(var size in sizes)
+            {
+                imgss[size] = img2r.Resize(((double)size)/img2r.Width);
+            }
+            List<Image> imgs = new();
+            for (int i = 0; i < nPages; i++)
+            {
+                Image img_frame = img.Crop(0, i * img.PageHeight, img.Width, img.PageHeight);
+                if(gaming[i].Item3!=0)
+                {
+                     img_frame = img_frame.Composite(imgss[gaming[i].Item3], BlendMode.Over, gaming[i].Item1, gaming[i].Item2);
+                }
+                imgs.Add(img_frame);
+            }
+            Image final = Image.Arrayjoin(imgs.ToArray(), 1);
+            foreach (var img_frame in imgs)
+            {
+                img_frame.Dispose();
+            }
+            foreach (var img_frame in imgss)
+            {
+                img_frame.Value.Dispose();
+            }
+            return final;
+        }
+        return null;
+    }
+
+
+
 
     [Command("jpeg")]
     public async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SdImage image)
@@ -368,7 +466,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         var image = SdImage.FromContext(ctx);
         await Jpegize(ctx, image);
     }
-    private static async Task<Tuple<MemoryStream, string>> TintAsync(byte[] photoBytes, Color color)
+    private static Tuple<MemoryStream, string> Tint(byte[] photoBytes, Color color)
     {
         var img = Image.NewFromBuffer(photoBytes);
         if (!img.HasAlpha())
@@ -399,7 +497,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
           Color color)
     {
         await ctx.TriggerTypingAsync();
-        var thing = await TintAsync(await image.GetBytesAsync(HttpClient), color);
+        var thing = Tint(await image.GetBytesAsync(HttpClient), color);
         await using var outStream = thing.Item1;
         outStream.Position = 0;
         await SendImageStreamIfAllowed(ctx, outStream, $"sbimg{thing.Item2}", "There you go");

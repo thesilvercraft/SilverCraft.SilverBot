@@ -91,6 +91,10 @@ public class SdImage : IDisposable
     {
         return _bytes ??= await httpClient.GetByteArrayAsync(Url);
     }
+    public async Task<Stream> GetByteStream(HttpClient httpClient)
+    {
+        return _bytes ==null? await httpClient.GetStreamAsync(Url) : new MemoryStream(_bytes);
+    }
 
     protected virtual void Dispose(bool disposing)
     {

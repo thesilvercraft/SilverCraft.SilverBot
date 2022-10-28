@@ -664,7 +664,7 @@ public class Audio : BaseCommandModule
     }
 
     [Command("join")]
-    [Description("Tell me to join your channel of the voice type")]
+    [Description("to join the voice chat you're in")]
     public async Task Join(CommandContext ctx)
     {
         await StaticJoin(ctx, AudioService);

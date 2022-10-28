@@ -27,6 +27,7 @@
         <None Remove="Templates\joker_laugh.gif" />
         <None Remove="Templates\linus-linus-torvalds.gif" />
         <None Remove="Templates\motivator_template.png" />
+        <None Remove="Templates\simba-toss.gif" />
         <None Remove="Templates\weeb_reliable_template.png" />
     </ItemGroup>
     <ItemGroup>
@@ -37,6 +38,7 @@
         <EmbeddedResource Include="Templates\adventure_time_template.png" />
         <EmbeddedResource Include="Templates\happy_new_year_template.png" />
         <EmbeddedResource Include="Templates\linus-linus-torvalds.gif" />
+        <EmbeddedResource Include="Templates\simba-toss.gif" />
         <EmbeddedResource Include="Templates\weeb_reliable_template.png" />
     </ItemGroup>
     <ItemGroup>

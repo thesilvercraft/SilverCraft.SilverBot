@@ -4,15 +4,14 @@
 @using Microsoft.AspNetCore.Http
 @using DSharpPlus
 @using DSharpPlus.CommandsNext
-
+@attribute [Authorize]
 @inject Config _config
-@inject IHttpContextAccessor _httpContextAccessor
 @inject DiscordClient _discord
 @inject DatabaseContext _dbctx
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _uriHelper
 @inject HttpClient _client
-
+@*
 @code {
 
     [Parameter]
@@ -21,10 +20,9 @@
 }
 
 @{
-    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
-    {
-        _uriHelper.NavigateTo("/login", true);
-    }
+    var auser = AuthenticationStateProvider.AuthState();
+    var uid = auser.User.PUID();
+
     var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
     var servers = from server in _httpContextAccessor.HttpContext.Session.GetGuildsFromSession(_client)
         where _discord.Guilds.ContainsKey(server.UId) && (_discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult().Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner)
@@ -62,4 +60,4 @@
 else
 {
     <h1>Oh no an error has occured, please contact the person that owns this instance of Silverbot.</h1>
-}
+}*@

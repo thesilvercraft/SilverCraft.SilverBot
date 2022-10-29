@@ -1,29 +1,35 @@
 ﻿@using SilverBotDS.WebHelpers
 @using Microsoft.AspNetCore.Http
 @using DSharpPlus
-@inject IHttpContextAccessor _httpContextAccessor
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DiscordClient _discord
 @inject HttpClient _client
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="font-family: 'Berlin Sans FB', sans-serif;">
-<a class="navbar-brand" href="#">
-    @if (DateTime.UtcNow.Month == 6)
-    {
-    
-    <img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+    <a class="navbar-brand" href="#">
+        @if (DateTime.UtcNow.Month == 6)
+        {
+
+            <img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+        }
+        else if (DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)
+        {
+            <img src="/halloween/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+        }
+        else
+        {
+            <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+        }
+        SilverBot
+        <span class="badge badge-primary">@(DateTime.UtcNow.Month == 6 ? "Pride" : DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31 ? "Halloween" : "Web")</span>
+    </a>
+    @{
+        var authState = AuthenticationStateProvider.AuthState();
+        var user = authState.User;
     }
-    else if (DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)
-    {
-    <img src="/halloween/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
-    }
-    else
-    {
-    <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
-    }
-    SilverBot
-    <span class="badge badge-primary">@(DateTime.UtcNow.Month == 6 ? "Pride" : DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31 ? "Halloween" : "Web")</span>
-</a>
     <ul class="navbar-nav">
-        @if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext?.Session.GetObjectFromJson<string>("accessToken")))
+        @if (user == null || !user.Identity.IsAuthenticated)
         {
             <li class="nav-item">
                 <a class="nav-link" href="\login">Log in</a>
@@ -32,10 +38,10 @@
         else
         {
             <li class="nav-item">
-                @{
-                    var user = _discord.GetUserAsync(_httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client).UId).GetAwaiter().GetResult();
-                }
-                <a class="nav-link" href="">Hello @user.Username#@user.Discriminator</a>
+                <img src="https://cdn.discordapp.com/avatars/@user.UID()/@user.AvatarHash() .webp?size=16" class="avatar" aria-hidden="true">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Hello @user.Username()#@user.Discriminator()</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/listguilds">Servers</a>
@@ -48,4 +54,4 @@
             </li>
         }
     </ul>
-    </nav>
+</nav>

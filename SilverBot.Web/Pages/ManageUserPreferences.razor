@@ -3,31 +3,28 @@
 @using SilverBotDS.Objects
 @using Microsoft.AspNetCore.Http
 @using DSharpPlus
+@attribute [Authorize]
 
 @inject Config _config
-@inject IHttpContextAccessor _httpContextAccessor
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DiscordClient _discord
 @inject DatabaseContext _dbctx
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _uriHelper
 @inject HttpClient _client
 @{
-    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
-    {
-        _uriHelper.NavigateTo("/login", true);
-    }
-    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
+    var auser = AuthenticationStateProvider.AuthState();
+    var uid = auser.User.PUID();
 
-
-    var userpref = _dbctx.userSettings.FirstOrDefault(x => x.Id == thing.UId);
+    var userpref = _dbctx.userSettings.FirstOrDefault(x => x.Id == uid);
     if (userpref == null)
     {
-        userpref = new UserSettings {Id = thing.UId, IsBanned = false, LangName = "en", UsesNewMusicPage = false};
+        userpref = new UserSettings { Id = uid, IsBanned = false, LangName = "en", UsesNewMusicPage = false };
         _dbctx.userSettings.Add(userpref);
         _dbctx.SaveChanges();
     }
 }
-@if (!_dbctx.IsBanned(thing.UId))
+@if (!_dbctx.IsBanned(uid))
 {
     <p>Welcome to the beta version of the user preferences edit page</p>
 

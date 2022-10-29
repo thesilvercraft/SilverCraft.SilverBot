@@ -4,8 +4,10 @@
 @using Microsoft.AspNetCore.Http
 @using DSharpPlus
 @using System.Text.Json
+@attribute [Authorize]
+@*
 @inject Config _config
-@inject IHttpContextAccessor _httpContextAccessor
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DiscordClient _discord
 @inject DatabaseContext _dbctx
 @inject IJSRuntime _jsRuntime
@@ -25,10 +27,8 @@
     {
         WriteIndented = true,
     };
-    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
-    {
-        _uriHelper.NavigateTo("/login", true);
-    }
+    var auser = AuthenticationStateProvider.AuthState();
+    var uid = auser.User.PUID();
     var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
     var translator = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
     if (translator == null)
@@ -83,4 +83,4 @@
 <button @onclick="Downloadlanguage">
     Download to your computer
 </button>
-<RadzenTextArea @bind-Value="@_bindmaterial" Style=" width: 100%; height: 100vh;"/>
+<RadzenTextArea @bind-Value="@_bindmaterial" Style=" width: 100%; height: 100vh;"/>*@

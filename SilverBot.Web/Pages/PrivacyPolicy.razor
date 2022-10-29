@@ -29,15 +29,10 @@ Basically:
 <ul>
     <li>Server count of the bot</li>
     <li>Count of the members in all servers</li>
-    <li>When a slash-command or command is sucessfully executed the user ID and the command's name is sent to segment</li>
-    @if (_config.SendErrorsThroughSegment)
-    {
-        <li>When an error is thrown the user ID of the user that executed the (slash)command and the error message is sent to segment</li>
-    }
     <li>When an error is detected in a command the commands message id, the channels id, the message content and any related data to that command is logged by sending it through a discord webhook</li>
     <li>And anything else that the discord api gives us and the code uses.</li>
 </ul>
 <h1 id="what-information-do-you-share-">What information do you share?</h1>
 The aforementioned server count of the bot, count of members in all servers combined and the commands exection rate by time, this info can be seen publicly on the silverbot dashboard which can be found at <a href="https://silverbot.cf/">https://silverbot.cf/</a> and how often commands are sucessfully executed.
 <h1 id="how-can-i-request-for-any-data-to-be-deleted-">How can i request for any data to be deleted?</h1>
-You may request for any data to be deleted by direct messaging <code>SilverDiamond#1691</code> on discord.<br>Last updated on 01 February 2022.
+You may request for any data to be deleted by direct messaging <code>SilverDiamond#1691</code> on discord.<br>Last updated on 29 October 2022.

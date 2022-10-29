@@ -8,20 +8,19 @@
 @using Lavalink4NET
 @using Lavalink4NET.Events
 @using Lavalink4NET.Player
-@inject IHttpContextAccessor _httpContextAccessor
+@attribute [Authorize]
+
 @inject NavigationManager _uriHelper
 @inject Config _config
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
 @{
     if (!_config.UseLavaLink)
     {
         _uriHelper.NavigateTo("/", true);
     }
-    if (_httpContextAccessor.HttpContext == null || string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>("accessToken")))
-    {
-        _uriHelper.NavigateTo("/login", true);
-    }
+   
 }
-
 
 <RadzenNotification/>
 @inject DiscordClient _discord
@@ -32,7 +31,8 @@
 @inject HttpClient _client
 @{
     var usenew = false;
-    var user = _discord.GetUserAsync(_httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client).UId).GetAwaiter().GetResult();
+    var auser = AuthenticationStateProvider.AuthState();
+    var user = _discord.GetUserAsync(auser.User.PUID()).GetAwaiter().GetResult();
     var userpref = _dbCtx.userSettings.FirstOrDefault(x => x.Id == user.Id);
     if (userpref != null)
     {

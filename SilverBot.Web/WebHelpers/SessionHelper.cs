@@ -1,6 +1,10 @@
-﻿using System.Diagnostics;
+﻿using DSharpPlus.Entities;
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text.Json;
 using static SilverBotDS.Objects.Classes.Oauth;
 
@@ -47,6 +51,30 @@ public static class SessionHelper
         return guilds;
     }
 
+    public static AuthenticationState AuthState(this AuthenticationStateProvider provider)
+    {
+        return provider.GetAuthenticationStateAsync().GetAwaiter().GetResult();
+    }
+    public static string Username(this ClaimsPrincipal user)
+    {
+        return user.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+    }
+    public static string Discriminator(this ClaimsPrincipal user)
+    {
+        return user.FindFirstValue("urn:discord:user:discriminator");
+    }
+    public static string UID(this ClaimsPrincipal user)
+    {
+        return user.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+    }
+    public static ulong PUID(this ClaimsPrincipal user)
+    {
+        return ulong.Parse(user.UID());
+    }
+    public static string AvatarHash(this ClaimsPrincipal user)
+    {
+        return user.FindFirstValue("urn:discord:avatar:hash");
+    }
     public static Oauththingy GetUserInfoFromSession(this ISession session, HttpClient client)
     {
         if (session.TryGetValue("UserCache", out _))
@@ -67,4 +95,5 @@ public static class SessionHelper
         session.SetObjectAsJson("UserCache", new Tuple<Oauththingy, DateTime>(oauth, DateTime.UtcNow));
         return oauth;
     }
+
 }

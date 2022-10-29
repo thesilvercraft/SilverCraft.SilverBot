@@ -46,9 +46,9 @@ using System.Threading.Tasks;
 
 namespace SilverBotDS
 {
-    internal static class Program
+    public static class Program
     {
-        private static Config _config;
+        public static Config _config;
 
         private static DiscordClient _discord;
         private static LavalinkNode _audioService;
@@ -171,8 +171,8 @@ namespace SilverBotDS
             }
             return false;
         }
-
-        private static async Task MainAsync(string[] args)
+        public static ServiceCollection services = new();
+        public static async Task MainAsync(string[] args, bool ExitAfterbootup = false)
         {
             _config = await Config.GetAsync();
             var configurationBuilder = new ConfigurationBuilder()
@@ -266,7 +266,7 @@ namespace SilverBotDS
             //set up XP and repeating things
             _discord.MessageCreated += Discord_MessageCreated;
             _log.Verbose("Initializing Commands");
-            ServiceCollection services = new();
+            
             services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
 
             services.AddDbContext<DatabaseContext>(
@@ -715,6 +715,10 @@ namespace SilverBotDS
                 _log.Information("Creating host");
             }
             _log.Information("Booted up");
+            if (ExitAfterbootup)
+            {
+                return;
+            }
             while (true)
             {
                 _log.Verbose("Updating the status to a random one");

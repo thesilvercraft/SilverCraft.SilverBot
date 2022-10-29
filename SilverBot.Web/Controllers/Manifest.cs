@@ -30,7 +30,7 @@ public class Manifest : Controller
                 new Icon {Sizes = "192x192", Src = "/pride/android-chrome-192x192.png", Type = "image/png"}
             };
         }
-        else if (DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)
+        else if (DateTime.UtcNow.Month == 10 &&  DateTime.UtcNow.Day == 31)
         {
             obj.Icons = new[]
             {

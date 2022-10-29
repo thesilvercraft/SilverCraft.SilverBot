@@ -18,15 +18,20 @@ public static class ColorConverter
             byte[] intBytes = BitConverter.GetBytes(color);
             if (intBytes[3] != 0)
             {
-                return  Color.FromArgb(intBytes[3],intBytes[2], intBytes[1], intBytes[0]);
+                return Color.FromArgb(intBytes[3],intBytes[2], intBytes[1], intBytes[0]);
             }
             else
             {
                 return Color.FromArgb(intBytes[2], intBytes[1], intBytes[0]);
             }
         }
-        //TODO PARSE TEXT
-
+        if(Enum.TryParse(typeof(KnownColor),value, out var result))
+        {
+            if(result is KnownColor kc)
+            {
+                return Color.FromKnownColor(kc);
+            }
+        }
         return null;
     }
 }
@@ -34,20 +39,11 @@ public class SColorConverter : IArgumentConverter<Color>
 {
     public Task<Optional<Color>> ConvertAsync(string value, CommandContext ctx)
     {
-        if(uint.TryParse(value.Replace("#",""), NumberStyles.HexNumber,null, out var color))
+        var c = ColorConverter.Convert(value);
+        if(c is Color col)
         {
-            byte[] intBytes = BitConverter.GetBytes(color);
-            if (intBytes[3]!=0)
-            {
-                return Task.FromResult(new Optional<Color>(Color.FromArgb(intBytes[3],intBytes[2], intBytes[1], intBytes[0])));
-            }
-            else
-            {
-                return Task.FromResult(new Optional<Color>(Color.FromArgb(intBytes[2], intBytes[1], intBytes[0])));
-            }
-
+            return Task.FromResult(Optional.FromValue(col));
         }
-        //TODO PARSE TEXT
         return Task.FromResult(Optional.FromNoValue<Color>());
     }
 }

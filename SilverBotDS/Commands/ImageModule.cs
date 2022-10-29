@@ -285,7 +285,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
             "Twemoji Color Emoji, " + font + " normal " + (loadedimg.Width / 10),
             width: loadedimg.Width - ((loadedimg.Width / 25) * 2),
             rgba: true,
-            align: Align.Centre, fontfile: ("E:\\Users\\filip\\source\\repos\\SilverCraft.SilverBot\\SilverBotDS\\bin\\Debug\\net6.0\\fonts\\twemoji.otf"));
+            align: Align.Centre, fontfile: "fonts/twemoji.otf");
         using var textimgb = textimga.Equal(new int[] { 0, 0, 0, 0 }).BandAnd().Ifthenelse(new int[] { 255, 255, 255, 255 }, textimga).Embed(2, 2, textimga.Width + 4, textimga.Height + 4, Extend.White);
         if (loadedimg.Contains("n-pages") && loadedimg.Contains("page-height"))
         {
@@ -352,55 +352,83 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         {
             return new Tuple<bool, Image>(true, await Caption(img, text));
         }, filename: "sbfail.gif", encoder: ".gif");
-    [Command("syeet")]
+    //[Command("transform")]
+    //[Description("epic 3d perspective transformation test")]
+    //public async Task TransformTest(CommandContext ctx, SdImage img)
+    //{
+    //    //https://stackoverflow.com/a/50219715
+    //    var loaded = LoadFromStream(await img.GetByteStream(HttpClient), false);
+        
+    //    double[] T = new[] {
+    //        1.0,
+    //        0.3, //makes image go bottom left
+    //        0, //nothing
+    //        0.2, //makes image go top right
+    //        1.0, 
+    //        0,//nothing
+    //        0.0007,//makes image disapear
+    //        0.0007 //makes image disapear
+    //    };
+    //    Image i = Image.Xyz(loaded.Width, loaded.Height);
+    //    var x = (i[0] * T[0] + i[1] * T[1] + T[2]) / (i[0] * T[6] + i[1] * T[7] + 1);
+    //    var y = (i[0] * T[3] + i[1] * T[4] + T[5]) / (i[0] * T[6] + i[1] * T[7] + 1);
+    //    var m = x.Bandjoin(y);
+    //    loaded = loaded.Mapim(m);
+    //    using MemoryStream s = new();
+    //    WriteImageToStream(loaded, s, ".png");
+    //    s.Position = 0;
+    //   await SendImageStreamIfAllowed(ctx, s);
+    //}
+    [Command("yeet")]
     [Description("YEET")]
     public Task Yeet(CommandContext ctx) => Yeet(ctx, SdImage.FromContext(ctx));
-    [Command("syeet")]
+    [Command("yeet")]
     [Description("YEET")]
     public async Task Yeet(CommandContext ctx, SdImage img2) =>
     await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.simba-toss.gif", async (img) =>
-    { var x = new Tuple<int, int, int>[] {
-    new(143,59,80),
-    new(143,59,80),
-    new(90,8,80),
-    new(55,-25,80),
-    new(0,0,0),
-    new(0,0,0),
-    new(245,93,90),
-    new(215,89,80),
-    new(178,66,100),
-    new(135,32,100),
-    new(57,-41,100),//11
-    new(0,0,0),//12
-    new(120,66,15),//13
-    new(115,52,15),//14
-    new(123,32,15),//15
-    new(143,29,15),//16
-    new(162,38,15),//17
-    new(167,49,15),//18
-    new(169,66,15),//19
-    new(168,71,15),//20
-    new(165,76,15),//21
-    new(164,79,15),//22
-    new(162,82,15),//23
-    new(159,83,15),//24
-    new(161,84,15),//25
-    new(160,84,15),//26
-    new(161,85,15),//27
-    new(162,84,15),//28
-    new(154,55,24),
-    new(154,40,24),
-    new(154,34,24),
-    new(75,24,24),
-    new(34,13,24),
-    new(15,14,24),
-    new(0,17,24),
-    new(0,0,0),
-    new(0,0,0),
-    new(0,0,0),
-    //after throw, feel free to PR
-    new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0)
-    };
+    { 
+        var x = new Tuple<int, int, int>[] {
+            new(143,59,80),
+            new(143,59,80),
+            new(90,8,80),
+            new(55,-25,80),
+            new(0,0,0),
+            new(0,0,0),
+            new(245,93,90),
+            new(215,89,80),
+            new(178,66,100),
+            new(135,32,100),
+            new(57,-41,100),//11
+            new(0,0,0),//12
+            new(120,66,15),//13
+            new(115,52,15),//14
+            new(123,32,15),//15
+            new(143,29,15),//16
+            new(162,38,15),//17
+            new(167,49,15),//18
+            new(169,66,15),//19
+            new(168,71,15),//20
+            new(165,76,15),//21
+            new(164,79,15),//22
+            new(162,82,15),//23
+            new(159,83,15),//24
+            new(161,84,15),//25
+            new(160,84,15),//26
+            new(161,85,15),//27
+            new(162,84,15),//28
+            new(154,55,24),
+            new(154,40,24),
+            new(154,34,24),
+            new(75,24,24),
+            new(34,13,24),
+            new(15,14,24),
+            new(0,17,24),
+            new(0,0,0),
+            new(0,0,0),
+            new(0,0,0),
+            //after throw, feel free to PR
+            new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0),new(0,0,0)
+        };
         return new Tuple<bool, Image>(true, await EpicGifComposite(img, img2, x));
     }, filename: "sbYEET.gif", encoder: ".gif");
 
@@ -448,9 +476,6 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         return null;
     }
 
-
-
-
     [Command("jpeg")]
     public async Task Jpegize(CommandContext ctx, [Description("the url of the image")] SdImage image)
     {
@@ -461,15 +486,12 @@ public class ImageModule : BaseCommandModule, IRequireAssets
 
     [Command("jpeg")]
     //[RequireAttachment(argumentCountThatOverloadsCheck: 1)]
-    public async Task Jpegize(CommandContext ctx)
+    public async Task Jpegize(CommandContext ctx) => await Jpegize(ctx, SdImage.FromContext(ctx));
+    private static Tuple<MemoryStream, string> Tint(Stream photoStream, Color color, string extension)
     {
-        var image = SdImage.FromContext(ctx);
-        await Jpegize(ctx, image);
-    }
-    private static Tuple<MemoryStream, string> Tint(byte[] photoBytes, Color color)
-    {
-        var img = Image.NewFromBuffer(photoBytes);
-        if (!img.HasAlpha())
+        var img = LoadFromStream(photoStream, extension == ".gif");
+        bool AlphaProcessing= extension!=".gif";
+        if (!img.HasAlpha() && AlphaProcessing)
         {
             var imgwithoutbands = img;
             img = imgwithoutbands.Bandjoin(255);
@@ -479,25 +501,31 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         bands[0] = bands[0] * color.R / 255d;
         bands[1] = bands[1] * color.G / 255d;
         bands[2] = bands[2] * color.B / 255d;
-        bands[3] = bands[3] * color.A / 255d;
-        img = bands[0].Bandjoin(bands[1..3]);
+        if(AlphaProcessing)
+        {
+            bands[3] = bands[3] * color.A / 255d;
+            img = bands[0].Bandjoin(bands[1], bands[2], bands[3]);
+        }
+        else
+        {
+            img = bands[0].Bandjoin(bands[1], bands[2]);
+        }
         var s = new MemoryStream
         {
             Position = 0
         };
-        WriteImageToStream(img, s, ".png");
-        return new Tuple<MemoryStream, string>(s, ".png");
+        WriteImageToStream(img, s, extension);
+        return new Tuple<MemoryStream, string>(s, extension);
     }
     [Command("tint")]
     // [RequireAttachment(argumentCountThatOverloadsCheck: 2)]
 
     public async Task Tint(CommandContext ctx, [Description("the url of the image")] SdImage image,
-       [Description(
-              "https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Color.html#SixLabors_ImageSharp_Color_TryParse_System_String_SixLabors_ImageSharp_Color__")]
+       [Description("A hex color (RGB OR RGBA), or a dotnet KnownColor")]
           Color color)
     {
         await ctx.TriggerTypingAsync();
-        var thing = Tint(await image.GetBytesAsync(HttpClient), color);
+        var thing = Tint(await image.GetByteStream(HttpClient), color, image.Url.GetFileExtensionFromUrl());
         await using var outStream = thing.Item1;
         outStream.Position = 0;
         await SendImageStreamIfAllowed(ctx, outStream, $"sbimg{thing.Item2}", "There you go");
@@ -505,8 +533,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
 
     [Command("tint")]
     public async Task Tint(CommandContext ctx,
-        [Description(
-              "https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Color.html#SixLabors_ImageSharp_Color_TryParse_System_String_SixLabors_ImageSharp_Color__")]
+        [Description("A hex color (RGB OR RGBA), or a dotnet KnownColor")]
           Color color) => await Tint(ctx, SdImage.FromContext(ctx), color);
     [RequireGuild]
     [Command("adventuretime")]
@@ -541,7 +568,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         }
         using var inputStream = (Assembly.GetExecutingAssembly()
             .GetManifestResourceStream(template) ?? throw new TemplateReturningNullException(template));
-        using var img = new ImageMagick.MagickImageCollection(inputStream);
+        using var img = new MagickImageCollection(inputStream);
         var r = await func.Invoke(img);
         if (!r.Item1)
         {

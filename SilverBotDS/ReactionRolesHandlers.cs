@@ -33,10 +33,7 @@ namespace SilverBotDS
             var services = sender.GetExtension<CommandsNextExtension>().Services;
             await using var db = (DatabaseContext)services.GetService(typeof(DatabaseContext));
             var user = await e.Guild.GetMemberAsync(e.User.Id);
-            if ((e.Guild.Permissions?.HasPermission(Permissions.ManageRoles) == true || e.Guild.CurrentMember.Roles.MaxBy(x => x.Position)!.CheckPermission(Permissions.ManageRoles) == PermissionLevel.Allowed) &&
-                e.Guild.CurrentMember.Roles.MaxBy(x => x.Position)!.Position >
-                user.Roles.MaxBy(x => x.Position)!.Position)
-            {
+            
                 var rrrm = db?.ReactionRoleMappings.FirstOrDefault(a => a.ChannelId == e.Channel.Id && a.MessageId == e.Message.Id && a.EmojiId == e.Emoji.Id && a.Emoji == e.Emoji.Name);
                 if (rrrm != null && e.Guild.Roles[rrrm.RoleId] != null)
                 {
@@ -58,12 +55,12 @@ namespace SilverBotDS
                             throw new ArgumentOutOfRangeException(nameof(rrrm));
                     }
                 }
-            }
+            
         }
 
         private static async Task Discord_MessageReactionRemoved(DiscordClient sender, MessageReactionRemoveEventArgs e)
         {
-            if (e.Guild == null || e.User.IsBot)
+            if (e.Guild == null)
             {
                 return;
             }
@@ -71,9 +68,7 @@ namespace SilverBotDS
             var services = sender.GetExtension<CommandsNextExtension>().Services;
             await using var db = (DatabaseContext)services.GetService(typeof(DatabaseContext));
             var user = await e.Guild.GetMemberAsync(e.User.Id);
-            if ((e.Guild.Permissions?.HasPermission(Permissions.ManageRoles) == true || e.Guild.CurrentMember.Roles.MaxBy(x => x.Position)!.CheckPermission(Permissions.ManageRoles) == PermissionLevel.Allowed) &&
-                e.Guild.CurrentMember.Roles.MaxBy(x => x.Position)!.Position >
-                user.Roles.MaxBy(x => x.Position)!.Position)
+          
             {
                 var rrrm = db?.ReactionRoleMappings.FirstOrDefault(a => a.ChannelId == e.Channel.Id && a.MessageId == e.Message.Id && a.EmojiId == e.Emoji.Id && a.Emoji == e.Emoji.Name);
                 if (rrrm != null && e.Guild.Roles[rrrm.RoleId] != null)

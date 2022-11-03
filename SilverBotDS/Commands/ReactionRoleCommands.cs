@@ -39,6 +39,7 @@ public class ReactionRoleCommands : SilverBotCommandModule
     public async Task ReactionRoleAdd(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var serverSettings = DbCtx.GetServerSettings(ctx.Guild.Id);
         if (!(ctx.Guild.Permissions?.HasPermission(Permissions.ManageRoles) == true || ctx.Guild.CurrentMember.Roles.MaxBy(x => x.Position)!.CheckPermission(Permissions.ManageRoles) == PermissionLevel.Allowed))
         {
             await ctx.RespondAsync(lang.ReactionRoleNoPermManageRoles);
@@ -107,7 +108,6 @@ public class ReactionRoleCommands : SilverBotCommandModule
                         }
                         DiscordEmoji emoji;
                         var m = Emote.Match(splitline[1]);
-                        Console.WriteLine(";" + splitline[1] + ";");
                         if (m.Success)
                         {
                             emoji = DiscordEmoji.FromGuildEmote(ctx.Client, ulong.Parse(m.Groups["id"].Value));
@@ -180,9 +180,10 @@ public class ReactionRoleCommands : SilverBotCommandModule
                 mb = mb.WithContent(asasadsadsasas.ToString());
             }
             var nnmsg = await ctx.Channel.SendMessageAsync(mb);
+
             foreach (var role in roles)
             {
-                DbCtx.ReactionRoleMappings.Add(new ReactionRoleMapping { Emoji = role.Value.Item1.Name, EmojiId = role.Value.Item1.Id, RoleId = role.Key.Id, MessageId = nnmsg.Id, ChannelId = ctx.Channel.Id, MappingId = Guid.NewGuid(), Mode = role.Value.Item2 });
+                serverSettings.ReactionRoleMappings.Add(new ReactionRoleMapping { Emoji = role.Value.Item1.Name, EmojiId = role.Value.Item1.Id, RoleId = role.Key.Id, MessageId = nnmsg.Id, ChannelId = ctx.Channel.Id, Mode = role.Value.Item2 });
                 _ = nnmsg.CreateReactionAsync(role.Value.Item1);
             }
             DbCtx.SaveChanges();

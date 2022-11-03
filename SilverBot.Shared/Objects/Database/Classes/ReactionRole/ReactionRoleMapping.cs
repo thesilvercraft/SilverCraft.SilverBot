@@ -7,7 +7,6 @@ public class ReactionRoleMapping
     [Key]
     public Guid MappingId { get; set; }
     public virtual Guid ServerSettingsId { get; set; }
-    public virtual ServerSettings ServerSettings { get; set; }
     public ulong RoleId { get; set; }
 
     public ulong MessageId { get; set; }

@@ -708,6 +708,46 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         outStream.Position = 0;
         await SendImageStreamIfAllowed(ctx, outStream, content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.");
     }
+    [Command("ObMedal")]
+    public Task ObMedal(CommandContext ctx)
+    {
+        return ObMedal(ctx, ctx.User);
+    }
+    [Command("ObMedal")]
+    public async Task ObMedal(CommandContext ctx, DiscordUser obama)
+    {
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.obamamedal.jpg", async (img) =>
+        {
+            using (var internalimage = await GetProfilePictureAsyncStatic(obama))
+            {
+                var i = img;
+                img = img.Composite2(internalimage, BlendMode.Over, 120, 62);
+                img = img.Composite2(internalimage, BlendMode.Over, 377, 3);
+                i.Dispose();
+            }
+            return new Tuple<bool, Image>(true, img);
+        }, msgcontent: $"{obama.Mention} Awards {obama.Mention} a Medal.");
+    }
+    [Command("ObMedal")]
+    public async Task ObMedal(CommandContext ctx, DiscordUser obama, DiscordUser secondPerson)
+    {
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.obamamedal.jpg", async (img) =>
+        {
+            using (var internalimage = await GetProfilePictureAsyncStatic(obama))
+            {
+                var i = img;
+                img = img.Composite2(internalimage, BlendMode.Over, 120, 62);
+                i.Dispose();
+            }
+            using (var internalimage = await GetProfilePictureAsyncStatic(secondPerson))
+            {
+                var i = img;
+                img = img.Composite2(internalimage, BlendMode.Over, 377, 3);
+                i.Dispose();
+            }
+            return new Tuple<bool, Image>(true, img);
+        }, msgcontent: $"{obama.Mention} Awards {obama.Mention} a Medal.");
+    }
     [Command("happynewyear")]
     public async Task HappyNewYear(CommandContext ctx) => await HappyNewYear(ctx, ctx.User);
     [Command("happynewyear")]

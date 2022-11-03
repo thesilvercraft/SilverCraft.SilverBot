@@ -49,7 +49,7 @@ namespace SilverBotDS.Migrations
 
                     b.HasKey("EventID");
 
-                    b.ToTable("plannedEvents");
+                    b.ToTable("plannedEvents", (string)null);
                 });
 
             modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.ReactionRole.ReactionRoleMapping", b =>
@@ -83,7 +83,7 @@ namespace SilverBotDS.Migrations
 
                     b.HasIndex("ServerSettingsId");
 
-                    b.ToTable("ReactionRoleMappings");
+                    b.ToTable("ReactionRoleMappings", (string)null);
                 });
 
             modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.TranslatorSettings", b =>
@@ -97,7 +97,7 @@ namespace SilverBotDS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("translatorSettings");
+                    b.ToTable("translatorSettings", (string)null);
                 });
 
             modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.UserExperience", b =>
@@ -112,7 +112,7 @@ namespace SilverBotDS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("userExperiences");
+                    b.ToTable("userExperiences", (string)null);
                 });
 
             modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.UserQuote", b =>
@@ -132,7 +132,7 @@ namespace SilverBotDS.Migrations
 
                     b.HasKey("QuoteId");
 
-                    b.ToTable("userQuotes");
+                    b.ToTable("userQuotes", (string)null);
                 });
 
             modelBuilder.Entity("SilverBotDS.Objects.ServerSettings", b =>
@@ -170,7 +170,7 @@ namespace SilverBotDS.Migrations
 
                     b.HasKey("ServerSettingsId");
 
-                    b.ToTable("serverSettings");
+                    b.ToTable("serverSettings", (string)null);
                 });
 
             modelBuilder.Entity("SilverBotDS.Objects.UserSettings", b =>
@@ -191,7 +191,7 @@ namespace SilverBotDS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("userSettings");
+                    b.ToTable("userSettings", (string)null);
                 });
 
             modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.ReactionRole.ReactionRoleMapping", b =>
@@ -207,7 +207,7 @@ namespace SilverBotDS.Migrations
 
             modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.TranslatorSettings", b =>
                 {
-                    b.OwnsOne("SilverBotDS.Objects.Language", "CurrentCustomLanguage", b1 =>
+                    b.OwnsOne("SilverBotDS.Objects.Database.Classes.TranslatorSettings.CurrentCustomLanguage#SilverBotDS.Objects.Language", "CurrentCustomLanguage", b1 =>
                         {
                             b1.Property<ulong>("TranslatorSettingsId")
                                 .HasColumnType("INTEGER");
@@ -1053,13 +1053,13 @@ namespace SilverBotDS.Migrations
 
                             b1.HasKey("TranslatorSettingsId");
 
-                            b1.ToTable("translatorSettings");
+                            b1.ToTable("translatorSettings", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TranslatorSettingsId");
                         });
 
-                    b.OwnsMany("SilverBotDS.Objects.Language", "CustomLanguages", b1 =>
+                    b.OwnsMany("SilverBotDS.Objects.Database.Classes.TranslatorSettings.CustomLanguages#SilverBotDS.Objects.Language", "CustomLanguages", b1 =>
                         {
                             b1.Property<ulong>("TranslatorSettingsId")
                                 .HasColumnType("INTEGER");
@@ -1906,7 +1906,7 @@ namespace SilverBotDS.Migrations
 
                             b1.HasKey("TranslatorSettingsId", "Id");
 
-                            b1.ToTable("translatorSettings_CustomLanguages");
+                            b1.ToTable("translatorSettings_CustomLanguages", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TranslatorSettingsId");

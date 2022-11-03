@@ -36,5 +36,5 @@ public class ServerSettings
     }
 
     public string PrefixesInJson { get; set; } = "[]";
-    public virtual List<ReactionRoleMapping> Mappings { get; set; }
+    public virtual List<ReactionRoleMapping> ReactionRoleMappings { get; set; } = new();
 }

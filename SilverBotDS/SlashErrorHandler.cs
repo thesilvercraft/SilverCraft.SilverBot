@@ -90,7 +90,7 @@ namespace SilverBotDS
             {
                 if (e.Exception is CommandNotFoundException)
                 {
-                    await RespondWithContent("404 Not Found");
+                    await RespondWithContent("Command not found.");
                 }
                 else
                 {

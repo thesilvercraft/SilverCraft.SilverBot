@@ -150,9 +150,9 @@ public class Language
     public string LoopingQueue { get; set; } = "Now looping queue 🔁";
 
     /// <summary>
-    ///     Send **an** image my guy
+    ///     Send **an** image
     /// </summary>
-    public string WrongImageCount { get; set; } = "Send **an** image my guy";
+    public string WrongImageCount { get; set; } = "Send **an** image";
 
     /// <summary>
     ///     Now not looping.
@@ -533,8 +533,9 @@ public class Language
         "We both must have the permision {0} for you to use that.";
 
     public string UnknownImageFormat { get; set; } =
-        "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG photos.";
-
+        "I do not know how to read that format, I can only read BMP, TIFF, GIF, PNG, TGA and JPEG images.";
+    public string NetVipsLoadFail { get; set; } =
+    "The command you tried to execute failed to load an image, please check if all provided images are supported by libvips. error # 8b15ed5b-3501-4972-bb48-07c01648ee4a";
     public string AttributeDataBaseCheckNoDirectMessages { get; set; } =
      "This command can only be run in a server";
 

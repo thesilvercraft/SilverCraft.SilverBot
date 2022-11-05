@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -62,7 +63,7 @@ internal class BibiCommands : SilverBotCommandModule, IRequireAssets
     [Cooldown(1, 2, CooldownBucketType.User)]
     public async Task Bibi(CommandContext ctx, [RemainingText][Description("Bibi is")] string input)
     {
-        await ctx.TriggerTypingAsync();
+        //await ctx.TriggerTypingAsync();
         input = $"bibi is {input}";
         var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
         using var file = File.OpenRead(Path.Combine(Config.LocalBibiPictures,$"{randomnumber}.png"));
@@ -71,16 +72,16 @@ internal class BibiCommands : SilverBotCommandModule, IRequireAssets
         {
             FillColor = randomnumber is 10 or 9 ? MagickColors.Gray : MagickColors.White,
             Font = "Arial",
-            FontPointsize= picture.Width / 14,
-            BackgroundColor= MagickColors.Transparent,
-            Width= picture.Width,
+            FontPointsize = picture.Width / 14,
+            BackgroundColor = MagickColors.Transparent,
+            Width = picture.Width,
         };
         using var label = new MagickImage($"caption:{input}", settings);
         picture.Composite(label, 4, 230, CompositeOperator.Over);
         await using var outStream = new MemoryStream();
         await picture.WriteAsync(outStream, MagickFormat.Png);
         outStream.Position = 0;
-        await ImageModule.SendImageStreamIfAllowed(ctx, outStream, content: input);
+        await ImageModule.SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream:true, content: input);
     }
 }
 

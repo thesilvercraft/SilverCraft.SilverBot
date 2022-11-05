@@ -17,6 +17,7 @@ using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -95,8 +96,8 @@ userAndBotPermissions.Permissions != Permissions.All => string.Format(lang.Requi
 userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                 RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
 userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount => (string)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang),
-                RequireAttachmentAttribute attachmentAttribute => (string)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang),
+                RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount => ((string?)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang))?? "Too many attachments (mini error 21d74757-ee71-42e0-a4e7-02d3b17336a2)",
+               RequireAttachmentAttribute attachmentAttribute => (string?)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang) ?? "Not enough attachments (mini error 80d5e4d1-3c5c-43b3-8b97-5d3e419d275e)",
                 _ => string.Format(lang.CheckFailed, type.Name.RemoveStringFromEnd("Attribute").Humanize()),
             };
         }
@@ -164,9 +165,9 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                             await RespondWithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable);
                             break;
 
-                        /*case UnknownImageFormatException:
-                            await RespondWithContent(lang.UnknownImageFormat);
-                            break;*/
+                        case NetVips.VipsException { Message: "unable to load from source\r\nVipsForeignLoad: buffer is not in a known format\n" }:
+                            await RespondWithContent(lang.NetVipsLoadFail);
+                            break;
                         case MagickMissingDelegateErrorException ty :
                             var encode = "no encode delegate for this image format ";
                             if (ty.Message.StartsWith(encode))
@@ -189,7 +190,9 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                         case AttachmentCountIncorrectException aa:
                             await RespondWithContent(lang.NoImageGeneric);
                             break;
-
+                        case OutOfMemoryException:
+                            await RespondWithContent("Bot is out of memory Error # 23690c09-675e-47e9-a7be-6dba827ee780");
+                            break;
                         default:
                             await RespondWithContent(lang.GeneralException);
                             break;

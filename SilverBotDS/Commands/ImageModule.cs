@@ -78,7 +78,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
             .SendAsync(ctx.Channel);
     }
 
-    public static async Task SendImageStreamIfAllowed(CommandContext ctx, Stream image, string Filename = "sbimg.png", string? content = null, Language lang = null)
+    public static async Task SendImageStreamIfAllowed(CommandContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language lang = null, bool dryrun=false)
     {
         lang ??= await Language.GetLanguageFromCtxAsync(ctx);
         if (image.Length > MaxBytes(ctx))
@@ -89,7 +89,14 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         }
         else
         {
-            await SendImageStream(ctx, image, Filename, content);
+            if(!dryrun)
+            {
+                await SendImageStream(ctx, image, Filename, content);
+            }
+        }
+        if(DisposeOfStream)
+        {
+            await image.DisposeAsync();
         }
     }
 
@@ -124,7 +131,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         await using MemoryStream outStream = new();
         WriteImageToStream(r.Item2, outStream, encoder ?? ".png");
         outStream.Position = 0;
-        await SendImageStreamIfAllowed(ctx, outStream, filename, msgcontent);
+        await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, filename, msgcontent);
     }
 
     /// <summary>
@@ -262,7 +269,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         await using MemoryStream outStream = new();
         WriteImageToStream(await Caption(loadedimg, text, font), outStream, extension);
         outStream.Position = 0;
-        await SendImageStreamIfAllowed(ctx, outStream, Filename: "sbimgcaption" + extension, content: "there");
+        await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, Filename: "sbimgcaption" + extension, content: "there");
     }
     public static void WriteImageToStream(Image w, Stream s, string extension)
     {
@@ -481,7 +488,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     {
         await ctx.TriggerTypingAsync();
         await using var outStream = JPEGSpecialSauce(await image.GetBytesAsync(HttpClient));
-        await SendImageStreamIfAllowed(ctx, outStream, "sbimg.jpeg", "There you go");
+        await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, "sbimg.jpeg", "There you go");
     }
 
     [Command("jpeg")]
@@ -528,7 +535,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         var thing = Tint(await image.GetByteStream(HttpClient), color, image.Url.GetFileExtensionFromUrl());
         await using var outStream = thing.Item1;
         outStream.Position = 0;
-        await SendImageStreamIfAllowed(ctx, outStream, $"sbimg{thing.Item2}", "There you go");
+        await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, $"sbimg{thing.Item2}", "There you go");
     }
 
     [Command("tint")]
@@ -558,7 +565,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         await using MemoryStream outStream = new();
         WriteImageToStream(img, outStream, ".png");
         outStream.Position = 0;
-        await SendImageStreamIfAllowed(ctx, outStream, content: $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!");
+        await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, content: $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!");
     }
     private async Task CommonCodeWithTemplateGIFMagick(CommandContext ctx, string template, Func<ImageMagick.MagickImageCollection, Task<Tuple<bool, ImageMagick.MagickImageCollection>>> func, bool TriggerTyping = true, string filename = "sbimg.png", ImageMagick.MagickFormat? encoder = null, int quality = 75)
     {
@@ -580,7 +587,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         await using MemoryStream outStream = new();
         await r.Item2.WriteAsync(outStream, encoder ?? ImageMagick.MagickFormat.Png);
         outStream.Position = 0;
-        await SendImageStreamIfAllowed(ctx, outStream, filename, "there");
+        await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, filename, "there");
     }
     [Command("seal")]
     [Description("He was forced to use Microsoft Windows when he was 6")]
@@ -616,7 +623,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     {
         await ctx.TriggerTypingAsync();
         var thing = ResizeAsyncOP(await image.GetBytesAsync(HttpClient), x, y, format);
-        await SendImageStreamIfAllowed(ctx, thing.Item1, $"sbimg.{thing.Item2}", "There you go");
+        await SendImageStreamIfAllowed(ctx, thing.Item1, DisposeOfStream: true, $"sbimg.{thing.Item2}", "There you go");
     }
 
     private Tuple<Stream, string> ResizeAsyncOP(byte[] bytes, int x, int y, MagickFormat? format)
@@ -706,7 +713,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         outStream.Position = 0;
         img.WriteToStream(outStream, ".png");
         outStream.Position = 0;
-        await SendImageStreamIfAllowed(ctx, outStream, content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.");
+        await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, content: $"{jotaro.Mention}: {koichi.Mention}, you truly are a reliable guy.");
     }
     [Command("ObMedal")]
     public Task ObMedal(CommandContext ctx)
@@ -783,7 +790,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         var thing = await GrayScaleAsync(await image.GetBytesAsync(HttpClient), image.Url.GetFileExtensionFromUrl());
         var outStream = thing.Item1;
         outStream.Position = 0;
-        await SendImageStreamIfAllowed(ctx, outStream, $"sbimg{thing.Item2}", "There you go");
+        await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, $"sbimg{thing.Item2}", "There you go");
     }
 
 

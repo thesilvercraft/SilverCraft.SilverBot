@@ -66,20 +66,7 @@ public class GeneralCommands : ApplicationCommandModule
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
-            new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
-                .WithTitle(lang.VersionInfoTitle)
-                .AddField(lang.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
-                .AddField(lang.GitRepo, ThisAssembly.Git.RepositoryUrl)
-                .AddField(lang.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
-                .AddField(lang.GitBranch, Formatter.InlineCode(ThisAssembly.Git.Branch))
-                .AddField(lang.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
-                .AddField(lang.CLR, Formatter.InlineCode(RuntimeInformation.FrameworkDescription))
-                .AddField(lang.OS, Formatter.InlineCode(Environment.OSVersion.VersionString))
-                .AddField(lang.DsharpplusVersion, Formatter.InlineCode(ctx.Client.VersionString))
-                .WithAuthor($"{ctx.Client.CurrentUser.Username}#{ctx.Client.CurrentUser.Discriminator}",
-                    iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
-                .WithColor(await ColorUtils.GetSingleAsync())
-                .Build()).AsEphemeral(true));
+            new DiscordInteractionResponseBuilder().AddEmbed(MiscCommands.VersionInfoEmbed(lang,ctx)).AsEphemeral(true));
     }
 
     [SlashCommand("dukthosting", "SilverHosting:tm: best")]

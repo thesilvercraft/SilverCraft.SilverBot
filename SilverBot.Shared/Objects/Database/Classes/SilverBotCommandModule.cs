@@ -2,12 +2,9 @@
 
 namespace SilverBotDS.Objects.Classes;
 
-public class SilverBotCommandModule : BaseCommandModule
+public interface IHaveExecutableRequirements 
 {
-    public virtual Task<bool> ExecuteRequirements(Config conf)
-    {
-        return Task.FromResult(true);
-    }
+    public Task<bool> ExecuteRequirements(Config conf);
 }
 
 public interface IRequireAssets

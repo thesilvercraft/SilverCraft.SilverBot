@@ -11,7 +11,7 @@ namespace SilverBotDS.Objects;
 [Serializable]
 public class Config
 {
-    private const ulong CurrentConfVer = 45;
+    private const ulong CurrentConfVer = 48;
 
     [XmlDescription("Array of prefixes the bot will respond to")]
     public string[] Prefix { get; set; } =
@@ -19,6 +19,7 @@ public class Config
         "sd!",
         "sb!",
         "~",
+        "ß",
         "hey silverbot",
         "ok silverbot",
         "this is so sad silverbot"
@@ -58,15 +59,18 @@ public class Config
         "SilverBotDS.Commands.AdminCommands",
         "SilverBotDS.Commands.ReactionRoleCommands",
         "SilverBotDS.Commands.ReminderCommands",
+        "SilverBotDS.Commands.Slash.GeneralCommands",
+        "SilverBotDS.Commands.Slash.AudioSlash",
+        "SilverBotDS.Commands.Slash.BubotSlash",
     };
 
     [XmlDescription("What services should silverbot load from external dlls")]
     public SerializableDictionary<string, string> ServicesToLoadExternal { get; set; } = new();
 
     [XmlDescription("What modules should silverbot load from external dlls")]
-    public SerializableDictionary<string, string> ModulesToLoadExternal { get; set; } = new()
+    public string[] ModulesFilesToLoadExternal { get; set; } = new[]
     {
-        { "SilverBotDS.AnimeModule.dll", "SilverBotDS.Anime.Anime" }
+        "SilverBotDS.AnimeModule.dll"
     };
 
     [XmlDescription("The Giphy token, can be got from https://developers.giphy.com/")]
@@ -110,6 +114,10 @@ public class Config
     [XmlDescription(
         "Allow silverbot to download and start Lavalink, if you disable this your responsible for launching lavalink")]
     public bool AutoDownloadAndStartLavalink { get; set; } = true;
+
+    [XmlDescription(
+        "Enable sponsorblock plugin, if https://github.com/TopiSenpai/Sponsorblock-Plugin is installed on lavalink server")]
+    public bool SponsorBlock { get; set; } = false;
 
     [XmlDescription(
        "If AutoDownloadAndStartLavalink is set to true then you have to set this and LavalinkBuildsSourceGitHubRepo to a valid github repo with releases that contain jar files, Some examples are the official repo that is freyacodes/Lavalink (Official source) or Cog-Creators/Lavalink-Jars (Contains native libraries for ARM and some other platforms not nativly supported by lavalink officially)")]

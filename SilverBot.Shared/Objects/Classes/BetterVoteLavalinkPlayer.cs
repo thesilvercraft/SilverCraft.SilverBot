@@ -16,6 +16,8 @@ public enum LoopSettings
     [EnumMember(Value = "queue")] LoopingQueue
 }
 
+
+
 public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
 {
     public Dictionary<DiscordUser, List<Func<string, DiscordUser, bool>>> OnWebsiteEvent = new();

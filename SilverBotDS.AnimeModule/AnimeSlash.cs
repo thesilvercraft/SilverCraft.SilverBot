@@ -1,12 +1,10 @@
-using DSharpPlus.CommandsNext;
 using DSharpPlus.SlashCommands;
-using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using DSharpPlus;
 
-namespace SilverBotDS.AnimeSlash;
+namespace SilverBotDS.Anime;
 
 [Category("Anime")]
 public class AnimeSlash : ApplicationCommandModule
@@ -22,9 +20,9 @@ public class AnimeSlash : ApplicationCommandModule
 
     private async Task SendImage(InteractionContext ctx, string url)
     {
-        await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-            .WithEmbed(new DiscordEmbedBuilder().WithImageUrl(url))
-            .SendAsync(ctx.Channel);
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
+            new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder().WithImageUrl(url)));
+     
     }
 
     [SlashCommand("hug", "i have no idea what this means")]
@@ -75,8 +73,5 @@ public class AnimeSlash : ApplicationCommandModule
         await SendImage(ctx, await GetAnimeUrl("img/punch"));
     }
 
-    public class RootObject
-    {
-        [JsonPropertyName("url")] public string Url { get; set; }
-    }
+    
 }

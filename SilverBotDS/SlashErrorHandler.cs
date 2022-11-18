@@ -66,8 +66,14 @@ namespace SilverBotDS
         {
             async Task RespondWithContent(string content, bool ephermal = true)
             {
-                await e.Context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
-                    new DiscordInteractionResponseBuilder().AsEphemeral(ephermal).WithContent(content));
+                try
+                {
+                    await e.Context.DeferAsync(ephermal);
+                }
+                catch
+                {
+                }
+                await e.Context.FollowUpAsync(new DiscordFollowupMessageBuilder().AsEphemeral(ephermal).WithContent(content));
             }
 
             var config = ServiceProvider.GetService<Config>();

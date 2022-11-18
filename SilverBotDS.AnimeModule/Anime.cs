@@ -82,8 +82,9 @@ public class Anime : BaseCommandModule
         await SendImage(ctx, await GetAnimeUrl("img/punch"));
     }
 
-    public class RootObject
-    {
-        [JsonPropertyName("url")] public string Url { get; set; }
-    }
+
+}
+public class RootObject
+{
+    [JsonPropertyName("url")] public string Url { get; set; }
 }

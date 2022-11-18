@@ -41,18 +41,9 @@ public class MiscCommands : BaseCommandModule
 
     private readonly Regex _vbErrorR = new("BC[0-9][0-9][0-9][0-9][0-9]",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-
-    public DatabaseContext Database { private get; set; }
-    public Config Config { private get; set; }
-    public HttpClient HttpClient { private get; set; }
-
-    [Command("version")]
-    [Description("Get the version info")]
-    [Aliases("ver", "verinfo", "versioninfo")]
-    public async Task VersionInfoCmd(CommandContext ctx)
+    public static DiscordEmbed VersionInfoEmbed(Language lang, dynamic ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
+        return new DiscordEmbedBuilder()
             .WithTitle(lang.VersionInfoTitle)
             .AddField(lang.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
             .AddField(lang.GitRepo, ThisAssembly.Git.RepositoryUrl)
@@ -64,8 +55,20 @@ public class MiscCommands : BaseCommandModule
             .AddField(lang.DsharpplusVersion, Formatter.InlineCode(ctx.Client.VersionString))
             .WithAuthor($"{ctx.Client.CurrentUser.Username}#{ctx.Client.CurrentUser.Discriminator}",
                 iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
-            .WithColor(await ColorUtils.GetSingleAsync())
-            .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+            .Build();
+    }
+
+    public DatabaseContext Database { private get; set; }
+    public Config Config { private get; set; }
+    public HttpClient HttpClient { private get; set; }
+
+    [Command("version")]
+    [Description("Get the version info")]
+    [Aliases("ver", "verinfo", "versioninfo")]
+    public async Task VersionInfoCmd(CommandContext ctx)
+    {
+        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        await new DiscordMessageBuilder().WithEmbed(VersionInfoEmbed(lang,ctx)).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
     }
 
     [Command("setlang")]

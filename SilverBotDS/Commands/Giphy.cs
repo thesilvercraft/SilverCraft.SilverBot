@@ -17,7 +17,7 @@ namespace SilverBotDS.Commands;
 
 [Group("gif")]
 [Category("Image")]
-public class Giphy : SilverBotCommandModule
+public class Giphy : BaseCommandModule
 {
     public static Giphy CreateInstance()
     {

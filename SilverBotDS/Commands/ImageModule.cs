@@ -28,6 +28,7 @@ using System.Linq;
 using ImageMagick;
 using static System.Net.Mime.MediaTypeNames;
 using Image = NetVips.Image;
+using DSharpPlus.SlashCommands;
 
 namespace SilverBotDS.Commands;
 
@@ -63,7 +64,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
 
     private const int MegaByte = 1000000;
 
-    private static int MaxBytes(CommandContext ctx) => (ctx?.Guild?.PremiumTier) switch
+    private static int MaxBytes(dynamic ctx) => (ctx?.Guild?.PremiumTier) switch
     {
         PremiumTier.Tier_2 => 50 * MegaByte,
         PremiumTier.Tier_3 => 100 * MegaByte,
@@ -100,6 +101,25 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         }
     }
 
+    public static async Task SendImageStreamIfAllowed(InteractionContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language lang = null, bool dryrun = false)
+    {
+        lang ??= await Language.GetLanguageFromCtxAsync(ctx);
+        if (image.Length > MaxBytes(ctx))
+        {
+            await ctx.FollowUpAsync(new DiscordFollowupMessageBuilder().WithContent(string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(image.Length))));
+        }
+        else
+        {
+            if (!dryrun)
+            {
+                await ctx.FollowUpAsync(new DiscordFollowupMessageBuilder().WithContent(content).AddFile(Filename,image));
+            }
+        }
+        if (DisposeOfStream)
+        {
+            await image.DisposeAsync();
+        }
+    }
     public static async Task SendImageStream(CommandContext ctx, Stream outstream, string filename = "sbimg.png",
       string? content = null)
     {

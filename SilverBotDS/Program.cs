@@ -13,6 +13,7 @@ using ImageMagick;
 using Lavalink4NET;
 using Lavalink4NET.Artwork;
 using Lavalink4NET.DSharpPlus;
+using Lavalink4NET.Integrations.SponsorBlock;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Tracking;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,7 @@ using SilverBotDS.Utils;
 using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -474,6 +476,8 @@ namespace SilverBotDS
             commands.RegisterConverter(new LoopSettingsConverter());
             commands.RegisterConverter(new SongOrSongsConverter());
             commands.RegisterConverter(new ImageFormatConverter());
+            
+
             async Task ProcessModuleType(Type? type)
             {
                 if(type == null)
@@ -508,9 +512,9 @@ namespace SilverBotDS
                     }
                 }
 
-                if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
+                if (type.IsSubclassOf(typeof(IHaveExecutableRequirements)))
                 {
-                    var n = (SilverBotCommandModule)Activator.CreateInstance(type);
+                    var n = (IHaveExecutableRequirements)Activator.CreateInstance(type);
                     if (await n.ExecuteRequirements(_config))
                     {
                         commands.RegisterCommands(type);
@@ -541,26 +545,26 @@ namespace SilverBotDS
                     _log.Error(ex, "Failed to load internal module {Module} Exception occured", module);
                 }
             }
-            foreach (var group in _config.ModulesToLoadExternal.GroupBy(x => x.Key))
+            foreach (var group in _config.ModulesFilesToLoadExternal)
             {
-                if (File.Exists(group.Key))
+                if (File.Exists(group))
                 {
-                    var assembly = Assembly.LoadFrom(group.Key);
-                    foreach (var module in group)
+                    var assembly = Assembly.LoadFrom(group);
+                    foreach (var module in assembly.ExportedTypes.Where(x=>x.IsSubclassOf(typeof(ApplicationCommandModule)) || x.IsSubclassOf(typeof(BaseCommandModule))))
                     {
                         try
                         {
-                            await ProcessModuleType(assembly.GetType(module.Value));
+                            await ProcessModuleType(module);
                         }
                         catch (Exception ex)
                         {
-                            _log.Error(ex, "Failed to load external module {Module} Exception occured", module.Value);
+                            _log.Error(ex, "Failed to load external module {Module} Exception occured", module);
                         }
                     }
                 }
                 else
                 {
-                    _log.Information("Modules from the {File} won't be loaded as its file doesn't exist", group.Key);
+                    _log.Information("Modules from the {File} won't be loaded as its file doesn't exist", group);
                 }
             }
             commands.CommandExecuted += Commands_CommandExecuted;
@@ -597,6 +601,21 @@ namespace SilverBotDS
                 {
                     _trackingService.BeginTracking();
                 }
+                if(_config.SponsorBlock)
+                {
+                    _audioService.UseSponsorBlock();
+                }
+                var sponsorBlock = _audioService.Integrations.Get<ISponsorBlockIntegration>();
+                sponsorBlock.DefaultSkipCategories = ImmutableArray.Create(
+                    SegmentCategory.SelfPromotion,
+                    SegmentCategory.Sponsor,
+                    SegmentCategory.Intro,
+                    SegmentCategory.Outro,
+                    SegmentCategory.Filler,
+                    SegmentCategory.Interaction,
+                    SegmentCategory.Preview,
+                    SegmentCategory.OfftopicMusic
+                );
             }
 
             await _discord.UpdateStatusAsync(new("console logs while configuring server statistics",

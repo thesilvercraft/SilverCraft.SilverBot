@@ -22,7 +22,7 @@ namespace SilverBotDS.Commands;
 [RequireTranslator(true)]
 //[ModuleLifespan(ModuleLifespan.Transient)]
 [Category("Translation")]
-public class TranslatorCommands : SilverBotCommandModule
+public class TranslatorCommands : BaseCommandModule
 {
     private readonly Regex _customlangregex = new("(?<uid>[0-9]*)-(?<language>.+(-?([a-z]+?))?)-(?<langid>[0-9]+)");
 

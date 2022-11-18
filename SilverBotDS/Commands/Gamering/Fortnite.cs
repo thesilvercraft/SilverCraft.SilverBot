@@ -13,12 +13,12 @@ namespace SilverBotDS.Commands.Gamering;
 
 [Category("Gaming")]
 [Group("fortnite")]
-public class Fortnite : SilverBotCommandModule
+public class Fortnite : BaseCommandModule, IHaveExecutableRequirements
 {
     private FortniteApiClient _api;
     public Config Config { private get; set; }
 
-    public override Task<bool> ExecuteRequirements(Config conf)
+    public Task<bool> ExecuteRequirements(Config conf)
     {
         return Task.FromResult(!(string.IsNullOrEmpty(conf.FApiToken) || conf.FApiToken == "Fortnite_Token_Here" ||
                                  string.Equals(conf.FApiToken, "none", StringComparison.InvariantCultureIgnoreCase)));

@@ -39,7 +39,7 @@ public class Bubot : BaseCommandModule
 }
 
 [Category("Bubot")]
-internal class BibiCommands : SilverBotCommandModule, IRequireAssets
+internal class BibiCommands : BaseCommandModule, IHaveExecutableRequirements, IRequireAssets
 {
     public static string[] RequiredAssets => new[]
     {
@@ -53,7 +53,7 @@ internal class BibiCommands : SilverBotCommandModule, IRequireAssets
         get { return Directory.EnumerateFiles(Config.LocalBibiPictures).Count(x => x.EndsWith(".png")); }
     }
 
-    public override Task<bool> ExecuteRequirements(Config conf)
+    public Task<bool> ExecuteRequirements(Config conf)
     {
         return Task.FromResult(Directory.Exists(conf.LocalBibiPictures));
     }
@@ -89,13 +89,13 @@ internal class BibiCommands : SilverBotCommandModule, IRequireAssets
 [Aliases("bibilib")]
 [Description("Access the great cat bibi library.")]
 [Category("Bubot")]
-internal class BibiLib : SilverBotCommandModule
+internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
 {
     private string[] _bibiDescText;
     private string[] _bibiFullDescText;
     public Config Config { private get; set; }
 
-    public override Task<bool> ExecuteRequirements(Config conf)
+    public Task<bool> ExecuteRequirements(Config conf)
     {
         return Task.FromResult(Directory.Exists(conf.LocalBibiPictures) && File.Exists(conf.BibiLibCutOutConfig) && File.Exists(conf.BibiLibFullConfig));
     }

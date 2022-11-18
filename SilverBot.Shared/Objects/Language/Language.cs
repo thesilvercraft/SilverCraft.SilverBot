@@ -28,6 +28,8 @@ public class Language
     ///     Default(EN)
     /// </summary>
     public string LangName { get; set; } = "English(EN)";
+    public string UnknownError { get; set; } = "The bot has encountered an unknown error.";
+
 
     /// <summary>
     ///     A 2-4 alphanumeric code
@@ -114,6 +116,8 @@ public class Language
     ///     Whoa there, there is nothing queued next.
     /// </summary>
     public string NothingInQueue { get; set; } = "Whoa there, there is nothing queued next.";
+    public string NothingInQueueToRemove { get; set; } = "There is nothing queued to remove.";
+
 
     public string NothingInQueueHistory { get; set; } = "Whoa there is nothing in the queue history";
 

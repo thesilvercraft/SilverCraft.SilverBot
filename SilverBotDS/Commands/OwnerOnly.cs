@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.SlashCommands;
 using Humanizer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
@@ -26,7 +27,7 @@ namespace SilverBotDS.Commands;
 
 [RequireOwner]
 [Category("Owner")]
-public class OwnerOnly : SilverBotCommandModule
+public class OwnerOnly : BaseCommandModule
 {
     public DatabaseContext Database { private get; set; }
     public Config Config { private get; set; }
@@ -84,9 +85,9 @@ public class OwnerOnly : SilverBotCommandModule
                     }
                 }
             }
-            if (type.IsSubclassOf(typeof(SilverBotCommandModule)))
+            if (type.IsSubclassOf(typeof(IHaveExecutableRequirements)))
             {
-                var n = (SilverBotCommandModule)Activator.CreateInstance(type);
+                var n = (IHaveExecutableRequirements)Activator.CreateInstance(type);
                 if (await n.ExecuteRequirements(Config))
                 {
                     ctx.CommandsNext.RegisterCommands(type);
@@ -265,7 +266,13 @@ public class OwnerOnly : SilverBotCommandModule
             .WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None)
             .SendAsync(ctx.Channel);
     }
-
+    public static async Task SendStringFileWithContent(BaseContext ctx, string title, string file,
+        string filename = "message.txt")
+    {
+        await new DiscordMessageBuilder().WithContent(title)
+            .WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None)
+            .SendAsync(ctx.Channel);
+    }
     public static async Task SendBestRepresentationAsync(object ob, CommandContext ctx)
     {
         try

@@ -23,11 +23,11 @@ namespace SilverBotDS.Commands;
 [Category("Reaction Roles")]
 [Group("rr")]
 [RequireUserPermissions(Permissions.Administrator)]
-public class ReactionRoleCommands : SilverBotCommandModule
+public class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRequirements
 {
     public DatabaseContext DbCtx { private get; set; }
 
-    public override Task<bool> ExecuteRequirements(Config conf)
+    public Task<bool> ExecuteRequirements(Config conf)
     {
         return Task.FromResult(conf.ReactionRolesEnabled);
     }

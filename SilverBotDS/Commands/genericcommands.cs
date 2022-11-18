@@ -2,10 +2,12 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using Humanizer;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -33,58 +35,9 @@ public sealed class Genericcommands : BaseCommandModule
             .SendAsync(ctx.Channel);
     }
 
-    [Command("spinningfox")]
-    [Description("fox go brrrrrrrr")]
-    public async Task Fox(CommandContext ctx)
-    {
-        await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-            .WithContent("https://media.discordapp.net/attachments/811583810264629252/824266450818695168/image0-1.gif")
-            .SendAsync(ctx.Channel);
-    }
 
-    [Command("meme")]
-    public async Task Kindsffeefdfdfergergrgfdfdsgfdfg(CommandContext ctx)
-    {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        var b = new DiscordEmbedBuilder();
-        var client = HttpClient;
-        var rm = await client.GetAsync("https://meme-api.herokuapp.com/gimme");
-        if (rm.StatusCode == HttpStatusCode.OK)
-        {
-            var asdf = JsonSerializer.Deserialize<Meme>(await rm.Content.ReadAsStringAsync());
-            if (asdf?.Nsfw == false)
-            {
-                b.WithTitle(lang.Meme + asdf.Title)
-                    .WithUrl(asdf.PostLink)
-                    .WithAuthor($"👍 {asdf.Ups} | r/{asdf.Subreddit}")
-                    .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                    .AddField("NSFW", BoolToEmoteString(asdf.Nsfw), true)
-                    .AddField("Spoiler", BoolToEmoteString(asdf.Spoiler), true)
-                    .AddField("Author", asdf.Author, true)
-                    .WithImageUrl(asdf.Url)
-                    .WithColor(await ColorUtils.GetSingleAsync());
-            }
-            else
-            {
-                b.WithTitle("Meme returned null")
-                    .WithColor(await ColorUtils.GetSingleAsync());
-            }
 
-            await new DiscordMessageBuilder()
-                .WithReply(ctx.Message.Id)
-                .WithEmbed(b.Build())
-                .SendAsync(ctx.Channel);
-        }
-        else
-        {
-            b.WithDescription(rm.StatusCode.ToString());
-            await new DiscordMessageBuilder()
-                .WithReply(ctx.Message.Id)
-                .WithEmbed(b.Build())
-                .SendAsync(ctx.Channel);
-        }
-    }
-
+   
     [Command("time")]
     [Description("Get the time in UTC")]
     public async Task Time(CommandContext ctx)
@@ -111,8 +64,9 @@ public sealed class Genericcommands : BaseCommandModule
     [Command("ping")]
     public async Task Ping(CommandContext ctx)
     {
-        await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent($"🏓 Pong! {ctx.Client.Ping}ms")
+       var msg= await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithContent($"🏓 Pong! {ctx.Client.Ping}ms")
             .SendAsync(ctx.Channel);
+        await msg.ModifyAsync($"🏓 Pong! {ctx.Client.Ping.Milliseconds().Humanize()} ({( msg.Timestamp - ctx.Message.Timestamp).Humanize()} to send, {(DateTime.UtcNow - ctx.Message.Timestamp).Humanize()} round trip)");
     }
 
     [Command("dump")]
@@ -129,6 +83,35 @@ public sealed class Genericcommands : BaseCommandModule
             .WithContent($"{ctx.User.Mention}")
             .WithAllowedMentions(Mentions.None)
             .WithFile("message.txt", outStream)
+            .SendAsync(ctx.Channel);
+    }
+    [Command("archive")]
+    [RequirePermissions(Permissions.ReadMessageHistory | Permissions.SendMessages | Permissions.AttachFiles)]
+    [Description("Archive a message (and its attachments)")]
+    public async Task ArchiveMessage(CommandContext ctx, DiscordMessage message)
+    {
+        await using MemoryStream memoryStream = new();
+        using (ZipArchive zip = new(memoryStream, ZipArchiveMode.Create, true))
+        {
+            foreach (var f in message.Attachments)
+            {
+                var zipItem = zip.CreateEntry($"{f.FileName}");
+                await using MemoryStream originalFileMemoryStream = new(await HttpClient.GetByteArrayAsync(f.ProxyUrl));
+                await using var entryStream = zipItem.Open();
+                await originalFileMemoryStream.CopyToAsync(entryStream);
+            }
+            var zipItemmsg = zip.CreateEntry($"message.txt");
+            await using MemoryStream zipItemmsgfs = new(Encoding.UTF8.GetBytes(message.Content)) { Position=0};
+            await using var entryStreammsg = zipItemmsg.Open();
+            await zipItemmsgfs.CopyToAsync(entryStreammsg);
+        }
+
+        memoryStream.Position = 0;
+        await new DiscordMessageBuilder()
+            .WithReply(ctx.Message.Id)
+            .WithContent($"{ctx.User.Mention}")
+            .WithAllowedMentions(Mentions.None)
+            .WithFile("message.zip", memoryStream)
             .SendAsync(ctx.Channel);
     }
 
@@ -158,43 +141,10 @@ public sealed class Genericcommands : BaseCommandModule
                 .WithTitle(lang.SilverhostingJokeTitle)
                 .WithDescription(lang.SilverhostingJokeDescription)
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                .WithColor(await ColorUtils.GetSingleAsync())
                 .Build())
             .SendAsync(ctx.Channel);
     }
-
-    private static async Task SimpleImageMeme(CommandContext ctx, string imageurl, string? title = null,
-        string? content = null, Language? language = null)
-    {
-        language ??= await Language.GetLanguageFromCtxAsync(ctx);
-        var embedBuilder = new DiscordEmbedBuilder()
-            .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
-            .WithImageUrl(imageurl).WithColor(await ColorUtils.GetSingleAsync());
-        var messageBuilder = new DiscordMessageBuilder();
-        if (title != null)
-        {
-            embedBuilder.WithTitle(title);
-        }
-
-        if (content != null)
-        {
-            messageBuilder.WithContent(content);
-        }
-
-        await messageBuilder
-            .WithReply(ctx.Message.Id)
-            .WithEmbed(embedBuilder.Build())
-            .SendAsync(ctx.Channel);
-    }
-
-    [Command("monke")]
-    [Aliases(":monkey:", "🐒", "🐵", ":monkey_face:")]
-    [Description("Reject humanity return to monke")]
-    public async Task Monke(CommandContext ctx)
-    {
-        await SimpleImageMeme(ctx, "https://i.kym-cdn.com/photos/images/newsfeed/001/867/677/40d.jpg");
-    }
-
+  
     public static async Task<bool> IsAtSilverCraftAsync(DiscordClient discord, DiscordUser b, Config cnf)
     {
         return (await discord.GetGuildAsync(cnf.ServerId)).Members.ContainsKey(b.Id);

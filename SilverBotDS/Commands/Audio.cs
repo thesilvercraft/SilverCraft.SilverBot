@@ -289,18 +289,7 @@ public class Audio : BaseCommandModule
     public async Task Seek(CommandContext ctx, TimeSpan time)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         try
         {
@@ -311,33 +300,86 @@ public class Audio : BaseCommandModule
             await SendSimpleMessage(ctx, lang.TrackCanNotBeSeeked, language: lang);
         }
     }
+    public async Task MakeSureBotIsInVC(CommandContext ctx, Language lang)
+    {
+        if (!IsInVc(ctx))
+        {
+            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
+            throw new BotNotInVCException("bot not in voice chat");
+        }
+    }
+    public static async Task MakeSureUserIsInVC(CommandContext ctx, Language lang)
+    {
+        var channel = ctx.Member?.VoiceState?.Channel;
+        if (channel == null)
+        {
+            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+            throw new UserNotInVCException("user not in voice chat");
 
+        }
+    }
+    public async Task MakeSureBothAreInVC(CommandContext ctx, Language lang)
+    {
+        await MakeSureBotIsInVC(ctx, lang);
+        await MakeSureUserIsInVC(ctx, lang);
+    }
+    public class BotNotInVCException : Exception
+    {
+        public BotNotInVCException(string? message) : base(message)
+        {
+        }
+
+        public BotNotInVCException(string? message, Exception? innerException) : base(message, innerException)
+        {
+        }
+
+      
+    }
+    public class UserNotInVCException : Exception
+    {
+        public UserNotInVCException(string? message) : base(message)
+        {
+        }
+
+        public UserNotInVCException(string? message, Exception? innerException) : base(message, innerException)
+        {
+        }
+
+    }
+    public class PlayerIsNullException : Exception
+    {
+        public PlayerIsNullException(string? message) : base(message)
+        {
+        }
+
+        public PlayerIsNullException(string? message, Exception? innerException) : base(message, innerException)
+        {
+        }
+
+       
+    }
+    public async Task MakeSurePlayerIsntNull(CommandContext ctx, Language lang, BetterVoteLavalinkPlayer? player)
+    {
+        if (player == null)
+        {
+            await SendSimpleMessage(ctx, lang.UnknownError, language: lang);
+            throw new PlayerIsNullException("player returned null");
+        }
+    }
     [Command("clearqueue")]
     [RequireDj]
     [Description("Clears the queue")]
     public async Task ClearQueue(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
+        await MakeSurePlayerIsntNull(ctx, lang, player);
         if (player.Queue.Count == 0 && player.State != PlayerState.NotPlaying)
         {
-            await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
+            await SendSimpleMessage(ctx, lang.NothingInQueueToRemove, language: lang);
             return;
         }
-
         var cnt = player.Queue.Clear();
         await SendSimpleMessage(ctx,
             string.Format(lang.RemovedXSongOrSongs, cnt, cnt == 1 ? lang.RemovedSong : lang.RemovedSongs),
@@ -350,19 +392,7 @@ public class Audio : BaseCommandModule
     public async Task Shuffle(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         player.Queue.Shuffle();
         await SendSimpleMessage(ctx, lang.ShuffledSuccess, language: lang);
@@ -373,19 +403,7 @@ public class Audio : BaseCommandModule
     public async Task ExportQueue(CommandContext ctx, string? playlistName = null)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         var queue = player.Queue.Select(x => x.Identifier).ToList();
         queue.Insert(0, player.CurrentTrack.Identifier);
@@ -402,19 +420,7 @@ public class Audio : BaseCommandModule
     public async Task Remove(CommandContext ctx, int songindex)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (songindex < 0 || songindex > player.Queue.Count)
         {
@@ -434,19 +440,7 @@ public class Audio : BaseCommandModule
     public async Task QueueHistory(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.QueueHistory.Count == 0)
         {
@@ -473,19 +467,7 @@ public class Audio : BaseCommandModule
     public async Task Queue(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.Queue.Count == 0 && player.State != PlayerState.Playing)
         {
@@ -544,18 +526,7 @@ public class Audio : BaseCommandModule
     public async Task Loop(CommandContext ctx, [Description("Has to be none, song or queue")] LoopSettings settings)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
+        await MakeSureBothAreInVC(ctx, lang);
 
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         player.LoopSettings = settings;
@@ -583,21 +554,7 @@ public class Audio : BaseCommandModule
     public async Task Pause(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-
-        var channel = ctx.Member?.VoiceState?.Channel;
-
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.State != PlayerState.Playing)
         {
@@ -640,26 +597,13 @@ public class Audio : BaseCommandModule
     public async Task Resume(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.State != PlayerState.Paused)
         {
             await SendSimpleMessage(ctx, lang.NotPaused, language: lang);
             return;
         }
-
         await player.ResumeAsync();
     }
 
@@ -678,13 +622,7 @@ public class Audio : BaseCommandModule
             await SendSimpleMessage(ctx, lang.AlreadyConnected, language: lang);
             return;
         }
-
-        if (ctx.Member?.VoiceState?.Channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureUserIsInVC(ctx, lang);
         await audioService.JoinAsync<BetterVoteLavalinkPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id,
             true);
         await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name),
@@ -698,18 +636,7 @@ public class Audio : BaseCommandModule
     public async Task Skip(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
+        await MakeSureBothAreInVC(ctx, lang);
 
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
 
@@ -733,19 +660,7 @@ public class Audio : BaseCommandModule
     public async Task VoteSkip(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.State != PlayerState.Playing)
         {
@@ -783,18 +698,13 @@ public class Audio : BaseCommandModule
     public async Task ForceDisconnect(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
+        await MakeSureUserIsInVC(ctx, lang);
 
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         await player.DisconnectAsync();
         await player.DestroyAsync();
         player.Dispose();
-        await SendSimpleMessage(ctx, string.Format(lang.Left, channel.Name), language: lang);
+        
     }
 
     [Command("disconnect")]
@@ -804,21 +714,9 @@ public class Audio : BaseCommandModule
     public async Task Disconnect(CommandContext ctx)
     {
         var lang = await Language.GetLanguageFromCtxAsync(ctx);
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (!IsInVc(ctx))
-        {
-            await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
-            return;
-        }
-
-        if (channel == null)
-        {
-            await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
-            return;
-        }
-
+        await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         await player.DisconnectAsync();
-        await SendSimpleMessage(ctx, string.Format(lang.Left, channel.Name), language: lang);
+        await SendSimpleMessage(ctx, string.Format(lang.Left, ctx.Member?.VoiceState?.Channel.Name), language: lang);
     }
 }

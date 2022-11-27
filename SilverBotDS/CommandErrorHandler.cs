@@ -17,7 +17,6 @@ using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +26,7 @@ namespace SilverBotDS
     {
         private static ServiceProvider ServiceProvider { get; set; }
         private static Logger Log { get; set; }
-        private static bool UseSegment { get; set; }
+        private static bool UseAnalytics { get; set; }
         private static CommandsNextExtension E { get; set; }
 
         public static Task RegisterErrorHandler(ServiceProvider sp, Logger log, CommandsNextExtension e)
@@ -36,17 +35,23 @@ namespace SilverBotDS
             Log = log;
             E = e;
             E.CommandErrored += Commands_CommandErrored;
-            UseSegment = sp.GetRequiredService<Config>().SendErrorsThroughSegment;
+            UseAnalytics = sp.GetRequiredService<Config>().UseAnalytics;
             return Task.CompletedTask;
         }
 
         public static void Reload()
         {
             E.CommandErrored -= Commands_CommandErrored;
-            UseSegment = ServiceProvider.GetRequiredService<Config>().SendErrorsThroughSegment;
+            UseAnalytics = ServiceProvider.GetRequiredService<Config>().UseAnalytics;
             E.CommandErrored += Commands_CommandErrored;
         }
-
+        public static readonly List<string> WaysToPissOffUser = new()
+        {
+        
+            "https://media.discordapp.net/attachments/1040561549556854875/1046410074878390384/sbfail.gif",
+            "📸",
+            "think you have outsmarted me? well you haven't"
+        };
         /// <summary>
         ///     Render the error message for an Attribute
         /// </summary>
@@ -58,47 +63,38 @@ namespace SilverBotDS
         private static string RenderErrorMessageForAttribute(CheckBaseAttribute checkBase, Language lang,
             bool isinguild, CommandErrorEventArgs e)
         {
-            var type = checkBase.GetType();
-            if (type == typeof(RequireDjAttribute))
+            string DoOwnerOnly()
             {
-                return lang.RequireDJCheckFailed;
-            }
-            if (type == typeof(RequireGuildAttribute))
-            {
-                return lang.RequireGuildCheckFailed;
-            }
-            if (type == typeof(RequireNsfwAttribute))
-            {
-                return lang.RequireNsfwCheckFailed;
-            }
-            if (type == typeof(RequireOwnerAttribute))
-            {
+                if (e is { Command.Name: "evaluate" } && (e.Context.RawArgumentString.Contains(lang.RequireOwnerCheckFailed) || WaysToPissOffUser.Any(x => e.Context.RawArgumentString.Contains(x))))
+                {
+                    var s = WaysToPissOffUser.Where(x => !e.Context.RawArgumentString.Contains(x));
+                    if (s.Any())
+                    {
+                        return s.ElementAt(RandomGenerator.Next(0, s.Count()));
+                    }
+                }
                 return lang.RequireOwnerCheckFailed;
             }
             return checkBase switch
             {
+                RequireOwnerAttribute => DoOwnerOnly(),
+                RequireDjAttribute => lang.RequireDJCheckFailed,
+                RequireGuildAttribute => lang.RequireGuildCheckFailed,
+                RequireNsfwAttribute => lang.RequireNsfwCheckFailed,
                 RequireRolesAttribute requireRolesAttribute when requireRolesAttribute.RoleNames.Count == 1 => string.Format(lang.RequireRolesCheckFailedSG, requireRolesAttribute.RoleNames[0]),
                 RequireRolesAttribute requireRolesAttribute => string.Format(lang.RequireRolesCheckFailedPL, requireRolesAttribute.RoleNames.Humanize()),
                 RequireBotPermissionsAttribute requireBotPermissions when !(requireBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) &&
-requireBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotPermisionsCheckFailedSG,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireBotPermissionsAttribute requireBotPermissions => string.Format(lang.RequireBotPermisionsCheckFailedPL,
-requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireBotPermissionsAttribute requireBotPermissions when Enum.IsDefined(requireBotPermissions.Permissions) && requireBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotPermisionsCheckFailedSG, requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireBotPermissionsAttribute requireBotPermissions => string.Format(lang.RequireBotPermisionsCheckFailedPL, requireBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                 RequireUserPermissionsAttribute userPermissions when !(userPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All => string.Format(lang.RequireUserPermisionsCheckFailedSG,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequireUserPermissionsAttribute userPermissions => string.Format(lang.RequireUserPermisionsCheckFailedPL,
-userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireUserPermissionsAttribute userPermissions when Enum.IsDefined(userPermissions.Permissions) && userPermissions.Permissions != Permissions.All => string.Format(lang.RequireUserPermisionsCheckFailedSG, userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequireUserPermissionsAttribute userPermissions => string.Format(lang.RequireUserPermisionsCheckFailedPL, userPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                 RequirePermissionsAttribute userAndBotPermissions when !(userAndBotPermissions.IgnoreDms && isinguild) => lang.RequireGuildCheckFailed,
-                RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) &&
-userAndBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
-                RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL,
-userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequirePermissionsAttribute userAndBotPermissions when Enum.IsDefined(userAndBotPermissions.Permissions) && userAndBotPermissions.Permissions != Permissions.All => string.Format(lang.RequireBotAndUserPermisionsCheckFailedSG, userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
+                RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL, userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                 RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount => ((string?)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang))?? "Too many attachments (mini error 21d74757-ee71-42e0-a4e7-02d3b17336a2)",
-               RequireAttachmentAttribute attachmentAttribute => (string?)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang) ?? "Not enough attachments (mini error 80d5e4d1-3c5c-43b3-8b97-5d3e419d275e)",
-                _ => string.Format(lang.CheckFailed, type.Name.RemoveStringFromEnd("Attribute").Humanize()),
+                RequireAttachmentAttribute attachmentAttribute => (string?)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang) ?? "Not enough attachments (mini error 80d5e4d1-3c5c-43b3-8b97-5d3e419d275e)",
+                _ => string.Format(lang.CheckFailed, e.Exception.GetType().Name.RemoveStringFromEnd("Attribute").Humanize()),
             };
         }
 
@@ -112,12 +108,12 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                     .SendAsync(e.Context.Channel);
             }
 
-            if (UseSegment)
+            if (UseAnalytics)
             {
                 var analytics = ServiceProvider.GetService<IAnalyse>();
                 if (analytics is not null)
                 {
-                    await analytics.EmitEvent(e.Context.User, "SlashCommandErrored", new Dictionary<string, object>()
+                    await analytics.EmitEvent(e.Context.User, "CommandErrored", new Dictionary<string, object>()
                     {
                         {"commandname", e.Context.Command.Name},
                         {"error", e.Exception}
@@ -129,12 +125,7 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                     .PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id))
                     .HasPermission(Permissions.SendMessages))
             {
-                if (e.Exception is CommandNotFoundException)
-                {
-                    //we do not do anything if it is a nonexistent command, i would have liked it to be a user only visible message but discord is shit
-                    return;
-                }
-                else
+                if (e.Exception is not CommandNotFoundException)
                 {
                     var lang = await Language.GetLanguageFromCtxAsync(e.Context);
                     switch (e.Exception)
@@ -168,16 +159,16 @@ userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                         case NetVips.VipsException { Message: "unable to load from source\r\nVipsForeignLoad: buffer is not in a known format\n" }:
                             await RespondWithContent(lang.NetVipsLoadFail);
                             break;
-                        case MagickMissingDelegateErrorException ty :
+                        case MagickMissingDelegateErrorException ty:
                             var encode = "no encode delegate for this image format ";
                             if (ty.Message.StartsWith(encode))
                             {
-                                await RespondWithContent($"The bot can not encode `{ty.Message[(encode.Length+1)..(encode.Length + 4)]}` images.");
+                                await RespondWithContent($"The bot can not encode `{ty.Message[(encode.Length + 1)..(encode.Length + 4)]}` images.");
                             }
                             break;
                         case MagickCoderErrorException imgerr:
                             var zip = "ZIP compression not supported";
-                            if(imgerr.Message.StartsWith(zip))
+                            if (imgerr.Message.StartsWith(zip))
                             {
                                 await RespondWithContent($"The bot can not decode this image because it uses ZIP compression.");
                             }

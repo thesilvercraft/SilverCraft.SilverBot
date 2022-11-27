@@ -65,7 +65,10 @@ public class Config
     };
 
     [XmlDescription("What services should silverbot load from external dlls")]
-    public SerializableDictionary<string, string> ServicesToLoadExternal { get; set; } = new();
+    public SerializableDictionary<string, string> ServicesToLoadExternal { get; set; } = new()
+    {
+        {"SilverBot.SysAdminModule.dll","SilverBot.SysAdminModule.SysAdminModule" }
+    };
 
     [XmlDescription("What modules should silverbot load from external dlls")]
     public string[] ModulesFilesToLoadExternal { get; set; } = new[]
@@ -188,7 +191,7 @@ public class Config
     [XmlDescription("Do we check github for a newer commit")]
     public bool EnableUpdateChecking { get; set; } = false;
 
-    public bool SendErrorsThroughSegment { get; set; } = false;
+    public bool UseAnalytics { get; set; } = false;
 
     [XmlDescription("Webhooks for archiving")]
     public string[] ArchiveWebhooks { get; set; } = Array.Empty<string>();

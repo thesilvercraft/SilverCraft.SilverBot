@@ -117,6 +117,7 @@
     <ItemGroup>
         <ProjectReference Include="..\SDiscordSink\SDiscordSink.csproj" />
         <ProjectReference Include="..\SilverBot.Shared\SilverBot.Shared.csproj" />
+        <ProjectReference Include="..\SilverBot.SysAdminModule\SilverBot.SysAdminModule.csproj" />
         <ProjectReference Include="..\SilverBotDS.AnimeModule\SilverBotDS.AnimeModule.csproj" />
     </ItemGroup>
 

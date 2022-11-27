@@ -77,7 +77,7 @@ namespace SilverBotDS
             }
 
             var config = ServiceProvider.GetService<Config>();
-            if (config is { SendErrorsThroughSegment: true })
+            if (config is { UseAnalytics: true })
             {
                 var analytics = ServiceProvider.GetService<IAnalyse>();
                 if (analytics is not null)

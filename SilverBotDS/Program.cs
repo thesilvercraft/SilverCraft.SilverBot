@@ -340,6 +340,7 @@ namespace SilverBotDS
                     .AccessToken)));
             }
             services.AddSingleton(_log);
+            services.AddSingleton(_discord);
             object CreateInstance(Type t, IServiceProvider services)
             {
                 var ti = t.GetTypeInfo();
@@ -455,7 +456,6 @@ namespace SilverBotDS
                     _log.Information("Services from the {File} won't be loaded as its file doesn't exist", group.Key);
                 }
             }
-            services.AddSingleton(_discord);
             ServiceProvider = services.BuildServiceProvider();
             var context = ServiceProvider.GetService<DatabaseContext>();
             //Do stuff with the database making sure its up to date.
@@ -604,18 +604,19 @@ namespace SilverBotDS
                 if(_config.SponsorBlock)
                 {
                     _audioService.UseSponsorBlock();
+                    var sponsorBlock = _audioService.Integrations.Get<ISponsorBlockIntegration>();
+                    sponsorBlock.DefaultSkipCategories = ImmutableArray.Create(
+                        SegmentCategory.SelfPromotion,
+                        SegmentCategory.Sponsor,
+                        SegmentCategory.Intro,
+                        SegmentCategory.Outro,
+                        SegmentCategory.Filler,
+                        SegmentCategory.Interaction,
+                        SegmentCategory.Preview,
+                        SegmentCategory.OfftopicMusic
+                    );
                 }
-                var sponsorBlock = _audioService.Integrations.Get<ISponsorBlockIntegration>();
-                sponsorBlock.DefaultSkipCategories = ImmutableArray.Create(
-                    SegmentCategory.SelfPromotion,
-                    SegmentCategory.Sponsor,
-                    SegmentCategory.Intro,
-                    SegmentCategory.Outro,
-                    SegmentCategory.Filler,
-                    SegmentCategory.Interaction,
-                    SegmentCategory.Preview,
-                    SegmentCategory.OfftopicMusic
-                );
+                
             }
 
             await _discord.UpdateStatusAsync(new("console logs while configuring server statistics",

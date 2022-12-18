@@ -26,13 +26,14 @@ public class ServerStatsCommands : BaseCommandModule
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
     public DatabaseContext Database { private get; set; }
+    public LanguageService LanguageService { private get; set; }
 
     [Command("emoteanalyse")]
     [Description("analyse emote usage in a specified channel")]
     [Cooldown(1, 60 * 60, CooldownBucketType.Guild)]
     public async Task EmoteAnalytics(CommandContext ctx, DiscordChannel channel, int limit = 10000)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
             .WithContent(string.Format(lang.EmojiMessageDownloadStart, limit,
                 new TimeSpan(0, 0, limit / 100).Humanize(2, lang.GetCultureInfo())))
@@ -80,7 +81,7 @@ public class ServerStatsCommands : BaseCommandModule
     {
         if (category.Type == ChannelType.Category)
         {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             if (category.PermissionsFor(ctx.Guild.CurrentMember).HasPermission(Permissions.ManageChannels))
             {
                 Database.SetServerStatsCategory(ctx.Guild.Id, category.Id);
@@ -104,7 +105,7 @@ public class ServerStatsCommands : BaseCommandModule
     [RequireBotPermissions(Permissions.ManageChannels)]
     public async Task SetStatisticStrings(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         Database.SetServerStatStrings(ctx.Guild.Id, null);
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
             .WithContent(lang.SetToDefaultStrings)
@@ -117,7 +118,7 @@ public class ServerStatsCommands : BaseCommandModule
     [RequireBotPermissions(Permissions.ManageChannels)]
     public async Task SetStatisticStrings(CommandContext ctx, params string[] cake)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         Database.SetServerStatStrings(ctx.Guild.Id, cake.Select(x => new ServerStatString(x)).ToArray());
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
             .WithContent(lang.SetToProvidedStrings)

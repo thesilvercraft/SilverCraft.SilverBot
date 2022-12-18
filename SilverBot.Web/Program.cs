@@ -9,11 +9,11 @@ using SilverBotDS.Objects;
 using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
-if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net6.0"))
+if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net7.0"))
 {
     Environment.CurrentDirectory += Environment.OSVersion.Platform == PlatformID.Win32NT
-        ? "\\bin\\Debug\\net6.0"
-        : "/bin/Debug/net6.0";
+        ? "\\bin\\Debug\\net7.0"
+        : "/bin/Debug/net7.0";
 }
 await SilverBotDS.Program.MainAsync(args,true);
 // Add services to the container.

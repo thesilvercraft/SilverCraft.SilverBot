@@ -52,6 +52,7 @@ internal class BibiCommands : BaseCommandModule, IHaveExecutableRequirements, IR
     };
 
     public Config Config { private get; set; }
+    public LanguageService LanguageService { private get; set; }
 
     private int BibiPictureCount
     {
@@ -99,6 +100,8 @@ internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
     private string[] _bibiDescText;
     private string[] _bibiFullDescText;
     public Config Config { private get; set; }
+    public LanguageService LanguageService { private get; set; }
+
 
     public Task<bool> ExecuteRequirements(Config conf)
     {
@@ -128,7 +131,7 @@ internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
     public async Task BibiLibrary(CommandContext ctx)
     {
         EnsureCreated();
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         List<Page> pages = new();
         for (var a = 0; a < _bibiDescText.Length; a++)
         {
@@ -149,7 +152,7 @@ internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
     public async Task BibiLibraryFull(CommandContext ctx)
     {
         EnsureCreated();
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         List<Page> pages = new();
         for (var a = 0; a < _bibiFullDescText.Length; a++)
         {

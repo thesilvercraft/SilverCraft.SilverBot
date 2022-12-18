@@ -105,17 +105,17 @@ namespace SilverBotDS
                     Directory.CreateDirectory(Path.GetDirectoryName(args[1]) ?? string.Empty);
                 }
 
-                Language.SerialiseDefault(args[1]);
+                LanguageService.SerialiseDefault(args[1]);
                 Console.WriteLine("Serialized en.json");
                 Environment.Exit(70);
                 return;
             }
 
-            if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net6.0"))
+            if (Debugger.IsAttached && !(Environment.CurrentDirectory.EndsWith("bin\\Debug\\net7.0") ||Environment.CurrentDirectory.EndsWith("bin/Debug/net7.0")  ))
             {
                 Environment.CurrentDirectory += Environment.OSVersion.Platform == PlatformID.Win32NT
-                    ? "\\bin\\Debug\\net6.0"
-                    : "/bin/Debug/net6.0";
+                    ? "\\bin\\Debug\\net7.0"
+                    : "/bin/Debug/net7.0";
             }
 
             MainAsync(args).GetAwaiter().GetResult();
@@ -275,7 +275,7 @@ namespace SilverBotDS
             _log.Verbose("Initializing Commands");
             
             services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
-
+            services.AddSingleton(new LanguageService());
             services.AddDbContext<DatabaseContext>(
                               options =>
                               {

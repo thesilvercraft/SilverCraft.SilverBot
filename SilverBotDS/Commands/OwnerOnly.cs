@@ -37,6 +37,7 @@ public class OwnerOnly : BaseCommandModule
     public DatabaseContext Database { private get; set; }
     public Config Config { private get; set; }
     public HttpClient HttpClient { private get; set; }
+    public LanguageService LanguageService { private get; set; }
 
     private readonly string[] _urls =
     {
@@ -268,14 +269,14 @@ public class OwnerOnly : BaseCommandModule
         string filename = "message.txt")
     {
         await new DiscordMessageBuilder().WithContent(title)
-            .WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None)
+            .AddFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None)
             .SendAsync(ctx.Channel);
     }
     public static async Task SendStringFileWithContent(BaseContext ctx, string title, string file,
         string filename = "message.txt")
     {
         await new DiscordMessageBuilder().WithContent(title)
-            .WithFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None)
+            .AddFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None)
             .SendAsync(ctx.Channel);
     }
     public static async Task SendBestRepresentationAsync(object ob, CommandContext ctx)
@@ -544,7 +545,7 @@ public class OwnerOnly : BaseCommandModule
     [RequirePermissions(Permissions.ManageEmojis)]
     public async Task Addemotez(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         if (ctx.Message.Attachments.Count == 0)
         {
             await ctx.RespondAsync(lang.NoImageGeneric);

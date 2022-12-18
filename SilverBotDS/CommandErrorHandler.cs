@@ -132,7 +132,8 @@ namespace SilverBotDS
             {
                 if (e.Exception is not CommandNotFoundException)
                 {
-                    var lang = await Language.GetLanguageFromCtxAsync(e.Context);
+                    var languageService = ServiceProvider.GetService<LanguageService>();
+                    var lang = await languageService.FromCtxAsync(e.Context);
                     switch (e.Exception)
                     {
                         case ChecksFailedException cfe when cfe.FailedChecks.Count is 1:

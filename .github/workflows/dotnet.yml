@@ -14,16 +14,16 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
     - name: Build
       run: dotnet publish -c Release -p:PublishProfile=FolderProfile 
     - name: Copy SilverBotDS.AnimeModule to publish directory
-      run: copy "SilverBotDS.AnimeModule\bin\Release\net6.0\SilverBotDS.AnimeModule*" "SilverBotDS\bin\Release\net6.0\publish"
+      run: copy "SilverBotDS.AnimeModule\bin\Release\net7.0\SilverBotDS.AnimeModule*" "SilverBotDS\bin\Release\net7.0\publish"
     - name: Zip 
       shell: powershell
       run: |
            [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") 
-           [System.IO.Compression.ZipFile]::CreateFromDirectory('SilverBotDS\bin\Release\net6.0\publish', 'silverbot.zip', 'Optimal', $false) 
+           [System.IO.Compression.ZipFile]::CreateFromDirectory('SilverBotDS\bin\Release\net7.0\publish', 'silverbot.zip', 'Optimal', $false) 
     - name: Shorten the SHA
       id: shas
       shell: powershell
@@ -57,7 +57,7 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBotDS\bin\Release\net6.0\publish\SilverBotDS.dll
+         asset_path: .\SilverBotDS\bin\Release\net7.0\publish\SilverBotDS.dll
          asset_name: SilverBotDS.dll
          asset_content_type: application/octet-stream
     - name: Upload Release Dll of AnimeModule
@@ -67,7 +67,7 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBotDS.AnimeModule\bin\Release\net6.0\publish\SilverBotDS.AnimeModule.dll
+         asset_path: .\SilverBotDS.AnimeModule\bin\Release\net7.0\publish\SilverBotDS.AnimeModule.dll
          asset_name: SilverBotDS.AnimeModule.dll
          asset_content_type: application/octet-stream
     - name: Upload Release Dll of Shared
@@ -77,7 +77,7 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBot.Shared\bin\Release\net6.0\publish\SilverBot.Shared.dll
+         asset_path: .\SilverBot.Shared\bin\Release\net7.0\publish\SilverBot.Shared.dll
          asset_name: SilverBot.Shared.dll
          asset_content_type: application/octet-stream
     - name: Upload Release PDB of Shared
@@ -87,6 +87,6 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBot.Shared\bin\Release\net6.0\publish\SilverBot.Shared.pdb
+         asset_path: .\SilverBot.Shared\bin\Release\net7.0\publish\SilverBot.Shared.pdb
          asset_name: SilverBot.Shared.pdb
          asset_content_type: application/octet-stream

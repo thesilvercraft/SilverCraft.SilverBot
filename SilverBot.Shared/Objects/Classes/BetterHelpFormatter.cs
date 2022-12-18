@@ -23,9 +23,10 @@ public class CustomHelpFormatter : BaseHelpFormatter
     public CustomHelpFormatter(CommandContext ctx)
         : base(ctx)
     {
-        var langtask = Language.GetLanguageFromCtxAsync(ctx);
-        langtask.Wait();
-        Lang = langtask.Result;
+        var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+        var langtask = languageservice?.FromCtxAsync(ctx);
+        langtask?.Wait();
+        Lang = langtask?.Result;
         EmbedBuilder = new DiscordEmbedBuilder()
             .WithTitle(Lang.HelpCommandHelpString).WithFooter(Lang.RequestedBy + ctx.User.Username,
                 ctx.User.GetAvatarUrl(ImageFormat.Auto));

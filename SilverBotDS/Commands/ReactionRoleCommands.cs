@@ -39,11 +39,12 @@ public class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRequiremen
 
     private static readonly Regex Emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    public LanguageService LanguageService { private get; set; }
 
     [Command("addmenu")]
     public async Task ReactionRoleAdd(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var serverSettings = DbCtx.GetServerSettings(ctx.Guild.Id);
         if (!(ctx.Guild.Permissions?.HasPermission(Permissions.ManageRoles) == true || ctx.Guild.CurrentMember.Roles.MaxBy(x => x.Position)!.CheckPermission(Permissions.ManageRoles) == PermissionLevel.Allowed))
         {

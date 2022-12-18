@@ -22,7 +22,7 @@ public class Fortnite : BaseCommandModule, IHaveExecutableRequirements
 {
     private FortniteApiClient _api;
     public Config Config { private get; set; }
-
+    public LanguageService LanguageService { private get; set; }
     public Task<bool> ExecuteRequirements(Config conf)
     {
         return Task.FromResult(!(string.IsNullOrEmpty(conf.FApiToken) || conf.FApiToken == "Fortnite_Token_Here" ||
@@ -48,7 +48,7 @@ public class Fortnite : BaseCommandModule, IHaveExecutableRequirements
     public async Task Stats(CommandContext ctx, [Description("The username of the person")][RemainingText] string name)
     {
         MakeSureApiIsSet();
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var statsV2V1 = await _api.V1.Stats.GetBrV2Async(x =>
         {
             x.Name = name;

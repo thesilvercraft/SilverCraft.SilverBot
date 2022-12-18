@@ -21,6 +21,8 @@ public class GeneralCommands : ApplicationCommandModule
 {
     public DatabaseContext Dbctx { private get; set; }
     public Config Cnf { private get; set; }
+    public LanguageService LanguageService { private get; set; }
+
 
     [SlashCommand("hello", "A simple hello command")]
     public async Task TestCommand(InteractionContext ctx)
@@ -31,7 +33,7 @@ public class GeneralCommands : ApplicationCommandModule
 
     public async Task WhoIsTask(BaseContext ctx, DiscordUser user)
     {
-        var lang = await Language.GetLanguageFromGuildIdAsync(ctx.Guild.Id, Dbctx);
+        var lang = await LanguageService.GetLanguageFromGuildIdAsync(ctx.Guild.Id, Dbctx);
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
                 .WithTitle(lang.User + user.Username)
@@ -69,7 +71,7 @@ public class GeneralCommands : ApplicationCommandModule
     [SlashCommand("version", "Find out the version info for this instance of silverbot")]
     public async Task VersionInfoCommand(InteractionContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().AddEmbed(MiscCommands.VersionInfoEmbed(lang,ctx)).AsEphemeral(true));
     }
@@ -77,7 +79,7 @@ public class GeneralCommands : ApplicationCommandModule
     [SlashCommand("dukthosting", "SilverHosting:tm: best")]
     public async Task DuktHostingCommand(InteractionContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
                 .WithTitle(lang.SilverhostingJokeTitle)

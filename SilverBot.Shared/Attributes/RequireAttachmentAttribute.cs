@@ -48,3 +48,19 @@ public class RequireAttachmentAttribute : CheckBaseAttribute
             : Task.FromResult(ctx.Message.Attachments.Count == AttachmentCount);
     }
 }
+public class AiGenChannelAttribute : CheckBaseAttribute
+{
+    public AiGenChannelAttribute(ulong id)
+    {
+        Id = id;
+    }
+
+    public ulong Id { get; init; }
+
+    public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
+    {
+        return
+            Task.FromResult(ctx.Channel.Id==Id);
+
+    }
+}

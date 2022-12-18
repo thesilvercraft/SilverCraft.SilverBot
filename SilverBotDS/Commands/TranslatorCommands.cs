@@ -38,6 +38,7 @@ public class TranslatorCommands : BaseCommandModule
 
     public DatabaseContext DatabaseContext { set; private get; }
     public HttpClient HttpClient { get; set; }
+    public LanguageService LanguageService { private get; set; }
 
     [Command("editlangtranslator")]
     [Description("set you're testing language")]
@@ -51,7 +52,7 @@ public class TranslatorCommands : BaseCommandModule
     [Description("yayayayayyayaya")]
     public async Task Get(CommandContext ctx, string name)
     {
-        var langobj = await Language.GetLanguageFromCtxAsync(ctx);
+        var langobj = await LanguageService.FromCtxAsync(ctx);
         await ctx.RespondAsync(typeof(Language).GetProperty(name).GetValue(langobj).ToString());
     }
 
@@ -62,11 +63,11 @@ public class TranslatorCommands : BaseCommandModule
         Language langobj;
         if (lang == null)
         {
-            langobj = await Language.GetLanguageFromCtxAsync(ctx);
+            langobj = await LanguageService.FromCtxAsync(ctx);
         }
-        else if (Language.LoadedLanguages().Select(x => x.ToLowerInvariant()).Contains(lang.ToLowerInvariant()))
+        else if (LanguageService.LoadedLanguages().Select(x => x.ToLowerInvariant()).Contains(lang.ToLowerInvariant()))
         {
-            langobj = await Language.GetAsync(lang);
+            langobj = await LanguageService.GetAsync(lang);
         }
         else if (_customlangregex.IsMatch(lang))
         {
@@ -83,7 +84,7 @@ public class TranslatorCommands : BaseCommandModule
                 }
                 else
                 {
-                    langobj = await Language.GetLanguageFromCtxAsync(ctx);
+                    langobj = await LanguageService.FromCtxAsync(ctx);
                 }
             }
             else
@@ -91,12 +92,12 @@ public class TranslatorCommands : BaseCommandModule
                 await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                     .WithContent("invalid uid using default")
                     .SendAsync(ctx.Channel);
-                langobj = await Language.GetLanguageFromCtxAsync(ctx);
+                langobj = await LanguageService.FromCtxAsync(ctx);
             }
         }
         else
         {
-            langobj = await Language.GetLanguageFromCtxAsync(ctx);
+            langobj = await LanguageService.FromCtxAsync(ctx);
         }
 
         var t = DatabaseContext.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
@@ -157,12 +158,12 @@ public class TranslatorCommands : BaseCommandModule
         Language langobj;
         if (lang == null)
         {
-            langobj = await Language.GetLanguageFromCtxAsync(ctx);
+            langobj = await LanguageService.FromCtxAsync(ctx);
         }
-        else if (Language.LoadedLanguages().Select(x => x.ToLowerInvariant().Trim())
+        else if (LanguageService.LoadedLanguages().Select(x => x.ToLowerInvariant().Trim())
                  .Contains(lang.ToLowerInvariant().Trim()))
         {
-            langobj = await Language.GetAsync(lang);
+            langobj = await LanguageService.GetAsync(lang);
         }
         else if (_customlangregex.IsMatch(lang))
         {
@@ -185,7 +186,7 @@ public class TranslatorCommands : BaseCommandModule
                     await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                         .WithContent("invalid language using default")
                         .SendAsync(ctx.Channel);
-                    langobj = await Language.GetLanguageFromCtxAsync(ctx);
+                    langobj = await LanguageService.FromCtxAsync(ctx);
                 }
             }
             else
@@ -193,7 +194,7 @@ public class TranslatorCommands : BaseCommandModule
                 await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                     .WithContent("invalid uid using default")
                     .SendAsync(ctx.Channel);
-                langobj = await Language.GetLanguageFromCtxAsync(ctx);
+                langobj = await LanguageService.FromCtxAsync(ctx);
             }
         }
         else
@@ -201,12 +202,12 @@ public class TranslatorCommands : BaseCommandModule
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                 .WithContent("invalid language using default")
                 .SendAsync(ctx.Channel);
-            langobj = await Language.GetLanguageFromCtxAsync(ctx);
+            langobj = await LanguageService.FromCtxAsync(ctx);
         }
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(langobj, _options)));
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-            .WithFile("language.json", stream)
+            .AddFile("language.json", stream)
             .SendAsync(ctx.Channel);
     }
 }

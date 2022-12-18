@@ -66,6 +66,7 @@ SOFTWARE.*/
 public class ImageModule : BaseCommandModule, IRequireAssets
 {
 
+    public LanguageService LanguageService { private get; set; }
 
     private const int MegaByte = 1000000;
 
@@ -84,9 +85,13 @@ public class ImageModule : BaseCommandModule, IRequireAssets
             .SendAsync(ctx.Channel);
     }
 
-    public static async Task SendImageStreamIfAllowed(CommandContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language lang = null, bool dryrun=false)
+    public static async Task SendImageStreamIfAllowed(CommandContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language? lang = null, bool dryrun=false)
     {
-        lang ??= await Language.GetLanguageFromCtxAsync(ctx);
+        if (lang == null)
+        {
+            var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+            lang ??= await languageservice?.FromCtxAsync(ctx);
+        }
         if (image.Length > MaxBytes(ctx))
         {
             await Send_img_plsAsync(ctx,
@@ -106,9 +111,13 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         }
     }
 
-    public static async Task SendImageStreamIfAllowed(InteractionContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language lang = null, bool dryrun = false)
+    public static async Task SendImageStreamIfAllowed(InteractionContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language? lang = null, bool dryrun = false)
     {
-        lang ??= await Language.GetLanguageFromCtxAsync(ctx);
+        if (lang == null)
+        {
+            var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+            lang ??= await languageservice?.FromCtxAsync(ctx);
+        }
         if (image.Length > MaxBytes(ctx))
         {
             await ctx.FollowUpAsync(new DiscordFollowupMessageBuilder().WithContent(string.Format(lang.OutputFileLargerThan8M, FileSizeUtils.FormatSize(image.Length))));
@@ -130,7 +139,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     {
         content ??= "Command executed with result";
         await new DiscordMessageBuilder().WithContent(content)
-            .WithFile(filename, outstream)
+            .AddFile(filename, outstream)
             .SendAsync(ctx.Channel);
     }
 
@@ -159,12 +168,16 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, filename, msgcontent);
     }
 
+    private async Task<Image> GetProfilePictureAsyncStatic(DiscordUser user, ushort size = 256)
+    {
+        return await GetProfilePictureAsyncStatic(user, HttpClient, size);
+    }
     /// <summary>
     ///     Gets the profile picture of a discord user in a 256x256 bitmap saved to a byte array
     /// </summary>
     /// <param name="user">the user</param>
     /// <returns>a 256x256 bitmap in byte[] format</returns>
-    private async Task<Image> GetProfilePictureAsyncStatic(DiscordUser user, ushort size = 256)
+    public static async Task<Image> GetProfilePictureAsyncStatic(DiscordUser user, HttpClient client,ushort size = 256)
     {
         var discordsize = size;
         if (discordsize == 0 || (discordsize & (discordsize - 1)) != 0)
@@ -172,7 +185,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
             discordsize = 1024;
         }
         MemoryStream stream =
-         new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordsize)).GetBytesAsync(HttpClient));
+         new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordsize)).GetBytesAsync(client));
         if (discordsize == size)
         {
             return LoadFromStream(stream);
@@ -382,6 +395,10 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     public async Task JokerLaugh(CommandContext ctx, [RemainingText] string text) => 
         await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.joker_laugh.gif", async (img) =>
         {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                text = "epic embed fail";
+            }
             return new Tuple<bool, Image>(true, await Caption(img, text));
         }, filename: "sbfail.gif", encoder: ".gif");
     //[Command("transform")]

@@ -18,13 +18,6 @@ namespace SilverBotDS.Objects;
 [Owned]
 public class Language
 {
-    private static readonly Dictionary<string, Language> CachedLanguages = new();
-
-    private static readonly JsonSerializerOptions options = new()
-    {
-        WriteIndented = true
-    };
-
     [ForeignKey("TranslatorSettings.Id")]
     [JsonIgnore]
     public Guid Id { get; set; }
@@ -34,7 +27,6 @@ public class Language
     /// </summary>
     public string LangName { get; set; } = "English(EN)";
     public string UnknownError { get; set; } = "The bot has encountered an unknown error.";
-
 
     /// <summary>
     ///     A 2-4 alphanumeric code
@@ -637,7 +629,18 @@ public class Language
         return new CultureInfo(CultureInfo);
     }
 
-    public static Dictionary<string, Language> GetLoadedLanguages()
+  
+}
+
+public class LanguageService
+{
+    private static readonly Dictionary<string, Language> CachedLanguages = new();
+
+    private static readonly JsonSerializerOptions options = new()
+    {
+        WriteIndented = true
+    };
+      public  Dictionary<string, Language> GetLoadedLanguages()
     {
         if (CachedLanguages.Count == 0)
         {
@@ -648,7 +651,7 @@ public class Language
         return CachedLanguages;
     }
 
-    public static string[] LoadedLanguages()
+    public  string[] LoadedLanguages()
     {
         if (CachedLanguages.Count == 0)
         {
@@ -659,7 +662,7 @@ public class Language
         return CachedLanguages.Keys.ToArray();
     }
 
-    public static async Task<Language> GetAsync(string a)
+    public async Task<Language> GetAsync(string a)
     {
         a = a.Trim();
         if (CachedLanguages.Count != 0)
@@ -702,7 +705,7 @@ public class Language
 
     public static async Task SerialiseDefaultAsync(string loc)
     {
-        using var streamWriter = new StreamWriter(loc);
+        await using var streamWriter = new StreamWriter(loc);
         await streamWriter.WriteAsync(JsonSerializer.Serialize(new Language(), options));
     }
 
@@ -712,12 +715,12 @@ public class Language
         streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
     }
 
-    public static async Task<Language> GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)
+    public async Task<Language> GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)
     {
         return await GetAsync(db.GetLangCodeGuild(id));
     }
 
-    public static async Task<Language> GetLanguageFromCtxAsync(CommandContext ctx)
+    public async Task<Language> FromCtxAsync(CommandContext ctx)
     {
         using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
         var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
@@ -737,7 +740,7 @@ public class Language
             : db.GetLangCodeGuild(ctx.Guild.Id));
     }
 
-    public static async Task<Language> GetLanguageFromCtxAsync(BaseContext ctx)
+    public async Task<Language> FromCtxAsync(BaseContext ctx)
     {
         using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
         var conf = (Config)ctx.Services.GetService(typeof(Config));

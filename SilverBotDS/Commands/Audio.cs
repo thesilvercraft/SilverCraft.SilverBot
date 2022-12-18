@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
@@ -40,6 +41,7 @@ public class Audio : BaseCommandModule
 
     public SpotifyClient SpotifyClient { private get; set; }
     public ArtworkService ArtworkService { private get; set; }
+    public LanguageService LanguageService { private get; set; }
 
     private bool IsInVc(CommandContext ctx) => IsInVc(ctx, AudioService);
 
@@ -49,7 +51,11 @@ public class Audio : BaseCommandModule
     private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "",
         string imageurl = "", string url = "", Language? language = null)
     {
-        language ??= await Language.GetLanguageFromCtxAsync(ctx);
+        if (language == null)
+        {
+            var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+            language ??= await languageservice?.FromCtxAsync(ctx);
+        }
         var embedBuilder = new DiscordEmbedBuilder()
             .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
             .WithColor(await ColorUtils.GetSingleAsync());
@@ -83,7 +89,11 @@ public class Audio : BaseCommandModule
     public static async Task SendSimpleMessage(CommandContext ctx, string title = "", string message = "", string image = "",
         Language? language = null)
     {
-        language ??= await Language.GetLanguageFromCtxAsync(ctx);
+        if (language == null)
+        {
+            var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+            language ??= await languageservice?.FromCtxAsync(ctx);
+        }
         var embedBuilder = new DiscordEmbedBuilder()
             .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
             .WithColor(await ColorUtils.GetSingleAsync());
@@ -137,7 +147,7 @@ public class Audio : BaseCommandModule
     [Aliases("pn")]
     public async Task PlayNext(CommandContext ctx, [RemainingText] SongORSongs song)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (song.Song != null)
         {
@@ -205,7 +215,7 @@ public class Audio : BaseCommandModule
     [Command("play")]
     public async Task Play(CommandContext ctx, [RemainingText] SongORSongs song)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (song.Song != null)
         {
@@ -264,7 +274,7 @@ public class Audio : BaseCommandModule
     [Description("Change the volume 1-100%")]
     public async Task Volume(CommandContext ctx, ushort volume)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         if (!IsInVc(ctx))
         {
             await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
@@ -293,7 +303,7 @@ public class Audio : BaseCommandModule
     [Description("Seeks to the specified time")]
     public async Task Seek(CommandContext ctx, TimeSpan time)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         try
@@ -376,7 +386,7 @@ public class Audio : BaseCommandModule
     [Description("Clears the queue")]
     public async Task ClearQueue(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         await MakeSurePlayerIsntNull(ctx, lang, player);
@@ -396,7 +406,7 @@ public class Audio : BaseCommandModule
     [Description("Shuffles the queue")]
     public async Task Shuffle(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         player.Queue.Shuffle();
@@ -407,7 +417,7 @@ public class Audio : BaseCommandModule
     [Description("Export the queue")]
     public async Task ExportQueue(CommandContext ctx, string? playlistName = null)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         var queue = player.Queue.Select(x => x.Identifier).ToList();
@@ -424,7 +434,7 @@ public class Audio : BaseCommandModule
     [Description("Remove song X from the queue. 0 < index > queue length")]
     public async Task Remove(CommandContext ctx, int songindex)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (songindex < 0 || songindex > player.Queue.Count)
@@ -444,7 +454,7 @@ public class Audio : BaseCommandModule
     [Aliases("qh", "prevplaying", "pq")]
     public async Task QueueHistory(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.QueueHistory.Count == 0)
@@ -471,7 +481,7 @@ public class Audio : BaseCommandModule
     [Aliases("np", "nowplaying", "q")]
     public async Task Queue(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.Queue.Count == 0 && player.State != PlayerState.Playing)
@@ -530,7 +540,7 @@ public class Audio : BaseCommandModule
     [Description("Loops nothing/the queue/the currently playing song")]
     public async Task Loop(CommandContext ctx, [Description("Has to be none, song or queue")] LoopSettings settings)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
 
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
@@ -558,7 +568,7 @@ public class Audio : BaseCommandModule
     [Description("pause the current song")]
     public async Task Pause(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.State != PlayerState.Playing)
@@ -601,7 +611,7 @@ public class Audio : BaseCommandModule
     [Description("resume the current song")]
     public async Task Resume(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.State != PlayerState.Paused)
@@ -621,7 +631,7 @@ public class Audio : BaseCommandModule
 
     public static async Task StaticJoin(CommandContext ctx, LavalinkNode audioService)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await ctx.Services.GetService<LanguageService>().FromCtxAsync(ctx);
         if (IsInVc(ctx, audioService))
         {
             await SendSimpleMessage(ctx, lang.AlreadyConnected, language: lang);
@@ -640,7 +650,7 @@ public class Audio : BaseCommandModule
     [Aliases("fs")]
     public async Task Skip(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
 
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
@@ -664,7 +674,7 @@ public class Audio : BaseCommandModule
     [Aliases("skip")]
     public async Task VoteSkip(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (player.State != PlayerState.Playing)
@@ -702,7 +712,7 @@ public class Audio : BaseCommandModule
     [RequireDj]
     public async Task ForceDisconnect(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureUserIsInVC(ctx, lang);
 
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
@@ -718,7 +728,7 @@ public class Audio : BaseCommandModule
     [RequireDj]
     public async Task Disconnect(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         await player.DisconnectAsync();

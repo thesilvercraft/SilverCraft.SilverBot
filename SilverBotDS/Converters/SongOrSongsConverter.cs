@@ -41,10 +41,11 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
 
     public async Task<Optional<SongORSongs>> ConvertAsync(string value, CommandContext ctx)
     {
-        var spotifyClient = (SpotifyClient)ctx.CommandsNext.Services.GetService(typeof(SpotifyClient));
-        var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
-        var audioService = (LavalinkNode)ctx.CommandsNext.Services.GetService(typeof(LavalinkNode));
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var spotifyClient = (SpotifyClient?)ctx.CommandsNext.Services.GetService(typeof(SpotifyClient));
+        var conf = (Config?)ctx.CommandsNext.Services.GetService(typeof(Config));
+        var languageService = (LanguageService?)ctx.CommandsNext.Services.GetService(typeof(LanguageService));
+        var audioService = (LavalinkNode?)ctx.CommandsNext.Services.GetService(typeof(LavalinkNode));
+        var lang = await languageService.FromCtxAsync(ctx);
         if (!IsInVc(ctx, audioService))
         {
             if (ctx.Member?.VoiceState?.Channel == null)

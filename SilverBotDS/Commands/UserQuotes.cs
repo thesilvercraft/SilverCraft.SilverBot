@@ -24,7 +24,7 @@ namespace SilverBotDS.Commands;
 public class UserQuotesModule : BaseCommandModule
 {
     public DatabaseContext Dctx { private get; set; }
-
+    public LanguageService LanguageService { private get; set; }
     public async Task PresentQuote(CommandContext ctx, SBDSODC.UserQuote quote, Language lang)
     {
         var b = new DiscordEmbedBuilder
@@ -57,7 +57,7 @@ public class UserQuotesModule : BaseCommandModule
     [Description("Add a new quote to your \"Quote Book\"")]
     public async Task Add(CommandContext ctx, [RemainingText] string content)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var quote = new SBDSODC.UserQuote
         {
             QuoteContent = content,
@@ -74,7 +74,7 @@ public class UserQuotesModule : BaseCommandModule
     [Description("Gets a quote from your \"Quote Book\" with it's ID")]
     public async Task Get(CommandContext ctx, string id)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
 
         var uq = Dctx.userQuotes.Any(x => x.UserId == ctx.User.Id);
         if (uq)

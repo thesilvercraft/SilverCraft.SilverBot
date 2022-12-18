@@ -29,25 +29,23 @@ public sealed class Genericcommands : BaseCommandModule
 {
     public Config Config { private get; set; }
     public HttpClient HttpClient { private get; set; }
+    public LanguageService LanguageService { private get; set; }
 
     [Command("hi")]
     [Description("Hello fellow human! beep boop")]
     public async Task GreetCommand(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
             .WithContent(string.Format(lang.Hi, ctx.User.Mention))
             .SendAsync(ctx.Channel);
     }
-
-
-
-   
+    
     [Command("time")]
     [Description("Get the time in UTC")]
     public async Task Time(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await new DiscordMessageBuilder()
             .WithReply(ctx.Message.Id)
             .WithContent(string.Format(lang.TimeInUtc, DateTime.UtcNow.DateTimeToTimeStamp(TimestampFormat.LongDateTime)))
@@ -85,9 +83,9 @@ public sealed class Genericcommands : BaseCommandModule
         };
         await new DiscordMessageBuilder()
             .WithReply(ctx.Message.Id)
-            .WithContent($"{ctx.User.Mention}")
+            .WithContent(ctx.User.Mention)
             .WithAllowedMentions(Mentions.None)
-            .WithFile("message.txt", outStream)
+            .AddFile("message.txt", outStream)
             .SendAsync(ctx.Channel);
     }
     [Command("archive")]
@@ -116,7 +114,7 @@ public sealed class Genericcommands : BaseCommandModule
             .WithReply(ctx.Message.Id)
             .WithContent($"{ctx.User.Mention}")
             .WithAllowedMentions(Mentions.None)
-            .WithFile("message.zip", memoryStream)
+            .AddFile("message.zip", memoryStream)
             .SendAsync(ctx.Channel);
     }
 
@@ -139,7 +137,7 @@ public sealed class Genericcommands : BaseCommandModule
     [Description("SilverHosting best")]
     public async Task Dukt(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await new DiscordMessageBuilder()
             .WithReply(ctx.Message.Id)
             .WithEmbed(new DiscordEmbedBuilder()
@@ -160,7 +158,7 @@ public sealed class Genericcommands : BaseCommandModule
     [Description("Get the info I know about a specified user")]
     public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()
             .WithTitle(lang.User + a.Username)
             .WithDescription(lang.InformationAbout + a.Mention)

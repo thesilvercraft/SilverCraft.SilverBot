@@ -46,6 +46,8 @@ public class MiscCommands : BaseCommandModule
 
     private readonly Regex _vbErrorR = new("BC[0-9][0-9][0-9][0-9][0-9]",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    public LanguageService LanguageService { private get; set; }
+
     public static DiscordEmbed VersionInfoEmbed(Language lang, dynamic ctx)
     {
         return new DiscordEmbedBuilder()
@@ -72,7 +74,7 @@ public class MiscCommands : BaseCommandModule
     [Aliases("ver", "verinfo", "versioninfo")]
     public async Task VersionInfoCmd(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await new DiscordMessageBuilder().WithEmbed(VersionInfoEmbed(lang,ctx)).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
     }
 
@@ -81,7 +83,7 @@ public class MiscCommands : BaseCommandModule
     [RequireUserPermissions(Permissions.ManageGuild)]
     public async Task SetLanguage(CommandContext ctx, string langName)
     {
-        if (Language.LoadedLanguages().AsEnumerable()
+        if (LanguageService.LoadedLanguages().AsEnumerable()
             .Any(x => string.Equals(x, langName, StringComparison.InvariantCultureIgnoreCase)))
         {
             if (ctx.Channel.IsPrivate)
@@ -93,7 +95,7 @@ public class MiscCommands : BaseCommandModule
                 Database.InserOrUpdateLangCodeGuild(ctx.Guild.Id, langName.ToLowerInvariant());
             }
 
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                 .WithContent(lang.Success)
                 .SendAsync(ctx.Channel);
@@ -101,7 +103,7 @@ public class MiscCommands : BaseCommandModule
         else
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                .WithContent($"Unknown language. Valid choices are:```{Language.LoadedLanguages().Humanize()}```")
+                .WithContent($"Unknown language. Valid choices are:```{LanguageService.LoadedLanguages().Humanize()}```")
                 .SendAsync(ctx.Channel);
         }
     }
@@ -127,7 +129,7 @@ public class MiscCommands : BaseCommandModule
         }
 
         Database.SaveChanges();
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         if (enable)
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
@@ -147,7 +149,7 @@ public class MiscCommands : BaseCommandModule
     [Description("translate from an unknown language")]
     public async Task TranlateUnknown(CommandContext ctx, [RemainingText] string text)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         Translator translator = new(HttpClient);
         var tranlsation = await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate);
         if (tranlsation.Item1.Length > 4095)
@@ -169,7 +171,7 @@ public class MiscCommands : BaseCommandModule
     [Description("translate from an unknown language to a specified one")]
     public async Task TranlateUnknown(CommandContext ctx, string languageTo, [RemainingText] string text)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         if (!Translator.ContainsKeyOrVal(languageTo))
         {
             languageTo = languageTo.Humanize(LetterCasing.Sentence);

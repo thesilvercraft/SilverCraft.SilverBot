@@ -30,12 +30,12 @@ public class AdminCommands : BaseCommandModule
     private DiscordEmoji[] _pollEmojiCache;
     public DatabaseContext Database { private get; set; }
     public HttpClient HttpClient { private get; set; }
-
+    public LanguageService LanguageService { private get; set; }
     [Command("setprefix")]
     [RequireUserPermissions(Permissions.ManageGuild)]
     public async Task SetPrefix(CommandContext ctx, params string[] cake)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         Database.SetServerPrefixes(ctx.Guild.Id, cake);
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
             .WithContent(lang.SetToProvidedStrings)
@@ -92,7 +92,7 @@ public class AdminCommands : BaseCommandModule
         }
         else
         {
-            var lang = await Language.GetLanguageFromCtxAsync(commandContext);
+            var lang = await LanguageService.FromCtxAsync(commandContext);
             await commandContext.RespondAsync(lang.PollErrorQuestionNull);
         }
     }
@@ -131,7 +131,7 @@ public class AdminCommands : BaseCommandModule
         }
         else
         {
-            var lang = await Language.GetLanguageFromCtxAsync(commandContext);
+            var lang = await LanguageService.FromCtxAsync(commandContext);
             await commandContext.RespondAsync(lang.GiveawayItemNull);
         }
     }
@@ -199,7 +199,7 @@ public class AdminCommands : BaseCommandModule
         }
 
         memoryStream.Position = 0;
-        await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithFile("emojis.zip", memoryStream)
+        await new DiscordMessageBuilder().WithReply(ctx.Message.Id).AddFile("emojis.zip", memoryStream)
             .SendAsync(ctx.Channel);
     }
 }

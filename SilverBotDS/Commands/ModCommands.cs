@@ -19,13 +19,15 @@ namespace SilverBotDS.Commands;
 [Category("Moderation")]
 public class ModCommands : BaseCommandModule
 {
+    
+    public LanguageService LanguageService { private get; set; }
     [Command("kick")]
     [Description("Kick a specified user")]
     [RequirePermissions(Permissions.KickMembers)]
     public async Task Kick(CommandContext ctx, [Description("the user like duh")] DiscordMember a,
         [Description("the reason")][RemainingText] string reason = "The kick boot has spoken")
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder();
         var thing = "";
         int bp = (await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id)).Hierarchy,
@@ -60,7 +62,7 @@ public class ModCommands : BaseCommandModule
     public async Task Ban(CommandContext ctx, [Description("the user like duh")] DiscordUser a,
         [Description("the reason")][RemainingText] string reason = "The ban hammer has spoken")
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder();
         var thing = "";
         if (ctx.Guild.Members.ContainsKey(a.Id))
@@ -116,7 +118,7 @@ public class ModCommands : BaseCommandModule
     [RequirePermissions(Permissions.ManageMessages)]
     public async Task Purge(CommandContext ctx, [Description("number of messages")] int amount)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         if (amount is < 0 or 0)
         {
             await new DiscordMessageBuilder()

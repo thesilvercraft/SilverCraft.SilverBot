@@ -4,8 +4,8 @@ SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
 
-//TODO
-/*using DSharpPlus;
+
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -14,16 +14,10 @@ using DSharpPlus.Interactivity.Extensions;
 using Microsoft.EntityFrameworkCore;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
-using SixLabors.Fonts;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -31,22 +25,29 @@ using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
+using ImageMagick;
+using NetVips;
+using SilverBotDS.Objects.Classes;
 
 namespace SilverBotDS.Commands;
 
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 [Category("XP")]
-public class Experience : SilverBotCommandModule, IRequireFonts
+public class Experience : BaseCommandModule, IRequireAssets
 {
     private static readonly IEnumerable<int> Range = Enumerable.Range(700, 2000);
-    private readonly SolidBrush _blackBrush = new(Color.Black);
 
-    private readonly Font _diavloLight = new(SystemFonts.Get("Diavlo Light"), 30.0f);
+    public static string[] RequiredAssets => new[]
+    {
+        "font://Diavlo Light",
+    };
+
     public DatabaseContext Database { private get; set; }
     public HttpClient HttpClient { private get; set; }
+    public LanguageService LanguageService { private get; set; }
 
-    public static string[] RequiredFontFamilies => new[] { "Diavlo Light" };
 
     [Command("givexpbecausedowntimepercent")]
     [RequireOwner]
@@ -77,7 +78,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
     [Command("xp")]
     public async Task XpCommand(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder()
             .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
             .WithColor(await ColorUtils.GetSingleAsync());
@@ -99,7 +100,7 @@ public class Experience : SilverBotCommandModule, IRequireFonts
     [Command("xp")]
     public async Task XpCommand(CommandContext ctx, DiscordMember member)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder()
             .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
             .WithColor(await ColorUtils.GetSingleAsync());
@@ -121,9 +122,9 @@ public class Experience : SilverBotCommandModule, IRequireFonts
     [RequireGuild]
     public async Task XpLeaderboard(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var o = Database.userExperiences.AsEnumerable().OrderByDescending(x => x.XP);
-        if (o is not null)
+        if (o != null)
         {
             DiscordEmbedBuilder bob = new();
             StringBuilder stringBuilder = new();
@@ -169,42 +170,83 @@ public class Experience : SilverBotCommandModule, IRequireFonts
         }
     }
 
+  
+
     [Command("xpcard")]
     public async Task XpCard(CommandContext ctx, DiscordUser user)
     {
         await ctx.TriggerTypingAsync();
         var outStream = new MemoryStream();
-        SdImage image = new(user.GetAvatarUrl(ImageFormat.Png));
-        using (var imanidiot =
-               Image.Load((await ImageModule.ResizeAsync(await image.GetBytesAsync(HttpClient), new Size(200, 200)))
-                   .Item1))
+        var imanidiot =
+            await ImageModule.GetProfilePictureAsyncStatic(user, HttpClient, 256);
+        var background = DateTime.UtcNow.Month switch
         {
-            Image imge = new Image<Rgba32>(800, 240);
-            imge.Mutate(async oo =>
-            {
-                oo.Fill(Color.White);
-                oo.DrawImage(imanidiot, new Point(13, 20), 1);
-                using var img = ImageModule.DrawText($"{user.Username}#{user.Discriminator}", _diavloLight, Color.Black,
-                    Color.Transparent);
-                oo.DrawImage(img, new Point(229, 25), 1);
-                oo.Fill(Color.Black, new Rectangle(new Point(233, 83), new Size(478, 30)));
-                var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == user.Id);
-                if (o is not null)
-                {
-                    var levelcount = GetLevel(o.XP);
-                    var progress = 4.76 * GetProgressToNextLevel(o.XP);
-                    oo.Fill(Color.LightGreen, new Rectangle(new Point(234, 84), new Size((int)progress, 28)));
-                    oo.DrawText($"{o.XP}XP", _diavloLight, _blackBrush, new PointF((float)(170 + progress), 140));
-                    oo.DrawText($"{GetNeededXpForNextLevel(o.XP)}XP", _diavloLight, _blackBrush,
-                        new PointF(650.95f, 120));
-                    oo.DrawText($"Level: {levelcount}", _diavloLight, _blackBrush, new PointF(232, 169));
-                }
-            });
-            imge.Save(outStream, new PngEncoder());
+            10 when DateTime.UtcNow.Day == 31 => new double[] { 0xFF, 0x78, 0x00, 0xFF },
+            6 => new double[] { 0x00, 0x00, 0x00, 0x00 },
+            _ => new double[] { 0x2E, 0xC2, 0x7E, 0xFF }
+        };
+
+        var picture = imanidiot.Embed(14, 17, 900, 286, Enums.Extend.Background, background);
+        if (!picture.HasAlpha())
+        {
+            picture = picture.Bandjoin(255);
         }
 
+        if (DateTime.UtcNow.Month == 6)
+        {
+            var bg = Image.Black(900, 286, 3);
+            bg = bg.SRGB2HSV();
+                bg = bg.Mutate(y =>
+                    {
+                        byte p = 0;
+                        for (int x = 0; x < 900; x++)
+                        {
+                        y.DrawLine(new double[] { p, 255,255  }, x, 0, x, 286);
+                        if (p == 255)
+                        {
+                            p = 0;
+                        }
+                        else
+                        {
+                            p++;
+                        }
+                        }
+                    }
+                    );
+                bg=bg.HSV2sRGB();
+            picture = bg.Composite(picture, Enums.BlendMode.Over, 0, 0);
+        }
+
+        var picturetext = Image.Text(HttpUtility.HtmlEncode($"{user.Username}#{user.Discriminator}"), "Twemoji Color Emoji, Diavlo Light", 596,
+            42, Enums.Align.Low,
+            rgba: true);
+        picture = picture.Composite(picturetext, Enums.BlendMode.Over, 287, 19);
+        picture = picture.Mutate(x => { x.DrawRect(new double[] { 0, 0, 0, 255 }, 280, 76, 570, 52, true); });
+        var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == user.Id);
+        if (o is not null)
+        {
+            var levelcount = GetLevel(o.XP);
+            var progress = (int)(5.69d * GetProgressToNextLevel(o.XP));
+            picture = picture.Mutate(x =>
+            {
+                x.DrawRect(new double[] { 69, 69, 255, 255 }, 281, 77, progress, 50, true);
+            });
+            using var lvlText = Image.Text(HttpUtility.HtmlEncode($"Level: {levelcount}"), "Twemoji Color Emoji, Diavlo Light", 433,
+                38, Enums.Align.Centre,
+                rgba: true);
+            picture = picture.Composite(lvlText, Enums.BlendMode.Over, 287, 224);
+            using var xpText = Image.Text(HttpUtility.HtmlEncode($"{o.XP}XP"), "Twemoji Color Emoji, Diavlo Light", 229,
+                22, Enums.Align.Centre,
+                rgba: true);
+            picture = picture.Composite(xpText, Enums.BlendMode.Over, (280+progress)-(xpText.Width/2), 132);
+            using var nextLvlText = Image.Text(HttpUtility.HtmlEncode($"{GetNeededXpForNextLevel(o.XP)}XP"), "Twemoji Color Emoji, Diavlo Light", 229,
+                22, Enums.Align.Low,
+                rgba: true);
+            picture = picture.Composite(nextLvlText, Enums.BlendMode.Over, (570+280)-(xpText.Width/2), 132);
+        }
+        ImageModule.WriteImageToStream(picture, outStream, ".png");
         outStream.Position = 0;
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         await ImageModule.SendImageStream(ctx, outStream, content: lang.XPCommandCardSuccess);
     }
 
@@ -252,4 +294,4 @@ public class Experience : SilverBotCommandModule, IRequireFonts
 
         return l;
     }
-}*/
+}

@@ -49,7 +49,8 @@ namespace SilverBotDS
             var channel = await _discordClient.GetChannelAsync(@event.ChannelID);
             if (@event.ResponseMessageID != null)
             {
-                var lang = await Language.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
+                var languageservice = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
+                var lang = await languageservice.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
                 var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
                 var bob = new DiscordEmbedBuilder(msg.Embeds[0]);
                 var yesVotes =
@@ -98,7 +99,8 @@ namespace SilverBotDS
         {
             var _discordClient = (DiscordClient)ServiceProvider.GetService(typeof(DiscordClient));
             var channel = await _discordClient.GetChannelAsync(@event.ChannelID);
-            var lang = await Language.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
+            var languageservice = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
+            var lang = await languageservice.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
             if (!@event.Handled)
             {
                 DiscordMessageBuilder a = new();
@@ -130,7 +132,8 @@ namespace SilverBotDS
             var channel = await _discordClient.GetChannelAsync(@event.ChannelID);
             if (@event.ResponseMessageID != null)
             {
-                var lang = await Language.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
+                var languageservice = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
+                var lang = await languageservice.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
 
                 var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
                 var people =

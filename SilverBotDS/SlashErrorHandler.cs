@@ -105,7 +105,7 @@ namespace SilverBotDS
                 }
                 else
                 {
-                    var lang = await Language.GetLanguageFromCtxAsync(e.Context);
+                    var lang = await  e.Context.Services.GetService<LanguageService>().FromCtxAsync(e.Context);
                     switch (e.Exception)
                     {
                         case SlashExecutionChecksFailedException cfe when cfe.FailedChecks.Count is 1:

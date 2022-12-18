@@ -34,7 +34,7 @@ public class Emotes : BaseCommandModule
     public async Task AddEmote(CommandContext ctx, [Description("Name like `Kappa`")] string name,
         [Description("Url of the thing")] SdImage url)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var bytes = await url.GetBytesAsync(HttpClient);
         var st = new MemoryStream(bytes);
         try
@@ -61,7 +61,7 @@ public class Emotes : BaseCommandModule
     [RequirePermissions(Permissions.ManageEmojis)]
     public async Task AddEmote(CommandContext ctx, [Description("Name like `Kappa`")] string name)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         try
         {
             var image = SdImage.FromContext(ctx);

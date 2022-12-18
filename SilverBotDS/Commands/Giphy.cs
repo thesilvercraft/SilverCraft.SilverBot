@@ -31,7 +31,7 @@ public class Giphy : BaseCommandModule
 
     private GiphyDotNet.Manager.Giphy _giphy;
     public Config Config { private get; set; }
-
+    public LanguageService LanguageService { private get; set; }
     private void MakeSureTokenIsSet()
     {
         if (_giphy == null)
@@ -52,7 +52,7 @@ public class Giphy : BaseCommandModule
     public async Task Random(CommandContext ctx)
     {
         MakeSureTokenIsSet();
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var gifresult = await _giphy.RandomGif(new RandomParameter
         {
             Rating = Rating.Pg
@@ -70,7 +70,7 @@ public class Giphy : BaseCommandModule
     public async Task Search(CommandContext ctx, [RemainingText] string term)
     {
         MakeSureTokenIsSet();
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder();
         var searchParameter = new SearchParameter
         {

@@ -23,12 +23,14 @@ namespace SilverBotDS.Commands.Gamering;
 [Group("steam")]
 public class SteamCommands : BaseCommandModule
 {
+    public LanguageService LanguageService { private get; set; }
+
     [Command("search")]
     [Aliases("s")]
     [Description("Search about a game")]
     public async Task Search(CommandContext ctx, [RemainingText][Description("The game")] string game)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         try
         {
             var listings = SteamStoreQuery.Query.Search(game);

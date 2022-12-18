@@ -28,6 +28,7 @@ using System.Net.Http;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext;
 using System.IO;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SilverBotDS.Commands.Slash
 {
@@ -40,6 +41,7 @@ namespace SilverBotDS.Commands.Slash
         public HttpClient HttpClient { private get; set; }
         public SpotifyClient SpotifyClient { private get; set; }
         public ArtworkService ArtworkService { private get; set; }
+        public LanguageService LanguageService { private get; set; }
 
         private bool IsInVc(BaseContext ctx) => IsInVc(ctx, AudioService);
 
@@ -49,7 +51,11 @@ namespace SilverBotDS.Commands.Slash
         private static async Task SendNowPlayingMessage(BaseContext ctx, string title = "", string message = "",
             string imageurl = "", string url = "", Language? language = null)
         {
-            language ??= await Language.GetLanguageFromCtxAsync(ctx);
+            if (language == null)
+            {
+                var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+                language ??= await languageservice?.FromCtxAsync(ctx);
+            }
             var embedBuilder = new DiscordEmbedBuilder()
                 .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                 .WithColor(await ColorUtils.GetSingleAsync());
@@ -80,7 +86,11 @@ namespace SilverBotDS.Commands.Slash
         public static async Task SendSimpleMessage(BaseContext ctx, string title = "", string message = "", string image = "",
             Language? language = null)
         {
-            language ??= await Language.GetLanguageFromCtxAsync(ctx);
+            if (language == null)
+            {
+                var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+                language ??= await languageservice?.FromCtxAsync(ctx);
+            }
             var embedBuilder = new DiscordEmbedBuilder()
                 .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                 .WithColor(await ColorUtils.GetSingleAsync());
@@ -128,7 +138,7 @@ namespace SilverBotDS.Commands.Slash
        public async Task<SongORSongs?> ConvertToSong(InteractionContext ctx, string value, Language lang=null)
            {
             var conf = Config;
-             lang ??= await Language.GetLanguageFromCtxAsync(ctx);
+             lang ??= await LanguageService.FromCtxAsync(ctx);
             if (!IsInVc(ctx, AudioService))
             {
                 await MakeSureUserIsInVC(ctx, lang);
@@ -185,7 +195,7 @@ namespace SilverBotDS.Commands.Slash
 
         public async Task PlayNext(InteractionContext ctx, [Option("songname","the song to add next in the queue")] string sg)
         {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await ctx.DeferAsync();
             var song = await ConvertToSong(ctx, sg, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
@@ -256,7 +266,7 @@ namespace SilverBotDS.Commands.Slash
 
         public async Task Play(InteractionContext ctx, [Option("songname", "the song to add next in the queue")] string sg)
         {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await ctx.DeferAsync();
             var song = await ConvertToSong(ctx, sg, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
@@ -313,7 +323,7 @@ namespace SilverBotDS.Commands.Slash
 
         public async Task Volume(InteractionContext ctx, [Option("volume", "1-100%")] long volume)
         {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             if (!IsInVc(ctx))
             {
                 await SendSimpleMessage(ctx, lang.NotConnected, language: lang);
@@ -343,7 +353,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Seek(InteractionContext ctx, [Option("time", "time to seek to")]  TimeSpan? time)
         {
             await ctx.DeferAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             try
@@ -425,7 +435,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task ClearQueue(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             await MakeSurePlayerIsntNull(ctx, lang, player);
@@ -446,7 +456,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Shuffle(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             player.Queue.Shuffle();
@@ -459,7 +469,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task ExportQueue(InteractionContext ctx, [Option("playlistName", "playlist name")]  string? playlistName = null)
         {
             await ctx.DeferAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             var queue = player.Queue.Select(x => x.Identifier).ToList();
@@ -479,7 +489,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Remove(InteractionContext ctx, [Option("songindex", "song index")]  long songindex)
         {
             await ctx.DeferAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             if (songindex < 0 || songindex > player.Queue.Count)
@@ -498,7 +508,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Loop(InteractionContext ctx, [Option("looptype", "What do you want looped?")] LoopSettings settings)
         {
             await ctx.DeferAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
 
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
@@ -526,7 +536,7 @@ namespace SilverBotDS.Commands.Slash
             [Aliases("qh", "prevplaying", "pq")]
             public async Task QueueHistory(CommandContext ctx)
             {
-                var lang = await Language.GetLanguageFromCtxAsync(ctx);
+                var lang = await LanguageService.FromCtxAsync(ctx);
                 await MakeSureBothAreInVC(ctx, lang);
                 var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
                 if (player.QueueHistory.Count == 0)
@@ -553,7 +563,7 @@ namespace SilverBotDS.Commands.Slash
             [Aliases("np", "nowplaying", "q")]
             public async Task Queue(CommandContext ctx)
             {
-                var lang = await Language.GetLanguageFromCtxAsync(ctx);
+                var lang = await LanguageService.FromCtxAsync(ctx);
                 await MakeSureBothAreInVC(ctx, lang);
                 var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
                 if (player.Queue.Count == 0 && player.State != PlayerState.Playing)
@@ -615,7 +625,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Pause(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Playing)
@@ -659,7 +669,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Resume(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Paused)
@@ -681,7 +691,7 @@ namespace SilverBotDS.Commands.Slash
 
         public static async Task StaticJoin(InteractionContext ctx, LavalinkNode audioService)
         {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await ctx.Services.GetService<LanguageService>().FromCtxAsync(ctx);
             if (IsInVc(ctx, audioService))
             {
                 await SendSimpleMessage(ctx, lang.AlreadyConnected, language: lang);
@@ -701,7 +711,7 @@ namespace SilverBotDS.Commands.Slash
         {
             await ctx.DeferAsync();
 
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
 
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
@@ -724,7 +734,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Disconnect(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             await player.DisconnectAsync();
@@ -736,7 +746,7 @@ namespace SilverBotDS.Commands.Slash
         {
             await ctx.DeferAsync();
 
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
             if (player.State != PlayerState.Playing)
@@ -775,7 +785,7 @@ namespace SilverBotDS.Commands.Slash
         [RequireDjSlash]
         public async Task ForceDisconnect(CommandContext ctx)
         {
-            var lang = await Language.GetLanguageFromCtxAsync(ctx);
+            var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureUserIsInVC(ctx, lang);
 
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);

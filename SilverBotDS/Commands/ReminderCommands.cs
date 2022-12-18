@@ -27,6 +27,7 @@ namespace SilverBotDS.Commands;
 public class ReminderCommands : BaseCommandModule
 {
     public DatabaseContext DbCtx { private get; set; }
+    public LanguageService LanguageService { private get; set; }
 
     [Command("remindme")]
     [Description("simple reminder")]
@@ -34,7 +35,7 @@ public class ReminderCommands : BaseCommandModule
         [Description("delay of reminder (e.g. 1m = 1 minute)")] TimeSpan duration,
         [Description("content")][RemainingText] string item)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         if (!string.IsNullOrEmpty(item))
         {
             var s = RandomGenerator.RandomString(20);
@@ -63,7 +64,7 @@ public class ReminderCommands : BaseCommandModule
     [Description("lists all reminders")]
     public async Task ListReminders(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
 
         var events = DbCtx.plannedEvents.Where(a => a.UserID == ctx.User.Id && a.Type == PlannedEventType.Reminder && !a.Handled).ToList();
         if (events.Count > 0)
@@ -92,7 +93,7 @@ public class ReminderCommands : BaseCommandModule
     [RequireUserPermissions(Permissions.Administrator)]
     public async Task ListRemindersG(CommandContext ctx)
     {
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var channels = (await ctx.Guild.GetChannelsAsync()).Select(xa => xa.Id).ToArray();
         var events = DbCtx.plannedEvents.Where(a => channels.Contains(a.ChannelID) && a.Type == PlannedEventType.Reminder && !a.Handled).ToList();
         if (events.Count > 0)
@@ -125,7 +126,7 @@ public class ReminderCommands : BaseCommandModule
             await ctx.RespondAsync("Invalid ID");
             return;
         }
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var a = DbCtx.plannedEvents.Where(a => a.UserID == ctx.User.Id && a.Type == PlannedEventType.Reminder && a.EventID == id).ToList();
         if (a.Count == 0)
         {
@@ -160,7 +161,7 @@ public class ReminderCommands : BaseCommandModule
         }
         var channels = (await ctx.Guild.GetChannelsAsync()).Select(xa => xa.Id).ToArray();
 
-        var lang = await Language.GetLanguageFromCtxAsync(ctx);
+        var lang = await LanguageService.FromCtxAsync(ctx);
         var a = DbCtx.plannedEvents.Where(a => channels.Contains(a.ChannelID) && a.Type == PlannedEventType.Reminder && a.EventID == id).ToList();
         if (a.Count == 0)
         {

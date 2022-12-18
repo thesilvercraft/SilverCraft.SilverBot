@@ -11,6 +11,7 @@
 @inject DatabaseContext _dbctx
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _uriHelper
+@inject LanguageService _LanguageService
 @inject HttpClient _client
 @{
     var auser = AuthenticationStateProvider.AuthState();
@@ -32,7 +33,7 @@
     <RadzenSwitch @bind-Value=@userpref.UsesNewMusicPage Name="Switch1" Style="margin-bottom: 20px"/>
     <RadzenLabel Text="Use the new Music Controller page" Component="Switch1" Style="margin-left: 5px;"/>
     <br/>
-    <RadzenDropDown AllowClear="false" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@Language.GetLoadedLanguages() @bind-Value=@userpref.LangName
+    <RadzenDropDown AllowClear="false" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@_LanguageService.GetLoadedLanguages() @bind-Value=@userpref.LangName
                     TextProperty="Value.LangName" ValueProperty="Key" Style="width:300px"/>
     <RadzenLabel Text="Your personal language (used for direct messages and stuff)" Component="Switch2" Style="margin-left: 5px;"/>
 

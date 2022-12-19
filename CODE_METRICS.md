@@ -5894,12 +5894,13 @@ The `SilverBotDS.Commands.Slash` namespace contains 6 named types.
 
 ## Metric definitions
 
-  - **Maintainability index**: Measures ease of code maintenance. ⬆ Higher values are better.
-  - **Cyclomatic complexity**: Measures the number of branches. ⬇️ Lower values are better.
-  - **Depth of inheritance**: Measures length of object inheritance hierarchy. ⬇️ Lower values are better.
-  - **Class coupling**: Measures the number of classes that are referenced. ⬇️ Lower values are better.
-  - **Lines of source code**: Exact number of lines of source code. ⬇️ Lower values are better.
-  - **Lines of executable code**: Approximates the lines of executable code. ⬇️ Lower values are better.
+
+  - **Maintainability index**: Measures ease of code maintenance. 🧽 ⬆ Higher values are better.
+  - **Cyclomatic complexity**: Measures the number of branches. 🌱 ⬇️ Lower values are better.
+  - **Depth of inheritance**: Measures length of object inheritance hierarchy. 🇿 ⬇️ Lower values are better.
+  - **Class coupling**: Measures the number of classes that are referenced.🇨 🇨 ⬇️ Lower values are better.
+  - **Lines of source code**: Exact number of lines of source code. 🇱 🇴 🇨 ⬇️ Lower values are better.
+  - **Lines of executable code**: Approximates the lines of executable code. 🇱 🇴 🇪 🇨 ⬇️ Lower values are better.
 
 ## Mermaid class diagrams
 
@@ -9269,6 +9270,7 @@ class UserNotInVCException{
 
 ```
 
-*This file is maintained by a bot.*
+***This file is maintained by a github action.***
+
 
 <!-- markdownlint-restore -->

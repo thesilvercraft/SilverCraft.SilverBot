@@ -21,7 +21,7 @@ jobs:
     # Create (or update) CODE_METRICS.md file.
     - name: .NET code metrics
       id: dotnet-code-metrics
-      uses: Silverdimond/SilverCommandRefGen/SilverCommandRefGen@main
+      uses: Silverdimond/SilverCommandRefGen/SilverCommandRefGen@master
       with:
         owner: ${{ github.repository_owner }}
         name: ${{ github.repository }}

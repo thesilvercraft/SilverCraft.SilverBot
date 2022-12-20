@@ -22,7 +22,6 @@ public enum LoopSettings
 }
 
 
-
 public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
 {
     public Dictionary<DiscordUser, List<Func<string, DiscordUser, bool>>> OnWebsiteEvent = new();

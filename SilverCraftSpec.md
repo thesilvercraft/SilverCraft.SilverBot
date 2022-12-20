@@ -13,7 +13,7 @@ This file is dynamically maintained by a bot, ~~a silverbot~~.
 
 #### Arguments
 
-`"hug"` <ctx>
+`"hug" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L34-L39
@@ -22,7 +22,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"kiss"` <ctx>
+`"kiss" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L41-L46
@@ -31,7 +31,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"slap"` <ctx>
+`"slap" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L48-L53
@@ -40,7 +40,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"wink"` <ctx>
+`"wink" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L55-L60
@@ -49,7 +49,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"pat"` <ctx>
+`"pat" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L62-L67
@@ -58,7 +58,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"kill"` <ctx>
+`"kill" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L69-L74
@@ -67,7 +67,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"cuddle"` <ctx>
+`"cuddle" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L76-L81
@@ -76,7 +76,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"punch"` <ctx>
+`"punch" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L83-L88
@@ -87,7 +87,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"hug"` <ctx>
+`"hug" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L33-L37
@@ -96,7 +96,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"kiss"` <ctx>
+`"kiss" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L39-L43
@@ -105,7 +105,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"slap"` <ctx>
+`"slap" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L45-L49
@@ -114,7 +114,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"wink"` <ctx>
+`"wink" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L51-L55
@@ -123,7 +123,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"pat"` <ctx>
+`"pat" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L57-L61
@@ -132,7 +132,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"kill"` <ctx>
+`"kill" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L63-L67
@@ -141,7 +141,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"cuddle"` <ctx>
+`"cuddle" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L69-L73
@@ -150,7 +150,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"punch"` <ctx>
+`"punch" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L75-L79
@@ -165,7 +165,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 #### Arguments
 
-`"setprefix"` <ctx> <cake>
+`"setprefix" <ctx> <cake>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L34-L44
@@ -174,7 +174,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"emojipoll"` <commandContext> <duration> <question>
+`"emojipoll" <commandContext> <duration> <question>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L53-L98
@@ -183,7 +183,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"GiveAway"` <commandContext> <duration> <item>
+`"GiveAway" <commandContext> <duration> <item>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L100-L137
@@ -192,7 +192,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"exportemotestoguilded"` <ctx>
+`"exportemotestoguilded" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L139-L165
@@ -201,7 +201,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"exportemotes"` <ctx>
+`"exportemotes" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L167-L204
@@ -214,7 +214,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"playnext"` <ctx> <song>
+`"playnext" <ctx> <song>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L145-L190
@@ -225,14 +225,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"play"` <ctx>
+`"play" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L192-L213
 
 #### Arguments
 
-`"play"` <ctx> <song>
+`"play" <ctx> <song>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L215-L269
@@ -243,7 +243,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"volume"` <ctx> <volume>
+`"volume" <ctx> <volume>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L271-L299
@@ -252,7 +252,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"seek"` <ctx> <time>
+`"seek" <ctx> <time>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L301-L317
@@ -261,7 +261,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"clearqueue"` <ctx>
+`"clearqueue" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L384-L402
@@ -270,7 +270,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"shuffle"` <ctx>
+`"shuffle" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L404-L414
@@ -279,7 +279,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"export"` <ctx> [playlistName]
+`"export" <ctx> [playlistName]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L416-L431
@@ -288,7 +288,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"remove"` <ctx> <songindex>
+`"remove" <ctx> <songindex>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L433-L450
@@ -299,7 +299,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"queuehistory"` <ctx>
+`"queuehistory" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L452-L477
@@ -310,7 +310,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"queue"` <ctx>
+`"queue" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L479-L536
@@ -321,7 +321,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"loop"` <ctx> <settings>
+`"loop" <ctx> <settings>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L538-L565
@@ -330,7 +330,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"pause"` <ctx>
+`"pause" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L567-L581
@@ -339,7 +339,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"ovh"` <ctx> <name> <artist>
+`"ovh" <ctx> <name> <artist>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L583-L595
@@ -348,7 +348,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"songaliases"` <ctx>
+`"songaliases" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L597-L608
@@ -357,7 +357,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"resume"` <ctx>
+`"resume" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L610-L623
@@ -366,7 +366,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"join"` <ctx>
+`"join" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L625-L630
@@ -377,7 +377,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"forceskip"` <ctx>
+`"forceskip" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L647-L670
@@ -388,7 +388,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"voteskip"` <ctx>
+`"voteskip" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L672-L707
@@ -399,7 +399,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"forcedisconnect"` <ctx>
+`"forcedisconnect" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L709-L723
@@ -410,7 +410,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"disconnect"` <ctx>
+`"disconnect" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L725-L736
@@ -421,7 +421,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"silveryeet"` <ctx>
+`"silveryeet" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L35-L43
@@ -432,7 +432,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"bibi"` <ctx> <input>
+`"bibi" <ctx> <input>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L67-L91
@@ -443,7 +443,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`` <ctx>
+` <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L129-L148
@@ -452,7 +452,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"full"` <ctx>
+`"full" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L150-L169
@@ -463,7 +463,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"givexpbecausedowntimepercent"` <ctx> <percent>
+`"givexpbecausedowntimepercent" <ctx> <percent>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L52-L63
@@ -472,7 +472,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"givexpbecausedowntime"` <ctx> <xp>
+`"givexpbecausedowntime" <ctx> <xp>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L65-L76
@@ -481,14 +481,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"xp"` <ctx>
+`"xp" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L78-L98
 
 #### Arguments
 
-`"xp"` <ctx> <member>
+`"xp" <ctx> <member>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L100-L119
@@ -497,7 +497,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"xptop"` <ctx>
+`"xptop" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L121-L171
@@ -506,14 +506,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"xpcard"` <ctx> <user>
+`"xpcard" <ctx> <user>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L175-L251
 
 #### Arguments
 
-`"xpcard"` <ctx>
+`"xpcard" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L253-L257
@@ -524,7 +524,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"fortstats"` <ctx> <name>
+`"fortstats" <ctx> <name>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L46-L65
@@ -533,7 +533,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"fortbrnews"` <ctx>
+`"fortbrnews" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L67-L74
@@ -542,7 +542,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"fortcrnews"` <ctx>
+`"fortcrnews" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L76-L83
@@ -551,7 +551,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"fortstwnews"` <ctx>
+`"fortstwnews" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L85-L92
@@ -560,7 +560,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"fortitms"` <ctx>
+`"fortitms" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L94-L107
@@ -573,7 +573,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"getfromusername"` <ctx> <input>
+`"getfromusername" <ctx> <input>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Minecraft.cs#L25-L39
@@ -586,7 +586,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"search"` <ctx> <game>
+`"search" <ctx> <game>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Steam.cs#L28-L102
@@ -597,7 +597,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"hi"` <ctx>
+`"hi" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L34-L42
@@ -606,7 +606,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"time"` <ctx>
+`"time" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L44-L53
@@ -615,7 +615,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"invite"` <ctx>
+`"invite" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L55-L65
@@ -624,7 +624,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"ping"` <ctx>
+`"ping" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L67-L73
@@ -633,14 +633,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"dump"` <ctx> <message>
+`"dump" <ctx> <message>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L75-L90
 
 #### Arguments
 
-`"dump"` <ctx>
+`"dump" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L121-L133
@@ -649,7 +649,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"archive"` <ctx> <message>
+`"archive" <ctx> <message>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L91-L119
@@ -660,7 +660,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"duckhosting"` <ctx>
+`"duckhosting" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L135-L149
@@ -669,14 +669,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"user"` <ctx> <a>
+`"user" <ctx> <a>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L157-L179
 
 #### Arguments
 
-`"user"` <ctx>
+`"user" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L181-L186
@@ -687,7 +687,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"random"` <ctx>
+`"random" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L51-L66
@@ -698,7 +698,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"search"` <ctx> <term>
+`"search" <ctx> <term>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L68-L93
@@ -709,14 +709,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"caption"` <ctx> <image> <text>
+`"caption" <ctx> <image> <text>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L379-L388
 
 #### Arguments
 
-`"caption"` <ctx> <text>
+`"caption" <ctx> <text>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L390-L391
@@ -725,7 +725,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"fail"` <ctx> <text>
+`"fail" <ctx> <text>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L393-L403
@@ -734,14 +734,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"yeet"` <ctx>
+`"yeet" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L431-L433
 
 #### Arguments
 
-`"yeet"` <ctx> <img2>
+`"yeet" <ctx> <img2>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L434-L482
@@ -750,14 +750,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"jpeg"` <ctx> <image>
+`"jpeg" <ctx> <image>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L528-L534
 
 #### Arguments
 
-`"jpeg"` <ctx>
+`"jpeg" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L536-L538
@@ -766,14 +766,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"tint"` <ctx> <image> <color>
+`"tint" <ctx> <image> <color>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L569-L581
 
 #### Arguments
 
-`"tint"` <ctx> <color>
+`"tint" <ctx> <color>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L583-L586
@@ -782,21 +782,21 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"adventuretime"` <ctx>
+`"adventuretime" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L587-L589
 
 #### Arguments
 
-`"adventuretime"` <ctx> <friendo>
+`"adventuretime" <ctx> <friendo>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L590-L591
 
 #### Arguments
 
-`"adventuretime"` <ctx> <person> <friendo>
+`"adventuretime" <ctx> <person> <friendo>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L592-L611
@@ -805,7 +805,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"seal"` <ctx> <text>
+`"seal" <ctx> <text>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L634-L640
@@ -814,7 +814,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"linus"` <ctx> [company]
+`"linus" <ctx> [company]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L642-L660
@@ -823,28 +823,28 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"resize"` <ctx> <image> [x] [y] [format]
+`"resize" <ctx> <image> [x] [y] [format]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L662-L669
 
 #### Arguments
 
-`"resize"` <ctx> <image> <format>
+`"resize" <ctx> <image> <format>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L698-L699
 
 #### Arguments
 
-`"resize"` <ctx> <format>
+`"resize" <ctx> <format>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L701-L702
 
 #### Arguments
 
-`"resize"` <ctx> [x] [y] [format]
+`"resize" <ctx> [x] [y] [format]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L704-L706
@@ -853,21 +853,21 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"reliable"` <ctx>
+`"reliable" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L707-L708
 
 #### Arguments
 
-`"reliable"` <ctx> <koichi>
+`"reliable" <ctx> <koichi>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L710-L711
 
 #### Arguments
 
-`"reliable"` <ctx> <jotaro> <koichi>
+`"reliable" <ctx> <jotaro> <koichi>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L713-L759
@@ -876,21 +876,21 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"ObMedal"` <ctx>
+`"ObMedal" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L760-L764
 
 #### Arguments
 
-`"ObMedal"` <ctx> <obama>
+`"ObMedal" <ctx> <obama>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L765-L779
 
 #### Arguments
 
-`"ObMedal"` <ctx> <obama> <secondPerson>
+`"ObMedal" <ctx> <obama> <secondPerson>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L780-L799
@@ -899,14 +899,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"happynewyear"` <ctx>
+`"happynewyear" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L800-L801
 
 #### Arguments
 
-`"happynewyear"` <ctx> <person>
+`"happynewyear" <ctx> <person>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L802-L808
@@ -915,14 +915,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"silver"` <ctx>
+`"silver" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L820-L826
 
 #### Arguments
 
-`"silver"` <ctx> <image>
+`"silver" <ctx> <image>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L828-L836
@@ -935,7 +935,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"version"` <ctx>
+`"version" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L72-L79
@@ -944,7 +944,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"setlang"` <ctx> <langName>
+`"setlang" <ctx> <langName>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L81-L109
@@ -953,7 +953,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"togglerepeat"` <ctx> <enable>
+`"togglerepeat" <ctx> <enable>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L111-L145
@@ -964,7 +964,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"translateunknown"` <ctx> <text>
+`"translateunknown" <ctx> <text>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L147-L167
@@ -975,7 +975,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"translateunknownto"` <ctx> <languageTo> <text>
+`"translateunknownto" <ctx> <languageTo> <text>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L169-L204
@@ -984,7 +984,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"cserrcode"` <ctx> <error>
+`"cserrcode" <ctx> <error>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L206-L260
@@ -995,7 +995,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"kick"` <ctx> <a> [reason]
+`"kick" <ctx> <a> [reason]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L24-L57
@@ -1004,7 +1004,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"ban"` <ctx> <a> [reason]
+`"ban" <ctx> <a> [reason]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L59-L96
@@ -1013,7 +1013,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"kickme"` <ctx> [ban]
+`"kickme" <ctx> [ban]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L98-L113
@@ -1024,7 +1024,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"purge"` <ctx> <amount>
+`"purge" <ctx> <amount>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L115-L155
@@ -1035,7 +1035,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"reloadcolors"` <ctx>
+`"reloadcolors" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L48-L65
@@ -1044,7 +1044,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"UnRegisterCommand"` <ctx> <cmdwithparm>
+`"UnRegisterCommand" <ctx> <cmdwithparm>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L67-L72
@@ -1053,7 +1053,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"RegisterModule"` <ctx> <mod> [skipcheck]
+`"RegisterModule" <ctx> <mod> [skipcheck]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L74-L115
@@ -1062,7 +1062,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"sudo"` <ctx> <member> <command>
+`"sudo" <ctx> <member> <command>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L117-L128
@@ -1071,14 +1071,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"setupcategory"` <ctx> <role>
+`"setupcategory" <ctx> <role>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L130-L168
 
 #### Arguments
 
-`"setupcategory"` <ctx> <person>
+`"setupcategory" <ctx> <person>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L170-L204
@@ -1087,7 +1087,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"dependencies"` <ctx>
+`"dependencies" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L339-L358
@@ -1098,7 +1098,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"evaluate"` <ctx> <code>
+`"evaluate" <ctx> <code>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L364-L471
@@ -1107,7 +1107,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"sh"` <ctx> <command>
+`"sh" <ctx> <command>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L473-L508
@@ -1116,7 +1116,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"runsql"` <ctx> <sql>
+`"runsql" <ctx> <sql>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L510-L517
@@ -1125,7 +1125,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"addemotes"` <ctx>
+`"addemotes" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L542-L612
@@ -1134,7 +1134,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"guilds"` <ctx>
+`"guilds" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L614-L625
@@ -1143,7 +1143,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"togglebanuser"` <ctx> <userid> [ban]
+`"togglebanuser" <ctx> <userid> [ban]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L627-L633
@@ -1152,7 +1152,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"shutdown"` <ctx>
+`"shutdown" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L635-L641
@@ -1161,7 +1161,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"shutdowngrace"` <ctx>
+`"shutdowngrace" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L643-L650
@@ -1170,7 +1170,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"removeuser"` <ctx> <userid>
+`"removeuser" <ctx> <userid>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L652-L658
@@ -1181,7 +1181,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"addmenu"` <ctx>
+`"addmenu" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReactionRoleCommands.cs#L44-L198
@@ -1192,7 +1192,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"remindme"` <ctx> <duration> <item>
+`"remindme" <ctx> <duration> <item>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L32-L61
@@ -1201,7 +1201,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"listreminders"` <ctx>
+`"listreminders" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L63-L89
@@ -1210,7 +1210,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"listremindersguild"` <ctx>
+`"listremindersguild" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L91-L118
@@ -1219,7 +1219,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"cancelreminder"` <ctx> <id>
+`"cancelreminder" <ctx> <id>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L120-L150
@@ -1228,7 +1228,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"cancelreminderf"` <ctx> <id>
+`"cancelreminderf" <ctx> <id>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L152-L185
@@ -1239,7 +1239,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"emoteanalyse"` <ctx> <channel> [limit]
+`"emoteanalyse" <ctx> <channel> [limit]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L31-L75
@@ -1248,7 +1248,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"setcategory"` <ctx> <category>
+`"setcategory" <ctx> <category>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L77-L101
@@ -1257,14 +1257,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"setstatstrings"` <ctx>
+`"setstatstrings" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L103-L114
 
 #### Arguments
 
-`"setstatstrings"` <ctx> <cake>
+`"setstatstrings" <ctx> <cake>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L116-L127
@@ -1275,7 +1275,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"playnext"` <ctx> <sg>
+`"playnext" <ctx> <sg>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L194-L240
@@ -1284,7 +1284,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"play"` <ctx> <sg>
+`"play" <ctx> <sg>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L265-L319
@@ -1293,7 +1293,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"volume"` <ctx> <volume>
+`"volume" <ctx> <volume>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L321-L348
@@ -1302,7 +1302,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"seek"` <ctx> <time>
+`"seek" <ctx> <time>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L350-L367
@@ -1311,7 +1311,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"clearqueue"` <ctx>
+`"clearqueue" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L433-L451
@@ -1320,7 +1320,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"shuffle"` <ctx>
+`"shuffle" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L453-L464
@@ -1329,7 +1329,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"export"` <ctx> [playlistName]
+`"export" <ctx> [playlistName]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L467-L484
@@ -1338,7 +1338,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"remove"` <ctx> <songindex>
+`"remove" <ctx> <songindex>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L487-L505
@@ -1347,7 +1347,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"loop"` <ctx> <settings>
+`"loop" <ctx> <settings>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L506-L533
@@ -1356,7 +1356,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"pause"` <ctx>
+`"pause" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L623-L638
@@ -1365,7 +1365,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"resume"` <ctx>
+`"resume" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L667-L681
@@ -1374,7 +1374,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"join"` <ctx>
+`"join" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L683-L690
@@ -1383,7 +1383,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"forceskip"` <ctx>
+`"forceskip" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L707-L731
@@ -1392,7 +1392,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"leave"` <ctx>
+`"leave" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L732-L742
@@ -1401,7 +1401,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"skip"` <ctx>
+`"skip" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L743-L779
@@ -1412,7 +1412,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"bibi"` <ctx> <input>
+`"bibi" <ctx> <input>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/BubotSlash.cs#L67-L90
@@ -1423,7 +1423,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"hello"` <ctx>
+`"hello" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L27-L32
@@ -1432,7 +1432,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"whois"` <ctx> <user>
+`"whois" <ctx> <user>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L59-L63
@@ -1441,14 +1441,14 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`` <ctx>
+` <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L65-L69
 
 #### Arguments
 
-`` <ctx>
+` <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L93-L102
@@ -1457,7 +1457,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"version"` <ctx>
+`"version" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L71-L77
@@ -1466,7 +1466,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"dukthosting"` <ctx>
+`"dukthosting" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L79-L91
@@ -1477,56 +1477,56 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"imagine"` <ctx> <prompt>
+`"imagine" <ctx> <prompt>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L35-L39
 
 #### Arguments
 
-`"imagine"` <ctx> <prompt> <steps>
+`"imagine" <ctx> <prompt> <steps>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L40-L44
 
 #### Arguments
 
-`"imagine"` <ctx> <model> <prompt>
+`"imagine" <ctx> <model> <prompt>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L45-L49
 
 #### Arguments
 
-`"imagine"` <ctx> <model> <seed> <prompt>
+`"imagine" <ctx> <model> <seed> <prompt>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L50-L54
 
 #### Arguments
 
-`"imagine"` <ctx> <model> <prompt> <steps>
+`"imagine" <ctx> <model> <prompt> <steps>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L55-L59
 
 #### Arguments
 
-`"imagine"` <ctx> <model> <seed> <prompt> <resolution>
+`"imagine" <ctx> <model> <seed> <prompt> <resolution>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L60-L64
 
 #### Arguments
 
-`"imagine"` <ctx> <model> <seed> <prompt> <steps> <resolution>
+`"imagine" <ctx> <model> <seed> <prompt> <steps> <resolution>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L65-L69
 
 #### Arguments
 
-`"imagine"` <ctx> [model] [seed] [negative_prompt] [prompt] [resolution] [steps]
+`"imagine" <ctx> [model] [seed] [negative_prompt] [prompt] [resolution] [steps]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L70-L179
@@ -1537,7 +1537,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"editlangtranslator"` <ctx>
+`"editlangtranslator" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L43-L49
@@ -1546,7 +1546,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"getobjectfromcurrentlanguage"` <ctx> <name>
+`"getobjectfromcurrentlanguage" <ctx> <name>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L51-L57
@@ -1555,7 +1555,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"setlangtranslator"` <ctx> <lang>
+`"setlangtranslator" <ctx> <lang>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L59-L122
@@ -1564,7 +1564,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"uploadlanguage"` <ctx>
+`"uploadlanguage" <ctx>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L124-L152
@@ -1573,7 +1573,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"generatelangtemplate"` <ctx> [lang]
+`"generatelangtemplate" <ctx> [lang]`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L154-L212
@@ -1584,7 +1584,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"add"` <ctx> <content>
+`"add" <ctx> <content>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/UserQuotes.cs#L56-L71
@@ -1593,7 +1593,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 #### Arguments
 
-`"get"` <ctx> <id>
+`"get" <ctx> <id>`
 
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/UserQuotes.cs#L73-L96

@@ -4049,7 +4049,7 @@ The *SilverBotDS.csproj* project file contains:
 
 - 7 namespaces.
 - 56 named types.
-- 11,891 total lines of source code.
+- 11,890 total lines of source code.
 - Approximately 4,016 lines of executable code.
 - The highest cyclomatic complexity is 94 :exploding_head:.
 
@@ -4064,7 +4064,7 @@ The *SilverBotDS.csproj* project file contains:
 The `SilverBotDS.Commands` namespace contains 31 named types.
 
 - 31 named types.
-- 4,352 total lines of source code.
+- 4,351 total lines of source code.
 - Approximately 1,870 lines of executable code.
 - The highest cyclomatic complexity is 33 :exploding_head:.
 
@@ -4428,7 +4428,7 @@ The `SilverBotDS.Commands` namespace contains 31 named types.
 <br>
 
 - The `Giphy` contains 8 members.
-- 103 total lines of source code.
+- 102 total lines of source code.
 - Approximately 36 lines of executable code.
 - The highest cyclomatic complexity is 5 :heavy_check_mark:.
 
@@ -4441,7 +4441,7 @@ The `SilverBotDS.Commands` namespace contains 31 named types.
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L35' title='void Giphy.MakeSureTokenIsSet()'>35</a> | 74 | 5 :heavy_check_mark: | 0 | 3 | 15 / 4 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L52' title='Task Giphy.Random(CommandContext ctx)'>52</a> | 69 | 1 :heavy_check_mark: | 0 | 9 | 16 / 6 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L70' title='Task Giphy.Search(CommandContext ctx, string term)'>70</a> | 62 | 1 :heavy_check_mark: | 0 | 12 | 26 / 10 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L95' title='Task Giphy.WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage, InteractivityExtension interactivity, Language lang, int page, string formated, GiphySearchResult gifResult, DiscordEmbedBuilder? b = null)'>95</a> | 59 | 3 :heavy_check_mark: | 0 | 12 | 30 / 11 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L95' title='Task Giphy.WaitForNextMessage(CommandContext ctx, DiscordMessage oldmessage, InteractivityExtension interactivity, Language lang, int page, string formated, GiphySearchResult gifResult, DiscordEmbedBuilder? b = null)'>95</a> | 59 | 3 :heavy_check_mark: | 0 | 12 | 29 / 11 |
 
 <a href="#Giphy-class-diagram">:link: to `Giphy` class diagram</a>
 

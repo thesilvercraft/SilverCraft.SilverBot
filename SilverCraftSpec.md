@@ -15,7 +15,6 @@ This file is dynamically maintained by a bot, ~~a silverbot~~.
 
 `"hug"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L34-L39
 
@@ -25,7 +24,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"kiss"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L41-L46
 
@@ -35,7 +33,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"slap"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L48-L53
 
@@ -45,7 +42,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"wink"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L55-L60
 
@@ -55,7 +51,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"pat"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L62-L67
 
@@ -65,7 +60,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"kill"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L69-L74
 
@@ -75,7 +69,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"cuddle"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L76-L81
 
@@ -85,7 +78,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"punch"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L83-L88
 
@@ -97,7 +89,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"hug"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L33-L37
 
@@ -107,7 +98,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"kiss"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L39-L43
 
@@ -117,7 +107,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"slap"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L45-L49
 
@@ -127,7 +116,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"wink"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L51-L55
 
@@ -137,7 +125,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"pat"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L57-L61
 
@@ -147,7 +134,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"kill"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L63-L67
 
@@ -157,7 +143,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"cuddle"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L69-L73
 
@@ -167,7 +152,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"punch"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L75-L79
 
@@ -183,7 +167,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 `"setprefix"` <ctx> <cake>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L34-L44
 
@@ -193,7 +176,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"emojipoll"` <commandContext> <duration> <question>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L53-L98
 
@@ -203,7 +185,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"GiveAway"` <commandContext> <duration> <item>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L100-L137
 
@@ -213,7 +194,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"exportemotestoguilded"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L139-L165
 
@@ -223,7 +203,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"exportemotes"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L167-L204
 
@@ -237,7 +216,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"playnext"` <ctx> <song>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L145-L190
 
@@ -249,7 +227,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"play"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L192-L213
 
@@ -257,7 +234,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"play"` <ctx> <song>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L215-L269
 
@@ -269,7 +245,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"volume"` <ctx> <volume>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L271-L299
 
@@ -279,7 +254,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"seek"` <ctx> <time>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L301-L317
 
@@ -289,7 +263,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"clearqueue"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L384-L402
 
@@ -299,7 +272,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"shuffle"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L404-L414
 
@@ -309,7 +281,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"export"` <ctx> [playlistName]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L416-L431
 
@@ -319,7 +290,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"remove"` <ctx> <songindex>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L433-L450
 
@@ -331,7 +301,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"queuehistory"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L452-L477
 
@@ -343,7 +312,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"queue"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L479-L536
 
@@ -355,7 +323,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"loop"` <ctx> <settings>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L538-L565
 
@@ -365,7 +332,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"pause"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L567-L581
 
@@ -375,7 +341,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"ovh"` <ctx> <name> <artist>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L583-L595
 
@@ -385,7 +350,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"songaliases"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L597-L608
 
@@ -395,7 +359,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"resume"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L610-L623
 
@@ -405,7 +368,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"join"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L625-L630
 
@@ -417,7 +379,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"forceskip"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L647-L670
 
@@ -429,7 +390,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"voteskip"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L672-L707
 
@@ -441,7 +401,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"forcedisconnect"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L709-L723
 
@@ -453,7 +412,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"disconnect"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L725-L736
 
@@ -465,7 +423,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"silveryeet"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L35-L43
 
@@ -477,7 +434,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"bibi"` <ctx> <input>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L67-L91
 
@@ -489,7 +445,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L129-L148
 
@@ -499,7 +454,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"full"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L150-L169
 
@@ -511,7 +465,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"givexpbecausedowntimepercent"` <ctx> <percent>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L52-L63
 
@@ -521,7 +474,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"givexpbecausedowntime"` <ctx> <xp>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L65-L76
 
@@ -531,7 +483,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"xp"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L78-L98
 
@@ -539,7 +490,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"xp"` <ctx> <member>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L100-L119
 
@@ -549,7 +499,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"xptop"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L121-L171
 
@@ -559,7 +508,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"xpcard"` <ctx> <user>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L175-L251
 
@@ -567,7 +515,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"xpcard"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L253-L257
 
@@ -579,7 +526,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"fortstats"` <ctx> <name>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L46-L65
 
@@ -589,7 +535,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"fortbrnews"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L67-L74
 
@@ -599,7 +544,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"fortcrnews"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L76-L83
 
@@ -609,7 +553,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"fortstwnews"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L85-L92
 
@@ -619,7 +562,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"fortitms"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L94-L107
 
@@ -633,7 +575,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"getfromusername"` <ctx> <input>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Minecraft.cs#L25-L39
 
@@ -647,7 +588,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"search"` <ctx> <game>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Steam.cs#L28-L102
 
@@ -659,7 +599,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"hi"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L34-L42
 
@@ -669,7 +608,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"time"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L44-L53
 
@@ -679,7 +617,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"invite"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L55-L65
 
@@ -689,7 +626,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"ping"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L67-L73
 
@@ -699,7 +635,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"dump"` <ctx> <message>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L75-L90
 
@@ -707,7 +642,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"dump"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L121-L133
 
@@ -717,7 +651,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"archive"` <ctx> <message>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L91-L119
 
@@ -729,7 +662,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"duckhosting"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L135-L149
 
@@ -739,7 +671,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"user"` <ctx> <a>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L157-L179
 
@@ -747,7 +678,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"user"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L181-L186
 
@@ -759,7 +689,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"random"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L51-L66
 
@@ -771,7 +700,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"search"` <ctx> <term>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L68-L93
 
@@ -783,7 +711,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"caption"` <ctx> <image> <text>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L379-L388
 
@@ -791,7 +718,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"caption"` <ctx> <text>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L390-L391
 
@@ -801,7 +727,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"fail"` <ctx> <text>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L393-L403
 
@@ -811,7 +736,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"yeet"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L431-L433
 
@@ -819,7 +743,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"yeet"` <ctx> <img2>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L434-L482
 
@@ -829,7 +752,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"jpeg"` <ctx> <image>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L528-L534
 
@@ -837,7 +759,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"jpeg"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L536-L538
 
@@ -847,7 +768,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"tint"` <ctx> <image> <color>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L569-L581
 
@@ -855,7 +775,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"tint"` <ctx> <color>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L583-L586
 
@@ -865,7 +784,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"adventuretime"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L587-L589
 
@@ -873,7 +791,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"adventuretime"` <ctx> <friendo>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L590-L591
 
@@ -881,7 +798,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"adventuretime"` <ctx> <person> <friendo>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L592-L611
 
@@ -891,7 +807,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"seal"` <ctx> <text>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L634-L640
 
@@ -901,7 +816,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"linus"` <ctx> [company]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L642-L660
 
@@ -911,7 +825,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"resize"` <ctx> <image> [x] [y] [format]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L662-L669
 
@@ -919,7 +832,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"resize"` <ctx> <image> <format>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L698-L699
 
@@ -927,7 +839,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"resize"` <ctx> <format>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L701-L702
 
@@ -935,7 +846,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"resize"` <ctx> [x] [y] [format]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L704-L706
 
@@ -945,7 +855,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"reliable"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L707-L708
 
@@ -953,7 +862,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"reliable"` <ctx> <koichi>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L710-L711
 
@@ -961,7 +869,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"reliable"` <ctx> <jotaro> <koichi>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L713-L759
 
@@ -971,7 +878,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"ObMedal"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L760-L764
 
@@ -979,7 +885,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"ObMedal"` <ctx> <obama>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L765-L779
 
@@ -987,7 +892,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"ObMedal"` <ctx> <obama> <secondPerson>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L780-L799
 
@@ -997,7 +901,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"happynewyear"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L800-L801
 
@@ -1005,7 +908,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"happynewyear"` <ctx> <person>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L802-L808
 
@@ -1015,7 +917,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"silver"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L820-L826
 
@@ -1023,7 +924,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"silver"` <ctx> <image>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L828-L836
 
@@ -1037,7 +937,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"version"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L72-L79
 
@@ -1047,7 +946,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"setlang"` <ctx> <langName>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L81-L109
 
@@ -1057,7 +955,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"togglerepeat"` <ctx> <enable>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L111-L145
 
@@ -1069,7 +966,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"translateunknown"` <ctx> <text>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L147-L167
 
@@ -1081,7 +977,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"translateunknownto"` <ctx> <languageTo> <text>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L169-L204
 
@@ -1091,7 +986,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"cserrcode"` <ctx> <error>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L206-L260
 
@@ -1103,7 +997,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"kick"` <ctx> <a> [reason]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L24-L57
 
@@ -1113,7 +1006,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"ban"` <ctx> <a> [reason]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L59-L96
 
@@ -1123,7 +1015,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"kickme"` <ctx> [ban]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L98-L113
 
@@ -1135,7 +1026,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"purge"` <ctx> <amount>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L115-L155
 
@@ -1147,7 +1037,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"reloadcolors"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L48-L65
 
@@ -1157,7 +1046,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"UnRegisterCommand"` <ctx> <cmdwithparm>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L67-L72
 
@@ -1167,7 +1055,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"RegisterModule"` <ctx> <mod> [skipcheck]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L74-L115
 
@@ -1177,7 +1064,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"sudo"` <ctx> <member> <command>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L117-L128
 
@@ -1187,7 +1073,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"setupcategory"` <ctx> <role>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L130-L168
 
@@ -1195,7 +1080,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"setupcategory"` <ctx> <person>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L170-L204
 
@@ -1205,7 +1089,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"dependencies"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L339-L358
 
@@ -1217,7 +1100,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"evaluate"` <ctx> <code>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L364-L471
 
@@ -1227,7 +1109,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"sh"` <ctx> <command>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L473-L508
 
@@ -1237,7 +1118,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"runsql"` <ctx> <sql>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L510-L517
 
@@ -1247,7 +1127,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"addemotes"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L542-L612
 
@@ -1257,7 +1136,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"guilds"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L614-L625
 
@@ -1267,7 +1145,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"togglebanuser"` <ctx> <userid> [ban]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L627-L633
 
@@ -1277,7 +1154,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"shutdown"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L635-L641
 
@@ -1287,7 +1163,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"shutdowngrace"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L643-L650
 
@@ -1297,7 +1172,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"removeuser"` <ctx> <userid>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L652-L658
 
@@ -1309,7 +1183,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"addmenu"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReactionRoleCommands.cs#L44-L198
 
@@ -1321,7 +1194,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"remindme"` <ctx> <duration> <item>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L32-L61
 
@@ -1331,7 +1203,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"listreminders"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L63-L89
 
@@ -1341,7 +1212,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"listremindersguild"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L91-L118
 
@@ -1351,7 +1221,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"cancelreminder"` <ctx> <id>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L120-L150
 
@@ -1361,7 +1230,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"cancelreminderf"` <ctx> <id>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L152-L185
 
@@ -1373,7 +1241,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"emoteanalyse"` <ctx> <channel> [limit]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L31-L75
 
@@ -1383,7 +1250,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"setcategory"` <ctx> <category>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L77-L101
 
@@ -1393,7 +1259,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"setstatstrings"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L103-L114
 
@@ -1401,7 +1266,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"setstatstrings"` <ctx> <cake>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L116-L127
 
@@ -1413,7 +1277,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"playnext"` <ctx> <sg>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L194-L240
 
@@ -1423,7 +1286,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"play"` <ctx> <sg>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L265-L319
 
@@ -1433,7 +1295,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"volume"` <ctx> <volume>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L321-L348
 
@@ -1443,7 +1304,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"seek"` <ctx> <time>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L350-L367
 
@@ -1453,7 +1313,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"clearqueue"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L433-L451
 
@@ -1463,7 +1322,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"shuffle"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L453-L464
 
@@ -1473,7 +1331,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"export"` <ctx> [playlistName]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L467-L484
 
@@ -1483,7 +1340,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"remove"` <ctx> <songindex>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L487-L505
 
@@ -1493,7 +1349,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"loop"` <ctx> <settings>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L506-L533
 
@@ -1503,7 +1358,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"pause"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L623-L638
 
@@ -1513,7 +1367,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"resume"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L667-L681
 
@@ -1523,7 +1376,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"join"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L683-L690
 
@@ -1533,7 +1385,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"forceskip"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L707-L731
 
@@ -1543,7 +1394,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"leave"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L732-L742
 
@@ -1553,7 +1403,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"skip"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L743-L779
 
@@ -1565,7 +1414,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"bibi"` <ctx> <input>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/BubotSlash.cs#L67-L90
 
@@ -1577,7 +1425,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"hello"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L27-L32
 
@@ -1587,7 +1434,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"whois"` <ctx> <user>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L59-L63
 
@@ -1597,7 +1443,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L65-L69
 
@@ -1605,7 +1450,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L93-L102
 
@@ -1615,7 +1459,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"version"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L71-L77
 
@@ -1625,7 +1468,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"dukthosting"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L79-L91
 
@@ -1637,7 +1479,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"imagine"` <ctx> <prompt>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L35-L39
 
@@ -1645,7 +1486,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"imagine"` <ctx> <prompt> <steps>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L40-L44
 
@@ -1653,7 +1493,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"imagine"` <ctx> <model> <prompt>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L45-L49
 
@@ -1661,7 +1500,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"imagine"` <ctx> <model> <seed> <prompt>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L50-L54
 
@@ -1669,7 +1507,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"imagine"` <ctx> <model> <prompt> <steps>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L55-L59
 
@@ -1677,7 +1514,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"imagine"` <ctx> <model> <seed> <prompt> <resolution>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L60-L64
 
@@ -1685,7 +1521,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"imagine"` <ctx> <model> <seed> <prompt> <steps> <resolution>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L65-L69
 
@@ -1693,7 +1528,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"imagine"` <ctx> [model] [seed] [negative_prompt] [prompt] [resolution] [steps]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L70-L179
 
@@ -1705,7 +1539,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"editlangtranslator"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L43-L49
 
@@ -1715,7 +1548,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"getobjectfromcurrentlanguage"` <ctx> <name>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L51-L57
 
@@ -1725,7 +1557,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"setlangtranslator"` <ctx> <lang>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L59-L122
 
@@ -1735,7 +1566,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"uploadlanguage"` <ctx>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L124-L152
 
@@ -1745,7 +1575,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"generatelangtemplate"` <ctx> [lang]
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L154-L212
 
@@ -1757,7 +1586,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"add"` <ctx> <content>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/UserQuotes.cs#L56-L71
 
@@ -1767,7 +1595,6 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"get"` <ctx> <id>
 
-- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/UserQuotes.cs#L73-L96
 

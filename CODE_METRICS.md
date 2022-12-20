@@ -5894,6 +5894,7 @@ The `SilverBotDS.Commands.Slash` namespace contains 6 named types.
 
 ## Metric definitions
 
+
   - **Maintainability index**: Measures ease of code maintenance. 🧽 ⬆ Higher values are better.
   - **Cyclomatic complexity**: Measures the number of branches. 🌱 ⬇️ Lower values are better.
   - **Depth of inheritance**: Measures length of object inheritance hierarchy. 🇿 ⬇️ Lower values are better.
@@ -8070,6 +8071,7 @@ class Anime{
 ```
 
 <div id="AnimeSlash-class-diagram"></div>
+
 
 ##### `AnimeSlash` class diagram
 

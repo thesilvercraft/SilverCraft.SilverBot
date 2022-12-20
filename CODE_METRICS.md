@@ -152,7 +152,7 @@ The *SDiscordSink.csproj* project file contains:
 
 - 1 namespaces.
 - 2 named types.
-- 137 total lines of source code.
+- 136 total lines of source code.
 - Approximately 53 lines of executable code.
 - The highest cyclomatic complexity is 21 :exploding_head:.
 
@@ -167,7 +167,7 @@ The *SDiscordSink.csproj* project file contains:
 The `SDiscordSink` namespace contains 2 named types.
 
 - 2 named types.
-- 137 total lines of source code.
+- 136 total lines of source code.
 - Approximately 53 lines of executable code.
 - The highest cyclomatic complexity is 21 :exploding_head:.
 
@@ -180,7 +180,7 @@ The `SDiscordSink` namespace contains 2 named types.
 <br>
 
 - The `DiscordSink` contains 6 members.
-- 118 total lines of source code.
+- 117 total lines of source code.
 - Approximately 51 lines of executable code.
 - The highest cyclomatic complexity is 21 :exploding_head:.
 
@@ -189,7 +189,7 @@ The `SDiscordSink` namespace contains 2 named types.
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SDiscordSink/DiscordSink.cs#L39' title='DiscordWebhookClient DiscordSink._webhookClient'>39</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SDiscordSink/DiscordSink.cs#L41' title='DiscordSink.DiscordSink(ulong id, string token)'>41</a> | 86 | 1 :heavy_check_mark: | 0 | 2 | 5 / 2 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SDiscordSink/DiscordSink.cs#L47' title='DiscordSink.DiscordSink(params Tuple<ulong, string>[] webhooks)'>47</a> | 82 | 2 :heavy_check_mark: | 0 | 3 | 8 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SDiscordSink/DiscordSink.cs#L68' title='void DiscordSink.Emit(LogEvent logEvent)'>68</a> | 40 | 21 :exploding_head: | 0 | 15 | 86 / 44 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SDiscordSink/DiscordSink.cs#L67' title='void DiscordSink.Emit(LogEvent logEvent)'>67</a> | 40 | 21 :exploding_head: | 0 | 15 | 86 / 44 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SDiscordSink/DiscordSink.cs#L56' title='Dictionary<LogEventLevel, Tuple<string, DiscordColor?>> DiscordSink.k'>56</a> | 84 | 0 :heavy_check_mark: | 0 | 6 | 8 / 1 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SDiscordSink/DiscordSink.cs#L66' title='Regex DiscordSink.VBUErr'>66</a> | 91 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
 

@@ -9,149 +9,165 @@ This file is dynamically maintained by a bot, ~~a silverbot~~.
 
 ### Anime
 
-> "hug" - "i have no idea what this means"
+#### "hug" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"hug" <ctx>`
 
+- ctx - "i have no idea what this means" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L34-L39
 
-> "kiss" - "i have no idea what this means"
+#### "kiss" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"kiss" <ctx>`
 
+- ctx - "i have no idea what this means" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L41-L46
 
-> "slap" - "i have no idea what this means"
+#### "slap" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"slap" <ctx>`
 
+- ctx - "i have no idea what this means" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L48-L53
 
-> "wink" - "i have no idea what this means"
+#### "wink" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"wink" <ctx>`
 
+- ctx - "i have no idea what this means" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L55-L60
 
-> "pat" - "i have no idea what this means"
+#### "pat" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"pat" <ctx>`
 
+- ctx - "i have no idea what this means" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L62-L67
 
-> "kill" - "the thing im gonna do to bub in fartnite"
+#### "kill" - "the thing im gonna do to bub in fartnite"
 
-#### Arguments
+##### Arguments
 
 `"kill" <ctx>`
 
+- ctx - "the thing im gonna do to bub in fartnite" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L69-L74
 
-> "cuddle" - "i have no idea what this means"
+#### "cuddle" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"cuddle" <ctx>`
 
+- ctx - "i have no idea what this means" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L76-L81
 
-> "punch" - "i have no idea what this means"
+#### "punch" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"punch" <ctx>`
 
+- ctx - "i have no idea what this means" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L83-L88
 
 ### AnimeSlash
 
-> "hug" - "i have no idea what this means"
+#### "hug" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"hug" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L33-L37
 
-> "kiss" - "i have no idea what this means"
+#### "kiss" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"kiss" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L39-L43
 
-> "slap" - "i have no idea what this means"
+#### "slap" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"slap" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L45-L49
 
-> "wink" - "i have no idea what this means"
+#### "wink" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"wink" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L51-L55
 
-> "pat" - "i have no idea what this means"
+#### "pat" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"pat" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L57-L61
 
-> "kill" - "the thing im gonna do to bub in fartnite"
+#### "kill" - "the thing im gonna do to bub in fartnite"
 
-#### Arguments
+##### Arguments
 
 `"kill" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L63-L67
 
-> "cuddle" - "i have no idea what this means"
+#### "cuddle" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"cuddle" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L69-L73
 
-> "punch" - "i have no idea what this means"
+#### "punch" - "i have no idea what this means"
 
-#### Arguments
+##### Arguments
 
 `"punch" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L75-L79
 
@@ -161,1440 +177,1728 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 ### AdminCommands
 
-> "setprefix" - Unknown description
+#### "setprefix" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"setprefix" <ctx> <cake>`
 
+- ctx - No description (CommandContext)
+- cake - No description (string[])
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L34-L44
 
-> "emojipoll" - "Start a simple emoji poll for a simple yes/no question"
+#### "emojipoll" - "Start a simple emoji poll for a simple yes/no question"
 
-#### Arguments
+##### Arguments
 
 `"emojipoll" <commandContext> <duration> <question>`
 
+- commandContext - "Start a simple emoji poll for a simple yes/no question" (CommandContext)
+- duration - "Start a simple emoji poll for a simple yes/no question" (TimeSpan)
+- question - "Start a simple emoji poll for a simple yes/no question" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L53-L98
 
-> "GiveAway" - "Start a simple giveaway"
+#### "GiveAway" - "Start a simple giveaway"
 
-#### Arguments
+##### Arguments
 
 `"GiveAway" <commandContext> <duration> <item>`
 
+- commandContext - "Start a simple giveaway" (CommandContext)
+- duration - "Start a simple giveaway" (TimeSpan)
+- item - "Start a simple giveaway" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L100-L137
 
-> "exportemotestoguilded" - "Exports your guild's emotes into a \"Emote Pack\" Guilded can read"
+#### "exportemotestoguilded" - "Exports your guild's emotes into a \"Emote Pack\" Guilded can read"
 
-#### Arguments
+##### Arguments
 
 `"exportemotestoguilded" <ctx>`
 
+- ctx - "Exports your guild's emotes into a \"Emote Pack\" Guilded can read" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L139-L165
 
-> "exportemotes" - Unknown description
+#### "exportemotes" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"exportemotes" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L167-L204
 
 ### Audio
 
-> "playnext" - "Tell me to play a song next in the queue"
+#### "playnext" - "Tell me to play a song next in the queue"
 
 `"pn"`
 
-#### Arguments
+##### Arguments
 
 `"playnext" <ctx> <song>`
 
+- ctx - "Tell me to play a song next in the queue" (CommandContext)
+- song - "Tell me to play a song next in the queue" (SongORSongs)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L145-L190
 
-> "play" - "Tell me to play a song"
+#### "play" - "Tell me to play a song"
 
 `"p"`
 
-#### Arguments
+##### Arguments
 
 `"play" <ctx>`
 
+- ctx - "Tell me to play a song" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L192-L213
 
-#### Arguments
+##### Arguments
 
 `"play" <ctx> <song>`
 
+- ctx - No description (CommandContext)
+- song - No description (SongORSongs)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L215-L269
 
-> "volume" - "Change the volume 1-100%"
+#### "volume" - "Change the volume 1-100%"
 
 `"vol"`
 
-#### Arguments
+##### Arguments
 
 `"volume" <ctx> <volume>`
 
+- ctx - "Change the volume 1-100%" (CommandContext)
+- volume - "Change the volume 1-100%" (ushort)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L271-L299
 
-> "seek" - "Seeks to the specified time"
+#### "seek" - "Seeks to the specified time"
 
-#### Arguments
+##### Arguments
 
 `"seek" <ctx> <time>`
 
+- ctx - "Seeks to the specified time" (CommandContext)
+- time - "Seeks to the specified time" (TimeSpan)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L301-L317
 
-> "clearqueue" - "Clears the queue"
+#### "clearqueue" - "Clears the queue"
 
-#### Arguments
+##### Arguments
 
 `"clearqueue" <ctx>`
 
+- ctx - "Clears the queue" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L384-L402
 
-> "shuffle" - "Shuffles the queue"
+#### "shuffle" - "Shuffles the queue"
 
-#### Arguments
+##### Arguments
 
 `"shuffle" <ctx>`
 
+- ctx - "Shuffles the queue" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L404-L414
 
-> "export" - "Export the queue"
+#### "export" - "Export the queue"
 
-#### Arguments
+##### Arguments
 
 `"export" <ctx> [playlistName]`
 
+- ctx - "Export the queue" (CommandContext)
+- playlistName - "Export the queue" (string?)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L416-L431
 
-> "remove" - "Remove song X from the queue. 0 < index > queue length"
+#### "remove" - "Remove song X from the queue. 0 < index > queue length"
 
-#### Arguments
+##### Arguments
 
 `"remove" <ctx> <songindex>`
 
+- ctx - "Remove song X from the queue. 0 < index > queue length" (CommandContext)
+- songindex - "Remove song X from the queue. 0 < index > queue length" (int)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L433-L450
 
-> "queuehistory" - "check what was playing"
+#### "queuehistory" - "check what was playing"
 
 `"qh"`,`"prevplaying"`,`"pq"`
 
-#### Arguments
+##### Arguments
 
 `"queuehistory" <ctx>`
 
+- ctx - "check what was playing" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L452-L477
 
-> "queue" - "check whats playing rn and whats next"
+#### "queue" - "check whats playing rn and whats next"
 
 `"np"`,`"nowplaying"`,`"q"`
 
-#### Arguments
+##### Arguments
 
 `"queue" <ctx>`
 
+- ctx - "check whats playing rn and whats next" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L479-L536
 
-> "loop" - "Loops nothing/the queue/the currently playing song"
+#### "loop" - "Loops nothing/the queue/the currently playing song"
 
 `"repeat"`
 
-#### Arguments
+##### Arguments
 
 `"loop" <ctx> <settings>`
 
+- ctx - "Loops nothing/the queue/the currently playing song" (CommandContext)
+- settings - "Loops nothing/the queue/the currently playing song" (LoopSettings)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L538-L565
 
-> "pause" - "pause the current song"
+#### "pause" - "pause the current song"
 
-#### Arguments
+##### Arguments
 
 `"pause" <ctx>`
 
+- ctx - "pause the current song" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L567-L581
 
-> "ovh" - "get the lyrics from ovh"
+#### "ovh" - "get the lyrics from ovh"
 
-#### Arguments
+##### Arguments
 
 `"ovh" <ctx> <name> <artist>`
 
+- ctx - "get the lyrics from ovh" (CommandContext)
+- name - "get the lyrics from ovh" (string)
+- artist - "get the lyrics from ovh" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L583-L595
 
-> "songaliases" - "Get the hardcoded aliases in silverbots code"
+#### "songaliases" - "Get the hardcoded aliases in silverbots code"
 
-#### Arguments
+##### Arguments
 
 `"songaliases" <ctx>`
 
+- ctx - "Get the hardcoded aliases in silverbots code" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L597-L608
 
-> "resume" - "resume the current song"
+#### "resume" - "resume the current song"
 
-#### Arguments
+##### Arguments
 
 `"resume" <ctx>`
 
+- ctx - "resume the current song" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L610-L623
 
-> "join" - "to join the voice chat you're in"
+#### "join" - "to join the voice chat you're in"
 
-#### Arguments
+##### Arguments
 
 `"join" <ctx>`
 
+- ctx - "to join the voice chat you're in" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L625-L630
 
-> "forceskip" - "skip a song. dj only command"
+#### "forceskip" - "skip a song. dj only command"
 
 `"fs"`
 
-#### Arguments
+##### Arguments
 
 `"forceskip" <ctx>`
 
+- ctx - "skip a song. dj only command" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L647-L670
 
-> "voteskip" - "skip a song"
+#### "voteskip" - "skip a song"
 
 `"skip"`
 
-#### Arguments
+##### Arguments
 
 `"voteskip" <ctx>`
 
+- ctx - "skip a song" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L672-L707
 
-> "forcedisconnect" - "Tell me to leave your channel of the voice type, without checking if its in a vc"
+#### "forcedisconnect" - "Tell me to leave your channel of the voice type, without checking if its in a vc"
 
 `"fuckoffisntworking"`
 
-#### Arguments
+##### Arguments
 
 `"forcedisconnect" <ctx>`
 
+- ctx - "Tell me to leave your channel of the voice type, without checking if its in a vc" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L709-L723
 
-> "disconnect" - "Tell me to leave your channel of the voice type"
+#### "disconnect" - "Tell me to leave your channel of the voice type"
 
 `"fuckoff"`,`"minecraftbedrockisbetter"`,`"fockoff"`,`"leave"`
 
-#### Arguments
+##### Arguments
 
 `"disconnect" <ctx>`
 
+- ctx - "Tell me to leave your channel of the voice type" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L725-L736
 
 ### Bubot
 
-> "silveryeet" - "Sends SilverYeet.gif"
+#### "silveryeet" - "Sends SilverYeet.gif"
 
-#### Arguments
+##### Arguments
 
 `"silveryeet" <ctx>`
 
+- ctx - "Sends SilverYeet.gif" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L35-L43
 
 ### BibiCommands
 
-> "bibi" - "Makes a image with the great cat Bibi."
+#### "bibi" - "Makes a image with the great cat Bibi."
 
-#### Arguments
+##### Arguments
 
 `"bibi" <ctx> <input>`
 
+- ctx - "Makes a image with the great cat Bibi." (CommandContext)
+- input - "Makes a image with the great cat Bibi." (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L67-L91
 
 ### BibiLib
 
-> Unknown command name - "Access the great cat bibi library."
+#### Unknown command name - "Access the great cat bibi library."
 
-#### Arguments
+##### Arguments
 
 ` <ctx>`
 
+- ctx - "Access the great cat bibi library." (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L129-L148
 
-> "full" - "Access the great cat bibi library."
+#### "full" - "Access the great cat bibi library."
 
-#### Arguments
+##### Arguments
 
 `"full" <ctx>`
 
+- ctx - "Access the great cat bibi library." (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L150-L169
 
 ### Experience
 
-> "givexpbecausedowntimepercent" - Unknown description
+#### "givexpbecausedowntimepercent" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"givexpbecausedowntimepercent" <ctx> <percent>`
 
+- ctx - No description (CommandContext)
+- percent - No description (byte)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L52-L63
 
-> "givexpbecausedowntime" - Unknown description
+#### "givexpbecausedowntime" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"givexpbecausedowntime" <ctx> <xp>`
 
+- ctx - No description (CommandContext)
+- xp - No description (ulong)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L65-L76
 
-> "xp" - Unknown description
+#### "xp" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"xp" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L78-L98
 
-#### Arguments
+##### Arguments
 
 `"xp" <ctx> <member>`
 
+- ctx - No description (CommandContext)
+- member - No description (DiscordMember)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L100-L119
 
-> "xptop" - Unknown description
+#### "xptop" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"xptop" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L121-L171
 
-> "xpcard" - Unknown description
+#### "xpcard" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"xpcard" <ctx> <user>`
 
+- ctx - No description (CommandContext)
+- user - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L175-L251
 
-#### Arguments
+##### Arguments
 
 `"xpcard" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L253-L257
 
 ### Fortnite
 
-> "fortstats" - "Get the stats of a person using their username"
+#### "fortstats" - "Get the stats of a person using their username"
 
-#### Arguments
+##### Arguments
 
 `"fortstats" <ctx> <name>`
 
+- ctx - "Get the stats of a person using their username" (CommandContext)
+- name - "Get the stats of a person using their username" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L46-L65
 
-> "fortbrnews" - "Get a gif of the latest battle royale news"
+#### "fortbrnews" - "Get a gif of the latest battle royale news"
 
-#### Arguments
+##### Arguments
 
 `"fortbrnews" <ctx>`
 
+- ctx - "Get a gif of the latest battle royale news" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L67-L74
 
-> "fortcrnews" - "Get a gif of the latest creative news"
+#### "fortcrnews" - "Get a gif of the latest creative news"
 
-#### Arguments
+##### Arguments
 
 `"fortcrnews" <ctx>`
 
+- ctx - "Get a gif of the latest creative news" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L76-L83
 
-> "fortstwnews" - "Get a gif of the latest save-the-world news"
+#### "fortstwnews" - "Get a gif of the latest save-the-world news"
 
-#### Arguments
+##### Arguments
 
 `"fortstwnews" <ctx>`
 
+- ctx - "Get a gif of the latest save-the-world news" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L85-L92
 
-> "fortitms" - "Try to get the item shop items"
+#### "fortitms" - "Try to get the item shop items"
 
-#### Arguments
+##### Arguments
 
 `"fortitms" <ctx>`
 
+- ctx - "Try to get the item shop items" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L94-L107
 
 ### MinecraftModule
 
-> "getfromusername" - "Get a minecraft players UUID from their username"
+#### "getfromusername" - "Get a minecraft players UUID from their username"
 
 `"username"`
 
-#### Arguments
+##### Arguments
 
 `"getfromusername" <ctx> <input>`
 
+- ctx - "Get a minecraft players UUID from their username" (CommandContext)
+- input - "Get a minecraft players UUID from their username" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Minecraft.cs#L25-L39
 
 ### SteamCommands
 
-> "search" - "Search about a game"
+#### "search" - "Search about a game"
 
 `"s"`
 
-#### Arguments
+##### Arguments
 
 `"search" <ctx> <game>`
 
+- ctx - "Search about a game" (CommandContext)
+- game - "Search about a game" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Steam.cs#L28-L102
 
 ### Genericcommands
 
-> "hi" - "Hello fellow human! beep boop"
+#### "hi" - "Hello fellow human! beep boop"
 
-#### Arguments
+##### Arguments
 
 `"hi" <ctx>`
 
+- ctx - "Hello fellow human! beep boop" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L34-L42
 
-> "time" - "Get the time in UTC"
+#### "time" - "Get the time in UTC"
 
-#### Arguments
+##### Arguments
 
 `"time" <ctx>`
 
+- ctx - "Get the time in UTC" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L44-L53
 
-> "invite" - "Invite me to your server"
+#### "invite" - "Invite me to your server"
 
-#### Arguments
+##### Arguments
 
 `"invite" <ctx>`
 
+- ctx - "Invite me to your server" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L55-L65
 
-> "ping" - Unknown description
+#### "ping" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"ping" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L67-L73
 
-> "dump" - "Dump a messages raw content (useful for emote walls)"
+#### "dump" - "Dump a messages raw content (useful for emote walls)"
 
-#### Arguments
+##### Arguments
 
 `"dump" <ctx> <message>`
 
+- ctx - "Dump a messages raw content (useful for emote walls)" (CommandContext)
+- message - "Dump a messages raw content (useful for emote walls)" (DiscordMessage)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L75-L90
 
-#### Arguments
+##### Arguments
 
 `"dump" <ctx>`
 
+- ctx - "Dump a messages raw content (useful for emote walls)" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L121-L133
 
-> "archive" - "Archive a message (and its attachments)"
+#### "archive" - "Archive a message (and its attachments)"
 
-#### Arguments
+##### Arguments
 
 `"archive" <ctx> <message>`
 
+- ctx - "Archive a message (and its attachments)" (CommandContext)
+- message - "Archive a message (and its attachments)" (DiscordMessage)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L91-L119
 
-> "duckhosting" - "SilverHosting best"
+#### "duckhosting" - "SilverHosting best"
 
 `"dukthosting"`,`"ducthosting"`,`":duckhosting:"`,`"<:duckhosting:797225115837792367>"`
 
-#### Arguments
+##### Arguments
 
 `"duckhosting" <ctx>`
 
+- ctx - "SilverHosting best" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L135-L149
 
-> "user" - "Get the info I know about a specified user"
+#### "user" - "Get the info I know about a specified user"
 
-#### Arguments
+##### Arguments
 
 `"user" <ctx> <a>`
 
+- ctx - "Get the info I know about a specified user" (CommandContext)
+- a - "Get the info I know about a specified user" (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L157-L179
 
-#### Arguments
+##### Arguments
 
 `"user" <ctx>`
 
+- ctx - "Get the info I know about a specified user" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L181-L186
 
 ### Giphy
 
-> "random" - Unknown description
+#### "random" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"random" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L51-L66
 
-> "search" - Unknown description
+#### "search" - Unknown description
 
 `"s"`
 
-#### Arguments
+##### Arguments
 
 `"search" <ctx> <term>`
 
+- ctx - No description (CommandContext)
+- term - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L68-L93
 
 ### ImageModule
 
-> "caption" - "Captions an image"
+#### "caption" - "Captions an image"
 
-#### Arguments
+##### Arguments
 
 `"caption" <ctx> <image> <text>`
 
+- ctx - "Captions an image" (CommandContext)
+- image - "Captions an image" (SdImage)
+- text - "Captions an image" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L379-L388
 
-#### Arguments
+##### Arguments
 
 `"caption" <ctx> <text>`
 
+- ctx - No description (CommandContext)
+- text - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L390-L391
 
-> "fail" - "epic embed fail"
+#### "fail" - "epic embed fail"
 
-#### Arguments
+##### Arguments
 
 `"fail" <ctx> <text>`
 
+- ctx - "epic embed fail" (CommandContext)
+- text - "epic embed fail" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L393-L403
 
-> "yeet" - "YEET"
+#### "yeet" - "YEET"
 
-#### Arguments
+##### Arguments
 
 `"yeet" <ctx>`
 
+- ctx - "YEET" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L431-L433
 
-#### Arguments
+##### Arguments
 
 `"yeet" <ctx> <img2>`
 
+- ctx - "YEET" (CommandContext)
+- img2 - "YEET" (SdImage)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L434-L482
 
-> "jpeg" - Unknown description
+#### "jpeg" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"jpeg" <ctx> <image>`
 
+- ctx - No description (CommandContext)
+- image - No description (SdImage)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L528-L534
 
-#### Arguments
+##### Arguments
 
 `"jpeg" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L536-L538
 
-> "tint" - Unknown description
+#### "tint" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"tint" <ctx> <image> <color>`
 
+- ctx - No description (CommandContext)
+- image - No description (SdImage)
+- color - No description (Color)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L569-L581
 
-#### Arguments
+##### Arguments
 
 `"tint" <ctx> <color>`
 
+- ctx - No description (CommandContext)
+- color - No description (Color)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L583-L586
 
-> "adventuretime" - Unknown description
+#### "adventuretime" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"adventuretime" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L587-L589
 
-#### Arguments
+##### Arguments
 
 `"adventuretime" <ctx> <friendo>`
 
+- ctx - No description (CommandContext)
+- friendo - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L590-L591
 
-#### Arguments
+##### Arguments
 
 `"adventuretime" <ctx> <person> <friendo>`
 
+- ctx - No description (CommandContext)
+- person - No description (DiscordUser)
+- friendo - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L592-L611
 
-> "seal" - "He was forced to use Microsoft Windows when he was 6"
+#### "seal" - "He was forced to use Microsoft Windows when he was 6"
 
-#### Arguments
+##### Arguments
 
 `"seal" <ctx> <text>`
 
+- ctx - "He was forced to use Microsoft Windows when he was 6" (CommandContext)
+- text - "He was forced to use Microsoft Windows when he was 6" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L634-L640
 
-> "linus" - "NVIDIA, fuck you."
+#### "linus" - "NVIDIA, fuck you."
 
-#### Arguments
+##### Arguments
 
 `"linus" <ctx> [company]`
 
+- ctx - "NVIDIA, fuck you." (CommandContext)
+- company - "NVIDIA, fuck you." (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L642-L660
 
-> "resize" - Unknown description
+#### "resize" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"resize" <ctx> <image> [x] [y] [format]`
 
+- ctx - No description (CommandContext)
+- image - No description (SdImage)
+- x - No description (int)
+- y - No description (int)
+- format - No description (MagickFormat?)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L662-L669
 
-#### Arguments
+##### Arguments
 
 `"resize" <ctx> <image> <format>`
 
+- ctx - No description (CommandContext)
+- image - No description (SdImage)
+- format - No description (MagickFormat?)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L698-L699
 
-#### Arguments
+##### Arguments
 
 `"resize" <ctx> <format>`
 
+- ctx - No description (CommandContext)
+- format - No description (MagickFormat?)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L701-L702
 
-#### Arguments
+##### Arguments
 
 `"resize" <ctx> [x] [y] [format]`
 
+- ctx - No description (CommandContext)
+- x - No description (int)
+- y - No description (int)
+- format - No description (MagickFormat?)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L704-L706
 
-> "reliable" - Unknown description
+#### "reliable" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"reliable" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L707-L708
 
-#### Arguments
+##### Arguments
 
 `"reliable" <ctx> <koichi>`
 
+- ctx - No description (CommandContext)
+- koichi - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L710-L711
 
-#### Arguments
+##### Arguments
 
 `"reliable" <ctx> <jotaro> <koichi>`
 
+- ctx - No description (CommandContext)
+- jotaro - No description (DiscordUser)
+- koichi - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L713-L759
 
-> "ObMedal" - Unknown description
+#### "ObMedal" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"ObMedal" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L760-L764
 
-#### Arguments
+##### Arguments
 
 `"ObMedal" <ctx> <obama>`
 
+- ctx - No description (CommandContext)
+- obama - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L765-L779
 
-#### Arguments
+##### Arguments
 
 `"ObMedal" <ctx> <obama> <secondPerson>`
 
+- ctx - No description (CommandContext)
+- obama - No description (DiscordUser)
+- secondPerson - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L780-L799
 
-> "happynewyear" - Unknown description
+#### "happynewyear" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"happynewyear" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L800-L801
 
-#### Arguments
+##### Arguments
 
 `"happynewyear" <ctx> <person>`
 
+- ctx - No description (CommandContext)
+- person - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L802-L808
 
-> "silver" - Unknown description
+#### "silver" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"silver" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L820-L826
 
-#### Arguments
+##### Arguments
 
 `"silver" <ctx> <image>`
 
+- ctx - No description (CommandContext)
+- image - No description (SdImage)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L828-L836
 
 ### MiscCommands
 
-> "version" - "Get the version info"
+#### "version" - "Get the version info"
 
 `"ver"`,`"verinfo"`,`"versioninfo"`
 
-#### Arguments
+##### Arguments
 
 `"version" <ctx>`
 
+- ctx - "Get the version info" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L72-L79
 
-> "setlang" - "set your language"
+#### "setlang" - "set your language"
 
-#### Arguments
+##### Arguments
 
 `"setlang" <ctx> <langName>`
 
+- ctx - "set your language" (CommandContext)
+- langName - "set your language" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L81-L109
 
-> "togglerepeat" - "toggle repeated strings"
+#### "togglerepeat" - "toggle repeated strings"
 
-#### Arguments
+##### Arguments
 
 `"togglerepeat" <ctx> <enable>`
 
+- ctx - "toggle repeated strings" (CommandContext)
+- enable - "toggle repeated strings" (bool)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L111-L145
 
-> "translateunknown" - "translate from an unknown language"
+#### "translateunknown" - "translate from an unknown language"
 
 `"translate"`
 
-#### Arguments
+##### Arguments
 
 `"translateunknown" <ctx> <text>`
 
+- ctx - "translate from an unknown language" (CommandContext)
+- text - "translate from an unknown language" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L147-L167
 
-> "translateunknownto" - "translate from an unknown language to a specified one"
+#### "translateunknownto" - "translate from an unknown language to a specified one"
 
 `"translateto"`
 
-#### Arguments
+##### Arguments
 
 `"translateunknownto" <ctx> <languageTo> <text>`
 
+- ctx - "translate from an unknown language to a specified one" (CommandContext)
+- languageTo - "translate from an unknown language to a specified one" (string)
+- text - "translate from an unknown language to a specified one" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L169-L204
 
-> "cserrcode" - Unknown description
+#### "cserrcode" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"cserrcode" <ctx> <error>`
 
+- ctx - No description (CommandContext)
+- error - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L206-L260
 
 ### ModCommands
 
-> "kick" - "Kick a specified user"
+#### "kick" - "Kick a specified user"
 
-#### Arguments
+##### Arguments
 
 `"kick" <ctx> <a> [reason]`
 
+- ctx - "Kick a specified user" (CommandContext)
+- a - "Kick a specified user" (DiscordMember)
+- reason - "Kick a specified user" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L24-L57
 
-> "ban" - "bans a specified user"
+#### "ban" - "bans a specified user"
 
-#### Arguments
+##### Arguments
 
 `"ban" <ctx> <a> [reason]`
 
+- ctx - "bans a specified user" (CommandContext)
+- a - "bans a specified user" (DiscordUser)
+- reason - "bans a specified user" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L59-L96
 
-> "kickme" - "Kicks yourself lmao (or ban if you're super daring)"
+#### "kickme" - "Kicks yourself lmao (or ban if you're super daring)"
 
-#### Arguments
+##### Arguments
 
 `"kickme" <ctx> [ban]`
 
+- ctx - "Kicks yourself lmao (or ban if you're super daring)" (CommandContext)
+- ban - "Kicks yourself lmao (or ban if you're super daring)" (bool)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L98-L113
 
-> "purge" - "Downloads and removes X messages from the current channel."
+#### "purge" - "Downloads and removes X messages from the current channel."
 
 `"clean"`,`"clear"`
 
-#### Arguments
+##### Arguments
 
 `"purge" <ctx> <amount>`
 
+- ctx - "Downloads and removes X messages from the current channel." (CommandContext)
+- amount - "Downloads and removes X messages from the current channel." (int)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L115-L155
 
 ### OwnerOnly
 
-> "reloadcolors" - "reloads the colors.json"
+#### "reloadcolors" - "reloads the colors.json"
 
-#### Arguments
+##### Arguments
 
 `"reloadcolors" <ctx>`
 
+- ctx - "reloads the colors.json" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L48-L65
 
-> "UnRegisterCommand" - Unknown description
+#### "UnRegisterCommand" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"UnRegisterCommand" <ctx> <cmdwithparm>`
 
+- ctx - No description (CommandContext)
+- cmdwithparm - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L67-L72
 
-> "RegisterModule" - Unknown description
+#### "RegisterModule" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"RegisterModule" <ctx> <mod> [skipcheck]`
 
+- ctx - No description (CommandContext)
+- mod - No description (string)
+- skipcheck - No description (bool)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L74-L115
 
-> "sudo" - "Executes a command as another user."
+#### "sudo" - "Executes a command as another user."
 
-#### Arguments
+##### Arguments
 
 `"sudo" <ctx> <member> <command>`
 
+- ctx - "Executes a command as another user." (CommandContext)
+- member - "Executes a command as another user." (DiscordMember)
+- command - "Executes a command as another user." (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L117-L128
 
-> "setupcategory" - "Set up a category in the silverbot dev server"
+#### "setupcategory" - "Set up a category in the silverbot dev server"
 
-#### Arguments
+##### Arguments
 
 `"setupcategory" <ctx> <role>`
 
+- ctx - "Set up a category in the silverbot dev server" (CommandContext)
+- role - "Set up a category in the silverbot dev server" (DiscordRole)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L130-L168
 
-#### Arguments
+##### Arguments
 
 `"setupcategory" <ctx> <person>`
 
+- ctx - "Set up a category in the silverbot dev server" (CommandContext)
+- person - "Set up a category in the silverbot dev server" (DiscordMember)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L170-L204
 
-> "dependencies" - "get the dependencies used"
+#### "dependencies" - "get the dependencies used"
 
-#### Arguments
+##### Arguments
 
 `"dependencies" <ctx>`
 
+- ctx - "get the dependencies used" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L339-L358
 
-> "evaluate" - "EVALUATE SOME C# CODE"
+#### "evaluate" - "EVALUATE SOME C# CODE"
 
 `"eval"`,`"ev"`
 
-#### Arguments
+##### Arguments
 
 `"evaluate" <ctx> <code>`
 
+- ctx - "EVALUATE SOME C# CODE" (CommandContext)
+- code - "EVALUATE SOME C# CODE" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L364-L471
 
-> "sh" - "runs some commands"
+#### "sh" - "runs some commands"
 
-#### Arguments
+##### Arguments
 
 `"sh" <ctx> <command>`
 
+- ctx - "runs some commands" (CommandContext)
+- command - "runs some commands" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L473-L508
 
-> "runsql" - "runs some sql"
+#### "runsql" - "runs some sql"
 
-#### Arguments
+##### Arguments
 
 `"runsql" <ctx> <sql>`
 
+- ctx - "runs some sql" (CommandContext)
+- sql - "runs some sql" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L510-L517
 
-> "addemotes" - "testing shiz"
+#### "addemotes" - "testing shiz"
 
-#### Arguments
+##### Arguments
 
 `"addemotes" <ctx>`
 
+- ctx - "testing shiz" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L542-L612
 
-> "guilds" - Unknown description
+#### "guilds" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"guilds" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L614-L625
 
-> "togglebanuser" - Unknown description
+#### "togglebanuser" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"togglebanuser" <ctx> <userid> [ban]`
 
+- ctx - No description (CommandContext)
+- userid - No description (DiscordUser)
+- ban - No description (bool)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L627-L633
 
-> "shutdown" - "kill the bot"
+#### "shutdown" - "kill the bot"
 
-#### Arguments
+##### Arguments
 
 `"shutdown" <ctx>`
 
+- ctx - "kill the bot" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L635-L641
 
-> "shutdowngrace" - "kill the bot but shutdown the tasks first"
+#### "shutdowngrace" - "kill the bot but shutdown the tasks first"
 
-#### Arguments
+##### Arguments
 
 `"shutdowngrace" <ctx>`
 
+- ctx - "kill the bot but shutdown the tasks first" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L643-L650
 
-> "removeuser" - Unknown description
+#### "removeuser" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"removeuser" <ctx> <userid>`
 
+- ctx - No description (CommandContext)
+- userid - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L652-L658
 
 ### ReactionRoleCommands
 
-> "addmenu" - Unknown description
+#### "addmenu" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"addmenu" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReactionRoleCommands.cs#L44-L198
 
 ### ReminderCommands
 
-> "remindme" - "simple reminder"
+#### "remindme" - "simple reminder"
 
-#### Arguments
+##### Arguments
 
 `"remindme" <ctx> <duration> <item>`
 
+- ctx - "simple reminder" (CommandContext)
+- duration - "simple reminder" (TimeSpan)
+- item - "simple reminder" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L32-L61
 
-> "listreminders" - "lists all reminders"
+#### "listreminders" - "lists all reminders"
 
-#### Arguments
+##### Arguments
 
 `"listreminders" <ctx>`
 
+- ctx - "lists all reminders" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L63-L89
 
-> "listremindersguild" - "lists all reminders here"
+#### "listremindersguild" - "lists all reminders here"
 
-#### Arguments
+##### Arguments
 
 `"listremindersguild" <ctx>`
 
+- ctx - "lists all reminders here" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L91-L118
 
-> "cancelreminder" - "deletes a specific reminder"
+#### "cancelreminder" - "deletes a specific reminder"
 
-#### Arguments
+##### Arguments
 
 `"cancelreminder" <ctx> <id>`
 
+- ctx - "deletes a specific reminder" (CommandContext)
+- id - "deletes a specific reminder" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L120-L150
 
-> "cancelreminderf" - "deletes a reminder with force"
+#### "cancelreminderf" - "deletes a reminder with force"
 
-#### Arguments
+##### Arguments
 
 `"cancelreminderf" <ctx> <id>`
 
+- ctx - "deletes a reminder with force" (CommandContext)
+- id - "deletes a reminder with force" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L152-L185
 
 ### ServerStatsCommands
 
-> "emoteanalyse" - "analyse emote usage in a specified channel"
+#### "emoteanalyse" - "analyse emote usage in a specified channel"
 
-#### Arguments
+##### Arguments
 
 `"emoteanalyse" <ctx> <channel> [limit]`
 
+- ctx - "analyse emote usage in a specified channel" (CommandContext)
+- channel - "analyse emote usage in a specified channel" (DiscordChannel)
+- limit - "analyse emote usage in a specified channel" (int)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L31-L75
 
-> "setcategory" - Unknown description
+#### "setcategory" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"setcategory" <ctx> <category>`
 
+- ctx - No description (CommandContext)
+- category - No description (DiscordChannel)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L77-L101
 
-> "setstatstrings" - Unknown description
+#### "setstatstrings" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"setstatstrings" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L103-L114
 
-#### Arguments
+##### Arguments
 
 `"setstatstrings" <ctx> <cake>`
 
+- ctx - No description (CommandContext)
+- cake - No description (string[])
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L116-L127
 
 ### AudioSlash
 
-> "playnext" - "Tell me to play a song next in the queue"
+#### "playnext" - "Tell me to play a song next in the queue"
 
-#### Arguments
+##### Arguments
 
 `"playnext" <ctx> <sg>`
 
+- ctx - No description (InteractionContext)
+- sg - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L194-L240
 
-> "play" - "Tell me to play a song"
+#### "play" - "Tell me to play a song"
 
-#### Arguments
+##### Arguments
 
 `"play" <ctx> <sg>`
 
+- ctx - No description (InteractionContext)
+- sg - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L265-L319
 
-> "volume" - "Change the volume 1-100%"
+#### "volume" - "Change the volume 1-100%"
 
-#### Arguments
+##### Arguments
 
 `"volume" <ctx> <volume>`
 
+- ctx - No description (InteractionContext)
+- volume - No description (long)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L321-L348
 
-> "seek" - "Seeks to the specified time"
+#### "seek" - "Seeks to the specified time"
 
-#### Arguments
+##### Arguments
 
 `"seek" <ctx> <time>`
 
+- ctx - No description (InteractionContext)
+- time - No description (TimeSpan?)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L350-L367
 
-> "clearqueue" - "Clears the queue"
+#### "clearqueue" - "Clears the queue"
 
-#### Arguments
+##### Arguments
 
 `"clearqueue" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L433-L451
 
-> "shuffle" - "Shuffles the queue"
+#### "shuffle" - "Shuffles the queue"
 
-#### Arguments
+##### Arguments
 
 `"shuffle" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L453-L464
 
-> "export" - "Export the queue"
+#### "export" - "Export the queue"
 
-#### Arguments
+##### Arguments
 
 `"export" <ctx> [playlistName]`
 
+- ctx - No description (InteractionContext)
+- playlistName - No description (string?)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L467-L484
 
-> "remove" - "Remove song X from the queue. 0 < index > queue length"
+#### "remove" - "Remove song X from the queue. 0 < index > queue length"
 
-#### Arguments
+##### Arguments
 
 `"remove" <ctx> <songindex>`
 
+- ctx - No description (InteractionContext)
+- songindex - No description (long)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L487-L505
 
-> "loop" - "Loops nothing/the queue/the currently playing song\""
+#### "loop" - "Loops nothing/the queue/the currently playing song\""
 
-#### Arguments
+##### Arguments
 
 `"loop" <ctx> <settings>`
 
+- ctx - No description (InteractionContext)
+- settings - No description (LoopSettings)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L506-L533
 
-> "pause" - "pause the current song"
+#### "pause" - "pause the current song"
 
-#### Arguments
+##### Arguments
 
 `"pause" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L623-L638
 
-> "resume" - "resume the current song"
+#### "resume" - "resume the current song"
 
-#### Arguments
+##### Arguments
 
 `"resume" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L667-L681
 
-> "join" - "join the voice chat you're in"
+#### "join" - "join the voice chat you're in"
 
-#### Arguments
+##### Arguments
 
 `"join" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L683-L690
 
-> "forceskip" - "skip a song. dj only command"
+#### "forceskip" - "skip a song. dj only command"
 
-#### Arguments
+##### Arguments
 
 `"forceskip" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L707-L731
 
-> "leave" - "disconnect from voice channel"
+#### "leave" - "disconnect from voice channel"
 
-#### Arguments
+##### Arguments
 
 `"leave" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L732-L742
 
-> "skip" - "vote skip"
+#### "skip" - "vote skip"
 
-#### Arguments
+##### Arguments
 
 `"skip" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L743-L779
 
 ### BubotSlash
 
-> "bibi" - "Makes a image with the great cat Bibi."
+#### "bibi" - "Makes a image with the great cat Bibi."
 
-#### Arguments
+##### Arguments
 
 `"bibi" <ctx> <input>`
 
+- ctx - No description (InteractionContext)
+- input - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/BubotSlash.cs#L67-L90
 
 ### GeneralCommands
 
-> "hello" - "A simple hello command"
+#### "hello" - "A simple hello command"
 
-#### Arguments
+##### Arguments
 
 `"hello" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L27-L32
 
-> "whois" - "Find out the info silverbot knows about someone."
+#### "whois" - "Find out the info silverbot knows about someone."
 
-#### Arguments
+##### Arguments
 
 `"whois" <ctx> <user>`
 
+- ctx - No description (InteractionContext)
+- user - No description (DiscordUser)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L59-L63
 
-> Unknown command name - Unknown description
+#### Unknown command name - Unknown description
 
-#### Arguments
+##### Arguments
 
 ` <ctx>`
 
+- ctx - No description (ContextMenuContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L65-L69
 
-#### Arguments
+##### Arguments
 
 ` <ctx>`
 
+- ctx - No description (ContextMenuContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L93-L102
 
-> "version" - "Find out the version info for this instance of silverbot"
+#### "version" - "Find out the version info for this instance of silverbot"
 
-#### Arguments
+##### Arguments
 
 `"version" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L71-L77
 
-> "dukthosting" - "SilverHosting:tm: best"
+#### "dukthosting" - "SilverHosting:tm: best"
 
-#### Arguments
+##### Arguments
 
 `"dukthosting" <ctx>`
 
+- ctx - No description (InteractionContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L79-L91
 
 ### StableDiff
 
-> "imagine" - Unknown description
+#### "imagine" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"imagine" <ctx> <prompt>`
 
+- ctx - No description (CommandContext)
+- prompt - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L35-L39
 
-#### Arguments
+##### Arguments
 
 `"imagine" <ctx> <prompt> <steps>`
 
+- ctx - No description (CommandContext)
+- prompt - No description (string)
+- steps - No description (int)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L40-L44
 
-#### Arguments
+##### Arguments
 
 `"imagine" <ctx> <model> <prompt>`
 
+- ctx - No description (CommandContext)
+- model - No description (string)
+- prompt - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L45-L49
 
-#### Arguments
+##### Arguments
 
 `"imagine" <ctx> <model> <seed> <prompt>`
 
+- ctx - No description (CommandContext)
+- model - No description (string)
+- seed - No description (int)
+- prompt - No description (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L50-L54
 
-#### Arguments
+##### Arguments
 
 `"imagine" <ctx> <model> <prompt> <steps>`
 
+- ctx - No description (CommandContext)
+- model - No description (string)
+- prompt - No description (string)
+- steps - No description (int)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L55-L59
 
-#### Arguments
+##### Arguments
 
 `"imagine" <ctx> <model> <seed> <prompt> <resolution>`
 
+- ctx - No description (CommandContext)
+- model - No description (string)
+- seed - No description (int)
+- prompt - No description (string)
+- resolution - No description (int)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L60-L64
 
-#### Arguments
+##### Arguments
 
 `"imagine" <ctx> <model> <seed> <prompt> <steps> <resolution>`
 
+- ctx - No description (CommandContext)
+- model - No description (string)
+- seed - No description (int)
+- prompt - No description (string)
+- steps - No description (int)
+- resolution - No description (int)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L65-L69
 
-#### Arguments
+##### Arguments
 
 `"imagine" <ctx> [model] [seed] [negative_prompt] [prompt] [resolution] [steps]`
 
+- ctx - No description (CommandContext)
+- model - No description (string)
+- seed - No description (int?)
+- negative_prompt - No description (string)
+- prompt - No description (string)
+- resolution - No description (int)
+- steps - No description (int)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L70-L179
 
 ### TranslatorCommands
 
-> "editlangtranslator" - "set you're testing language"
+#### "editlangtranslator" - "set you're testing language"
 
-#### Arguments
+##### Arguments
 
 `"editlangtranslator" <ctx>`
 
+- ctx - "set you're testing language" (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L43-L49
 
-> "getobjectfromcurrentlanguage" - "yayayayayyayaya"
+#### "getobjectfromcurrentlanguage" - "yayayayayyayaya"
 
-#### Arguments
+##### Arguments
 
 `"getobjectfromcurrentlanguage" <ctx> <name>`
 
+- ctx - "yayayayayyayaya" (CommandContext)
+- name - "yayayayayyayaya" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L51-L57
 
-> "setlangtranslator" - "set you're testing language"
+#### "setlangtranslator" - "set you're testing language"
 
-#### Arguments
+##### Arguments
 
 `"setlangtranslator" <ctx> <lang>`
 
+- ctx - "set you're testing language" (CommandContext)
+- lang - "set you're testing language" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L59-L122
 
-> "uploadlanguage" - Unknown description
+#### "uploadlanguage" - Unknown description
 
-#### Arguments
+##### Arguments
 
 `"uploadlanguage" <ctx>`
 
+- ctx - No description (CommandContext)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L124-L152
 
-> "generatelangtemplate" - "make a template for translation"
+#### "generatelangtemplate" - "make a template for translation"
 
-#### Arguments
+##### Arguments
 
 `"generatelangtemplate" <ctx> [lang]`
 
+- ctx - "make a template for translation" (CommandContext)
+- lang - "make a template for translation" (string?)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L154-L212
 
 ### UserQuotesModule
 
-> "add" - "Add a new quote to your \"Quote Book\""
+#### "add" - "Add a new quote to your \"Quote Book\""
 
-#### Arguments
+##### Arguments
 
 `"add" <ctx> <content>`
 
+- ctx - "Add a new quote to your \"Quote Book\"" (CommandContext)
+- content - "Add a new quote to your \"Quote Book\"" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/UserQuotes.cs#L56-L71
 
-> "get" - "Gets a quote from your \"Quote Book\" with it's ID"
+#### "get" - "Gets a quote from your \"Quote Book\" with it's ID"
 
-#### Arguments
+##### Arguments
 
 `"get" <ctx> <id>`
 
+- ctx - "Gets a quote from your \"Quote Book\" with it's ID" (CommandContext)
+- id - "Gets a quote from your \"Quote Book\" with it's ID" (string)
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/UserQuotes.cs#L73-L96
 

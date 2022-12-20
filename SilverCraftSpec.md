@@ -11,33 +11,81 @@ This file is dynamically maintained by a bot, ~~a silverbot~~.
 
 > "hug" - "i have no idea what this means"
 
+#### Arguments
+
+`"hug"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L34-L39
 
 > "kiss" - "i have no idea what this means"
+
+#### Arguments
+
+`"kiss"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L41-L46
 
 > "slap" - "i have no idea what this means"
 
+#### Arguments
+
+`"slap"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L48-L53
 
 > "wink" - "i have no idea what this means"
+
+#### Arguments
+
+`"wink"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L55-L60
 
 > "pat" - "i have no idea what this means"
 
+#### Arguments
+
+`"pat"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L62-L67
 
 > "kill" - "the thing im gonna do to bub in fartnite"
+
+#### Arguments
+
+`"kill"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L69-L74
 
 > "cuddle" - "i have no idea what this means"
 
+#### Arguments
+
+`"cuddle"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L76-L81
 
 > "punch" - "i have no idea what this means"
+
+#### Arguments
+
+`"punch"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/Anime.cs#L83-L88
 
@@ -45,33 +93,81 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 > "hug" - "i have no idea what this means"
 
+#### Arguments
+
+`"hug"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L33-L37
 
 > "kiss" - "i have no idea what this means"
+
+#### Arguments
+
+`"kiss"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L39-L43
 
 > "slap" - "i have no idea what this means"
 
+#### Arguments
+
+`"slap"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L45-L49
 
 > "wink" - "i have no idea what this means"
+
+#### Arguments
+
+`"wink"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L51-L55
 
 > "pat" - "i have no idea what this means"
 
+#### Arguments
+
+`"pat"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L57-L61
 
 > "kill" - "the thing im gonna do to bub in fartnite"
+
+#### Arguments
+
+`"kill"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L63-L67
 
 > "cuddle" - "i have no idea what this means"
 
+#### Arguments
+
+`"cuddle"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L69-L73
 
 > "punch" - "i have no idea what this means"
+
+#### Arguments
+
+`"punch"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.AnimeModule/AnimeSlash.cs#L75-L79
 
@@ -83,21 +179,51 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS.
 
 > "setprefix" - Unknown description
 
+#### Arguments
+
+`"setprefix"` <ctx> <cake>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L34-L44
 
 > "emojipoll" - "Start a simple emoji poll for a simple yes/no question"
+
+#### Arguments
+
+`"emojipoll"` <commandContext> <duration> <question>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L53-L98
 
 > "GiveAway" - "Start a simple giveaway"
 
+#### Arguments
+
+`"GiveAway"` <commandContext> <duration> <item>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L100-L137
 
 > "exportemotestoguilded" - "Exports your guild's emotes into a \"Emote Pack\" Guilded can read"
 
+#### Arguments
+
+`"exportemotestoguilded"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L139-L165
 
 > "exportemotes" - Unknown description
+
+#### Arguments
+
+`"exportemotes"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L167-L204
 
@@ -107,15 +233,31 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"pn"`
 
+#### Arguments
+
+`"playnext"` <ctx> <song>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L145-L190
 
 > "play" - "Tell me to play a song"
 
 `"p"`
 
+#### Arguments
+
+`"play"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L192-L213
 
-> "play" - Unknown description
+#### Arguments
+
+`"play"` <ctx> <song>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L215-L269
 
@@ -123,25 +265,61 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"vol"`
 
+#### Arguments
+
+`"volume"` <ctx> <volume>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L271-L299
 
 > "seek" - "Seeks to the specified time"
+
+#### Arguments
+
+`"seek"` <ctx> <time>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L301-L317
 
 > "clearqueue" - "Clears the queue"
 
+#### Arguments
+
+`"clearqueue"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L384-L402
 
 > "shuffle" - "Shuffles the queue"
+
+#### Arguments
+
+`"shuffle"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L404-L414
 
 > "export" - "Export the queue"
 
+#### Arguments
+
+`"export"` <ctx> [playlistName]
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L416-L431
 
 > "remove" - "Remove song X from the queue. 0 < index > queue length"
+
+#### Arguments
+
+`"remove"` <ctx> <songindex>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L433-L450
 
@@ -149,11 +327,23 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"qh"`,`"prevplaying"`,`"pq"`
 
+#### Arguments
+
+`"queuehistory"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L452-L477
 
 > "queue" - "check whats playing rn and whats next"
 
 `"np"`,`"nowplaying"`,`"q"`
+
+#### Arguments
+
+`"queue"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L479-L536
 
@@ -161,25 +351,61 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"repeat"`
 
+#### Arguments
+
+`"loop"` <ctx> <settings>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L538-L565
 
 > "pause" - "pause the current song"
+
+#### Arguments
+
+`"pause"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L567-L581
 
 > "ovh" - "get the lyrics from ovh"
 
+#### Arguments
+
+`"ovh"` <ctx> <name> <artist>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L583-L595
 
 > "songaliases" - "Get the hardcoded aliases in silverbots code"
+
+#### Arguments
+
+`"songaliases"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L597-L608
 
 > "resume" - "resume the current song"
 
+#### Arguments
+
+`"resume"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L610-L623
 
 > "join" - "to join the voice chat you're in"
+
+#### Arguments
+
+`"join"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L625-L630
 
@@ -187,11 +413,23 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"fs"`
 
+#### Arguments
+
+`"forceskip"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L647-L670
 
 > "voteskip" - "skip a song"
 
 `"skip"`
+
+#### Arguments
+
+`"voteskip"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L672-L707
 
@@ -199,11 +437,23 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"fuckoffisntworking"`
 
+#### Arguments
+
+`"forcedisconnect"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L709-L723
 
 > "disconnect" - "Tell me to leave your channel of the voice type"
 
 `"fuckoff"`,`"minecraftbedrockisbetter"`,`"fockoff"`,`"leave"`
+
+#### Arguments
+
+`"disconnect"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L725-L736
 
@@ -211,11 +461,23 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "silveryeet" - "Sends SilverYeet.gif"
 
+#### Arguments
+
+`"silveryeet"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L35-L43
 
 ### BibiCommands
 
 > "bibi" - "Makes a image with the great cat Bibi."
+
+#### Arguments
+
+`"bibi"` <ctx> <input>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L67-L91
 
@@ -223,9 +485,21 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > Unknown command name - "Access the great cat bibi library."
 
+#### Arguments
+
+`` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L129-L148
 
 > "full" - "Access the great cat bibi library."
+
+#### Arguments
+
+`"full"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/bubot.cs#L150-L169
 
@@ -233,29 +507,67 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "givexpbecausedowntimepercent" - Unknown description
 
+#### Arguments
+
+`"givexpbecausedowntimepercent"` <ctx> <percent>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L52-L63
 
 > "givexpbecausedowntime" - Unknown description
+
+#### Arguments
+
+`"givexpbecausedowntime"` <ctx> <xp>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L65-L76
 
 > "xp" - Unknown description
 
+#### Arguments
+
+`"xp"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L78-L98
 
-> "xp" - Unknown description
+#### Arguments
+
+`"xp"` <ctx> <member>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L100-L119
 
 > "xptop" - Unknown description
 
+#### Arguments
+
+`"xptop"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L121-L171
 
 > "xpcard" - Unknown description
 
+#### Arguments
+
+`"xpcard"` <ctx> <user>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L175-L251
 
-> "xpcard" - Unknown description
+#### Arguments
+
+`"xpcard"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L253-L257
 
@@ -263,21 +575,51 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "fortstats" - "Get the stats of a person using their username"
 
+#### Arguments
+
+`"fortstats"` <ctx> <name>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L46-L65
 
 > "fortbrnews" - "Get a gif of the latest battle royale news"
+
+#### Arguments
+
+`"fortbrnews"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L67-L74
 
 > "fortcrnews" - "Get a gif of the latest creative news"
 
+#### Arguments
+
+`"fortcrnews"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L76-L83
 
 > "fortstwnews" - "Get a gif of the latest save-the-world news"
 
+#### Arguments
+
+`"fortstwnews"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L85-L92
 
 > "fortitms" - "Try to get the item shop items"
+
+#### Arguments
+
+`"fortitms"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Fortnite.cs#L94-L107
 
@@ -287,6 +629,12 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"username"`
 
+#### Arguments
+
+`"getfromusername"` <ctx> <input>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Minecraft.cs#L25-L39
 
 ### SteamCommands
@@ -295,49 +643,111 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"s"`
 
+#### Arguments
+
+`"search"` <ctx> <game>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Steam.cs#L28-L102
 
 ### Genericcommands
 
 > "hi" - "Hello fellow human! beep boop"
 
+#### Arguments
+
+`"hi"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L34-L42
 
 > "time" - "Get the time in UTC"
+
+#### Arguments
+
+`"time"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L44-L53
 
 > "invite" - "Invite me to your server"
 
+#### Arguments
+
+`"invite"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L55-L65
 
 > "ping" - Unknown description
+
+#### Arguments
+
+`"ping"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L67-L73
 
 > "dump" - "Dump a messages raw content (useful for emote walls)"
 
+#### Arguments
+
+`"dump"` <ctx> <message>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L75-L90
+
+#### Arguments
+
+`"dump"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
+https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L121-L133
 
 > "archive" - "Archive a message (and its attachments)"
 
+#### Arguments
+
+`"archive"` <ctx> <message>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L91-L119
-
-> "dump" - "Dump a messages raw content (useful for emote walls)"
-
-https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L121-L133
 
 > "duckhosting" - "SilverHosting best"
 
 `"dukthosting"`,`"ducthosting"`,`":duckhosting:"`,`"<:duckhosting:797225115837792367>"`
 
+#### Arguments
+
+`"duckhosting"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L135-L149
 
 > "user" - "Get the info I know about a specified user"
 
+#### Arguments
+
+`"user"` <ctx> <a>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L157-L179
 
-> "user" - "Get the info I know about a specified user"
+#### Arguments
+
+`"user"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L181-L186
 
@@ -345,11 +755,23 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "random" - Unknown description
 
+#### Arguments
+
+`"random"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L51-L66
 
 > "search" - Unknown description
 
 `"s"`
+
+#### Arguments
+
+`"search"` <ctx> <term>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L68-L93
 
@@ -357,113 +779,251 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "caption" - "Captions an image"
 
+#### Arguments
+
+`"caption"` <ctx> <image> <text>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L379-L388
 
-> "caption" - Unknown description
+#### Arguments
+
+`"caption"` <ctx> <text>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L390-L391
 
 > "fail" - "epic embed fail"
 
+#### Arguments
+
+`"fail"` <ctx> <text>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L393-L403
 
 > "yeet" - "YEET"
 
+#### Arguments
+
+`"yeet"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L431-L433
 
-> "yeet" - "YEET"
+#### Arguments
+
+`"yeet"` <ctx> <img2>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L434-L482
 
 > "jpeg" - Unknown description
 
+#### Arguments
+
+`"jpeg"` <ctx> <image>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L528-L534
 
-> "jpeg" - Unknown description
+#### Arguments
+
+`"jpeg"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L536-L538
 
 > "tint" - Unknown description
 
+#### Arguments
+
+`"tint"` <ctx> <image> <color>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L569-L581
 
-> "tint" - Unknown description
+#### Arguments
+
+`"tint"` <ctx> <color>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L583-L586
 
 > "adventuretime" - Unknown description
 
+#### Arguments
+
+`"adventuretime"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L587-L589
 
-> "adventuretime" - Unknown description
+#### Arguments
+
+`"adventuretime"` <ctx> <friendo>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L590-L591
 
-> "adventuretime" - Unknown description
+#### Arguments
+
+`"adventuretime"` <ctx> <person> <friendo>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L592-L611
 
 > "seal" - "He was forced to use Microsoft Windows when he was 6"
 
+#### Arguments
+
+`"seal"` <ctx> <text>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L634-L640
 
 > "linus" - "NVIDIA, fuck you."
+
+#### Arguments
+
+`"linus"` <ctx> [company]
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L642-L660
 
 > "resize" - Unknown description
 
+#### Arguments
+
+`"resize"` <ctx> <image> [x] [y] [format]
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L662-L669
 
-> "resize" - Unknown description
+#### Arguments
+
+`"resize"` <ctx> <image> <format>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L698-L699
 
-> "resize" - Unknown description
+#### Arguments
+
+`"resize"` <ctx> <format>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L701-L702
 
-> "resize" - Unknown description
+#### Arguments
+
+`"resize"` <ctx> [x] [y] [format]
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L704-L706
 
 > "reliable" - Unknown description
 
+#### Arguments
+
+`"reliable"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L707-L708
 
-> "reliable" - Unknown description
+#### Arguments
+
+`"reliable"` <ctx> <koichi>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L710-L711
 
-> "reliable" - Unknown description
+#### Arguments
+
+`"reliable"` <ctx> <jotaro> <koichi>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L713-L759
 
 > "ObMedal" - Unknown description
 
+#### Arguments
+
+`"ObMedal"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L760-L764
 
-> "ObMedal" - Unknown description
+#### Arguments
+
+`"ObMedal"` <ctx> <obama>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L765-L779
 
-> "ObMedal" - Unknown description
+#### Arguments
+
+`"ObMedal"` <ctx> <obama> <secondPerson>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L780-L799
 
 > "happynewyear" - Unknown description
 
+#### Arguments
+
+`"happynewyear"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L800-L801
 
-> "happynewyear" - Unknown description
+#### Arguments
+
+`"happynewyear"` <ctx> <person>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L802-L808
 
 > "silver" - Unknown description
 
+#### Arguments
+
+`"silver"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L820-L826
 
-> "silver" - Unknown description
+#### Arguments
+
+`"silver"` <ctx> <image>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L828-L836
 
@@ -473,13 +1033,31 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"ver"`,`"verinfo"`,`"versioninfo"`
 
+#### Arguments
+
+`"version"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L72-L79
 
 > "setlang" - "set your language"
 
+#### Arguments
+
+`"setlang"` <ctx> <langName>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L81-L109
 
 > "togglerepeat" - "toggle repeated strings"
+
+#### Arguments
+
+`"togglerepeat"` <ctx> <enable>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L111-L145
 
@@ -487,15 +1065,33 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"translate"`
 
+#### Arguments
+
+`"translateunknown"` <ctx> <text>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L147-L167
 
 > "translateunknownto" - "translate from an unknown language to a specified one"
 
 `"translateto"`
 
+#### Arguments
+
+`"translateunknownto"` <ctx> <languageTo> <text>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L169-L204
 
 > "cserrcode" - Unknown description
+
+#### Arguments
+
+`"cserrcode"` <ctx> <error>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L206-L260
 
@@ -503,13 +1099,31 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "kick" - "Kick a specified user"
 
+#### Arguments
+
+`"kick"` <ctx> <a> [reason]
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L24-L57
 
 > "ban" - "bans a specified user"
 
+#### Arguments
+
+`"ban"` <ctx> <a> [reason]
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L59-L96
 
 > "kickme" - "Kicks yourself lmao (or ban if you're super daring)"
+
+#### Arguments
+
+`"kickme"` <ctx> [ban]
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L98-L113
 
@@ -517,35 +1131,81 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"clean"`,`"clear"`
 
+#### Arguments
+
+`"purge"` <ctx> <amount>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L115-L155
 
 ### OwnerOnly
 
 > "reloadcolors" - "reloads the colors.json"
 
+#### Arguments
+
+`"reloadcolors"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L48-L65
 
 > "UnRegisterCommand" - Unknown description
+
+#### Arguments
+
+`"UnRegisterCommand"` <ctx> <cmdwithparm>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L67-L72
 
 > "RegisterModule" - Unknown description
 
+#### Arguments
+
+`"RegisterModule"` <ctx> <mod> [skipcheck]
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L74-L115
 
 > "sudo" - "Executes a command as another user."
+
+#### Arguments
+
+`"sudo"` <ctx> <member> <command>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L117-L128
 
 > "setupcategory" - "Set up a category in the silverbot dev server"
 
+#### Arguments
+
+`"setupcategory"` <ctx> <role>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L130-L168
 
-> "setupcategory" - "Set up a category in the silverbot dev server"
+#### Arguments
+
+`"setupcategory"` <ctx> <person>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L170-L204
 
 > "dependencies" - "get the dependencies used"
+
+#### Arguments
+
+`"dependencies"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L339-L358
 
@@ -553,37 +1213,91 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 `"eval"`,`"ev"`
 
+#### Arguments
+
+`"evaluate"` <ctx> <code>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L364-L471
 
 > "sh" - "runs some commands"
+
+#### Arguments
+
+`"sh"` <ctx> <command>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L473-L508
 
 > "runsql" - "runs some sql"
 
+#### Arguments
+
+`"runsql"` <ctx> <sql>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L510-L517
 
 > "addemotes" - "testing shiz"
+
+#### Arguments
+
+`"addemotes"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L542-L612
 
 > "guilds" - Unknown description
 
+#### Arguments
+
+`"guilds"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L614-L625
 
 > "togglebanuser" - Unknown description
+
+#### Arguments
+
+`"togglebanuser"` <ctx> <userid> [ban]
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L627-L633
 
 > "shutdown" - "kill the bot"
 
+#### Arguments
+
+`"shutdown"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L635-L641
 
 > "shutdowngrace" - "kill the bot but shutdown the tasks first"
 
+#### Arguments
+
+`"shutdowngrace"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L643-L650
 
 > "removeuser" - Unknown description
+
+#### Arguments
+
+`"removeuser"` <ctx> <userid>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L652-L658
 
@@ -591,27 +1305,63 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "addmenu" - Unknown description
 
+#### Arguments
+
+`"addmenu"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReactionRoleCommands.cs#L44-L198
 
 ### ReminderCommands
 
 > "remindme" - "simple reminder"
 
+#### Arguments
+
+`"remindme"` <ctx> <duration> <item>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L32-L61
 
 > "listreminders" - "lists all reminders"
+
+#### Arguments
+
+`"listreminders"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L63-L89
 
 > "listremindersguild" - "lists all reminders here"
 
+#### Arguments
+
+`"listremindersguild"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L91-L118
 
 > "cancelreminder" - "deletes a specific reminder"
 
+#### Arguments
+
+`"cancelreminder"` <ctx> <id>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L120-L150
 
 > "cancelreminderf" - "deletes a reminder with force"
+
+#### Arguments
+
+`"cancelreminderf"` <ctx> <id>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReminderCommands.cs#L152-L185
 
@@ -619,17 +1369,39 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "emoteanalyse" - "analyse emote usage in a specified channel"
 
+#### Arguments
+
+`"emoteanalyse"` <ctx> <channel> [limit]
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L31-L75
 
 > "setcategory" - Unknown description
+
+#### Arguments
+
+`"setcategory"` <ctx> <category>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L77-L101
 
 > "setstatstrings" - Unknown description
 
+#### Arguments
+
+`"setstatstrings"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L103-L114
 
-> "setstatstrings" - Unknown description
+#### Arguments
+
+`"setstatstrings"` <ctx> <cake>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L116-L127
 
@@ -637,61 +1409,151 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "playnext" - "Tell me to play a song next in the queue"
 
+#### Arguments
+
+`"playnext"` <ctx> <sg>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L194-L240
 
 > "play" - "Tell me to play a song"
+
+#### Arguments
+
+`"play"` <ctx> <sg>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L265-L319
 
 > "volume" - "Change the volume 1-100%"
 
+#### Arguments
+
+`"volume"` <ctx> <volume>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L321-L348
 
 > "seek" - "Seeks to the specified time"
+
+#### Arguments
+
+`"seek"` <ctx> <time>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L350-L367
 
 > "clearqueue" - "Clears the queue"
 
+#### Arguments
+
+`"clearqueue"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L433-L451
 
 > "shuffle" - "Shuffles the queue"
+
+#### Arguments
+
+`"shuffle"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L453-L464
 
 > "export" - "Export the queue"
 
+#### Arguments
+
+`"export"` <ctx> [playlistName]
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L467-L484
 
 > "remove" - "Remove song X from the queue. 0 < index > queue length"
+
+#### Arguments
+
+`"remove"` <ctx> <songindex>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L487-L505
 
 > "loop" - "Loops nothing/the queue/the currently playing song\""
 
+#### Arguments
+
+`"loop"` <ctx> <settings>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L506-L533
 
 > "pause" - "pause the current song"
+
+#### Arguments
+
+`"pause"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L623-L638
 
 > "resume" - "resume the current song"
 
+#### Arguments
+
+`"resume"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L667-L681
 
 > "join" - "join the voice chat you're in"
+
+#### Arguments
+
+`"join"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L683-L690
 
 > "forceskip" - "skip a song. dj only command"
 
+#### Arguments
+
+`"forceskip"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L707-L731
 
 > "leave" - "disconnect from voice channel"
 
+#### Arguments
+
+`"leave"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L732-L742
 
 > "skip" - "vote skip"
+
+#### Arguments
+
+`"skip"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L743-L779
 
@@ -699,65 +1561,139 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "bibi" - "Makes a image with the great cat Bibi."
 
+#### Arguments
+
+`"bibi"` <ctx> <input>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/BubotSlash.cs#L67-L90
 
 ### GeneralCommands
 
 > "hello" - "A simple hello command"
 
+#### Arguments
+
+`"hello"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L27-L32
 
 > "whois" - "Find out the info silverbot knows about someone."
+
+#### Arguments
+
+`"whois"` <ctx> <user>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L59-L63
 
 > Unknown command name - Unknown description
 
+#### Arguments
+
+`` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L65-L69
 
+#### Arguments
+
+`` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
+https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L93-L102
+
 > "version" - "Find out the version info for this instance of silverbot"
+
+#### Arguments
+
+`"version"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L71-L77
 
 > "dukthosting" - "SilverHosting:tm: best"
 
+#### Arguments
+
+`"dukthosting"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L79-L91
-
-> Unknown command name - Unknown description
-
-https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L93-L102
 
 ### StableDiff
 
 > "imagine" - Unknown description
 
+#### Arguments
+
+`"imagine"` <ctx> <prompt>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L35-L39
 
-> "imagine" - Unknown description
+#### Arguments
+
+`"imagine"` <ctx> <prompt> <steps>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L40-L44
 
-> "imagine" - Unknown description
+#### Arguments
+
+`"imagine"` <ctx> <model> <prompt>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L45-L49
 
-> "imagine" - Unknown description
+#### Arguments
+
+`"imagine"` <ctx> <model> <seed> <prompt>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L50-L54
 
-> "imagine" - Unknown description
+#### Arguments
+
+`"imagine"` <ctx> <model> <prompt> <steps>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L55-L59
 
-> "imagine" - Unknown description
+#### Arguments
+
+`"imagine"` <ctx> <model> <seed> <prompt> <resolution>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L60-L64
 
-> "imagine" - Unknown description
+#### Arguments
+
+`"imagine"` <ctx> <model> <seed> <prompt> <steps> <resolution>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L65-L69
 
-> "imagine" - Unknown description
+#### Arguments
+
+`"imagine"` <ctx> [model] [seed] [negative_prompt] [prompt] [resolution] [steps]
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L70-L179
 
@@ -765,21 +1701,51 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "editlangtranslator" - "set you're testing language"
 
+#### Arguments
+
+`"editlangtranslator"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L43-L49
 
 > "getobjectfromcurrentlanguage" - "yayayayayyayaya"
+
+#### Arguments
+
+`"getobjectfromcurrentlanguage"` <ctx> <name>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L51-L57
 
 > "setlangtranslator" - "set you're testing language"
 
+#### Arguments
+
+`"setlangtranslator"` <ctx> <lang>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L59-L122
 
 > "uploadlanguage" - Unknown description
 
+#### Arguments
+
+`"uploadlanguage"` <ctx>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L124-L152
 
 > "generatelangtemplate" - "make a template for translation"
+
+#### Arguments
+
+`"generatelangtemplate"` <ctx> [lang]
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L154-L212
 
@@ -787,9 +1753,21 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "add" - "Add a new quote to your \"Quote Book\""
 
+#### Arguments
+
+`"add"` <ctx> <content>
+
+- System.Collections.Generic.List`1[System.String]
+
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/UserQuotes.cs#L56-L71
 
 > "get" - "Gets a quote from your \"Quote Book\" with it's ID"
+
+#### Arguments
+
+`"get"` <ctx> <id>
+
+- System.Collections.Generic.List`1[System.String]
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/UserQuotes.cs#L73-L96
 
@@ -804,5 +1782,5 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 ## /github/workspace/SilverBot.Web/SilverBot.Web.csproj
 
 ```json
-{"/github/workspace/SilverBotDS.AnimeModule/SilverBotDS.AnimeModule.csproj":{"CommandModules":[{"Name":"Anime","Commands":[{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L34-L39","Name":"\u0022hug\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L41-L46","Name":"\u0022kiss\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L48-L53","Name":"\u0022slap\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L55-L60","Name":"\u0022wink\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L62-L67","Name":"\u0022pat\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L69-L74","Name":"\u0022kill\u0022","Description":"\u0022the thing im gonna do to bub in fartnite\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L76-L81","Name":"\u0022cuddle\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L83-L88","Name":"\u0022punch\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]}]},{"Name":"AnimeSlash","Commands":[{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L33-L37","Name":"\u0022hug\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L39-L43","Name":"\u0022kiss\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L45-L49","Name":"\u0022slap\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L51-L55","Name":"\u0022wink\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L57-L61","Name":"\u0022pat\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L63-L67","Name":"\u0022kill\u0022","Description":"\u0022the thing im gonna do to bub in fartnite\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L69-L73","Name":"\u0022cuddle\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L75-L79","Name":"\u0022punch\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]}]}]},"/github/workspace/SDBrowser/SDBrowser.csproj":{"CommandModules":[]},"/github/workspace/SilverBotDS/SilverBotDS.csproj":{"CommandModules":[{"Name":"AdminCommands","Commands":[{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L34-L44","Name":"\u0022setprefix\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"cake","Type":"string[]"}]},{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L53-L98","Name":"\u0022emojipoll\u0022","Description":"\u0022Start a simple emoji poll for a simple yes/no question\u0022","Aliases":null,"CustomAttributes":["Cooldown"],"Arguments":[{"Name":"commandContext","Type":"CommandContext"},{"Name":"duration","Type":"TimeSpan"},{"Name":"question","Type":"string"}]},{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L100-L137","Name":"\u0022GiveAway\u0022","Description":"\u0022Start a simple giveaway\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"commandContext","Type":"CommandContext"},{"Name":"duration","Type":"TimeSpan"},{"Name":"item","Type":"string"}]},{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L139-L165","Name":"\u0022exportemotestoguilded\u0022","Description":"\u0022Exports your guild\u0027s emotes into a \\\u0022Emote Pack\\\u0022 Guilded can read\u0022","Aliases":null,"CustomAttributes":["RequireGuild"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L167-L204","Name":"\u0022exportemotes\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireGuild"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]}]},{"Name":"Audio","Commands":[{"Location":"/SilverBotDS/Commands/Audio.cs#L145-L190","Name":"\u0022playnext\u0022","Description":"\u0022Tell me to play a song next in the queue\u0022","Aliases":["\u0022pn\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"song","Type":"SongORSongs"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L192-L213","Name":"\u0022play\u0022","Description":"\u0022Tell me to play a song\u0022","Aliases":["\u0022p\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L215-L269","Name":"\u0022play\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"song","Type":"SongORSongs"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L271-L299","Name":"\u0022volume\u0022","Description":"\u0022Change the volume 1-100%\u0022","Aliases":["\u0022vol\u0022"],"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"volume","Type":"ushort"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L301-L317","Name":"\u0022seek\u0022","Description":"\u0022Seeks to the specified time\u0022","Aliases":null,"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"time","Type":"TimeSpan"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L384-L402","Name":"\u0022clearqueue\u0022","Description":"\u0022Clears the queue\u0022","Aliases":null,"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L404-L414","Name":"\u0022shuffle\u0022","Description":"\u0022Shuffles the queue\u0022","Aliases":null,"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L416-L431","Name":"\u0022export\u0022","Description":"\u0022Export the queue\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"playlistName","Type":"string?"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L433-L450","Name":"\u0022remove\u0022","Description":"\u0022Remove song X from the queue. 0 \u003C index \u003E queue length\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"songindex","Type":"int"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L452-L477","Name":"\u0022queuehistory\u0022","Description":"\u0022check what was playing\u0022","Aliases":["\u0022qh\u0022","\u0022prevplaying\u0022","\u0022pq\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L479-L536","Name":"\u0022queue\u0022","Description":"\u0022check whats playing rn and whats next\u0022","Aliases":["\u0022np\u0022","\u0022nowplaying\u0022","\u0022q\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L538-L565","Name":"\u0022loop\u0022","Description":"\u0022Loops nothing/the queue/the currently playing song\u0022","Aliases":["\u0022repeat\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"settings","Type":"LoopSettings"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L567-L581","Name":"\u0022pause\u0022","Description":"\u0022pause the current song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L583-L595","Name":"\u0022ovh\u0022","Description":"\u0022get the lyrics from ovh\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"name","Type":"string"},{"Name":"artist","Type":"string"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L597-L608","Name":"\u0022songaliases\u0022","Description":"\u0022Get the hardcoded aliases in silverbots code\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L610-L623","Name":"\u0022resume\u0022","Description":"\u0022resume the current song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L625-L630","Name":"\u0022join\u0022","Description":"\u0022to join the voice chat you\u0027re in\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L647-L670","Name":"\u0022forceskip\u0022","Description":"\u0022skip a song. dj only command\u0022","Aliases":["\u0022fs\u0022"],"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L672-L707","Name":"\u0022voteskip\u0022","Description":"\u0022skip a song\u0022","Aliases":["\u0022skip\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L709-L723","Name":"\u0022forcedisconnect\u0022","Description":"\u0022Tell me to leave your channel of the voice type, without checking if its in a vc\u0022","Aliases":["\u0022fuckoffisntworking\u0022"],"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L725-L736","Name":"\u0022disconnect\u0022","Description":"\u0022Tell me to leave your channel of the voice type\u0022","Aliases":["\u0022fuckoff\u0022","\u0022minecraftbedrockisbetter\u0022","\u0022fockoff\u0022","\u0022leave\u0022"],"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]}]},{"Name":"Bubot","Commands":[{"Location":"/SilverBotDS/Commands/bubot.cs#L35-L43","Name":"\u0022silveryeet\u0022","Description":"\u0022Sends SilverYeet.gif\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]}]},{"Name":"BibiCommands","Commands":[{"Location":"/SilverBotDS/Commands/bubot.cs#L67-L91","Name":"\u0022bibi\u0022","Description":"\u0022Makes a image with the great cat Bibi.\u0022","Aliases":null,"CustomAttributes":["Cooldown"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"input","Type":"string"}]}]},{"Name":"BibiLib","Commands":[{"Location":"/SilverBotDS/Commands/bubot.cs#L129-L148","Name":null,"Description":"\u0022Access the great cat bibi library.\u0022","Aliases":null,"CustomAttributes":["GroupCommand"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/bubot.cs#L150-L169","Name":"\u0022full\u0022","Description":"\u0022Access the great cat bibi library.\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]}]},{"Name":"Experience","Commands":[{"Location":"/SilverBotDS/Commands/Experience.cs#L52-L63","Name":"\u0022givexpbecausedowntimepercent\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireOwner"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"percent","Type":"byte"}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L65-L76","Name":"\u0022givexpbecausedowntime\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireOwner"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"xp","Type":"ulong"}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L78-L98","Name":"\u0022xp\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L100-L119","Name":"\u0022xp\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"member","Type":"DiscordMember"}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L121-L171","Name":"\u0022xptop\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireGuild"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L175-L251","Name":"\u0022xpcard\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"user","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L253-L257","Name":"\u0022xpcard\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]}]},{"Name":"Fortnite","Commands":[{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L46-L65","Name":"\u0022fortstats\u0022","Description":"\u0022Get the stats of a person using their username\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"name","Type":"string"}]},{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L67-L74","Name":"\u0022fortbrnews\u0022","Description":"\u0022Get a gif of the latest battle royale news\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L76-L83","Name":"\u0022fortcrnews\u0022","Description":"\u0022Get a gif of the latest creative news\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L85-L92","Name":"\u0022fortstwnews\u0022","Description":"\u0022Get a gif of the latest save-the-world news\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L94-L107","Name":"\u0022fortitms\u0022","Description":"\u0022Try to get the item shop items\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]}]},{"Name":"MinecraftModule","Commands":[{"Location":"/SilverBotDS/Commands/Gamering/Minecraft.cs#L25-L39","Name":"\u0022getfromusername\u0022","Description":"\u0022Get a minecraft players UUID from their username\u0022","Aliases":["\u0022username\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"input","Type":"string"}]}]},{"Name":"SteamCommands","Commands":[{"Location":"/SilverBotDS/Commands/Gamering/Steam.cs#L28-L102","Name":"\u0022search\u0022","Description":"\u0022Search about a game\u0022","Aliases":["\u0022s\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"game","Type":"string"}]}]},{"Name":"Genericcommands","Commands":[{"Location":"/SilverBotDS/Commands/genericcommands.cs#L34-L42","Name":"\u0022hi\u0022","Description":"\u0022Hello fellow human! beep boop\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L44-L53","Name":"\u0022time\u0022","Description":"\u0022Get the time in UTC\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L55-L65","Name":"\u0022invite\u0022","Description":"\u0022Invite me to your server\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L67-L73","Name":"\u0022ping\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L75-L90","Name":"\u0022dump\u0022","Description":"\u0022Dump a messages raw content (useful for emote walls)\u0022","Aliases":null,"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"message","Type":"DiscordMessage"}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L91-L119","Name":"\u0022archive\u0022","Description":"\u0022Archive a message (and its attachments)\u0022","Aliases":null,"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"message","Type":"DiscordMessage"}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L121-L133","Name":"\u0022dump\u0022","Description":"\u0022Dump a messages raw content (useful for emote walls)\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L135-L149","Name":"\u0022duckhosting\u0022","Description":"\u0022SilverHosting best\u0022","Aliases":["\u0022dukthosting\u0022","\u0022ducthosting\u0022","\u0022:duckhosting:\u0022","\u0022\u003C:duckhosting:797225115837792367\u003E\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L157-L179","Name":"\u0022user\u0022","Description":"\u0022Get the info I know about a specified user\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"a","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L181-L186","Name":"\u0022user\u0022","Description":"\u0022Get the info I know about a specified user\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]}]},{"Name":"Giphy","Commands":[{"Location":"/SilverBotDS/Commands/Giphy.cs#L51-L66","Name":"\u0022random\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Giphy.cs#L68-L93","Name":"\u0022search\u0022","Description":null,"Aliases":["\u0022s\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"term","Type":"string"}]}]},{"Name":"ImageModule","Commands":[{"Location":"/SilverBotDS/Commands/ImageModule.cs#L379-L388","Name":"\u0022caption\u0022","Description":"\u0022Captions an image\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"image","Type":"SdImage"},{"Name":"text","Type":"string"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L390-L391","Name":"\u0022caption\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"text","Type":"string"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L393-L403","Name":"\u0022fail\u0022","Description":"\u0022epic embed fail\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"text","Type":"string"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L431-L433","Name":"\u0022yeet\u0022","Description":"\u0022YEET\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L434-L482","Name":"\u0022yeet\u0022","Description":"\u0022YEET\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"img2","Type":"SdImage"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L528-L534","Name":"\u0022jpeg\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"image","Type":"SdImage"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L536-L538","Name":"\u0022jpeg\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L569-L581","Name":"\u0022tint\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"image","Type":"SdImage"},{"Name":"color","Type":"Color"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L583-L586","Name":"\u0022tint\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"color","Type":"Color"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L587-L589","Name":"\u0022adventuretime\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireGuild"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L590-L591","Name":"\u0022adventuretime\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"friendo","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L592-L611","Name":"\u0022adventuretime\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"person","Type":"DiscordUser"},{"Name":"friendo","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L634-L640","Name":"\u0022seal\u0022","Description":"\u0022He was forced to use Microsoft Windows when he was 6\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"text","Type":"string"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L642-L660","Name":"\u0022linus\u0022","Description":"\u0022NVIDIA, fuck you.\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"company","Type":"string"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L662-L669","Name":"\u0022resize\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"image","Type":"SdImage"},{"Name":"x","Type":"int"},{"Name":"y","Type":"int"},{"Name":"format","Type":"MagickFormat?"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L698-L699","Name":"\u0022resize\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"image","Type":"SdImage"},{"Name":"format","Type":"MagickFormat?"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L701-L702","Name":"\u0022resize\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"format","Type":"MagickFormat?"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L704-L706","Name":"\u0022resize\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"x","Type":"int"},{"Name":"y","Type":"int"},{"Name":"format","Type":"MagickFormat?"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L707-L708","Name":"\u0022reliable\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L710-L711","Name":"\u0022reliable\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"koichi","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L713-L759","Name":"\u0022reliable\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"jotaro","Type":"DiscordUser"},{"Name":"koichi","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L760-L764","Name":"\u0022ObMedal\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L765-L779","Name":"\u0022ObMedal\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"obama","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L780-L799","Name":"\u0022ObMedal\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"obama","Type":"DiscordUser"},{"Name":"secondPerson","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L800-L801","Name":"\u0022happynewyear\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L802-L808","Name":"\u0022happynewyear\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"person","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L820-L826","Name":"\u0022silver\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L828-L836","Name":"\u0022silver\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"image","Type":"SdImage"}]}]},{"Name":"MiscCommands","Commands":[{"Location":"/SilverBotDS/Commands/Misc.cs#L72-L79","Name":"\u0022version\u0022","Description":"\u0022Get the version info\u0022","Aliases":["\u0022ver\u0022","\u0022verinfo\u0022","\u0022versioninfo\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L81-L109","Name":"\u0022setlang\u0022","Description":"\u0022set your language\u0022","Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"langName","Type":"string"}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L111-L145","Name":"\u0022togglerepeat\u0022","Description":"\u0022toggle repeated strings\u0022","Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"enable","Type":"bool"}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L147-L167","Name":"\u0022translateunknown\u0022","Description":"\u0022translate from an unknown language\u0022","Aliases":["\u0022translate\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"text","Type":"string"}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L169-L204","Name":"\u0022translateunknownto\u0022","Description":"\u0022translate from an unknown language to a specified one\u0022","Aliases":["\u0022translateto\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"languageTo","Type":"string"},{"Name":"text","Type":"string"}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L206-L260","Name":"\u0022cserrcode\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"error","Type":"string"}]}]},{"Name":"ModCommands","Commands":[{"Location":"/SilverBotDS/Commands/ModCommands.cs#L24-L57","Name":"\u0022kick\u0022","Description":"\u0022Kick a specified user\u0022","Aliases":null,"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"a","Type":"DiscordMember"},{"Name":"reason","Type":"string"}]},{"Location":"/SilverBotDS/Commands/ModCommands.cs#L59-L96","Name":"\u0022ban\u0022","Description":"\u0022bans a specified user\u0022","Aliases":null,"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"a","Type":"DiscordUser"},{"Name":"reason","Type":"string"}]},{"Location":"/SilverBotDS/Commands/ModCommands.cs#L98-L113","Name":"\u0022kickme\u0022","Description":"\u0022Kicks yourself lmao (or ban if you\u0027re super daring)\u0022","Aliases":null,"CustomAttributes":["RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"ban","Type":"bool"}]},{"Location":"/SilverBotDS/Commands/ModCommands.cs#L115-L155","Name":"\u0022purge\u0022","Description":"\u0022Downloads and removes X messages from the current channel.\u0022","Aliases":["\u0022clean\u0022","\u0022clear\u0022"],"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"amount","Type":"int"}]}]},{"Name":"OwnerOnly","Commands":[{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L48-L65","Name":"\u0022reloadcolors\u0022","Description":"\u0022reloads the colors.json\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L67-L72","Name":"\u0022UnRegisterCommand\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"cmdwithparm","Type":"string"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L74-L115","Name":"\u0022RegisterModule\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"mod","Type":"string"},{"Name":"skipcheck","Type":"bool"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L117-L128","Name":"\u0022sudo\u0022","Description":"\u0022Executes a command as another user.\u0022","Aliases":null,"CustomAttributes":["Hidden","RequireOwner"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"member","Type":"DiscordMember"},{"Name":"command","Type":"string"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L130-L168","Name":"\u0022setupcategory\u0022","Description":"\u0022Set up a category in the silverbot dev server\u0022","Aliases":null,"CustomAttributes":["RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"role","Type":"DiscordRole"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L170-L204","Name":"\u0022setupcategory\u0022","Description":"\u0022Set up a category in the silverbot dev server\u0022","Aliases":null,"CustomAttributes":["RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"person","Type":"DiscordMember"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L339-L358","Name":"\u0022dependencies\u0022","Description":"\u0022get the dependencies used\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L364-L471","Name":"\u0022evaluate\u0022","Description":"\u0022EVALUATE SOME C# CODE\u0022","Aliases":["\u0022eval\u0022","\u0022ev\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"code","Type":"string"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L473-L508","Name":"\u0022sh\u0022","Description":"\u0022runs some commands\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"command","Type":"string"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L510-L517","Name":"\u0022runsql\u0022","Description":"\u0022runs some sql\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"sql","Type":"string"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L542-L612","Name":"\u0022addemotes\u0022","Description":"\u0022testing shiz\u0022","Aliases":null,"CustomAttributes":["RequireGuild","RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L614-L625","Name":"\u0022guilds\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L627-L633","Name":"\u0022togglebanuser\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"userid","Type":"DiscordUser"},{"Name":"ban","Type":"bool"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L635-L641","Name":"\u0022shutdown\u0022","Description":"\u0022kill the bot\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L643-L650","Name":"\u0022shutdowngrace\u0022","Description":"\u0022kill the bot but shutdown the tasks first\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L652-L658","Name":"\u0022removeuser\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"userid","Type":"DiscordUser"}]}]},{"Name":"ReactionRoleCommands","Commands":[{"Location":"/SilverBotDS/Commands/ReactionRoleCommands.cs#L44-L198","Name":"\u0022addmenu\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]}]},{"Name":"ReminderCommands","Commands":[{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L32-L61","Name":"\u0022remindme\u0022","Description":"\u0022simple reminder\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"duration","Type":"TimeSpan"},{"Name":"item","Type":"string"}]},{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L63-L89","Name":"\u0022listreminders\u0022","Description":"\u0022lists all reminders\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L91-L118","Name":"\u0022listremindersguild\u0022","Description":"\u0022lists all reminders here\u0022","Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L120-L150","Name":"\u0022cancelreminder\u0022","Description":"\u0022deletes a specific reminder\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"id","Type":"string"}]},{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L152-L185","Name":"\u0022cancelreminderf\u0022","Description":"\u0022deletes a reminder with force\u0022","Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"id","Type":"string"}]}]},{"Name":"ServerStatsCommands","Commands":[{"Location":"/SilverBotDS/Commands/ServerStatsCommands.cs#L31-L75","Name":"\u0022emoteanalyse\u0022","Description":"\u0022analyse emote usage in a specified channel\u0022","Aliases":null,"CustomAttributes":["Cooldown"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"channel","Type":"DiscordChannel"},{"Name":"limit","Type":"int"}]},{"Location":"/SilverBotDS/Commands/ServerStatsCommands.cs#L77-L101","Name":"\u0022setcategory\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireUserPermissions","RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"category","Type":"DiscordChannel"}]},{"Location":"/SilverBotDS/Commands/ServerStatsCommands.cs#L103-L114","Name":"\u0022setstatstrings\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireUserPermissions","RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/ServerStatsCommands.cs#L116-L127","Name":"\u0022setstatstrings\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireUserPermissions","RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"cake","Type":"string[]"}]}]},{"Name":"AudioSlash","Commands":[{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L194-L240","Name":"\u0022playnext\u0022","Description":"\u0022Tell me to play a song next in the queue\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"},{"Name":"sg","Type":"string"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L265-L319","Name":"\u0022play\u0022","Description":"\u0022Tell me to play a song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"},{"Name":"sg","Type":"string"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L321-L348","Name":"\u0022volume\u0022","Description":"\u0022Change the volume 1-100%\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext"},{"Name":"volume","Type":"long"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L350-L367","Name":"\u0022seek\u0022","Description":"\u0022Seeks to the specified time\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext"},{"Name":"time","Type":"TimeSpan?"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L433-L451","Name":"\u0022clearqueue\u0022","Description":"\u0022Clears the queue\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L453-L464","Name":"\u0022shuffle\u0022","Description":"\u0022Shuffles the queue\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L467-L484","Name":"\u0022export\u0022","Description":"\u0022Export the queue\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"},{"Name":"playlistName","Type":"string?"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L487-L505","Name":"\u0022remove\u0022","Description":"\u0022Remove song X from the queue. 0 \u003C index \u003E queue length\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"},{"Name":"songindex","Type":"long"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L506-L533","Name":"\u0022loop\u0022","Description":"\u0022Loops nothing/the queue/the currently playing song\\\u0022\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"},{"Name":"settings","Type":"LoopSettings"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L623-L638","Name":"\u0022pause\u0022","Description":"\u0022pause the current song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L667-L681","Name":"\u0022resume\u0022","Description":"\u0022resume the current song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L683-L690","Name":"\u0022join\u0022","Description":"\u0022join the voice chat you\u0027re in\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L707-L731","Name":"\u0022forceskip\u0022","Description":"\u0022skip a song. dj only command\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L732-L742","Name":"\u0022leave\u0022","Description":"\u0022disconnect from voice channel\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L743-L779","Name":"\u0022skip\u0022","Description":"\u0022vote skip\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]}]},{"Name":"BubotSlash","Commands":[{"Location":"/SilverBotDS/Commands/Slash/BubotSlash.cs#L67-L90","Name":"\u0022bibi\u0022","Description":"\u0022Makes a image with the great cat Bibi.\u0022","Aliases":null,"CustomAttributes":["SlashCooldown"],"Arguments":[{"Name":"ctx","Type":"InteractionContext"},{"Name":"input","Type":"string"}]}]},{"Name":"GeneralCommands","Commands":[{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L27-L32","Name":"\u0022hello\u0022","Description":"\u0022A simple hello command\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L59-L63","Name":"\u0022whois\u0022","Description":"\u0022Find out the info silverbot knows about someone.\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"},{"Name":"user","Type":"DiscordUser"}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L65-L69","Name":null,"Description":null,"Aliases":null,"CustomAttributes":["ContextMenu"],"Arguments":[{"Name":"ctx","Type":"ContextMenuContext"}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L71-L77","Name":"\u0022version\u0022","Description":"\u0022Find out the version info for this instance of silverbot\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L79-L91","Name":"\u0022dukthosting\u0022","Description":"\u0022SilverHosting:tm: best\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext"}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L93-L102","Name":null,"Description":null,"Aliases":null,"CustomAttributes":["ContextMenu"],"Arguments":[{"Name":"ctx","Type":"ContextMenuContext"}]}]},{"Name":"StableDiff","Commands":[{"Location":"/SilverBotDS/Commands/StableDiff.cs#L35-L39","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"prompt","Type":"string"}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L40-L44","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"prompt","Type":"string"},{"Name":"steps","Type":"int"}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L45-L49","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"model","Type":"string"},{"Name":"prompt","Type":"string"}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L50-L54","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"model","Type":"string"},{"Name":"seed","Type":"int"},{"Name":"prompt","Type":"string"}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L55-L59","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"model","Type":"string"},{"Name":"prompt","Type":"string"},{"Name":"steps","Type":"int"}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L60-L64","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"model","Type":"string"},{"Name":"seed","Type":"int"},{"Name":"prompt","Type":"string"},{"Name":"resolution","Type":"int"}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L65-L69","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"model","Type":"string"},{"Name":"seed","Type":"int"},{"Name":"prompt","Type":"string"},{"Name":"steps","Type":"int"},{"Name":"resolution","Type":"int"}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L70-L179","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"model","Type":"string"},{"Name":"seed","Type":"int?"},{"Name":"negative_prompt","Type":"string"},{"Name":"prompt","Type":"string"},{"Name":"resolution","Type":"int"},{"Name":"steps","Type":"int"}]}]},{"Name":"TranslatorCommands","Commands":[{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L43-L49","Name":"\u0022editlangtranslator\u0022","Description":"\u0022set you\u0027re testing language\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L51-L57","Name":"\u0022getobjectfromcurrentlanguage\u0022","Description":"\u0022yayayayayyayaya\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"name","Type":"string"}]},{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L59-L122","Name":"\u0022setlangtranslator\u0022","Description":"\u0022set you\u0027re testing language\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"lang","Type":"string"}]},{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L124-L152","Name":"\u0022uploadlanguage\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireAttachment"],"Arguments":[{"Name":"ctx","Type":"CommandContext"}]},{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L154-L212","Name":"\u0022generatelangtemplate\u0022","Description":"\u0022make a template for translation\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"lang","Type":"string?"}]}]},{"Name":"UserQuotesModule","Commands":[{"Location":"/SilverBotDS/Commands/UserQuotes.cs#L56-L71","Name":"\u0022add\u0022","Description":"\u0022Add a new quote to your \\\u0022Quote Book\\\u0022\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"content","Type":"string"}]},{"Location":"/SilverBotDS/Commands/UserQuotes.cs#L73-L96","Name":"\u0022get\u0022","Description":"\u0022Gets a quote from your \\\u0022Quote Book\\\u0022 with it\u0027s ID\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext"},{"Name":"id","Type":"string"}]}]}]},"/github/workspace/SilverBotDS.PixelsArchiver/SilverBotDS.PixelsArchiver.csproj":{"CommandModules":[]},"/github/workspace/SDiscordSink/SDiscordSink.csproj":{"CommandModules":[]},"/github/workspace/SilverBot.SysAdminModule/SilverBot.SysAdminModule.csproj":{"CommandModules":[]},"/github/workspace/SilverBot.Shared/SilverBot.Shared.csproj":{"CommandModules":[]},"/github/workspace/SilverBot.Web/SilverBot.Web.csproj":{"CommandModules":[]}}
+{"/github/workspace/SilverBotDS.AnimeModule/SilverBotDS.AnimeModule.csproj":{"CommandModules":[{"Name":"Anime","Commands":[{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L34-L39","Name":"\u0022hug\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022i have no idea what this means\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L41-L46","Name":"\u0022kiss\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022i have no idea what this means\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L48-L53","Name":"\u0022slap\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022i have no idea what this means\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L55-L60","Name":"\u0022wink\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022i have no idea what this means\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L62-L67","Name":"\u0022pat\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022i have no idea what this means\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L69-L74","Name":"\u0022kill\u0022","Description":"\u0022the thing im gonna do to bub in fartnite\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022the thing im gonna do to bub in fartnite\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L76-L81","Name":"\u0022cuddle\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022i have no idea what this means\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS.AnimeModule/Anime.cs#L83-L88","Name":"\u0022punch\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022i have no idea what this means\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"AnimeSlash","Commands":[{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L33-L37","Name":"\u0022hug\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L39-L43","Name":"\u0022kiss\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L45-L49","Name":"\u0022slap\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L51-L55","Name":"\u0022wink\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L57-L61","Name":"\u0022pat\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L63-L67","Name":"\u0022kill\u0022","Description":"\u0022the thing im gonna do to bub in fartnite\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L69-L73","Name":"\u0022cuddle\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS.AnimeModule/AnimeSlash.cs#L75-L79","Name":"\u0022punch\u0022","Description":"\u0022i have no idea what this means\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]}]}]},"/github/workspace/SDBrowser/SDBrowser.csproj":{"CommandModules":[]},"/github/workspace/SilverBotDS/SilverBotDS.csproj":{"CommandModules":[{"Name":"AdminCommands","Commands":[{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L34-L44","Name":"\u0022setprefix\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions"]},{"Name":"cake","Type":"string[]","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions"]}]},{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L53-L98","Name":"\u0022emojipoll\u0022","Description":"\u0022Start a simple emoji poll for a simple yes/no question\u0022","Aliases":null,"CustomAttributes":["Cooldown"],"Arguments":[{"Name":"commandContext","Type":"CommandContext","Description":"\u0022Start a simple emoji poll for a simple yes/no question\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Cooldown"]},{"Name":"duration","Type":"TimeSpan","Description":"\u0022Start a simple emoji poll for a simple yes/no question\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Cooldown"]},{"Name":"question","Type":"string","Description":"\u0022Start a simple emoji poll for a simple yes/no question\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Cooldown"]}]},{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L100-L137","Name":"\u0022GiveAway\u0022","Description":"\u0022Start a simple giveaway\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"commandContext","Type":"CommandContext","Description":"\u0022Start a simple giveaway\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"duration","Type":"TimeSpan","Description":"\u0022Start a simple giveaway\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"item","Type":"string","Description":"\u0022Start a simple giveaway\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L139-L165","Name":"\u0022exportemotestoguilded\u0022","Description":"\u0022Exports your guild\u0027s emotes into a \\\u0022Emote Pack\\\u0022 Guilded can read\u0022","Aliases":null,"CustomAttributes":["RequireGuild"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Exports your guild\u0027s emotes into a \\\u0022Emote Pack\\\u0022 Guilded can read\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireGuild"]}]},{"Location":"/SilverBotDS/Commands/AdminCommands.cs#L167-L204","Name":"\u0022exportemotes\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireGuild"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireGuild"]}]}]},{"Name":"Audio","Commands":[{"Location":"/SilverBotDS/Commands/Audio.cs#L145-L190","Name":"\u0022playnext\u0022","Description":"\u0022Tell me to play a song next in the queue\u0022","Aliases":["\u0022pn\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Tell me to play a song next in the queue\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]},{"Name":"song","Type":"SongORSongs","Description":"\u0022Tell me to play a song next in the queue\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L192-L213","Name":"\u0022play\u0022","Description":"\u0022Tell me to play a song\u0022","Aliases":["\u0022p\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Tell me to play a song\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L215-L269","Name":"\u0022play\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"song","Type":"SongORSongs","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L271-L299","Name":"\u0022volume\u0022","Description":"\u0022Change the volume 1-100%\u0022","Aliases":["\u0022vol\u0022"],"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Change the volume 1-100%\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases","RequireDj"]},{"Name":"volume","Type":"ushort","Description":"\u0022Change the volume 1-100%\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases","RequireDj"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L301-L317","Name":"\u0022seek\u0022","Description":"\u0022Seeks to the specified time\u0022","Aliases":null,"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Seeks to the specified time\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireDj"]},{"Name":"time","Type":"TimeSpan","Description":"\u0022Seeks to the specified time\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireDj"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L384-L402","Name":"\u0022clearqueue\u0022","Description":"\u0022Clears the queue\u0022","Aliases":null,"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Clears the queue\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireDj"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L404-L414","Name":"\u0022shuffle\u0022","Description":"\u0022Shuffles the queue\u0022","Aliases":null,"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Shuffles the queue\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireDj"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L416-L431","Name":"\u0022export\u0022","Description":"\u0022Export the queue\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Export the queue\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"playlistName","Type":"string?","Description":"\u0022Export the queue\u0022","RemainingText":false,"Optional":true,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L433-L450","Name":"\u0022remove\u0022","Description":"\u0022Remove song X from the queue. 0 \u003C index \u003E queue length\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Remove song X from the queue. 0 \u003C index \u003E queue length\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"songindex","Type":"int","Description":"\u0022Remove song X from the queue. 0 \u003C index \u003E queue length\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L452-L477","Name":"\u0022queuehistory\u0022","Description":"\u0022check what was playing\u0022","Aliases":["\u0022qh\u0022","\u0022prevplaying\u0022","\u0022pq\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022check what was playing\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L479-L536","Name":"\u0022queue\u0022","Description":"\u0022check whats playing rn and whats next\u0022","Aliases":["\u0022np\u0022","\u0022nowplaying\u0022","\u0022q\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022check whats playing rn and whats next\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L538-L565","Name":"\u0022loop\u0022","Description":"\u0022Loops nothing/the queue/the currently playing song\u0022","Aliases":["\u0022repeat\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Loops nothing/the queue/the currently playing song\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]},{"Name":"settings","Type":"LoopSettings","Description":"\u0022Loops nothing/the queue/the currently playing song\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L567-L581","Name":"\u0022pause\u0022","Description":"\u0022pause the current song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022pause the current song\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L583-L595","Name":"\u0022ovh\u0022","Description":"\u0022get the lyrics from ovh\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022get the lyrics from ovh\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"name","Type":"string","Description":"\u0022get the lyrics from ovh\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"artist","Type":"string","Description":"\u0022get the lyrics from ovh\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L597-L608","Name":"\u0022songaliases\u0022","Description":"\u0022Get the hardcoded aliases in silverbots code\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get the hardcoded aliases in silverbots code\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L610-L623","Name":"\u0022resume\u0022","Description":"\u0022resume the current song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022resume the current song\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L625-L630","Name":"\u0022join\u0022","Description":"\u0022to join the voice chat you\u0027re in\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022to join the voice chat you\u0027re in\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L647-L670","Name":"\u0022forceskip\u0022","Description":"\u0022skip a song. dj only command\u0022","Aliases":["\u0022fs\u0022"],"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022skip a song. dj only command\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireDj","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L672-L707","Name":"\u0022voteskip\u0022","Description":"\u0022skip a song\u0022","Aliases":["\u0022skip\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022skip a song\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L709-L723","Name":"\u0022forcedisconnect\u0022","Description":"\u0022Tell me to leave your channel of the voice type, without checking if its in a vc\u0022","Aliases":["\u0022fuckoffisntworking\u0022"],"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Tell me to leave your channel of the voice type, without checking if its in a vc\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases","RequireDj"]}]},{"Location":"/SilverBotDS/Commands/Audio.cs#L725-L736","Name":"\u0022disconnect\u0022","Description":"\u0022Tell me to leave your channel of the voice type\u0022","Aliases":["\u0022fuckoff\u0022","\u0022minecraftbedrockisbetter\u0022","\u0022fockoff\u0022","\u0022leave\u0022"],"CustomAttributes":["RequireDj"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Tell me to leave your channel of the voice type\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases","RequireDj"]}]}]},{"Name":"Bubot","Commands":[{"Location":"/SilverBotDS/Commands/bubot.cs#L35-L43","Name":"\u0022silveryeet\u0022","Description":"\u0022Sends SilverYeet.gif\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Sends SilverYeet.gif\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"BibiCommands","Commands":[{"Location":"/SilverBotDS/Commands/bubot.cs#L67-L91","Name":"\u0022bibi\u0022","Description":"\u0022Makes a image with the great cat Bibi.\u0022","Aliases":null,"CustomAttributes":["Cooldown"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Makes a image with the great cat Bibi.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Cooldown"]},{"Name":"input","Type":"string","Description":"\u0022Makes a image with the great cat Bibi.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Cooldown"]}]}]},{"Name":"BibiLib","Commands":[{"Location":"/SilverBotDS/Commands/bubot.cs#L129-L148","Name":null,"Description":"\u0022Access the great cat bibi library.\u0022","Aliases":null,"CustomAttributes":["GroupCommand"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Access the great cat bibi library.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["GroupCommand"]}]},{"Location":"/SilverBotDS/Commands/bubot.cs#L150-L169","Name":"\u0022full\u0022","Description":"\u0022Access the great cat bibi library.\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Access the great cat bibi library.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"Experience","Commands":[{"Location":"/SilverBotDS/Commands/Experience.cs#L52-L63","Name":"\u0022givexpbecausedowntimepercent\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireOwner"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireOwner"]},{"Name":"percent","Type":"byte","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireOwner"]}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L65-L76","Name":"\u0022givexpbecausedowntime\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireOwner"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireOwner"]},{"Name":"xp","Type":"ulong","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireOwner"]}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L78-L98","Name":"\u0022xp\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L100-L119","Name":"\u0022xp\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"member","Type":"DiscordMember","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L121-L171","Name":"\u0022xptop\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireGuild"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireGuild"]}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L175-L251","Name":"\u0022xpcard\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"user","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Experience.cs#L253-L257","Name":"\u0022xpcard\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"Fortnite","Commands":[{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L46-L65","Name":"\u0022fortstats\u0022","Description":"\u0022Get the stats of a person using their username\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get the stats of a person using their username\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"name","Type":"string","Description":"\u0022Get the stats of a person using their username\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L67-L74","Name":"\u0022fortbrnews\u0022","Description":"\u0022Get a gif of the latest battle royale news\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get a gif of the latest battle royale news\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L76-L83","Name":"\u0022fortcrnews\u0022","Description":"\u0022Get a gif of the latest creative news\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get a gif of the latest creative news\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L85-L92","Name":"\u0022fortstwnews\u0022","Description":"\u0022Get a gif of the latest save-the-world news\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get a gif of the latest save-the-world news\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Gamering/Fortnite.cs#L94-L107","Name":"\u0022fortitms\u0022","Description":"\u0022Try to get the item shop items\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Try to get the item shop items\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"MinecraftModule","Commands":[{"Location":"/SilverBotDS/Commands/Gamering/Minecraft.cs#L25-L39","Name":"\u0022getfromusername\u0022","Description":"\u0022Get a minecraft players UUID from their username\u0022","Aliases":["\u0022username\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get a minecraft players UUID from their username\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]},{"Name":"input","Type":"string","Description":"\u0022Get a minecraft players UUID from their username\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]}]},{"Name":"SteamCommands","Commands":[{"Location":"/SilverBotDS/Commands/Gamering/Steam.cs#L28-L102","Name":"\u0022search\u0022","Description":"\u0022Search about a game\u0022","Aliases":["\u0022s\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Search about a game\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]},{"Name":"game","Type":"string","Description":"\u0022Search about a game\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]}]},{"Name":"Genericcommands","Commands":[{"Location":"/SilverBotDS/Commands/genericcommands.cs#L34-L42","Name":"\u0022hi\u0022","Description":"\u0022Hello fellow human! beep boop\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Hello fellow human! beep boop\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L44-L53","Name":"\u0022time\u0022","Description":"\u0022Get the time in UTC\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get the time in UTC\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L55-L65","Name":"\u0022invite\u0022","Description":"\u0022Invite me to your server\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Invite me to your server\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L67-L73","Name":"\u0022ping\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L75-L90","Name":"\u0022dump\u0022","Description":"\u0022Dump a messages raw content (useful for emote walls)\u0022","Aliases":null,"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Dump a messages raw content (useful for emote walls)\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequirePermissions"]},{"Name":"message","Type":"DiscordMessage","Description":"\u0022Dump a messages raw content (useful for emote walls)\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequirePermissions"]}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L91-L119","Name":"\u0022archive\u0022","Description":"\u0022Archive a message (and its attachments)\u0022","Aliases":null,"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Archive a message (and its attachments)\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequirePermissions"]},{"Name":"message","Type":"DiscordMessage","Description":"\u0022Archive a message (and its attachments)\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequirePermissions"]}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L121-L133","Name":"\u0022dump\u0022","Description":"\u0022Dump a messages raw content (useful for emote walls)\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Dump a messages raw content (useful for emote walls)\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L135-L149","Name":"\u0022duckhosting\u0022","Description":"\u0022SilverHosting best\u0022","Aliases":["\u0022dukthosting\u0022","\u0022ducthosting\u0022","\u0022:duckhosting:\u0022","\u0022\u003C:duckhosting:797225115837792367\u003E\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022SilverHosting best\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L157-L179","Name":"\u0022user\u0022","Description":"\u0022Get the info I know about a specified user\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get the info I know about a specified user\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"a","Type":"DiscordUser","Description":"\u0022Get the info I know about a specified user\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/genericcommands.cs#L181-L186","Name":"\u0022user\u0022","Description":"\u0022Get the info I know about a specified user\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get the info I know about a specified user\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"Giphy","Commands":[{"Location":"/SilverBotDS/Commands/Giphy.cs#L51-L66","Name":"\u0022random\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/Giphy.cs#L68-L93","Name":"\u0022search\u0022","Description":null,"Aliases":["\u0022s\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]},{"Name":"term","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]}]},{"Name":"ImageModule","Commands":[{"Location":"/SilverBotDS/Commands/ImageModule.cs#L379-L388","Name":"\u0022caption\u0022","Description":"\u0022Captions an image\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Captions an image\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"image","Type":"SdImage","Description":"\u0022Captions an image\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"text","Type":"string","Description":"\u0022Captions an image\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L390-L391","Name":"\u0022caption\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"text","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L393-L403","Name":"\u0022fail\u0022","Description":"\u0022epic embed fail\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022epic embed fail\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"text","Type":"string","Description":"\u0022epic embed fail\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L431-L433","Name":"\u0022yeet\u0022","Description":"\u0022YEET\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022YEET\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L434-L482","Name":"\u0022yeet\u0022","Description":"\u0022YEET\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022YEET\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"img2","Type":"SdImage","Description":"\u0022YEET\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L528-L534","Name":"\u0022jpeg\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"image","Type":"SdImage","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L536-L538","Name":"\u0022jpeg\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L569-L581","Name":"\u0022tint\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"image","Type":"SdImage","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"color","Type":"Color","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L583-L586","Name":"\u0022tint\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"color","Type":"Color","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L587-L589","Name":"\u0022adventuretime\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireGuild"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["RequireGuild","Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L590-L591","Name":"\u0022adventuretime\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"friendo","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L592-L611","Name":"\u0022adventuretime\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"person","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"friendo","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L634-L640","Name":"\u0022seal\u0022","Description":"\u0022He was forced to use Microsoft Windows when he was 6\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022He was forced to use Microsoft Windows when he was 6\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"text","Type":"string","Description":"\u0022He was forced to use Microsoft Windows when he was 6\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L642-L660","Name":"\u0022linus\u0022","Description":"\u0022NVIDIA, fuck you.\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022NVIDIA, fuck you.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"company","Type":"string","Description":"\u0022NVIDIA, fuck you.\u0022","RemainingText":false,"Optional":true,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L662-L669","Name":"\u0022resize\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"image","Type":"SdImage","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"x","Type":"int","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]},{"Name":"y","Type":"int","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]},{"Name":"format","Type":"MagickFormat?","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L698-L699","Name":"\u0022resize\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"image","Type":"SdImage","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"format","Type":"MagickFormat?","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L701-L702","Name":"\u0022resize\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"format","Type":"MagickFormat?","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L704-L706","Name":"\u0022resize\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"x","Type":"int","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]},{"Name":"y","Type":"int","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]},{"Name":"format","Type":"MagickFormat?","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L707-L708","Name":"\u0022reliable\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L710-L711","Name":"\u0022reliable\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"koichi","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L713-L759","Name":"\u0022reliable\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"jotaro","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"koichi","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L760-L764","Name":"\u0022ObMedal\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L765-L779","Name":"\u0022ObMedal\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"obama","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L780-L799","Name":"\u0022ObMedal\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"obama","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"secondPerson","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L800-L801","Name":"\u0022happynewyear\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L802-L808","Name":"\u0022happynewyear\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"person","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L820-L826","Name":"\u0022silver\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ImageModule.cs#L828-L836","Name":"\u0022silver\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"image","Type":"SdImage","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"MiscCommands","Commands":[{"Location":"/SilverBotDS/Commands/Misc.cs#L72-L79","Name":"\u0022version\u0022","Description":"\u0022Get the version info\u0022","Aliases":["\u0022ver\u0022","\u0022verinfo\u0022","\u0022versioninfo\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Get the version info\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L81-L109","Name":"\u0022setlang\u0022","Description":"\u0022set your language\u0022","Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022set your language\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions"]},{"Name":"langName","Type":"string","Description":"\u0022set your language\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions"]}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L111-L145","Name":"\u0022togglerepeat\u0022","Description":"\u0022toggle repeated strings\u0022","Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022toggle repeated strings\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions"]},{"Name":"enable","Type":"bool","Description":"\u0022toggle repeated strings\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions"]}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L147-L167","Name":"\u0022translateunknown\u0022","Description":"\u0022translate from an unknown language\u0022","Aliases":["\u0022translate\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022translate from an unknown language\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]},{"Name":"text","Type":"string","Description":"\u0022translate from an unknown language\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L169-L204","Name":"\u0022translateunknownto\u0022","Description":"\u0022translate from an unknown language to a specified one\u0022","Aliases":["\u0022translateto\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022translate from an unknown language to a specified one\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]},{"Name":"languageTo","Type":"string","Description":"\u0022translate from an unknown language to a specified one\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]},{"Name":"text","Type":"string","Description":"\u0022translate from an unknown language to a specified one\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/Misc.cs#L206-L260","Name":"\u0022cserrcode\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"error","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"ModCommands","Commands":[{"Location":"/SilverBotDS/Commands/ModCommands.cs#L24-L57","Name":"\u0022kick\u0022","Description":"\u0022Kick a specified user\u0022","Aliases":null,"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Kick a specified user\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequirePermissions"]},{"Name":"a","Type":"DiscordMember","Description":"\u0022Kick a specified user\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequirePermissions"]},{"Name":"reason","Type":"string","Description":"\u0022Kick a specified user\u0022","RemainingText":false,"Optional":true,"CustomAttributes":["Command","RequirePermissions"]}]},{"Location":"/SilverBotDS/Commands/ModCommands.cs#L59-L96","Name":"\u0022ban\u0022","Description":"\u0022bans a specified user\u0022","Aliases":null,"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022bans a specified user\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequirePermissions"]},{"Name":"a","Type":"DiscordUser","Description":"\u0022bans a specified user\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequirePermissions"]},{"Name":"reason","Type":"string","Description":"\u0022bans a specified user\u0022","RemainingText":false,"Optional":true,"CustomAttributes":["Command","RequirePermissions"]}]},{"Location":"/SilverBotDS/Commands/ModCommands.cs#L98-L113","Name":"\u0022kickme\u0022","Description":"\u0022Kicks yourself lmao (or ban if you\u0027re super daring)\u0022","Aliases":null,"CustomAttributes":["RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Kicks yourself lmao (or ban if you\u0027re super daring)\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireBotPermissions"]},{"Name":"ban","Type":"bool","Description":"\u0022Kicks yourself lmao (or ban if you\u0027re super daring)\u0022","RemainingText":false,"Optional":true,"CustomAttributes":["Command","RequireBotPermissions"]}]},{"Location":"/SilverBotDS/Commands/ModCommands.cs#L115-L155","Name":"\u0022purge\u0022","Description":"\u0022Downloads and removes X messages from the current channel.\u0022","Aliases":["\u0022clean\u0022","\u0022clear\u0022"],"CustomAttributes":["RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Downloads and removes X messages from the current channel.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases","RequirePermissions"]},{"Name":"amount","Type":"int","Description":"\u0022Downloads and removes X messages from the current channel.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases","RequirePermissions"]}]}]},{"Name":"OwnerOnly","Commands":[{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L48-L65","Name":"\u0022reloadcolors\u0022","Description":"\u0022reloads the colors.json\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022reloads the colors.json\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L67-L72","Name":"\u0022UnRegisterCommand\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"cmdwithparm","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L74-L115","Name":"\u0022RegisterModule\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"mod","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"skipcheck","Type":"bool","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L117-L128","Name":"\u0022sudo\u0022","Description":"\u0022Executes a command as another user.\u0022","Aliases":null,"CustomAttributes":["Hidden","RequireOwner"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Executes a command as another user.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Hidden","RequireOwner"]},{"Name":"member","Type":"DiscordMember","Description":"\u0022Executes a command as another user.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Hidden","RequireOwner"]},{"Name":"command","Type":"string","Description":"\u0022Executes a command as another user.\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Hidden","RequireOwner"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L130-L168","Name":"\u0022setupcategory\u0022","Description":"\u0022Set up a category in the silverbot dev server\u0022","Aliases":null,"CustomAttributes":["RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Set up a category in the silverbot dev server\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireBotPermissions"]},{"Name":"role","Type":"DiscordRole","Description":"\u0022Set up a category in the silverbot dev server\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireBotPermissions"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L170-L204","Name":"\u0022setupcategory\u0022","Description":"\u0022Set up a category in the silverbot dev server\u0022","Aliases":null,"CustomAttributes":["RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Set up a category in the silverbot dev server\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireBotPermissions"]},{"Name":"person","Type":"DiscordMember","Description":"\u0022Set up a category in the silverbot dev server\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireBotPermissions"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L339-L358","Name":"\u0022dependencies\u0022","Description":"\u0022get the dependencies used\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022get the dependencies used\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L364-L471","Name":"\u0022evaluate\u0022","Description":"\u0022EVALUATE SOME C# CODE\u0022","Aliases":["\u0022eval\u0022","\u0022ev\u0022"],"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022EVALUATE SOME C# CODE\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]},{"Name":"code","Type":"string","Description":"\u0022EVALUATE SOME C# CODE\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Aliases"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L473-L508","Name":"\u0022sh\u0022","Description":"\u0022runs some commands\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022runs some commands\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"command","Type":"string","Description":"\u0022runs some commands\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L510-L517","Name":"\u0022runsql\u0022","Description":"\u0022runs some sql\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022runs some sql\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"sql","Type":"string","Description":"\u0022runs some sql\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L542-L612","Name":"\u0022addemotes\u0022","Description":"\u0022testing shiz\u0022","Aliases":null,"CustomAttributes":["RequireGuild","RequirePermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022testing shiz\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireGuild","RequirePermissions"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L614-L625","Name":"\u0022guilds\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L627-L633","Name":"\u0022togglebanuser\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"userid","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"ban","Type":"bool","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L635-L641","Name":"\u0022shutdown\u0022","Description":"\u0022kill the bot\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022kill the bot\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L643-L650","Name":"\u0022shutdowngrace\u0022","Description":"\u0022kill the bot but shutdown the tasks first\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022kill the bot but shutdown the tasks first\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/OwnerOnly.cs#L652-L658","Name":"\u0022removeuser\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"userid","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"ReactionRoleCommands","Commands":[{"Location":"/SilverBotDS/Commands/ReactionRoleCommands.cs#L44-L198","Name":"\u0022addmenu\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]},{"Name":"ReminderCommands","Commands":[{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L32-L61","Name":"\u0022remindme\u0022","Description":"\u0022simple reminder\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022simple reminder\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"duration","Type":"TimeSpan","Description":"\u0022simple reminder\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"item","Type":"string","Description":"\u0022simple reminder\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L63-L89","Name":"\u0022listreminders\u0022","Description":"\u0022lists all reminders\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022lists all reminders\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L91-L118","Name":"\u0022listremindersguild\u0022","Description":"\u0022lists all reminders here\u0022","Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022lists all reminders here\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions"]}]},{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L120-L150","Name":"\u0022cancelreminder\u0022","Description":"\u0022deletes a specific reminder\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022deletes a specific reminder\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"id","Type":"string","Description":"\u0022deletes a specific reminder\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/ReminderCommands.cs#L152-L185","Name":"\u0022cancelreminderf\u0022","Description":"\u0022deletes a reminder with force\u0022","Aliases":null,"CustomAttributes":["RequireUserPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022deletes a reminder with force\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions"]},{"Name":"id","Type":"string","Description":"\u0022deletes a reminder with force\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions"]}]}]},{"Name":"ServerStatsCommands","Commands":[{"Location":"/SilverBotDS/Commands/ServerStatsCommands.cs#L31-L75","Name":"\u0022emoteanalyse\u0022","Description":"\u0022analyse emote usage in a specified channel\u0022","Aliases":null,"CustomAttributes":["Cooldown"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022analyse emote usage in a specified channel\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Cooldown"]},{"Name":"channel","Type":"DiscordChannel","Description":"\u0022analyse emote usage in a specified channel\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command","Cooldown"]},{"Name":"limit","Type":"int","Description":"\u0022analyse emote usage in a specified channel\u0022","RemainingText":false,"Optional":true,"CustomAttributes":["Command","Cooldown"]}]},{"Location":"/SilverBotDS/Commands/ServerStatsCommands.cs#L77-L101","Name":"\u0022setcategory\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireUserPermissions","RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions","RequireBotPermissions"]},{"Name":"category","Type":"DiscordChannel","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions","RequireBotPermissions"]}]},{"Location":"/SilverBotDS/Commands/ServerStatsCommands.cs#L103-L114","Name":"\u0022setstatstrings\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireUserPermissions","RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions","RequireBotPermissions"]}]},{"Location":"/SilverBotDS/Commands/ServerStatsCommands.cs#L116-L127","Name":"\u0022setstatstrings\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireUserPermissions","RequireBotPermissions"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions","RequireBotPermissions"]},{"Name":"cake","Type":"string[]","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireUserPermissions","RequireBotPermissions"]}]}]},{"Name":"AudioSlash","Commands":[{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L194-L240","Name":"\u0022playnext\u0022","Description":"\u0022Tell me to play a song next in the queue\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]},{"Name":"sg","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L265-L319","Name":"\u0022play\u0022","Description":"\u0022Tell me to play a song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]},{"Name":"sg","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L321-L348","Name":"\u0022volume\u0022","Description":"\u0022Change the volume 1-100%\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["RequireDjSlash","SlashCommand"]},{"Name":"volume","Type":"long","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["RequireDjSlash","SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L350-L367","Name":"\u0022seek\u0022","Description":"\u0022Seeks to the specified time\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["RequireDjSlash","SlashCommand"]},{"Name":"time","Type":"TimeSpan?","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["RequireDjSlash","SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L433-L451","Name":"\u0022clearqueue\u0022","Description":"\u0022Clears the queue\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["RequireDjSlash","SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L453-L464","Name":"\u0022shuffle\u0022","Description":"\u0022Shuffles the queue\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["RequireDjSlash","SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L467-L484","Name":"\u0022export\u0022","Description":"\u0022Export the queue\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]},{"Name":"playlistName","Type":"string?","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L487-L505","Name":"\u0022remove\u0022","Description":"\u0022Remove song X from the queue. 0 \u003C index \u003E queue length\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]},{"Name":"songindex","Type":"long","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L506-L533","Name":"\u0022loop\u0022","Description":"\u0022Loops nothing/the queue/the currently playing song\\\u0022\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]},{"Name":"settings","Type":"LoopSettings","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L623-L638","Name":"\u0022pause\u0022","Description":"\u0022pause the current song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L667-L681","Name":"\u0022resume\u0022","Description":"\u0022resume the current song\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L683-L690","Name":"\u0022join\u0022","Description":"\u0022join the voice chat you\u0027re in\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L707-L731","Name":"\u0022forceskip\u0022","Description":"\u0022skip a song. dj only command\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["RequireDjSlash","SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L732-L742","Name":"\u0022leave\u0022","Description":"\u0022disconnect from voice channel\u0022","Aliases":null,"CustomAttributes":["RequireDjSlash"],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand","RequireDjSlash"]}]},{"Location":"/SilverBotDS/Commands/Slash/AudioSlash.cs#L743-L779","Name":"\u0022skip\u0022","Description":"\u0022vote skip\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]}]},{"Name":"BubotSlash","Commands":[{"Location":"/SilverBotDS/Commands/Slash/BubotSlash.cs#L67-L90","Name":"\u0022bibi\u0022","Description":"\u0022Makes a image with the great cat Bibi.\u0022","Aliases":null,"CustomAttributes":["SlashCooldown"],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand","SlashCooldown"]},{"Name":"input","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand","SlashCooldown"]}]}]},{"Name":"GeneralCommands","Commands":[{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L27-L32","Name":"\u0022hello\u0022","Description":"\u0022A simple hello command\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L59-L63","Name":"\u0022whois\u0022","Description":"\u0022Find out the info silverbot knows about someone.\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]},{"Name":"user","Type":"DiscordUser","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L65-L69","Name":null,"Description":null,"Aliases":null,"CustomAttributes":["ContextMenu"],"Arguments":[{"Name":"ctx","Type":"ContextMenuContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["ContextMenu"]}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L71-L77","Name":"\u0022version\u0022","Description":"\u0022Find out the version info for this instance of silverbot\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L79-L91","Name":"\u0022dukthosting\u0022","Description":"\u0022SilverHosting:tm: best\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"InteractionContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["SlashCommand"]}]},{"Location":"/SilverBotDS/Commands/Slash/GeneralCommands.cs#L93-L102","Name":null,"Description":null,"Aliases":null,"CustomAttributes":["ContextMenu"],"Arguments":[{"Name":"ctx","Type":"ContextMenuContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["ContextMenu"]}]}]},{"Name":"StableDiff","Commands":[{"Location":"/SilverBotDS/Commands/StableDiff.cs#L35-L39","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"prompt","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L40-L44","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"prompt","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"steps","Type":"int","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L45-L49","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"model","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"prompt","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L50-L54","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"model","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"seed","Type":"int","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"prompt","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L55-L59","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"model","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"prompt","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"steps","Type":"int","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L60-L64","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"model","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"seed","Type":"int","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"prompt","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"resolution","Type":"int","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L65-L69","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"model","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"seed","Type":"int","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"prompt","Type":"string","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"steps","Type":"int","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"resolution","Type":"int","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/StableDiff.cs#L70-L179","Name":"\u0022imagine\u0022","Description":null,"Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"model","Type":"string","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]},{"Name":"seed","Type":"int?","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]},{"Name":"negative_prompt","Type":"string","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]},{"Name":"prompt","Type":"string","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]},{"Name":"resolution","Type":"int","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]},{"Name":"steps","Type":"int","Description":null,"RemainingText":false,"Optional":true,"CustomAttributes":["Command"]}]}]},{"Name":"TranslatorCommands","Commands":[{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L43-L49","Name":"\u0022editlangtranslator\u0022","Description":"\u0022set you\u0027re testing language\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022set you\u0027re testing language\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L51-L57","Name":"\u0022getobjectfromcurrentlanguage\u0022","Description":"\u0022yayayayayyayaya\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022yayayayayyayaya\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"name","Type":"string","Description":"\u0022yayayayayyayaya\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L59-L122","Name":"\u0022setlangtranslator\u0022","Description":"\u0022set you\u0027re testing language\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022set you\u0027re testing language\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"lang","Type":"string","Description":"\u0022set you\u0027re testing language\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L124-L152","Name":"\u0022uploadlanguage\u0022","Description":null,"Aliases":null,"CustomAttributes":["RequireAttachment"],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":null,"RemainingText":false,"Optional":false,"CustomAttributes":["Command","RequireAttachment"]}]},{"Location":"/SilverBotDS/Commands/TranslatorCommands.cs#L154-L212","Name":"\u0022generatelangtemplate\u0022","Description":"\u0022make a template for translation\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022make a template for translation\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"lang","Type":"string?","Description":"\u0022make a template for translation\u0022","RemainingText":false,"Optional":true,"CustomAttributes":["Command"]}]}]},{"Name":"UserQuotesModule","Commands":[{"Location":"/SilverBotDS/Commands/UserQuotes.cs#L56-L71","Name":"\u0022add\u0022","Description":"\u0022Add a new quote to your \\\u0022Quote Book\\\u0022\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Add a new quote to your \\\u0022Quote Book\\\u0022\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"content","Type":"string","Description":"\u0022Add a new quote to your \\\u0022Quote Book\\\u0022\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]},{"Location":"/SilverBotDS/Commands/UserQuotes.cs#L73-L96","Name":"\u0022get\u0022","Description":"\u0022Gets a quote from your \\\u0022Quote Book\\\u0022 with it\u0027s ID\u0022","Aliases":null,"CustomAttributes":[],"Arguments":[{"Name":"ctx","Type":"CommandContext","Description":"\u0022Gets a quote from your \\\u0022Quote Book\\\u0022 with it\u0027s ID\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]},{"Name":"id","Type":"string","Description":"\u0022Gets a quote from your \\\u0022Quote Book\\\u0022 with it\u0027s ID\u0022","RemainingText":false,"Optional":false,"CustomAttributes":["Command"]}]}]}]},"/github/workspace/SilverBotDS.PixelsArchiver/SilverBotDS.PixelsArchiver.csproj":{"CommandModules":[]},"/github/workspace/SDiscordSink/SDiscordSink.csproj":{"CommandModules":[]},"/github/workspace/SilverBot.SysAdminModule/SilverBot.SysAdminModule.csproj":{"CommandModules":[]},"/github/workspace/SilverBot.Shared/SilverBot.Shared.csproj":{"CommandModules":[]},"/github/workspace/SilverBot.Web/SilverBot.Web.csproj":{"CommandModules":[]}}
 ```

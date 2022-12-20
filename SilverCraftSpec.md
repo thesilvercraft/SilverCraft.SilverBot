@@ -105,13 +105,13 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "playnext" - "Tell me to play a song next in the queue"
 
-`System.String[]`
+`"pn"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L145-L190
 
 > "play" - "Tell me to play a song"
 
-`System.String[]`
+`"p"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L192-L213
 
@@ -121,7 +121,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "volume" - "Change the volume 1-100%"
 
-`System.String[]`
+`"vol"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L271-L299
 
@@ -147,19 +147,19 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "queuehistory" - "check what was playing"
 
-`System.String[]`
+`"qh"`,`"prevplaying"`,`"pq"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L452-L477
 
 > "queue" - "check whats playing rn and whats next"
 
-`System.String[]`
+`"np"`,`"nowplaying"`,`"q"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L479-L536
 
 > "loop" - "Loops nothing/the queue/the currently playing song"
 
-`System.String[]`
+`"repeat"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L538-L565
 
@@ -185,25 +185,25 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "forceskip" - "skip a song. dj only command"
 
-`System.String[]`
+`"fs"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L647-L670
 
 > "voteskip" - "skip a song"
 
-`System.String[]`
+`"skip"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L672-L707
 
 > "forcedisconnect" - "Tell me to leave your channel of the voice type, without checking if its in a vc"
 
-`System.String[]`
+`"fuckoffisntworking"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L709-L723
 
 > "disconnect" - "Tell me to leave your channel of the voice type"
 
-`System.String[]`
+`"fuckoff"`,`"minecraftbedrockisbetter"`,`"fockoff"`,`"leave"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L725-L736
 
@@ -285,7 +285,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "getfromusername" - "Get a minecraft players UUID from their username"
 
-`System.String[]`
+`"username"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Minecraft.cs#L25-L39
 
@@ -293,7 +293,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "search" - "Search about a game"
 
-`System.String[]`
+`"s"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Steam.cs#L28-L102
 
@@ -329,7 +329,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "duckhosting" - "SilverHosting best"
 
-`System.String[]`
+`"dukthosting"`,`"ducthosting"`,`":duckhosting:"`,`"<:duckhosting:797225115837792367>"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L135-L149
 
@@ -349,7 +349,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "search" - Unknown description
 
-`System.String[]`
+`"s"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Giphy.cs#L68-L93
 
@@ -471,7 +471,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "version" - "Get the version info"
 
-`System.String[]`
+`"ver"`,`"verinfo"`,`"versioninfo"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L72-L79
 
@@ -485,13 +485,13 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "translateunknown" - "translate from an unknown language"
 
-`System.String[]`
+`"translate"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L147-L167
 
 > "translateunknownto" - "translate from an unknown language to a specified one"
 
-`System.String[]`
+`"translateto"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L169-L204
 
@@ -515,7 +515,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "purge" - "Downloads and removes X messages from the current channel."
 
-`System.String[]`
+`"clean"`,`"clear"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L115-L155
 
@@ -551,7 +551,7 @@ https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/
 
 > "evaluate" - "EVALUATE SOME C# CODE"
 
-`System.String[]`
+`"eval"`,`"ev"`
 
 https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L364-L471
 

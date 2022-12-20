@@ -14,7 +14,7 @@ The *SDBrowser.csproj* project file contains:
 - 1 namespaces.
 - 4 named types.
 - 166 total lines of source code.
-- Approximately 74 lines of executable code.
+- Approximately 76 lines of executable code.
 - The highest cyclomatic complexity is 5 :heavy_check_mark:.
 
 <details>
@@ -29,7 +29,7 @@ The `SDBrowser` namespace contains 4 named types.
 
 - 4 named types.
 - 166 total lines of source code.
-- Approximately 74 lines of executable code.
+- Approximately 76 lines of executable code.
 - The highest cyclomatic complexity is 5 :heavy_check_mark:.
 
 <details>
@@ -65,8 +65,8 @@ The `SDBrowser` namespace contains 4 named types.
 <br>
 
 - The `IBrowser` contains 3 members.
-- 11 total lines of source code.
-- Approximately 6 lines of executable code.
+- 12 total lines of source code.
+- Approximately 8 lines of executable code.
 - The highest cyclomatic complexity is 1 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |

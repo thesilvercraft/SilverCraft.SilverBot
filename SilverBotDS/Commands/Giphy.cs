@@ -105,7 +105,6 @@ public class Giphy : BaseCommandModule
             {
                 page = 0;
             }
-
             b.WithDescription(
                     $"{formated} : {gifResult.Data[page].Url} {string.Format(lang.PageGif, page + 1, gifResult.Data.Length)}")
                 .WithImageUrl(gifResult.Data[page].Images.Original.Url).WithColor(await ColorUtils.GetSingleAsync());

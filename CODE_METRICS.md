@@ -8072,6 +8072,7 @@ class Anime{
 
 <div id="AnimeSlash-class-diagram"></div>
 
+
 ##### `AnimeSlash` class diagram
 
 ```mermaid
@@ -9271,6 +9272,5 @@ class UserNotInVCException{
 ```
 
 ***This file is maintained by a github action.***
-
 
 <!-- markdownlint-restore -->

@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SDBrowser;
-
-public sealed class SeleniumBrowser : IBrowser
+[Obsolete]
+public  class SeleniumBrowser : IBrowser
 {
     private readonly IWebDriver _webDriver;
     private bool _isLocked;

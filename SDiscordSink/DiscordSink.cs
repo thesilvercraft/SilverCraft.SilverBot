@@ -64,7 +64,6 @@ public class DiscordSink : ILogEventSink
     };
 
     private readonly Regex VBUErr = new(@"^Error `(P<error>.+?)` encountered.\nGuild `(P<guild_id>\d+|None)`, channel `(P<channel_id>\d+|None)`, user `(P<user_id>\d+|None)`\n```\n(P<command_invoke>.+?)\n```$", RegexOptions.Multiline | RegexOptions.Compiled);
-
     public void Emit(LogEvent logEvent)
     {
         var builder = new DiscordEmbedBuilder();

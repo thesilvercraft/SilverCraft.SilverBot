@@ -36,7 +36,6 @@ using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Utils;
-using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -335,15 +334,7 @@ namespace SilverBotDS
                 services.AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
             }
 
-            if (IsNotNullAndIsNotB(_config.SpotifyClientId, "Spotify_CLIENT_ID") &&
-                IsNotNullAndIsNotB(_config.SpotifyClientSecret, "Spotify_CLIENT_SECRET"))
-            {
-                var spotifyClientConfig = SpotifyClientConfig.CreateDefault();
-                services.AddSingleton(new SpotifyClient(spotifyClientConfig.WithToken(
-                    (await new OAuthClient(spotifyClientConfig).RequestToken(
-                        new ClientCredentialsRequest(_config.SpotifyClientId, _config.SpotifyClientSecret)))
-                    .AccessToken)));
-            }
+           
             services.AddSingleton(_log);
             services.AddSingleton(_discord);
             object CreateInstance(Type t, IServiceProvider services)

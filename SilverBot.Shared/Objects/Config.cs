@@ -171,14 +171,9 @@ public class Config
 
     [XmlDescription("A temporary way to disable the interactivity tracker")]
     public bool SitInVc { get; set; } = false;
+    
 
-    [XmlDescription(
-        "Stuff to use spotify with, leave as is if you are too bored to make a spotify app if you arent go to https://developer.spotify.com/dashboard")]
-    public string SpotifyClientId { get; set; } = "Spotify_CLIENT_ID";
-
-    public string SpotifyClientSecret { get; set; } = "Spotify_CLIENT_SECRET";
-
-    [XmlDescription("Do we enable the shitty server statistics")]
+    [XmlDescription("Do we enable the server statistics")]
     public bool EnableServerStatistics { get; set; } = true;
 
     [XmlDescription("Used for the new Translator Mode thingy")]

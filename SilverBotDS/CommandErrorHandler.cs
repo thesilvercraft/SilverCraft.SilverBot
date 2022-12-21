@@ -99,7 +99,7 @@ namespace SilverBotDS
                 RequirePermissionsAttribute userAndBotPermissions => string.Format(lang.RequireBotAndUserPermisionsCheckFailedPL, userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                 RequireAttachmentAttribute attachmentAttribute when e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount => ((string?)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang))?? "Too many attachments (mini error 21d74757-ee71-42e0-a4e7-02d3b17336a2)",
                 RequireAttachmentAttribute attachmentAttribute => (string?)typeof(Language).GetProperty(attachmentAttribute.LessThenLang)?.GetValue(lang) ?? "Not enough attachments (mini error 80d5e4d1-3c5c-43b3-8b97-5d3e419d275e)",
-                _ => string.Format(lang.CheckFailed, e.Exception.GetType().Name.RemoveStringFromEnd("Attribute").Humanize()),
+                _ => string.Format(lang.CheckFailed, checkBase.GetType().Name.RemoveStringFromEnd("Attribute").Humanize()),
             };
         }
 

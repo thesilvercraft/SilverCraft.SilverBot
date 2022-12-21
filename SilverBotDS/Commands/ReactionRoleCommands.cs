@@ -9,7 +9,6 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
-using Microsoft.EntityFrameworkCore;
 using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
@@ -114,18 +113,11 @@ public class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRequiremen
                         }
                         DiscordEmoji emoji;
                         var m = Emote.Match(splitline[1]);
-                        if (m.Success)
-                        {
-                            emoji = DiscordEmoji.FromGuildEmote(ctx.Client, ulong.Parse(m.Groups["id"].Value));
-                        }
-                        else
-                        {
-                            emoji = DiscordEmoji.FromUnicode(ctx.Client, splitline[1]);
-                        }
-                        ReactionRoleType t = ReactionRoleType.Normal;
+                        emoji = m.Success ? DiscordEmoji.FromGuildEmote(ctx.Client, ulong.Parse(m.Groups["id"].Value)) : DiscordEmoji.FromUnicode(ctx.Client, splitline[1]);
+                        var t = ReactionRoleType.Normal;
                         if (splitline.Length == 3)
                         {
-                            if (ushort.TryParse(splitline[2], out ushort idoft) && Enum.GetValues<ReactionRoleType>().Select(x => ((ushort)x)).Contains(idoft))
+                            if (ushort.TryParse(splitline[2], out var idoft) && Enum.GetValues<ReactionRoleType>().Select(x => ((ushort)x)).Contains(idoft))
                             {
                                 t = (ReactionRoleType)idoft;
                             }

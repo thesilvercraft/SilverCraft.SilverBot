@@ -4,7 +4,6 @@ SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
 using DSharpPlus;
-using Microsoft.Extensions.Logging;
 using SilverBotDS.Objects;
 using System.Diagnostics;
 

@@ -9,7 +9,6 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes;
 using SilverBotDS.Utils;
 using System;
@@ -128,24 +127,22 @@ public class ReminderCommands : BaseCommandModule
         }
         var lang = await LanguageService.FromCtxAsync(ctx);
         var a = DbCtx.plannedEvents.Where(a => a.UserID == ctx.User.Id && a.Type == PlannedEventType.Reminder && a.EventID == id).ToList();
-        if (a.Count == 0)
+        switch (a.Count)
         {
-            await ctx.RespondAsync(lang.CancelReminderErrorNoEvent);
-        }
-        else if (a.Count == 1)
-        {
-            if (a[0].Handled)
-            {
+            case 0:
+                await ctx.RespondAsync(lang.CancelReminderErrorNoEvent);
+                break;
+            case 1 when a[0].Handled:
                 await ctx.RespondAsync(lang.CancelReminderErrorAlreadyHandled);
                 return;
-            }
-            DbCtx.plannedEvents.Remove(a[0]);
-            await DbCtx.SaveChangesAsync();
-            await ctx.RespondAsync(lang.CancelReminderSuccess);
-        }
-        else
-        {
-            await ctx.RespondAsync(lang.CancelReminderErrorMultiple);
+            case 1:
+                DbCtx.plannedEvents.Remove(a[0]);
+                await DbCtx.SaveChangesAsync();
+                await ctx.RespondAsync(lang.CancelReminderSuccess);
+                break;
+            default:
+                await ctx.RespondAsync(lang.CancelReminderErrorMultiple);
+                break;
         }
     }
 
@@ -163,24 +160,22 @@ public class ReminderCommands : BaseCommandModule
 
         var lang = await LanguageService.FromCtxAsync(ctx);
         var a = DbCtx.plannedEvents.Where(a => channels.Contains(a.ChannelID) && a.Type == PlannedEventType.Reminder && a.EventID == id).ToList();
-        if (a.Count == 0)
+        switch (a.Count)
         {
-            await ctx.RespondAsync(lang.CancelReminderErrorNoEvent);
-        }
-        else if (a.Count == 1)
-        {
-            if (a[0].Handled)
-            {
+            case 0:
+                await ctx.RespondAsync(lang.CancelReminderErrorNoEvent);
+                break;
+            case 1 when a[0].Handled:
                 await ctx.RespondAsync(lang.CancelReminderErrorAlreadyHandled);
                 return;
-            }
-            DbCtx.plannedEvents.Remove(a[0]);
-            await DbCtx.SaveChangesAsync();
-            await ctx.RespondAsync(lang.CancelReminderSuccess);
-        }
-        else
-        {
-            await ctx.RespondAsync(lang.CancelReminderErrorMultiple);
+            case 1:
+                DbCtx.plannedEvents.Remove(a[0]);
+                await DbCtx.SaveChangesAsync();
+                await ctx.RespondAsync(lang.CancelReminderSuccess);
+                break;
+            default:
+                await ctx.RespondAsync(lang.CancelReminderErrorMultiple);
+                break;
         }
     }
 }

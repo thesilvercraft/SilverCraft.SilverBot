@@ -4,8 +4,6 @@ SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
 using System;
-using System.Buffers.Text;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -15,7 +13,6 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using RestSharp.Serialization.Json;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;

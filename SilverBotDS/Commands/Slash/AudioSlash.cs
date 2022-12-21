@@ -16,7 +16,6 @@ using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,8 +23,6 @@ using System.Text.Json;
 using Lavalink4NET.Decoding;
 using Lavalink4NET.Rest;
 using System.Net.Http;
-using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.CommandsNext;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -61,24 +58,19 @@ namespace SilverBotDS.Commands.Slash
             {
                 embedBuilder.WithDescription(message);
             }
-
             if (!string.IsNullOrEmpty(title))
             {
                 embedBuilder.WithTitle(title);
             }
-
             if (!string.IsNullOrEmpty(imageurl))
             {
                 embedBuilder.WithThumbnail(imageurl);
             }
-
             if (!string.IsNullOrEmpty(url))
             {
                 embedBuilder.WithUrl(url);
             }
             await ctx.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(embedBuilder.Build()));
-            
-            
         }
 
         public static async Task SendSimpleMessage(BaseContext ctx, string title = "", string message = "", string image = "",
@@ -96,7 +88,6 @@ namespace SilverBotDS.Commands.Slash
             {
                 embedBuilder.WithDescription(message);
             }
-
             if (!string.IsNullOrEmpty(title))
             {
                 embedBuilder.WithTitle(title);
@@ -114,7 +105,6 @@ namespace SilverBotDS.Commands.Slash
             {
                 return TimeSpan.MaxValue;
             }
-
             TimeSpan time;
             if (player.CurrentTrack.IsLiveStream)
             {
@@ -143,12 +133,10 @@ namespace SilverBotDS.Commands.Slash
 
                 await StaticJoin(ctx, AudioService);
             }
-
             if (conf.SongAliases.ContainsKey(value))
             {
                 value = conf.SongAliases[value];
             }
-
             if (value.EndsWith(".json"))
             {
                 var client = HttpClient;
@@ -168,27 +156,29 @@ namespace SilverBotDS.Commands.Slash
                         TimeSpan.FromMilliseconds(tracks.CurrentSongTimems));
                 }
             }
-
-           
-
             var track = await AudioService.GetTracksAsync(value);
-            if (track?.Any() != true)
+            if (track?.Any() == true)
             {
-                track = new[] { await AudioService.GetTrackAsync(value, SearchMode.YouTube) };
-
-                if (track?.Any() != true)
-                {
-                    track = new[] { await AudioService.GetTrackAsync(value, SearchMode.SoundCloud) };
-                    if (track?.Any() != true)
-                    {
-                        await SendSimpleMessage(ctx, string.Format(lang.NoResults, value), language: lang);
-                        return null;
-                    }
-                }
+                return (new SongORSongs(track.First(), null, track.Skip(1).ToAsyncEnumerable()));
             }
 
-            return (new SongORSongs(track.First(), null, track.Skip(1).ToAsyncEnumerable()));
-        }
+            track = new[] { await AudioService.GetTrackAsync(value, SearchMode.YouTube) };
+
+            if (track?.Any() == true)
+            {
+                return (new SongORSongs(track.First(), null, track.Skip(1).ToAsyncEnumerable()));
+            }
+
+            track = new[] { await AudioService.GetTrackAsync(value, SearchMode.SoundCloud) };
+            if (track?.Any() == true)
+            {
+                return (new SongORSongs(track.First(), null, track.Skip(1).ToAsyncEnumerable()));
+            }
+
+            await SendSimpleMessage(ctx, string.Format(lang.NoResults, value), language: lang);
+            return null;
+
+           }
         [SlashCommand("playnext", "Tell me to play a song next in the queue")]
 
         public async Task PlayNext(InteractionContext ctx, [Option("songname","the song to add next in the queue")] string sg)

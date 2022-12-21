@@ -54,14 +54,16 @@ public class ServerStatsCommands : BaseCommandModule
             foreach (var part in message.Content.Split(' '))
             {
                 var m = _emote.Matches(part);
-                if (m.Count != 0)
+                if (m.Count == 0)
                 {
-                    foreach (var gr in m.Select(ovl => ovl.Groups))
-                    {
-                        bob.Append(gr["name"].Value).Append(',').Append(Convert.ToUInt64(gr["id"].Value)).Append(',')
-                            .AppendFormat("{0:yyyy-MM-dd HH:mm:ss}", message.EditedTimestamp ?? message.Timestamp)
-                            .AppendLine();
-                    }
+                    continue;
+                }
+
+                foreach (var gr in m.Select(ovl => ovl.Groups))
+                {
+                    bob.Append(gr["name"].Value).Append(',').Append(Convert.ToUInt64(gr["id"].Value)).Append(',')
+                        .AppendFormat("{0:yyyy-MM-dd HH:mm:ss}", message.EditedTimestamp ?? message.Timestamp)
+                        .AppendLine();
                 }
             }
 

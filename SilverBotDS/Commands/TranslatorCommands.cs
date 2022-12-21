@@ -9,7 +9,6 @@ using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
 using SilverBotDS.Objects.Database.Classes;
 using System;
 using System.Collections.Generic;

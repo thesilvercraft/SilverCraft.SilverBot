@@ -3,18 +3,13 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
-using DSharpPlus.Entities;
-using DSharpPlus;
+
 using DSharpPlus.SlashCommands;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using ImageMagick;
 using SilverBotDS.Objects.Classes;
@@ -28,11 +23,7 @@ namespace SilverBotDS.Commands.Slash
         private string[] _bibiFullDescText;
         public Config Config { private get; set; }
 
-        public Task<bool> ExecuteRequirements(Config conf)
-        {
-            return Task.FromResult(Directory.Exists(conf.LocalBibiPictures));
-
-        }
+        public Task<bool> ExecuteRequirements(Config conf) => Task.FromResult(Directory.Exists(conf.LocalBibiPictures));
 
         private void EnsureCreated()
         {
@@ -52,9 +43,9 @@ namespace SilverBotDS.Commands.Slash
             return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
         }
         public static string[] RequiredAssets => new[]
-   {
-        "font://Arial",
-    };
+        {
+            "font://Arial",
+        };
 
 
         private int BibiPictureCount

@@ -12,7 +12,6 @@ using DSharpPlus.Interactivity.Extensions;
 using GiphyDotNet.Model.Parameters;
 using GiphyDotNet.Model.Results;
 using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using System;
 using System.Threading.Tasks;

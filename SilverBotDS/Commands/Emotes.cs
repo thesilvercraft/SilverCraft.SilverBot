@@ -5,14 +5,13 @@ You should have received a copy of the GNU General Public License along with Sil
 */
 
 //TODO
-/*using DSharpPlus;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using SilverBotDS.Converters;
 using SilverBotDS.Exceptions;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
-using SixLabors.ImageSharp;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -25,6 +24,8 @@ public class Emotes : BaseCommandModule
 {
     public DatabaseContext Database { private get; set; }
     public Config Config { private get; set; }
+    public LanguageService LanguageService { private get; set; }
+
     public HttpClient HttpClient { private get; set; }
 
     [Command("addemote")]
@@ -42,9 +43,8 @@ public class Emotes : BaseCommandModule
             if (bytes.Length > 256000)
             {
                 await ctx.RespondAsync(string.Format(lang.EmoteWasLargerThan256K, FileSizeUtils.FormatSize(st.Length)));
-                st = (await ImageModule.ResizeAsync(bytes, new Size(128, 128))).Item1;
+                st = (ImageModule.ResizeAsyncOP(bytes, 128, 128)) as MemoryStream;
             }
-
             var emote = await ctx.Guild.CreateEmojiAsync(name, st,
                 reason: "Added via silverbot by " + ctx.User.Username);
 
@@ -79,4 +79,4 @@ public class Emotes : BaseCommandModule
             }
         }
     }
-}*/
+}

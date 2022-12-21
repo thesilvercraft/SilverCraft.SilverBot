@@ -6,12 +6,10 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
-using ImageMagick;
 using System;
 using System.Drawing;
 using System.Globalization;
 using System.Threading.Tasks;
-using static SilverBotDS.Utils.ColorUtils;
 
 namespace SilverBotDS.Converters;
 public static class ColorConverter

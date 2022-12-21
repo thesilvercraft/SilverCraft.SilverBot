@@ -8,7 +8,6 @@ You should have received a copy of the GNU General Public License along with Sil
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SilverBotDS.Objects;
 
 #nullable disable

@@ -43,7 +43,7 @@ public class SColorConverter : IArgumentConverter<Color>
     public Task<Optional<Color>> ConvertAsync(string value, CommandContext ctx)
     {
         var c = ColorConverter.Convert(value);
-        if(c is Color col)
+        if(c is { } col)
         {
             return Task.FromResult(Optional.FromValue(col));
         }

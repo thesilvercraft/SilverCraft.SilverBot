@@ -6,11 +6,12 @@ using System.Web;
 
 namespace SDBrowser;
 
+[Obsolete]
 public class RemoteBrowser : IBrowser
 {
     private readonly HttpClient _client;
 
-    private readonly string _urlOfRemote = "https://pagerendererapi.herokuapp.com/";
+    private readonly string _urlOfRemote = "";
 
     public RemoteBrowser(HttpClient client)
     {

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace SDBrowser;
-
+[Obsolete]
 public interface IBrowser
 {
     Task<Stream> RenderUrlAsync(string url, byte waittime = 0);

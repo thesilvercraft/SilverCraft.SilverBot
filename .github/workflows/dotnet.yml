@@ -27,66 +27,19 @@ jobs:
     - name: Shorten the SHA
       id: shas
       shell: powershell
-      run:  echo "::set-output name=sha_short::$(git rev-parse --short=10 ${{ github.sha }})"
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run:  echo "sha_short=$(git rev-parse --short=10 ${{ github.sha }})" >> $GITHUB_OUTPUT
+    - name: Release
+      uses: softprops/action-gh-release@v1
       with:
-         tag_name: ${{ steps.shas.outputs.sha_short }}
-         release_name:  ${{ steps.shas.outputs.sha_short }}
-         body: Automated release, a release will be created for every single push on the master branch. this one is for ${{ github.sha }}, As always zipped releases should contain most things the program needs to run and that means it has to contains the license info of every dependency contained within it
-         draft: true
-         prerelease: false
-
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: ./silverbot.zip
-         asset_name: silverbot.zip
-         asset_content_type: application/zip
-    - name: Upload Release Dll
-      id: upload-release-dll
-      uses: actions/upload-release-asset@v1
-      env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBotDS\bin\Release\net7.0\publish\SilverBotDS.dll
-         asset_name: SilverBotDS.dll
-         asset_content_type: application/octet-stream
-    - name: Upload Release Dll of AnimeModule
-      id: upload-release-dll-anime
-      uses: actions/upload-release-asset@v1
-      env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBotDS.AnimeModule\bin\Release\net7.0\publish\SilverBotDS.AnimeModule.dll
-         asset_name: SilverBotDS.AnimeModule.dll
-         asset_content_type: application/octet-stream
-    - name: Upload Release Dll of Shared
-      id: upload-release-dll-shared
-      uses: actions/upload-release-asset@v1
-      env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBot.Shared\bin\Release\net7.0\publish\SilverBot.Shared.dll
-         asset_name: SilverBot.Shared.dll
-         asset_content_type: application/octet-stream
-    - name: Upload Release PDB of Shared
-      id: upload-release-pdb-shared
-      uses: actions/upload-release-asset@v1
-      env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: .\SilverBot.Shared\bin\Release\net7.0\publish\SilverBot.Shared.pdb
-         asset_name: SilverBot.Shared.pdb
-         asset_content_type: application/octet-stream
+          body: Automated release, a release will be created for every single push on the master branch. this one is for ${{ github.sha }}, As always zipped releases should contain most things the program needs to run and that means it has to contains the license info of every dependency contained within it
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ steps.shas.outputs.sha_short }}
+          name:  ${{ steps.shas.outputs.sha_short }}
+          draft: true
+          prerelease: false
+          files: |
+            ./silverbot.zip
+            .\SilverBotDS\bin\Release\net7.0\publish\SilverBotDS.dll
+            .\SilverBotDS.AnimeModule\bin\Release\net7.0\publish\SilverBotDS.AnimeModule.dll
+            .\SilverBot.Shared\bin\Release\net7.0\publish\SilverBot.Shared.dll
+            .\SilverBot.Shared\bin\Release\net7.0\publish\SilverBot.Shared.pdb

@@ -18,7 +18,6 @@ using SilverBotDS.Converters;
 using SilverBotDS.Objects;
 using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
-using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +38,6 @@ public class Audio : BaseCommandModule
 
     public Config Config { private get; set; }
 
-    public SpotifyClient SpotifyClient { private get; set; }
     public ArtworkService ArtworkService { private get; set; }
     public LanguageService LanguageService { private get; set; }
 

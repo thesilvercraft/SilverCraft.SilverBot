@@ -16,7 +16,7 @@ namespace SilverBotDS.Objects;
 [Serializable]
 public class Config
 {
-    private const ulong CurrentConfVer = 48;
+    private const ulong CurrentConfVer = 49;
 
     [XmlDescription("Array of prefixes the bot will respond to")]
     public string[] Prefix { get; set; } =
@@ -44,12 +44,10 @@ public class Config
     public string[] ModulesToLoad { get; set; } =
     {
         "SilverBotDS.Commands.Genericcommands",
-        "SilverBotDS.Commands.Emotes",
         "SilverBotDS.Commands.ModCommands",
         "SilverBotDS.Commands.Giphy",
         "SilverBotDS.Commands.OwnerOnly",
         "SilverBotDS.Commands.Gamering.SteamCommands",
-        "SilverBotDS.Commands.Gamering.Fortnite",
         "SilverBotDS.Commands.Bubot",
         "SilverBotDS.Commands.BibiCommands",
         "SilverBotDS.Commands.BibiLib",
@@ -94,7 +92,7 @@ public class Config
     public ulong ServerId { get; set; } = 679353407667961877;
 
     [XmlDescription("Call the garbage collector when the splash changes (the gc is just snake oil)")]
-    public bool CallGCOnSplashChange { get; set; } = false;
+    public bool CallGcOnSplashChange { get; set; } = false;
 
     [XmlDescription("Enable reaction role related functions, essential if you load SilverBotDS.Commands.ReactionRoleCommands")]
     public bool ReactionRolesEnabled { get; set; } = true;
@@ -111,10 +109,7 @@ public class Config
 
     [XmlDescription("The current config version, don't change unless insctructed by dev")]
     public ulong? ConfigVer { get; set; }
-
-    [XmlDescription("Webhook for logging")]
-    public string LogWebhook { get; set; } = "https://discordapp.com/api/webhooks/id/key";
-
+    
     [XmlDescription(
         "Allow silverbot to connect to lavalink and use audio commands, useful if you have lavalink installed or if you allowed silverbot to install and run lavalink (requires java)")]
     public bool UseLavaLink { get; set; } = true;
@@ -155,24 +150,23 @@ public class Config
     public bool EmulateBubotBibi { get; set; } = false;
 
     [XmlDescription("Location of bibi pictures (local -  pictures(png) -  folder)")]
-    public string LocalBibiPictures { get; set; } = "C:\\BibiPictures\\Bibi\\";
+    public string LocalBibiPictures { get; set; } = "SilverBotAssets/Bibi";
 
     [XmlDescription("Location of bibi pictures (BibiLibCutout - web - pictures)")]
-    public string BibiLibCutOut { get; set; } = "https://cmpc.live/bibipics/bibicutout/picture{0}.png?raw=true";
+    public string BibiLibCutOut { get; set; } = "https://github.com/thesilvercraft/SilverBotAssets/blob/main/BibiLibCutout/{0}.png?raw=true";
 
     [XmlDescription("Location of titles for BibiLibCutout pictures (BibiLibCutout - local - config)")]
-    public string BibiLibCutOutConfig { get; set; } = "C:\\BibiPictures\\BibiLibCutout\\Titles.json";
+    public string BibiLibCutOutConfig { get; set; } = "SilverBotAssets/BibiLibCutout/Titles.json";
 
     [XmlDescription("Location of bibi pictures (BibiLibFull - web - pictures)")]
-    public string BibiLibFull { get; set; } = "https://cmpc.live/bibipics/bibifull/picture{0}.png?swag=true";
+    public string BibiLibFull { get; set; } = "https://github.com/thesilvercraft/SilverBotAssets/blob/main/BibiLibFull/{0}.png?raw=true";
 
     [XmlDescription("Location of titles for BibiLibFull pictures (BibiLibFull - local - config)")]
-    public string BibiLibFullConfig { get; set; } = "C:\\BibiPictures\\BibiLibFull\\Titles.json";
+    public string BibiLibFullConfig { get; set; } = "SilverBotAssets/BibiLibFull/Titles.json";
 
     [XmlDescription("A temporary way to disable the interactivity tracker")]
     public bool SitInVc { get; set; } = false;
     
-
     [XmlDescription("Do we enable the server statistics")]
     public bool EnableServerStatistics { get; set; } = true;
 
@@ -180,10 +174,6 @@ public class Config
     public ulong TranslatorRoleId { get; set; } = 0;
 
     public ulong TranslatorModeChannel { get; set; } = 0;
-
-    [XmlDescription("RedirectUrl for the page")]
-    public string LoginPageDiscordRedirectUrl { get; set; } =
-        "https://discord.com/api/oauth2/authorize?client_id=702445582559739976&redirect_uri=https%3A%2F%2Flocalhost%3A44319%2Flogin&response_type=code&scope=identify%20guilds%20guilds.join";
 
     public ulong LoginPageDiscordClientId { get; set; } = 702445582559739976;
     public string LoginPageDiscordClientSecret { get; set; } = "lol no";
@@ -412,12 +402,14 @@ public class Config
         using (var fs = new StreamReader("silverbot.xml"))
         {
             cnf = (Config?)serializer.Deserialize(fs);
-            if (cnf is { ConfigVer: not CurrentConfVer })
+            if (cnf is { ConfigVer: CurrentConfVer })
             {
-                fs.Dispose();
-                await OutdatedConfigTask(cnf);
-                return await GetAsync();
+                return cnf;
             }
+
+            fs.Dispose();
+            await OutdatedConfigTask(cnf);
+            return await GetAsync();
         }
         return cnf;
     }

@@ -9,6 +9,8 @@ using DSharpPlus.Entities;
 using SilverBotDS.Utils;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
+using SilverBotDS.Objects;
 
 namespace SilverBotDS.Commands.Gamering;
 
@@ -17,6 +19,8 @@ using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 [Category("Gaming")]
 [Group("minecraft")]
 [Aliases("mc")]
+[RequireModuleGuildEnabled(EnabledModules.Minecraft, true)]
+
 public class MinecraftModule : BaseCommandModule
 {
     //HEY LOIS IM PLAYING MINECRAFT

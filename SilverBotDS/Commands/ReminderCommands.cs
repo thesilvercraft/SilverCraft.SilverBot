@@ -22,7 +22,7 @@ namespace SilverBotDS.Commands;
 [RequireGuild]
 [Category("Reminder")]
 [RequireUserPermissions(Permissions.SendMessages)]
-[RequireGuildDatabaseValue("Reminders", true, true)]
+[RequireModuleGuildEnabled(EnabledModules.Reminders ,true)]
 public class ReminderCommands : BaseCommandModule
 {
     public DatabaseContext DbCtx { private get; set; }

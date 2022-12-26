@@ -19,11 +19,14 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
 [Category("Bubot")]
+[RequireModuleGuildEnabled(EnabledModules.Bubot, true)]
+
 public class Bubot : BaseCommandModule
 {
     [Command("silveryeet")]
@@ -38,6 +41,7 @@ public class Bubot : BaseCommandModule
 }
 
 [Category("Bubot")]
+[RequireModuleGuildEnabled(EnabledModules.Bubot, true)]
 internal class BibiCommands : BaseCommandModule, IHaveExecutableRequirements, IRequireAssets
 {
     public static string[] RequiredAssets => new[]
@@ -66,7 +70,7 @@ internal class BibiCommands : BaseCommandModule, IHaveExecutableRequirements, IR
         //await ctx.TriggerTypingAsync();
         input = $"bibi is {input}";
         var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
-        using var file = File.OpenRead(Path.Combine(Config.LocalBibiPictures,$"{randomnumber}.png"));
+        await using var file = File.OpenRead(Path.Combine(Config.LocalBibiPictures,$"{randomnumber}.png"));
         using var picture = new MagickImage(file);
         MagickReadSettings settings = new()
         {
@@ -89,6 +93,7 @@ internal class BibiCommands : BaseCommandModule, IHaveExecutableRequirements, IR
 [Aliases("bibilib")]
 [Description("Access the great cat bibi library.")]
 [Category("Bubot")]
+[RequireModuleGuildEnabled(EnabledModules.Bubot, true)]
 internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
 {
     private string[] _bibiDescText;
@@ -130,7 +135,7 @@ internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
         for (var a = 0; a < _bibiDescText.Length; a++)
         {
             var imgurl =
-                $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibCutout/{a + 1}.png?raw=true";
+                $"https://github.com/thesilvercraft/SilverBotAssets/blob/main/BibiLibCutout/{a + 1}.png?raw=true";
             pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(_bibiDescText[a])
                 .WithDescription($"{imgurl}\n{string.Format(lang.PageNuget, a + 1, _bibiDescText.Length)}")
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
@@ -151,7 +156,7 @@ internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
         for (var a = 0; a < _bibiFullDescText.Length; a++)
         {
             var imgurl =
-                $"https://github.com/thesilvercraft/SilverBot/blob/master/SilverBotDS/Templates/BibiLibFull/{a + 1}.png?raw=true";
+                $"https://github.com/thesilvercraft/SilverBotAssets/blob/main/BibiLibFull/{a + 1}.png?raw=true";
             pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(_bibiFullDescText[a])
                 .WithDescription($"{imgurl}\n{string.Format(lang.PageNuget, a + 1, _bibiDescText.Length)}")
                 .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))

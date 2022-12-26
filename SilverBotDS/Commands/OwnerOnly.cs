@@ -369,7 +369,7 @@ public class OwnerOnly : BaseCommandModule
         var console = Console.Out;
         try
         {
-            using var sw = new StringWriter();
+            await using var sw = new StringWriter();
             Console.SetOut(sw);
             var sw1 = Stopwatch.StartNew();
             var script = CSharpScript.Create(RemoveCodeBraces(code),

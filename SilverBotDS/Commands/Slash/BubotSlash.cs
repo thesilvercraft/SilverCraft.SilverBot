@@ -62,7 +62,7 @@ namespace SilverBotDS.Commands.Slash
             //await ctx.TriggerTypingAsync();
             input = $"bibi is {input}";
             var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
-            using var file = File.OpenRead(Path.Combine(Config.LocalBibiPictures, $"{randomnumber}.png"));
+            await using var file = File.OpenRead(Path.Combine(Config.LocalBibiPictures, $"{randomnumber}.png"));
             using var picture = new MagickImage(file);
             MagickReadSettings settings = new()
             {

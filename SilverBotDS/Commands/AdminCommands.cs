@@ -18,6 +18,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 using static SilverBotDS.Commands.OwnerOnly;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
@@ -25,6 +26,8 @@ namespace SilverBotDS.Commands;
 
 [RequireUserPermissions(Permissions.Administrator)]
 [Category("Utility")]
+[RequireModuleGuildEnabled(EnabledModules.Admin, false)]
+
 public class AdminCommands : BaseCommandModule
 {
     private DiscordEmoji[] _pollEmojiCache;

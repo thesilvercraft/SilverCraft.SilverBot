@@ -16,11 +16,14 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
 [Category("Miscellaneous")]
+[RequireModuleGuildEnabled(EnabledModules.Misc, true)]
+
 public class MiscCommands : BaseCommandModule
 {
     private readonly Regex _csharpErrorR = new("CS[0-9][0-9][0-9][0-9]",

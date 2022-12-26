@@ -58,17 +58,13 @@ public class DatabaseContext : DbContext
         }
 
         var plannedevents = await plannedEvents.Where(x => x.UserID == userId).ToListAsync();
-        if (plannedevents?.Count > 0)
+        if (plannedevents.Count > 0)
         {
             plannedEvents.RemoveRange(plannedevents);
             await SaveChangesAsync();
         }
     }
 
-    public List<ulong> GetIdsOfEmoteOptedInServers()
-    {
-        return serverSettings.Where(a => a.EmotesOptin).Select(x => x.ServerId).AsEnumerable().Reverse().ToList();
-    }
 
     public string GetLangCodeUser(ulong id)
     {
@@ -104,35 +100,13 @@ public class DatabaseContext : DbContext
         return serverSettings.FirstOrDefault(x => x.ServerId == id)?.LangName ?? "en";
     }
 
-    public bool IsOptedInEmotes(ulong id)
-    {
-        return serverSettings.Any(x => x.ServerId == id && x.EmotesOptin);
-    }
 
     public bool IsBanned(ulong id)
     {
         return userSettings.Any(x => x.Id == id && x.IsBanned);
     }
 
-    public void OptIntoEmotes(ulong id)
-    {
-        var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == id);
-        if (serversettings is not null)
-        {
-            serversettings.EmotesOptin = true;
-            serverSettings.Update(serversettings);
-        }
-        else
-        {
-            serverSettings.Add(new ServerSettings
-            {
-                EmotesOptin = true,
-                ServerId = id
-            });
-        }
 
-        SaveChanges();
-    }
 
     public void SetServerStatsCategory(ulong sid, ulong? id)
     {
@@ -174,7 +148,7 @@ public class DatabaseContext : DbContext
         SaveChanges();
     }
 
-    public void SetServerStatStrings(ulong sid, ServerStatString[] id)
+    public void SetServerStatStrings(ulong sid, ServerStatString[]? id)
     {
         id ??= StatsTemplates;
         var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
@@ -241,7 +215,7 @@ public class DatabaseContext : DbContext
         await using var cmd = Database.GetDbConnection().CreateCommand();
         cmd.CommandText = sql;
         Database.OpenConnection();
-        using var result = await cmd.ExecuteReaderAsync();
+        await using var result = await cmd.ExecuteReaderAsync();
         try
         {
             var dataTable = new DataTable();

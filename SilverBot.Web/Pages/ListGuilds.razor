@@ -1,9 +1,13 @@
 ﻿@page "/listguilds"
 @using SilverBotDS.Objects
+@using SilverBotDS.WebHelpers
+@using DSharpPlus
+@using System.Text
+@using Microsoft.Extensions.Caching.Memory
 @inject Config _config
 @attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@*
+@inject IMemoryCache _cache
 @inject DiscordClient _discord
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _uriHelper
@@ -11,10 +15,9 @@
 @{
     var auser = AuthenticationStateProvider.AuthState();
     var uid = auser.User.PUID();
-
-    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
-    var servers = from server in _httpContextAccessor.HttpContext.Session.GetGuildsFromSession(_client)
-        where _discord.Guilds.ContainsKey(server.UId) && (_discord.Guilds[server.UId].GetMemberAsync(thing.UId).GetAwaiter().GetResult().Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner)
+    var guilds = auser.User.GetGuilds(_client,_cache);
+    var servers = from server in guilds
+        where _discord.Guilds.ContainsKey(server.UId) && Task.Run( async () => (await _discord.Guilds[server.UId].GetMemberAsync(uid)).Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) || server.Owner).GetAwaiter().GetResult()
         select server;
 }
 <h1>The servers you can manage:</h1>
@@ -50,4 +53,4 @@
                 }
     </div>
 </div>
-</div>       *@
+</div>       

@@ -18,22 +18,18 @@ public static class ColorConverter
     {
         if (uint.TryParse(value.Replace("#", ""), NumberStyles.HexNumber, null, out var color))
         {
-            byte[] intBytes = BitConverter.GetBytes(color);
-            if (intBytes[3] != 0)
-            {
-                return Color.FromArgb(intBytes[3],intBytes[2], intBytes[1], intBytes[0]);
-            }
-            else
-            {
-                return Color.FromArgb(intBytes[2], intBytes[1], intBytes[0]);
-            }
+            var intBytes = BitConverter.GetBytes(color);
+            return intBytes[3] != 0 ? Color.FromArgb(intBytes[3],intBytes[2], intBytes[1], intBytes[0]) : Color.FromArgb(intBytes[2], intBytes[1], intBytes[0]);
         }
-        if(Enum.TryParse(typeof(KnownColor),value, out var result))
+
+        if (!Enum.TryParse(typeof(KnownColor), value, out var result))
         {
-            if(result is KnownColor kc)
-            {
-                return Color.FromKnownColor(kc);
-            }
+            return null;
+        }
+
+        if(result is KnownColor kc)
+        {
+            return Color.FromKnownColor(kc);
         }
         return null;
     }

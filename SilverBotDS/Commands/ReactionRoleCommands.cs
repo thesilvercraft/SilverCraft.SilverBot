@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
@@ -27,6 +28,7 @@ namespace SilverBotDS.Commands;
 [Category("Reaction Roles")]
 [Group("rr")]
 [RequireUserPermissions(Permissions.Administrator)]
+[RequireModuleGuildEnabled(EnabledModules.ReactionRole,true)]
 public class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRequirements
 {
     public DatabaseContext DbCtx { private get; set; }
@@ -72,7 +74,7 @@ public class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRequiremen
 
         if (!result.TimedOut)
         {
-            bool useembed = GetFromContent(result.Result.Content);
+            var useembed = GetFromContent(result.Result.Content);
             await result.Result.DeleteAsync();
             msg = await msg.ModifyAsync(lang.ReactionRoleTitle);
             result = await ctx.Message.GetNextMessageAsync(m => m.Content.Length > 0);
@@ -103,7 +105,7 @@ public class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRequiremen
                     {
                         var splitline = line.Split(' ');
                         DiscordRole role;
-                        if (ulong.TryParse(splitline[0], out ulong id))
+                        if (ulong.TryParse(splitline[0], out var id))
                         {
                             role = ctx.Guild.GetRole(id);
                         }
@@ -164,7 +166,7 @@ public class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRequiremen
             {
                 msg = await msg.ModifyAsync(lang.ReactionRoleEmbedColour);
                 result = await ctx.Message.GetNextMessageAsync(m => m.Content.Length > 0, TimeSpan.FromMinutes(2));
-                DiscordColor colour = DiscordColor.Red;
+                var colour = DiscordColor.Red;
                 if (!result.TimedOut)
                 {
                     var c = ColorConverter.Convert(result.Result.Content);

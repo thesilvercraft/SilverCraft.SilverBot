@@ -5,18 +5,17 @@
 @inject HttpClient _client
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="font-family: 'Berlin Sans FB', sans-serif;">
     <a class="navbar-brand" href="#">
-        @if (DateTime.UtcNow.Month == 6)
+        @switch (DateTime.UtcNow.Month)
         {
-
-            <img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
-        }
-        else if (DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31)
-        {
-            <img src="/halloween/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
-        }
-        else
-        {
-            <img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+            case 6:
+                @:<img src="/pride/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+                break;
+            case 10 when DateTime.UtcNow.Day == 31:
+                @:<img src="/halloween/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+                break;
+            default:
+                @:<img src="/silverbot.svg" width="30" height="30" class="d-inline-block align-top" alt="SilverBot">
+                break;
         }
         SilverBot
         <span class="badge badge-primary">@(DateTime.UtcNow.Month == 6 ? "Pride" : DateTime.UtcNow.Month == 10 && DateTime.UtcNow.Day == 31 ? "Halloween" : "Web")</span>
@@ -35,7 +34,7 @@
         else
         {
             <li class="nav-item">
-                <img src="https://cdn.discordapp.com/avatars/@user.UID()/@user.AvatarHash() .webp?size=16" class="avatar" aria-hidden="true">
+                <img src="https://cdn.discordapp.com/avatars/@user.UID()/@(user.AvatarHash()).webp?size=32" class="avatar" aria-hidden="true">
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="">Hello @user.Username()#@user.Discriminator()</a>

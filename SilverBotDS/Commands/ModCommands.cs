@@ -12,11 +12,13 @@ using SilverBotDS.Utils;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
 [Category("Moderation")]
+[RequireModuleGuildEnabled(EnabledModules.Moderator, true)]
 public class ModCommands : BaseCommandModule
 {
     

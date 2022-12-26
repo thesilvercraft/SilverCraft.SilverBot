@@ -1,25 +1,23 @@
 ﻿@page "/languageeditor"
 @using SilverBotDS.Objects
+@using DSharpPlus
+@using SilverBotDS.WebHelpers
 @inject Config _config
 
-@*@inject DiscordClient _discord
+@inject DiscordClient _discord
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _uriHelper
 @inject DatabaseContext _dbctx
 @inject HttpClient _client
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @{
-    if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.Session.GetObjectFromJson<string>
-        ("accessToken")))
-    {
-        _uriHelper.NavigateTo("/login", true);
-    }
-    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
-    var translator = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
+    var auser = AuthenticationStateProvider.AuthState();
+    var user = _discord.GetUserAsync(auser.User.PUID()).GetAwaiter().GetResult();
+    var translator = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == auser.User.PUID());
     if (translator == null)
     {
         _uriHelper.NavigateTo("/", true);
     }
-
     var languages = translator.CustomLanguages.ToList();
     var a = 0;
 }
@@ -32,7 +30,6 @@
                 <div class="row">
                     <div class="m-2 center col">
                         <a href="/managelanguage/@a">
-
                             <p class="text-center">@language.LangName</p>
                         </a>
                     </div>
@@ -41,4 +38,4 @@
             }
         </div>
     </div>
-</div>*@
+</div>

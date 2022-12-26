@@ -13,6 +13,7 @@ using SilverBotDS.Utils;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 using SBDSODC = SilverBotDS.Objects.Database.Classes;
 
@@ -21,6 +22,8 @@ namespace SilverBotDS.Commands;
 [Group("quotes")]
 [Aliases("quote")]
 [Category("Quote-Book")]
+[RequireModuleGuildEnabled(EnabledModules.QuoteBook, true)]
+
 public class UserQuotesModule : BaseCommandModule
 {
     public DatabaseContext Dctx { private get; set; }

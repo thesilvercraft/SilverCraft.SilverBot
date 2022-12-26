@@ -15,22 +15,22 @@ public class RequireAttachmentAttribute : CheckBaseAttribute
         string morethen = "MoreThanOneImageGeneric", int argumentCountThatOverloadsCheck = -1)
     {
         AttachmentCount = attachmentcount;
-        if (typeof(Language).GetProperty(lessthen).CanRead)
+        if (typeof(Language)?.GetProperty(lessthen)?.CanRead==true)
         {
             LessThenLang = lessthen;
         }
         else
         {
-            throw new InvalidOperationException("LessThen must be readable");
+            throw new InvalidOperationException(nameof(lessthen)+" cannot be read");
         }
 
-        if (typeof(Language).GetProperty(morethen).CanRead)
+        if (typeof(Language)?.GetProperty(morethen)?.CanRead==true)
         {
             MoreThenLang = morethen;
         }
         else
         {
-            throw new InvalidOperationException("MoreThen must be readable");
+            throw new InvalidOperationException(nameof(morethen)+" cannot be read");
         }
 
         OverloadCount = argumentCountThatOverloadsCheck;

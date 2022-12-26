@@ -13,6 +13,7 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.Interactivity.Extensions;
 using SilverBotDS.Attributes;
 using SilverBotDS.Objects;
 using SilverBotDS.Utils;
@@ -21,13 +22,14 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 namespace SilverBotDS.Commands
 {
     [Attributes.Category("Stable diffusion")]
-    [AiGenChannel(1051203568524341358)]
+    [AiGenChannel(1055151462952480909)]
     public class StableDiff:BaseCommandModule
     {
         public HttpClient HttpClient { private get; set; }
         public Config Config { private get; set; }
-        private string[] SafeModel = new[] { "sd-v1-4"};
-        private string[] NotSafeModel = new[] { "HD-17" };
+        private string[] SafeModel = new[] { "sd-v1-4" , "App_Icons_V1_PublicPrompts", "Pixel_Art_V1_PublicPrompts"};
+        private string[] NotSafeModel = new[] { "hd-17", "wd-v1-3-float16" };
+        public ulong[] Trusted = new[] { 687387957296103541u, 1024769162419126362u};
 
         [Command("imagine")]
         public async Task Imagine(CommandContext ctx, string prompt)
@@ -67,11 +69,12 @@ namespace SilverBotDS.Commands
         [Command("imagine")]
         public async Task TImagine(CommandContext ctx, string model = "sd-v1-4", int? seed=null,string negative_prompt="",string prompt="space", int resolution=512, int steps = 25)
         {
-            if (!ctx.Channel.IsNSFW && NotSafeModel.Contains(model))
+            if (!ctx.Channel.IsNSFW && (NotSafeModel.Contains(model.ToLower()) ||NotSafeModel.Contains(model.ToLower()+".ckpt")))
             {
                 //disappointment
                 model = SafeModel[0];
             }
+            
             input i = new()
             {
                 prompt = prompt,
@@ -84,17 +87,28 @@ namespace SilverBotDS.Commands
             };
             var sent = JsonSerializer.Serialize(i);
             Console.WriteLine(sent);
+
+            var interactivity = ctx.Client.GetInteractivity();
+            ctx.RespondAsync(
+                "<@264081339316305920> aprov ");
+           var r =await interactivity.WaitForReactionAsync((x) =>
+            {
+                return x.Message == ctx.Message && (ctx.Client.CurrentApplication.Owners.Any(y=>y.Id==x.User.Id) || Trusted.Contains(x.User.Id)) && x.Emoji.Name=="upvote";
+            }, TimeSpan.FromMinutes(5));
+           if (r.TimedOut)
+           {
+               return;
+           }
             var res = await HttpClient.PostAsync("http://localhost:9000/render", new StringContent(sent,Encoding.UTF8,"application/json"));
             var response = JsonSerializer.Deserialize<response>(await res.Content.ReadAsStringAsync());
             DiscordMessage og;
             if (string.IsNullOrWhiteSpace(response.stream))
             {
-                og= await new DiscordMessageBuilder()
+                og = await new DiscordMessageBuilder()
                     .WithEmbed(new DiscordEmbedBuilder().WithTitle("bot broke try again?")
                         .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
                         .WithColor(await ColorUtils.GetSingleAsync()).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
                 return;
-                
             }
             if (response.status == "Online")
             {
@@ -113,7 +127,7 @@ namespace SilverBotDS.Commands
 
           
 
-            bool keeptrying = true;
+            var keeptrying = true;
             byte exc = 100;
             while (keeptrying)
             {
@@ -144,7 +158,7 @@ namespace SilverBotDS.Commands
                     {
                         var deserialized = JsonSerializer.Deserialize<fullresponse>(rescont);
                         var start= deserialized.output[0].data.IndexOf("base64,", 0, StringComparison.Ordinal) + "base64,".Length;
-                        byte[] bytes = Convert.FromBase64String(deserialized.output[0].data[start..]);
+                        var bytes = Convert.FromBase64String(deserialized.output[0].data[start..]);
                         await og.ModifyAsync(x =>
                         {
                             x.AddFile("image.png",new MemoryStream(bytes))

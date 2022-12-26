@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
+using Microsoft.Extensions.Caching.Memory;
 using static SilverBotDS.Objects.Classes.Oauth;
 
 namespace SilverBotDS.WebHelpers;
@@ -27,23 +28,23 @@ public static class SessionHelper
         return value == null ? default : JsonSerializer.Deserialize<T>(value);
     }
 
-    public static Guild[] GetGuildsFromSession(this ISession session, HttpClient client)
+    public static Guild[] GetGuilds(this ClaimsPrincipal user, HttpClient client, IMemoryCache cache)
     {
-        if (session.TryGetValue("GuildsCache", out _))
+        if (cache.TryGetValue(user.UID(), out Tuple<Guild[], DateTime> ch))
         {
-            var (item1, item2) = session.GetObjectFromJson<Tuple<Guild[], DateTime>>("GuildsCache");
-            if (DateTime.UtcNow - item2 > TimeSpan.FromSeconds(10))
+            if (DateTime.UtcNow - ch.Item2 > TimeSpan.FromSeconds(10))
             {
-                return item1;
+                Debug.Assert( ch.Item1!=null);
+                Debug.Assert( ch.Item1.Length!=0);
+                return ch.Item1;
             }
-
-            Debug.WriteLine(DateTime.UtcNow - item2);
         }
         //TODO: MIGRATE TO V9
         using var requestMessage =
             new HttpRequestMessage(HttpMethod.Get, "https://discordapp.com/api/v8/users/@me/guilds");
+        
         requestMessage.Headers.Authorization =
-            new AuthenticationHeaderValue("Bearer", GetObjectFromJson<string>(session, "accessToken"));
+            new AuthenticationHeaderValue("Bearer", user.FindFirstValue("DiscordToken"));
         var response = client.Send(requestMessage);
         StreamReader reader2 = new(response.Content.ReadAsStream());
         if (response.StatusCode == HttpStatusCode.TooManyRequests)
@@ -51,7 +52,9 @@ public static class SessionHelper
             return Array.Empty<Guild>();
         }
         var guilds = JsonSerializer.Deserialize<Guild[]>(reader2.ReadToEnd());
-        session.SetObjectAsJson("GuildsCache", new Tuple<Guild[], DateTime>(guilds, DateTime.UtcNow));
+        cache.Set(user.UID(), new Tuple<Guild[], DateTime>(guilds,DateTime.UtcNow));
+        Debug.Assert(guilds!=null);
+        Debug.Assert(guilds.Length!=0);
         return guilds;
     }
 

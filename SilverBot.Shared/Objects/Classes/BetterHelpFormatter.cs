@@ -11,6 +11,7 @@ using DSharpPlus.Entities;
 using SilverBotDS.Attributes;
 using SilverBotDS.Utils;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SilverBotDS.Objects.Classes;
 
@@ -23,7 +24,7 @@ public class CustomHelpFormatter : BaseHelpFormatter
     public CustomHelpFormatter(CommandContext ctx)
         : base(ctx)
     {
-        var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+        var languageservice = ctx.Services.GetService<LanguageService>();
         var langtask = languageservice?.FromCtxAsync(ctx);
         langtask?.Wait();
         Lang = langtask?.Result;

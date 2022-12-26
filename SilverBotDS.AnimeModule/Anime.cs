@@ -8,11 +8,14 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using SilverBotDS.Attributes;
+using SilverBotDS.Objects;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Anime;
 
 [Category("Anime")]
+[RequireModuleGuildEnabled(EnabledModules.Anime, true)]
 public class Anime : BaseCommandModule
 {
     private const string BaseUrl = "https://anime-api.hisoka17.repl.co/";

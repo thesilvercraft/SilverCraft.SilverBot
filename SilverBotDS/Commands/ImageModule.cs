@@ -27,6 +27,8 @@ using System.Linq;
 using ImageMagick;
 using Image = NetVips.Image;
 using DSharpPlus.SlashCommands;
+using Microsoft.Extensions.DependencyInjection;
+using SilverBotDS.Attributes;
 
 namespace SilverBotDS.Commands;
 
@@ -56,6 +58,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 [Cooldown(1, 2, CooldownBucketType.User)]
 [Category("Image")]
+[RequireModuleGuildEnabled(EnabledModules.ImageModule, true)]
+
 public class ImageModule : BaseCommandModule, IRequireAssets
 {
 
@@ -82,8 +86,8 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     {
         if (lang == null)
         {
-            var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
-            lang ??= await languageservice?.FromCtxAsync(ctx);
+            var languageService = ctx.Services.GetService<LanguageService>();
+            lang ??= await languageService?.FromCtxAsync(ctx);
         }
         if (image.Length > MaxBytes(ctx))
         {
@@ -108,8 +112,8 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     {
         if (lang == null)
         {
-            var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
-            lang ??= await languageservice?.FromCtxAsync(ctx);
+            var languageService = ctx.Services.GetService<LanguageService>();
+            lang ??= await languageService?.FromCtxAsync(ctx);
         }
         if (image.Length > MaxBytes(ctx))
         {
@@ -127,12 +131,12 @@ public class ImageModule : BaseCommandModule, IRequireAssets
             await image.DisposeAsync();
         }
     }
-    public static async Task SendImageStream(CommandContext ctx, Stream outstream, string filename = "sbimg.png",
+    public static async Task SendImageStream(CommandContext ctx, Stream outStream, string filename = "sbimg.png",
       string? content = null)
     {
         content ??= "Command executed with result";
         await new DiscordMessageBuilder().WithContent(content)
-            .AddFile(filename, outstream)
+            .AddFile(filename, outStream)
             .SendAsync(ctx.Channel);
     }
 
@@ -142,7 +146,8 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         {
             await ctx.TriggerTypingAsync();
         }
-        using var inputStream = (Assembly.GetExecutingAssembly()
+
+        await using var inputStream = (Assembly.GetExecutingAssembly()
             .GetManifestResourceStream(template) ?? throw new TemplateReturningNullException(template));
         VOption v = new();
 
@@ -165,21 +170,24 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     {
         return await GetProfilePictureAsyncStatic(user, HttpClient, size);
     }
+
     /// <summary>
     ///     Gets the profile picture of a discord user in a 256x256 bitmap saved to a byte array
     /// </summary>
     /// <param name="user">the user</param>
+    /// <param name="client">HttpClient instance</param>
+    /// <param name="size">size of needed picture (preferably a power of 2)</param>
     /// <returns>a 256x256 bitmap in byte[] format</returns>
-    public static async Task<Image> GetProfilePictureAsyncStatic(DiscordUser user, HttpClient client,ushort size = 256)
+    public static async Task<Image> GetProfilePictureAsyncStatic(DiscordUser user, HttpClient client, ushort size = 256)
     {
-        var discordsize = size;
-        if (discordsize == 0 || (discordsize & (discordsize - 1)) != 0)
+        var discordSize = size;
+        if (discordSize == 0 || (discordSize & (discordSize - 1)) != 0)
         {
-            discordsize = 1024;
+            discordSize = 1024;
         }
         MemoryStream stream =
-         new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordsize)).GetBytesAsync(client));
-        if (discordsize == size)
+         new(await new SdImage(user.GetAvatarUrl(ImageFormat.Png, discordSize)).GetBytesAsync(client));
+        if (discordSize == size)
         {
             return LoadFromStream(stream);
         }
@@ -197,7 +205,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         if (s.CanSeek && gif == null)
         {
             s.Seek(0, SeekOrigin.Begin);
-            byte[] buffer = new byte[6];
+            var buffer = new byte[6];
             s.Read(buffer, 0, buffer.Length);
             gif = buffer[0] == 0x47 && buffer[1] == 0x49 && buffer[2] == 0x46 && buffer[3] == 0x38 && (buffer[4] == 0x37 || buffer[4] == 0x39) && buffer[5] == 0x61;
             s.Seek(0, SeekOrigin.Begin);
@@ -258,8 +266,9 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     };
     public static void AutoFixRequiredAssets(IEnumerable<string> missing)
     {
-        var url = "https://github.com/esmBot/esmBot/blob/master/assets/fonts/{0}?raw=true";
-        if (missing.Any(x => x.StartsWith("font://")))
+        const string url = "https://github.com/esmBot/esmBot/blob/master/assets/fonts/{0}?raw=true";
+        var groups = missing.GroupBy(x => x.StartsWith("font://")).ToList();
+        if (groups.Any(x=>x.Key))
         {
             Serilog.Log.Information("Please install the windows fonts, debian `sudo apt install ttf-mscorefonts-installer`, arch https://wiki.archlinux.org/title/Microsoft_fonts");
         }
@@ -269,7 +278,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         {
             Directory.CreateDirectory("fonts");
         }
-        foreach (var missingAsset in missing.Where(x => !x.StartsWith("font://")))
+        foreach (var missingAsset in groups.First(x=>!x.Key))
         {
             var fn = missingAsset.RemoveStringFromStart("file://fonts/");
             var r = client.GetAsync(string.Format(url, fn));
@@ -329,17 +338,17 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         {
             var nPages = (int)loadedimg.Get("n-pages");
             List<Image> img = new();
-            for (int i = 0; i < nPages; i++)
+            for (var i = 0; i < nPages; i++)
             {
-                using Image img_frame = loadedimg.Crop(0, i * loadedimg.PageHeight, loadedimg.Width, loadedimg.PageHeight);
-                Image frame = textimgb.Join(
+                using var img_frame = loadedimg.Crop(0, i * loadedimg.PageHeight, loadedimg.Width, loadedimg.PageHeight);
+                var frame = textimgb.Join(
                 img_frame, Direction.Vertical,
                 true,
                 align: Align.Centre,
                 background: new double[] { 0xffffff });
                 img.Add(frame);
             }
-            Image final = Image.Arrayjoin(img.ToArray(), 1);
+            var final = Image.Arrayjoin(img.ToArray(), 1);
             foreach (var img_frame in img)
             {
                 img_frame.Dispose();
@@ -376,7 +385,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         //https://github.com/esmBot/esmBot/blob/master/natives/caption.cc
         await ctx.TriggerTypingAsync();
         var bytes = await image.GetBytesAsync(HttpClient);
-        string extension = image.Url.GetFileExtensionFromUrl();
+        var extension = image.Url.GetFileExtensionFromUrl();
         await CaptionAndSend(ctx, bytes, text, extension);
     }
 
@@ -386,7 +395,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     [Command("fail")]
     [Description("epic embed fail")]
     public async Task JokerLaugh(CommandContext ctx, [RemainingText] string text) => 
-        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.joker_laugh.gif", async (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.SilverBotAssets.joker_laugh.gif", async (img) =>
         {
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -427,7 +436,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     [Command("yeet")]
     [Description("YEET")]
     public async Task Yeet(CommandContext ctx, SdImage img2) =>
-    await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.simba-toss.gif", async (img) =>
+    await CommonCodeWithTemplate(ctx, "SilverBotDS.SilverBotAssets.simba-toss.gif", async (img) =>
     { 
         var x = new Tuple<int, int, int>[] {
             new(143,59,80),
@@ -476,46 +485,47 @@ public class ImageModule : BaseCommandModule, IRequireAssets
 
     private async Task<Image> EpicGifComposite(Image img, SdImage img2, Tuple<int, int, int>[] gaming )
     {
-        if (img.Contains("n-pages") && img.Contains("page-height"))
+        if (!img.Contains("n-pages") || !img.Contains("page-height"))
         {
-            if(!img.HasAlpha())
-            {
-                img = img.Bandjoin(255);
-            }
-            var img2r = LoadFromStream(await img2.GetByteStream(HttpClient));
-            var nPages = (int)img.Get("n-pages");
-            if(gaming.Length<nPages)
-            {
-                nPages = gaming.Length;
-            }
-            Dictionary<int, Image> imgss = new();
-            var sizes = gaming.Select(x => x.Item3).Distinct();
-            foreach(var size in sizes)
-            {
-                imgss[size] = img2r.Resize(((double)size)/img2r.Width);
-            }
-            List<Image> imgs = new();
-            for (int i = 0; i < nPages; i++)
-            {
-                Image img_frame = img.Crop(0, i * img.PageHeight, img.Width, img.PageHeight);
-                if(gaming[i].Item3!=0)
-                {
-                     img_frame = img_frame.Composite(imgss[gaming[i].Item3], BlendMode.Over, gaming[i].Item1, gaming[i].Item2);
-                }
-                imgs.Add(img_frame);
-            }
-            Image final = Image.Arrayjoin(imgs.ToArray(), 1);
-            foreach (var img_frame in imgs)
-            {
-                img_frame.Dispose();
-            }
-            foreach (var img_frame in imgss)
-            {
-                img_frame.Value.Dispose();
-            }
-            return final;
+            return null;
         }
-        return null;
+
+        if(!img.HasAlpha())
+        {
+            img = img.Bandjoin(255);
+        }
+        var img2r = LoadFromStream(await img2.GetByteStream(HttpClient));
+        var nPages = (int)img.Get("n-pages");
+        if(gaming.Length<nPages)
+        {
+            nPages = gaming.Length;
+        }
+        Dictionary<int, Image> imgss = new();
+        var sizes = gaming.Select(x => x.Item3).Distinct();
+        foreach(var size in sizes)
+        {
+            imgss[size] = img2r.Resize(((double)size)/img2r.Width);
+        }
+        List<Image> imgs = new();
+        for (var i = 0; i < nPages; i++)
+        {
+            var img_frame = img.Crop(0, i * img.PageHeight, img.Width, img.PageHeight);
+            if(gaming[i].Item3!=0)
+            {
+                img_frame = img_frame.Composite(imgss[gaming[i].Item3], BlendMode.Over, gaming[i].Item1, gaming[i].Item2);
+            }
+            imgs.Add(img_frame);
+        }
+        var final = Image.Arrayjoin(imgs.ToArray(), 1);
+        foreach (var img_frame in imgs)
+        {
+            img_frame.Dispose();
+        }
+        foreach (var img_frame in imgss)
+        {
+            img_frame.Value.Dispose();
+        }
+        return final;
     }
 
     [Command("jpeg")]
@@ -532,7 +542,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     private static Tuple<MemoryStream, string> Tint(Stream photoStream, Color color, string extension)
     {
         var img = LoadFromStream(photoStream, extension == ".gif");
-        bool AlphaProcessing= extension!=".gif";
+        var AlphaProcessing= extension!=".gif";
         if (!img.HasAlpha() && AlphaProcessing)
         {
             var imgwithoutbands = img;
@@ -588,8 +598,8 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         await ctx.TriggerTypingAsync();
         var img = LoadFromStream(
             Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("SilverBotDS.Templates.adventure_time_template.png") ??
-            throw new TemplateReturningNullException("SilverBotDS.Templates.adventure_time_template.png"));
+                .GetManifestResourceStream("SilverBotDS.SilverBotAssets.adventure_time_template.png") ??
+            throw new TemplateReturningNullException("SilverBotDS.SilverBotAssets.adventure_time_template.png"));
         var i = img;
         img = img.Composite2(await GetProfilePictureAsyncStatic(person), BlendMode.Over, 22, 948);
         i.Dispose();
@@ -608,7 +618,8 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         {
             await ctx.TriggerTypingAsync();
         }
-        using var inputStream = (Assembly.GetExecutingAssembly()
+
+        await using var inputStream = (Assembly.GetExecutingAssembly()
             .GetManifestResourceStream(template) ?? throw new TemplateReturningNullException(template));
         using var img = new MagickImageCollection(inputStream);
         var r = await func.Invoke(img);
@@ -627,7 +638,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     [Command("seal")]
     [Description("He was forced to use Microsoft Windows when he was 6")]
     public async Task Seal(CommandContext ctx, [RemainingText] string text) =>
-        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.cement-seal-clear.gif", async (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.SilverBotAssets.cement-seal-clear.gif", async (img) =>
         {
             return new Tuple<bool, Image>(true, await Caption(img, text));
         }, filename: "sbseal.gif", encoder: ".gif");
@@ -635,7 +646,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     [Command("linus")]
     [Description("NVIDIA, fuck you.")]
     public async Task Linus(CommandContext ctx, [RemainingText][Description("company,or thing you want linus to swear at")] string company = "NVIDIA") => 
-        await CommonCodeWithTemplateGIFMagick(ctx, "SilverBotDS.Templates.linus-linus-torvalds.gif", (img) =>
+        await CommonCodeWithTemplateGIFMagick(ctx, "SilverBotDS.SilverBotAssets.linus-linus-torvalds.gif", (img) =>
         {
             //TODO PORT TO LIBVIPS
             MagickReadSettings settings = new()
@@ -709,8 +720,8 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         await ctx.TriggerTypingAsync();
         var img = LoadFromStream(
             Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("SilverBotDS.Templates.weeb_reliable_template.png") ??
-            throw new TemplateReturningNullException("SilverBotDS.Templates.weeb_reliable_template.png"));
+                .GetManifestResourceStream("SilverBotDS.SilverBotAssets.weeb_reliable_template.png") ??
+            throw new TemplateReturningNullException("SilverBotDS.SilverBotAssets.weeb_reliable_template.png"));
 
         using (var internalimage = await GetProfilePictureAsyncStatic(jotaro))
         {
@@ -758,7 +769,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     [Command("ObMedal")]
     public async Task ObMedal(CommandContext ctx, DiscordUser obama)
     {
-        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.obamamedal.jpg", async (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.SilverBotAssets.obamamedal.jpg", async (img) =>
         {
             using (var internalimage = await GetProfilePictureAsyncStatic(obama))
             {
@@ -773,7 +784,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     [Command("ObMedal")]
     public async Task ObMedal(CommandContext ctx, DiscordUser obama, DiscordUser secondPerson)
     {
-        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.obamamedal.jpg", async (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.SilverBotAssets.obamamedal.jpg", async (img) =>
         {
             using (var internalimage = await GetProfilePictureAsyncStatic(obama))
             {
@@ -794,7 +805,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     public async Task HappyNewYear(CommandContext ctx) => await HappyNewYear(ctx, ctx.User);
     [Command("happynewyear")]
     public async Task HappyNewYear(CommandContext ctx, DiscordUser person) =>
-        await CommonCodeWithTemplate(ctx, "SilverBotDS.Templates.happy_new_year_template.png", async (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.SilverBotAssets.happy_new_year_template.png", async (img) =>
         {
             using var a = (await GetProfilePictureAsyncStatic(person, 350)).Embed(19, 70, img.Width, img.Height, Extend.Black);
             return new Tuple<bool, Image>(true, a.Composite2(img, BlendMode.Over));

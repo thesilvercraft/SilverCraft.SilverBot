@@ -18,6 +18,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SilverBotDS.Converters;
 
@@ -26,9 +27,9 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
 
     public async Task<Optional<SongORSongs>> ConvertAsync(string value, CommandContext ctx)
     {
-        var conf = (Config?)ctx.CommandsNext.Services.GetService(typeof(Config));
-        var languageService = (LanguageService?)ctx.CommandsNext.Services.GetService(typeof(LanguageService));
-        var audioService = (LavalinkNode?)ctx.CommandsNext.Services.GetService(typeof(LavalinkNode));
+        var conf = ctx.CommandsNext.Services.GetService<Config>();
+        var languageService =  ctx.CommandsNext.Services.GetService<LanguageService>();
+        var audioService =  ctx.CommandsNext.Services.GetService<LavalinkNode>();
         var lang = await languageService.FromCtxAsync(ctx);
         if (!IsInVc(ctx, audioService))
         {
@@ -50,7 +51,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
         await ctx.TriggerTypingAsync();
         if (value.EndsWith(".json"))
         {
-            var client = (HttpClient)ctx.CommandsNext.Services.GetService(typeof(HttpClient));
+            var client = ctx.CommandsNext.Services.GetService<HttpClient>();
             if (client is not null)
             {
                 var tracks =

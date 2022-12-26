@@ -21,15 +21,15 @@
     </PropertyGroup>
     <ItemGroup>
         <None Remove="Exceptions\NewFile.txt" />
-        <None Remove="Templates\adventure_time_template.png" />
-        <None Remove="Templates\cement-seal-clear.gif" />
-        <None Remove="Templates\happy_new_year_template.png" />
-        <None Remove="Templates\joker_laugh.gif" />
-        <None Remove="Templates\linus-linus-torvalds.gif" />
-        <None Remove="Templates\motivator_template.png" />
-        <None Remove="Templates\obamamedal.jpg" />
-        <None Remove="Templates\simba-toss.gif" />
-        <None Remove="Templates\weeb_reliable_template.png" />
+        <None Remove="SilverBotAssets\adventure_time_template.png" />
+        <None Remove="SilverBotAssets\cement-seal-clear.gif" />
+        <None Remove="SilverBotAssets\happy_new_year_template.png" />
+        <None Remove="SilverBotAssets\joker_laugh.gif" />
+        <None Remove="SilverBotAssets\linus-linus-torvalds.gif" />
+        <None Remove="SilverBotAssets\motivator_template.png" />
+        <None Remove="SilverBotAssets\obamamedal.jpg" />
+        <None Remove="SilverBotAssets\simba-toss.gif" />
+        <None Remove="SilverBotAssets\weeb_reliable_template.png" />
         <None Update="Languages\mk\mk.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -56,16 +56,16 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="Templates\cement-seal-clear.gif" />
-        <EmbeddedResource Include="Templates\joker_laugh.gif" />
+        <EmbeddedResource Include="SilverBotAssets\cement-seal-clear.gif" />
+        <EmbeddedResource Include="SilverBotAssets\joker_laugh.gif" />
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="Templates\adventure_time_template.png" />
-        <EmbeddedResource Include="Templates\happy_new_year_template.png" />
-        <EmbeddedResource Include="Templates\linus-linus-torvalds.gif" />
-        <EmbeddedResource Include="Templates\obamamedal.jpg" />
-        <EmbeddedResource Include="Templates\simba-toss.gif" />
-        <EmbeddedResource Include="Templates\weeb_reliable_template.png" />
+        <EmbeddedResource Include="SilverBotAssets\adventure_time_template.png" />
+        <EmbeddedResource Include="SilverBotAssets\happy_new_year_template.png" />
+        <EmbeddedResource Include="SilverBotAssets\linus-linus-torvalds.gif" />
+        <EmbeddedResource Include="SilverBotAssets\obamamedal.jpg" />
+        <EmbeddedResource Include="SilverBotAssets\simba-toss.gif" />
+        <EmbeddedResource Include="SilverBotAssets\weeb_reliable_template.png" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\.editorconfig" Link=".editorconfig" />
@@ -129,14 +129,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SDiscordSink\SDiscordSink.csproj" />
         <ProjectReference Include="..\SilverBot.Shared\SilverBot.Shared.csproj" />
         <ProjectReference Include="..\SilverBot.SysAdminModule\SilverBot.SysAdminModule.csproj" />
         <ProjectReference Include="..\SilverBotDS.AnimeModule\SilverBotDS.AnimeModule.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Resource Include="Templates\weeb_reliable_template.png" />
+        <Resource Include="SilverBotAssets\weeb_reliable_template.png" />
     </ItemGroup>
     <Target Name="AddAssemblyAliasToReactiveAsync" AfterTargets="ResolveAssemblyReferences">
         <ItemGroup>
@@ -155,184 +154,184 @@
         <None Update="License.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\1.png">
+        <None Update="SilverBotAssets\BibiLibCutout\1.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\10.png">
+        <None Update="SilverBotAssets\BibiLibCutout\10.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\11.png">
+        <None Update="SilverBotAssets\BibiLibCutout\11.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\12.png">
+        <None Update="SilverBotAssets\BibiLibCutout\12.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\13.png">
+        <None Update="SilverBotAssets\BibiLibCutout\13.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\14.png">
+        <None Update="SilverBotAssets\BibiLibCutout\14.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\15.png">
+        <None Update="SilverBotAssets\BibiLibCutout\15.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\16.png">
+        <None Update="SilverBotAssets\BibiLibCutout\16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\17.png">
+        <None Update="SilverBotAssets\BibiLibCutout\17.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\18.png">
+        <None Update="SilverBotAssets\BibiLibCutout\18.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\19.png">
+        <None Update="SilverBotAssets\BibiLibCutout\19.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\2.png">
+        <None Update="SilverBotAssets\BibiLibCutout\2.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\20.png">
+        <None Update="SilverBotAssets\BibiLibCutout\20.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\21.png">
+        <None Update="SilverBotAssets\BibiLibCutout\21.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\22.png">
+        <None Update="SilverBotAssets\BibiLibCutout\22.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\3.png">
+        <None Update="SilverBotAssets\BibiLibCutout\3.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\4.png">
+        <None Update="SilverBotAssets\BibiLibCutout\4.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\5.png">
+        <None Update="SilverBotAssets\BibiLibCutout\5.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\6.png">
+        <None Update="SilverBotAssets\BibiLibCutout\6.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\7.png">
+        <None Update="SilverBotAssets\BibiLibCutout\7.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\8.png">
+        <None Update="SilverBotAssets\BibiLibCutout\8.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\9.png">
+        <None Update="SilverBotAssets\BibiLibCutout\9.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibCutout\Titles.json">
+        <None Update="SilverBotAssets\BibiLibCutout\Titles.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\1.png">
+        <None Update="SilverBotAssets\BibiLibFull\1.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\10.png">
+        <None Update="SilverBotAssets\BibiLibFull\10.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\11.png">
+        <None Update="SilverBotAssets\BibiLibFull\11.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\12.png">
+        <None Update="SilverBotAssets\BibiLibFull\12.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\13.png">
+        <None Update="SilverBotAssets\BibiLibFull\13.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\14.png">
+        <None Update="SilverBotAssets\BibiLibFull\14.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\15.png">
+        <None Update="SilverBotAssets\BibiLibFull\15.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\16.png">
+        <None Update="SilverBotAssets\BibiLibFull\16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\17.png">
+        <None Update="SilverBotAssets\BibiLibFull\17.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\18.png">
+        <None Update="SilverBotAssets\BibiLibFull\18.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\19.png">
+        <None Update="SilverBotAssets\BibiLibFull\19.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\2.png">
+        <None Update="SilverBotAssets\BibiLibFull\2.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\3.png">
+        <None Update="SilverBotAssets\BibiLibFull\3.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\4.png">
+        <None Update="SilverBotAssets\BibiLibFull\4.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\5.png">
+        <None Update="SilverBotAssets\BibiLibFull\5.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\6.png">
+        <None Update="SilverBotAssets\BibiLibFull\6.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\7.png">
+        <None Update="SilverBotAssets\BibiLibFull\7.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\8.png">
+        <None Update="SilverBotAssets\BibiLibFull\8.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\9.png">
+        <None Update="SilverBotAssets\BibiLibFull\9.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\BibiLibFull\Titles.json">
+        <None Update="SilverBotAssets\BibiLibFull\Titles.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\1.png">
+        <None Update="SilverBotAssets\Bibi\1.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\10.png">
+        <None Update="SilverBotAssets\Bibi\10.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\11.png">
+        <None Update="SilverBotAssets\Bibi\11.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\12.png">
+        <None Update="SilverBotAssets\Bibi\12.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\13.png">
+        <None Update="SilverBotAssets\Bibi\13.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\14.png">
+        <None Update="SilverBotAssets\Bibi\14.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\15.png">
+        <None Update="SilverBotAssets\Bibi\15.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\16.png">
+        <None Update="SilverBotAssets\Bibi\16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\17.png">
+        <None Update="SilverBotAssets\Bibi\17.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\2.png">
+        <None Update="SilverBotAssets\Bibi\2.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\3.png">
+        <None Update="SilverBotAssets\Bibi\3.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\4.png">
+        <None Update="SilverBotAssets\Bibi\4.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\5.png">
+        <None Update="SilverBotAssets\Bibi\5.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\6.png">
+        <None Update="SilverBotAssets\Bibi\6.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\7.png">
+        <None Update="SilverBotAssets\Bibi\7.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\8.png">
+        <None Update="SilverBotAssets\Bibi\8.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Templates\Bibi\9.png">
+        <None Update="SilverBotAssets\Bibi\9.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
@@ -366,7 +365,7 @@
       </Compile>
     </ItemGroup>
     <ItemGroup>
-      <Content Update="Templates\BibiLibCutout\Titles.json">
+      <Content Update="SilverBotAssets\BibiLibCutout\Titles.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

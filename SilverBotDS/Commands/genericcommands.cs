@@ -17,12 +17,15 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 using static SilverBotDS.Utils.StringUtils;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
 [Category("General")]
+[RequireModuleGuildEnabled(EnabledModules.Generic, true)]
+
 public sealed class Genericcommands : BaseCommandModule
 {
     public Config Config { private get; set; }

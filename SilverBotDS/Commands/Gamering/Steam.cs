@@ -15,12 +15,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands.Gamering;
 
 [Category("Gaming")]
 [Group("steam")]
+[RequireModuleGuildEnabled(EnabledModules.Steam, true)]
+
 public class SteamCommands : BaseCommandModule
 {
     public LanguageService LanguageService { private get; set; }

@@ -48,7 +48,7 @@ namespace SilverBotDS.Commands.Slash
         {
             if (language == null)
             {
-                var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+                var languageservice = ctx.Services.GetService<LanguageService>();
                 language ??= await languageservice?.FromCtxAsync(ctx);
             }
             var embedBuilder = new DiscordEmbedBuilder()
@@ -78,7 +78,7 @@ namespace SilverBotDS.Commands.Slash
         {
             if (language == null)
             {
-                var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
+                var languageservice = ctx.Services.GetService<LanguageService>();
                 language ??= await languageservice?.FromCtxAsync(ctx);
             }
             var embedBuilder = new DiscordEmbedBuilder()

@@ -15,11 +15,13 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SilverBotDS.Attributes;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
 [Category("Server statistics")]
+[RequireModuleGuildEnabled(EnabledModules.ServerStats, true)]
 public class ServerStatsCommands : BaseCommandModule
 {
     private readonly Regex _emote = new("<(a)?:(?<name>.+?):(?<id>.+?)>",

@@ -6,6 +6,7 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 using SilverBotDS.Objects;
 
 namespace SilverBotDS.Attributes;
@@ -21,7 +22,7 @@ public class RequireTranslatorAttribute : CheckBaseAttribute
 
     public override async Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
     {
-        var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
+        var conf = ctx.CommandsNext.Services.GetService<Config>();
         return await IsTranslator(conf, ctx.Client, ctx.User.Id, InChannel ? ctx.Channel.Id : null);
     }
 

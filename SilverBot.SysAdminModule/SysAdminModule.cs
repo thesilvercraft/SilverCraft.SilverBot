@@ -6,6 +6,7 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus;
 using SilverBotDS.Objects;
 using System.Diagnostics;
+using System.Text;
 
 namespace SilverBot.SysAdminModule
 {
@@ -33,6 +34,35 @@ namespace SilverBot.SysAdminModule
                 }
                 Console.WriteLine("Upgrading packages");
                 pm.UpgradePackages();
+            }
+            else if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                var file = File.ReadAllText("/etc/os-release");
+                var idlike = file.IndexOf("ID_LIKE=", StringComparison.Ordinal);
+                if (idlike != -1)
+                {
+                    idlike += "ID_LIKE=".Length;
+                    StringBuilder entireIdLike = new();
+                    var c=true;
+                    while (c)
+                    {
+                        if (file[idlike] != '\n' && file[idlike] != '\r')
+                        {
+                            entireIdLike.Append(file[idlike]);
+                        }
+                        else
+                        {
+                            c = false;
+                        }
+                        idlike++;
+                    }
+                    Console.WriteLine($"Running on something like {entireIdLike.ToString()}");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("SysAdminModule tried to initialise on unsupported platform");
             }
         }
 
@@ -138,7 +168,7 @@ namespace SilverBot.SysAdminModule
                     break;
                 }
             }
-            for (int y2 = y+1; y2 < x.Length; y2++)
+            for (var y2 = y+1; y2 < x.Length; y2++)
             {
                 if (!string.IsNullOrWhiteSpace( x[y2]))
                 {
@@ -162,7 +192,7 @@ namespace SilverBot.SysAdminModule
                     break;
                 }
             }
-            for (int y2 = y + 1; y2 < x.Length; y2++)
+            for (var y2 = y + 1; y2 < x.Length; y2++)
             {
                 if (!string.IsNullOrWhiteSpace(x[y2]))
                 {

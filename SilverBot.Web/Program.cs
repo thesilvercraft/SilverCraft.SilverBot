@@ -6,6 +6,9 @@ You should have received a copy of the GNU General Public License along with Sil
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Radzen;
 using System.Diagnostics;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using SilverBot.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\net7.0"))
@@ -23,6 +26,7 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
     options.LoginPath = "/api/unauthorized";
@@ -31,7 +35,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 }).AddDiscord(options => {
     options.ClientId = SilverBotDS.Program._config.LoginPageDiscordClientId.ToString();
     options.ClientSecret = SilverBotDS.Program._config.LoginPageDiscordClientSecret;
-
+    options.SaveTokens = true;
+    options.Scope.Add("guilds");
+    options.Events = new OAuthEvents
+    {
+        OnCreatingTicket = context =>
+        {
+            var guildClaim = new Claim( "DiscordToken",context.AccessToken ?? throw new InvalidOperationException());
+            context.Identity?.AddClaim(guildClaim);
+            return Task.CompletedTask;
+        }
+    };
 });
 foreach (var service in SilverBotDS.Program.services)
 {

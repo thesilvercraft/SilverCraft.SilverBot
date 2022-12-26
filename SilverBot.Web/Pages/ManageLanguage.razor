@@ -1,6 +1,10 @@
 ﻿@page "/managelanguage/{id:int}"
+@using System.Text.Json
+@using DSharpPlus
+@using SilverBotDS.Objects
+@using SilverBotDS.WebHelpers
 @attribute [Authorize]
-@*
+
 @inject Config _config
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DiscordClient _discord
@@ -24,45 +28,37 @@
     };
     var auser = AuthenticationStateProvider.AuthState();
     var uid = auser.User.PUID();
-    var thing = _httpContextAccessor.HttpContext.Session.GetUserInfoFromSession(_client);
-    var translator = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
+    var translator = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == uid);
     if (translator == null)
     {
         _uriHelper.NavigateTo("/", true);
     }
-
     var languages = translator.CustomLanguages;
-
     if (languages.Count <= Id)
     {
         _uriHelper.NavigateTo("/languageeditor");
     }
-
     var language = translator.CustomLanguages.ToList().ElementAt(Id);
     var json = JsonSerializer.Serialize(language, options);
-
     async Task Downloadlanguage()
     {
         await _jsRuntime.InvokeVoidAsync("download", json, "language.json", "application/json");
     }
-
     void UpdateHeading()
     {
         _bindmaterial = json;
     }
-
     void HandleValidSubmit()
     {
-        var o = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == thing.UId);
+        var o = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == uid);
         var p = o.CustomLanguages.ToList();
         p[Id] = JsonSerializer.Deserialize<Language>(_bindmaterial);
         p[Id].Id = language.Id;
         o.CustomLanguages = p;
         _dbctx.translatorSettings.Attach(o);
         _dbctx.translatorSettings.Update(o);
-        Console.WriteLine(_dbctx.SaveChanges());
+        _dbctx.SaveChanges();
         _uriHelper.NavigateTo("/languageeditor");
-        // Process the valid form
     }
 }
 
@@ -78,4 +74,4 @@
 <button @onclick="Downloadlanguage">
     Download to your computer
 </button>
-<RadzenTextArea @bind-Value="@_bindmaterial" Style=" width: 100%; height: 100vh;"/>*@
+<RadzenTextArea @bind-Value="@_bindmaterial" Style=" width: 100%; height: 100vh;"/>

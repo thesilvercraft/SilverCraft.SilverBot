@@ -25,6 +25,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using NetVips;
+using SilverBotDS.Attributes;
 using SilverBotDS.Objects.Classes;
 
 namespace SilverBotDS.Commands;
@@ -32,6 +33,8 @@ namespace SilverBotDS.Commands;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 [Category("XP")]
+[RequireModuleGuildEnabled(EnabledModules.Experience, true)]
+
 public class Experience : BaseCommandModule, IRequireAssets
 {
     private static readonly IEnumerable<int> Range = Enumerable.Range(700, 2000);
@@ -55,7 +58,7 @@ public class Experience : BaseCommandModule, IRequireAssets
             person.XP += person.XP / 100 * percent;
             Database.userExperiences.Update(person);
         }
-
+        Console.WriteLine("aa");
         await Database.SaveChangesAsync();
     }
 
@@ -176,6 +179,10 @@ public class Experience : BaseCommandModule, IRequireAssets
         var outStream = new MemoryStream();
         var imanidiot =
             await ImageModule.GetProfilePictureAsyncStatic(user, HttpClient, 256);
+        if (!imanidiot.HasAlpha())
+        {
+            imanidiot = imanidiot.Bandjoin(255);
+        }
         var background = DateTime.UtcNow.Month switch
         {
             10 when DateTime.UtcNow.Day == 31 => new double[] { 0xFF, 0x78, 0x00, 0xFF },
@@ -184,10 +191,6 @@ public class Experience : BaseCommandModule, IRequireAssets
         };
 
         var picture = imanidiot.Embed(14, 17, 900, 286, Enums.Extend.Background, background);
-        if (!picture.HasAlpha())
-        {
-            picture = picture.Bandjoin(255);
-        }
 
         if (DateTime.UtcNow.Month == 6)
         {
@@ -196,7 +199,7 @@ public class Experience : BaseCommandModule, IRequireAssets
                 bg = bg.Mutate(y =>
                     {
                         byte p = 0;
-                        for (int x = 0; x < 900; x++)
+                        for (var x = 0; x < 900; x++)
                         {
                         y.DrawLine(new double[] { p, 255,255  }, x, 0, x, 286);
                         if (p == 255)

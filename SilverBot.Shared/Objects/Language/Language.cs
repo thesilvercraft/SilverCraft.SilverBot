@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SilverBotDS.Objects;
 
@@ -623,6 +624,8 @@ public class Language
     public string CancelReminderErrorMultiple { get; set; } = "Internal error, try again later";
     public string CancelReminderErrorAlreadyHandled { get; set; } = "You can not cancel a reminder that has already passed";
     public string CancelReminderSuccess { get; set; } = "Deleted the reminder";
+ public string LavalinkNotSetup { get; set; } =
+        "Lavalink hasn't been set up properly on this instance. Please contact the bot owners.";
 
     public CultureInfo GetCultureInfo()
     {
@@ -642,12 +645,12 @@ public class LanguageService
     };
       public  Dictionary<string, Language> GetLoadedLanguages()
     {
-        if (CachedLanguages.Count == 0)
+        if (CachedLanguages.Count != 0)
         {
-            var t = GetAsync("en");
-            t.Wait();
+            return CachedLanguages;
         }
-
+        var t = Task.Run(async () => await GetAsync("en"));
+        t.Wait();
         return CachedLanguages;
     }
 
@@ -722,8 +725,8 @@ public class LanguageService
 
     public async Task<Language> FromCtxAsync(CommandContext ctx)
     {
-        using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
-        var conf = (Config)ctx.CommandsNext.Services.GetService(typeof(Config));
+        await using var db = ctx.CommandsNext.Services.GetService<DatabaseContext>();
+        var conf = ctx.CommandsNext.Services.GetService<Config>();
         if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
         {
             var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
@@ -742,7 +745,7 @@ public class LanguageService
 
     public async Task<Language> FromCtxAsync(BaseContext ctx)
     {
-        using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
+        await using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
         var conf = (Config)ctx.Services.GetService(typeof(Config));
         if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
         {

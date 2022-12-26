@@ -20,39 +20,40 @@ using SilverBotDS.Objects.Classes;
 using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using SilverBotDS.Attributes;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
 [RequireGuild]
 [Category("Audio")]
+[RequireModuleGuildEnabled(EnabledModules.Audio, false)]
 public class Audio : BaseCommandModule
 {
     public LavalinkNode AudioService { private get; set; }
     public LyricsService LyricsService { private get; set; }
-
     public Config Config { private get; set; }
-
     public ArtworkService ArtworkService { private get; set; }
     public LanguageService LanguageService { private get; set; }
 
     private bool IsInVc(CommandContext ctx) => IsInVc(ctx, AudioService);
 
     private static bool IsInVc(CommandContext ctx, LavalinkNode lavalinkNode) => lavalinkNode.HasPlayer(ctx.Guild.Id) &&
-               lavalinkNode.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null and not { State: PlayerState.NotConnected } and not { State: PlayerState.Destroyed };
+        lavalinkNode.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null and not { State: PlayerState.NotConnected } and not { State: PlayerState.Destroyed };
 
     private static async Task SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "",
         string imageurl = "", string url = "", Language? language = null)
     {
         if (language == null)
         {
-            var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
-            language ??= await languageservice?.FromCtxAsync(ctx);
+            var languageService = ctx.Services.GetService<LanguageService>();
+            language ??= await languageService?.FromCtxAsync(ctx)!;
         }
         var embedBuilder = new DiscordEmbedBuilder()
             .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
@@ -62,35 +63,31 @@ public class Audio : BaseCommandModule
         {
             embedBuilder.WithDescription(message);
         }
-
         if (!string.IsNullOrEmpty(title))
         {
             embedBuilder.WithTitle(title);
         }
-
         if (!string.IsNullOrEmpty(imageurl))
         {
             embedBuilder.WithThumbnail(imageurl);
         }
-
         if (!string.IsNullOrEmpty(url))
         {
             embedBuilder.WithUrl(url);
         }
-
         await messageBuilder
             .WithReply(ctx.Message.Id)
             .WithEmbed(embedBuilder.Build())
             .SendAsync(ctx.Channel);
     }
 
-    public static async Task SendSimpleMessage(CommandContext ctx, string title = "", string message = "", string image = "",
+    public static async Task SendSimpleMessage(CommandContext ctx, string title = "", string message = "", string? image = "",
         Language? language = null)
     {
         if (language == null)
         {
-            var languageservice = (LanguageService?)ctx.Services.GetService(typeof(LanguageService));
-            language ??= await languageservice?.FromCtxAsync(ctx);
+            var languageservice = ctx.Services.GetService<LanguageService>();
+            language ??= await languageservice?.FromCtxAsync(ctx)!;
         }
         var embedBuilder = new DiscordEmbedBuilder()
             .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
@@ -121,22 +118,22 @@ public class Audio : BaseCommandModule
         {
             return TimeSpan.MaxValue;
         }
-
-        TimeSpan time;
-        if (player.CurrentTrack.IsLiveStream)
+        var time=TimeSpan.FromHours(20);
+        if (player.CurrentTrack != null && player.CurrentTrack.IsLiveStream)
         {
             time = TimeSpan.FromHours(20) - player.Position.Position;
         }
         else
         {
-            time = player.CurrentTrack.Duration - player.Position.Position;
+            if (player.CurrentTrack != null)
+            {
+                time = player.CurrentTrack.Duration - player.Position.Position;
+            }
         }
-
         for (var i = 0; i < song - 1; i++)
         {
             time += player.Queue[i].Duration;
         }
-
         return time;
     }
 
@@ -149,16 +146,15 @@ public class Audio : BaseCommandModule
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         if (song.Song != null)
         {
-            await player.PlayTopAsync(song.Song);
+            await player?.PlayTopAsync(song.Song)!;
             var dmb = new DiscordEmbedBuilder()
                     .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
                     .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
-                    .WithUrl(song.Song.Uri.ToString())
+                    .WithUrl(song.Song.Uri?.ToString())
                     .AddField(lang.TimeTillTrackPlays,
                         player.LoopSettings == LoopSettings.LoopingSong
                             ? lang.SongTimeLeftSongLooping
                             : TimeTillSongPlays(player, 1).Humanize(culture: lang.GetCultureInfo()));
-
             var art = await ArtworkService.ResolveAsync(song.Song);
             if (art != null)
             {
@@ -167,22 +163,17 @@ public class Audio : BaseCommandModule
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
           .WithEmbed(dmb).SendAsync(ctx.Channel);
         }
-
         if (song.GetRestOfSongs is not null)
         {
-            ulong countofsongs = 0;
+            ulong songCount = 0;
             await foreach (var t in song.GetRestOfSongs)
             {
-                if (t is not null)
-                {
-                    await player.PlayTopAsync(t);
-                    countofsongs++;
-                }
+                await player?.PlayTopAsync(t)!;
+                songCount++;
             }
-
-            if (countofsongs != 0)
+            if (songCount != 0)
             {
-                await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, countofsongs));
+                await SendNowPlayingMessage(ctx, string.Format(lang.AddedXAmountOfSongs, songCount));
             }
         }
     }
@@ -252,11 +243,8 @@ public class Audio : BaseCommandModule
             ulong countofsongs = 0;
             await foreach (var t in song.GetRestOfSongs)
             {
-                if (t is not null)
-                {
-                    await player.PlayAsync(t, true);
-                    countofsongs++;
-                }
+                await player?.PlayAsync(t, true)!;
+                countofsongs++;
             }
 
             if (countofsongs != 0)
@@ -306,7 +294,7 @@ public class Audio : BaseCommandModule
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
         try
         {
-            await player.SeekPositionAsync(time);
+            await player?.SeekPositionAsync(time)!;
         }
         catch (NotSupportedException)
         {
@@ -407,7 +395,7 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        player.Queue.Shuffle();
+        player?.Queue.Shuffle();
         await SendSimpleMessage(ctx, lang.ShuffledSuccess, language: lang);
     }
 
@@ -418,14 +406,20 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        var queue = player.Queue.Select(x => x.Identifier).ToList();
-        queue.Insert(0, player.CurrentTrack.Identifier);
-        await OwnerOnly.SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new SilverBotPlaylist
+        var queue = player?.Queue.Select(x => x.Identifier).ToList();
+        if (player?.CurrentTrack?.Identifier != null)
         {
-            Identifiers = queue.ToArray(),
-            CurrentSongTimems = player.Position.Position.TotalMilliseconds,
-            PlaylistTitle = playlistName
-        }), "queue.json");
+            queue?.Insert(0, player?.CurrentTrack?.Identifier);
+        }
+        if (player != null)
+        {
+            await OwnerOnly.SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new SilverBotPlaylist
+            {
+                Identifiers = queue?.ToArray() ?? throw new InvalidOperationException(),
+                CurrentSongTimems = player.Position.Position.TotalMilliseconds,
+                PlaylistTitle = playlistName
+            }), "queue.json");
+        }
     }
 
     [Command("remove")]
@@ -435,7 +429,7 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        if (songindex < 0 || songindex > player.Queue.Count)
+        if (player != null && (songindex < 0 || songindex > player.Queue.Count))
         {
             await SendSimpleMessage(ctx, lang.SongNotExist, language: lang);
             return;
@@ -455,7 +449,7 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        if (player.QueueHistory.Count == 0)
+        if (player != null && player.QueueHistory.Count == 0)
         {
             await SendSimpleMessage(ctx, lang.NothingInQueueHistory, language: lang);
             return;
@@ -465,7 +459,7 @@ public class Audio : BaseCommandModule
         for (var i = 0; i < player.QueueHistory.Count; i++)
         {
             pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.QueueHistory[i].Item1.Title)
-                .WithUrl(player.QueueHistory[i].Item1.Uri.ToString()).WithColor(await ColorUtils.GetSingleAsync())
+                .WithUrl(player.QueueHistory[i].Item1.Uri?.ToString()).WithColor(await ColorUtils.GetSingleAsync())
                 .AddField(lang.TimeWhenTrackPlayed, Formatter.Timestamp(player.QueueHistory[i].Item2))
                 .WithAuthor(string.Format(lang.PageNuget, i + 1, player.QueueHistory.Count))));
         }
@@ -482,13 +476,13 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        if (player.Queue.Count == 0 && player.State != PlayerState.Playing)
+        if (player != null && player.Queue.Count == 0 && player.State != PlayerState.Playing)
         {
             await SendSimpleMessage(ctx, lang.NothingInQueue, language: lang);
             return;
         }
         var e = new DiscordEmbedBuilder().WithTitle(player.CurrentTrack.Title)
-                .WithUrl(player.CurrentTrack.Uri.ToString()).WithColor(await ColorUtils.GetSingleAsync())
+                .WithUrl(player.CurrentTrack.Uri?.ToString()).WithColor(await ColorUtils.GetSingleAsync())
                 .WithAuthor(string.Format(lang.PageNuget, 1, player.Queue.Count + 1))
                 .AddField(lang.SongLength, player.CurrentTrack.Duration.ToString())
 
@@ -540,27 +534,19 @@ public class Audio : BaseCommandModule
     {
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
-
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        player.LoopSettings = settings;
-        switch (settings)
-        {
-            case LoopSettings.NotLooping:
-                await SendSimpleMessage(ctx, lang.NotLooping, language: lang);
-                break;
-
-            case LoopSettings.LoopingSong:
-                await SendSimpleMessage(ctx, lang.LoopingSong, language: lang);
-                break;
-
-            case LoopSettings.LoopingQueue:
-                await SendSimpleMessage(ctx, lang.LoopingQueue, language: lang);
-                break;
-
-            default:
-                throw new InvalidOperationException("Unexpected value settings = " + settings);
-        }
+        player!.LoopSettings = settings;
+        await SendSimpleMessage(ctx, GetMessageOfLoopSetting(lang, settings), language: lang);
     }
+
+    public string GetMessageOfLoopSetting(Language lang, LoopSettings setting) =>
+        setting switch
+        {
+            LoopSettings.LoopingQueue => lang.LoopingQueue,
+            LoopSettings.LoopingSong => lang.LoopingSong,
+            LoopSettings.NotLooping => lang.NotLooping,
+            _ => throw new ArgumentOutOfRangeException(nameof(setting), setting, null)
+        };
 
     [Command("pause")]
     [Description("pause the current song")]
@@ -569,13 +555,12 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        if (player.State != PlayerState.Playing)
+        if (player != null && player.State != PlayerState.Playing)
         {
             await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
             return;
         }
-
-        await player.PauseAsync();
+        await player?.PauseAsync()!;
     }
 
     [Command("ovh")]
@@ -588,7 +573,6 @@ public class Audio : BaseCommandModule
             await SendSimpleMessage(ctx, "Lyrics not found");
             return;
         }
-
         await SendSimpleMessage(ctx, "Lyrics", $"```{lyrics}```");
     }
 
@@ -601,7 +585,6 @@ public class Audio : BaseCommandModule
         {
             bob.Append(Formatter.InlineCode(song.Key)).Append(" - ").AppendLine(Formatter.InlineCode(song.Value));
         }
-
         await SendSimpleMessage(ctx, message: bob.ToString());
     }
 
@@ -612,12 +595,12 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        if (player.State != PlayerState.Paused)
+        if (player != null && player.State != PlayerState.Paused)
         {
             await SendSimpleMessage(ctx, lang.NotPaused, language: lang);
             return;
         }
-        await player.ResumeAsync();
+        await player?.ResumeAsync()!;
     }
 
     [Command("join")]
@@ -636,10 +619,13 @@ public class Audio : BaseCommandModule
             return;
         }
         await MakeSureUserIsInVC(ctx, lang);
-        await audioService.JoinAsync<BetterVoteLavalinkPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel).Id,
-            true);
-        await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel).Name),
-            language: lang);
+        if (ctx.Member?.VoiceState?.Channel != null)
+        {
+            await audioService.JoinAsync<BetterVoteLavalinkPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel!).Id,
+                true);
+            await SendSimpleMessage(ctx, string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel)?.Name),
+                language: lang);
+        }
     }
 
     [Command("forceskip")]
@@ -650,20 +636,17 @@ public class Audio : BaseCommandModule
     {
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
-
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-
-        if (player.State != PlayerState.Playing)
+        if (player != null && player.State != PlayerState.Playing)
         {
             await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
             return;
         }
-
-        var trackbefore = player.CurrentTrack;
-        await player.SkipAsync();
+        var trackbefore = player?.CurrentTrack;
+        await player?.SkipAsync()!;
         var trackafter = player.CurrentTrack;
         await SendSimpleMessage(ctx,
-            string.Format(lang.SkippedNP, trackbefore.Title, trackafter == null ? lang.QueueNothing : trackafter?.Title),
+            string.Format(lang.SkippedNP, trackbefore?.Title, trackafter == null ? lang.QueueNothing : trackafter?.Title),
             language: lang, image: trackafter == null ? null : (await ArtworkService.ResolveAsync(trackafter))?.ToString());
     }
 
@@ -675,32 +658,33 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        if (player.State != PlayerState.Playing)
+        if (player != null && player.State != PlayerState.Playing)
         {
             await SendSimpleMessage(ctx, lang.NotPlaying, language: lang);
             return;
         }
-
-        var trackbefore = player.CurrentTrack;
+        var trackbefore = player?.CurrentTrack;
         if (await new RequireDjAttribute().ExecuteCheckAsync(ctx, false))
         {
             await SendSimpleMessage(ctx, lang.CanForceSkip, language: lang);
         }
-
-        var thing = await player.VoteAsync(ctx.Member.Id);
-        if (thing.WasSkipped)
+        if (ctx.Member != null)
         {
-            await SendSimpleMessage(ctx,
-                string.Format(lang.SkippedNP, trackbefore.Title,
-                    player.CurrentTrack == null ? lang.QueueNothing : player.CurrentTrack.Title), image: (await ArtworkService.ResolveAsync(player.CurrentTrack))?.ToString(), language: lang);
-        }
-        else if (thing.WasAdded)
-        {
-            await SendSimpleMessage(ctx, lang.Voted, language: lang);
-        }
-        else
-        {
-            await SendSimpleMessage(ctx, lang.AlreadyVoted, language: lang);
+            var thing = await player?.VoteAsync(ctx.Member.Id)!;
+            if (thing.WasSkipped)
+            {
+                await SendSimpleMessage(ctx,
+                    string.Format(lang.SkippedNP, trackbefore?.Title,
+                        player.CurrentTrack == null ? lang.QueueNothing : player.CurrentTrack.Title), image: (await ArtworkService.ResolveAsync(player.CurrentTrack))?.ToString(), language: lang);
+            }
+            else if (thing.WasAdded)
+            {
+                await SendSimpleMessage(ctx, lang.Voted, language: lang);
+            }
+            else
+            {
+                await SendSimpleMessage(ctx, lang.AlreadyVoted, language: lang);
+            }
         }
     }
 
@@ -729,7 +713,7 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-        await player.DisconnectAsync();
+        await player?.DisconnectAsync()!;
         await SendSimpleMessage(ctx, string.Format(lang.Left, ctx.Member?.VoiceState?.Channel.Name), language: lang);
     }
 }

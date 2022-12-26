@@ -96,7 +96,7 @@ internal static class VersionInfo
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CS0162 // Unreachable code detected
                 //At least one of these will warn lmao
-                log.Information("You are running a {Dirty} version of silverbot", "dirty");
+                log.Information("You are running a {Dirty} version of silverbot", "DIRTY");
 #pragma warning restore CS0162 // Unreachable code detected
 #pragma warning restore IDE0079 // Remove unnecessary suppression
             }

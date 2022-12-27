@@ -3,28 +3,28 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using DSharpPlus.Entities;
-using DSharpPlus;
 using DSharpPlus.SlashCommands;
 using Humanizer;
+using Lavalink4NET;
 using Lavalink4NET.Artwork;
+using Lavalink4NET.Decoding;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
-using Lavalink4NET;
-using SilverBotDS.Converters;
-using SilverBotDS.Objects.Classes;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
-using Lavalink4NET.Decoding;
 using Lavalink4NET.Rest;
-using System.Net.Http;
-using System.IO;
 using Microsoft.Extensions.DependencyInjection;
+using SilverBotDS.Converters;
+using SilverBotDS.Objects;
+using SilverBotDS.Objects.Classes;
+using SilverBotDS.Utils;
 
 namespace SilverBotDS.Commands.Slash
 {
@@ -52,7 +52,7 @@ namespace SilverBotDS.Commands.Slash
                 language ??= await languageservice?.FromCtxAsync(ctx);
             }
             var embedBuilder = new DiscordEmbedBuilder()
-                .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                .AddRequestedByFooter(ctx,language)
                 .WithColor(await ColorUtils.GetSingleAsync());
             if (!string.IsNullOrEmpty(message))
             {
@@ -82,7 +82,7 @@ namespace SilverBotDS.Commands.Slash
                 language ??= await languageservice?.FromCtxAsync(ctx);
             }
             var embedBuilder = new DiscordEmbedBuilder()
-                .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                .AddRequestedByFooter(ctx,language)
                 .WithColor(await ColorUtils.GetSingleAsync());
             if (!string.IsNullOrEmpty(message))
             {
@@ -191,7 +191,7 @@ namespace SilverBotDS.Commands.Slash
             {
                 await player.PlayTopAsync(song.Song);
                 var dmb = new DiscordEmbedBuilder()
-                        .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                        .AddRequestedByFooter(ctx,lang)
                         .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
                         .WithUrl(song.Song.Uri.ToString())
                         .AddField(lang.TimeTillTrackPlays,
@@ -271,7 +271,7 @@ namespace SilverBotDS.Commands.Slash
                 else
                 {
                     var emb = new DiscordEmbedBuilder()
-                            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                            .AddRequestedByFooter(ctx,lang)
                             .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
                             .WithUrl(song.Song.Uri.ToString())
                             .AddField(lang.TimeTillTrackPlays,
@@ -332,7 +332,7 @@ namespace SilverBotDS.Commands.Slash
             }
 
             var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-            await player.SetVolumeAsync(volume / 100f, true);
+            await player?.SetVolumeAsync(volume / 100f, true)!;
         }
 
         [RequireDjSlash]

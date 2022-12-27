@@ -10,6 +10,7 @@ using SilverBotDS.Utils;
 using System.Text.Json;
 using System.Xml;
 using System.Xml.Serialization;
+using Towel;
 
 namespace SilverBotDS.Objects;
 
@@ -385,6 +386,8 @@ public class Config
                             Console.WriteLine("Where do you store your java executable? (type java or java.exe if in path) (E.g. C:\\Program Files\\Java\\jdk-11.0.2\\bin\\java.exe)");
                             conf.JavaLoc = Console.ReadLine() ?? "java";
                         }
+
+                        conf.ServerId = ConsoleHelper.GetInput<ulong>("Enter main server id (long number)");
                     }
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Please manually review the generated config as this generator is not accurate");

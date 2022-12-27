@@ -62,12 +62,12 @@ public class Language
     /// <summary>
     ///     <b>Requested by </b>SilverDimond
     ///     <para />
-    ///     <b>Requested␣by␣</b>
+    ///     <b>Requested␣by␣{0}</b>
     /// </summary>
     /// <remarks>
     ///     Needs to be used like <c>Language.Requested_by+Username</c> <strong>MAY BE SUBJECT TO CHANGE</strong>
     /// </remarks>
-    public string RequestedBy { get; set; } = "Requested by ";
+    public string RequestedBy { get; set; } = "Requested by {0}";
 
     /// <summary>
     ///     Something went wrong, it's probably on my end.
@@ -510,7 +510,7 @@ public class Language
     public string HelpCommandGroupSubcommands { get; set; } = "Subcommands";
 
     public string HelpCommandGroupListingAllCommands { get; set; } =
-        "Listing all commands and groups. Specify a command to see more information.";
+        "Listing all commands and groups. Specify a command to see more information.\n Consider viewing the code line infused SilverCraftSpec.md file <https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverCraftSpec.md>";
 
     public string RequireDJCheckFailed { get; set; } = "You must have the DJ role to use that";
     public string RequireGuildCheckFailed { get; set; } = "You must be in a Guild (aka discord server) to use that.";

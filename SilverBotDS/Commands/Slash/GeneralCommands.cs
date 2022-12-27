@@ -45,12 +45,12 @@ public class GeneralCommands : ApplicationCommandModule
                 .AddField(lang.IsABot, StringUtils.BoolToEmoteString(user.IsBot), true)
                 .AddField(lang.AccountCreationDate, user.CreationTimestamp.UtcDateTime.DateTimeToTimeStamp(TimestampFormat.LongDateTime), true)
                 .AddField(lang.AccountJoinDate,
-                    ctx.Guild?.Members.ContainsKey(user.Id) == true
+                    (ctx.Guild?.Members.ContainsKey(user.Id) == true
                         ? ctx.Guild?.Members[user.Id].JoinedAt.UtcDateTime.DateTimeToTimeStamp(TimestampFormat.LongDateTime)
-                        : "NA", true)
+                        : "NA") ?? "NA", true)
                 .WithColor(await ColorUtils.GetSingleAsync())
                 .WithThumbnail(user.GetAvatarUrl(ImageFormat.Png))
-                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+                .AddRequestedByFooter(ctx,lang)
                 .Build()).AsEphemeral(true));
     }
 

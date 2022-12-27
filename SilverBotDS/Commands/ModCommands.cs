@@ -54,7 +54,7 @@ public class ModCommands : BaseCommandModule
         }
 
         b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync())
-            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            .AddRequestedByFooter(ctx,lang);
         await ctx.RespondAsync(b.Build());
     }
 
@@ -93,7 +93,7 @@ public class ModCommands : BaseCommandModule
         }
 
         b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync())
-            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            .AddRequestedByFooter(ctx,lang);
         await ctx.RespondAsync(b.Build());
     }
 

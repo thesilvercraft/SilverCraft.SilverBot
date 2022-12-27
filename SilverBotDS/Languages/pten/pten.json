@@ -4,7 +4,7 @@
   "Hi": "Ahoy,{0}!",
   "TimeInUtc": "Time in UTC be {0}",
   "CommandIsDisabled": "This here command be disabled",
-  "RequestedBy": "Requested by ",
+  "RequestedBy": "Requested by {0}",
   "DblaReturnedNull": "Somethin' went wrong, it be probably on me ship.",
   "AlreadyConnected": "I be already in a voice channel!",
   "UserNotConnected": "Ye must be in a voice channel!",

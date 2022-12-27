@@ -4,7 +4,7 @@
   "Hi": "Hoi {0}!",
   "TimeInUtc": "Tijd in UTC is {0}",
   "CommandIsDisabled": "Deze command is disabled",
-  "RequestedBy": "Aangevraagd door ",
+  "RequestedBy": "Aangevraagd door {0}",
   "DblaReturnedNull": "Iet's is verkeerd gegaan, het is ligt grote kans aan mij.",
   "AlreadyConnected": "Ik ben al in een spraakkanaal!",
   "UserNotConnected": "Je moet wel in een spraakkanaal zijn hé!",

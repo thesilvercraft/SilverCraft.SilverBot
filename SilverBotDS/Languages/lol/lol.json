@@ -4,7 +4,7 @@
   "Hi": "OH HAI {0}!",
   "TimeInUtc": "TIEM IN UTC IZ {0}",
   "CommandIsDisabled": "DIS COMMAND IZ DISABLD",
-  "RequestedBy": "EQUESTD BY ",
+  "RequestedBy": "EQUESTD BY {0}",
   "DblaReturnedNull": "SOMETHIN WENT WRONG, IZ PROBABLY ON MAH END.",
   "AlreadyConnected": "IM ALREADY IN VOICE CHANNEL!",
   "UserNotConnected": "U MUST BE IN VOICE CHANNEL!",

@@ -80,7 +80,7 @@ public class Experience : BaseCommandModule, IRequireAssets
     {
         var lang = await LanguageService.FromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder()
-            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+            .AddRequestedByFooter(ctx,lang)
             .WithColor(await ColorUtils.GetSingleAsync());
         var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == ctx.User.Id);
         if (o is not null)
@@ -102,7 +102,7 @@ public class Experience : BaseCommandModule, IRequireAssets
     {
         var lang = await LanguageService.FromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder()
-            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+            .AddRequestedByFooter(ctx,lang)
             .WithColor(await ColorUtils.GetSingleAsync());
         var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == member.Id);
         if (o is not null)
@@ -130,7 +130,7 @@ public class Experience : BaseCommandModule, IRequireAssets
             StringBuilder stringBuilder = new();
             List<Page> pages = new();
             bob.WithTitle(lang.XPCommandLeaderBoardTitle);
-            bob.WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png));
+            bob.AddRequestedByFooter(ctx,lang);
             foreach (var person in o)
             {
                 if (Range.Contains(stringBuilder.Length))
@@ -165,7 +165,7 @@ public class Experience : BaseCommandModule, IRequireAssets
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(new DiscordEmbedBuilder()
                 .WithDescription(lang.XPCommandGeneralFail)
-                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+                .AddRequestedByFooter(ctx,lang)
                 .WithColor(await ColorUtils.GetSingleAsync()).Build()).SendAsync(ctx.Channel);
         }
     }

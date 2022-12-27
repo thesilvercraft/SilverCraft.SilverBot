@@ -56,7 +56,7 @@ public class Audio : BaseCommandModule
             language ??= await languageService?.FromCtxAsync(ctx)!;
         }
         var embedBuilder = new DiscordEmbedBuilder()
-            .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+            .AddRequestedByFooter(ctx,language)
             .WithColor(await ColorUtils.GetSingleAsync());
         var messageBuilder = new DiscordMessageBuilder();
         if (!string.IsNullOrEmpty(message))
@@ -90,7 +90,7 @@ public class Audio : BaseCommandModule
             language ??= await languageservice?.FromCtxAsync(ctx)!;
         }
         var embedBuilder = new DiscordEmbedBuilder()
-            .WithFooter(language.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+            .AddRequestedByFooter(ctx,language)
             .WithColor(await ColorUtils.GetSingleAsync());
         var messageBuilder = new DiscordMessageBuilder();
         if (!string.IsNullOrEmpty(message))
@@ -148,7 +148,7 @@ public class Audio : BaseCommandModule
         {
             await player?.PlayTopAsync(song.Song)!;
             var dmb = new DiscordEmbedBuilder()
-                    .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                    .AddRequestedByFooter(ctx,lang)
                     .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
                     .WithUrl(song.Song.Uri?.ToString())
                     .AddField(lang.TimeTillTrackPlays,
@@ -219,7 +219,7 @@ public class Audio : BaseCommandModule
             else
             {
                 var emb = new DiscordEmbedBuilder()
-                        .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Auto))
+                        .AddRequestedByFooter(ctx,lang)
                         .WithTitle(string.Format(lang.Enqueued, song.Song.Title + lang.SongByAuthor + song.Song.Author))
                         .WithUrl(song.Song.Uri.ToString())
                         .AddField(lang.TimeTillTrackPlays,

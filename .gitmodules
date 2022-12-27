@@ -1,0 +1,3 @@
+[submodule "libfoo"]
+	path = SilverBotDS/SilverBotAssets
+	url = git://github.com/thesilvercraft/SilverBotAssets.git

@@ -70,7 +70,7 @@ public class SteamCommands : BaseCommandModule
                 }
 
                 tempbuilder.WithFooter(
-                    $"{lang.RequestedBy}{ctx.User.Username} {string.Format(lang.PageNuget, i + 1, listings.Count)}",
+                    $"{string.Format(lang.RequestedBy, ctx.User.Username)} {string.Format(lang.PageNuget, i + 1, listings.Count)}",
                     ctx.User.GetAvatarUrl(ImageFormat.Png));
                 if (!string.IsNullOrEmpty(listings[i].ImageLink))
                 {

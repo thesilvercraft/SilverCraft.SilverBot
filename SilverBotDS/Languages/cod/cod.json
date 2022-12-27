@@ -4,7 +4,7 @@
   "Hi": "Fuck you {0}!",
   "TimeInUtc": "Why do you want the time coward? Anyway its {0}",
   "CommandIsDisabled": "This command is disabled",
-  "RequestedBy": "Requested by ",
+  "RequestedBy": "Requested by {0}",
   "DblaReturnedNull": "Something went wrong, it's probably on my end.",
   "AlreadyConnected": "I'M ALREADY IN A VOICE CHANNEL YOU SHIT",
   "UserNotConnected": "GET IN A FUCKING VOICE CHANNEL YOU SHIT",

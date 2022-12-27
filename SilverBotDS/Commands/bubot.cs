@@ -3,6 +3,8 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
+using System;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -19,6 +21,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using SilverBot.Shared.Pagination;
 using SilverBotDS.Attributes;
 using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
 
@@ -99,6 +102,7 @@ internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
     private string[] _bibiDescText;
     private string[] _bibiFullDescText;
     public Config Config { private get; set; }
+    public IPaginator Paginator { private get; set; }
     public LanguageService LanguageService { private get; set; }
 
 
@@ -124,26 +128,14 @@ internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
         using StreamReader reader = new(Config.BibiLibFullConfig);
         return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
     }
-
     [GroupCommand]
     [Description("Access the great cat bibi library.")]
     public async Task BibiLibrary(CommandContext ctx)
     {
         EnsureCreated();
-        var lang = await LanguageService.FromCtxAsync(ctx);
-        List<Page> pages = new();
-        for (var a = 0; a < _bibiDescText.Length; a++)
-        {
-            var imgurl =
-                $"https://github.com/thesilvercraft/SilverBotAssets/blob/main/BibiLibCutout/{a + 1}.png?raw=true";
-            pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(_bibiDescText[a])
-                .WithDescription($"{imgurl}\n{string.Format(lang.PageNuget, a + 1, _bibiDescText.Length)}")
-                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                .WithImageUrl(imgurl).WithColor(await ColorUtils.GetSingleAsync())));
-        }
-
-        var interactivity = ctx.Client.GetInteractivity();
-        await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new CancellationToken());
+        var lang = await LanguageService.FromCtxAsync(ctx); 
+        BibiPagination b = new(Config.BibiLibCutOut,_bibiDescText,lang,ctx.User);
+        await Paginator.SendPaginatedMessage(ctx.Channel, ctx.User, false, b);
     }
 
     [Command("full")]
@@ -152,18 +144,8 @@ internal class BibiLib : BaseCommandModule, IHaveExecutableRequirements
     {
         EnsureCreated();
         var lang = await LanguageService.FromCtxAsync(ctx);
-        List<Page> pages = new();
-        for (var a = 0; a < _bibiFullDescText.Length; a++)
-        {
-            var imgurl =
-                $"https://github.com/thesilvercraft/SilverBotAssets/blob/main/BibiLibFull/{a + 1}.png?raw=true";
-            pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(_bibiFullDescText[a])
-                .WithDescription($"{imgurl}\n{string.Format(lang.PageNuget, a + 1, _bibiDescText.Length)}")
-                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                .WithImageUrl(imgurl).WithColor(await ColorUtils.GetSingleAsync())));
-        }
-
-        var interactivity = ctx.Client.GetInteractivity();
-        await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, token: new CancellationToken());
+        BibiPagination b = new(Config.BibiLibFull,_bibiFullDescText,lang,ctx.User);
+        await Paginator.SendPaginatedMessage(ctx.Channel, ctx.User, false, b);
     }
 }
+

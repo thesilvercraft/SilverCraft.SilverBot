@@ -144,7 +144,7 @@ public sealed class Genericcommands : BaseCommandModule
             .WithEmbed(new DiscordEmbedBuilder()
                 .WithTitle(lang.SilverhostingJokeTitle)
                 .WithDescription(lang.SilverhostingJokeDescription)
-                .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+                .AddRequestedByFooter(ctx,lang)
                 .Build())
             .SendAsync(ctx.Channel);
     }
@@ -175,7 +175,7 @@ public sealed class Genericcommands : BaseCommandModule
                     : "NA", true)
             .WithColor(await ColorUtils.GetSingleAsync())
             .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
-            .WithFooter(lang.RequestedBy + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
+            .AddRequestedByFooter(ctx,lang)
             .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
     }
 

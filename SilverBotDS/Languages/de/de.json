@@ -4,7 +4,7 @@
   "Hi": "Hi {0}!",
   "TimeInUtc": "Die Zeit in UTC ist {0}",
   "CommandIsDisabled": "Dieser Befehl ist deaktiviert",
-  "RequestedBy": "Angefordert von ",
+  "RequestedBy": "Angefordert von {0}",
   "DblaReturnedNull": "Etwas ist schiefgelaufen, es ist wahrscheinlich auf meiner Seite.",
   "AlreadyConnected": "Ich bin bereits einem Sprachkanal zugewiesen!",
   "UserNotConnected": "Du musst in einem Sprachkanal sein!",

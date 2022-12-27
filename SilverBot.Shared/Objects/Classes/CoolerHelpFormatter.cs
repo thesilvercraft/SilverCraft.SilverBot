@@ -15,13 +15,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SilverBotDS.Objects.Classes;
 
-public class CustomHelpFormatter : BaseHelpFormatter
+public class CoolerHelpFormatter : BaseHelpFormatter
 {
     /// <summary>
     ///     Creates a new default help formatter.
     /// </summary>
     /// <param name="ctx">Context in which this formatter is being invoked.</param>
-    public CustomHelpFormatter(CommandContext ctx)
+    public CoolerHelpFormatter(CommandContext ctx)
         : base(ctx)
     {
         var languageservice = ctx.Services.GetService<LanguageService>();
@@ -29,8 +29,7 @@ public class CustomHelpFormatter : BaseHelpFormatter
         langtask?.Wait();
         Lang = langtask?.Result;
         EmbedBuilder = new DiscordEmbedBuilder()
-            .WithTitle(Lang.HelpCommandHelpString).WithFooter(Lang.RequestedBy + ctx.User.Username,
-                ctx.User.GetAvatarUrl(ImageFormat.Auto));
+            .WithTitle(Lang.HelpCommandHelpString).AddRequestedByFooter(ctx,Lang);
     }
 
     public DiscordEmbedBuilder EmbedBuilder { get; }

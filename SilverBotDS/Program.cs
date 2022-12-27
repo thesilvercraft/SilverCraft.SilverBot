@@ -50,6 +50,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SilverBot.Shared;
+using SilverBot.Shared.Pagination;
 
 namespace SilverBotDS
 {
@@ -264,6 +265,7 @@ namespace SilverBotDS
             {
                 services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
                 services.AddSingleton(new LanguageService());
+                services.AddSingleton<IPaginator>(new CoolerPaginatior(_discord));
                 services.AddDbContext<DatabaseContext>(
                     options =>
                     {
@@ -435,7 +437,7 @@ namespace SilverBotDS
 
                     using (mainlog.BeginScope("Registering converters"))
                     {
-                        commands.SetHelpFormatter<CustomHelpFormatter>();
+                        commands.SetHelpFormatter<CoolerHelpFormatter>();
                         commands.RegisterConverter(new SdImageConverter());
                         commands.RegisterConverter(new SColorConverter());
                         commands.RegisterConverter(new LoopSettingsConverter());

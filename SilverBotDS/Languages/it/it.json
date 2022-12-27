@@ -4,7 +4,7 @@
   "Hi": "Ciao {0}!",
   "TimeInUtc": "Orario nella zona d'orario dell' UTC è {0}",
   "CommandIsDisabled": "Questo comando è disabilitato",
-  "RequestedBy": "Richiesto da ",
+  "RequestedBy": "Richiesto da {0}",
   "DblaReturnedNull": "Qualcosa è andato storto, è probabilmente problema mio.",
   "AlreadyConnected": "Sono già in un canale vocale!",
   "UserNotConnected": "Devi per forza essere in un canale vocale!",

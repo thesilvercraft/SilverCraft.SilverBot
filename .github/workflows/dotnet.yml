@@ -3,18 +3,19 @@ name: .NET
 on:
   push:
     branches: [ master ]
+  paths-ignore:
+    - '**.md'
+  workflow_dispatch:
 jobs:
   build:
     runs-on: windows-2019
     if: "!contains(github.event.head_commit.message, 'ci skip')"
-    env:
-      SHA10: ${GITHUB_SHA::10}
     steps:
     - uses: actions/checkout@v3
       with:
           submodules: 'true'
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
     - name: Build
@@ -41,7 +42,7 @@ jobs:
           prerelease: false
           files: |
             ./silverbot.zip
-            .\SilverBotDS\bin\Release\net7.0\publish\SilverBotDS.dll
-            .\SilverBotDS.AnimeModule\bin\Release\net7.0\publish\SilverBotDS.AnimeModule.dll
-            .\SilverBot.Shared\bin\Release\net7.0\publish\SilverBot.Shared.dll
-            .\SilverBot.Shared\bin\Release\net7.0\publish\SilverBot.Shared.pdb
+            ./SilverBotDS/bin/Release/net7.0/publish/SilverBotDS.dll
+            ./SilverBotDS.AnimeModule/bin/Release/net7.0/publish/SilverBotDS.AnimeModule.dll
+            ./SilverBot.Shared/bin/Release/net7.0/publish/SilverBot.Shared.dll
+            ./SilverBot.Shared/bin/Release/net7.0/publish/SilverBot.Shared.pdb

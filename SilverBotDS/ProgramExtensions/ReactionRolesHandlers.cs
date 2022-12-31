@@ -3,16 +3,17 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
-using DSharpPlus;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.EventArgs;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Database.Classes.ReactionRole;
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.EventArgs;
+using SilverBot.Shared.Objects.Database;
+using SilverBot.Shared.Objects.Database.Classes.ReactionRole;
 
-namespace SilverBotDS
+namespace SilverBotDS.ProgramExtensions
 {
     public static class ReactionRolesHandlers
     {

@@ -1,4 +1,4 @@
-using SilverBotDS.Utils;
+using SilverBot.Shared.Utils;
 
 namespace SilverBot.Shared
 {

@@ -1,5 +1,4 @@
 using DSharpPlus.Entities;
-using SilverBotDS;
 
 namespace SilverBot.Shared.Pagination;
 

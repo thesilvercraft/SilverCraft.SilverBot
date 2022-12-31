@@ -6,15 +6,16 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using SilverBotDS.Utils;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SilverBotDS.Attributes;
-using SilverBotDS.Objects;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Utils;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands.Gamering;
 
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using CategoryAttribute = CategoryAttribute;
 
 [Category("Gaming")]
 [Group("minecraft")]

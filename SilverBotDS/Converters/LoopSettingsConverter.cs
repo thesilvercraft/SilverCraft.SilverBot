@@ -6,9 +6,9 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
-using SilverBotDS.Objects.Classes;
 using System;
 using System.Threading.Tasks;
+using SilverBot.Shared.Objects.Classes;
 
 namespace SilverBotDS.Converters;
 

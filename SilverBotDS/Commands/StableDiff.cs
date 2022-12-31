@@ -4,6 +4,7 @@ SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
 using System;
+using System.Buffers.Text;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -14,14 +15,15 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
-using SilverBotDS.Attributes;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
+using RestSharp;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Utils;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace SilverBotDS.Commands
 {
-    [Attributes.Category("Stable diffusion")]
+    [SilverBot.Shared.Attributes.Category("Stable diffusion")]
     [AiGenChannel(1055151462952480909)]
     public class StableDiff:BaseCommandModule
     {
@@ -74,7 +76,16 @@ namespace SilverBotDS.Commands
                 //disappointment
                 model = SafeModel[0];
             }
-            
+
+            string promptimg = null;
+            if (ctx.Message.Attachments.Count == 1)
+            {
+                promptimg = ctx.Message.Attachments.First().Url;
+            }
+            else if (ctx.Message.ReferencedMessage!=null && ctx.Message.ReferencedMessage.Attachments.Count == 1)
+            {
+                promptimg = ctx.Message.ReferencedMessage.Attachments.First().Url;
+            }
             input i = new()
             {
                 prompt = prompt,
@@ -85,6 +96,40 @@ namespace SilverBotDS.Commands
                 height = resolution.ToString(),
                 num_inference_steps=steps.ToString()
             };
+            if (promptimg != null && (promptimg.EndsWith(".png") || promptimg.EndsWith(".jpg")))
+            {
+                try
+                {
+                    var promptImgResponseMessage = await HttpClient.GetAsync(promptimg);
+                    var bytearray = await promptImgResponseMessage.Content.ReadAsByteArrayAsync();
+
+                    bool Matches(byte?[] x)
+                    {
+                        return !x.Where((t, j) => t != null && t != bytearray[j]).Any();
+                    }
+                    byte?[] jpgs1 = new byte?[] { 0xFF, 0xD8, 0xFF, 0xDB };
+                    byte?[] jpgs2 = new byte?[] { 0xFF,0xD8,0xFF,0xE0,0x00,0x10,0x4A,0x46,0x49,0x46,0x00,0x01};
+                    byte?[] jpgs3 = new byte?[] { 0xFF, 0xD8, 0xFF, 0xEE };
+                    byte?[] jpgs4 = new byte?[] { 0xFF,0xD8,0xFF,0xE1,null,null,0x45,0x78,0x69,0x66,0x00,0x00 };
+                    byte?[] png = new byte?[] { 0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A};
+
+
+                    if (Matches(jpgs1) || Matches(jpgs2) || Matches(jpgs3) || Matches(jpgs4))
+                    {
+                        i.init_image = "data:image/jpeg;base64," + Convert.ToBase64String(bytearray);
+                    }
+                    else if (Matches(png))
+                    {
+                        i.init_image = "data:image/png;base64," + Convert.ToBase64String(bytearray);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+                
+            }
             var sent = JsonSerializer.Serialize(i);
             Console.WriteLine(sent);
 
@@ -208,6 +253,7 @@ namespace SilverBotDS.Commands
     {
         public string prompt { get; set; }
         public long session_id { get; set; } = 1670683499561;
+        public string init_image { get; set; } = null;
         public int seed { get; set; }
         public string negative_prompt { get; set; }
         public int num_outputs { get; set; } = 1;

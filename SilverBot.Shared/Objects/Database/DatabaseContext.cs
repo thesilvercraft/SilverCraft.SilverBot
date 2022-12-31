@@ -3,14 +3,15 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using SilverBotDS.Objects.Database.Classes;
-using SilverBotDS.Objects.Database.Classes.ReactionRole;
+
 using System.Data;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Database.Classes.ReactionRole;
 
-namespace SilverBotDS.Objects;
+namespace SilverBot.Shared.Objects.Database;
 
 public class DatabaseContext : DbContext
 {
@@ -81,17 +82,17 @@ public class DatabaseContext : DbContext
 
     public ServerSettings GetServerSettings(ulong id)
     {
-        var a = serverSettings.Where(x => x.ServerId == id).FirstOrDefault();
-        if (a == null)
+        var a = serverSettings.FirstOrDefault(x => x.ServerId == id);
+        if (a != null)
         {
-            a = new ServerSettings
-            {
-                ServerId = id
-            };
-            serverSettings.Add(a);
-            SaveChanges();
+            return a;
         }
-
+        a = new ServerSettings
+        {
+            ServerId = id
+        };
+        serverSettings.Add(a);
+        SaveChanges();
         return a;
     }
 

@@ -4,16 +4,16 @@ SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.AspNetCore.Components.Authorization;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Caching.Memory;
-using static SilverBotDS.Objects.Classes.Oauth;
+using static SilverBot.Shared.Objects.Classes.Oauth;
 
-namespace SilverBotDS.WebHelpers;
+namespace SilverBot.Web.WebHelpers;
 
 public static class SessionHelper
 {

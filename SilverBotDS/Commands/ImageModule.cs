@@ -8,17 +8,13 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using SilverBotDS.Converters;
-using SilverBotDS.Exceptions;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
-using SilverBotDS.Utils;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 using NetVips;
 using System.Web;
 using static NetVips.Enums;
@@ -28,7 +24,12 @@ using ImageMagick;
 using Image = NetVips.Image;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
-using SilverBotDS.Attributes;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Exceptions;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared.Utils;
 
 namespace SilverBotDS.Commands;
 
@@ -789,17 +790,17 @@ public class ImageModule : BaseCommandModule, IRequireAssets
             using (var internalimage = await GetProfilePictureAsyncStatic(obama))
             {
                 var i = img;
-                img = img.Composite2(internalimage, BlendMode.Over, 120, 62);
+                img = img.Composite2(internalimage, BlendMode.Over,377, 3);
                 i.Dispose();
             }
             using (var internalimage = await GetProfilePictureAsyncStatic(secondPerson))
             {
                 var i = img;
-                img = img.Composite2(internalimage, BlendMode.Over, 377, 3);
+                img = img.Composite2(internalimage, BlendMode.Over, 120, 62);
                 i.Dispose();
             }
             return new Tuple<bool, Image>(true, img);
-        }, msgcontent: $"{obama.Mention} Awards {obama.Mention} a Medal.");
+        }, msgcontent: $"{obama.Mention} Awards {secondPerson.Mention} a Medal.");
     }
     [Command("happynewyear")]
     public async Task HappyNewYear(CommandContext ctx) => await HappyNewYear(ctx, ctx.User);

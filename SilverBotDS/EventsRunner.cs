@@ -7,15 +7,16 @@ using DSharpPlus;
 using DSharpPlus.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Database.Classes;
-using SilverBotDS.Utils;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using SilverBot.Shared.Objects.Database;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared.Utils;
 
 namespace SilverBotDS
 {

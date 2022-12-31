@@ -1,10 +1,8 @@
 using DSharpPlus;
 using DSharpPlus.Entities;
-using SilverBot.Shared.Pagination;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
+using SilverBot.Shared.Objects.Language;
 
-namespace SilverBotDS
+namespace SilverBot.Shared.Pagination
 {
     public class BibiPage : ILazyPage
     {

@@ -8,15 +8,16 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Humanizer;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Database.Classes;
 using System;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SilverBotDS.Attributes;
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects.Database;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 

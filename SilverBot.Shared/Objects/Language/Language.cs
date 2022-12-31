@@ -3,18 +3,14 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
-using DSharpPlus;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.SlashCommands;
-using Microsoft.EntityFrameworkCore;
-using SilverBotDS.Attributes;
+
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.DependencyInjection;
+using DSharpPlus;
+using Microsoft.EntityFrameworkCore;
 
-namespace SilverBotDS.Objects;
+namespace SilverBot.Shared.Objects.Language;
 
 [Owned]
 public class Language
@@ -627,138 +623,30 @@ public class Language
  public string LavalinkNotSetup { get; set; } =
         "Lavalink hasn't been set up properly on this instance. Please contact the bot owners.";
 
-    public CultureInfo GetCultureInfo()
+ public string WebsitePlayerResumed { get; set; } = "Resumed the player";
+ public string WebsitePlayerPaused { get; set; } = "Paused the player";
+ public string WebsiteSkippedViaVote { get; set; } = "Skipped the song via voting";
+ public string WebsiteVotedForSkip { get; set; } = "Voted for skipping the song";
+ public string WebsiteSkipped { get; set; } = "Skipped the song";
+ public string WebsiteShuffled{ get; set; } = "Shuffled the queue";
+ public string WebsiteLoopOff { get; set; } = "Disabled looping";
+ public string WebsiteLoopSong { get; set; } = "Enabled looping and set it to loop a song";
+ public string WebsiteLoopQueue { get; set; } = "Enabled looping and set it to loop the queue";
+ public string WebsitePlayingNothingTrackName { get; set; } = "Nothing by No-one";
+ public string WebsitePlayPause { get; set; } = "Play/Pause";
+ public string WebsiteVoteSkip { get; set; } = "Vote Skip";
+ public string WebsiteForceSkip { get; set; } = "Force Skip";
+ public string WebsiteShuffle { get; set; } = "Shuffle";
+ public string WebsiteNoLoop { get; set; } = "Disable loop";
+ public string WebsiteBLoopSong { get; set; } = "Loop song";
+ public string WebsiteBLoopQueue { get; set; } = "Loop queue";
+ public string WebsiteBVolumeDown { get; set; } = "Volume Down";
+ public string WebsiteBVolumeUp { get; set; } = "Volume Up";
+
+ public CultureInfo GetCultureInfo()
     {
         return new CultureInfo(CultureInfo);
     }
 
   
-}
-
-public class LanguageService
-{
-    private static readonly Dictionary<string, Language> CachedLanguages = new();
-
-    private static readonly JsonSerializerOptions options = new()
-    {
-        WriteIndented = true
-    };
-      public  Dictionary<string, Language> GetLoadedLanguages()
-    {
-        if (CachedLanguages.Count != 0)
-        {
-            return CachedLanguages;
-        }
-        var t = Task.Run(async () => await GetAsync("en"));
-        t.Wait();
-        return CachedLanguages;
-    }
-
-    public  string[] LoadedLanguages()
-    {
-        if (CachedLanguages.Count == 0)
-        {
-            var t = GetAsync("en");
-            t.Wait();
-        }
-
-        return CachedLanguages.Keys.ToArray();
-    }
-
-    public async Task<Language> GetAsync(string a)
-    {
-        a = a.Trim();
-        if (CachedLanguages.Count != 0)
-        {
-            if (CachedLanguages.ContainsKey(a))
-            {
-                return CachedLanguages[a];
-            }
-
-            return new Language();
-        }
-
-        var folloc = Path.Combine(Environment.CurrentDirectory, "Languages");
-        if (Directory.Exists(folloc))
-        {
-            foreach (var folder in Directory.GetDirectories(folloc))
-            {
-                foreach (var u in Directory.GetFiles(folder))
-                {
-                    await using Stream stream = File.OpenRead(u);
-                    var reader = new StreamReader(stream);
-                    var content = await reader.ReadToEndAsync();
-                    reader.Close();
-                    reader.Dispose();
-                    var asdf = JsonSerializer.Deserialize<Language>(content);
-                    var name = Path.GetFileNameWithoutExtension(u);
-                    CachedLanguages.Add(name, asdf);
-                }
-            }
-        }
-        else
-        {
-            Directory.CreateDirectory(Path.Combine(folloc, "en"));
-            await SerialiseDefaultAsync(
-                Path.Combine(Environment.CurrentDirectory, "languages", "en", "en.json"));
-        }
-
-        return await GetAsync(a);
-    }
-
-    public static async Task SerialiseDefaultAsync(string loc)
-    {
-        await using var streamWriter = new StreamWriter(loc);
-        await streamWriter.WriteAsync(JsonSerializer.Serialize(new Language(), options));
-    }
-
-    public static void SerialiseDefault(string loc)
-    {
-        using var streamWriter = new StreamWriter(loc);
-        streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
-    }
-
-    public async Task<Language> GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)
-    {
-        return await GetAsync(db.GetLangCodeGuild(id));
-    }
-
-    public async Task<Language> FromCtxAsync(CommandContext ctx)
-    {
-        await using var db = ctx.CommandsNext.Services.GetService<DatabaseContext>();
-        var conf = ctx.CommandsNext.Services.GetService<Config>();
-        if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
-        {
-            var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
-
-            if (t?.IsTranslator == true && t.CurrentCustomLanguage != null)
-            {
-                await db.Entry(t).ReloadAsync();
-                return t.CurrentCustomLanguage;
-            }
-        }
-
-        return await GetAsync(ctx.Channel.IsPrivate
-            ? db.GetLangCodeUser(ctx.User.Id)
-            : db.GetLangCodeGuild(ctx.Guild.Id));
-    }
-
-    public async Task<Language> FromCtxAsync(BaseContext ctx)
-    {
-        await using var db = (DatabaseContext)ctx.Services.GetService(typeof(DatabaseContext));
-        var conf = (Config)ctx.Services.GetService(typeof(Config));
-        if (await RequireTranslatorAttribute.IsTranslator(conf, ctx.Client, ctx.User.Id, ctx.Channel.Id))
-        {
-            var t = db.translatorSettings.FirstOrDefault(x => x.Id == ctx.User.Id);
-            if (t?.IsTranslator == true && t.CurrentCustomLanguage != null)
-            {
-                await db.Entry(t).ReloadAsync();
-                return t.CurrentCustomLanguage;
-            }
-        }
-
-        return await GetAsync(ctx.Channel.IsPrivate
-            ? db.GetLangCodeUser(ctx.User.Id)
-            : db.GetLangCodeGuild(ctx.Guild.Id));
-    }
 }

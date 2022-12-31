@@ -2,9 +2,9 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using SilverBotDS.Objects;
+using SilverBot.Shared.Objects.Language;
 
-namespace SilverBotDS.Utils
+namespace SilverBot.Shared.Utils
 {
     public static class EmbedBuilderUtils
     {

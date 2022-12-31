@@ -31,10 +31,6 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Sinks.SystemConsole.Themes;
 using SilverBotDS.Converters;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
-using SilverBotDS.Objects.Database.Classes;
-using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -50,7 +46,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SilverBot.Shared;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Classes;
+using SilverBot.Shared.Objects.Database;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Pagination;
+using SilverBot.Shared.Utils;
+using SilverBotDS.ProgramExtensions;
 
 namespace SilverBotDS
 {
@@ -562,21 +565,15 @@ namespace SilverBotDS
 
             //🥁🥁🥁 drum-roll
             _log.Information("Connecting to discord");
-            var isConnected = false;
+            var wait = new ManualResetEvent(false); 
             _discord.Ready += (_, _) =>
             {
-                isConnected = true;
+                wait.Set();
                 return Task.CompletedTask;
             };
             await _discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
             _log.Information("Waiting for client to connect");
-            while (isConnected)
-            {
-                //intentional empty statement
-                _log.Information("_");
-                await Task.Delay(100, cancellationToken);
-            }
-
+            wait.WaitOne();
             await Task.Delay(2000, cancellationToken);
             if (_config.UseLavaLink)
             {
@@ -651,13 +648,17 @@ namespace SilverBotDS
                 _log.Information("Creating host");
             }
 
-            _log.Information("Booted up");
-            do
+            async Task SplashTask()
             {
                 _log.Verbose("Updating the status to a random one");
-                //update the status to some random one
                 await _discord.UpdateStatusAsync(_config.Splashes.RandomFrom()
                     .GetDiscordActivity(GetStringDictionary(_discord)));
+            }
+
+            SplashTask();
+            _log.Information("Booted up");
+            while (!ExitAfterbootup&& !cancellationToken.IsCancellationRequested)
+            {
                 if (_config.CallGcOnSplashChange)
                 {
                     _log.Verbose("Calling the garbage collector");
@@ -681,8 +682,9 @@ namespace SilverBotDS
                 //wait the specified time
                 _log.Verbose("Waiting {V}", new TimeSpan(0, 0, 0, 0, _config.MsInterval).Humanize(precision: 5));
                 await Task.Delay(_config.MsInterval, cancellationToken);
+                SplashTask();
                 //repeat🔁
-            } while (!ExitAfterbootup && !cancellationToken.IsCancellationRequested);
+            }
         }
 
         public static object CreateInstance(Type t, IServiceProvider services)

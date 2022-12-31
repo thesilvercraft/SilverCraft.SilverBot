@@ -3,10 +3,11 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
-using SilverBotDS.Converters;
-using System.Runtime.Serialization;
 
-namespace SilverBotDS.Exceptions;
+using System.Runtime.Serialization;
+using SilverBot.Shared.Objects;
+
+namespace SilverBot.Shared.Exceptions;
 
 [Serializable]
 public class AttachmentCountIncorrectException : Exception

@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SilverBotDS.Objects;
+using SilverBot.Shared.Objects.Database;
 
 #nullable disable
 
@@ -16,12 +16,12 @@ namespace SilverBotDS.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true);
 
-            modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.PlannedEvent", b =>
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.PlannedEvent", b =>
                 {
                     b.Property<string>("EventID")
                         .HasColumnType("TEXT");
@@ -56,7 +56,7 @@ namespace SilverBotDS.Migrations
                     b.ToTable("plannedEvents");
                 });
 
-            modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.ReactionRole.ReactionRoleMapping", b =>
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.ReactionRole.ReactionRoleMapping", b =>
                 {
                     b.Property<Guid>("MappingId")
                         .ValueGeneratedOnAdd()
@@ -90,56 +90,7 @@ namespace SilverBotDS.Migrations
                     b.ToTable("ReactionRoleMappings");
                 });
 
-            modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.TranslatorSettings", b =>
-                {
-                    b.Property<ulong>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsTranslator")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("translatorSettings");
-                });
-
-            modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.UserExperience", b =>
-                {
-                    b.Property<ulong>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("XPString")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("userExperiences");
-                });
-
-            modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.UserQuote", b =>
-                {
-                    b.Property<string>("QuoteId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("QuoteContent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<ulong>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("QuoteId");
-
-                    b.ToTable("userQuotes");
-                });
-
-            modelBuilder.Entity("SilverBotDS.Objects.ServerSettings", b =>
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.ServerSettings", b =>
                 {
                     b.Property<Guid>("ServerSettingsId")
                         .ValueGeneratedOnAdd()
@@ -174,7 +125,55 @@ namespace SilverBotDS.Migrations
                     b.ToTable("serverSettings");
                 });
 
-            modelBuilder.Entity("SilverBotDS.Objects.UserSettings", b =>
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.TranslatorSettings", b =>
+                {
+                    b.Property<ulong>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsTranslator")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("translatorSettings");
+                });
+
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.UserExperience", b =>
+                {
+                    b.Property<ulong>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("XP")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("userExperiences");
+                });
+
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.UserQuote", b =>
+                {
+                    b.Property<string>("QuoteId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("QuoteContent")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("QuoteId");
+
+                    b.ToTable("userQuotes");
+                });
+
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.UserSettings", b =>
                 {
                     b.Property<ulong>("Id")
                         .ValueGeneratedOnAdd()
@@ -195,18 +194,18 @@ namespace SilverBotDS.Migrations
                     b.ToTable("userSettings");
                 });
 
-            modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.ReactionRole.ReactionRoleMapping", b =>
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.ReactionRole.ReactionRoleMapping", b =>
                 {
-                    b.HasOne("SilverBotDS.Objects.ServerSettings", null)
+                    b.HasOne("SilverBot.Shared.Objects.Database.Classes.ServerSettings", null)
                         .WithMany("ReactionRoleMappings")
                         .HasForeignKey("ServerSettingsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SilverBotDS.Objects.Database.Classes.TranslatorSettings", b =>
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.TranslatorSettings", b =>
                 {
-                    b.OwnsOne("SilverBotDS.Objects.Language", "CurrentCustomLanguage", b1 =>
+                    b.OwnsOne("SilverBot.Shared.Objects.Language.Language", "CurrentCustomLanguage", b1 =>
                         {
                             b1.Property<ulong>("TranslatorSettingsId")
                                 .HasColumnType("INTEGER");
@@ -1030,6 +1029,82 @@ namespace SilverBotDS.Migrations
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
+                            b1.Property<string>("WebsiteBLoopQueue")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteBLoopSong")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteBVolumeDown")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteBVolumeUp")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteForceSkip")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteLoopOff")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteLoopQueue")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteLoopSong")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteNoLoop")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsitePlayPause")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsitePlayerPaused")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsitePlayerResumed")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsitePlayingNothingTrackName")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteShuffle")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteShuffled")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteSkipped")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteSkippedViaVote")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteVoteSkip")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteVotedForSkip")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
                             b1.Property<string>("WrongImageCount")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
@@ -1074,7 +1149,7 @@ namespace SilverBotDS.Migrations
                                 .HasForeignKey("TranslatorSettingsId");
                         });
 
-                    b.OwnsMany("SilverBotDS.Objects.Language", "CustomLanguages", b1 =>
+                    b.OwnsMany("SilverBot.Shared.Objects.Language.Language", "CustomLanguages", b1 =>
                         {
                             b1.Property<ulong>("TranslatorSettingsId")
                                 .HasColumnType("INTEGER");
@@ -1899,6 +1974,82 @@ namespace SilverBotDS.Migrations
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
+                            b1.Property<string>("WebsiteBLoopQueue")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteBLoopSong")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteBVolumeDown")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteBVolumeUp")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteForceSkip")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteLoopOff")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteLoopQueue")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteLoopSong")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteNoLoop")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsitePlayPause")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsitePlayerPaused")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsitePlayerResumed")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsitePlayingNothingTrackName")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteShuffle")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteShuffled")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteSkipped")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteSkippedViaVote")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteVoteSkip")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("WebsiteVotedForSkip")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
                             b1.Property<string>("WrongImageCount")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
@@ -1943,13 +2094,12 @@ namespace SilverBotDS.Migrations
                                 .HasForeignKey("TranslatorSettingsId");
                         });
 
-                    b.Navigation("CurrentCustomLanguage")
-                        .IsRequired();
+                    b.Navigation("CurrentCustomLanguage");
 
                     b.Navigation("CustomLanguages");
                 });
 
-            modelBuilder.Entity("SilverBotDS.Objects.ServerSettings", b =>
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.ServerSettings", b =>
                 {
                     b.Navigation("ReactionRoleMappings");
                 });

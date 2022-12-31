@@ -6,12 +6,14 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Database;
+using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared.Utils;
 
 namespace SilverBotDS.Commands.Slash;
 

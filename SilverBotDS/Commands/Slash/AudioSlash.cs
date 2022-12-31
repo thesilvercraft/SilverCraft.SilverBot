@@ -21,10 +21,12 @@ using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
 using Microsoft.Extensions.DependencyInjection;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Classes;
+using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared.Utils;
 using SilverBotDS.Converters;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
-using SilverBotDS.Utils;
 
 namespace SilverBotDS.Commands.Slash
 {

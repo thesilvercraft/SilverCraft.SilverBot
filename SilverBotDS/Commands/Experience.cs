@@ -12,8 +12,6 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Microsoft.EntityFrameworkCore;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,12 +23,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using NetVips;
-using SilverBotDS.Attributes;
-using SilverBotDS.Objects.Classes;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects.Database;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared.Utils;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using CategoryAttribute = CategoryAttribute;
 
 [Category("XP")]
 [RequireModuleGuildEnabled(EnabledModules.Experience, true)]
@@ -256,10 +258,10 @@ public class Experience : BaseCommandModule, IRequireAssets
         await XpCard(ctx, ctx.User);
     }
 
-    private BigInteger GetNeededXpForNextLevel(BigInteger xp)
+    private BigInteger GetNeededXpForNextLevel(ulong xp)
     {
-        BigInteger e = 69;
-        BigInteger l = 1;
+        ulong e = 69;
+        ulong l = 1;
         while (xp / e != 0)
         {
             l++;
@@ -269,10 +271,10 @@ public class Experience : BaseCommandModule, IRequireAssets
         return e;
     }
 
-    private double GetProgressToNextLevel(BigInteger xp)
+    private double GetProgressToNextLevel(ulong xp)
     {
-        BigInteger e = 69;
-        BigInteger l = 1;
+        ulong e = 69;
+        ulong l = 1;
         while (xp / e != 0)
         {
             l++;
@@ -282,10 +284,10 @@ public class Experience : BaseCommandModule, IRequireAssets
         return (double)xp / (double)e * 100d;
     }
 
-    private BigInteger GetLevel(BigInteger xp)
+    private ulong GetLevel(ulong xp)
     {
-        BigInteger e = 69;
-        BigInteger l = 1;
+        ulong e = 69;
+        ulong l = 1;
         while (xp / e != 0)
         {
             l++;

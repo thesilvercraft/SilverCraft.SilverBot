@@ -1,4 +1,4 @@
-﻿@page "/bibigallery"
+﻿@page "/bibigalleryfull"
 @using System.IO
 @using System.Text.Json
 @using SilverBot.Shared.Objects
@@ -21,7 +21,7 @@
             {
                 return Array.Empty<string>();
             }
-            using StreamReader e = new(_config.BibiLibCutOutConfig);
+            using StreamReader e = new(_config.BibiLibFullConfig);
             return JsonSerializer.Deserialize<string[]>(e.ReadToEnd());
         }
     }
@@ -30,7 +30,7 @@
 
 <h1>Bibi pictures</h1>
 <p>By: <code>jaydenkamp#5087</code></p>
-<p>Collected and cut out by: <code>Wbubbler#7474</code></p>
+<p>Collected by: <code>Wbubbler#7474</code></p>
 <style>
     .column {
         float: left;
@@ -79,7 +79,7 @@
 <div class="row">
     @for (var a = 1; a < BibiDescText.Length; a++)
     {
-        var url = string.Format(_config.BibiLibCutOut, a);
+        var url = string.Format(_config.BibiLibFull, a);
         <div class="column">
             <img src="@url" alt="@BibiDescText[a - 1]" onclick="galleryThing(this);">
         </div>

@@ -7,12 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
-using Serilog;
 using Serilog.Core;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Utils;
 
-namespace SilverBotDS
+namespace SilverBotDS.ProgramExtensions
 {
     public static class Archiver
     {

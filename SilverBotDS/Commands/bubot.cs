@@ -12,18 +12,19 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using ImageMagick;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
-using SilverBotDS.Utils;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Pagination;
-using SilverBotDS.Attributes;
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using SilverBot.Shared.Utils;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 

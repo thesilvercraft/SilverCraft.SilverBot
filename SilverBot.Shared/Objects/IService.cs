@@ -3,7 +3,7 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
-namespace SilverBotDS.Objects
+namespace SilverBot.Shared.Objects
 {
     /// <summary>
     /// A service that does stuff, basically has all of the access to silverbots interfaces while doing something by itself (example would be a health monitor, pixels like archiver)

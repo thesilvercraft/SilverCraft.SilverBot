@@ -1,6 +1,8 @@
 ﻿@page "/userpreferences"
-@using SilverBotDS.WebHelpers
-@using SilverBotDS.Objects
+@using SilverBot.Shared.Objects.Database
+@using SilverBot.Shared.Objects.Database.Classes
+@using SilverBot.Shared.Objects.Language
+@using SilverBot.Web.WebHelpers
 @attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DatabaseContext _dbctx

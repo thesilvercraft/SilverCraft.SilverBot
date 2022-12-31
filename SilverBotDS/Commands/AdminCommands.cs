@@ -7,9 +7,6 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Database.Classes;
-using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,9 +15,13 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using SilverBotDS.Attributes;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects.Database;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared.Utils;
 using static SilverBotDS.Commands.OwnerOnly;
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 

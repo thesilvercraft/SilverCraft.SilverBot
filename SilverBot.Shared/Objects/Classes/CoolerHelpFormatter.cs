@@ -3,17 +3,19 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
+using System.Text;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.CommandsNext.Entities;
 using DSharpPlus.Entities;
-using SilverBotDS.Attributes;
-using SilverBotDS.Utils;
-using System.Text;
 using Microsoft.Extensions.DependencyInjection;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared.Utils;
 
-namespace SilverBotDS.Objects.Classes;
+namespace SilverBot.Shared.Objects.Classes;
 
 public class CoolerHelpFormatter : BaseHelpFormatter
 {
@@ -25,16 +27,14 @@ public class CoolerHelpFormatter : BaseHelpFormatter
         : base(ctx)
     {
         var languageservice = ctx.Services.GetService<LanguageService>();
-        var langtask = languageservice?.FromCtxAsync(ctx);
-        langtask?.Wait();
-        Lang = langtask?.Result;
+        Lang = languageservice?.FromCtx(ctx);
         EmbedBuilder = new DiscordEmbedBuilder()
             .WithTitle(Lang.HelpCommandHelpString).AddRequestedByFooter(ctx,Lang);
     }
 
     public DiscordEmbedBuilder EmbedBuilder { get; }
     private Command Command { get; set; }
-    private Language Lang { get; }
+    private Language.Language Lang { get; }
 
     /// <summary>
     ///     Sets the command this help message will be for.
@@ -46,7 +46,7 @@ public class CoolerHelpFormatter : BaseHelpFormatter
         Command = command;
         EmbedBuilder.WithDescription(
             $"{Formatter.InlineCode(command.Name)}: {command.Description ?? Lang.HelpCommandNoDescription}");
-        if (command is CommandGroup cgroup && cgroup.IsExecutableWithoutSubcommands)
+        if (command is CommandGroup { IsExecutableWithoutSubcommands: true })
         {
             EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\n{Lang.HelpCommandGroupCanBeExecuted}");
         }
@@ -57,30 +57,32 @@ public class CoolerHelpFormatter : BaseHelpFormatter
                 string.Join(", ", command.Aliases.Select(Formatter.InlineCode)));
         }
 
-        if (command.Overloads?.Any() == true)
+        if (command.Overloads?.Any() != true)
         {
-            var sb = new StringBuilder();
-            foreach (var ovl in command.Overloads.OrderByDescending(x => x.Priority).Select(ovl => ovl.Arguments))
+            return this;
+        }
+
+        var sb = new StringBuilder();
+        foreach (var ovl in command.Overloads.OrderByDescending(x => x.Priority).Select(ovl => ovl.Arguments))
+        {
+            sb.Append('`').Append(command.QualifiedName);
+            foreach (var arg in ovl)
             {
-                sb.Append('`').Append(command.QualifiedName);
-                foreach (var arg in ovl)
-                {
-                    sb.Append(arg.IsOptional || arg.IsCatchAll ? " [" : " <").Append(arg.Name)
-                        .Append(arg.IsCatchAll ? "..." : "").Append(arg.IsOptional || arg.IsCatchAll ? ']' : '>');
-                }
-
-                sb.Append("`\n");
-                foreach (var arg in ovl)
-                {
-                    sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type))
-                        .Append(")`: ").Append(arg.Description ?? Lang.HelpCommandNoDescription).Append('\n');
-                }
-
-                sb.Append('\n');
+                sb.Append(arg.IsOptional || arg.IsCatchAll ? " [" : " <").Append(arg.Name)
+                    .Append(arg.IsCatchAll ? "..." : "").Append(arg.IsOptional || arg.IsCatchAll ? ']' : '>');
             }
 
-            EmbedBuilder.AddField(Lang.HelpCommandGroupArguments, sb.ToString().Trim());
+            sb.Append("`\n");
+            foreach (var arg in ovl)
+            {
+                sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type))
+                    .Append(")`: ").Append(arg.Description ?? Lang.HelpCommandNoDescription).Append('\n');
+            }
+
+            sb.Append('\n');
         }
+
+        EmbedBuilder.AddField(Lang.HelpCommandGroupArguments, sb.ToString().Trim());
 
         return this;
     }
@@ -114,8 +116,8 @@ public class CoolerHelpFormatter : BaseHelpFormatter
                     }
                 }
 
-                if (command.Module.ModuleType.GetCustomAttributes(true)
-                    .Any(x => x.GetType() == typeof(CategoryAttribute)))
+                if (command.Module != null && command.Module.ModuleType.GetCustomAttributes(true)
+                        .Any(x => x.GetType() == typeof(CategoryAttribute)))
                 {
                     foreach (var attribute in command.Module.ModuleType.GetCustomAttributes(true)
                                  .Where(x => x is CategoryAttribute))
@@ -158,10 +160,7 @@ public class CoolerHelpFormatter : BaseHelpFormatter
         {
             EmbedBuilder.WithDescription(Lang.HelpCommandGroupListingAllCommands);
         }
-
-        var colortask = ColorUtils.GetSingleAsync();
-        colortask.Wait();
-        EmbedBuilder.Color = colortask.Result;
+        EmbedBuilder.Color = ColorUtils.GetSingle();
         return new CommandHelpMessage(embed: EmbedBuilder.Build());
     }
 }

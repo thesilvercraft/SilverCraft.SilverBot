@@ -11,14 +11,15 @@ using Lavalink4NET.Decoding;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
 using SilverBotDS.Commands;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Classes;
+using SilverBot.Shared.Objects.Language;
 
 namespace SilverBotDS.Converters;
 

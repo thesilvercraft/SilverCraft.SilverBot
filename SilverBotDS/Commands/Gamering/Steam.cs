@@ -9,14 +9,15 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
-using SilverBotDS.Objects;
 using SteamStoreQuery.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using SilverBotDS.Attributes;
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands.Gamering;
 

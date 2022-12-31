@@ -8,14 +8,15 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SilverBotDS.Attributes;
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
-using SBDSODC = SilverBotDS.Objects.Database.Classes;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects.Database;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared.Utils;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 
@@ -28,7 +29,7 @@ public class UserQuotesModule : BaseCommandModule
 {
     public DatabaseContext Dctx { private get; set; }
     public LanguageService LanguageService { private get; set; }
-    public async Task PresentQuote(CommandContext ctx, SBDSODC.UserQuote quote, Language lang)
+    public async Task PresentQuote(CommandContext ctx, UserQuote quote, Language lang)
     {
         var b = new DiscordEmbedBuilder
         {
@@ -61,7 +62,7 @@ public class UserQuotesModule : BaseCommandModule
     public async Task Add(CommandContext ctx, [RemainingText] string content)
     {
         var lang = await LanguageService.FromCtxAsync(ctx);
-        var quote = new SBDSODC.UserQuote
+        var quote = new UserQuote
         {
             QuoteContent = content,
             QuoteId = RandomGenerator.RandomAbcString(6),

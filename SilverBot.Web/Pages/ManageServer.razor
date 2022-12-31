@@ -1,10 +1,12 @@
 ﻿@page "/manageserver/{id:long}"
-@using SilverBotDS.Objects
 @using DSharpPlus
 @using DSharpPlus.CommandsNext
 @using Microsoft.Extensions.Caching.Memory
-@using SilverBotDS.WebHelpers
 @using System.Diagnostics
+@using SilverBot.Shared.Objects
+@using SilverBot.Shared.Objects.Database
+@using SilverBot.Shared.Objects.Database.Classes
+@using SilverBot.Web.WebHelpers
 @attribute [Authorize]
 @inject Config _config
 @inject DiscordClient _discord

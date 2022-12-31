@@ -10,17 +10,19 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
 using Humanizer;
 using SilverBotDS.Converters;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
-using SilverBotDS.Objects.Database.Classes.ReactionRole;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SilverBotDS.Attributes;
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Database;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Database.Classes.ReactionRole;
+using SilverBot.Shared.Objects.Language;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 

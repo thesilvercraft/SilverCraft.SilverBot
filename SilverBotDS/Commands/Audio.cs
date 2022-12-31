@@ -15,9 +15,6 @@ using Lavalink4NET.Artwork;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Player;
 using SilverBotDS.Converters;
-using SilverBotDS.Objects;
-using SilverBotDS.Objects.Classes;
-using SilverBotDS.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,8 +23,13 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using SilverBotDS.Attributes;
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Classes;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared.Utils;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands;
 

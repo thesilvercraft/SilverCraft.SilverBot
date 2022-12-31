@@ -3,23 +3,24 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
+using System.ComponentModel;
+using System.Text.Json;
+using System.Xml.Serialization;
 using DSharpPlus.Entities;
 using Microsoft.Extensions.Logging;
-using SilverBotDS.Attributes;
-using SilverBotDS.Utils;
-using System.Text.Json;
-using System.Xml;
-using System.Xml.Serialization;
+using SilverBot.Shared.Objects.Classes;
+using SilverConfig;
 using Towel;
 
-namespace SilverBotDS.Objects;
+namespace SilverBot.Shared.Objects;
 
 [Serializable]
-public class Config
+public class Config : INotifyPropertyChanged, ICanBeToldThatAPartOfMeIsChanged
 {
-    private const ulong CurrentConfVer = 49;
+    private const ulong CurrentConfVer = 50;
 
-    [XmlDescription("Array of prefixes the bot will respond to")]
+    [Comment("Array of prefixes the bot will respond to")]
     public string[] Prefix { get; set; } =
     {
         "sd!",
@@ -31,17 +32,18 @@ public class Config
         "this is so sad silverbot"
     };
 
-    [XmlDescription(
+    [Comment(
         "how much is the bot allowed to log, Values can be Trace, Debug, Information, Warning, Error or Critical")]
     public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
 
-    [XmlDescription("Should silverbot keep its logs on a log.txt file in its directory")]
+    [Comment("Should silverbot keep its logs on a log.txt file in its directory")]
     public bool UseTxtFilesAsLogs { get; set; } = true;
 
-    [XmlDescription("The Discord token, can be had at https://discord.com/developers/")]
+    [Comment("The Discord token, can be had at https://discord.com/developers/")]
     public string Token { get; set; } = "Discord_Token_Here";
+    
 
-    [XmlDescription("What modules should silverbot load")]
+    [Comment("What modules should silverbot load")]
     public string[] ModulesToLoad { get; set; } =
     {
         "SilverBotDS.Commands.Genericcommands",
@@ -68,110 +70,114 @@ public class Config
         "SilverBotDS.Commands.Slash.BubotSlash",
     };
 
-    [XmlDescription("What services should silverbot load from external dlls")]
-    public SerializableDictionary<string, string> ServicesToLoadExternal { get; set; } = new()
+    [Comment("What services should silverbot load from external dlls")]
+    public Classes.SerializableDictionary<string, string> ServicesToLoadExternal { get; set; } = new()
     {
         {"SilverBot.SysAdminModule.dll","SilverBot.SysAdminModule.SysAdminModule" }
     };
-
-    [XmlDescription("What modules should silverbot load from external dlls")]
+    [Comment("Extra string paramaters you might want to give to any code that can read this config")]
+    public Classes.SerializableDictionary<string, string> ExtraParams { get; set; } = new()
+    {
+        {"GAMING","YES" }
+    };
+    [Comment("What modules should silverbot load from external dlls")]
     public string[] ModulesFilesToLoadExternal { get; set; } = new[]
     {
         "SilverBotDS.AnimeModule.dll"
     };
 
-    [XmlDescription("The Giphy token, can be got from https://developers.giphy.com/")]
+    [Comment("The Giphy token, can be got from https://developers.giphy.com/")]
     public string Gtoken { get; set; } = "Giphy_Token_Here";
 
-    [XmlDescription("The FortniteAPI token, can be got from https://dash.fortnite-api.com/")]
+    [Comment("The FortniteAPI token, can be got from https://dash.fortnite-api.com/")]
     public string FApiToken { get; set; } = "Fortnite_Token_Here";
 
-    [XmlDescription("Location of java.exe to be able to launch lavalink (type java if in path")]
+    [Comment("Location of java.exe to be able to launch lavalink (type java if in path")]
     public string JavaLoc { get; set; } = "C:\\Program Files\\Java\\jdk-13\\bin\\java.exe";
 
-    [XmlDescription("(ulong)Id of main server")]
+    [Comment("(ulong)Id of main server")]
     public ulong ServerId { get; set; } = 679353407667961877;
 
-    [XmlDescription("Call the garbage collector when the splash changes (the gc is just snake oil)")]
+    [Comment("Call the garbage collector when the splash changes (the gc is just snake oil)")]
     public bool CallGcOnSplashChange { get; set; } = false;
 
-    [XmlDescription("Enable reaction role related functions, essential if you load SilverBotDS.Commands.ReactionRoleCommands")]
+    [Comment("Enable reaction role related functions, essential if you load SilverBotDS.Commands.ReactionRoleCommands")]
     public bool ReactionRolesEnabled { get; set; } = true;
 
-    [XmlDescription("Should this instance of silverbot host a webserver?")]
+    [Comment("Should this instance of silverbot host a webserver?")]
     public bool HostWebsite { get; set; } = true;
 
-    [XmlDescription("Should this instance of silverbot clear dead tasks? (answer is usually yes unless you are debugging)")]
+    [Comment("Should this instance of silverbot clear dead tasks? (answer is usually yes unless you are debugging)")]
     public bool ClearTasks { get; set; } = true;
 
-    [XmlDescription(
+    [Comment(
         "Interval to use so discord dont ban us, in ms, is int32 so use -1 if you want no splash changes, defaults to 30m (1800000ms)")]
     public int MsInterval { get; set; } = 1800000;
 
-    [XmlDescription("The current config version, don't change unless insctructed by dev")]
+    [Comment("The current config version, don't change unless insctructed by dev")]
     public ulong? ConfigVer { get; set; }
     
-    [XmlDescription(
+    [Comment(
         "Allow silverbot to connect to lavalink and use audio commands, useful if you have lavalink installed or if you allowed silverbot to install and run lavalink (requires java)")]
     public bool UseLavaLink { get; set; } = true;
 
-    [XmlDescription(
+    [Comment(
         "Allow silverbot to download and start Lavalink, if you disable this your responsible for launching lavalink")]
     public bool AutoDownloadAndStartLavalink { get; set; } = true;
 
-    [XmlDescription(
+    [Comment(
         "Enable sponsorblock plugin, if https://github.com/TopiSenpai/Sponsorblock-Plugin is installed on lavalink server")]
     public bool SponsorBlock { get; set; } = false;
 
-    [XmlDescription(
+    [Comment(
        "If AutoDownloadAndStartLavalink is set to true then you have to set this and LavalinkBuildsSourceGitHubRepo to a valid github repo with releases that contain jar files, Some examples are the official repo that is freyacodes/Lavalink (Official source) or Cog-Creators/Lavalink-Jars (Contains native libraries for ARM and some other platforms not nativly supported by lavalink officially)")]
     public string LavalinkBuildsSourceGitHubUser { get; set; } = "freyacodes";
 
     public string LavalinkBuildsSourceGitHubRepo { get; set; } = "Lavalink";
 
-    [XmlDescription("The Lavalink Node restful HTTP api URI.")]
+    [Comment("The Lavalink Node restful HTTP api URI.")]
     public string LavalinkRestUri { get; set; } = "http://localhost:2333/";
 
-    [XmlDescription("The Lavalink Node WebSocket URI.")]
+    [Comment("The Lavalink Node WebSocket URI.")]
     public string LavalinkWebSocketUri { get; set; } = "ws://localhost:2333/";
 
-    [XmlDescription("The Lavalink Node Password.")]
+    [Comment("The Lavalink Node Password.")]
     public string LavalinkPassword { get; set; } = "youshallnotpass";
 
-    [XmlDescription("Friday text channel. leave 0 to disable")]
+    [Comment("Friday text channel. leave 0 to disable")]
     public ulong FridayTextChannel { get; set; }
 
-    [XmlDescription("Allow silverbot to load (or make) a colors config, useful if you plan on adding colors")]
+    [Comment("Allow silverbot to load (or make) a colors config, useful if you plan on adding colors")]
     public bool ColorConfig { get; set; } = true;
 
-    [XmlDescription("Allow silverbot to emulate bubot (enables some basic commands)")]
+    [Comment("Allow silverbot to emulate bubot (enables some basic commands)")]
     public bool EmulateBubot { get; set; } = false;
 
-    [XmlDescription("Allow silverbot to emulate bubot's bibi commands (also enables the bibi gallery)")]
+    [Comment("Allow silverbot to emulate bubot's bibi commands (also enables the bibi gallery)")]
     public bool EmulateBubotBibi { get; set; } = false;
 
-    [XmlDescription("Location of bibi pictures (local -  pictures(png) -  folder)")]
+    [Comment("Location of bibi pictures (local -  pictures(png) -  folder)")]
     public string LocalBibiPictures { get; set; } = "SilverBotAssets/Bibi";
 
-    [XmlDescription("Location of bibi pictures (BibiLibCutout - web - pictures)")]
+    [Comment("Location of bibi pictures (BibiLibCutout - web - pictures)")]
     public string BibiLibCutOut { get; set; } = "https://github.com/thesilvercraft/SilverBotAssets/blob/main/BibiLibCutout/{0}.png?raw=true";
 
-    [XmlDescription("Location of titles for BibiLibCutout pictures (BibiLibCutout - local - config)")]
+    [Comment("Location of titles for BibiLibCutout pictures (BibiLibCutout - local - config)")]
     public string BibiLibCutOutConfig { get; set; } = "SilverBotAssets/BibiLibCutout/Titles.json";
 
-    [XmlDescription("Location of bibi pictures (BibiLibFull - web - pictures)")]
+    [Comment("Location of bibi pictures (BibiLibFull - web - pictures)")]
     public string BibiLibFull { get; set; } = "https://github.com/thesilvercraft/SilverBotAssets/blob/main/BibiLibFull/{0}.png?raw=true";
 
-    [XmlDescription("Location of titles for BibiLibFull pictures (BibiLibFull - local - config)")]
+    [Comment("Location of titles for BibiLibFull pictures (BibiLibFull - local - config)")]
     public string BibiLibFullConfig { get; set; } = "SilverBotAssets/BibiLibFull/Titles.json";
 
-    [XmlDescription("A temporary way to disable the interactivity tracker")]
+    [Comment("A temporary way to disable the interactivity tracker")]
     public bool SitInVc { get; set; } = false;
     
-    [XmlDescription("Do we enable the server statistics")]
+    [Comment("Do we enable the server statistics")]
     public bool EnableServerStatistics { get; set; } = true;
 
-    [XmlDescription("Used for the new Translator Mode thingy")]
+    [Comment("Used for the new Translator Mode thingy")]
     public ulong TranslatorRoleId { get; set; } = 0;
 
     public ulong TranslatorModeChannel { get; set; } = 0;
@@ -179,20 +185,20 @@ public class Config
     public ulong LoginPageDiscordClientId { get; set; } = 702445582559739976;
     public string LoginPageDiscordClientSecret { get; set; } = "lol no";
 
-    [XmlDescription("Do we check github for a newer commit")]
+    [Comment("Do we check github for a newer commit")]
     public bool EnableUpdateChecking { get; set; } = false;
 
     public bool UseAnalytics { get; set; } = false;
 
-    [XmlDescription("Webhooks for archiving")]
+    [Comment("Webhooks for archiving")]
     public string[] ArchiveWebhooks { get; set; } = Array.Empty<string>();
 
-    [XmlDescription("Where the hell do we get our data from")]
+    [Comment("Where the hell do we get our data from")]
     public ulong[] ChannelsToArchivePicturesFrom { get; set; } = Array.Empty<ulong>();
 
-    [XmlDescription(
+    [Comment(
         "Song aliases, It can be any kind of url or search term (It also supports SilverBotPlaylist files)")]
-    public SerializableDictionary<string, string> SongAliases { get; set; } = new()
+    public Classes.SerializableDictionary<string, string> SongAliases { get; set; } = new()
     {
         { "special for bub", "https://www.youtube.com/watch?v=y1TJBgpGrd8" },
         { "meme playlist", "https://www.youtube.com/playlist?list=PLiiTWcm0RsKj8toM1CoxDbjDZftLYDFo1" },
@@ -315,29 +321,8 @@ public class Config
         new("0s and 1s", ActivityType.ListeningTo),
     };
 
-    private static XmlDocument MakeDocumentWithComments(XmlDocument xmlDocument)
-    {
-        foreach (var i in typeof(Config).GetMembers())
-        {
-            foreach (var e in i.GetCustomAttributes(false))
-            {
-                if (e.GetType() == typeof(XmlDescriptionAttribute))
-                {
-                    xmlDocument = XmlUtils.CommentBeforeObject(xmlDocument, $"/Config/{i.Name}",
-                    ((XmlDescriptionAttribute)e).Description);
-                }
-                else if (e.GetType() == typeof(XmlCommentInsideAttribute))
-                {
-                    xmlDocument = XmlUtils.CommentInObject(xmlDocument, $"/Config/{i.Name}",
-                    ((XmlCommentInsideAttribute)e).Comment);
-                }
-            }
-        }
 
-        return xmlDocument;
-    }
-
-    public static async Task OutdatedConfigTask(Config readconfig)
+    public static async Task OutdatedConfigTask(Config readConfig,CommentXmlConfigReaderNotifyWhenChanged<Config> configReader)
     {
         using (var streamReader = new StreamReader("silverbot.xml"))
         {
@@ -345,23 +330,22 @@ public class Config
             await streamWriter.WriteAsync(await streamReader.ReadToEndAsync());
         }
 
-        await using (var streamWriter = new StreamWriter("silverbot.xml"))
+        if (readConfig.ConfigVer < 20 && File.Exists("splashes.json"))
         {
-            if (readconfig.ConfigVer < 20 && File.Exists("splashes.json"))
-            {
-                using StreamReader reader = new("splashes.json");
-                readconfig.Splashes = JsonSerializer.Deserialize<DiscordActivity[]>(await reader.ReadToEndAsync())
-                    .Select(item => Splash.GetFromDiscordActivity(item)).ToArray();
-            }
-
-            readconfig.ConfigVer = CurrentConfVer;
-            MakeDocumentWithComments(XmlUtils.SerializeToXmlDocument(readconfig)).Save(streamWriter);
+            using StreamReader reader = new("splashes.json");
+            readConfig.Splashes = (JsonSerializer.Deserialize<DiscordActivity[]>(await reader.ReadToEndAsync()) ?? Array.Empty<DiscordActivity>())
+                .Select(Splash.GetFromDiscordActivity).ToArray();
         }
+
+        readConfig.ConfigVer = CurrentConfVer;
+            readConfig.AllowedToRead = false;
+            configReader.Write(readConfig,"silverbot.xml");
+            readConfig.AllowedToRead = true;
     }
 
     public static async Task<Config?> GetAsync()
     {
-        var serializer = new XmlSerializer(typeof(Config));
+        CommentXmlConfigReaderNotifyWhenChanged<Config> reader = new();
         if (!File.Exists("silverbot.xml"))
         {
             var conf = new Config
@@ -393,27 +377,24 @@ public class Config
                     Console.WriteLine("Please manually review the generated config as this generator is not accurate");
                 }
             }
-            await using (var streamWriter = new StreamWriter("silverbot.xml"))
-            {
-                MakeDocumentWithComments(XmlUtils.SerializeToXmlDocument(conf)).Save(streamWriter);
-            }
+            reader.Write(conf,"silverbot.xml");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
             Environment.Exit(420);
         }
-        Config? cnf = null;
-        using (var fs = new StreamReader("silverbot.xml"))
+        var cnf = reader.Read("silverbot.xml");;
+        if (cnf is not { ConfigVer: CurrentConfVer })
         {
-            cnf = (Config?)serializer.Deserialize(fs);
-            if (cnf is { ConfigVer: CurrentConfVer })
-            {
-                return cnf;
-            }
-
-            fs.Dispose();
-            await OutdatedConfigTask(cnf);
-            return await GetAsync();
+            await OutdatedConfigTask(cnf,reader);
         }
         return cnf;
     }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    void ICanBeToldThatAPartOfMeIsChanged.PropertyChanged(object e, PropertyChangedEventArgs a)
+    {
+        PropertyChanged?.Invoke(e, a);
+    }
+    [XmlIgnore]
+    public bool AllowedToRead { get; set; } = true;
 }

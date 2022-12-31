@@ -3,6 +3,12 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
@@ -13,18 +19,12 @@ using DSharpPlus.SlashCommands.EventArgs;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
-using SilverBotDS.Attributes;
-using SilverBotDS.Converters;
-using SilverBotDS.Exceptions;
-using SilverBotDS.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using SilverBot.Shared.Exceptions;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Language;
 using SilverBotDS.Commands.Slash;
 
-namespace SilverBotDS
+namespace SilverBotDS.ProgramExtensions
 {
     public static class SlashErrorHandler
     {
@@ -62,8 +62,6 @@ namespace SilverBotDS
             var type = checkBase.GetType();
             return checkBase switch
             {
-                RequireGuildDatabaseValueSlashAttribute a when !a.AllowDirectMessages && isinguild => lang.AttributeDataBaseCheckNoDirectMessages,
-                RequireGuildDatabaseValueSlashAttribute a when a.Variable == "AttributeDataBaseCheckWebShot" => lang.AttributeDataBaseCheckNoDirectMessages,
                 _ => string.Format(lang.CheckFailed, RemoveStringFromEnd(type.Name, "Attribute").Humanize()),
             };
         }

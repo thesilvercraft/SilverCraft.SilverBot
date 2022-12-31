@@ -1,9 +1,9 @@
 using System.Linq;
 using ImageMagick;
 using SilverBot.Shared;
-using SilverBotDS.Utils;
+using SilverBot.Shared.Utils;
 
-namespace SilverBotDS
+namespace SilverBotDS.ProgramExtensions
 {
     public class FontAssetSchemeChecker :IAssetSchemeChecker
     {

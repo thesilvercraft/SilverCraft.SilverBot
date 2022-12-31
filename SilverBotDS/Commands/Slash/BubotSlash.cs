@@ -5,15 +5,15 @@ You should have received a copy of the GNU General Public License along with Sil
 */
 
 using DSharpPlus.SlashCommands;
-using SilverBotDS.Objects;
-using SilverBotDS.Utils;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ImageMagick;
-using SilverBotDS.Objects.Classes;
 using DSharpPlus.SlashCommands.Attributes;
+using SilverBot.Shared.Objects;
+using SilverBot.Shared.Objects.Database.Classes;
+using SilverBot.Shared.Utils;
 
 namespace SilverBotDS.Commands.Slash
 {

@@ -1,9 +1,7 @@
-using System;
 using DSharpPlus.Entities;
-using SilverBot.Shared.Pagination;
-using SilverBotDS.Objects;
+using SilverBot.Shared.Objects.Language;
 
-namespace SilverBotDS
+namespace SilverBot.Shared.Pagination
 {
     public class BibiPagination : IPagination
     {

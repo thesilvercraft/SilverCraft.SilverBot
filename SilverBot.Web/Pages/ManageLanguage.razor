@@ -1,8 +1,10 @@
 ﻿@page "/managelanguage/{id:int}"
 @using System.Text.Json
 @using DSharpPlus
-@using SilverBotDS.Objects
-@using SilverBotDS.WebHelpers
+@using SilverBot.Shared.Objects
+@using SilverBot.Shared.Objects.Database
+@using SilverBot.Shared.Objects.Language
+@using SilverBot.Web.WebHelpers
 @attribute [Authorize]
 
 @inject Config _config

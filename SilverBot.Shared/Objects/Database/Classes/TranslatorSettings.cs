@@ -3,9 +3,10 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
 using System.ComponentModel.DataAnnotations;
 
-namespace SilverBotDS.Objects.Database.Classes;
+namespace SilverBot.Shared.Objects.Database.Classes;
 
 public class TranslatorSettings
 {
@@ -13,6 +14,6 @@ public class TranslatorSettings
 
     public bool IsTranslator { get; set; }
 
-    public Language CurrentCustomLanguage { get; set; }
-    public ICollection<Language> CustomLanguages { get; set; } = new List<Language>();
+    public Language.Language? CurrentCustomLanguage { get; set; }
+    public ICollection<Language.Language> CustomLanguages { get; set; } = new List<Language.Language>();
 }

@@ -3,16 +3,17 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using SilverBotDS.Attributes;
-using SilverBotDS.Objects;
-using CategoryAttribute = SilverBotDS.Attributes.CategoryAttribute;
+using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Objects.Database.Classes;
+using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
-namespace SilverBotDS.Anime;
+namespace SilverBotDS.AnimeModule;
 
 [Category("Anime")]
 [RequireModuleGuildEnabled(EnabledModules.Anime, true)]

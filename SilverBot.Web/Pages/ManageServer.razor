@@ -1,0 +1,75 @@
+﻿@page "/manageserver/{id:long}"
+@using DSharpPlus
+@using DSharpPlus.CommandsNext
+@using Microsoft.Extensions.Caching.Memory
+@using System.Diagnostics
+@using SilverBot.Shared.Objects
+@using SilverBot.Shared.Objects.Database
+@using SilverBot.Shared.Objects.Database.Classes
+@using SilverBot.Web.WebHelpers
+@attribute [Authorize]
+@inject Config _config
+@inject DiscordClient _discord
+@inject DatabaseContext _dbctx
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _uriHelper
+@inject IMemoryCache _cache
+@inject HttpClient _client
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@code {
+
+    [Parameter]
+    public long Id { get; set; }
+
+}
+@{
+    var auser = AuthenticationStateProvider.AuthState();
+    var uid = auser.User.PUID();
+    if (!_discord.Guilds.ContainsKey((ulong)Id) || !( _discord.Guilds[(ulong)Id].OwnerId==uid || Task.Run(async () => (await _discord.Guilds[(ulong)Id].GetMemberAsync(uid)).Roles.Any(e => e.CheckPermission(Permissions.ManageGuild) == PermissionLevel.Allowed) ).GetAwaiter().GetResult() || _discord.CurrentApplication.Owners.Any(x=>x.Id==uid)))
+    {
+        _uriHelper.NavigateTo("/listguilds");
+    }
+    var seropt = _dbctx.GetServerSettings((ulong) Id);
+    var ser = _discord.Guilds[(ulong)Id];
+    void Update()
+    {
+        _dbctx.serverSettings.Update(seropt); _dbctx.SaveChanges();
+    }
+    void UpdateRepeatThings(bool repeatThings)
+    {
+        seropt.RepeatThings = repeatThings;
+        Update();
+    }
+    void SetValue(bool b, EnabledModules module)
+    {
+        if (b)
+        {
+            seropt.EnabledModules |= module;
+        }
+        else
+        {
+            seropt.EnabledModules &= ~module;
+        }
+        Update();
+    }
+}
+@if (!_dbctx.IsBanned(uid))
+{
+    <p>Currently editing: <strong>@ser.Name</strong> (@ser.Id)</p>
+    <RadzenSwitch Value="@seropt.RepeatThings" Name="Switch2" ValueChanged="x => UpdateRepeatThings(x)" Style="margin-bottom: 20px"/>
+    <RadzenLabel Text="Opt into repeating of phrases" Component="Switch2" Style="margin-left: 5px;"/>
+    <br/>
+    <p>Edit allowed modules (for a module to work it also has to be loaded instance wide, a thing this page DOES NOT check for)</p>
+   @foreach (var module in Enum.GetValues(typeof(EnabledModules)).Cast<EnabledModules>().Where(x=> (x!=EnabledModules.AllExceptReminders) && (x!=EnabledModules.All) && (x!=EnabledModules.None)))
+   {
+       <RadzenSwitch Value="@seropt.EnabledModules.HasFlag(module)" ValueChanged="b => SetValue(b,module)" Name="@module.ToString()" Style="margin-bottom: 20px"/> 
+       <RadzenLabel Text=@($"Opt into {module.ToString()}") Component=@module.ToString() Style="margin-left: 5px;"/> 
+       <br/> 
+   }
+     
+}
+else
+{
+    <h1>Oh no an error has occured, please contact the person that owns this instance of Silverbot.</h1>
+}

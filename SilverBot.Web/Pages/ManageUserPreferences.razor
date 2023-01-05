@@ -1,0 +1,36 @@
+﻿@page "/userpreferences"
+@using SilverBot.Shared.Objects.Database
+@using SilverBot.Shared.Objects.Database.Classes
+@using SilverBot.Shared.Objects.Language
+@using SilverBot.Web.WebHelpers
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DatabaseContext _dbctx
+@inject LanguageService _LanguageService
+@{
+    var auser = AuthenticationStateProvider.AuthState();
+    var uid = auser.User.PUID();
+    var userpref = _dbctx.userSettings.FirstOrDefault(x => x.Id == uid);
+    if (userpref == null)
+    {
+        userpref = new UserSettings { Id = uid, IsBanned = false, LangName = "en", UsesNewMusicPage = false };
+        _dbctx.userSettings.Add(userpref);
+        _dbctx.SaveChanges();
+    }
+    var loadedlangs = _LanguageService.GetLoadedLanguages();
+}
+@if (!userpref.IsBanned)
+{
+    <RadzenSwitch @bind-Value=@userpref.UsesNewMusicPage Name="Switch1" Style="margin-bottom: 20px"/>
+    <RadzenLabel Text="Use the new Music Controller page" Component="Switch1" Style="margin-left: 5px;"/>
+    <br/>
+    @*  *@
+    <RadzenDropDown AllowClear="false" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@loadedlangs @bind-Value=@userpref.LangName TextProperty="Value.LangName" ValueProperty="Key" Style="width:300px"/>
+    <RadzenLabel Text="Your personal language (used for direct messages and stuff)" Component="Switch2" Style="margin-left: 5px;"/>
+    <br/>
+    <RadzenButton Click=@(_ => { _dbctx.userSettings.Update(userpref); _dbctx.SaveChanges(); }) Text="Save" Style="margin-bottom: 20px; width: 150px"/>
+}
+else
+{
+    <h1>Oh no an error has occured, please contact the person that owns this instance of Silverbot.</h1>
+}

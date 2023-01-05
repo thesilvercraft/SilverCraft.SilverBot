@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverBotDS", "SilverBotDS\SilverBotDS.csproj", "{8E5FE08F-9BA0-4345-8A31-CFF1D1183E6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DFE19DA4-8DBC-4430-AF04-FE97F431635E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverBotDS.AnimeModule", "SilverBotDS.AnimeModule\SilverBotDS.AnimeModule.csproj", "{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverBot.Web", "SilverBot.Web\SilverBot.Web.csproj", "{32DE2969-1AAA-49AB-AFF3-EE32AA113EE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverBot.Shared", "SilverBot.Shared\SilverBot.Shared.csproj", "{F5638A2C-FB42-4F9F-93AA-D451DA956EC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverBot.SysAdminModule", "SilverBot.SysAdminModule\SilverBot.SysAdminModule.csproj", "{B42BC408-9995-4DFB-815C-79456339A46E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E5FE08F-9BA0-4345-8A31-CFF1D1183E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E5FE08F-9BA0-4345-8A31-CFF1D1183E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E5FE08F-9BA0-4345-8A31-CFF1D1183E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E5FE08F-9BA0-4345-8A31-CFF1D1183E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AC85505-D6DB-4252-B22E-0DBE70B1EDAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32DE2969-1AAA-49AB-AFF3-EE32AA113EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32DE2969-1AAA-49AB-AFF3-EE32AA113EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32DE2969-1AAA-49AB-AFF3-EE32AA113EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32DE2969-1AAA-49AB-AFF3-EE32AA113EE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5638A2C-FB42-4F9F-93AA-D451DA956EC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5638A2C-FB42-4F9F-93AA-D451DA956EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5638A2C-FB42-4F9F-93AA-D451DA956EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5638A2C-FB42-4F9F-93AA-D451DA956EC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B42BC408-9995-4DFB-815C-79456339A46E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B42BC408-9995-4DFB-815C-79456339A46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B42BC408-9995-4DFB-815C-79456339A46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B42BC408-9995-4DFB-815C-79456339A46E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B73DF257-CCAC-485D-9375-8E3F102D2DF2}
+	EndGlobalSection
+EndGlobal

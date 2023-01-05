@@ -1,0 +1,42 @@
+﻿@page "/languageeditor"
+@using DSharpPlus
+@using SilverBot.Shared.Objects
+@using SilverBot.Shared.Objects.Database
+@using SilverBot.Web.WebHelpers
+@inject Config _config
+
+@inject DiscordClient _discord
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _uriHelper
+@inject DatabaseContext _dbctx
+@inject HttpClient _client
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@{
+    var auser = AuthenticationStateProvider.AuthState();
+    var user = _discord.GetUserAsync(auser.User.PUID()).GetAwaiter().GetResult();
+    var translator = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == auser.User.PUID());
+    if (translator == null)
+    {
+        _uriHelper.NavigateTo("/", true);
+    }
+    var languages = translator.CustomLanguages.ToList();
+    var a = 0;
+}
+<h1>The custom languages you can edit:</h1>
+<div>
+    <div class="card-body">
+        <div class="row justify-content-center">
+            @foreach (var language in languages)
+            {
+                <div class="row">
+                    <div class="m-2 center col">
+                        <a href="/managelanguage/@a">
+                            <p class="text-center">@language.LangName</p>
+                        </a>
+                    </div>
+                </div>
+                a++;
+            }
+        </div>
+    </div>
+</div>

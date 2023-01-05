@@ -1,0 +1,48 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+        - '**.md'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    steps:
+    - uses: actions/checkout@v3
+      with:
+          submodules: 'true'
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Build
+      run: dotnet publish -c Release -p:PublishProfile=FolderProfile 
+    - name: Copy SilverBotDS.AnimeModule to publish directory
+      run: copy "SilverBotDS.AnimeModule\bin\Release\net7.0\SilverBotDS.AnimeModule*" "SilverBotDS\bin\Release\net7.0\publish"
+    - name: Zip 
+      shell: powershell
+      run: |
+           [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") 
+           [System.IO.Compression.ZipFile]::CreateFromDirectory('SilverBotDS\bin\Release\net7.0\publish', 'silverbot.zip', 'Optimal', $false) 
+    - name: Shorten the SHA
+      id: shas
+      shell: powershell
+      run:  echo "sha_short=$(git rev-parse --short=10 ${{ github.sha }})" >> $GITHUB_OUTPUT
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+          body: Automated release, a release will be created for every single push on the master branch. this one is for ${{ github.sha }}, As always zipped releases should contain most things the program needs to run and that means it has to contains the license info of every dependency contained within it
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ steps.shas.outputs.sha_short }}
+          name:  ${{ steps.shas.outputs.sha_short }}
+          draft: true
+          prerelease: false
+          files: |
+            ./silverbot.zip
+            ./SilverBotDS/bin/Release/net7.0/publish/SilverBotDS.dll
+            ./SilverBotDS.AnimeModule/bin/Release/net7.0/publish/SilverBotDS.AnimeModule.dll
+            ./SilverBot.Shared/bin/Release/net7.0/publish/SilverBot.Shared.dll
+            ./SilverBot.Shared/bin/Release/net7.0/publish/SilverBot.Shared.pdb

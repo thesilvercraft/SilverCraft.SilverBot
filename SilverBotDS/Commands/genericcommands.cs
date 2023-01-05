@@ -91,6 +91,20 @@ public sealed class Genericcommands : BaseCommandModule
             .AddFile("message.txt", outStream)
             .SendAsync(ctx.Channel);
     }
+    [Command("dump")]
+    [Description("Dump a messages raw content (useful for emote walls)")]
+    public async Task DumpMessage(CommandContext ctx)
+    {
+        if (ctx.Message.ReferencedMessage != null)
+        {
+            await DumpMessage(ctx, ctx.Message.ReferencedMessage);
+        }
+        else
+        {
+            await DumpMessage(ctx, (await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, 1))[0]);
+        }
+    }
+
     [Command("archive")]
     [RequirePermissions(Permissions.ReadMessageHistory | Permissions.SendMessages | Permissions.AttachFiles)]
     [Description("Archive a message (and its attachments)")]
@@ -106,10 +120,10 @@ public sealed class Genericcommands : BaseCommandModule
                 await using var entryStream = zipItem.Open();
                 await originalFileMemoryStream.CopyToAsync(entryStream);
             }
-            var zipItemmsg = zip.CreateEntry($"message.txt");
-            await using MemoryStream zipItemmsgfs = new(Encoding.UTF8.GetBytes(message.Content)) { Position=0};
-            await using var entryStreammsg = zipItemmsg.Open();
-            await zipItemmsgfs.CopyToAsync(entryStreammsg);
+            var zipItemMsg = zip.CreateEntry($"message.txt");
+            await using MemoryStream zipItemMsgFileStream = new(Encoding.UTF8.GetBytes(message.Content)) { Position=0};
+            await using var entryStreammsg = zipItemMsg.Open();
+            await zipItemMsgFileStream.CopyToAsync(entryStreammsg);
         }
 
         memoryStream.Position = 0;
@@ -121,20 +135,7 @@ public sealed class Genericcommands : BaseCommandModule
             .SendAsync(ctx.Channel);
     }
 
-    [Command("dump")]
-    [Description("Dump a messages raw content (useful for emote walls)")]
-    public async Task DumpMessage(CommandContext ctx)
-    {
-        if (ctx.Message.ReferencedMessage != null)
-        {
-            await DumpMessage(ctx, ctx.Message.ReferencedMessage);
-        }
-        else
-        {
-            await DumpMessage(ctx, (await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, 1))[0]);
-        }
-    }
-
+   
     [Command("duckhosting")]
     [Aliases("dukthosting", "ducthosting", ":duckhosting:", "<:duckhosting:797225115837792367>")]
     [Description("SilverHosting best")]
@@ -156,7 +157,6 @@ public sealed class Genericcommands : BaseCommandModule
         return (await discord.GetGuildAsync(cnf.ServerId)).Members.ContainsKey(b.Id);
     }
 
-    //TODO reimplement "bot" command
     [Command("user")]
     [Description("Get the info I know about a specified user")]
     public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)

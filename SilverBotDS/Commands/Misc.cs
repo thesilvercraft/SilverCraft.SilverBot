@@ -96,11 +96,11 @@ public class MiscCommands : BaseCommandModule
     [RequireUserPermissions(Permissions.ManageGuild)]
     public async Task SetLanguage(CommandContext ctx, bool enable)
     {
-        var serversettings = Database.serverSettings.FirstOrDefault(x => x.ServerId == ctx.Guild.Id);
-        if (serversettings is not null)
+        var serverSettings = Database.serverSettings.FirstOrDefault(x => x.ServerId == ctx.Guild.Id);
+        if (serverSettings is not null)
         {
-            serversettings.RepeatThings = enable;
-            Database.serverSettings.Update(serversettings);
+            serverSettings.RepeatThings = enable;
+            Database.serverSettings.Update(serverSettings);
         }
         else
         {
@@ -133,15 +133,15 @@ public class MiscCommands : BaseCommandModule
     {
         var lang = await LanguageService.FromCtxAsync(ctx);
         Translator translator = new(HttpClient);
-        var tranlsation = await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate);
-        if (tranlsation.Item1.Length > 4095)
+        var translation = await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate);
+        if (translation.Item1.Length > 4095)
         {
-            await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{tranlsation.Item2}>", tranlsation.Item1);
+            await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{translation.Item2}>", translation.Item1);
         }
         else
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                .WithEmbed(new DiscordEmbedBuilder().WithDescription(tranlsation.Item1).WithUrl(tranlsation.Item2)
+                .WithEmbed(new DiscordEmbedBuilder().WithDescription(translation.Item1).WithUrl(translation.Item2)
                     .WithTitle("TTS").Build())
                 .WithAllowedMentions(Mentions.None)
                 .SendAsync(ctx.Channel);
@@ -170,15 +170,15 @@ public class MiscCommands : BaseCommandModule
         }
 
         Translator translator = new(HttpClient);
-        var tranlsation = await translator.TranslateAsync(text, "auto", languageTo);
-        if (tranlsation.Item1.Length > 4095)
+        var translation = await translator.TranslateAsync(text, "auto", languageTo);
+        if (translation.Item1.Length > 4095)
         {
-            await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{tranlsation.Item2}>", tranlsation.Item1);
+            await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{translation.Item2}>", translation.Item1);
         }
         else
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-                .WithEmbed(new DiscordEmbedBuilder().WithDescription(tranlsation.Item1).WithUrl(tranlsation.Item2)
+                .WithEmbed(new DiscordEmbedBuilder().WithDescription(translation.Item1).WithUrl(translation.Item2)
                     .WithTitle("TTS").Build())
                 .WithAllowedMentions(Mentions.None)
                 .SendAsync(ctx.Channel);

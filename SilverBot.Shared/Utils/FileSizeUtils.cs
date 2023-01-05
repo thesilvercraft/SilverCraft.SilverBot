@@ -17,6 +17,6 @@ public static class FileSizeUtils
             counter++;
         }
 
-        return string.Format("{0:n1}{1}", number, FileSizes.FSizes[counter].Suffix);
+        return $"{number:n1}{FileSizes.FSizes[counter].Suffix}";
     }
 }

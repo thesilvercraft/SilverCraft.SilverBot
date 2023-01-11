@@ -81,20 +81,7 @@ namespace SilverBotDS
         private static readonly Dictionary<ulong, DateTime> XpLevelling = new();
         private static readonly TimeSpan MessageLimit = TimeSpan.FromMinutes(2);
         public static ServiceProvider ServiceProvider { get; private set; }
-        private static readonly Dictionary<string, Tuple<Task, CancellationTokenSource>> RunningTasks = new();
-        private static readonly Dictionary<Guid, Tuple<Task, CancellationTokenSource>> RunningTasksOfSecondRow = new();
-
-        public static Task RunningTasksOfSecondRowAdd(Guid a, Tuple<Task, CancellationTokenSource> b)
-        {
-            RunningTasksOfSecondRow.Add(a, b);
-            return Task.CompletedTask;
-        }
-
-        public static Task RunningTasksAdd(string a, Tuple<Task, CancellationTokenSource> b)
-        {
-            RunningTasks.Add(a, b);
-            return Task.CompletedTask;
-        }
+       
 
         /// <summary>
         /// EFCore Scaring mesure
@@ -128,18 +115,7 @@ namespace SilverBotDS
             MainAsync(args).GetAwaiter().GetResult();
         }
 
-        public static void CancelTasks()
-        {
-            foreach (var task in RunningTasksOfSecondRow)
-            {
-                task.Value.Item2.Cancel();
-            }
-
-            foreach (var task in RunningTasks)
-            {
-                task.Value.Item2.Cancel();
-            }
-        }
+    
 
         public static void SendLog(Exception exception)
         {
@@ -260,7 +236,8 @@ namespace SilverBotDS
                 _discord.MessageCreated += Discord_MessageCreated;
             }
 
-
+            TaskService taskService = new();
+            services.AddSingleton(taskService);
             using (mainlog.BeginScope("Initializing Commands"))
             {
                 services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
@@ -314,7 +291,7 @@ namespace SilverBotDS
                 }
 
 
-                await Task.Delay(2000);
+                await Task.Delay(2000, cancellationToken);
                 if (_config.UseLavaLink)
                 {
                     using (mainlog.BeginScope("Lavalink"))
@@ -348,6 +325,7 @@ namespace SilverBotDS
                 services.AddSingleton(_discord);
                 ModuleRegistrationService moduleRegistrationService = new();
                 services.AddSingleton(moduleRegistrationService);
+               
                 using (mainlog.BeginScope("External services"))
                 {
                     foreach (var group in _config.ServicesToLoadExternal.GroupBy(x => x.Key))
@@ -382,7 +360,7 @@ namespace SilverBotDS
                 {
                     var context = ServiceProvider.GetService<DatabaseContext>();
                     //Do stuff with the database making sure its up to date.
-                    await context!.Database!.MigrateAsync()!;
+                    await context!.Database!.MigrateAsync(cancellationToken: cancellationToken)!;
                 }
 
                 using (mainlog.BeginScope("Registering commands and converters"))
@@ -513,7 +491,7 @@ namespace SilverBotDS
             if (IsNotNullAndIsNotB(_config.FridayTextChannel, 0))
             {
                 CancellationTokenSource s = new();
-                RunningTasks.Add("WaitForFridayTask", new(Task.Run(() => WaitForFridayAsync(s.Token), s.Token), s));
+                taskService.AddMain("WaitForFridayTask", new(Task.Run(() => WaitForFridayAsync(s.Token), s.Token), s));
             }
 
             await _discord.UpdateStatusAsync(new("console logs while configuring server statistics",
@@ -534,12 +512,12 @@ namespace SilverBotDS
             if (_config.EnableServerStatistics)
             {
                 CancellationTokenSource s = new();
-                RunningTasks.Add("StatisticsTask", new(Task.Run(() => StatisticsMainAsync(s.Token), s.Token), s));
+                taskService.AddMain("StatisticsTask", new(Task.Run(() => StatisticsMainAsync(s.Token), s.Token), s));
             }
 
             CancellationTokenSource ets = new();
             EventsRunner.InjectEvents(ServiceProvider, _log);
-            RunningTasks.Add("EventsTask", new(Task.Run(EventsRunner.RunEventsAsync, ets.Token), ets));
+            taskService.AddMain("EventsTask", new(Task.Run(EventsRunner.RunEventsAsync, ets.Token), ets));
 
             if (_config.HostWebsite)
             {
@@ -552,10 +530,10 @@ namespace SilverBotDS
             {
                 _log.Verbose("Updating the status to a random one");
                 await _discord.UpdateStatusAsync(_config.Splashes.RandomFrom()
-                    .GetDiscordActivity(GetStringDictionary(_discord)));
+                    .GetDiscordActivity(GetStringDictionary(_discord,ServiceProvider)));
             }
 
-            SplashTask();
+            await SplashTask();
             _log.Information("Booted up");
             while (!ExitAfterbootup&& !cancellationToken.IsCancellationRequested)
             {
@@ -568,21 +546,13 @@ namespace SilverBotDS
                 if (_config.ClearTasks)
                 {
                     _log.Verbose("Going through the task lists");
-                    foreach (var task in RunningTasks.Where(task => task.Value.Item1.IsCompleted))
-                    {
-                        RunningTasks.Remove(task.Key);
-                    }
-
-                    foreach (var task in RunningTasksOfSecondRow.Where(task => task.Value.Item1.IsCompleted))
-                    {
-                        RunningTasksOfSecondRow.Remove(task.Key);
-                    }
+                    taskService.ClearDeadTasks();
                 }
 
                 //wait the specified time
                 _log.Verbose("Waiting {V}", new TimeSpan(0, 0, 0, 0, _config.MsInterval).Humanize(precision: 5));
                 await Task.Delay(_config.MsInterval, cancellationToken);
-                SplashTask();
+                await SplashTask();
                 //repeat🔁
             }
         }
@@ -590,15 +560,14 @@ namespace SilverBotDS
         
         private static Task<int> ResolvePrefixAsync(DiscordMessage msg)
         {
-            if (msg.Channel.Type == ChannelType.Private)
-            {
-                return Task.FromResult(0);
-            }
-
             var db = ServiceProvider.GetService<DatabaseContext>();
             if (db?.IsBanned(msg.Author.Id) == true)
             {
                 return Task.FromResult(-1);
+            }
+            if (msg.Channel.Type == ChannelType.Private)
+            {
+                return Task.FromResult(0);
             }
 
             var gld = msg.Channel.Guild;
@@ -649,12 +618,14 @@ namespace SilverBotDS
             }
         }
 
-        public static Dictionary<string, string> GetStringDictionary(DiscordClient client)
+        public static Dictionary<string, string> GetStringDictionary(DiscordClient client, ServiceProvider provider)
         {
             return new Dictionary<string, string>
             {
                 ["GuildCount"] = client.Guilds.Values.LongCount().ToString(),
-                ["Platform"] = RuntimeInformation.ProcessArchitecture.ToString()
+                ["Platform"] = RuntimeInformation.ProcessArchitecture.ToString(),
+                ["Threads"]= Process.GetCurrentProcess().Threads.Count.ToString(),
+                ["TaskCount"]= (provider.GetService<TaskService>())?.NumberOfRunningTasks().ToString()??"unknown"
             };
         }
 

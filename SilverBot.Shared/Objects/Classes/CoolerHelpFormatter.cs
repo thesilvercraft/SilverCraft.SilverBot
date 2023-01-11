@@ -81,9 +81,10 @@ public class CoolerHelpFormatter : BaseHelpFormatter
 
             sb.Append('\n');
         }
-
-        EmbedBuilder.AddField(Lang.HelpCommandGroupArguments, sb.ToString().Trim());
-
+        var groupArguments = sb.ToString().Trim();
+        if(groupArguments.Length < 1024) {
+            EmbedBuilder.AddField(Lang.HelpCommandGroupArguments, groupArguments);
+        }
         return this;
     }
 

@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace SilverBot.Shared.Objects.Classes;
 
 [XmlRoot("dictionary")]
-public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
+public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable where TKey : notnull
 {
     #region IXmlSerializable Members
 

@@ -382,7 +382,7 @@ public class Config : INotifyPropertyChanged, ICanBeToldThatAPartOfMeIsChanged
             Console.WriteLine("silverbot.xml should exist in the CWD, edit it, save it and restart silverbot");
             Environment.Exit(420);
         }
-        var cnf = reader.Read("silverbot.xml");;
+        var cnf = reader.Read("silverbot.xml");
         if (cnf is not { ConfigVer: CurrentConfVer })
         {
             await OutdatedConfigTask(cnf,reader);

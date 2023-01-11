@@ -25,39 +25,39 @@ public class Manifest : Controller
             ThemeColor = "#01dff0",
             Display = "standalone"
         };
-        if (DateTime.UtcNow.Month == 6)
+        switch (DateTime.UtcNow.Month)
         {
-            obj.Icons = new[]
-            {
-                new Icon {Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
-                new Icon {Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"},
-                new Icon {Sizes = "512x512", Src = "/pride/android-chrome-512x512.png", Type = "image/png"},
-                new Icon {Sizes = "192x192", Src = "/pride/android-chrome-192x192.png", Type = "image/png"}
-            };
-        }
-        else if (DateTime.UtcNow.Month == 10 &&  DateTime.UtcNow.Day == 31)
-        {
-            obj.Icons = new[]
-            {
-                new Icon {Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
-                new Icon
+            case 6:
+                obj.Icons = new[]
                 {
-                    Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"
-                },
-                new Icon {Sizes = "512x512", Src = "/halloween/android-chrome-512x512.png", Type = "image/png"},
-                new Icon {Sizes = "192x192", Src = "/halloween/android-chrome-192x192.png", Type = "image/png"}
-            };
-            obj.ThemeColor = "#EF5B31";
-        }
-        else
-        {
-            obj.Icons = new[]
-            {
-                new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
-                new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"},
-                new Icon {Sizes = "512x512", Src = "/android-chrome-512x512.png", Type = "image/png"},
-                new Icon {Sizes = "192x192", Src = "/android-chrome-192x192.png", Type = "image/png"}
-            };
+                    new Icon {Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
+                    new Icon {Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"},
+                    new Icon {Sizes = "512x512", Src = "/pride/android-chrome-512x512.png", Type = "image/png"},
+                    new Icon {Sizes = "192x192", Src = "/pride/android-chrome-192x192.png", Type = "image/png"}
+                };
+                break;
+            case 10 when DateTime.UtcNow.Day == 31:
+                obj.Icons = new[]
+                {
+                    new Icon {Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
+                    new Icon
+                    {
+                        Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"
+                    },
+                    new Icon {Sizes = "512x512", Src = "/halloween/android-chrome-512x512.png", Type = "image/png"},
+                    new Icon {Sizes = "192x192", Src = "/halloween/android-chrome-192x192.png", Type = "image/png"}
+                };
+                obj.ThemeColor = "#EF5B31";
+                break;
+            default:
+                obj.Icons = new[]
+                {
+                    new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
+                    new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"},
+                    new Icon {Sizes = "512x512", Src = "/android-chrome-512x512.png", Type = "image/png"},
+                    new Icon {Sizes = "192x192", Src = "/android-chrome-192x192.png", Type = "image/png"}
+                };
+                break;
         }
 
         return obj;

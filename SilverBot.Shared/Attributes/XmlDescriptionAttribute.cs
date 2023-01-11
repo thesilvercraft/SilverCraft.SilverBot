@@ -21,9 +21,17 @@ public class CommentXmlConfigReaderNotifyWhenChanged<T> : CommentXmlConfigReader
 
     public void Dispose()
     {
-        foreach (var fsw in fileSystemWatchers) fsw.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            foreach (var fsw in fileSystemWatchers) fsw.Dispose();
+        }
+    }
     public override T? Read(string path)
     {
         var c = base.Read(path);

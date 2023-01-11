@@ -17,6 +17,7 @@ using SilverBot.Shared.Objects.Database;
 using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Utils;
+using SilverBotDS.ProgramExtensions;
 
 namespace SilverBotDS
 {
@@ -156,40 +157,34 @@ namespace SilverBotDS
         public static async Task RunEventsAsync()
         {
             var dbctx = ServiceProvider.GetRequiredService<DatabaseContext>();
+            var taskService = ServiceProvider.GetRequiredService<TaskService>();
+
             while (true)
             {
                 try
                 {
-                    var arr = dbctx.plannedEvents.ToArray();
+                    var arr = dbctx.plannedEvents.Where(x=>x.Time> DateTime.Now && !x.Handled).ToArray();
                     foreach (var evnt in arr)
                     {
-                        if (!evnt.Handled)
-                        {
-                            if (evnt.Time > DateTime.Now)
-                            {
-                                continue;
-                            }
-
                             try
                             {
                                 CancellationTokenSource cts = new(15 * 1007);
                                 switch (evnt.Type)
                                 {
-                                    case PlannedEventType.EmojiPoll:
-
-                                        await Program.RunningTasksOfSecondRowAdd(Guid.NewGuid(), new(Task.Run(() => RunEmojiEvent(evnt, dbctx), cts.Token), cts));
+                                    case PlannedEventType.EmojiPoll: 
+                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunEmojiEvent(evnt, dbctx), cts.Token), cts));
                                         break;
 
                                     case PlannedEventType.GiveAway:
-                                        await Program.RunningTasksOfSecondRowAdd(Guid.NewGuid(), new(Task.Run(() => RunGiveAwayEvent(evnt, dbctx), cts.Token), cts));
+                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunGiveAwayEvent(evnt, dbctx), cts.Token), cts));
                                         break;
 
                                     case PlannedEventType.Reminder:
-                                        await Program.RunningTasksOfSecondRowAdd(Guid.NewGuid(), new(Task.Run(() => RunReminderEvent(evnt, dbctx), cts.Token), cts));
+                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunReminderEvent(evnt, dbctx), cts.Token), cts));
                                         break;
 
                                     default:
-                                        Log.Warning("[SUS] DB event with unknown type was ignored, Type: {Type}", evnt.Type);
+                                        Log.Warning("DB event with unknown type was ignored, Type: {Type}", evnt.Type);
                                         break;
                                 }
                             }
@@ -197,13 +192,6 @@ namespace SilverBotDS
                             {
                                 Log.Error(e, "exception happened in events thread in the switch case");
                             }
-                        }
-                        else
-                        {
-                            Log.Verbose("removed an {EventType}", evnt.Type);
-                            dbctx.plannedEvents.Remove(evnt);
-                            await dbctx.SaveChangesAsync();
-                        }
                     }
                 }
                 catch (Exception e)

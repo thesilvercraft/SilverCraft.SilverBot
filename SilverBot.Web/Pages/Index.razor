@@ -2,11 +2,15 @@
 @using Humanizer
 @using DSharpPlus
 @using System.Diagnostics
-@using SilverBot.Shared.Objects
-@inject Config _config
+@using DSharpPlus.CommandsNext
+@using SilverBotDS.ProgramExtensions
 @inject DiscordClient _discord
+@inject TaskService TaskService
 <body>
 <h2>Wasting time in @_discord.Guilds.Count servers</h2>
 <h2>I have been up for @((DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()).Humanize())</h2>
 <h2>With @_discord.ShardCount @(_discord.ShardCount == 1 ? "shard" : "shards") and @(Process.GetCurrentProcess().Threads.Count) cpu @(Process.GetCurrentProcess().Threads.Count == 1 ? "thread" : "threads")</h2>
+<h4>@_discord.GetCommandsNext().RegisteredCommands.Count registered commands</h4>
+<h4>@TaskService.NumberOfRunningTasks() running tasks</h4>
+<h4>@Process.GetCurrentProcess().PrivateMemorySize64.Bytes() RAM</h4>
 </body>

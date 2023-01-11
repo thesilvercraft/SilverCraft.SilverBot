@@ -22,6 +22,7 @@ using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
 using Microsoft.Extensions.DependencyInjection;
 using SilverBot.Shared.Attributes;
+using SilverBot.Shared.Exceptions;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Classes;
 using SilverBot.Shared.Objects.Language;
@@ -103,7 +104,7 @@ namespace SilverBotDS.Commands.Slash
 
         private TimeSpan TimeTillSongPlays(QueuedLavalinkPlayer player, int song)
         {
-            if (player.IsLooping)
+            if (player.LoopMode == PlayerLoopMode.Track)
             {
                 return TimeSpan.MaxValue;
             }
@@ -365,8 +366,7 @@ namespace SilverBotDS.Commands.Slash
         }
         public static async Task MakeSureUserIsInVC(InteractionContext ctx, Language lang)
         {
-            var channel = ctx.Member?.VoiceState?.Channel;
-            if (channel == null)
+            if (ctx.Member?.VoiceState?.Channel == null)
             {
                 await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
                 throw new UserNotInVCException("user not in voice chat");
@@ -377,41 +377,7 @@ namespace SilverBotDS.Commands.Slash
             await MakeSureBotIsInVC(ctx, lang);
             await MakeSureUserIsInVC(ctx, lang);
         }
-        public class BotNotInVCException : Exception
-        {
-            public BotNotInVCException(string? message) : base(message)
-            {
-            }
-
-            public BotNotInVCException(string? message, Exception? innerException) : base(message, innerException)
-            {
-            }
-
-
-        }
-        public class UserNotInVCException : Exception
-        {
-            public UserNotInVCException(string? message) : base(message)
-            {
-            }
-
-            public UserNotInVCException(string? message, Exception? innerException) : base(message, innerException)
-            {
-            }
-
-        }
-        public class PlayerIsNullException : Exception
-        {
-            public PlayerIsNullException(string? message) : base(message)
-            {
-            }
-
-            public PlayerIsNullException(string? message, Exception? innerException) : base(message, innerException)
-            {
-            }
-
-
-        }
+      
         public async Task MakeSurePlayerIsntNull(InteractionContext ctx, Language lang, BetterVoteLavalinkPlayer? player)
         {
             if (player == null)

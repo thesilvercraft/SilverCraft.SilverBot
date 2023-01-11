@@ -59,7 +59,6 @@ public class BrowserConfig : Controller
     //From here on out blame vs
 #pragma warning disable IDE1006 // Naming Styles
 
-    // NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]

@@ -813,13 +813,13 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         }, filename: "sbnewyear.png", encoder: ".png");
 
 
-    private static async Task<Tuple<MemoryStream, string>> GrayScaleAsync(byte[] photoBytes, string extension)
+    private static  Task<Tuple<MemoryStream, string>> GrayScaleAsync(byte[] photoBytes, string extension)
     {
         var instream = new MemoryStream(photoBytes);
         var img = LoadFromStream(instream).Colourspace(Interpretation.Bw);
         var outstream = new MemoryStream();
         WriteImageToStream(img, outstream, extension);
-        return new Tuple<MemoryStream, string>(outstream, extension);
+        return Task.FromResult(new Tuple<MemoryStream, string>(outstream, extension));
     }
 
     [Command("silver")]

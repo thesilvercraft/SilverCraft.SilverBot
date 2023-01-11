@@ -28,6 +28,8 @@ using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Utils;
 using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
+using ImageMagick;
+using SilverBot.Shared.Exceptions;
 
 namespace SilverBotDS.Commands;
 
@@ -114,7 +116,7 @@ public class Audio : BaseCommandModule
 
     private TimeSpan TimeTillSongPlays(QueuedLavalinkPlayer player, int song)
     {
-        if (player.IsLooping)
+        if (player.LoopMode == PlayerLoopMode.Track)
         {
             return TimeSpan.MaxValue;
         }
@@ -267,8 +269,7 @@ public class Audio : BaseCommandModule
             return;
         }
 
-        var channel = ctx.Member?.VoiceState?.Channel;
-        if (channel == null)
+        if (ctx.Member?.VoiceState?.Channel == null)
         {
             await SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
             return;
@@ -324,41 +325,7 @@ public class Audio : BaseCommandModule
         await MakeSureBotIsInVC(ctx, lang);
         await MakeSureUserIsInVC(ctx, lang);
     }
-    public class BotNotInVCException : Exception
-    {
-        public BotNotInVCException(string? message) : base(message)
-        {
-        }
-
-        public BotNotInVCException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-      
-    }
-    public class UserNotInVCException : Exception
-    {
-        public UserNotInVCException(string? message) : base(message)
-        {
-        }
-
-        public UserNotInVCException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-    }
-    public class PlayerIsNullException : Exception
-    {
-        public PlayerIsNullException(string? message) : base(message)
-        {
-        }
-
-        public PlayerIsNullException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-       
-    }
+ 
     public async Task MakeSurePlayerIsntNull(CommandContext ctx, Language lang, BetterVoteLavalinkPlayer? player)
     {
         if (player == null)
@@ -429,12 +396,15 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
+        if(player is null)
+        {
+            throw new PlayerIsNullException();
+        }
         if (player != null && (songindex < 0 || songindex > player.Queue.Count))
         {
             await SendSimpleMessage(ctx, lang.SongNotExist, language: lang);
             return;
         }
-
         var thingy = player.Queue[songindex - 1];
         player.Queue.RemoveAt(songindex - 1);
         await SendSimpleMessage(ctx, lang.RemovedFront + thingy.Title + lang.SongByAuthor + thingy.Author,
@@ -449,6 +419,10 @@ public class Audio : BaseCommandModule
         var lang = await LanguageService.FromCtxAsync(ctx);
         await MakeSureBothAreInVC(ctx, lang);
         var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
+        if (player is null)
+        {
+            throw new PlayerIsNullException();
+        }
         if (player != null && player.QueueHistory.Count == 0)
         {
             await SendSimpleMessage(ctx, lang.NothingInQueueHistory, language: lang);

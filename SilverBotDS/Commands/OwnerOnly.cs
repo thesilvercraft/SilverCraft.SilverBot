@@ -26,7 +26,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Database;
-using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Utils;
 using SilverBotDS.ProgramExtensions;
@@ -44,7 +43,7 @@ public partial class OwnerOnly : BaseCommandModule
     public LanguageService LanguageService { private get; set; }
     public ModuleRegistrationService ModuleRegistrationService { private get; set; }
 
-
+    public TaskService TaskService { private get; set; }
     [Command("reloadcolors")]
     [Description("reloads the colors.json")]
     public async Task ReloadColors(CommandContext ctx)
@@ -612,7 +611,7 @@ public partial class OwnerOnly : BaseCommandModule
     [Description("kill the bot but shutdown the tasks first")]
     public async Task Reloadsplashesas(CommandContext ctx)
     {
-        Program.CancelTasks();
+        TaskService.CancelTasks();
         await ctx.RespondAsync("bye");
         Environment.Exit(469);
     }

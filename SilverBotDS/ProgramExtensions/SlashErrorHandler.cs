@@ -143,7 +143,7 @@ namespace SilverBotDS.ProgramExtensions
                         case AttachmentCountIncorrectException:
                             await RespondWithContent(lang.NoImageGeneric);
                             break;
-                        case AudioSlash.UserNotInVCException:
+                        case UserNotInVCException:
                             break;
                         default:
                             await RespondWithContent(lang.GeneralException);

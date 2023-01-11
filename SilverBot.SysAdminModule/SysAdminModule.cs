@@ -14,7 +14,7 @@ namespace SilverBot.SysAdminModule
     {
         public DiscordClient client { set; private get; }
         IPackageManager pm=new ScoopPackageManager();
-        public async Task Start()
+        public Task Start()
         {
        
             if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User)?.Contains("scoop")==true)
@@ -64,10 +64,12 @@ namespace SilverBot.SysAdminModule
             {
                 Console.WriteLine("SysAdminModule tried to initialise on unsupported platform");
             }
+            return Task.CompletedTask;
         }
 
-        public async Task Stop()
+        public  Task Stop()
         {
+            return Task.CompletedTask;
 
         }
     }

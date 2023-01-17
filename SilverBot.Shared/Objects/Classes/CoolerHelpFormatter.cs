@@ -12,7 +12,6 @@ using DSharpPlus.CommandsNext.Entities;
 using DSharpPlus.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using SilverBot.Shared.Attributes;
-using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Utils;
 
 namespace SilverBot.Shared.Objects.Classes;
@@ -26,15 +25,16 @@ public class CoolerHelpFormatter : BaseHelpFormatter
     public CoolerHelpFormatter(CommandContext ctx)
         : base(ctx)
     {
-        var languageservice = ctx.Services.GetService<LanguageService>();
-        Lang = languageservice?.FromCtx(ctx);
+        Language = ctx.GetLanguage();
+        ColourService = ctx.Services.GetService<ColourService>();
         EmbedBuilder = new DiscordEmbedBuilder()
-            .WithTitle(Lang.HelpCommandHelpString).AddRequestedByFooter(ctx,Lang);
+            .WithTitle(Language.HelpCommandHelpString).AddRequestedByFooter(ctx, Language);
     }
 
     public DiscordEmbedBuilder EmbedBuilder { get; }
     private Command Command { get; set; }
-    private Language.Language Lang { get; }
+    private ColourService? ColourService { get; }
+    private Language.Language Language { get; }
 
     /// <summary>
     ///     Sets the command this help message will be for.
@@ -45,15 +45,15 @@ public class CoolerHelpFormatter : BaseHelpFormatter
     {
         Command = command;
         EmbedBuilder.WithDescription(
-            $"{Formatter.InlineCode(command.Name)}: {command.Description ?? Lang.HelpCommandNoDescription}");
+            $"{Formatter.InlineCode(command.Name)}: {command.Description ?? Language.HelpCommandNoDescription}");
         if (command is CommandGroup { IsExecutableWithoutSubcommands: true })
         {
-            EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\n{Lang.HelpCommandGroupCanBeExecuted}");
+            EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\n{Language.HelpCommandGroupCanBeExecuted}");
         }
 
         if (command.Aliases?.Any() == true)
         {
-            EmbedBuilder.AddField(Lang.HelpCommandGroupAliases,
+            EmbedBuilder.AddField(Language.HelpCommandGroupAliases,
                 string.Join(", ", command.Aliases.Select(Formatter.InlineCode)));
         }
 
@@ -76,15 +76,18 @@ public class CoolerHelpFormatter : BaseHelpFormatter
             foreach (var arg in ovl)
             {
                 sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type))
-                    .Append(")`: ").Append(arg.Description ?? Lang.HelpCommandNoDescription).Append('\n');
+                    .Append(")`: ").Append(arg.Description ?? Language.HelpCommandNoDescription).Append('\n');
             }
 
             sb.Append('\n');
         }
+
         var groupArguments = sb.ToString().Trim();
-        if(groupArguments.Length < 1024) {
-            EmbedBuilder.AddField(Lang.HelpCommandGroupArguments, groupArguments);
+        if (groupArguments.Length < 1024)
+        {
+            EmbedBuilder.AddField(Language.HelpCommandGroupArguments, groupArguments);
         }
+
         return this;
     }
 
@@ -117,21 +120,22 @@ public class CoolerHelpFormatter : BaseHelpFormatter
                     }
                 }
 
-                if (command.Module != null && command.Module.ModuleType.GetCustomAttributes(true)
-                        .Any(x => x.GetType() == typeof(CategoryAttribute)))
+                if (command.Module == null || command.Module.ModuleType.GetCustomAttributes(true)
+                        .All(x => x.GetType() != typeof(CategoryAttribute)))
                 {
-                    foreach (var attribute in command.Module.ModuleType.GetCustomAttributes(true)
-                                 .Where(x => x is CategoryAttribute))
+                    continue;
+                }
+                foreach (var attribute in command.Module.ModuleType.GetCustomAttributes(true)
+                             .Where(x => x is CategoryAttribute))
+                {
+                    foreach (var category in ((CategoryAttribute)attribute).Category)
                     {
-                        foreach (var category in ((CategoryAttribute)attribute).Category)
+                        if (!commands.ContainsKey(category))
                         {
-                            if (!commands.ContainsKey(category))
-                            {
-                                commands.Add(category, new HashSet<string>());
-                            }
-
-                            commands[category].Add(command.Name);
+                            commands.Add(category, new HashSet<string>());
                         }
+
+                        commands[category].Add(command.Name);
                     }
                 }
             }
@@ -144,7 +148,7 @@ public class CoolerHelpFormatter : BaseHelpFormatter
         }
         else
         {
-            EmbedBuilder.AddField(Lang.HelpCommandGroupSubcommands,
+            EmbedBuilder.AddField(Language.HelpCommandGroupSubcommands,
                 string.Join(", ", subcommands.Select(x => Formatter.InlineCode(x.Name))));
         }
 
@@ -159,9 +163,14 @@ public class CoolerHelpFormatter : BaseHelpFormatter
     {
         if (Command == null)
         {
-            EmbedBuilder.WithDescription(Lang.HelpCommandGroupListingAllCommands);
+            EmbedBuilder.WithDescription(Language.HelpCommandGroupListingAllCommands);
         }
-        EmbedBuilder.Color = ColorUtils.GetSingle();
+
+        if (ColourService != null)
+        {
+            EmbedBuilder.Color = ColourService.GetSingle();
+        }
+
         return new CommandHelpMessage(embed: EmbedBuilder.Build());
     }
 }

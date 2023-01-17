@@ -18,6 +18,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
 using RestSharp;
+using SilverBot.Shared;
 using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Utils;
@@ -31,22 +32,18 @@ namespace SilverBotDS.Commands
     {
         public HttpClient HttpClient { private get; set; }
         public Config Config { private get; set; }
-        public string[] SafeModel { get; set; } = new[] { "sd-v1-4", "App_Icons_V1_PublicPrompts", "Pixel_Art_V1_PublicPrompts" };
-        public string[] NotSafeModel { get; set; }  = new[] { "hd-17", "wd-v1-3-float16" };
-        public ulong[] Trusted { get; set; } = new[] { 687387957296103541u, 1024769162419126362u };
 
-       
         [Command("imagine")]
         public async Task TImagine(CommandContext ctx, string prompt = "space", string model = "sd-v1-4", int? seed = null, string negative_prompt = "", 
            int resolution = 512, int steps = 25)
         {
-            if (!ctx.Channel.IsNSFW && (NotSafeModel.Contains(model.ToLower()) ||
-                                        NotSafeModel.Contains(model.ToLower() + ".ckpt")))
+            if (!ctx.Channel.IsNSFW && (Config.ExtraParams["StableDiff.NotSafeModel"].Contains(model.ToLower()) ||
+                                        Config.ExtraParams["StableDiff.NotSafeModel"].Contains(model.ToLower() + ".ckpt")))
             {
                 //disappointment
-                model = SafeModel[0];
+                model = Config.ExtraParams["StableDiff.SafeModel"].Split(",").Select(x=>x.Trim()).ToArray()[0];
             }
-
+            var language = await ctx.GetLanguageAsync();
             string promptimg = null;
             if (ctx.Message.Attachments.Count == 1)
             {
@@ -63,9 +60,9 @@ namespace SilverBotDS.Commands
                 UseStableDiffusionModel = model,
                 NegativePrompt = negative_prompt,
                 Seed = seed ?? RandomGenerator.Next(0, Int32.MaxValue),
-                Width = resolution.ToString(),
-                Height = resolution.ToString(),
-                NumInferenceSteps = steps.ToString()
+                Width = resolution,
+                Height = resolution,
+                NumInferenceSteps = steps
             };
             if (promptimg != null && (promptimg.EndsWith(".png") || promptimg.EndsWith(".jpeg")|| promptimg.EndsWith(".jpg")))
             {
@@ -107,48 +104,41 @@ namespace SilverBotDS.Commands
             var sent = JsonSerializer.Serialize(i);
             Console.WriteLine(sent);
             var interactivity = ctx.Client.GetInteractivity();
-            await ctx.RespondAsync(
-                "<@&1062796164962979840>"); 
             var r = await interactivity.WaitForReactionAsync(
                 (x) =>
                 {
                     return x.Message == ctx.Message &&
                            (ctx.Client.CurrentApplication.Owners.Any(y => y.Id == x.User.Id) ||
-                            Trusted.Contains(x.User.Id)) && x.Emoji.Name == "upvote";
+                            Config.ExtraParams["StableDiff.Trusted"].Split(",").Select(z=> Convert.ToUInt64(z.Trim())).Contains(x.User.Id)) && x.Emoji.Name == "upvote";
                 }, TimeSpan.FromMinutes(5));
             if (r.TimedOut)
             {
                 return;
             }
 
-            var res = await HttpClient.PostAsync("http://localhost:9000/render",
+            var res = await HttpClient.PostAsync( Config.ExtraParams["StableDiff.BaseUrl"]+"render",
                 new StringContent(sent, Encoding.UTF8, "application/json"));
             var response = JsonSerializer.Deserialize<Response>(await res.Content.ReadAsStringAsync());
             DiscordMessage og;
             if (string.IsNullOrWhiteSpace(response.Stream))
             {
-                await new DiscordMessageBuilder()
-                    .WithEmbed(new DiscordEmbedBuilder().WithTitle("bot broke try again?")
-                        .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                        .WithColor(await ColorUtils.GetSingleAsync()).Build()).WithReply(ctx.Message.Id)
-                    .SendAsync(ctx.Channel);
+                await Task.Delay(100);
+                await TImagine(ctx, prompt, model, seed, negative_prompt, resolution, steps);
                 return;
             }
 
             if (response.Status == "Online")
             {
                 og = await new DiscordMessageBuilder()
-                    .WithEmbed(new DiscordEmbedBuilder().WithTitle("Rendering " + response.Stream)
-                        .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                        .WithColor(await ColorUtils.GetSingleAsync()).Build()).WithReply(ctx.Message.Id)
+                    .WithEmbed(ctx.GetNewBuilder(language).WithTitle("Rendering " + response.Stream)
+                    .Build()).WithReply(ctx.Message.Id)
                     .SendAsync(ctx.Channel);
             }
             else
             {
                 og = await new DiscordMessageBuilder()
-                    .WithEmbed(new DiscordEmbedBuilder().WithTitle("Added to generation queue " + response.Stream)
-                        .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                        .WithColor(await ColorUtils.GetSingleAsync()).Build()).WithReply(ctx.Message.Id)
+                    .WithEmbed(ctx.GetNewBuilder(language).WithTitle("Added to generation queue " + response.Stream)
+                    .Build()).WithReply(ctx.Message.Id)
                     .SendAsync(ctx.Channel);
             }
 
@@ -158,7 +148,7 @@ namespace SilverBotDS.Commands
             {
                 try
                 {
-                    var res2 = await HttpClient.GetAsync("http://localhost:9000" + response.Stream);
+                    var res2 = await HttpClient.GetAsync(Config.ExtraParams["StableDiff.BaseUrl"]+ response.Stream);
                     var rescont = await res2.Content.ReadAsStringAsync();
                     if (rescont.StartsWith("{\"step\":"))
                     {
@@ -170,11 +160,10 @@ namespace SilverBotDS.Commands
                         var deserialized = JsonSerializer.Deserialize<PartialResponse>(rescont);
                         await og.ModifyAsync(x =>
                         {
-                            x.WithEmbed(new DiscordEmbedBuilder().WithTitle("Generating " + response.Stream)
+                            x.WithEmbed(ctx.GetNewBuilder(language).WithTitle("Generating " + response.Stream)
                                 .WithDescription(
                                     $"{deserialized.Step} / {deserialized.TotalSteps} @ {deserialized.StepTime}s per step")
-                                .WithFooter("Requested by " + ctx.User.Username,
-                                    ctx.User.GetAvatarUrl(ImageFormat.Png)));
+                                );
                         });
                     }
 
@@ -250,7 +239,7 @@ namespace SilverBotDS.Commands
         [JsonPropertyName("prompt")]
         public string Prompt { get; set; }
         [JsonPropertyName("session_id")]
-        public long SessionId { get; set; } = 1670683499561;
+        public string SessionId { get; set; } = "1670683499561";
         [JsonPropertyName("init_image")]
         public string InitImage { get; set; } = null;
         [JsonPropertyName("seed")]
@@ -260,15 +249,15 @@ namespace SilverBotDS.Commands
         [JsonPropertyName("num_outputs")]
         public int NumOutputs { get; set; } = 1;
         [JsonPropertyName("num_inference_steps")]
-        public string NumInferenceSteps { get; set; } = "25";
+        public long NumInferenceSteps { get; set; } = 25;
         [JsonPropertyName("guidance_scale")]
-        public string GuidanceScale { get; set; } = "12.5";
+        public float GuidanceScale { get; set; } = 12.5f;
         [JsonPropertyName("prompt_strength")]
-        public string PromptStrength { get; set; } = "0.34";
+        public float PromptStrength { get; set; } = 0.34f;
         [JsonPropertyName("width")]
-        public string Width { get; set; } = "1024";
+        public int Width { get; set; } = 1024;
         [JsonPropertyName("height")]
-        public string Height { get; set; } = "1024";
+        public int Height { get; set; } = 1024;
         [JsonPropertyName("turbo")]
         public bool Turbo { get; set; } = true;
         [JsonPropertyName("use_full_precision")]
@@ -286,7 +275,7 @@ namespace SilverBotDS.Commands
         [JsonPropertyName("output_format")]
         public string OutputFormat { get; set; } = "png";
         [JsonPropertyName("output_quality")]
-        public string OutputQuality { get; set; } = "75";
+        public int OutputQuality { get; set; } = 75;
         [JsonPropertyName("original_prompt")]
         public string OriginalPrompt { get; set; }
         [JsonPropertyName("sampler")]

@@ -42,6 +42,7 @@ public partial class OwnerOnly : BaseCommandModule
     public HttpClient HttpClient { private get; set; }
     public LanguageService LanguageService { private get; set; }
     public ModuleRegistrationService ModuleRegistrationService { private get; set; }
+    public ColourService ColourService {private get; set;}
 
     public TaskService TaskService { private get; set; }
     [Command("reloadcolors")]
@@ -56,11 +57,11 @@ public partial class OwnerOnly : BaseCommandModule
                 .WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
         }
 
-        await ColorUtils.ReloadConfig();
+        ColourService.ReadConfig();
         await new DiscordMessageBuilder()
             .WithEmbed(new DiscordEmbedBuilder().WithTitle("Reloaded the colors")
                 .WithFooter("Requested by " + ctx.User.Username, ctx.User.GetAvatarUrl(ImageFormat.Png))
-                .WithColor(await ColorUtils.GetSingleAsync()).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+                .WithColor(ColourService.GetSingle()).Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
     }
 
     [Command("UnRegisterCommand")]
@@ -412,8 +413,6 @@ public partial class OwnerOnly : BaseCommandModule
                 .SendAsync(ctx.Channel);
             sw1.Stop();
             sw2.Stop();
-            result = null;
-            script = null;
         }
         catch (CompilationErrorException e)
         {

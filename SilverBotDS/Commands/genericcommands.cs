@@ -33,6 +33,8 @@ public sealed class Genericcommands : BaseCommandModule
     public Config Config { private get; set; }
     public HttpClient HttpClient { private get; set; }
     public LanguageService LanguageService { private get; set; }
+    public ColourService ColourService {private get; set;}
+
 
     [Command("hi")]
     [Description("Hello fellow human! beep boop")]
@@ -122,8 +124,8 @@ public sealed class Genericcommands : BaseCommandModule
             }
             var zipItemMsg = zip.CreateEntry($"message.txt");
             await using MemoryStream zipItemMsgFileStream = new(Encoding.UTF8.GetBytes(message.Content)) { Position=0};
-            await using var entryStreammsg = zipItemMsg.Open();
-            await zipItemMsgFileStream.CopyToAsync(entryStreammsg);
+            await using var entryStreamMsg = zipItemMsg.Open();
+            await zipItemMsgFileStream.CopyToAsync(entryStreamMsg);
         }
 
         memoryStream.Position = 0;
@@ -175,7 +177,7 @@ public sealed class Genericcommands : BaseCommandModule
                 ctx.Guild?.Members.ContainsKey(a.Id) == true
                     ? ctx.Guild?.Members[a.Id].JoinedAt.UtcDateTime.DateTimeToTimeStamp(TimestampFormat.LongDateTime)
                     : "NA", true)
-            .WithColor(await ColorUtils.GetSingleAsync())
+            .WithColor(ColourService.GetSingle())
             .WithThumbnail(a.GetAvatarUrl(ImageFormat.Png))
             .AddRequestedByFooter(ctx,lang)
             .Build()).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);

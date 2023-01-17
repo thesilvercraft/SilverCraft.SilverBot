@@ -22,8 +22,7 @@ public class GeneralCommands : ApplicationCommandModule
     public DatabaseContext Dbctx { private get; set; }
     public Config Cnf { private get; set; }
     public LanguageService LanguageService { private get; set; }
-
-
+    public ColourService ColourService {private get; set;}
     [SlashCommand("hello", "A simple hello command")]
     public async Task TestCommand(InteractionContext ctx)
     {
@@ -50,7 +49,7 @@ public class GeneralCommands : ApplicationCommandModule
                     (ctx.Guild?.Members.ContainsKey(user.Id) == true
                         ? ctx.Guild?.Members[user.Id].JoinedAt.UtcDateTime.DateTimeToTimeStamp(TimestampFormat.LongDateTime)
                         : "NA") ?? "NA", true)
-                .WithColor(await ColorUtils.GetSingleAsync())
+                .WithColor(ColourService.GetSingle())
                 .WithThumbnail(user.GetAvatarUrl(ImageFormat.Png))
                 .AddRequestedByFooter(ctx,lang)
                 .Build()).AsEphemeral(true));
@@ -86,7 +85,7 @@ public class GeneralCommands : ApplicationCommandModule
                 .WithDescription(lang.SilverhostingJokeDescription)
                 .WithAuthor($"{ctx.Client.CurrentUser.Username}#{ctx.Client.CurrentUser.Discriminator}",
                     iconUrl: ctx.Client.CurrentUser.GetAvatarUrl(ImageFormat.Auto))
-                .WithColor(await ColorUtils.GetSingleAsync())
+                .WithColor(ColourService.GetSingle())
                 .Build()));
     }
 

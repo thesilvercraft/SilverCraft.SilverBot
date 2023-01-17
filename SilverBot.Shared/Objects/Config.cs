@@ -78,7 +78,11 @@ public class Config : INotifyPropertyChanged, ICanBeToldThatAPartOfMeIsChanged
     [Comment("Extra string paramaters you might want to give to any code that can read this config")]
     public Classes.SerializableDictionary<string, string> ExtraParams { get; set; } = new()
     {
-        {"GAMING","YES" }
+        {"StableDiff.SafeModel", "sd-v1-4, App_Icons_V1_PublicPrompts, Pixel_Art_V1_PublicPrompts" },
+        {"StableDiff.NotSafeModel", "hd-17, wd-v1-3-float16" },
+        {"StableDiff.Trusted", "687387957296103541, 1024769162419126362" },
+        {"StableDiff.BaseUrl", "http://localhost:9000" },
+
     };
     [Comment("What modules should silverbot load from external dlls")]
     public string[] ModulesFilesToLoadExternal { get; set; } = new[]

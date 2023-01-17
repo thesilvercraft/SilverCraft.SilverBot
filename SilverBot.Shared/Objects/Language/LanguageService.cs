@@ -3,6 +3,7 @@ using System.Text.Json;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Objects.Database;
 
@@ -39,6 +40,23 @@ namespace SilverBot.Shared.Objects.Language
         {
             return Task.Run(async ()=> await GetAsync(languageName)).GetAwaiter().GetResult();
         }
+        ///<summary>
+        ///a last resort for a non null <seealso cref="Language"/>
+        ///</summary>
+        public async Task<Language> GetDefaultAsync()
+        {
+            Log.Warning("GetDefaultAsync was called in {StackTrace}", Environment.StackTrace);
+            return await GetAsync("en") ?? new Language();
+        }
+         ///<summary>
+        ///a last resort for a non null <seealso cref="Language"/>
+        ///</summary>
+        public  Language GetDefault()
+        {
+            Log.Warning("GetDefault was called in {StackTrace}", Environment.StackTrace);
+            return Get("en") ?? new Language();
+        }
+        
         public async Task<Language> GetAsync(string languageName)
         {
             languageName = languageName.Trim();
@@ -94,13 +112,13 @@ namespace SilverBot.Shared.Objects.Language
         {
             await using var databaseContext = ctx.Services.GetService<DatabaseContext>();
             var config = ctx.Services.GetService<Config>();
-            return await FromCtxAsync(ctx,config ?? throw new InvalidOperationException(), databaseContext ?? throw new InvalidOperationException());
+            return await FromCtxAsync(ctx, config ?? throw new InvalidOperationException(), databaseContext ?? throw new InvalidOperationException());
         }
         public async Task<Language> FromCtxAsync(BaseContext ctx)
         {
             await using var databaseContext = ctx.Services.GetService<DatabaseContext>();
             var config = ctx.Services.GetService<Config>();
-            return await FromCtxAsync(ctx,config ?? throw new InvalidOperationException(), databaseContext ?? throw new InvalidOperationException());
+            return await FromCtxAsync(ctx, config ?? throw new InvalidOperationException(), databaseContext ?? throw new InvalidOperationException());
         }
         public Language FromUserId(ulong userId,DatabaseContext databaseContext)
         {

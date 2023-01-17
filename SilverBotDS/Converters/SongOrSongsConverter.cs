@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Classes;
 using SilverBot.Shared.Objects.Language;
+using SilverBot.Shared;
 
 namespace SilverBotDS.Converters;
 
@@ -37,7 +38,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
         {
             if (ctx.Member?.VoiceState?.Channel == null)
             {
-                await Audio.SendSimpleMessage(ctx, lang.UserNotConnected, language: lang);
+                await ctx.SendMessageAsync(lang.UserNotConnected, language: lang);
                 return new Optional<SongORSongs>();
             }
 
@@ -61,8 +62,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
                         .ReadAsStringAsync());
                 if (!string.IsNullOrEmpty(tracks.PlaylistTitle))
                 {
-                    await Audio.SendSimpleMessage(ctx,
-                        string.Format(lang.LoadedSilverBotPlaylistWithTitle, tracks.PlaylistTitle), language: lang);
+                    await ctx.SendMessageAsync(string.Format(lang.LoadedSilverBotPlaylistWithTitle, tracks.PlaylistTitle), language: lang);
                 }
 
                 return new Optional<SongORSongs>(new SongORSongs(TrackDecoder.DecodeTrack(tracks.Identifiers[0]), null,
@@ -86,7 +86,7 @@ public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
         {
             return new Optional<SongORSongs>(new SongORSongs(track.First(), null, track.Skip(1).Cast<LavalinkTrack>().ToAsyncEnumerable()));
         }
-        await Audio.SendSimpleMessage(ctx, string.Format(lang.NoResults, value), language: lang);
+        await ctx.SendMessageAsync(string.Format(lang.NoResults, value), language: lang);
         return new Optional<SongORSongs>();
     }
 

@@ -26,6 +26,7 @@ public class MinecraftModule : BaseCommandModule
 {
     //HEY LOIS IM PLAYING MINECRAFT
     public HttpClient HttpClient { private get; set; }
+    public ColourService ColourService {private get; set;}
 
     [Command("getfromusername")]
     [Description("Get a minecraft players UUID from their username")]
@@ -37,7 +38,7 @@ public class MinecraftModule : BaseCommandModule
         b.WithThumbnail(player.GetAvatarUrl())
             .WithImageUrl(player.GetBodyUrl())
             .AddField("uuid", "`" + player.Id + "`")
-            .WithColor(await ColorUtils.GetSingleAsync());
+            .WithColor(ColourService.GetSingle());
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
             .WithEmbed(b.Build())
             .SendAsync(ctx.Channel);

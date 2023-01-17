@@ -29,6 +29,7 @@ using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Utils;
 using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
+using SilverBot.Shared;
 
 namespace SilverBotDS.Commands;
 
@@ -49,6 +50,7 @@ public class Experience : BaseCommandModule, IRequireAssets
     public DatabaseContext Database { private get; set; }
     public HttpClient HttpClient { private get; set; }
     public LanguageService LanguageService { private get; set; }
+    public ColourService ColourService {private get; set;}
 
 
     [Command("givexpbecausedowntimepercent")]
@@ -83,7 +85,7 @@ public class Experience : BaseCommandModule, IRequireAssets
         var lang = await LanguageService.FromCtxAsync(ctx);
         var b = new DiscordEmbedBuilder()
             .AddRequestedByFooter(ctx,lang)
-            .WithColor(await ColorUtils.GetSingleAsync());
+            .WithColor(ColourService.GetSingle());
         var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == ctx.User.Id);
         if (o is not null)
         {
@@ -102,21 +104,18 @@ public class Experience : BaseCommandModule, IRequireAssets
     [Command("xp")]
     public async Task XpCommand(CommandContext ctx, DiscordMember member)
     {
-        var lang = await LanguageService.FromCtxAsync(ctx);
-        var b = new DiscordEmbedBuilder()
-            .AddRequestedByFooter(ctx,lang)
-            .WithColor(await ColorUtils.GetSingleAsync());
+        var language = await ctx.GetLanguageAsync();
+        var b = ctx.GetNewBuilder(language);
         var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == member.Id);
         if (o is not null)
         {
             var levelcount = GetLevel(o.XP);
-            b.WithDescription(string.Format(lang.XPCommandOther, o.XP, levelcount));
+            b.WithDescription(string.Format(language.XPCommandOther, o.XP, levelcount));
         }
         else
         {
-            b.WithDescription(lang.XPCommandFailOther);
+            b.WithDescription(language.XPCommandFailOther);
         }
-
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
     }
 
@@ -168,7 +167,7 @@ public class Experience : BaseCommandModule, IRequireAssets
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(new DiscordEmbedBuilder()
                 .WithDescription(lang.XPCommandGeneralFail)
                 .AddRequestedByFooter(ctx,lang)
-                .WithColor(await ColorUtils.GetSingleAsync()).Build()).SendAsync(ctx.Channel);
+                .WithColor(ColourService.GetSingle()).Build()).SendAsync(ctx.Channel);
         }
     }
 

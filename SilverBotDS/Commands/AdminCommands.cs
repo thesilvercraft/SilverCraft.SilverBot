@@ -35,6 +35,8 @@ public class AdminCommands : BaseCommandModule
     public DatabaseContext Database { private get; set; }
     public HttpClient HttpClient { private get; set; }
     public LanguageService LanguageService { private get; set; }
+    public ColourService ColourService {private get; set;}
+
     [Command("setprefix")]
     [RequireUserPermissions(Permissions.ManageGuild)]
     public async Task SetPrefix(CommandContext ctx, params string[] cake)
@@ -74,7 +76,7 @@ public class AdminCommands : BaseCommandModule
             bob.WithTitle(question)
                 .WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username,
                     iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png))
-                .WithColor(await ColorUtils.GetSingleAsync());
+                .WithColor(ColourService.GetSingle());
             var pollStartMessage = await commandContext.RespondAsync(bob.Build());
             foreach (var emote in _pollEmojiCache)
             {

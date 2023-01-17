@@ -24,6 +24,8 @@ public class ModCommands : BaseCommandModule
 {
     
     public LanguageService LanguageService { private get; set; }
+    public ColourService ColourService {private get; set;}
+
     [Command("kick")]
     [Description("Kick a specified user")]
     [RequirePermissions(Permissions.KickMembers)]
@@ -54,7 +56,7 @@ public class ModCommands : BaseCommandModule
             thing = lang.BotKickedUser;
         }
 
-        b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync())
+        b.WithDescription(thing).WithColor(ColourService.GetSingle())
             .AddRequestedByFooter(ctx,lang);
         await ctx.RespondAsync(b.Build());
     }
@@ -93,7 +95,7 @@ public class ModCommands : BaseCommandModule
             thing = lang.BotBannedUser;
         }
 
-        b.WithDescription(thing).WithColor(await ColorUtils.GetSingleAsync())
+        b.WithDescription(thing).WithColor(ColourService.GetSingle())
             .AddRequestedByFooter(ctx,lang);
         await ctx.RespondAsync(b.Build());
     }
@@ -128,7 +130,7 @@ public class ModCommands : BaseCommandModule
                 .WithReply(ctx.Message.Id)
                 .WithEmbed(new DiscordEmbedBuilder()
                     .WithTitle(lang.PurgeNumberNegative)
-                    .WithColor(await ColorUtils.GetSingleAsync()))
+                    .WithColor(ColourService.GetSingle()))
                 .SendAsync(ctx.Channel);
             return;
         }
@@ -141,7 +143,7 @@ public class ModCommands : BaseCommandModule
                 .WithReply(ctx.Message.Id)
                 .WithEmbed(new DiscordEmbedBuilder()
                     .WithTitle(lang.PurgeNothingToDelete)
-                    .WithColor(await ColorUtils.GetSingleAsync()))
+                    .WithColor(ColourService.GetSingle()))
                 .SendAsync(ctx.Channel);
             return;
         }
@@ -153,7 +155,7 @@ public class ModCommands : BaseCommandModule
             .WithEmbed(new DiscordEmbedBuilder()
                 .WithTitle(lang.PurgeRemovedFront + messages.Count +
                            (messages.Count > 1 ? lang.PurgeRemovedPlural : lang.PurgeRemovedSingle))
-                .WithColor(await ColorUtils.GetSingleAsync()))
+                .WithColor(ColourService.GetSingle()))
             .SendAsync(ctx.Channel);
     }
 }

@@ -243,6 +243,7 @@ namespace SilverBotDS
                 services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
                 services.AddSingleton(new LanguageService());
                 services.AddSingleton<IPaginator>(new CoolerPaginatior(_discord));
+                services.AddSingleton(new ColourService());
                 services.AddDbContext<DatabaseContext>(
                     options =>
                     {

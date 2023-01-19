@@ -32,20 +32,14 @@ public class Manifest : Controller
                 {
                     new Icon {Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
                     new Icon {Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"},
-                    new Icon {Sizes = "512x512", Src = "/pride/android-chrome-512x512.png", Type = "image/png"},
-                    new Icon {Sizes = "192x192", Src = "/pride/android-chrome-192x192.png", Type = "image/png"}
+
                 };
                 break;
             case 10 when DateTime.UtcNow.Day == 31:
                 obj.Icons = new[]
                 {
                     new Icon {Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
-                    new Icon
-                    {
-                        Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"
-                    },
-                    new Icon {Sizes = "512x512", Src = "/halloween/android-chrome-512x512.png", Type = "image/png"},
-                    new Icon {Sizes = "192x192", Src = "/halloween/android-chrome-192x192.png", Type = "image/png"}
+                    new Icon { Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable" },
                 };
                 obj.ThemeColor = "#EF5B31";
                 break;
@@ -54,8 +48,6 @@ public class Manifest : Controller
                 {
                     new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
                     new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"},
-                    new Icon {Sizes = "512x512", Src = "/android-chrome-512x512.png", Type = "image/png"},
-                    new Icon {Sizes = "192x192", Src = "/android-chrome-192x192.png", Type = "image/png"}
                 };
                 break;
         }

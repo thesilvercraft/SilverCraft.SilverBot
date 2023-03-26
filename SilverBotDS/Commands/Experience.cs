@@ -62,7 +62,6 @@ public class Experience : BaseCommandModule, IRequireAssets
             person.XP += person.XP / 100 * percent;
             Database.userExperiences.Update(person);
         }
-        Console.WriteLine("aa");
         await Database.SaveChangesAsync();
     }
 
@@ -75,7 +74,6 @@ public class Experience : BaseCommandModule, IRequireAssets
             person.XP += xp;
             Database.userExperiences.Update(person);
         }
-
         await Database.SaveChangesAsync();
     }
 
@@ -89,15 +87,13 @@ public class Experience : BaseCommandModule, IRequireAssets
         var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == ctx.User.Id);
         if (o is not null)
         {
-            var levelcount = GetLevel(o.XP);
-            Console.WriteLine(lang.XPCommandSelf);
-            b.WithDescription(string.Format(lang.XPCommandSelf, o.XP, levelcount));
+            var levelCount = GetLevel(o.XP);
+            b.WithDescription(string.Format(lang.XPCommandSelf, o.XP, levelCount));
         }
         else
         {
             b.WithDescription(lang.XPCommandFailSelf);
         }
-
         await new DiscordMessageBuilder().WithReply(ctx.Message.Id).WithEmbed(b.Build()).SendAsync(ctx.Channel);
     }
 
@@ -280,7 +276,7 @@ public class Experience : BaseCommandModule, IRequireAssets
             e *= l;
         }
 
-        return (double)xp / (double)e * 100d;
+        return (double)xp / e * 100d;
     }
 
     private ulong GetLevel(ulong xp)

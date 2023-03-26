@@ -108,6 +108,10 @@ namespace SilverBot.Shared.Objects.Language
         {
           return Task.Run(async ()=> await FromCtxAsync(ctx)).GetAwaiter().GetResult();
         }
+        public Language FromCtx(ISilverBotContext ctx)
+        {
+            return Task.Run(async ()=> await FromCtxAsync(ctx)).GetAwaiter().GetResult();
+        }
         public async Task<Language> FromCtxAsync(CommandContext ctx)
         {
             await using var databaseContext = ctx.Services.GetService<DatabaseContext>();
@@ -115,6 +119,12 @@ namespace SilverBot.Shared.Objects.Language
             return await FromCtxAsync(ctx, config ?? throw new InvalidOperationException(), databaseContext ?? throw new InvalidOperationException());
         }
         public async Task<Language> FromCtxAsync(BaseContext ctx)
+        {
+            await using var databaseContext = ctx.Services.GetService<DatabaseContext>();
+            var config = ctx.Services.GetService<Config>();
+            return await FromCtxAsync(ctx, config ?? throw new InvalidOperationException(), databaseContext ?? throw new InvalidOperationException());
+        }
+        public async Task<Language> FromCtxAsync(ISilverBotContext ctx)
         {
             await using var databaseContext = ctx.Services.GetService<DatabaseContext>();
             var config = ctx.Services.GetService<Config>();

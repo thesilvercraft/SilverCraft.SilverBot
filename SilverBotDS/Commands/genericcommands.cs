@@ -9,12 +9,14 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Humanizer;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using SilverBot.Shared;
 using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Database.Classes;
@@ -118,16 +120,14 @@ public sealed class Genericcommands : BaseCommandModule
             foreach (var f in message.Attachments)
             {
                 var zipItem = zip.CreateEntry($"{f.FileName}");
-                await using MemoryStream originalFileMemoryStream = new(await HttpClient.GetByteArrayAsync(f.ProxyUrl));
                 await using var entryStream = zipItem.Open();
-                await originalFileMemoryStream.CopyToAsync(entryStream);
+                await (await HttpClient.GetStreamAsync(f.Url)).CopyToAsync(entryStream);
             }
             var zipItemMsg = zip.CreateEntry($"message.txt");
             await using MemoryStream zipItemMsgFileStream = new(Encoding.UTF8.GetBytes(message.Content)) { Position=0};
             await using var entryStreamMsg = zipItemMsg.Open();
             await zipItemMsgFileStream.CopyToAsync(entryStreamMsg);
         }
-
         memoryStream.Position = 0;
         await new DiscordMessageBuilder()
             .WithReply(ctx.Message.Id)
@@ -161,7 +161,7 @@ public sealed class Genericcommands : BaseCommandModule
 
     [Command("user")]
     [Description("Get the info I know about a specified user")]
-    public async Task Userinfo(CommandContext ctx, [Description("the user like duh")] DiscordUser a)
+    public async Task Userinfo(CommandContext ctx, [Description("the user (left blank = person running command)")] DiscordUser a)
     {
         var lang = await LanguageService.FromCtxAsync(ctx);
         await new DiscordMessageBuilder().WithEmbed(new DiscordEmbedBuilder()

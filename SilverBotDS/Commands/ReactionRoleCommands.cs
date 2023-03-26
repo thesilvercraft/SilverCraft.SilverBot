@@ -104,27 +104,18 @@ public partial class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRe
                 {
                     foreach (var line in lines)
                     {
-                        var splitline = line.Split(' ');
-                        DiscordRole role;
-                        if (ulong.TryParse(splitline[0], out var id))
-                        {
-                            role = ctx.Guild.GetRole(id);
-                        }
-                        else
-                        {
-                            role = ctx.Guild.Roles.FirstOrDefault(r => r.Value.Mention == splitline[0]).Value;
-                        }
-                        DiscordEmoji emoji;
-                        var m = Emote().Match(splitline[1]);
-                        emoji = m.Success ? DiscordEmoji.FromGuildEmote(ctx.Client, ulong.Parse(m.Groups["id"].Value)) : DiscordEmoji.FromUnicode(ctx.Client, splitline[1]);
+                        var splitLine = line.Split(' ');
+                        var role = ulong.TryParse(splitLine[0], out var id) ? ctx.Guild.GetRole(id) : ctx.Guild.Roles.FirstOrDefault(r => r.Value.Mention == splitLine[0]).Value;
+                        var m = Emote().Match(splitLine[1]);
+                        var emoji = m.Success ? DiscordEmoji.FromGuildEmote(ctx.Client, ulong.Parse(m.Groups["id"].Value)) : DiscordEmoji.FromUnicode(ctx.Client, splitLine[1]);
                         var t = ReactionRoleType.Normal;
-                        if (splitline.Length == 3)
+                        if (splitLine.Length == 3)
                         {
-                            if (ushort.TryParse(splitline[2], out var idoft) && Enum.GetValues<ReactionRoleType>().Select(x => (ushort)x).Contains(idoft))
+                            if (ushort.TryParse(splitLine[2], out var idOfType) && Enum.GetValues<ReactionRoleType>().Select(x => (ushort)x).Contains(idOfType))
                             {
-                                t = (ReactionRoleType)idoft;
+                                t = (ReactionRoleType)idOfType;
                             }
-                            else if (!Enum.TryParse(splitline[2], out t))
+                            else if (!Enum.TryParse(splitLine[2], out t))
                             {
                                 t = ReactionRoleType.Normal;
                             }
@@ -137,29 +128,28 @@ public partial class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRe
                     msg = await msg.ModifyAsync(e.Message);
                 }
                 await result.Result.DeleteAsync();
-                StringBuilder asasasasas = new($"{lang.ReactionRoleRolesAdded} ({roles.Count}):\n");
+                StringBuilder rolesAlreadyAddedMsgContent = new($"{lang.ReactionRoleRolesAdded} ({roles.Count}):\n");
                 foreach (var role in roles)
                 {
-                    asasasasas.Append(role.Value.Item1).Append(' ').Append(role.Key.Name).Append(' ').AppendLine(role.Value.Item2.Humanize());
+                    rolesAlreadyAddedMsgContent.Append(role.Value.Item1).Append(' ').Append(role.Key.Name).Append(' ').AppendLine(role.Value.Item2.Humanize());
                 }
-
-                nmsg = await nmsg.ModifyAsync(asasasasas.ToString());
+                nmsg = await nmsg.ModifyAsync(rolesAlreadyAddedMsgContent.ToString());
             }
             await nmsg.DeleteAsync();
-            StringBuilder asasadsadsasas = new();
+            StringBuilder roleMenuBodyText = new();
             if (useembed)
             {
                 foreach (var role in roles)
                 {
-                    asasadsadsasas.Append(role.Value.Item1).Append(": ").AppendLine(role.Key.Mention);
+                    roleMenuBodyText.Append(role.Value.Item1).Append(": ").AppendLine(role.Key.Mention);
                 }
             }
             else
             {
-                asasadsadsasas.AppendLine(title);
+                roleMenuBodyText.AppendLine(title);
                 foreach (var role in roles)
                 {
-                    asasadsadsasas.Append(role.Value.Item1).Append(": `").Append(role.Key.Name).AppendLine("`");
+                    roleMenuBodyText.Append(role.Value.Item1).Append(": `").Append(role.Key.Name).AppendLine("`");
                 }
             }
             var mb = new DiscordMessageBuilder();
@@ -173,19 +163,19 @@ public partial class ReactionRoleCommands : BaseCommandModule, IHaveExecutableRe
                     var c = ColorConverter.Convert(result.Result.Content);
                     colour = new DiscordColor(c.Value.R, c.Value.G,c.Value.B);
                 }
-                mb = mb.WithEmbed(new DiscordEmbedBuilder().WithTitle(title).WithDescription(asasadsadsasas.ToString())
+                mb = mb.WithEmbed(new DiscordEmbedBuilder().WithTitle(title).WithDescription(roleMenuBodyText.ToString())
                     .WithColor(colour));
             }
             else
             {
-                mb = mb.WithContent(asasadsadsasas.ToString());
+                mb = mb.WithContent(roleMenuBodyText.ToString());
             }
-            var nnmsg = await ctx.Channel.SendMessageAsync(mb);
-
+            var menuMessage = await ctx.Channel.SendMessageAsync(mb);
+            
             foreach (var role in roles)
             {
-                serverSettings.ReactionRoleMappings.Add(new ReactionRoleMapping { Emoji = role.Value.Item1.Name, EmojiId = role.Value.Item1.Id, RoleId = role.Key.Id, MessageId = nnmsg.Id, ChannelId = ctx.Channel.Id, Mode = role.Value.Item2 });
-                _ = nnmsg.CreateReactionAsync(role.Value.Item1);
+                serverSettings.ReactionRoleMappings.Add(new ReactionRoleMapping { Emoji = role.Value.Item1.Name, EmojiId = role.Value.Item1.Id, RoleId = role.Key.Id, MessageId = menuMessage.Id, ChannelId = ctx.Channel.Id, Mode = role.Value.Item2 });
+                _ = menuMessage.CreateReactionAsync(role.Value.Item1);
             }
             await DbCtx.SaveChangesAsync();
             await msg.DeleteAsync();

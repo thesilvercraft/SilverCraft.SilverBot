@@ -53,6 +53,7 @@ using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Pagination;
 using SilverBot.Shared.Utils;
+using SilverBotDS.Commands;
 using SilverBotDS.ProgramExtensions;
 
 namespace SilverBotDS
@@ -311,6 +312,7 @@ namespace SilverBotDS
                         services.AddSingleton(_audioService);
                         mainlog.LogDebug("Activating artwork service");
                         services.AddSingleton(new ArtworkService());
+                      
                         if (!_config.SitInVc)
                         {
                             mainlog.LogDebug("Activating tracking service");
@@ -354,6 +356,13 @@ namespace SilverBotDS
                                 group.Key);
                         }
                     }
+                }
+
+                if (_config.UseLavaLink)
+                {
+                    services.AddSingleton(
+                        (NeutralAudio)ModuleRegistrationService.CreateInstance(typeof(NeutralAudio),
+                            services.BuildServiceProvider()));
                 }
 
                 ServiceProvider = services.BuildServiceProvider();

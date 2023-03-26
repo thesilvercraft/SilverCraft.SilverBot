@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SilverBot.Shared;
 using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Objects.Database;
 using SilverBot.Shared.Objects.Database.Classes;
@@ -73,7 +74,7 @@ public class ServerStatsCommands : BaseCommandModule
             e++;
         }
 
-        await OwnerOnly.SendStringFileWithContent(ctx,
+        await ctx.SendStringFileWithContent(
             string.Format(lang.EmojiEnd, messages.Count, (DateTime.Now - start).Humanize(2, lang.GetCultureInfo()),
                 (DateTime.Now - startproc).Humanize(2, lang.GetCultureInfo())), bob.ToString(), "emotes.csv");
         bob.Clear();

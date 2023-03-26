@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SilverBot.Shared;
 using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Database;
@@ -136,7 +137,7 @@ public class MiscCommands : BaseCommandModule
         var translation = await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate);
         if (translation.Item1.Length > 4095)
         {
-            await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{translation.Item2}>", translation.Item1);
+            await ctx.SendStringFileWithContent( $"TTS URL: <{translation.Item2}>", translation.Item1);
         }
         else
         {
@@ -173,7 +174,7 @@ public class MiscCommands : BaseCommandModule
         var translation = await translator.TranslateAsync(text, "auto", languageTo);
         if (translation.Item1.Length > 4095)
         {
-            await OwnerOnly.SendStringFileWithContent(ctx, $"TTS URL: <{translation.Item2}>", translation.Item1);
+            await ctx.SendStringFileWithContent( $"TTS URL: <{translation.Item2}>", translation.Item1);
         }
         else
         {

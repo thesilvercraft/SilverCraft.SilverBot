@@ -115,18 +115,11 @@ public class Language
 
     public string NothingInQueueHistory { get; set; } = "Whoa there is nothing in the queue history";
 
-    /// <summary>
-    ///     Never gonna give you up<b> by </b>Rick Astley
-    ///     <para />
-    ///     <b>␣by␣</b>
-    /// </summary>
-    /// <remarks>
-    ///     Needs to be used like <c>Title+Language.Song_by_author+Author</c>
-    /// </remarks>
-    public string SongByAuthor { get; set; } = " by ";
 
-    public string RemovedFront { get; set; } = "Removed: "; //"Removed: "Never gonna give you up by Rick Astley
+    public string RemovedFront {get; set; } = "Removed {0}";
+    public string RemovedFrontWithAuthorName { get; set; } = "Removed {0} by {1]";
 
+    public string GetRemovedTitle(string trackName, string? authorName)  => string.IsNullOrEmpty(authorName) ? string.Format(RemovedFront, trackName) : string.Format(RemovedFrontWithAuthorName, trackName, authorName);
     /// <summary>
     ///     Removed 20 songs
     ///     <br />
@@ -361,12 +354,15 @@ public class Language
     ///     Now playing: {0}
     /// </summary>
     public string NowPlaying { get; set; } = "Now playing: {0}";
+    public string NowPlayingBy { get; set; } = "Now playing {0} by {1}";
 
-    /// <summary>
-    ///     Enqueued: {0}
-    /// </summary>
+    public string GetNowPlaying(string trackName, string? authorName) => string.IsNullOrEmpty(authorName) ? string.Format(NowPlaying, trackName) : string.Format(NowPlayingBy, trackName, authorName);
+
+    public string GetEnqueuedTitle(string trackName, string? authorName) => string.IsNullOrEmpty(authorName) ? string.Format(Enqueued, trackName) : string.Format(EnqueuedBy, trackName, authorName);
     public string Enqueued { get; set; } = "Enqueued: {0}";
+    public string EnqueuedBy { get; set; } = "Enqueued: {0} by {1}";
 
+    
     /// <summary>
     ///     Skipped: {0}, Now playing {1}
     /// </summary>

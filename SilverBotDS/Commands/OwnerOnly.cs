@@ -24,6 +24,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using SilverBot.Shared;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Database;
 using SilverBot.Shared.Objects.Language;
@@ -139,7 +140,7 @@ public partial class OwnerOnly : BaseCommandModule
     public async Task Category(CommandContext ctx, [Description("The person to set up a category for")] DiscordMember
         person)
     {
-        var name = Regex.Replace(person.Username, @"[^\w]", "");
+        var name = MyRegex().Replace(person.Username, "");
         DiscordOverwriteBuilder[] builders =
         {
             new(ctx.Guild.CurrentMember)
@@ -231,20 +232,7 @@ public partial class OwnerOnly : BaseCommandModule
         return str;
     }
 
-    public static async Task SendStringFileWithContent(CommandContext ctx, string title, string file,
-        string filename = "message.txt")
-    {
-        await new DiscordMessageBuilder().WithContent(title)
-            .AddFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None)
-            .SendAsync(ctx.Channel);
-    }
-    public static async Task SendStringFileWithContent(BaseContext ctx, string title, string file,
-        string filename = "message.txt")
-    {
-        await new DiscordMessageBuilder().WithContent(title)
-            .AddFile(filename, new MemoryStream(Encoding.UTF8.GetBytes(file))).WithAllowedMentions(Mentions.None)
-            .SendAsync(ctx.Channel);
-    }
+  
     public static async Task SendBestRepresentationAsync(object ob, CommandContext ctx)
     {
         try
@@ -269,7 +257,7 @@ public partial class OwnerOnly : BaseCommandModule
                         str = JsonSerializer.Serialize(ob, Options);
                         if (str.Length >= 2000)
                         {
-                            await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
+                            await ctx.SendStringFileWithContent(ob.GetType().FullName, str, "eval.txt");
                             return;
                         }
 
@@ -286,7 +274,7 @@ public partial class OwnerOnly : BaseCommandModule
 
             if (ob.ToString().Length >= 2000)
             {
-                await SendStringFileWithContent(ctx, ob.GetType().FullName, str, "eval.txt");
+                await ctx.SendStringFileWithContent(ob.GetType().FullName, str, "eval.txt");
                 return;
             }
 
@@ -319,7 +307,7 @@ public partial class OwnerOnly : BaseCommandModule
 
         if (sb.Length > 1958)
         {
-            await SendStringFileWithContent(ctx, "stuff", sb.ToString(), "stuff.txt");
+            await ctx.SendStringFileWithContent("stuff", sb.ToString(), "stuff.txt");
         }
         else
         {
@@ -354,7 +342,7 @@ public partial class OwnerOnly : BaseCommandModule
             {
                 if (diag.Humanize().Length > 1958)
                 {
-                    await SendStringFileWithContent(ctx, "Compilation Diagnostics showed up:", diag.Humanize(),
+                    await ctx.SendStringFileWithContent( "Compilation Diagnostics showed up:", diag.Humanize(),
                         "diag.txt");
                 }
                 else
@@ -396,7 +384,7 @@ public partial class OwnerOnly : BaseCommandModule
             {
                 if (sw.ToString().Length > 1978)
                 {
-                    await SendStringFileWithContent(ctx, "Console Output:", sw.ToString(), "console.txt");
+                    await ctx.SendStringFileWithContent( "Console Output:", sw.ToString(), "console.txt");
                 }
                 else
                 {
@@ -419,7 +407,7 @@ public partial class OwnerOnly : BaseCommandModule
             Console.SetOut(console);
             if (e.Diagnostics.Humanize().Length > 1958)
             {
-                await SendStringFileWithContent(ctx, "Compilation Error occurred:", e.Diagnostics.Humanize(),
+                await ctx.SendStringFileWithContent( "Compilation Error occurred:", e.Diagnostics.Humanize(),
                     "error.txt");
             }
             else
@@ -623,5 +611,6 @@ public partial class OwnerOnly : BaseCommandModule
         await ctx.RespondAsync($"All traces of {userid.Id} have been removed from the database.");
     }
 
-
+    [GeneratedRegex("[^\\w]")]
+    private static partial Regex MyRegex();
 }

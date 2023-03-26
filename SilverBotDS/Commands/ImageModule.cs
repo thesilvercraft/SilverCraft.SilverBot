@@ -659,7 +659,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
             Width = 498,
             TextGravity = Gravity.Center,
             };
-            using var label = new MagickImage($"caption:{$"so {company}, fuck you."}", settings);
+            using var label = new MagickImage($"caption:so {company}, fuck you.", settings);
             img[0].Composite(label, Gravity.South, 0, 0, CompositeOperator.Over);
             return Task.FromResult(new Tuple<bool, MagickImageCollection>(true, img));
         }, filename: "sblinus.gif", encoder: MagickFormat.Gif);

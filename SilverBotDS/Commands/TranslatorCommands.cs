@@ -40,13 +40,6 @@ public class TranslatorCommands : BaseCommandModule
     public HttpClient HttpClient { get; set; }
     public LanguageService LanguageService { private get; set; }
 
-    [Command("editlangtranslator")]
-    [Description("set you're testing language")]
-    public async Task Edit(CommandContext ctx)
-    {
-        await ctx.RespondAsync(
-            "hey friendo try using the website which can be found at https://silverbot.cf/languageeditor");
-    }
 
     [Command("getobjectfromcurrentlanguage")]
     [Description("yayayayayyayaya")]

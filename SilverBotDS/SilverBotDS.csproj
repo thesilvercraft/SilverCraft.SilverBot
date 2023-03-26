@@ -74,7 +74,7 @@
     <ItemGroup>
         <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.2" />
         <PackageReference Include="GiphyDotNet" Version="2.4.0" />
-        <PackageReference Include="GitInfo" Version="2.3.0">
+        <PackageReference Include="GitInfo" Version="3.0.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -82,29 +82,29 @@
         <PackageReference Include="IPAddressRange" Version="5.0.0" />
         <PackageReference Include="Lavalink4NET.DSharpPlus" Version="3.0.0-preview.14" />
         <PackageReference Include="Lavalink4NET.Integrations.SponsorBlock" Version="3.0.0-preview.14" />
-        <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="12.2.2" />
-        <PackageReference Include="Microsoft.Azure.SignalR" Version="1.20.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.5.0-2.final" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2">
+        <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="12.3.0" />
+        <PackageReference Include="Microsoft.Azure.SignalR" Version="1.21.2" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.5.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.1.23111.4">
           <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.1.23111.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.2">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0-preview.1.23111.4">
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-preview.1.23111.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0-preview.1.23111.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="7.0.2">
+        <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="8.0.0-preview.1.23112.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.1" />
         <PackageReference Include="NSwag.ApiDescription.Client" Version="13.18.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -120,7 +120,7 @@
         </PackageReference>
         <PackageReference Include="System.Runtime" Version="4.3.1">
         </PackageReference>
-        <PackageReference Include="System.Text.Json" Version="7.0.1">
+        <PackageReference Include="System.Text.Json" Version="8.0.0-preview.1.23110.8">
         </PackageReference>
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1">
         </PackageReference>

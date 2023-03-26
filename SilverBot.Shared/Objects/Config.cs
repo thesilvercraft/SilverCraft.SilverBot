@@ -42,7 +42,6 @@ public class Config : INotifyPropertyChanged, ICanBeToldThatAPartOfMeIsChanged
     [Comment("The Discord token, can be had at https://discord.com/developers/")]
     public string Token { get; set; } = "Discord_Token_Here";
     
-
     [Comment("What modules should silverbot load")]
     public string[] ModulesToLoad { get; set; } =
     {

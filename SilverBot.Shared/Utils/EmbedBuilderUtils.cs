@@ -13,6 +13,8 @@ namespace SilverBot.Shared.Utils
             AddRequestedByFooter(builder, ctx.User, language);
         public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, BaseContext ctx, Language language) => 
             AddRequestedByFooter(builder, ctx.User, language);
+        public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, ISilverBotContext ctx, Language language) => 
+            AddRequestedByFooter(builder, ctx.User, language);
         public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, DiscordUser user, Language language) =>
             builder.WithFooter(string.Format(language.RequestedBy, user.Username),
                 user.GetAvatarUrl(ImageFormat.Png));

@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using SilverBot.Shared;
 using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Objects.Database;
 using SilverBot.Shared.Objects.Database.Classes;
@@ -31,7 +32,10 @@ namespace SilverBotDS.Commands;
 
 public class AdminCommands : BaseCommandModule
 {
-    private DiscordEmoji[] _pollEmojiCache;
+    public static readonly DiscordEmoji YesEmoji = DiscordEmoji.FromUnicode("☑️");
+    public static readonly DiscordEmoji NoEmoji =  DiscordEmoji.FromUnicode("❌️");
+    public static readonly DiscordEmoji EntryEmoji = DiscordEmoji.FromUnicode("☑️");
+
     public DatabaseContext Database { private get; set; }
     public HttpClient HttpClient { private get; set; }
     public LanguageService LanguageService { private get; set; }
@@ -66,11 +70,7 @@ public class AdminCommands : BaseCommandModule
         if (!string.IsNullOrEmpty(question))
         {
             var client = commandContext.Client;
-            _pollEmojiCache ??= new[]
-                {
-                    DiscordEmoji.FromName(client, ":everybodyvotes:"),
-                    DiscordEmoji.FromName(client, ":nobodyvotes:")
-                };
+          
 
             var bob = new DiscordEmbedBuilder();
             bob.WithTitle(question)
@@ -78,10 +78,10 @@ public class AdminCommands : BaseCommandModule
                     iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png))
                 .WithColor(ColourService.GetSingle());
             var pollStartMessage = await commandContext.RespondAsync(bob.Build());
-            foreach (var emote in _pollEmojiCache)
-            {
-                await pollStartMessage.CreateReactionAsync(emote);
-            }
+           
+                await pollStartMessage.CreateReactionAsync(YesEmoji);
+                await pollStartMessage.CreateReactionAsync(NoEmoji);
+
 
             await Database.plannedEvents.AddAsync(new PlannedEvent
             {
@@ -111,17 +111,11 @@ public class AdminCommands : BaseCommandModule
     {
         if (!string.IsNullOrEmpty(item))
         {
-            var client = commandContext.Client;
-            _pollEmojiCache ??= new[]
-            {
-                DiscordEmoji.FromName(client, ":everybodyvotes:"),
-                DiscordEmoji.FromName(client, ":nobodyvotes:")
-            };
             var bob = new DiscordEmbedBuilder();
             bob.WithTitle(item).WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username,
                 iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png));
             var pollStartMessage = await commandContext.RespondAsync(bob.Build());
-            await pollStartMessage.CreateReactionAsync(_pollEmojiCache[0]);
+            await pollStartMessage.CreateReactionAsync(EntryEmoji);
             await Database.plannedEvents.AddAsync(new PlannedEvent
             {
                 ChannelID = commandContext.Channel.Id,
@@ -150,7 +144,7 @@ public class AdminCommands : BaseCommandModule
         var emotes = ctx.Guild.Emojis.Values.Select(emoji => new Emote { Name = emoji.Name, Url = emoji.Url }).ToList();
         while (emotes.Count != 0)
         {
-            await SendStringFileWithContent(ctx, "", JsonSerializer.Serialize(new Rootobject
+            await ctx.SendStringFileWithContent( "", JsonSerializer.Serialize(new Rootobject
             {
                 Author = "SilverBot",
                 Name = $"{ctx.Guild.Name}'s emotes",

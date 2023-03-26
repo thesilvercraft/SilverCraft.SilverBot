@@ -17,6 +17,7 @@ using SilverBot.Shared.Objects.Database;
 using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Utils;
+using SilverBotDS.Commands;
 using SilverBotDS.ProgramExtensions;
 
 namespace SilverBotDS
@@ -32,35 +33,32 @@ namespace SilverBotDS
             ServiceProvider = sp;
         }
 
-        public static Task RunEmojiEvent(PlannedEvent @event, DatabaseContext dbctx)
+        public static Task RunEmojiEvent(PlannedEvent @event)
         {
             if (@event.Type != PlannedEventType.EmojiPoll)
             {
                 throw new ArgumentException("The parameter @event needs to be an EmojiPoll", nameof(@event));
             }
-            if (dbctx == null)
-            {
-                throw new ArgumentNullException(nameof(dbctx));
-            }
-            return RunEmojiEventAsync(@event, dbctx);
+            return RunEmojiEventAsync(@event);
         }
 
-        public static async Task RunEmojiEventAsync(PlannedEvent @event, DatabaseContext dbctx)
+        public static async Task RunEmojiEventAsync(PlannedEvent @event)
         {
-            var _discordClient = (DiscordClient)ServiceProvider.GetService(typeof(DiscordClient));
-            var channel = await _discordClient.GetChannelAsync(@event.ChannelID);
+            var discordClient = ServiceProvider.GetRequiredService<DiscordClient>();
+            var databaseContext = ServiceProvider.GetRequiredService<DatabaseContext>();
+            var channel = await discordClient.GetChannelAsync(@event.ChannelID);
             if (@event.ResponseMessageID != null)
             {
-                var languageservice = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
-                var lang = await languageservice.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
+                var languageService = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
+                var lang = await languageService.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, databaseContext);
                 var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
                 var bob = new DiscordEmbedBuilder(msg.Embeds[0]);
                 var yesVotes =
-                    (await msg.GetReactionsAsync(DiscordEmoji.FromName(_discordClient, ":everybodyvotes:"))).Count(x =>
-                        x.Id != _discordClient.CurrentUser.Id && !x.IsBot);
+                    (await msg.GetReactionsAsync(AdminCommands.YesEmoji)).Count(x =>
+                        x.Id != discordClient.CurrentUser.Id && !x.IsBot);
                 var noVotes =
-                    (await msg.GetReactionsAsync(DiscordEmoji.FromName(_discordClient, ":nobodyvotes:"))).Count(x =>
-                        x.Id != _discordClient.CurrentUser.Id && !x.IsBot);
+                    (await msg.GetReactionsAsync(AdminCommands.NoEmoji)).Count(x =>
+                        x.Id != discordClient.CurrentUser.Id && !x.IsBot);
                 var pollResultText = new StringBuilder();
                 pollResultText.Append(lang.PollResultsStart).Append(" **");
                 if (yesVotes > noVotes)
@@ -81,28 +79,24 @@ namespace SilverBotDS
                 bob.WithDescription(pollResultText.ToString());
                 await msg.ModifyAsync(bob.Build());
             }
-            @event.Handled = true;
         }
 
-        public static Task RunReminderEvent(PlannedEvent @event, DatabaseContext dbctx)
+        public static Task RunReminderEvent(PlannedEvent @event)
         {
             if (@event.Type != PlannedEventType.Reminder)
             {
                 throw new ArgumentException("The parameter @event needs to be an Reminder", nameof(@event));
             }
-            if (dbctx == null)
-            {
-                throw new ArgumentNullException(nameof(dbctx));
-            }
-            return RunReminderEventAsync(@event, dbctx);
+            return RunReminderEventAsync(@event);
         }
 
-        public static async Task RunReminderEventAsync(PlannedEvent @event, DatabaseContext dbctx)
+        public static async Task RunReminderEventAsync(PlannedEvent @event)
         {
-            var _discordClient = (DiscordClient)ServiceProvider.GetService(typeof(DiscordClient));
-            var channel = await _discordClient.GetChannelAsync(@event.ChannelID);
-            var languageservice = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
-            var lang = await languageservice.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
+            var discordClient = ServiceProvider.GetRequiredService<DiscordClient>();
+            var databaseContext = ServiceProvider.GetRequiredService<DatabaseContext>();
+            var channel = await discordClient.GetChannelAsync(@event.ChannelID);
+            var languageService = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
+            var lang = await languageService.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, databaseContext);
             if (!@event.Handled)
             {
                 DiscordMessageBuilder a = new();
@@ -111,36 +105,30 @@ namespace SilverBotDS
                 a.AddEmbed(new DiscordEmbedBuilder().WithTitle(lang.ReminderContent).WithDescription(@event.Data).Build());
                 await a.SendAsync(channel);
             }
-            @event.Handled = true;
         }
 
-        public static Task RunGiveAwayEvent(PlannedEvent @event, DatabaseContext dbctx)
+        public static Task RunGiveAwayEvent(PlannedEvent @event)
         {
             if (@event.Type != PlannedEventType.GiveAway)
             {
                 throw new ArgumentException("The parameter @event needs to be an GiveAway", nameof(@event));
             }
-            if (dbctx == null)
-            {
-                throw new ArgumentNullException(nameof(dbctx));
-            }
-            return RunGiveAwayEventAsync(@event, dbctx);
+            return RunGiveAwayEventAsync(@event);
         }
 
-        public static async Task RunGiveAwayEventAsync(PlannedEvent @event, DatabaseContext dbctx)
+        public static async Task RunGiveAwayEventAsync(PlannedEvent @event)
         {
-            var _discordClient = (DiscordClient)ServiceProvider.GetService(typeof(DiscordClient));
-
-            var channel = await _discordClient.GetChannelAsync(@event.ChannelID);
+            var discordClient = (DiscordClient)ServiceProvider.GetService(typeof(DiscordClient));
+            var databaseContext = ServiceProvider.GetRequiredService<DatabaseContext>();
+            var channel = await discordClient.GetChannelAsync(@event.ChannelID);
             if (@event.ResponseMessageID != null)
             {
-                var languageservice = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
-                var lang = await languageservice.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, dbctx);
-
+                var languageService = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
+                var lang = await languageService.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, databaseContext);
                 var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
                 var people =
-                    (await msg.GetReactionsAsync(DiscordEmoji.FromName(_discordClient, ":everybodyvotes:"))).Where(x =>
-                        x.Id != _discordClient.CurrentUser.Id && !x.IsBot);
+                    (await msg.GetReactionsAsync(AdminCommands.EntryEmoji)).Where(x =>
+                        x.Id != discordClient.CurrentUser.Id && !x.IsBot);
                 var discordUsers = people as DiscordUser[] ?? people.ToArray();
                 if (discordUsers.Length == 0)
                 {
@@ -151,42 +139,43 @@ namespace SilverBotDS
                     await channel.SendMessageAsync(string.Format(lang.GiveawayResultsWon, discordUsers[RandomGenerator.Next(0, discordUsers.Length)].Mention, msg.Embeds[0].Title));
                 }
             }
-            @event.Handled = true;
+         
         }
 
         public static async Task RunEventsAsync()
         {
             var dbctx = ServiceProvider.GetRequiredService<DatabaseContext>();
             var taskService = ServiceProvider.GetRequiredService<TaskService>();
-
             while (true)
             {
                 try
                 {
-                    var arr = dbctx.plannedEvents.Where(x=>x.Time> DateTime.Now && !x.Handled).ToArray();
-                    foreach (var evnt in arr)
+                    var plannedEvents = dbctx.plannedEvents.Where(x=>x.Time < DateTime.Now && !x.Handled).ToArray();
+                    foreach (var @event in plannedEvents)
                     {
                             try
                             {
                                 CancellationTokenSource cts = new(15 * 1007);
-                                switch (evnt.Type)
+                                switch (@event.Type)
                                 {
                                     case PlannedEventType.EmojiPoll: 
-                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunEmojiEvent(evnt, dbctx), cts.Token), cts));
+                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunEmojiEvent(@event), cts.Token), cts));
                                         break;
 
                                     case PlannedEventType.GiveAway:
-                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunGiveAwayEvent(evnt, dbctx), cts.Token), cts));
+                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunGiveAwayEvent(@event), cts.Token), cts));
                                         break;
 
                                     case PlannedEventType.Reminder:
-                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunReminderEvent(evnt, dbctx), cts.Token), cts));
+                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunReminderEvent(@event), cts.Token), cts));
                                         break;
 
                                     default:
-                                        Log.Warning("DB event with unknown type was ignored, Type: {Type}", evnt.Type);
+                                        Log.Warning("DB event with unknown type was ignored, Type: {Type}", @event.Type);
                                         break;
                                 }
+                                dbctx.plannedEvents.Remove(@event);
+                                await dbctx.SaveChangesAsync(cts.Token);
                             }
                             catch (Exception e)
                             {

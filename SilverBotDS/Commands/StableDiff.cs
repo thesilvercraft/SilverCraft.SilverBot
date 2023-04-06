@@ -46,7 +46,7 @@ namespace SilverBotDS.Commands
                 model = Config.ExtraParams["StableDiff.SafeModel"].Split(",").Select(x=>x.Trim()).ToArray()[0];
             }
             var language = await ctx.GetLanguageAsync();
-            string promptimg = null;
+            string? promptimg = null;
             if (ctx.Message.Attachments.Count == 1)
             {
                 promptimg = ctx.Message.Attachments[0].Url;
@@ -182,7 +182,7 @@ namespace SilverBotDS.Commands
 
                     if (rescont.StartsWith("{\"status\":\"succeeded\""))
                     {
-                        var deserialized = JsonSerializer.Deserialize<fullresponse>(rescont);
+                        var deserialized = JsonSerializer.Deserialize<Fullresponse>(rescont);
                         var start = deserialized.Output[0].Data.IndexOf("base64,", 0, StringComparison.Ordinal) +
                                     "base64,".Length;
                         var bytes = Convert.FromBase64String(deserialized.Output[0].Data[start..]);
@@ -288,7 +288,7 @@ namespace SilverBotDS.Commands
         public object PathAbs { get; set; }
     }
 
-    public class fullresponse
+    public class Fullresponse
     {
         [JsonPropertyName("status")]
 

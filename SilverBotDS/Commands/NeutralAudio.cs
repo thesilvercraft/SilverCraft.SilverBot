@@ -517,21 +517,21 @@ public class NeutralAudio
         await StaticJoin(ctx, AudioService);
     }
 
-    public static async Task StaticJoin(ISilverBotContext ctx, LavalinkNode audioService)
+    public static async Task StaticJoin(ISilverBotContext ctx, LavalinkNode audioService, Language? language =null)
     {
-        var lang = await ctx.Services.GetService<LanguageService>().FromCtxAsync(ctx);
+        language ??= await ctx.Services.GetService<LanguageService>().FromCtxAsync(ctx);
         if (IsInVc(ctx, audioService))
         {
-             await ctx.SendMessageAsync(  lang.AlreadyConnected, language: lang);
+             await ctx.SendMessageAsync(  language.AlreadyConnected, language: language);
             return;
         }
-        await MakeSureUserIsInVC(ctx, lang);
+        await MakeSureUserIsInVC(ctx, language);
         if (ctx.Member?.VoiceState?.Channel != null)
         {
             await audioService.JoinAsync<BetterVoteLavalinkPlayer>(ctx.Guild.Id, (ctx.Member?.VoiceState?.Channel!).Id,
                 true);
-             await ctx.SendMessageAsync(  string.Format(lang.Joined, (ctx.Member?.VoiceState?.Channel)?.Name),
-                language: lang);
+             await ctx.SendMessageAsync(  string.Format(language.Joined, (ctx.Member?.VoiceState?.Channel)?.Name),
+                language: language);
         }
     }
 

@@ -18,7 +18,7 @@ namespace SilverBotDS.ProgramExtensions;
 internal static class VersionInfo
 {
     public const string VNumber =
-        ThisAssembly.Git.Commit + "-" + ThisAssembly.Git.Branch + "-" + ThisAssembly.Git.CommitDate;
+        "";
 
     public static async Task Checkforupdates(HttpClient client, Logger log)
     {
@@ -26,7 +26,7 @@ internal static class VersionInfo
         {
             log.Information("Running on {OS}", Environment.OSVersion.VersionString);
             log.Information("Getting latest version info from {Source}", "GitHub");
-            Repo repo = new("thesilvercraft", "silverbot");
+           /* Repo repo = new("thesilvercraft", "silverbot");
             var info = await CommitInfo.GetLatestFromRepoAsync(repo, client);
             if (info.Sha == ThisAssembly.Git.Sha)
             {
@@ -100,7 +100,7 @@ internal static class VersionInfo
                 log.Information("You are running a {Dirty} version of silverbot", "DIRTY");
 #pragma warning restore CS0162 // Unreachable code detected
 #pragma warning restore IDE0079 // Remove unnecessary suppression
-            }
+            }*/
         }
         catch (WebException ex)
         {

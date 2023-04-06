@@ -28,12 +28,12 @@ public class CodeEnv
     }
 
     public CommandContext Ctx { get; init; }
-    public DiscordMember Member { get; init; }
+    public DiscordMember? Member { get; init; }
     public DiscordUser User { get; init; }
     public DiscordGuild Guild { get; init; }
     public DiscordClient Client { get; init; }
     public Config ExConfig { get; init; }
     public Config Config { get; init; }
-    public string VerString { get; init; }
+    public string VerString { get; init; } 
     public DatabaseContext DbContext { get; init; }
 }

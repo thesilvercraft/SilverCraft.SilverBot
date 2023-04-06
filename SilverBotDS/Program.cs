@@ -70,7 +70,6 @@ namespace SilverBotDS
         private static Logger _log;
         private static readonly HttpClient HttpClient = NewHttpClientWithUserAgent();
 
-        private static int _lastFriday;
 
         private static readonly string[] MessagesToRepeat =
         {
@@ -298,6 +297,7 @@ namespace SilverBotDS
                 {
                     using (mainlog.BeginScope("Lavalink"))
                     {
+                        
                         mainlog.LogInformation("Creating lavalink wrapper");
                         var discordClientWrapper = new DiscordClientWrapper(_discord);
                         _audioService = new LavalinkNode(new LavalinkNodeOptions
@@ -312,7 +312,10 @@ namespace SilverBotDS
                         services.AddSingleton(_audioService);
                         mainlog.LogDebug("Activating artwork service");
                         services.AddSingleton(new ArtworkService());
-                      
+                        if (_config.EnableJellyFinLookupService)
+                        {
+                            services.AddSingleton<ITrackOrAlbumLookupService>(new JellyFinLookupService(HttpClient, _config));
+                        }
                         if (!_config.SitInVc)
                         {
                             mainlog.LogDebug("Activating tracking service");
@@ -336,17 +339,17 @@ namespace SilverBotDS
                         if (File.Exists(group.Key))
                         {
                             var assembly = Assembly.LoadFrom(group.Key);
-                            foreach (var module in group)
+                            foreach (var module in group.Select(module=>module.Value))
                             {
                                 try
                                 {
-                                    var t = assembly.GetType(module.Value);
+                                    var t = assembly.GetType(module);
                                     await moduleRegistrationService.ProcessExternalServiceType(t,services);
                                 }
                                 catch (Exception ex)
                                 {
                                     mainlog.LogError(ex, "Failed to load service {Module} Exception occured",
-                                        module.Value);
+                                        module);
                                 }
                             }
                         }
@@ -711,23 +714,45 @@ namespace SilverBotDS
                 await Task.Delay(1800000, ct);
             }
         }
-
+        const string FridayFileName = "_LastFriday.txt";
+        public static bool ShouldDoFriday()
+        {
+            if(File.Exists(FridayFileName))
+            {
+                var a = File.ReadAllText(FridayFileName, Encoding.UTF8);
+                if(int.TryParse(a, out int x))
+                {
+                    return x != DateTime.Now.DayOfYear;
+                }
+            }
+            return true;
+        }
+        public static bool ShouldCleanUpFriday()
+        {
+            if (File.Exists(FridayFileName))
+            {
+                var a = File.ReadAllText(FridayFileName, Encoding.UTF8);
+                if (int.TryParse(a, out int x))
+                {
+                    return x == DateTime.Now.DayOfYear - 1;
+                }
+            }
+            return false;
+        }
         public static async Task WaitForFridayAsync(CancellationToken ct = default)
         {
             while (!ct.IsCancellationRequested)
             {
-                if (DayOfWeek.Friday == DateTime.Now.DayOfWeek &&
-                    (_lastFriday == 0 || _lastFriday != DateTime.Now.DayOfYear))
+                if (DayOfWeek.Friday == DateTime.Now.DayOfWeek && ShouldDoFriday())
                 {
-                    _lastFriday = DateTime.Now.DayOfYear;
+                    await File.WriteAllTextAsync(FridayFileName, DateTime.Now.DayOfYear.ToString(), Encoding.UTF8, ct);
                     await ExecuteFridayAsync(ct: ct);
                 }
                 else
                 {
-                    if (_lastFriday == DateTime.Now.DayOfYear - 1)
+                    if (ShouldCleanUpFriday())
                     {
                         await ExecuteFridayAsync(false, ct);
-                        _lastFriday = 0;
                     }
                 }
 

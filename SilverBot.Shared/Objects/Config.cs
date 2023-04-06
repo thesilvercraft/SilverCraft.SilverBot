@@ -18,7 +18,7 @@ namespace SilverBot.Shared.Objects;
 [Serializable]
 public class Config : INotifyPropertyChanged, ICanBeToldThatAPartOfMeIsChanged
 {
-    private const ulong CurrentConfVer = 50;
+    private const ulong CurrentConfVer = 51;
 
     [Comment("Array of prefixes the bot will respond to")]
     public string[] Prefix { get; set; } =
@@ -81,6 +81,11 @@ public class Config : INotifyPropertyChanged, ICanBeToldThatAPartOfMeIsChanged
         {"StableDiff.NotSafeModel", "hd-17, wd-v1-3-float16" },
         {"StableDiff.Trusted", "687387957296103541, 1024769162419126362" },
         {"StableDiff.BaseUrl", "http://localhost:9000" },
+        
+        {"JellyFinLookupService.BaseUrlNoSlash", "http://localhost:8096" },
+        {"JellyFinLookupService.ApiKey", "68dc268e4d264dcd9a625ac37e3b4f7b" },
+        {"JellyFinLookupService.ParentLibId", "7e64e319657a9516ec78490da03edccb" },
+        {"JellyFinLookupService.ParentUserId", "b981a5d9970c44c184ecd4dfd1202439" },
 
     };
     [Comment("What modules should silverbot load from external dlls")]
@@ -146,6 +151,10 @@ public class Config : INotifyPropertyChanged, ICanBeToldThatAPartOfMeIsChanged
 
     [Comment("The Lavalink Node Password.")]
     public string LavalinkPassword { get; set; } = "youshallnotpass";
+
+    [Comment("Enable the JellyFin lookup service, uses jellyfin, must be configured")]
+    public bool EnableJellyFinLookupService { get; set; } = true;
+
 
     [Comment("Friday text channel. leave 0 to disable")]
     public ulong FridayTextChannel { get; set; }
@@ -394,9 +403,9 @@ public class Config : INotifyPropertyChanged, ICanBeToldThatAPartOfMeIsChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    void ICanBeToldThatAPartOfMeIsChanged.PropertyChanged(object e, PropertyChangedEventArgs a)
+    void ICanBeToldThatAPartOfMeIsChanged.PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        PropertyChanged?.Invoke(e, a);
+        PropertyChanged?.Invoke(sender, e);
     }
     [XmlIgnore]
     public bool AllowedToRead { get; set; } = true;

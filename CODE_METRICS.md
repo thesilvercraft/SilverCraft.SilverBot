@@ -12,9 +12,9 @@ This file is dynamically maintained by a bot, *please do not* edit this by hand.
 The *SilverBot.Shared.csproj* project file contains:
 
 - 12 namespaces.
-- 99 named types.
-- 4,224 total lines of source code.
-- Approximately 1,708 lines of executable code.
+- 103 named types.
+- 4,488 total lines of source code.
+- Approximately 1,862 lines of executable code.
 - The highest cyclomatic complexity is 17 :exploding_head:.
 
 <details>
@@ -246,8 +246,8 @@ The `SilverBot.Shared.Attributes` namespace contains 8 named types.
 The `SilverBot.Shared.Objects.Classes` namespace contains 8 named types.
 
 - 8 named types.
-- 457 total lines of source code.
-- Approximately 162 lines of executable code.
+- 467 total lines of source code.
+- Approximately 164 lines of executable code.
 - The highest cyclomatic complexity is 17 :exploding_head:.
 
 <details>
@@ -292,20 +292,21 @@ The `SilverBot.Shared.Objects.Classes` namespace contains 8 named types.
 </summary>
 <br>
 
-- The `CoolerHelpFormatter` contains 7 members.
-- 148 total lines of source code.
-- Approximately 55 lines of executable code.
+- The `CoolerHelpFormatter` contains 8 members.
+- 158 total lines of source code.
+- Approximately 57 lines of executable code.
 - The highest cyclomatic complexity is 17 :exploding_head:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L26' title='CoolerHelpFormatter.CoolerHelpFormatter(CommandContext ctx)'>26</a> | 78 | 2 :heavy_check_mark: | 0 | 4 | 12 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L158' title='CommandHelpMessage CoolerHelpFormatter.Build()'>158</a> | 75 | 2 :heavy_check_mark: | 0 | 7 | 13 / 4 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L36' title='Command CoolerHelpFormatter.Command'>36</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L35' title='DiscordEmbedBuilder CoolerHelpFormatter.EmbedBuilder'>35</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L37' title='Language CoolerHelpFormatter.Lang'>37</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L44' title='BaseHelpFormatter CoolerHelpFormatter.WithCommand(Command command)'>44</a> | 49 | 17 :exploding_head: | 0 | 7 | 51 / 23 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L96' title='BaseHelpFormatter CoolerHelpFormatter.WithSubcommands(IEnumerable<Command> subcommands)'>96</a> | 50 | 13 :x: | 0 | 11 | 62 / 25 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L25' title='CoolerHelpFormatter.CoolerHelpFormatter(CommandContext ctx)'>25</a> | 77 | 1 :heavy_check_mark: | 0 | 6 | 12 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L162' title='CommandHelpMessage CoolerHelpFormatter.Build()'>162</a> | 71 | 3 :heavy_check_mark: | 0 | 7 | 18 / 5 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L36' title='ColourService? CoolerHelpFormatter.ColourService'>36</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L35' title='Command CoolerHelpFormatter.Command'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L34' title='DiscordEmbedBuilder CoolerHelpFormatter.EmbedBuilder'>34</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L37' title='Language CoolerHelpFormatter.Language'>37</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L44' title='BaseHelpFormatter CoolerHelpFormatter.WithCommand(Command command)'>44</a> | 49 | 17 :exploding_head: | 0 | 7 | 54 / 23 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/CoolerHelpFormatter.cs#L99' title='BaseHelpFormatter CoolerHelpFormatter.WithSubcommands(IEnumerable<Command> subcommands)'>99</a> | 50 | 13 :x: | 0 | 11 | 63 / 26 |
 
 <a href="#CoolerHelpFormatter-class-diagram">:link: to `CoolerHelpFormatter` class diagram</a>
 
@@ -436,10 +437,10 @@ The `SilverBot.Shared.Objects.Classes` namespace contains 8 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/SongOrSongs.cs#L15' title='SongORSongs.SongORSongs(LavalinkTrack song, string nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs)'>15</a> | 79 | 1 :heavy_check_mark: | 0 | 3 | 6 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/SongOrSongs.cs#L22' title='SongORSongs.SongORSongs(LavalinkTrack song, string nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs, TimeSpan startime)'>22</a> | 75 | 1 :heavy_check_mark: | 0 | 4 | 8 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/SongOrSongs.cs#L15' title='SongORSongs.SongORSongs(LavalinkTrack song, string? nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs)'>15</a> | 79 | 1 :heavy_check_mark: | 0 | 3 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/SongOrSongs.cs#L22' title='SongORSongs.SongORSongs(LavalinkTrack song, string? nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs, TimeSpan startime)'>22</a> | 75 | 1 :heavy_check_mark: | 0 | 4 | 8 / 4 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/SongOrSongs.cs#L34' title='IAsyncEnumerable<LavalinkTrack>? SongORSongs.GetRestOfSongs'>34</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/SongOrSongs.cs#L33' title='string SongORSongs.NameOfPlayList'>33</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/SongOrSongs.cs#L33' title='string? SongORSongs.NameOfPlayList'>33</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/SongOrSongs.cs#L31' title='LavalinkTrack? SongORSongs.Song'>31</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Classes/SongOrSongs.cs#L32' title='TimeSpan? SongORSongs.SongStartTime'>32</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 1 / 0 |
 
@@ -1045,8 +1046,8 @@ The `SilverBot.Shared.Exceptions` namespace contains 6 named types.
 The `SilverBot.Shared.Objects.Language` namespace contains 2 named types.
 
 - 2 named types.
-- 767 total lines of source code.
-- Approximately 289 lines of executable code.
+- 790 total lines of source code.
+- Approximately 303 lines of executable code.
 - The highest cyclomatic complexity is 7 :heavy_check_mark:.
 
 <details>
@@ -1057,247 +1058,252 @@ The `SilverBot.Shared.Objects.Language` namespace contains 2 named types.
 </summary>
 <br>
 
-- The `Language` contains 234 members.
-- 638 total lines of source code.
-- Approximately 239 lines of executable code.
+- The `Language` contains 239 members.
+- 634 total lines of source code.
+- Approximately 244 lines of executable code.
 - The highest cyclomatic complexity is 2 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L214' title='string Language.AccountCreationDate'>214</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L215' title='string Language.AccountJoinDate'>215</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L443' title='string Language.AddedXAmountOfSongs'>443</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L278' title='string Language.AllAvailibleEmotes'>278</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L207' title='string Language.AccountCreationDate'>207</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L208' title='string Language.AccountJoinDate'>208</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L439' title='string Language.AddedXAmountOfSongs'>439</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L271' title='string Language.AllAvailibleEmotes'>271</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L77' title='string Language.AlreadyConnected'>77</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L253' title='string Language.AlreadyOptedIn'>253</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L393' title='string Language.AlreadyVoted'>393</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L592' title='string Language.AmericanMoney'>592</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L537' title='string Language.AttributeDataBaseCheckNoDirectMessages'>537</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L540' title='string Language.AttributeDataBaseCheckWebShot'>540</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L292' title='string Language.Ban'>292</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L441' title='string Language.BotBannedUser'>441</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L294' title='string Language.BotHasLowerRole'>294</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L442' title='string Language.BotKickedUser'>442</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L621' title='string Language.CancelReminderErrorAlreadyHandled'>621</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L620' title='string Language.CancelReminderErrorMultiple'>620</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L619' title='string Language.CancelReminderErrorNoEvent'>619</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L622' title='string Language.CancelReminderSuccess'>622</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L378' title='string Language.CanForceSkip'>378</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L559' title='string Language.CategorySetSuccess'>559</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L470' title='string Language.CheckFailed'>470</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L475' title='string Language.ChecksFailed'>475</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L600' title='string Language.CLR'>600</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L545' title='string Language.ComicSuccess'>545</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L246' title='string Language.AlreadyOptedIn'>246</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L389' title='string Language.AlreadyVoted'>389</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L588' title='string Language.AmericanMoney'>588</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L533' title='string Language.AttributeDataBaseCheckNoDirectMessages'>533</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L536' title='string Language.AttributeDataBaseCheckWebShot'>536</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L285' title='string Language.Ban'>285</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L437' title='string Language.BotBannedUser'>437</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L287' title='string Language.BotHasLowerRole'>287</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L438' title='string Language.BotKickedUser'>438</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L617' title='string Language.CancelReminderErrorAlreadyHandled'>617</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L616' title='string Language.CancelReminderErrorMultiple'>616</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L615' title='string Language.CancelReminderErrorNoEvent'>615</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L618' title='string Language.CancelReminderSuccess'>618</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L374' title='string Language.CanForceSkip'>374</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L555' title='string Language.CategorySetSuccess'>555</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L466' title='string Language.CheckFailed'>466</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L471' title='string Language.ChecksFailed'>471</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L596' title='string Language.CLR'>596</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L541' title='string Language.ComicSuccess'>541</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L56' title='string Language.CommandIsDisabled'>56</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L589' title='string Language.CostsMoneyGameTypeBug'>589</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L439' title='string Language.CultureInfo'>439</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L585' title='string Language.CostsMoneyGameTypeBug'>585</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L435' title='string Language.CultureInfo'>435</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L71' title='string Language.DblaReturnedNull'>71</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L461' title='string Language.DisabledRepeatedPhrases'>461</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L553' title='string Language.Downloads'>553</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L594' title='string Language.DsharpplusVersion'>594</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L568' title='string Language.EmojiEnd'>568</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L565' title='string Language.EmojiMessageDownloadEnd'>565</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L562' title='string Language.EmojiMessageDownloadStart'>562</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L318' title='string Language.EmoteWasLargerThan256K'>318</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L464' title='string Language.EnableRepeatedPhrases'>464</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L368' title='string Language.Enqueued'>368</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L587' title='string Language.FreeToPlayGameType'>587</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L485' title='string Language.GeneralException'>485</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L646' title='CultureInfo Language.GetCultureInfo()'>646</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L598' title='string Language.GitBranch'>598</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L597' title='string Language.GitCommitHash'>597</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L596' title='string Language.GitRepo'>596</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L616' title='string Language.GiveawayItemNull'>616</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L615' title='string Language.GiveawayResultsNoReactions'>615</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L617' title='string Language.GiveawayResultsWon'>617</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L504' title='string Language.HelpCommandGroupAliases'>504</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L505' title='string Language.HelpCommandGroupArguments'>505</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L501' title='string Language.HelpCommandGroupCanBeExecuted'>501</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L508' title='string Language.HelpCommandGroupListingAllCommands'>508</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L506' title='string Language.HelpCommandGroupSubcommands'>506</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L498' title='string Language.HelpCommandHelpString'>498</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L499' title='string Language.HelpCommandNoDescription'>499</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L457' title='string Language.DisabledRepeatedPhrases'>457</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L549' title='string Language.Downloads'>549</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L590' title='string Language.DsharpplusVersion'>590</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L564' title='string Language.EmojiEnd'>564</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L561' title='string Language.EmojiMessageDownloadEnd'>561</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L558' title='string Language.EmojiMessageDownloadStart'>558</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L311' title='string Language.EmoteWasLargerThan256K'>311</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L460' title='string Language.EnableRepeatedPhrases'>460</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L362' title='string Language.Enqueued'>362</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L363' title='string Language.EnqueuedBy'>363</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L583' title='string Language.FreeToPlayGameType'>583</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L481' title='string Language.GeneralException'>481</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L642' title='CultureInfo Language.GetCultureInfo()'>642</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L361' title='string Language.GetEnqueuedTitle(string trackName, string? authorName)'>361</a> | 91 | 2 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L359' title='string Language.GetNowPlaying(string trackName, string? authorName)'>359</a> | 91 | 2 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L122' title='string Language.GetRemovedTitle(string trackName, string? authorName)'>122</a> | 91 | 2 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L594' title='string Language.GitBranch'>594</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L593' title='string Language.GitCommitHash'>593</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L592' title='string Language.GitRepo'>592</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L612' title='string Language.GiveawayItemNull'>612</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L611' title='string Language.GiveawayResultsNoReactions'>611</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L613' title='string Language.GiveawayResultsWon'>613</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L500' title='string Language.HelpCommandGroupAliases'>500</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L501' title='string Language.HelpCommandGroupArguments'>501</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L497' title='string Language.HelpCommandGroupCanBeExecuted'>497</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L504' title='string Language.HelpCommandGroupListingAllCommands'>504</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L502' title='string Language.HelpCommandGroupSubcommands'>502</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L494' title='string Language.HelpCommandHelpString'>494</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L495' title='string Language.HelpCommandNoDescription'>495</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L41' title='string Language.Hi'>41</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 9 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L20' title='Guid Language.Id'>20</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 3 / 4 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L177' title='string Language.InformationAbout'>177</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L480' title='string Language.InvalidOverload'>480</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L212' title='string Language.IsABot'>212</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L207' title='string Language.IsAnOwner'>207</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L599' title='string Language.IsDirty'>599</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L170' title='string Language.InformationAbout'>170</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L476' title='string Language.InvalidOverload'>476</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L205' title='string Language.IsABot'>205</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L200' title='string Language.IsAnOwner'>200</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L595' title='string Language.IsDirty'>595</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L97' title='string Language.Joined'>97</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 9 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L182' title='string Language.JoinedSilverCraft'>182</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L543' title='string Language.JpegSuccess'>543</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L293' title='string Language.Kick'>293</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L175' title='string Language.JoinedSilverCraft'>175</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L539' title='string Language.JpegSuccess'>539</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L286' title='string Language.Kick'>286</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L31' title='string Language.LangCodeGoogleTranslate'>31</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L25' title='string Language.LangName'>25</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L623' title='string Language.LavalinkNotSetup'>623</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L172' title='string Language.Left'>172</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L606' title='string Language.ListReminderListMore'>606</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L604' title='string Language.ListReminderNone'>604</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L605' title='string Language.ListReminderStart'>605</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L434' title='string Language.LoadedSilverBotPlaylistWithTitle'>434</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L148' title='string Language.LoopingQueue'>148</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L143' title='string Language.LoopingSong'>143</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L548' title='string Language.MathSteps'>548</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L305' title='string Language.Meme'>305</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L327' title='string Language.MoreThanOneImageGeneric'>327</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 7 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L248' title='string Language.MultipleEmotesFound'>248</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L535' title='string Language.NetVipsLoadFail'>535</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L238' title='string Language.NoEmotesFound'>238</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L590' title='string Language.NoGamesWereReturned'>590</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L591' title='string Language.NoGamesWereReturnedDescription'>591</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L313' title='string Language.NoImageGeneric'>313</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 7 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L491' title='string Language.NoMatchingSubcommandsAndGroupNotExecutable'>491</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L557' title='string Language.NoPerm'>557</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L166' title='string Language.NoResults'>166</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 8 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L588' title='string Language.NotAvailableGameType'>588</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L619' title='string Language.LavalinkNotSetup'>619</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L165' title='string Language.Left'>165</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L602' title='string Language.ListReminderListMore'>602</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L600' title='string Language.ListReminderNone'>600</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L601' title='string Language.ListReminderStart'>601</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L430' title='string Language.LoadedSilverBotPlaylistWithTitle'>430</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L141' title='string Language.LoopingQueue'>141</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L136' title='string Language.LoopingSong'>136</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L544' title='string Language.MathSteps'>544</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L298' title='string Language.Meme'>298</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L320' title='string Language.MoreThanOneImageGeneric'>320</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 7 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L241' title='string Language.MultipleEmotesFound'>241</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L531' title='string Language.NetVipsLoadFail'>531</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L231' title='string Language.NoEmotesFound'>231</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L586' title='string Language.NoGamesWereReturned'>586</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L587' title='string Language.NoGamesWereReturnedDescription'>587</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L306' title='string Language.NoImageGeneric'>306</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 7 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L487' title='string Language.NoMatchingSubcommandsAndGroupNotExecutable'>487</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L553' title='string Language.NoPerm'>553</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L159' title='string Language.NoResults'>159</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 8 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L584' title='string Language.NotAvailableGameType'>584</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L102' title='string Language.NotConnected'>102</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L112' title='string Language.NothingInQueue'>112</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L116' title='string Language.NothingInQueueHistory'>116</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L113' title='string Language.NothingInQueueToRemove'>113</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L158' title='string Language.NotLooping'>158</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L383' title='string Language.NotPaused'>383</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L151' title='string Language.NotLooping'>151</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L379' title='string Language.NotPaused'>379</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L107' title='string Language.NotPlaying'>107</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L438' title='string Language.NotValidLanguage'>438</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L363' title='string Language.NowPlaying'>363</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L551' title='string Language.NuGetVerified'>551</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L263' title='string Language.OptedIn'>263</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L268' title='string Language.OptedInWebshot'>268</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L273' title='string Language.OptedOutWebshot'>273</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L593' title='string Language.OS'>593</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L335' title='string Language.OutputFileLargerThan8M'>335</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 7 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L340' title='string Language.PageGif'>340</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L343' title='string Language.PageGifButtonText'>343</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L348' title='string Language.PageNuget'>348</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L353' title='string Language.PeriodExpired'>353</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L613' title='string Language.PollErrorQuestionNull'>613</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L611' title='string Language.PollResultsResultNo'>611</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L612' title='string Language.PollResultsResultUndecided'>612</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L610' title='string Language.PollResultsResultYes'>610</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L609' title='string Language.PollResultsStart'>609</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L300' title='string Language.PoweredByGiphy'>300</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L187' title='string Language.PrefixUsedTopgg'>187</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L437' title='string Language.PurgedBySilverBotReason'>437</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L229' title='string Language.PurgeNothingToDelete'>229</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L228' title='string Language.PurgeNumberNegative'>228</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L231' title='string Language.PurgeRemovedFront'>231</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L233' title='string Language.PurgeRemovedPlural'>233</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L232' title='string Language.PurgeRemovedSingle'>232</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L618' title='string Language.QueueNothing'>618</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L495' title='string Language.QuoteGetNoBook'>495</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L496' title='string Language.QuoteGetNoQuoteWithId'>496</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L497' title='string Language.QuotePreviewDeleteSuccess'>497</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L494' title='string Language.QuotePreviewQuoteID'>494</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L295' title='string Language.RandomGif'>295</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L582' title='string Language.ReactionRoleDone'>582</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L586' title='string Language.ReactionRoleEmbedColour'>586</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L572' title='string Language.ReactionRoleIntro'>572</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L585' title='string Language.ReactionRoleMainLoop'>585</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L583' title='string Language.ReactionRoleNone'>583</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L571' title='string Language.ReactionRoleNoPermManageRoles'>571</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L578' title='string Language.ReactionRoleResponseNo'>578</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L579' title='string Language.ReactionRoleResponseNo2'>579</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L580' title='string Language.ReactionRoleResponseNo3'>580</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L574' title='string Language.ReactionRoleResponseYes'>574</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L575' title='string Language.ReactionRoleResponseYes2'>575</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L576' title='string Language.ReactionRoleResponseYes3'>576</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L581' title='string Language.ReactionRoleRolesAdded'>581</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L573' title='string Language.ReactionRoleTitle'>573</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L607' title='string Language.ReminderContent'>607</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L602' title='string Language.ReminderErrorNoContent'>602</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L603' title='string Language.ReminderSuccess'>603</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L128' title='string Language.RemovedFront'>128</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L137' title='string Language.RemovedSong'>137</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L138' title='string Language.RemovedSongs'>138</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L135' title='string Language.RemovedXSongOrSongs'>135</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 6 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L434' title='string Language.NotValidLanguage'>434</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L356' title='string Language.NowPlaying'>356</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L357' title='string Language.NowPlayingBy'>357</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L547' title='string Language.NuGetVerified'>547</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L256' title='string Language.OptedIn'>256</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L261' title='string Language.OptedInWebshot'>261</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L266' title='string Language.OptedOutWebshot'>266</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L589' title='string Language.OS'>589</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L328' title='string Language.OutputFileLargerThan8M'>328</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 7 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L333' title='string Language.PageGif'>333</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L336' title='string Language.PageGifButtonText'>336</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L341' title='string Language.PageNuget'>341</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L346' title='string Language.PeriodExpired'>346</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L609' title='string Language.PollErrorQuestionNull'>609</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L607' title='string Language.PollResultsResultNo'>607</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L608' title='string Language.PollResultsResultUndecided'>608</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L606' title='string Language.PollResultsResultYes'>606</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L605' title='string Language.PollResultsStart'>605</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L293' title='string Language.PoweredByGiphy'>293</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L180' title='string Language.PrefixUsedTopgg'>180</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L433' title='string Language.PurgedBySilverBotReason'>433</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L222' title='string Language.PurgeNothingToDelete'>222</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L221' title='string Language.PurgeNumberNegative'>221</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L224' title='string Language.PurgeRemovedFront'>224</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L226' title='string Language.PurgeRemovedPlural'>226</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L225' title='string Language.PurgeRemovedSingle'>225</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L614' title='string Language.QueueNothing'>614</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L491' title='string Language.QuoteGetNoBook'>491</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L492' title='string Language.QuoteGetNoQuoteWithId'>492</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L493' title='string Language.QuotePreviewDeleteSuccess'>493</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L490' title='string Language.QuotePreviewQuoteID'>490</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L288' title='string Language.RandomGif'>288</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L578' title='string Language.ReactionRoleDone'>578</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L582' title='string Language.ReactionRoleEmbedColour'>582</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L568' title='string Language.ReactionRoleIntro'>568</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L581' title='string Language.ReactionRoleMainLoop'>581</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L579' title='string Language.ReactionRoleNone'>579</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L567' title='string Language.ReactionRoleNoPermManageRoles'>567</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L574' title='string Language.ReactionRoleResponseNo'>574</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L575' title='string Language.ReactionRoleResponseNo2'>575</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L576' title='string Language.ReactionRoleResponseNo3'>576</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L570' title='string Language.ReactionRoleResponseYes'>570</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L571' title='string Language.ReactionRoleResponseYes2'>571</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L572' title='string Language.ReactionRoleResponseYes3'>572</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L577' title='string Language.ReactionRoleRolesAdded'>577</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L569' title='string Language.ReactionRoleTitle'>569</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L603' title='string Language.ReminderContent'>603</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L598' title='string Language.ReminderErrorNoContent'>598</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L599' title='string Language.ReminderSuccess'>599</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L119' title='string Language.RemovedFront'>119</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L120' title='string Language.RemovedFrontWithAuthorName'>120</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L130' title='string Language.RemovedSong'>130</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L131' title='string Language.RemovedSongs'>131</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L128' title='string Language.RemovedXSongOrSongs'>128</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 6 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L66' title='string Language.RequestedBy'>66</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 9 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L527' title='string Language.RequireBotAndUserPermisionsCheckFailedPL'>527</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L530' title='string Language.RequireBotAndUserPermisionsCheckFailedSG'>530</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L518' title='string Language.RequireBotPermisionsCheckFailedPL'>518</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L521' title='string Language.RequireBotPermisionsCheckFailedSG'>521</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L511' title='string Language.RequireDJCheckFailed'>511</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L512' title='string Language.RequireGuildCheckFailed'>512</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L513' title='string Language.RequireNsfwCheckFailed'>513</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L514' title='string Language.RequireOwnerCheckFailed'>514</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L516' title='string Language.RequireRolesCheckFailedPL'>516</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L515' title='string Language.RequireRolesCheckFailedSG'>515</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L524' title='string Language.RequireUserPermisionsCheckFailedPL'>524</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L525' title='string Language.RequireUserPermisionsCheckFailedSG'>525</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L546' title='string Language.ResizeSuccess'>546</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L549' title='string Language.Results'>549</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L243' title='string Language.SearchedFor'>243</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L406' title='string Language.SearchFail'>406</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L416' title='string Language.SearchFailDescription'>416</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L411' title='string Language.SearchFailTitle'>411</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L258' title='string Language.Server'>258</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L556' title='string Language.SetToDefaultStrings'>556</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L555' title='string Language.SetToProvidedStrings'>555</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L192' title='string Language.ShuffledSuccess'>192</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L225' title='string Language.SilverhostingJokeDescription'>225</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L220' title='string Language.SilverhostingJokeTitle'>220</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L544' title='string Language.SilverSuccess'>544</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L373' title='string Language.SkippedNP'>373</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L550' title='string Language.SomethingsContributors'>550</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L126' title='string Language.SongByAuthor'>126</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 9 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L420' title='string Language.SongLength'>420</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L435' title='string Language.SongNotExist'>435</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L422' title='string Language.SongTimeLeft'>422</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L432' title='string Language.SongTimeLeftSongLooping'>432</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L427' title='string Language.SongTimeLeftSongLoopingCurrent'>427</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L421' title='string Language.SongTimePosition'>421</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L418' title='string Language.Success'>418</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L523' title='string Language.RequireBotAndUserPermisionsCheckFailedPL'>523</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L526' title='string Language.RequireBotAndUserPermisionsCheckFailedSG'>526</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L514' title='string Language.RequireBotPermisionsCheckFailedPL'>514</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L517' title='string Language.RequireBotPermisionsCheckFailedSG'>517</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L507' title='string Language.RequireDJCheckFailed'>507</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L508' title='string Language.RequireGuildCheckFailed'>508</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L509' title='string Language.RequireNsfwCheckFailed'>509</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L510' title='string Language.RequireOwnerCheckFailed'>510</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L512' title='string Language.RequireRolesCheckFailedPL'>512</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L511' title='string Language.RequireRolesCheckFailedSG'>511</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L520' title='string Language.RequireUserPermisionsCheckFailedPL'>520</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L521' title='string Language.RequireUserPermisionsCheckFailedSG'>521</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L542' title='string Language.ResizeSuccess'>542</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L545' title='string Language.Results'>545</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L236' title='string Language.SearchedFor'>236</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L402' title='string Language.SearchFail'>402</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L412' title='string Language.SearchFailDescription'>412</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L407' title='string Language.SearchFailTitle'>407</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L251' title='string Language.Server'>251</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L552' title='string Language.SetToDefaultStrings'>552</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L551' title='string Language.SetToProvidedStrings'>551</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L185' title='string Language.ShuffledSuccess'>185</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L218' title='string Language.SilverhostingJokeDescription'>218</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 5 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L213' title='string Language.SilverhostingJokeTitle'>213</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L540' title='string Language.SilverSuccess'>540</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L369' title='string Language.SkippedNP'>369</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L546' title='string Language.SomethingsContributors'>546</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L416' title='string Language.SongLength'>416</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L431' title='string Language.SongNotExist'>431</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L418' title='string Language.SongTimeLeft'>418</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L428' title='string Language.SongTimeLeftSongLooping'>428</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L423' title='string Language.SongTimeLeftSongLoopingCurrent'>423</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L417' title='string Language.SongTimePosition'>417</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L414' title='string Language.Success'>414</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L51' title='string Language.TimeInUtc'>51</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 9 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L401' title='string Language.TimesTrackLooped'>401</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L398' title='string Language.TimeTillTrackPlays'>398</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L400' title='string Language.TimeWhenTrackPlayed'>400</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L547' title='string Language.TintSuccess'>547</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L446' title='string Language.TrackCanNotBeSeeked'>446</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L444' title='string Language.TrackingStarted'>444</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L445' title='string Language.TrackingStopped'>445</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L552' title='string Language.Type'>552</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L397' title='string Language.TimesTrackLooped'>397</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L394' title='string Language.TimeTillTrackPlays'>394</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L396' title='string Language.TimeWhenTrackPlayed'>396</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L543' title='string Language.TintSuccess'>543</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L442' title='string Language.TrackCanNotBeSeeked'>442</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L440' title='string Language.TrackingStarted'>440</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L441' title='string Language.TrackingStopped'>441</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L548' title='string Language.Type'>548</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L26' title='string Language.UnknownError'>26</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L533' title='string Language.UnknownImageFormat'>533</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L419' title='string Language.UrbanExample'>419</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L285' title='string Language.UselessFact'>285</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L197' title='string Language.User'>197</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L290' title='string Language.UserHasLowerRole'>290</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L202' title='string Language.Userid'>202</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L283' title='string Language.UserIsBannedFromSilversocial'>283</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L358' title='string Language.UserIsntBot'>358</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L529' title='string Language.UnknownImageFormat'>529</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L415' title='string Language.UrbanExample'>415</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L278' title='string Language.UselessFact'>278</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L190' title='string Language.User'>190</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L283' title='string Language.UserHasLowerRole'>283</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L195' title='string Language.Userid'>195</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L276' title='string Language.UserIsBannedFromSilversocial'>276</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L351' title='string Language.UserIsntBot'>351</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L82' title='string Language.UserNotConnected'>82</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L554' title='string Language.Version'>554</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L436' title='string Language.VersionInfoTitle'>436</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L595' title='string Language.VersionNumber'>595</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L550' title='string Language.Version'>550</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L432' title='string Language.VersionInfoTitle'>432</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L591' title='string Language.VersionNumber'>591</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L87' title='string Language.VolumeNotCorrect'>87</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L388' title='string Language.Voted'>388</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L642' title='string Language.WebsiteBLoopQueue'>642</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L641' title='string Language.WebsiteBLoopSong'>641</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L643' title='string Language.WebsiteBVolumeDown'>643</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L644' title='string Language.WebsiteBVolumeUp'>644</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L638' title='string Language.WebsiteForceSkip'>638</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L632' title='string Language.WebsiteLoopOff'>632</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L634' title='string Language.WebsiteLoopQueue'>634</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L633' title='string Language.WebsiteLoopSong'>633</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L640' title='string Language.WebsiteNoLoop'>640</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L627' title='string Language.WebsitePlayerPaused'>627</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L626' title='string Language.WebsitePlayerResumed'>626</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L635' title='string Language.WebsitePlayingNothingTrackName'>635</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L636' title='string Language.WebsitePlayPause'>636</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L639' title='string Language.WebsiteShuffle'>639</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L631' title='string Language.WebsiteShuffled'>631</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L630' title='string Language.WebsiteSkipped'>630</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L628' title='string Language.WebsiteSkippedViaVote'>628</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L629' title='string Language.WebsiteVotedForSkip'>629</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L637' title='string Language.WebsiteVoteSkip'>637</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L153' title='string Language.WrongImageCount'>153</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L450' title='string Language.XPCommandCardSuccess'>450</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L455' title='string Language.XPCommandFailOther'>455</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L452' title='string Language.XPCommandFailSelf'>452</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L449' title='string Language.XPCommandGeneralFail'>449</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L459' title='string Language.XPCommandLeaderBoardPerson'>459</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L458' title='string Language.XPCommandLeaderBoardTitle'>458</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L448' title='string Language.XPCommandOther'>448</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L447' title='string Language.XPCommandSelf'>447</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L384' title='string Language.Voted'>384</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L638' title='string Language.WebsiteBLoopQueue'>638</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L637' title='string Language.WebsiteBLoopSong'>637</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L639' title='string Language.WebsiteBVolumeDown'>639</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L640' title='string Language.WebsiteBVolumeUp'>640</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L634' title='string Language.WebsiteForceSkip'>634</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L628' title='string Language.WebsiteLoopOff'>628</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L630' title='string Language.WebsiteLoopQueue'>630</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L629' title='string Language.WebsiteLoopSong'>629</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L636' title='string Language.WebsiteNoLoop'>636</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L623' title='string Language.WebsitePlayerPaused'>623</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L622' title='string Language.WebsitePlayerResumed'>622</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L631' title='string Language.WebsitePlayingNothingTrackName'>631</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L632' title='string Language.WebsitePlayPause'>632</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L635' title='string Language.WebsiteShuffle'>635</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L627' title='string Language.WebsiteShuffled'>627</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L626' title='string Language.WebsiteSkipped'>626</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L624' title='string Language.WebsiteSkippedViaVote'>624</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L625' title='string Language.WebsiteVotedForSkip'>625</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L633' title='string Language.WebsiteVoteSkip'>633</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L146' title='string Language.WrongImageCount'>146</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L446' title='string Language.XPCommandCardSuccess'>446</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L451' title='string Language.XPCommandFailOther'>451</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L448' title='string Language.XPCommandFailSelf'>448</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 2 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L445' title='string Language.XPCommandGeneralFail'>445</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L455' title='string Language.XPCommandLeaderBoardPerson'>455</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L454' title='string Language.XPCommandLeaderBoardTitle'>454</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L444' title='string Language.XPCommandOther'>444</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/Language.cs#L443' title='string Language.XPCommandSelf'>443</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 
 <a href="#Language-class-diagram">:link: to `Language` class diagram</a>
 
@@ -1313,28 +1319,32 @@ The `SilverBot.Shared.Objects.Language` namespace contains 2 named types.
 </summary>
 <br>
 
-- The `LanguageService` contains 15 members.
-- 124 total lines of source code.
-- Approximately 50 lines of executable code.
+- The `LanguageService` contains 19 members.
+- 151 total lines of source code.
+- Approximately 59 lines of executable code.
 - The highest cyclomatic complexity is 7 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L13' title='Dictionary<string, Language> LanguageService.CachedLanguages'>13</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L89' title='Language LanguageService.FromCtx(CommandContext ctx)'>89</a> | 88 | 1 :heavy_check_mark: | 0 | 4 | 4 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L93' title='Task<Language> LanguageService.FromCtxAsync(CommandContext ctx)'>93</a> | 80 | 3 :heavy_check_mark: | 0 | 6 | 6 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L99' title='Task<Language> LanguageService.FromCtxAsync(BaseContext ctx)'>99</a> | 80 | 3 :heavy_check_mark: | 0 | 6 | 6 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L113' title='Task<Language> LanguageService.FromCtxAsync(dynamic ctx, Config config, DatabaseContext databaseContext)'>113</a> | 61 | 7 :heavy_check_mark: | 0 | 7 | 19 / 9 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L105' title='Language LanguageService.FromUserId(ulong userId, DatabaseContext databaseContext)'>105</a> | 86 | 1 :heavy_check_mark: | 0 | 4 | 4 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L109' title='Task<Language> LanguageService.FromUserIdAsync(ulong userId, DatabaseContext databaseContext)'>109</a> | 91 | 1 :heavy_check_mark: | 0 | 4 | 4 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L38' title='Language LanguageService.Get(string languageName)'>38</a> | 88 | 1 :heavy_check_mark: | 0 | 3 | 4 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L42' title='Task<Language> LanguageService.GetAsync(string languageName)'>42</a> | 58 | 6 :heavy_check_mark: | 0 | 8 | 29 / 14 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L84' title='Task<Language> LanguageService.GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)'>84</a> | 91 | 1 :heavy_check_mark: | 0 | 4 | 4 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L19' title='Dictionary<string, Language> LanguageService.GetLoadedLanguages()'>19</a> | 76 | 2 :heavy_check_mark: | 0 | 3 | 9 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L29' title='IEnumerable<string> LanguageService.LoadedLanguages()'>29</a> | 80 | 2 :heavy_check_mark: | 0 | 4 | 8 / 3 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L15' title='JsonSerializerOptions LanguageService.options'>15</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 3 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L78' title='void LanguageService.SerialiseDefault(string loc)'>78</a> | 86 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L72' title='Task LanguageService.SerialiseDefaultAsync(string loc)'>72</a> | 86 | 1 :heavy_check_mark: | 0 | 5 | 5 / 2 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L14' title='Dictionary<string, Language> LanguageService.CachedLanguages'>14</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L107' title='Language LanguageService.FromCtx(CommandContext ctx)'>107</a> | 88 | 1 :heavy_check_mark: | 0 | 4 | 4 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L111' title='Language LanguageService.FromCtx(ISilverBotContext ctx)'>111</a> | 88 | 1 :heavy_check_mark: | 0 | 4 | 4 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L115' title='Task<Language> LanguageService.FromCtxAsync(CommandContext ctx)'>115</a> | 80 | 3 :heavy_check_mark: | 0 | 6 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L121' title='Task<Language> LanguageService.FromCtxAsync(BaseContext ctx)'>121</a> | 80 | 3 :heavy_check_mark: | 0 | 6 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L127' title='Task<Language> LanguageService.FromCtxAsync(ISilverBotContext ctx)'>127</a> | 78 | 3 :heavy_check_mark: | 0 | 7 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L141' title='Task<Language> LanguageService.FromCtxAsync(dynamic ctx, Config config, DatabaseContext databaseContext)'>141</a> | 61 | 7 :heavy_check_mark: | 0 | 7 | 19 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L133' title='Language LanguageService.FromUserId(ulong userId, DatabaseContext databaseContext)'>133</a> | 86 | 1 :heavy_check_mark: | 0 | 4 | 4 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L137' title='Task<Language> LanguageService.FromUserIdAsync(ulong userId, DatabaseContext databaseContext)'>137</a> | 91 | 1 :heavy_check_mark: | 0 | 4 | 4 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L39' title='Language LanguageService.Get(string languageName)'>39</a> | 88 | 1 :heavy_check_mark: | 0 | 3 | 4 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L60' title='Task<Language> LanguageService.GetAsync(string languageName)'>60</a> | 58 | 6 :heavy_check_mark: | 0 | 8 | 29 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L54' title='Language LanguageService.GetDefault()'>54</a> | 86 | 2 :heavy_check_mark: | 0 | 2 | 8 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L46' title='Task<Language> LanguageService.GetDefaultAsync()'>46</a> | 86 | 2 :heavy_check_mark: | 0 | 3 | 8 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L102' title='Task<Language> LanguageService.GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)'>102</a> | 91 | 1 :heavy_check_mark: | 0 | 4 | 4 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L20' title='Dictionary<string, Language> LanguageService.GetLoadedLanguages()'>20</a> | 76 | 2 :heavy_check_mark: | 0 | 3 | 9 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L30' title='IEnumerable<string> LanguageService.LoadedLanguages()'>30</a> | 80 | 2 :heavy_check_mark: | 0 | 4 | 8 / 3 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L16' title='JsonSerializerOptions LanguageService.options'>16</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 3 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L96' title='void LanguageService.SerialiseDefault(string loc)'>96</a> | 86 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Language/LanguageService.cs#L90' title='Task LanguageService.SerialiseDefaultAsync(string loc)'>90</a> | 86 | 1 :heavy_check_mark: | 0 | 5 | 5 / 2 |
 
 <a href="#LanguageService-class-diagram">:link: to `LanguageService` class diagram</a>
 
@@ -1434,8 +1444,8 @@ The `SilverBot.Shared.Objects.Classes.OAuth` namespace contains 2 named types.
 The `SilverBot.Shared.Objects` namespace contains 6 named types.
 
 - 6 named types.
-- 580 total lines of source code.
-- Approximately 217 lines of executable code.
+- 592 total lines of source code.
+- Approximately 220 lines of executable code.
 - The highest cyclomatic complexity is 12 :x:.
 
 <details>
@@ -1470,65 +1480,66 @@ The `SilverBot.Shared.Objects` namespace contains 6 named types.
 </summary>
 <br>
 
-- The `Config` contains 53 members.
-- 383 total lines of source code.
-- Approximately 171 lines of executable code.
+- The `Config` contains 54 members.
+- 395 total lines of source code.
+- Approximately 174 lines of executable code.
 - The highest cyclomatic complexity is 12 :x:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L399' title='bool Config.AllowedToRead'>399</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L194' title='string[] Config.ArchiveWebhooks'>194</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L126' title='bool Config.AutoDownloadAndStartLavalink'>126</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L163' title='string Config.BibiLibCutOut'>163</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L166' title='string Config.BibiLibCutOutConfig'>166</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L169' title='string Config.BibiLibFull'>169</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L172' title='string Config.BibiLibFullConfig'>172</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L102' title='bool Config.CallGcOnSplashChange'>102</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L197' title='ulong[] Config.ChannelsToArchivePicturesFrom'>197</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L111' title='bool Config.ClearTasks'>111</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L151' title='bool Config.ColorConfig'>151</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L118' title='ulong? Config.ConfigVer'>118</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 2 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L411' title='bool Config.AllowedToRead'>411</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L206' title='string[] Config.ArchiveWebhooks'>206</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L134' title='bool Config.AutoDownloadAndStartLavalink'>134</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L175' title='string Config.BibiLibCutOut'>175</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L178' title='string Config.BibiLibCutOutConfig'>178</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L181' title='string Config.BibiLibFull'>181</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L184' title='string Config.BibiLibFullConfig'>184</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L110' title='bool Config.CallGcOnSplashChange'>110</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L209' title='ulong[] Config.ChannelsToArchivePicturesFrom'>209</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L119' title='bool Config.ClearTasks'>119</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L163' title='bool Config.ColorConfig'>163</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L126' title='ulong? Config.ConfigVer'>126</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 2 / 2 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L21' title='ulong Config.CurrentConfVer'>21</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L154' title='bool Config.EmulateBubot'>154</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L157' title='bool Config.EmulateBubotBibi'>157</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L178' title='bool Config.EnableServerStatistics'>178</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L189' title='bool Config.EnableUpdateChecking'>189</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L79' title='SerializableDictionary<string, string> Config.ExtraParams'>79</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 5 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L93' title='string Config.FApiToken'>93</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L148' title='ulong Config.FridayTextChannel'>148</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L346' title='Task<Config?> Config.GetAsync()'>346</a> | 49 | 12 :x: | 0 | 6 | 46 / 27 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L90' title='string Config.Gtoken'>90</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L108' title='bool Config.HostWebsite'>108</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L96' title='string Config.JavaLoc'>96</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L136' title='string Config.LavalinkBuildsSourceGitHubRepo'>136</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L134' title='string Config.LavalinkBuildsSourceGitHubUser'>134</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L145' title='string Config.LavalinkPassword'>145</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L139' title='string Config.LavalinkRestUri'>139</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L142' title='string Config.LavalinkWebSocketUri'>142</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L160' title='string Config.LocalBibiPictures'>160</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L185' title='ulong Config.LoginPageDiscordClientId'>185</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L186' title='string Config.LoginPageDiscordClientSecret'>186</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L166' title='bool Config.EmulateBubot'>166</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L169' title='bool Config.EmulateBubotBibi'>169</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L156' title='bool Config.EnableJellyFinLookupService'>156</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L190' title='bool Config.EnableServerStatistics'>190</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L201' title='bool Config.EnableUpdateChecking'>201</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L78' title='SerializableDictionary<string, string> Config.ExtraParams'>78</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 14 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L101' title='string Config.FApiToken'>101</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L160' title='ulong Config.FridayTextChannel'>160</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L358' title='Task<Config?> Config.GetAsync()'>358</a> | 49 | 12 :x: | 0 | 6 | 46 / 27 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L98' title='string Config.Gtoken'>98</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L116' title='bool Config.HostWebsite'>116</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L104' title='string Config.JavaLoc'>104</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L144' title='string Config.LavalinkBuildsSourceGitHubRepo'>144</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L142' title='string Config.LavalinkBuildsSourceGitHubUser'>142</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L153' title='string Config.LavalinkPassword'>153</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L147' title='string Config.LavalinkRestUri'>147</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L150' title='string Config.LavalinkWebSocketUri'>150</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L172' title='string Config.LocalBibiPictures'>172</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L197' title='ulong Config.LoginPageDiscordClientId'>197</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L198' title='string Config.LoginPageDiscordClientSecret'>198</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L37' title='LogLevel Config.MinimumLogLevel'>37</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 3 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L84' title='string[] Config.ModulesFilesToLoadExternal'>84</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 5 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L47' title='string[] Config.ModulesToLoad'>47</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 26 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L115' title='int Config.MsInterval'>115</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L325' title='Task Config.OutdatedConfigTask(Config readConfig, CommentXmlConfigReaderNotifyWhenChanged<Config> configReader)'>325</a> | 62 | 4 :heavy_check_mark: | 0 | 7 | 20 / 10 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L92' title='string[] Config.ModulesFilesToLoadExternal'>92</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 5 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L46' title='string[] Config.ModulesToLoad'>46</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 26 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L123' title='int Config.MsInterval'>123</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L337' title='Task Config.OutdatedConfigTask(Config readConfig, CommentXmlConfigReaderNotifyWhenChanged<Config> configReader)'>337</a> | 62 | 4 :heavy_check_mark: | 0 | 7 | 20 / 10 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L24' title='string[] Config.Prefix'>24</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 11 / 3 |
-| Event | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L393' title='event PropertyChangedEventHandler? Config.PropertyChanged'>393</a> | 100 | 0 :heavy_check_mark: | 0 | 2 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L105' title='bool Config.ReactionRolesEnabled'>105</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L99' title='ulong Config.ServerId'>99</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L74' title='SerializableDictionary<string, string> Config.ServicesToLoadExternal'>74</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 5 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L394' title='void Config.PropertyChanged(object e, PropertyChangedEventArgs a)'>394</a> | 93 | 2 :heavy_check_mark: | 0 | 4 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L175' title='bool Config.SitInVc'>175</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L201' title='SerializableDictionary<string, string> Config.SongAliases'>201</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 17 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L217' title='Splash[] Config.Splashes'>217</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 106 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L130' title='bool Config.SponsorBlock'>130</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
+| Event | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L405' title='event PropertyChangedEventHandler? Config.PropertyChanged'>405</a> | 100 | 0 :heavy_check_mark: | 0 | 2 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L113' title='bool Config.ReactionRolesEnabled'>113</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L107' title='ulong Config.ServerId'>107</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L73' title='SerializableDictionary<string, string> Config.ServicesToLoadExternal'>73</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 5 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L406' title='void Config.PropertyChanged(object sender, PropertyChangedEventArgs e)'>406</a> | 93 | 2 :heavy_check_mark: | 0 | 4 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L187' title='bool Config.SitInVc'>187</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L213' title='SerializableDictionary<string, string> Config.SongAliases'>213</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 17 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L229' title='Splash[] Config.Splashes'>229</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 106 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L138' title='bool Config.SponsorBlock'>138</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L43' title='string Config.Token'>43</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L183' title='ulong Config.TranslatorModeChannel'>183</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L181' title='ulong Config.TranslatorRoleId'>181</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L191' title='bool Config.UseAnalytics'>191</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L122' title='bool Config.UseLavaLink'>122</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L195' title='ulong Config.TranslatorModeChannel'>195</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L193' title='ulong Config.TranslatorRoleId'>193</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L203' title='bool Config.UseAnalytics'>203</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L130' title='bool Config.UseLavaLink'>130</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 3 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Objects/Config.cs#L40' title='bool Config.UseTxtFilesAsLogs'>40</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
 
 <a href="#Config-class-diagram">:link: to `Config` class diagram</a>
@@ -1742,7 +1753,7 @@ The `SilverBot.Shared.Pagination` namespace contains 7 named types.
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Pagination/CoolerPaginatior.cs#L9' title='CoolerPaginatior.CoolerPaginatior(DiscordClient client)'>9</a> | 57 | 14 :x: | 0 | 12 | 45 / 12 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Pagination/CoolerPaginatior.cs#L56' title='IEnumerable<DiscordButtonComponent> CoolerPaginatior.GetButtons(ILazyPage page, IPagination pagination, Guid id)'>56</a> | 69 | 7 :heavy_check_mark: | 0 | 9 | 13 / 4 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Pagination/CoolerPaginatior.cs#L54' title='Dictionary<Guid, PaginationRecord> CoolerPaginatior.Paginations'>54</a> | 93 | 0 :heavy_check_mark: | 0 | 3 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Pagination/CoolerPaginatior.cs#L69' title='Task<DiscordMessage> CoolerPaginatior.SendPage(ILazyPage page, DiscordChannel channel, IPagination pagination, Guid id)'>69</a> | 70 | 3 :heavy_check_mark: | 0 | 11 | 15 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Pagination/CoolerPaginatior.cs#L69' title='Task<DiscordMessage> CoolerPaginatior.SendPage(ILazyPage page, DiscordChannel channel, IPagination pagination, Guid id)'>69</a> | 70 | 3 :heavy_check_mark: | 0 | 12 | 15 / 6 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Pagination/CoolerPaginatior.cs#L84' title='Task<Guid> CoolerPaginatior.SendPaginatedMessage(DiscordChannel channel, DiscordUser user, bool shared, IPagination pagination)'>84</a> | 71 | 1 :heavy_check_mark: | 0 | 10 | 9 / 5 |
 
 <a href="#CoolerPaginatior-class-diagram">:link: to `CoolerPaginatior` class diagram</a>
@@ -1937,12 +1948,52 @@ The `SilverBot.Shared.Objects.Database.Classes.ReactionRole` namespace contains 
 </summary>
 <br>
 
-The `SilverBot.Shared` namespace contains 4 named types.
+The `SilverBot.Shared` namespace contains 8 named types.
 
-- 4 named types.
-- 86 total lines of source code.
-- Approximately 24 lines of executable code.
+- 8 named types.
+- 356 total lines of source code.
+- Approximately 177 lines of executable code.
 - The highest cyclomatic complexity is 12 :x:.
+
+<details>
+<summary>
+  <strong id="basedcommandcontext">
+    BasedCommandContext :heavy_check_mark:
+  </strong>
+</summary>
+<br>
+
+- The `BasedCommandContext` contains 18 members.
+- 27 total lines of source code.
+- Approximately 25 lines of executable code.
+- The highest cyclomatic complexity is 2 :heavy_check_mark:.
+
+| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L98' title='BasedCommandContext.BasedCommandContext(CommandContext ctx)'>98</a> | 96 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L86' title='DiscordChannel BasedCommandContext.Channel'>86</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L88' title='DiscordClient BasedCommandContext.Client'>88</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L92' title='CommandsNextExtension? BasedCommandContext.CommandsNext'>92</a> | 100 | 2 :heavy_check_mark: | 0 | 4 | 1 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L102' title='object BasedCommandContext.GetOriginal()'>102</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L85' title='DiscordGuild? BasedCommandContext.Guild'>85</a> | 100 | 2 :heavy_check_mark: | 0 | 4 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L91' title='DiscordMember? BasedCommandContext.Member'>91</a> | 100 | 2 :heavy_check_mark: | 0 | 4 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L90' title='DiscordMessage BasedCommandContext.Message'>90</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L82' title='BasedCommandContext.implicit operator BasedCommandContext(CommandContext d)'>82</a> | 97 | 1 :heavy_check_mark: | 0 | 1 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L83' title='BasedCommandContext.implicit operator CommandContext(BasedCommandContext d)'>83</a> | 97 | 1 :heavy_check_mark: | 0 | 1 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L84' title='CommandContext BasedCommandContext.Org'>84</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L93' title='Task<DiscordMessage> BasedCommandContext.RespondAsync(string content)'>93</a> | 97 | 1 :heavy_check_mark: | 0 | 3 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L94' title='Task<DiscordMessage> BasedCommandContext.RespondAsync(DiscordEmbed embed)'>94</a> | 97 | 1 :heavy_check_mark: | 0 | 4 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L95' title='Task<DiscordMessage> BasedCommandContext.RespondAsync(string content, DiscordEmbed embed)'>95</a> | 94 | 1 :heavy_check_mark: | 0 | 4 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L96' title='Task<DiscordMessage> BasedCommandContext.RespondAsync(DiscordMessageBuilder builder)'>96</a> | 97 | 1 :heavy_check_mark: | 0 | 4 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L97' title='Task<DiscordMessage> BasedCommandContext.RespondAsync(Action<DiscordMessageBuilder> action)'>97</a> | 97 | 1 :heavy_check_mark: | 0 | 5 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L87' title='IServiceProvider BasedCommandContext.Services'>87</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L89' title='DiscordUser BasedCommandContext.User'>89</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 2 |
+
+<a href="#BasedCommandContext-class-diagram">:link: to `BasedCommandContext` class diagram</a>
+
+<a href="#silverbot-shared">:top: back to SilverBot.Shared</a>
+
+</details>
 
 <details>
 <summary>
@@ -1965,6 +2016,43 @@ The `SilverBot.Shared` namespace contains 4 named types.
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Attributes/XmlDescriptionAttribute.cs#L35' title='T? CommentXmlConfigReaderNotifyWhenChanged<T>.Read(string path)'>35</a> | 55 | 12 :x: | 0 | 7 | 40 / 15 |
 
 <a href="#CommentXmlConfigReaderNotifyWhenChanged&lt;T&gt;-class-diagram">:link: to `CommentXmlConfigReaderNotifyWhenChanged&lt;T&gt;` class diagram</a>
+
+<a href="#silverbot-shared">:top: back to SilverBot.Shared</a>
+
+</details>
+
+<details>
+<summary>
+  <strong id="contextextensions">
+    ContextExtensions :heavy_check_mark:
+  </strong>
+</summary>
+<br>
+
+- The `ContextExtensions` contains 15 members.
+- 166 total lines of source code.
+- Approximately 94 lines of executable code.
+- The highest cyclomatic complexity is 5 :heavy_check_mark:.
+
+| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L94' title='void ContextExtensions.CommonSendMessageLogic(DiscordEmbedBuilder embedBuilder, string title = "", string message = "", string imageUrl = "", string url = "")'>94</a> | 61 | 5 :heavy_check_mark: | 0 | 2 | 19 / 12 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L49' title='Language? ContextExtensions.GetLanguage(ISilverBotContext ctx, Language? language = null)'>49</a> | 68 | 2 :heavy_check_mark: | 0 | 4 | 12 / 7 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L61' title='Language? ContextExtensions.GetLanguage(CommandContext ctx, Language? language = null)'>61</a> | 69 | 2 :heavy_check_mark: | 0 | 3 | 12 / 7 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L13' title='Task<Language?> ContextExtensions.GetLanguageAsync(BaseContext ctx, Language? language = null)'>13</a> | 69 | 2 :heavy_check_mark: | 0 | 4 | 12 / 7 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L25' title='Task<Language?> ContextExtensions.GetLanguageAsync(CommandContext ctx, Language? language = null)'>25</a> | 69 | 2 :heavy_check_mark: | 0 | 4 | 12 / 7 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L37' title='Task<Language?> ContextExtensions.GetLanguageAsync(ISilverBotContext ctx, Language? language = null)'>37</a> | 68 | 2 :heavy_check_mark: | 0 | 5 | 12 / 7 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L140' title='DiscordEmbedBuilder ContextExtensions.GetNewBuilder(BaseContext ctx, Language language)'>140</a> | 75 | 2 :heavy_check_mark: | 0 | 5 | 12 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L152' title='DiscordEmbedBuilder ContextExtensions.GetNewBuilder(ISilverBotContext ctx, Language language)'>152</a> | 75 | 2 :heavy_check_mark: | 0 | 6 | 12 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L164' title='DiscordEmbedBuilder ContextExtensions.GetNewBuilder(CommandContext ctx, Language language)'>164</a> | 75 | 2 :heavy_check_mark: | 0 | 5 | 12 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L113' title='Task ContextExtensions.SendMessageAsync(CommandContext ctx, string title = "", string message = "", string imageUrl = "", string url = "", Language? language = null)'>113</a> | 60 | 1 :heavy_check_mark: | 0 | 7 | 11 / 10 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L124' title='Task ContextExtensions.SendMessageAsync(ISilverBotContext ctx, string title = "", string message = "", string imageUrl = "", string url = "", Language? language = null)'>124</a> | 60 | 1 :heavy_check_mark: | 0 | 8 | 8 / 10 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L132' title='Task ContextExtensions.SendMessageAsync(BaseContext ctx, string title = "", string message = "", string imageUrl = "", string url = "", Language? language = null)'>132</a> | 61 | 1 :heavy_check_mark: | 0 | 7 | 8 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L73' title='Task ContextExtensions.SendStringFileWithContent(CommandContext ctx, string title, string file, string filename = "message.txt")'>73</a> | 81 | 1 :heavy_check_mark: | 0 | 5 | 7 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L80' title='Task ContextExtensions.SendStringFileWithContent(BaseContext ctx, string title, string file, string filename = "message.txt")'>80</a> | 81 | 1 :heavy_check_mark: | 0 | 5 | 7 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ContextExtensions.cs#L87' title='Task ContextExtensions.SendStringFileWithContent(ISilverBotContext ctx, string title, string file, string filename = "message.txt")'>87</a> | 80 | 1 :heavy_check_mark: | 0 | 6 | 7 / 2 |
+
+<a href="#ContextExtensions-class-diagram">:link: to `ContextExtensions` class diagram</a>
 
 <a href="#silverbot-shared">:top: back to SilverBot.Shared</a>
 
@@ -2042,6 +2130,80 @@ The `SilverBot.Shared` namespace contains 4 named types.
 
 </details>
 
+<details>
+<summary>
+  <strong id="isilverbotcontext">
+    ISilverBotContext :heavy_check_mark:
+  </strong>
+</summary>
+<br>
+
+- The `ISilverBotContext` contains 13 members.
+- 16 total lines of source code.
+- Approximately 0 lines of executable code.
+- The highest cyclomatic complexity is 1 :heavy_check_mark:.
+
+| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L14' title='DiscordChannel ISilverBotContext.Channel'>14</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L12' title='DiscordClient ISilverBotContext.Client'>12</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L17' title='CommandsNextExtension? ISilverBotContext.CommandsNext'>17</a> | 100 | 1 :heavy_check_mark: | 0 | 2 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L10' title='object ISilverBotContext.GetOriginal()'>10</a> | 100 | 1 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L11' title='DiscordGuild? ISilverBotContext.Guild'>11</a> | 100 | 1 :heavy_check_mark: | 0 | 2 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L16' title='DiscordMember? ISilverBotContext.Member'>16</a> | 100 | 1 :heavy_check_mark: | 0 | 2 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L18' title='Task<DiscordMessage> ISilverBotContext.RespondAsync(string content)'>18</a> | 100 | 1 :heavy_check_mark: | 0 | 2 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L19' title='Task<DiscordMessage> ISilverBotContext.RespondAsync(DiscordEmbed embed)'>19</a> | 100 | 1 :heavy_check_mark: | 0 | 3 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L20' title='Task<DiscordMessage> ISilverBotContext.RespondAsync(string content, DiscordEmbed embed)'>20</a> | 100 | 1 :heavy_check_mark: | 0 | 3 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L21' title='Task<DiscordMessage> ISilverBotContext.RespondAsync(DiscordMessageBuilder builder)'>21</a> | 100 | 1 :heavy_check_mark: | 0 | 3 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L22' title='Task<DiscordMessage> ISilverBotContext.RespondAsync(Action<DiscordMessageBuilder> action)'>22</a> | 100 | 1 :heavy_check_mark: | 0 | 4 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L15' title='IServiceProvider ISilverBotContext.Services'>15</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L13' title='DiscordUser ISilverBotContext.User'>13</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+
+<a href="#ISilverBotContext-class-diagram">:link: to `ISilverBotContext` class diagram</a>
+
+<a href="#silverbot-shared">:top: back to SilverBot.Shared</a>
+
+</details>
+
+<details>
+<summary>
+  <strong id="unbasedcommandcontext">
+    UnBasedCommandContext :heavy_check_mark:
+  </strong>
+</summary>
+<br>
+
+- The `UnBasedCommandContext` contains 17 members.
+- 55 total lines of source code.
+- Approximately 34 lines of executable code.
+- The highest cyclomatic complexity is 5 :heavy_check_mark:.
+
+| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L71' title='UnBasedCommandContext.UnBasedCommandContext(InteractionContext ctx)'>71</a> | 96 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L31' title='DiscordChannel UnBasedCommandContext.Channel'>31</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L33' title='DiscordClient UnBasedCommandContext.Client'>33</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L36' title='CommandsNextExtension? UnBasedCommandContext.CommandsNext'>36</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 1 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L75' title='object UnBasedCommandContext.GetOriginal()'>75</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L30' title='DiscordGuild? UnBasedCommandContext.Guild'>30</a> | 100 | 2 :heavy_check_mark: | 0 | 4 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L35' title='DiscordMember? UnBasedCommandContext.Member'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 4 | 1 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L27' title='UnBasedCommandContext.implicit operator UnBasedCommandContext(InteractionContext d)'>27</a> | 97 | 1 :heavy_check_mark: | 0 | 1 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L28' title='UnBasedCommandContext.implicit operator InteractionContext(UnBasedCommandContext d)'>28</a> | 97 | 1 :heavy_check_mark: | 0 | 1 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L29' title='InteractionContext UnBasedCommandContext.Org'>29</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L37' title='Task<DiscordMessage> UnBasedCommandContext.RespondAsync(string content)'>37</a> | 97 | 1 :heavy_check_mark: | 0 | 5 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L38' title='Task<DiscordMessage> UnBasedCommandContext.RespondAsync(DiscordEmbed embed)'>38</a> | 97 | 1 :heavy_check_mark: | 0 | 6 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L39' title='Task<DiscordMessage> UnBasedCommandContext.RespondAsync(string content, DiscordEmbed embed)'>39</a> | 94 | 1 :heavy_check_mark: | 0 | 6 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L41' title='Task<DiscordMessage> UnBasedCommandContext.RespondAsync(DiscordMessageBuilder builder)'>41</a> | 65 | 5 :heavy_check_mark: | 0 | 6 | 23 / 10 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L65' title='Task<DiscordMessage> UnBasedCommandContext.RespondAsync(Action<DiscordMessageBuilder> action)'>65</a> | 82 | 1 :heavy_check_mark: | 0 | 5 | 6 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L32' title='IServiceProvider UnBasedCommandContext.Services'>32</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/ISilverBotContext.cs#L34' title='DiscordUser UnBasedCommandContext.User'>34</a> | 100 | 2 :heavy_check_mark: | 0 | 3 | 1 / 2 |
+
+<a href="#UnBasedCommandContext-class-diagram">:link: to `UnBasedCommandContext` class diagram</a>
+
+<a href="#silverbot-shared">:top: back to SilverBot.Shared</a>
+
+</details>
+
 </details>
 
 <details>
@@ -2055,8 +2217,8 @@ The `SilverBot.Shared` namespace contains 4 named types.
 The `SilverBot.Shared.Utils` namespace contains 42 named types.
 
 - 42 named types.
-- 1,246 total lines of source code.
-- Approximately 701 lines of executable code.
+- 1,195 total lines of source code.
+- Approximately 683 lines of executable code.
 - The highest cyclomatic complexity is 6 :heavy_check_mark:.
 
 <details>
@@ -2199,29 +2361,27 @@ The `SilverBot.Shared.Utils` namespace contains 42 named types.
 
 <details>
 <summary>
-  <strong id="colorutils">
-    ColorUtils :heavy_check_mark:
+  <strong id="colourservice">
+    ColourService :heavy_check_mark:
   </strong>
 </summary>
 <br>
 
-- The `ColorUtils` contains 8 members.
-- 133 total lines of source code.
-- Approximately 43 lines of executable code.
-- The highest cyclomatic complexity is 6 :heavy_check_mark:.
+- The `ColourService` contains 6 members.
+- 79 total lines of source code.
+- Approximately 24 lines of executable code.
+- The highest cyclomatic complexity is 5 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L14' title='DiscordColor[] ColorUtils.cache'>14</a> | 100 | 0 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L25' title='ColorUtils ColorUtils.CreateInstance()'>25</a> | 100 | 1 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L65' title='DiscordColor[] ColorUtils.Get(bool ignorecache = false, bool useinternal = false)'>65</a> | 56 | 6 :heavy_check_mark: | 0 | 5 | 29 / 16 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L36' title='Task<DiscordColor[]> ColorUtils.GetAsync(bool ignorecache = false, bool useinternal = false)'>36</a> | 56 | 6 :heavy_check_mark: | 0 | 6 | 35 / 16 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L110' title='DiscordColor ColorUtils.GetSingle(bool ignorecache = false, bool useinternal = false)'>110</a> | 72 | 1 :heavy_check_mark: | 0 | 3 | 11 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L122' title='Task<DiscordColor> ColorUtils.GetSingleAsync(bool ignorecache = false, bool useinternal = false)'>122</a> | 72 | 1 :heavy_check_mark: | 0 | 4 | 11 / 4 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L16' title='DiscordColor[] ColorUtils.Internal'>16</a> | 100 | 1 :heavy_check_mark: | 0 | 2 | 8 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L98' title='Task ColorUtils.ReloadConfig()'>98</a> | 96 | 1 :heavy_check_mark: | 0 | 3 | 8 / 1 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L14' title='DiscordColor[] ColourService.cache'>14</a> | 100 | 0 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L24' title='DiscordColor[] ColourService.Get(bool ignorecache = false, bool useinternal = false)'>24</a> | 62 | 5 :heavy_check_mark: | 0 | 1 | 18 / 11 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L68' title='DiscordColor ColourService.GetSingle(bool ignorecache = false, bool useinternal = false)'>68</a> | 72 | 1 :heavy_check_mark: | 0 | 3 | 11 / 4 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L16' title='DiscordColor[] ColourService.Internal'>16</a> | 100 | 1 :heavy_check_mark: | 0 | 2 | 8 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L42' title='void ColourService.ReadConfig()'>42</a> | 74 | 3 :heavy_check_mark: | 0 | 2 | 9 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L51' title='void ColourService.WriteConfig()'>51</a> | 80 | 1 :heavy_check_mark: | 0 | 4 | 10 / 3 |
 
-<a href="#ColorUtils-class-diagram">:link: to `ColorUtils` class diagram</a>
+<a href="#ColourService-class-diagram">:link: to `ColourService` class diagram</a>
 
 <a href="#silverbot-shared-utils">:top: back to SilverBot.Shared.Utils</a>
 
@@ -2509,16 +2669,17 @@ The `SilverBot.Shared.Utils` namespace contains 42 named types.
 </summary>
 <br>
 
-- The `EmbedBuilderUtils` contains 3 members.
-- 9 total lines of source code.
-- Approximately 3 lines of executable code.
+- The `EmbedBuilderUtils` contains 4 members.
+- 12 total lines of source code.
+- Approximately 4 lines of executable code.
 - The highest cyclomatic complexity is 1 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/EmbedBuilderUtils.cs#L11' title='DiscordEmbedBuilder EmbedBuilderUtils.AddRequestedByFooter(DiscordEmbedBuilder builder, CommandContext ctx, Language lang)'>11</a> | 95 | 1 :heavy_check_mark: | 0 | 4 | 2 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/EmbedBuilderUtils.cs#L13' title='DiscordEmbedBuilder EmbedBuilderUtils.AddRequestedByFooter(DiscordEmbedBuilder builder, BaseContext ctx, Language lang)'>13</a> | 95 | 1 :heavy_check_mark: | 0 | 4 | 2 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/EmbedBuilderUtils.cs#L15' title='DiscordEmbedBuilder EmbedBuilderUtils.AddRequestedByFooter(DiscordEmbedBuilder builder, DiscordUser user, Language lang)'>15</a> | 92 | 1 :heavy_check_mark: | 0 | 4 | 2 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/EmbedBuilderUtils.cs#L12' title='DiscordEmbedBuilder EmbedBuilderUtils.AddRequestedByFooter(DiscordEmbedBuilder builder, CommandContext ctx, Language language)'>12</a> | 95 | 1 :heavy_check_mark: | 0 | 4 | 2 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/EmbedBuilderUtils.cs#L14' title='DiscordEmbedBuilder EmbedBuilderUtils.AddRequestedByFooter(DiscordEmbedBuilder builder, BaseContext ctx, Language language)'>14</a> | 95 | 1 :heavy_check_mark: | 0 | 4 | 2 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/EmbedBuilderUtils.cs#L16' title='DiscordEmbedBuilder EmbedBuilderUtils.AddRequestedByFooter(DiscordEmbedBuilder builder, ISilverBotContext ctx, Language language)'>16</a> | 91 | 1 :heavy_check_mark: | 0 | 4 | 2 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/EmbedBuilderUtils.cs#L18' title='DiscordEmbedBuilder EmbedBuilderUtils.AddRequestedByFooter(DiscordEmbedBuilder builder, DiscordUser user, Language language)'>18</a> | 92 | 1 :heavy_check_mark: | 0 | 4 | 3 / 1 |
 
 <a href="#EmbedBuilderUtils-class-diagram">:link: to `EmbedBuilderUtils` class diagram</a>
 
@@ -2973,26 +3134,26 @@ The `SilverBot.Shared.Utils` namespace contains 42 named types.
 
 <details>
 <summary>
-  <strong id="colorutils-sdcolor">
-    ColorUtils.SdColor :heavy_check_mark:
+  <strong id="colourservice-sdcolor">
+    ColourService.SdColor :heavy_check_mark:
   </strong>
 </summary>
 <br>
 
-- The `ColorUtils.SdColor` contains 5 members.
+- The `ColourService.SdColor` contains 5 members.
 - 16 total lines of source code.
 - Approximately 2 lines of executable code.
 - The highest cyclomatic complexity is 2 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L132' title='byte SdColor.B'>132</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L139' title='SdColor SdColor.FromDiscordColor(DiscordColor color)'>139</a> | 90 | 1 :heavy_check_mark: | 0 | 2 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L131' title='byte SdColor.G'>131</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L130' title='byte SdColor.R'>130</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColorUtils.cs#L134' title='DiscordColor SdColor.ToDiscordColor()'>134</a> | 93 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L78' title='byte SdColor.B'>78</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L85' title='SdColor SdColor.FromDiscordColor(DiscordColor color)'>85</a> | 90 | 1 :heavy_check_mark: | 0 | 2 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L77' title='byte SdColor.G'>77</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L76' title='byte SdColor.R'>76</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Shared/Utils/ColourService.cs#L80' title='DiscordColor SdColor.ToDiscordColor()'>80</a> | 93 | 1 :heavy_check_mark: | 0 | 1 | 4 / 1 |
 
-<a href="#ColorUtils.SdColor-class-diagram">:link: to `ColorUtils.SdColor` class diagram</a>
+<a href="#ColourService.SdColor-class-diagram">:link: to `ColourService.SdColor` class diagram</a>
 
 <a href="#silverbot-shared-utils">:top: back to SilverBot.Shared.Utils</a>
 
@@ -3435,9 +3596,9 @@ The `SilverBot.SysAdminModule` namespace contains 5 named types.
 The *SilverBot.Web.csproj* project file contains:
 
 - 4 namespaces.
-- 15 named types.
-- 397 total lines of source code.
-- Approximately 230 lines of executable code.
+- 7 named types.
+- 270 total lines of source code.
+- Approximately 152 lines of executable code.
 - The highest cyclomatic complexity is 8 :warning:.
 
 <details>
@@ -3488,200 +3649,12 @@ The `<global namespace>` namespace contains 1 named types.
 </summary>
 <br>
 
-The `SilverBot.Web.Controllers` namespace contains 12 named types.
+The `SilverBot.Web.Controllers` namespace contains 4 named types.
 
-- 12 named types.
-- 214 total lines of source code.
-- Approximately 111 lines of executable code.
+- 4 named types.
+- 87 total lines of source code.
+- Approximately 33 lines of executable code.
 - The highest cyclomatic complexity is 4 :heavy_check_mark:.
-
-<details>
-<summary>
-  <strong id="browserconfig-browserconfig">
-    BrowserConfig.browserconfig :heavy_check_mark:
-  </strong>
-</summary>
-<br>
-
-- The `BrowserConfig.browserconfig` contains 1 members.
-- 12 total lines of source code.
-- Approximately 8 lines of executable code.
-- The highest cyclomatic complexity is 2 :heavy_check_mark:.
-
-| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L69' title='browserconfigMsapplication browserconfig.msapplication'>69</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-
-<a href="#BrowserConfig.browserconfig-class-diagram">:link: to `BrowserConfig.browserconfig` class diagram</a>
-
-<a href="#silverbot-web-controllers">:top: back to SilverBot.Web.Controllers</a>
-
-</details>
-
-<details>
-<summary>
-  <strong id="browserconfig">
-    BrowserConfig :heavy_check_mark:
-  </strong>
-</summary>
-<br>
-
-- The `BrowserConfig` contains 1 members.
-- 117 total lines of source code.
-- Approximately 26 lines of executable code.
-- The highest cyclomatic complexity is 4 :heavy_check_mark:.
-
-| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L18' title='browserconfig BrowserConfig.Index()'>18</a> | 50 | 4 :heavy_check_mark: | 0 | 8 | 40 / 20 |
-
-<a href="#BrowserConfig-class-diagram">:link: to `BrowserConfig` class diagram</a>
-
-<a href="#silverbot-web-controllers">:top: back to SilverBot.Web.Controllers</a>
-
-</details>
-
-<details>
-<summary>
-  <strong id="browserconfig-browserconfigmsapplication">
-    BrowserConfig.browserconfigMsapplication :heavy_check_mark:
-  </strong>
-</summary>
-<br>
-
-- The `BrowserConfig.browserconfigMsapplication` contains 1 members.
-- 7 total lines of source code.
-- Approximately 6 lines of executable code.
-- The highest cyclomatic complexity is 2 :heavy_check_mark:.
-
-| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L77' title='browserconfigMsapplicationTile browserconfigMsapplication.tile'>77</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-
-<a href="#BrowserConfig.browserconfigMsapplication-class-diagram">:link: to `BrowserConfig.browserconfigMsapplication` class diagram</a>
-
-<a href="#silverbot-web-controllers">:top: back to SilverBot.Web.Controllers</a>
-
-</details>
-
-<details>
-<summary>
-  <strong id="browserconfig-browserconfigmsapplicationtile">
-    BrowserConfig.browserconfigMsapplicationTile :heavy_check_mark:
-  </strong>
-</summary>
-<br>
-
-- The `BrowserConfig.browserconfigMsapplicationTile` contains 5 members.
-- 15 total lines of source code.
-- Approximately 6 lines of executable code.
-- The highest cyclomatic complexity is 2 :heavy_check_mark:.
-
-| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L87' title='browserconfigMsapplicationTileSquare150x150logo browserconfigMsapplicationTile.square150x150logo'>87</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L89' title='browserconfigMsapplicationTileSquare310x310logo browserconfigMsapplicationTile.square310x310logo'>89</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L85' title='browserconfigMsapplicationTileSquare70x70logo browserconfigMsapplicationTile.square70x70logo'>85</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L93' title='string browserconfigMsapplicationTile.TileColor'>93</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L91' title='browserconfigMsapplicationTileWide310x150logo browserconfigMsapplicationTile.wide310x150logo'>91</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-
-<a href="#BrowserConfig.browserconfigMsapplicationTile-class-diagram">:link: to `BrowserConfig.browserconfigMsapplicationTile` class diagram</a>
-
-<a href="#silverbot-web-controllers">:top: back to SilverBot.Web.Controllers</a>
-
-</details>
-
-<details>
-<summary>
-  <strong id="browserconfig-browserconfigmsapplicationtilesquare150x150logo">
-    BrowserConfig.browserconfigMsapplicationTileSquare150x150logo :heavy_check_mark:
-  </strong>
-</summary>
-<br>
-
-- The `BrowserConfig.browserconfigMsapplicationTileSquare150x150logo` contains 1 members.
-- 7 total lines of source code.
-- Approximately 8 lines of executable code.
-- The highest cyclomatic complexity is 2 :heavy_check_mark:.
-
-| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L109' title='string browserconfigMsapplicationTileSquare150x150logo.src'>109</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-
-<a href="#BrowserConfig.browserconfigMsapplicationTileSquare150x150logo-class-diagram">:link: to `BrowserConfig.browserconfigMsapplicationTileSquare150x150logo` class diagram</a>
-
-<a href="#silverbot-web-controllers">:top: back to SilverBot.Web.Controllers</a>
-
-</details>
-
-<details>
-<summary>
-  <strong id="browserconfig-browserconfigmsapplicationtilesquare310x310logo">
-    BrowserConfig.browserconfigMsapplicationTileSquare310x310logo :heavy_check_mark:
-  </strong>
-</summary>
-<br>
-
-- The `BrowserConfig.browserconfigMsapplicationTileSquare310x310logo` contains 1 members.
-- 7 total lines of source code.
-- Approximately 8 lines of executable code.
-- The highest cyclomatic complexity is 2 :heavy_check_mark:.
-
-| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L117' title='string browserconfigMsapplicationTileSquare310x310logo.src'>117</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-
-<a href="#BrowserConfig.browserconfigMsapplicationTileSquare310x310logo-class-diagram">:link: to `BrowserConfig.browserconfigMsapplicationTileSquare310x310logo` class diagram</a>
-
-<a href="#silverbot-web-controllers">:top: back to SilverBot.Web.Controllers</a>
-
-</details>
-
-<details>
-<summary>
-  <strong id="browserconfig-browserconfigmsapplicationtilesquare70x70logo">
-    BrowserConfig.browserconfigMsapplicationTileSquare70x70logo :heavy_check_mark:
-  </strong>
-</summary>
-<br>
-
-- The `BrowserConfig.browserconfigMsapplicationTileSquare70x70logo` contains 1 members.
-- 7 total lines of source code.
-- Approximately 8 lines of executable code.
-- The highest cyclomatic complexity is 2 :heavy_check_mark:.
-
-| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L101' title='string browserconfigMsapplicationTileSquare70x70logo.src'>101</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-
-<a href="#BrowserConfig.browserconfigMsapplicationTileSquare70x70logo-class-diagram">:link: to `BrowserConfig.browserconfigMsapplicationTileSquare70x70logo` class diagram</a>
-
-<a href="#silverbot-web-controllers">:top: back to SilverBot.Web.Controllers</a>
-
-</details>
-
-<details>
-<summary>
-  <strong id="browserconfig-browserconfigmsapplicationtilewide310x150logo">
-    BrowserConfig.browserconfigMsapplicationTileWide310x150logo :heavy_check_mark:
-  </strong>
-</summary>
-<br>
-
-- The `BrowserConfig.browserconfigMsapplicationTileWide310x150logo` contains 1 members.
-- 7 total lines of source code.
-- Approximately 8 lines of executable code.
-- The highest cyclomatic complexity is 2 :heavy_check_mark:.
-
-| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/browserconfig.cs#L125' title='string browserconfigMsapplicationTileWide310x150logo.src'>125</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-
-<a href="#BrowserConfig.browserconfigMsapplicationTileWide310x150logo-class-diagram">:link: to `BrowserConfig.browserconfigMsapplicationTileWide310x150logo` class diagram</a>
-
-<a href="#silverbot-web-controllers">:top: back to SilverBot.Web.Controllers</a>
-
-</details>
 
 <details>
 <summary>
@@ -3698,10 +3671,10 @@ The `SilverBot.Web.Controllers` namespace contains 12 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L91' title='string Icon.Purpose'>91</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L87' title='string Icon.Sizes'>87</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L85' title='string Icon.Src'>85</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L89' title='string Icon.Type'>89</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L83' title='string Icon.Purpose'>83</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L79' title='string Icon.Sizes'>79</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L77' title='string Icon.Src'>77</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L81' title='string Icon.Type'>81</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
 
 <a href="#Manifest.Icon-class-diagram">:link: to `Manifest.Icon` class diagram</a>
 
@@ -3741,13 +3714,13 @@ The `SilverBot.Web.Controllers` namespace contains 12 named types.
 <br>
 
 - The `Manifest` contains 1 members.
-- 82 total lines of source code.
+- 74 total lines of source code.
 - Approximately 9 lines of executable code.
 - The highest cyclomatic complexity is 4 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L17' title='Rootobject Manifest.Index()'>17</a> | 68 | 4 :heavy_check_mark: | 0 | 3 | 48 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L17' title='Rootobject Manifest.Index()'>17</a> | 69 | 4 :heavy_check_mark: | 0 | 3 | 40 / 3 |
 
 <a href="#Manifest-class-diagram">:link: to `Manifest` class diagram</a>
 
@@ -3770,13 +3743,13 @@ The `SilverBot.Web.Controllers` namespace contains 12 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L78' title='string Rootobject.BackgroundColor'>78</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L76' title='string Rootobject.Display'>76</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L72' title='Icon[] Rootobject.Icons'>72</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L68' title='string Rootobject.Name'>68</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L70' title='string Rootobject.ShortName'>70</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L74' title='string Rootobject.StartUrl'>74</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L80' title='string Rootobject.ThemeColor'>80</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L70' title='string Rootobject.BackgroundColor'>70</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L68' title='string Rootobject.Display'>68</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L64' title='Icon[] Rootobject.Icons'>64</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L60' title='string Rootobject.Name'>60</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L62' title='string Rootobject.ShortName'>62</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L66' title='string Rootobject.StartUrl'>66</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBot.Web/Controllers/Manifest.cs#L72' title='string Rootobject.ThemeColor'>72</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
 
 <a href="#Manifest.Rootobject-class-diagram">:link: to `Manifest.Rootobject` class diagram</a>
 
@@ -4008,10 +3981,10 @@ The `SilverBotDS.AnimeModule` namespace contains 3 named types.
 The *SilverBotDS.csproj* project file contains:
 
 - 7 namespaces.
-- 56 named types.
-- 24,162 total lines of source code.
-- Approximately 6,606 lines of executable code.
-- The highest cyclomatic complexity is 41 :exploding_head:.
+- 59 named types.
+- 23,859 total lines of source code.
+- Approximately 6,433 lines of executable code.
+- The highest cyclomatic complexity is 43 :exploding_head:.
 
 <details>
 <summary>
@@ -4021,11 +3994,11 @@ The *SilverBotDS.csproj* project file contains:
 </summary>
 <br>
 
-The `SilverBotDS.Commands` namespace contains 26 named types.
+The `SilverBotDS.Commands` namespace contains 27 named types.
 
-- 26 named types.
-- 4,150 total lines of source code.
-- Approximately 1,888 lines of executable code.
+- 27 named types.
+- 4,266 total lines of source code.
+- Approximately 1,902 lines of executable code.
 - The highest cyclomatic complexity is 33 :exploding_head:.
 
 <details>
@@ -4036,22 +4009,25 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 </summary>
 <br>
 
-- The `AdminCommands` contains 9 members.
-- 182 total lines of source code.
-- Approximately 68 lines of executable code.
+- The `AdminCommands` contains 12 members.
+- 177 total lines of source code.
+- Approximately 67 lines of executable code.
 - The highest cyclomatic complexity is 4 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L34' title='DiscordEmoji[] AdminCommands._pollEmojiCache'>34</a> | 100 | 0 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L35' title='DatabaseContext AdminCommands.Database'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L173' title='Task AdminCommands.DownloadEmotz(CommandContext ctx)'>173</a> | 55 | 4 :heavy_check_mark: | 0 | 12 | 38 / 18 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L60' title='Task AdminCommands.EmojiPollAsync(CommandContext commandContext, TimeSpan duration, string question)'>60</a> | 57 | 4 :heavy_check_mark: | 0 | 13 | 53 / 15 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L146' title='Task AdminCommands.ExportEmotesToGuilded(CommandContext ctx)'>146</a> | 61 | 3 :heavy_check_mark: | 0 | 9 | 27 / 11 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L106' title='Task AdminCommands.GiveAway(CommandContext commandContext, TimeSpan duration, string item)'>106</a> | 58 | 3 :heavy_check_mark: | 0 | 12 | 38 / 13 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L36' title='HttpClient AdminCommands.HttpClient'>36</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L37' title='LanguageService AdminCommands.LanguageService'>37</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L40' title='Task AdminCommands.SetPrefix(CommandContext ctx, params string[] cake)'>40</a> | 74 | 1 :heavy_check_mark: | 0 | 8 | 11 / 5 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L42' title='ColourService AdminCommands.ColourService'>42</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L39' title='DatabaseContext AdminCommands.Database'>39</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L169' title='Task AdminCommands.DownloadEmotz(CommandContext ctx)'>169</a> | 55 | 4 :heavy_check_mark: | 0 | 12 | 38 / 18 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L66' title='Task AdminCommands.EmojiPollAsync(CommandContext commandContext, TimeSpan duration, string question)'>66</a> | 58 | 3 :heavy_check_mark: | 0 | 14 | 49 / 14 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L37' title='DiscordEmoji AdminCommands.EntryEmoji'>37</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L142' title='Task AdminCommands.ExportEmotesToGuilded(CommandContext ctx)'>142</a> | 61 | 3 :heavy_check_mark: | 0 | 9 | 27 / 11 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L108' title='Task AdminCommands.GiveAway(CommandContext commandContext, TimeSpan duration, string item)'>108</a> | 61 | 3 :heavy_check_mark: | 0 | 12 | 32 / 11 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L40' title='HttpClient AdminCommands.HttpClient'>40</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L41' title='LanguageService AdminCommands.LanguageService'>41</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L36' title='DiscordEmoji AdminCommands.NoEmoji'>36</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L46' title='Task AdminCommands.SetPrefix(CommandContext ctx, params string[] cake)'>46</a> | 74 | 1 :heavy_check_mark: | 0 | 8 | 11 / 5 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/AdminCommands.cs#L35' title='DiscordEmoji AdminCommands.YesEmoji'>35</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
 
 <a href="#AdminCommands-class-diagram">:link: to `AdminCommands` class diagram</a>
 
@@ -4062,55 +4038,40 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 <details>
 <summary>
   <strong id="audio">
-    Audio :x:
+    Audio :heavy_check_mark:
   </strong>
 </summary>
 <br>
 
-- The `Audio` contains 37 members.
-- 658 total lines of source code.
-- Approximately 313 lines of executable code.
-- The highest cyclomatic complexity is 12 :x:.
+- The `Audio` contains 22 members.
+- 112 total lines of source code.
+- Approximately 86 lines of executable code.
+- The highest cyclomatic complexity is 2 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L555' title='Task Audio.Aliases(CommandContext ctx)'>555</a> | 73 | 2 :heavy_check_mark: | 0 | 8 | 11 / 6 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L44' title='ArtworkService Audio.ArtworkService'>44</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L41' title='LavalinkNode Audio.AudioService'>41</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L340' title='Task Audio.ClearQueue(CommandContext ctx)'>340</a> | 61 | 4 :heavy_check_mark: | 0 | 8 | 19 / 11 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L43' title='Config Audio.Config'>43</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L685' title='Task Audio.Disconnect(CommandContext ctx)'>685</a> | 65 | 4 :heavy_check_mark: | 0 | 9 | 12 / 9 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L371' title='Task Audio.ExportQueue(CommandContext ctx, string? playlistName = null)'>371</a> | 58 | 11 :radioactive: | 0 | 12 | 22 / 12 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L669' title='Task Audio.ForceDisconnect(CommandContext ctx)'>669</a> | 66 | 1 :heavy_check_mark: | 0 | 9 | 15 / 10 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L516' title='string Audio.GetMessageOfLoopSetting(Language lang, LoopSettings setting)'>516</a> | 91 | 1 :heavy_check_mark: | 0 | 5 | 8 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L47' title='bool Audio.IsInVc(CommandContext ctx)'>47</a> | 94 | 1 :heavy_check_mark: | 0 | 2 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L49' title='bool Audio.IsInVc(CommandContext ctx, LavalinkNode lavalinkNode)'>49</a> | 92 | 2 :heavy_check_mark: | 0 | 3 | 2 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L582' title='Task Audio.Join(CommandContext ctx)'>582</a> | 81 | 1 :heavy_check_mark: | 0 | 6 | 6 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L45' title='LanguageService Audio.LanguageService'>45</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L507' title='Task Audio.Loop(CommandContext ctx, LoopSettings settings)'>507</a> | 67 | 1 :heavy_check_mark: | 0 | 9 | 11 / 8 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L42' title='LyricsService Audio.LyricsService'>42</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L323' title='Task Audio.MakeSureBothAreInVC(CommandContext ctx, Language lang)'>323</a> | 84 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L305' title='Task Audio.MakeSureBotIsInVC(CommandContext ctx, Language lang)'>305</a> | 80 | 2 :heavy_check_mark: | 0 | 6 | 8 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L329' title='Task Audio.MakeSurePlayerIsntNull(CommandContext ctx, Language lang, BetterVoteLavalinkPlayer? player)'>329</a> | 80 | 2 :heavy_check_mark: | 0 | 8 | 8 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L313' title='Task Audio.MakeSureUserIsInVC(CommandContext ctx, Language lang)'>313</a> | 75 | 4 :heavy_check_mark: | 0 | 6 | 10 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L542' title='Task Audio.Ovh(CommandContext ctx, string name, string artist)'>542</a> | 70 | 2 :heavy_check_mark: | 0 | 8 | 12 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L527' title='Task Audio.Pause(CommandContext ctx)'>527</a> | 66 | 4 :heavy_check_mark: | 0 | 7 | 14 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L186' title='Task Audio.Play(CommandContext ctx)'>186</a> | 65 | 4 :heavy_check_mark: | 0 | 8 | 22 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L207' title='Task Audio.Play(CommandContext ctx, SongORSongs song)'>207</a> | 52 | 10 :radioactive: | 0 | 13 | 52 / 20 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L145' title='Task Audio.PlayNext(CommandContext ctx, SongORSongs song)'>145</a> | 53 | 10 :radioactive: | 0 | 15 | 40 / 19 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L448' title='Task Audio.Queue(CommandContext ctx)'>448</a> | 48 | 12 :x: | 0 | 13 | 58 / 24 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L417' title='Task Audio.QueueHistory(CommandContext ctx)'>417</a> | 56 | 6 :heavy_check_mark: | 0 | 13 | 30 / 15 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L394' title='Task Audio.Remove(CommandContext ctx, int songindex)'>394</a> | 59 | 5 :heavy_check_mark: | 0 | 9 | 21 / 12 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L567' title='Task Audio.Resume(CommandContext ctx)'>567</a> | 66 | 4 :heavy_check_mark: | 0 | 7 | 14 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L291' title='Task Audio.Seek(CommandContext ctx, TimeSpan time)'>291</a> | 66 | 2 :heavy_check_mark: | 0 | 9 | 17 / 9 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L52' title='Task Audio.SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "", string imageurl = "", string url = "", Language? language = null)'>52</a> | 54 | 7 :heavy_check_mark: | 0 | 7 | 33 / 19 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L86' title='Task Audio.SendSimpleMessage(CommandContext ctx, string title = "", string message = "", string? image = null, Language? language = null)'>86</a> | 56 | 6 :heavy_check_mark: | 0 | 7 | 30 / 16 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L360' title='Task Audio.Shuffle(CommandContext ctx)'>360</a> | 68 | 2 :heavy_check_mark: | 0 | 8 | 11 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L609' title='Task Audio.Skip(CommandContext ctx)'>609</a> | 58 | 10 :radioactive: | 0 | 10 | 21 / 13 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L587' title='Task Audio.StaticJoin(CommandContext ctx, LavalinkNode audioService)'>587</a> | 66 | 10 :radioactive: | 0 | 4 | 17 / 7 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L117' title='TimeSpan Audio.TimeTillSongPlays(QueuedLavalinkPlayer player, int song)'>117</a> | 62 | 6 :heavy_check_mark: | 0 | 3 | 24 / 10 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L263' title='Task Audio.Volume(CommandContext ctx, ushort volume)'>263</a> | 59 | 6 :heavy_check_mark: | 0 | 9 | 28 / 13 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L630' title='Task Audio.VoteSkip(CommandContext ctx)'>630</a> | 54 | 12 :x: | 0 | 10 | 37 / 18 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L95' title='Task Audio.Aliases(CommandContext ctx)'>95</a> | 85 | 1 :heavy_check_mark: | 0 | 6 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L54' title='Task Audio.ClearQueue(CommandContext ctx)'>54</a> | 82 | 1 :heavy_check_mark: | 0 | 7 | 4 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L127' title='Task Audio.Disconnect(CommandContext ctx)'>127</a> | 76 | 1 :heavy_check_mark: | 0 | 8 | 5 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L63' title='Task Audio.ExportQueue(CommandContext ctx, string? playlistName = null)'>63</a> | 77 | 1 :heavy_check_mark: | 0 | 7 | 3 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L121' title='Task Audio.ForceDisconnect(CommandContext ctx)'>121</a> | 78 | 1 :heavy_check_mark: | 0 | 8 | 5 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L103' title='Task Audio.Join(CommandContext ctx)'>103</a> | 85 | 1 :heavy_check_mark: | 0 | 6 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L82' title='Task Audio.Loop(CommandContext ctx, LoopSettings settings)'>82</a> | 79 | 1 :heavy_check_mark: | 0 | 8 | 4 / 4 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L22' title='NeutralAudio Audio.NeutralAudio'>22</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L91' title='Task Audio.Ovh(CommandContext ctx, string name, string artist)'>91</a> | 82 | 1 :heavy_check_mark: | 0 | 6 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L87' title='Task Audio.Pause(CommandContext ctx)'>87</a> | 85 | 1 :heavy_check_mark: | 0 | 6 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L34' title='Task Audio.Play(CommandContext ctx)'>34</a> | 80 | 1 :heavy_check_mark: | 0 | 7 | 4 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L37' title='Task Audio.Play(CommandContext ctx, SongORSongs song)'>37</a> | 89 | 1 :heavy_check_mark: | 0 | 7 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L27' title='Task Audio.PlayNext(CommandContext ctx, SongORSongs song)'>27</a> | 79 | 1 :heavy_check_mark: | 0 | 9 | 5 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L77' title='Task Audio.Queue(CommandContext ctx)'>77</a> | 78 | 1 :heavy_check_mark: | 0 | 7 | 4 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L72' title='Task Audio.QueueHistory(CommandContext ctx)'>72</a> | 78 | 1 :heavy_check_mark: | 0 | 7 | 4 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L67' title='Task Audio.Remove(CommandContext ctx, int songindex)'>67</a> | 83 | 1 :heavy_check_mark: | 0 | 6 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L99' title='Task Audio.Resume(CommandContext ctx)'>99</a> | 85 | 1 :heavy_check_mark: | 0 | 6 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L48' title='Task Audio.Seek(CommandContext ctx, TimeSpan time)'>48</a> | 80 | 1 :heavy_check_mark: | 0 | 8 | 4 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L59' title='Task Audio.Shuffle(CommandContext ctx)'>59</a> | 82 | 1 :heavy_check_mark: | 0 | 7 | 4 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L110' title='Task Audio.Skip(CommandContext ctx)'>110</a> | 78 | 1 :heavy_check_mark: | 0 | 8 | 5 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L43' title='Task Audio.Volume(CommandContext ctx, ushort volume)'>43</a> | 77 | 1 :heavy_check_mark: | 0 | 8 | 5 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Audio.cs#L115' title='Task Audio.VoteSkip(CommandContext ctx)'>115</a> | 80 | 1 :heavy_check_mark: | 0 | 7 | 4 / 4 |
 
 <a href="#Audio-class-diagram">:link: to `Audio` class diagram</a>
 
@@ -4217,14 +4178,14 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L17' title='CodeEnv.CodeEnv(CommandContext context, Config config, DatabaseContext dbctx)'>17</a> | 64 | 1 :heavy_check_mark: | 0 | 9 | 12 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L17' title='CodeEnv.CodeEnv(CommandContext context, Config config, DatabaseContext dbctx)'>17</a> | 64 | 1 :heavy_check_mark: | 0 | 10 | 12 / 9 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L34' title='DiscordClient CodeEnv.Client'>34</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L36' title='Config CodeEnv.Config'>36</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L30' title='CommandContext CodeEnv.Ctx'>30</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L38' title='DatabaseContext CodeEnv.DbContext'>38</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L35' title='Config CodeEnv.ExConfig'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L33' title='DiscordGuild CodeEnv.Guild'>33</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L31' title='DiscordMember CodeEnv.Member'>31</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L31' title='DiscordMember? CodeEnv.Member'>31</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L32' title='DiscordUser CodeEnv.User'>32</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/CodeEnv.cs#L37' title='string CodeEnv.VerString'>37</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
 
@@ -4249,8 +4210,8 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L497' title='string Emote.Name'>497</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L499' title='string Emote.Url'>499</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L484' title='string Emote.Name'>484</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L486' title='string Emote.Url'>486</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
 
 <a href="#OwnerOnly.Emote-class-diagram">:link: to `OwnerOnly.Emote` class diagram</a>
 
@@ -4266,28 +4227,29 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 </summary>
 <br>
 
-- The `Experience` contains 15 members.
-- 263 total lines of source code.
-- Approximately 130 lines of executable code.
+- The `Experience` contains 16 members.
+- 257 total lines of source code.
+- Approximately 128 lines of executable code.
 - The highest cyclomatic complexity is 6 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L56' title='Task Experience.BonusXp(CommandContext ctx, byte percent)'>56</a> | 69 | 2 :heavy_check_mark: | 0 | 7 | 12 / 7 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L69' title='Task Experience.BonusXpPerperson(CommandContext ctx, ulong xp)'>69</a> | 73 | 2 :heavy_check_mark: | 0 | 7 | 12 / 6 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L49' title='DatabaseContext Experience.Database'>49</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L287' title='ulong Experience.GetLevel(ulong xp)'>287</a> | 70 | 2 :heavy_check_mark: | 0 | 1 | 12 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L261' title='BigInteger Experience.GetNeededXpForNextLevel(ulong xp)'>261</a> | 70 | 2 :heavy_check_mark: | 0 | 2 | 12 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L274' title='double Experience.GetProgressToNextLevel(ulong xp)'>274</a> | 69 | 2 :heavy_check_mark: | 0 | 1 | 12 / 6 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L50' title='HttpClient Experience.HttpClient'>50</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L51' title='LanguageService Experience.LanguageService'>51</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L42' title='IEnumerable<int> Experience.Range'>42</a> | 91 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L44' title='string[] Experience.RequiredAssets'>44</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L178' title='Task Experience.XpCard(CommandContext ctx, DiscordUser user)'>178</a> | 42 | 6 :heavy_check_mark: | 0 | 13 | 77 / 41 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L256' title='Task Experience.XpCard(CommandContext ctx)'>256</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L81' title='Task Experience.XpCommand(CommandContext ctx)'>81</a> | 63 | 2 :heavy_check_mark: | 0 | 8 | 21 / 11 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L103' title='Task Experience.XpCommand(CommandContext ctx, DiscordMember member)'>103</a> | 63 | 2 :heavy_check_mark: | 0 | 9 | 20 / 10 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L125' title='Task Experience.XpLeaderboard(CommandContext ctx)'>125</a> | 49 | 5 :heavy_check_mark: | 0 | 15 | 51 / 28 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L58' title='Task Experience.BonusXp(CommandContext ctx, byte percent)'>58</a> | 71 | 2 :heavy_check_mark: | 0 | 7 | 11 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L70' title='Task Experience.BonusXpPerperson(CommandContext ctx, ulong xp)'>70</a> | 73 | 2 :heavy_check_mark: | 0 | 7 | 11 / 6 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L53' title='ColourService Experience.ColourService'>53</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L50' title='DatabaseContext Experience.Database'>50</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L282' title='ulong Experience.GetLevel(ulong xp)'>282</a> | 70 | 2 :heavy_check_mark: | 0 | 1 | 12 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L256' title='BigInteger Experience.GetNeededXpForNextLevel(ulong xp)'>256</a> | 70 | 2 :heavy_check_mark: | 0 | 2 | 12 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L269' title='double Experience.GetProgressToNextLevel(ulong xp)'>269</a> | 69 | 2 :heavy_check_mark: | 0 | 1 | 12 / 6 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L51' title='HttpClient Experience.HttpClient'>51</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L52' title='LanguageService Experience.LanguageService'>52</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L43' title='IEnumerable<int> Experience.Range'>43</a> | 91 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L45' title='string[] Experience.RequiredAssets'>45</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 4 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L173' title='Task Experience.XpCard(CommandContext ctx, DiscordUser user)'>173</a> | 42 | 6 :heavy_check_mark: | 0 | 13 | 77 / 41 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L251' title='Task Experience.XpCard(CommandContext ctx)'>251</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L81' title='Task Experience.XpCommand(CommandContext ctx)'>81</a> | 64 | 2 :heavy_check_mark: | 0 | 9 | 19 / 10 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L101' title='Task Experience.XpCommand(CommandContext ctx, DiscordMember member)'>101</a> | 64 | 2 :heavy_check_mark: | 0 | 7 | 17 / 10 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Experience.cs#L120' title='Task Experience.XpLeaderboard(CommandContext ctx)'>120</a> | 49 | 5 :heavy_check_mark: | 0 | 16 | 51 / 28 |
 
 <a href="#Experience-class-diagram">:link: to `Experience` class diagram</a>
 
@@ -4298,23 +4260,23 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 <details>
 <summary>
   <strong id="fullresponse">
-    fullresponse :heavy_check_mark:
+    Fullresponse :heavy_check_mark:
   </strong>
 </summary>
 <br>
 
-- The `fullresponse` contains 3 members.
+- The `Fullresponse` contains 3 members.
 - 12 total lines of source code.
 - Approximately 6 lines of executable code.
 - The highest cyclomatic complexity is 2 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L321' title='Output[] fullresponse.Output'>321</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 3 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L318' title='Input fullresponse.Request'>318</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 3 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L315' title='string fullresponse.Status'>315</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L301' title='Output[] Fullresponse.Output'>301</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 3 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L298' title='Input Fullresponse.Request'>298</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 3 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L295' title='string Fullresponse.Status'>295</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 2 |
 
-<a href="#fullresponse-class-diagram">:link: to `fullresponse` class diagram</a>
+<a href="#Fullresponse-class-diagram">:link: to `Fullresponse` class diagram</a>
 
 <a href="#silverbotds-commands">:top: back to SilverBotDS.Commands</a>
 
@@ -4328,27 +4290,28 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 </summary>
 <br>
 
-- The `Genericcommands` contains 14 members.
+- The `Genericcommands` contains 15 members.
 - 163 total lines of source code.
-- Approximately 57 lines of executable code.
+- Approximately 56 lines of executable code.
 - The highest cyclomatic complexity is 4 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L111' title='Task Genericcommands.ArchiveMessage(CommandContext ctx, DiscordMessage message)'>111</a> | 57 | 2 :heavy_check_mark: | 0 | 12 | 29 / 16 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L33' title='Config Genericcommands.Config'>33</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L142' title='Task Genericcommands.Dukt(CommandContext ctx)'>142</a> | 73 | 1 :heavy_check_mark: | 0 | 9 | 15 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L81' title='Task Genericcommands.DumpMessage(CommandContext ctx, DiscordMessage message)'>81</a> | 73 | 1 :heavy_check_mark: | 0 | 9 | 16 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L96' title='Task Genericcommands.DumpMessage(CommandContext ctx)'>96</a> | 73 | 2 :heavy_check_mark: | 0 | 5 | 13 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L39' title='Task Genericcommands.GreetCommand(CommandContext ctx)'>39</a> | 77 | 1 :heavy_check_mark: | 0 | 7 | 9 / 4 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L34' title='HttpClient Genericcommands.HttpClient'>34</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L60' title='Task Genericcommands.Invite(CommandContext ctx)'>60</a> | 82 | 1 :heavy_check_mark: | 0 | 6 | 11 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L155' title='Task<bool> Genericcommands.IsAtSilverCraftAsync(DiscordClient discord, DiscordUser b, Config cnf)'>155</a> | 94 | 1 :heavy_check_mark: | 0 | 5 | 4 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L35' title='LanguageService Genericcommands.LanguageService'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L71' title='Task Genericcommands.Ping(CommandContext ctx)'>71</a> | 79 | 1 :heavy_check_mark: | 0 | 5 | 7 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L49' title='Task Genericcommands.Time(CommandContext ctx)'>49</a> | 78 | 1 :heavy_check_mark: | 0 | 7 | 10 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L162' title='Task Genericcommands.Userinfo(CommandContext ctx, DiscordUser a)'>162</a> | 71 | 4 :heavy_check_mark: | 0 | 11 | 23 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L186' title='Task Genericcommands.Userinfo(CommandContext ctx)'>186</a> | 83 | 1 :heavy_check_mark: | 0 | 5 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L115' title='Task Genericcommands.ArchiveMessage(CommandContext ctx, DiscordMessage message)'>115</a> | 58 | 2 :heavy_check_mark: | 0 | 12 | 27 / 15 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L38' title='ColourService Genericcommands.ColourService'>38</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L35' title='Config Genericcommands.Config'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L144' title='Task Genericcommands.Dukt(CommandContext ctx)'>144</a> | 73 | 1 :heavy_check_mark: | 0 | 9 | 15 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L85' title='Task Genericcommands.DumpMessage(CommandContext ctx, DiscordMessage message)'>85</a> | 73 | 1 :heavy_check_mark: | 0 | 9 | 16 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L100' title='Task Genericcommands.DumpMessage(CommandContext ctx)'>100</a> | 73 | 2 :heavy_check_mark: | 0 | 5 | 13 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L43' title='Task Genericcommands.GreetCommand(CommandContext ctx)'>43</a> | 77 | 1 :heavy_check_mark: | 0 | 7 | 9 / 4 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L36' title='HttpClient Genericcommands.HttpClient'>36</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L64' title='Task Genericcommands.Invite(CommandContext ctx)'>64</a> | 82 | 1 :heavy_check_mark: | 0 | 6 | 11 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L157' title='Task<bool> Genericcommands.IsAtSilverCraftAsync(DiscordClient discord, DiscordUser b, Config cnf)'>157</a> | 94 | 1 :heavy_check_mark: | 0 | 5 | 4 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L37' title='LanguageService Genericcommands.LanguageService'>37</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L75' title='Task Genericcommands.Ping(CommandContext ctx)'>75</a> | 79 | 1 :heavy_check_mark: | 0 | 5 | 7 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L53' title='Task Genericcommands.Time(CommandContext ctx)'>53</a> | 78 | 1 :heavy_check_mark: | 0 | 7 | 10 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L164' title='Task Genericcommands.Userinfo(CommandContext ctx, DiscordUser a)'>164</a> | 71 | 4 :heavy_check_mark: | 0 | 12 | 23 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/genericcommands.cs#L188' title='Task Genericcommands.Userinfo(CommandContext ctx)'>188</a> | 83 | 1 :heavy_check_mark: | 0 | 5 | 6 / 3 |
 
 <a href="#Genericcommands-class-diagram">:link: to `Genericcommands` class diagram</a>
 
@@ -4364,70 +4327,71 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 </summary>
 <br>
 
-- The `ImageModule` contains 57 members.
-- 810 total lines of source code.
-- Approximately 386 lines of executable code.
+- The `ImageModule` contains 58 members.
+- 934 total lines of source code.
+- Approximately 406 lines of executable code.
 - The highest cyclomatic complexity is 11 :radioactive:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L253' title='string ImageModule._captionFont'>253</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L256' title='string ImageModule._subtitlesFont'>256</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L593' title='Task ImageModule.AdventureTime(CommandContext ctx)'>593</a> | 85 | 1 :heavy_check_mark: | 0 | 5 | 3 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L595' title='Task ImageModule.AdventureTime(CommandContext ctx, DiscordUser friendo)'>595</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L597' title='Task ImageModule.AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)'>597</a> | 58 | 4 :heavy_check_mark: | 0 | 11 | 20 / 14 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L268' title='void ImageModule.AutoFixRequiredAssets(IEnumerable<string> missing)'>268</a> | 57 | 4 :heavy_check_mark: | 0 | 5 | 23 / 17 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L325' title='Task<Image> ImageModule.Caption(Image loadedimg, string text, string font = null)'>325</a> | 52 | 6 :heavy_check_mark: | 0 | 5 | 43 / 18 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L293' title='Task ImageModule.CaptionAndSend(CommandContext ctx, Stream input, string text, string extension, string font = null)'>293</a> | 76 | 1 :heavy_check_mark: | 0 | 6 | 5 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L298' title='Task ImageModule.CaptionAndSend(CommandContext ctx, byte[] input, string text, string extension, string font = null)'>298</a> | 68 | 2 :heavy_check_mark: | 0 | 5 | 10 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L308' title='Task ImageModule.CaptionAndSend(CommandContext ctx, Image loadedimg, string text, string extension, string font = null)'>308</a> | 69 | 1 :heavy_check_mark: | 0 | 6 | 7 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L384' title='Task ImageModule.CaptionImage(CommandContext ctx, SdImage image, string text)'>384</a> | 71 | 1 :heavy_check_mark: | 0 | 8 | 10 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L394' title='Task ImageModule.CaptionImage(CommandContext ctx, string text)'>394</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L144' title='Task ImageModule.CommonCodeWithTemplate(CommandContext ctx, string template, Func<Image, Task<Tuple<bool, Image>>> func, bool TriggerTyping = true, string filename = "sbimg.png", string? encoder = null, string msgcontent = "there")'>144</a> | 55 | 5 :heavy_check_mark: | 0 | 12 | 25 / 16 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L616' title='Task ImageModule.CommonCodeWithTemplateGIFMagick(CommandContext ctx, string template, Func<MagickImageCollection, Task<Tuple<bool, MagickImageCollection>>> func, bool TriggerTyping = true, string filename = "sbimg.png", MagickFormat? encoder = null, int quality = 75)'>616</a> | 56 | 5 :heavy_check_mark: | 0 | 14 | 23 / 15 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L487' title='Task<Image> ImageModule.EpicGifComposite(Image img, SdImage img2, Tuple<int, int, int>[] gaming)'>487</a> | 49 | 10 :radioactive: | 0 | 9 | 44 / 25 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L170' title='Task<Image> ImageModule.GetProfilePictureAsyncStatic(DiscordUser user, ushort size = null)'>170</a> | 80 | 1 :heavy_check_mark: | 0 | 5 | 4 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L182' title='Task<Image> ImageModule.GetProfilePictureAsyncStatic(DiscordUser user, HttpClient client, ushort size = null)'>182</a> | 58 | 6 :heavy_check_mark: | 0 | 7 | 29 / 13 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L827' title='Task ImageModule.Grayscale(CommandContext ctx)'>827</a> | 82 | 1 :heavy_check_mark: | 0 | 4 | 7 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L834' title='Task ImageModule.Grayscale(CommandContext ctx, SdImage image)'>834</a> | 70 | 1 :heavy_check_mark: | 0 | 10 | 9 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L816' title='Task<Tuple<MemoryStream, string>> ImageModule.GrayScaleAsync(byte[] photoBytes, string extension)'>816</a> | 74 | 1 :heavy_check_mark: | 0 | 5 | 8 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L806' title='Task ImageModule.HappyNewYear(CommandContext ctx)'>806</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L808' title='Task ImageModule.HappyNewYear(CommandContext ctx, DiscordUser person)'>808</a> | 73 | 1 :heavy_check_mark: | 0 | 8 | 7 / 4 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L258' title='HttpClient ImageModule.HttpClient'>258</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L221' title='bool ImageModule.IsAnimated(byte[] bytes)'>221</a> | 83 | 7 :heavy_check_mark: | 0 | 0 | 4 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L398' title='Task ImageModule.JokerLaugh(CommandContext ctx, string text)'>398</a> | 71 | 2 :heavy_check_mark: | 0 | 9 | 11 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L533' title='Task ImageModule.Jpegize(CommandContext ctx, SdImage image)'>533</a> | 75 | 1 :heavy_check_mark: | 0 | 8 | 7 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L542' title='Task ImageModule.Jpegize(CommandContext ctx)'>542</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 3 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L368' title='MemoryStream ImageModule.JPEGSpecialSauce(byte[] photoBytes)'>368</a> | 70 | 1 :heavy_check_mark: | 0 | 4 | 14 / 6 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L67' title='LanguageService ImageModule.LanguageService'>67</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L649' title='Task ImageModule.Linus(CommandContext ctx, string company = "NVIDIA")'>649</a> | 64 | 1 :heavy_check_mark: | 0 | 10 | 19 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L204' title='Image ImageModule.LoadFromStream(Stream s, bool? gif = null)'>204</a> | 57 | 10 :radioactive: | 0 | 5 | 17 / 11 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L71' title='int ImageModule.MaxBytes(dynamic ctx)'>71</a> | 88 | 3 :heavy_check_mark: | 0 | 1 | 6 / 1 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L69' title='int ImageModule.MegaByte'>69</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L766' title='Task ImageModule.ObMedal(CommandContext ctx)'>766</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L771' title='Task ImageModule.ObMedal(CommandContext ctx, DiscordUser obama)'>771</a> | 66 | 1 :heavy_check_mark: | 0 | 8 | 15 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L786' title='Task ImageModule.ObMedal(CommandContext ctx, DiscordUser obama, DiscordUser secondPerson)'>786</a> | 61 | 1 :heavy_check_mark: | 0 | 8 | 20 / 11 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L713' title='Task ImageModule.Reliable(CommandContext ctx)'>713</a> | 88 | 1 :heavy_check_mark: | 0 | 4 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L716' title='Task ImageModule.Reliable(CommandContext ctx, DiscordUser koichi)'>716</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L719' title='Task ImageModule.Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)'>719</a> | 46 | 11 :radioactive: | 0 | 11 | 47 / 28 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L260' title='string[] ImageModule.RequiredAssets'>260</a> | 91 | 2 :heavy_check_mark: | 0 | 0 | 8 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L668' title='Task ImageModule.Resize(CommandContext ctx, SdImage image, int x = 0, int y = 0, MagickFormat? format = null)'>668</a> | 65 | 1 :heavy_check_mark: | 0 | 9 | 8 / 7 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L704' title='Task ImageModule.Resize(CommandContext ctx, SdImage image, MagickFormat? format)'>704</a> | 84 | 1 :heavy_check_mark: | 0 | 7 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L707' title='Task ImageModule.Resize(CommandContext ctx, MagickFormat? format)'>707</a> | 85 | 1 :heavy_check_mark: | 0 | 6 | 2 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L710' title='Task ImageModule.Resize(CommandContext ctx, int x = 0, int y = 0, MagickFormat? format = null)'>710</a> | 70 | 1 :heavy_check_mark: | 0 | 7 | 3 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L226' title='Stream ImageModule.ResizeAsyncOP(byte[] photoBytes, int x, int y)'>226</a> | 60 | 3 :heavy_check_mark: | 0 | 6 | 27 / 14 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L676' title='Tuple<Stream, string> ImageModule.ResizeAsyncOP(byte[] bytes, int x, int y, MagickFormat? format)'>676</a> | 59 | 7 :heavy_check_mark: | 0 | 9 | 26 / 14 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L641' title='Task ImageModule.Seal(CommandContext ctx, string text)'>641</a> | 76 | 1 :heavy_check_mark: | 0 | 9 | 7 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L78' title='Task ImageModule.Send_img_plsAsync(CommandContext ctx, string? message)'>78</a> | 93 | 2 :heavy_check_mark: | 0 | 5 | 7 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L135' title='Task ImageModule.SendImageStream(CommandContext ctx, Stream outStream, string filename = "sbimg.png", string? content = null)'>135</a> | 73 | 1 :heavy_check_mark: | 0 | 6 | 8 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L86' title='Task ImageModule.SendImageStreamIfAllowed(CommandContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language? lang = null, bool dryrun = false)'>86</a> | 57 | 6 :heavy_check_mark: | 0 | 6 | 25 / 13 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L112' title='Task ImageModule.SendImageStreamIfAllowed(InteractionContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language? lang = null, bool dryrun = false)'>112</a> | 58 | 6 :heavy_check_mark: | 0 | 7 | 23 / 13 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L543' title='Tuple<MemoryStream, string> ImageModule.Tint(Stream photoStream, Color color, string extension)'>543</a> | 54 | 4 :heavy_check_mark: | 0 | 7 | 30 / 17 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L576' title='Task ImageModule.Tint(CommandContext ctx, SdImage image, Color color)'>576</a> | 70 | 1 :heavy_check_mark: | 0 | 8 | 13 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L588' title='Task ImageModule.Tint(CommandContext ctx, Color color)'>588</a> | 87 | 1 :heavy_check_mark: | 0 | 6 | 4 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L315' title='void ImageModule.WriteImageToStream(Image w, Stream s, string extension)'>315</a> | 73 | 2 :heavy_check_mark: | 0 | 4 | 10 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L436' title='Task ImageModule.Yeet(CommandContext ctx)'>436</a> | 84 | 1 :heavy_check_mark: | 0 | 5 | 30 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L439' title='Task ImageModule.Yeet(CommandContext ctx, SdImage img2)'>439</a> | 63 | 1 :heavy_check_mark: | 0 | 10 | 49 / 5 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L275' title='string ImageModule._captionFont'>275</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L278' title='string ImageModule._subtitlesFont'>278</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L631' title='Task ImageModule.AdventureTime(CommandContext ctx)'>631</a> | 85 | 1 :heavy_check_mark: | 0 | 5 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L634' title='Task ImageModule.AdventureTime(CommandContext ctx, DiscordUser friendo)'>634</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 3 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L638' title='Task ImageModule.AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo)'>638</a> | 58 | 4 :heavy_check_mark: | 0 | 11 | 22 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L291' title='void ImageModule.AutoFixRequiredAssets(IEnumerable<string> missing)'>291</a> | 57 | 4 :heavy_check_mark: | 0 | 5 | 27 / 17 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L362' title='Task<Image> ImageModule.Caption(Image loadedimg, string text, string font = null)'>362</a> | 52 | 6 :heavy_check_mark: | 0 | 5 | 49 / 18 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L320' title='Task ImageModule.CaptionAndSend(CommandContext ctx, Stream input, string text, string extension, string font = null)'>320</a> | 76 | 1 :heavy_check_mark: | 0 | 6 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L327' title='Task ImageModule.CaptionAndSend(CommandContext ctx, byte[] input, string text, string extension, string font = null)'>327</a> | 68 | 2 :heavy_check_mark: | 0 | 5 | 12 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L340' title='Task ImageModule.CaptionAndSend(CommandContext ctx, Image loadedimg, string text, string extension, string font = null)'>340</a> | 69 | 1 :heavy_check_mark: | 0 | 6 | 9 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L429' title='Task ImageModule.CaptionImage(CommandContext ctx, SdImage image, string text)'>429</a> | 71 | 1 :heavy_check_mark: | 0 | 8 | 10 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L439' title='Task ImageModule.CaptionImage(CommandContext ctx, string text)'>439</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 3 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L909' title='Task ImageModule.CatGeneration(CommandContext ctx, string name = null)'>909</a> | 49 | 7 :heavy_check_mark: | 0 | 11 | 63 / 22 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L154' title='Task ImageModule.CommonCodeWithTemplate(CommandContext ctx, string template, Func<Image, Task<Tuple<bool, Image>>> func, bool TriggerTyping = true, string filename = "sbimg.png", string? encoder = null, string msgcontent = "there")'>154</a> | 56 | 5 :heavy_check_mark: | 0 | 11 | 27 / 15 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L660' title='Task ImageModule.CommonCodeWithTemplateGIFMagick(CommandContext ctx, string template, Func<MagickImageCollection, Task<Tuple<bool, MagickImageCollection>>> func, bool TriggerTyping = true, string filename = "sbimg.png", MagickFormat? encoder = null)'>660</a> | 57 | 5 :heavy_check_mark: | 0 | 14 | 26 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L512' title='Task<Image> ImageModule.EpicGifComposite(Image img, SdImage img2, Tuple<int, int, int>[] gaming)'>512</a> | 49 | 10 :radioactive: | 0 | 9 | 53 / 25 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L182' title='Task<Image> ImageModule.GetProfilePictureAsyncStatic(DiscordUser user, ushort size = null)'>182</a> | 80 | 1 :heavy_check_mark: | 0 | 5 | 4 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L194' title='Task<Image> ImageModule.GetProfilePictureAsyncStatic(DiscordUser user, HttpClient client, ushort size = null)'>194</a> | 58 | 6 :heavy_check_mark: | 0 | 7 | 32 / 13 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L892' title='Task ImageModule.Grayscale(CommandContext ctx)'>892</a> | 82 | 1 :heavy_check_mark: | 0 | 4 | 7 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L899' title='Task ImageModule.Grayscale(CommandContext ctx, SdImage image)'>899</a> | 70 | 1 :heavy_check_mark: | 0 | 10 | 9 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L881' title='Task<Tuple<MemoryStream, string>> ImageModule.GrayScaleAsync(byte[] photoBytes, string extension)'>881</a> | 74 | 1 :heavy_check_mark: | 0 | 5 | 8 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L869' title='Task ImageModule.HappyNewYear(CommandContext ctx)'>869</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L872' title='Task ImageModule.HappyNewYear(CommandContext ctx, DiscordUser person)'>872</a> | 73 | 1 :heavy_check_mark: | 0 | 8 | 8 / 4 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L280' title='HttpClient ImageModule.HttpClient'>280</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L241' title='bool ImageModule.IsAnimated(byte[] bytes)'>241</a> | 83 | 7 :heavy_check_mark: | 0 | 0 | 5 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L444' title='Task ImageModule.JokerLaugh(CommandContext ctx, string text)'>444</a> | 71 | 2 :heavy_check_mark: | 0 | 9 | 12 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L567' title='Task ImageModule.Jpegize(CommandContext ctx, SdImage image)'>567</a> | 75 | 1 :heavy_check_mark: | 0 | 8 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L576' title='Task ImageModule.Jpegize(CommandContext ctx)'>576</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 3 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L412' title='MemoryStream ImageModule.JPEGSpecialSauce(byte[] photoBytes)'>412</a> | 70 | 1 :heavy_check_mark: | 0 | 4 | 14 / 6 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L68' title='LanguageService ImageModule.LanguageService'>68</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L696' title='Task ImageModule.Linus(CommandContext ctx, string company = "NVIDIA")'>696</a> | 64 | 1 :heavy_check_mark: | 0 | 10 | 20 / 8 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L220' title='Image ImageModule.LoadFromStream(Stream s, bool? gif = null)'>220</a> | 57 | 10 :radioactive: | 0 | 5 | 20 / 11 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L72' title='int ImageModule.MaxBytes(dynamic ctx)'>72</a> | 88 | 3 :heavy_check_mark: | 0 | 1 | 6 / 1 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L70' title='int ImageModule.MegaByte'>70</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L823' title='Task ImageModule.ObMedal(CommandContext ctx)'>823</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L829' title='Task ImageModule.ObMedal(CommandContext ctx, DiscordUser obama)'>829</a> | 66 | 1 :heavy_check_mark: | 0 | 8 | 16 / 8 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L846' title='Task ImageModule.ObMedal(CommandContext ctx, DiscordUser obama, DiscordUser secondPerson)'>846</a> | 61 | 1 :heavy_check_mark: | 0 | 8 | 22 / 11 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L765' title='Task ImageModule.Reliable(CommandContext ctx)'>765</a> | 88 | 1 :heavy_check_mark: | 0 | 4 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L768' title='Task ImageModule.Reliable(CommandContext ctx, DiscordUser koichi)'>768</a> | 87 | 1 :heavy_check_mark: | 0 | 5 | 2 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L771' title='Task ImageModule.Reliable(CommandContext ctx, DiscordUser jotaro, DiscordUser koichi)'>771</a> | 47 | 11 :radioactive: | 0 | 11 | 51 / 28 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L282' title='string[] ImageModule.RequiredAssets'>282</a> | 91 | 2 :heavy_check_mark: | 0 | 0 | 8 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L716' title='Task ImageModule.Resize(CommandContext ctx, SdImage image, int x = 0, int y = 0, MagickFormat? format = null)'>716</a> | 65 | 1 :heavy_check_mark: | 0 | 9 | 8 / 7 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L753' title='Task ImageModule.Resize(CommandContext ctx, SdImage image, MagickFormat? format)'>753</a> | 84 | 1 :heavy_check_mark: | 0 | 7 | 3 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L757' title='Task ImageModule.Resize(CommandContext ctx, MagickFormat? format)'>757</a> | 85 | 1 :heavy_check_mark: | 0 | 6 | 3 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L761' title='Task ImageModule.Resize(CommandContext ctx, int x = 0, int y = 0, MagickFormat? format = null)'>761</a> | 70 | 1 :heavy_check_mark: | 0 | 7 | 3 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L247' title='Stream ImageModule.ResizeAsyncOP(byte[] photoBytes, int x, int y)'>247</a> | 60 | 3 :heavy_check_mark: | 0 | 6 | 27 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L724' title='Tuple<Stream, string> ImageModule.ResizeAsyncOP(byte[] bytes, int x, int y, MagickFormat? format)'>724</a> | 59 | 7 :heavy_check_mark: | 0 | 9 | 27 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L689' title='Task ImageModule.Seal(CommandContext ctx, string text)'>689</a> | 76 | 1 :heavy_check_mark: | 0 | 9 | 6 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L79' title='Task ImageModule.Send_img_plsAsync(CommandContext ctx, string? message)'>79</a> | 93 | 2 :heavy_check_mark: | 0 | 5 | 7 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L145' title='Task ImageModule.SendImageStream(CommandContext ctx, Stream outStream, string filename = "sbimg.png", string? content = null)'>145</a> | 73 | 1 :heavy_check_mark: | 0 | 6 | 8 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L87' title='Task ImageModule.SendImageStreamIfAllowed(CommandContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language? lang = null, bool dryrun = false)'>87</a> | 57 | 6 :heavy_check_mark: | 0 | 6 | 28 / 13 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L116' title='Task ImageModule.SendImageStreamIfAllowed(InteractionContext ctx, Stream image, bool DisposeOfStream, string Filename = "sbimg.png", string? content = null, Language? lang = null, bool dryrun = false)'>116</a> | 58 | 6 :heavy_check_mark: | 0 | 7 | 28 / 13 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L578' title='Tuple<MemoryStream, string> ImageModule.Tint(Stream photoStream, Color color, string extension)'>578</a> | 54 | 4 :heavy_check_mark: | 0 | 7 | 32 / 17 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L613' title='Task ImageModule.Tint(CommandContext ctx, SdImage image, Color color)'>613</a> | 70 | 1 :heavy_check_mark: | 0 | 8 | 12 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L625' title='Task ImageModule.Tint(CommandContext ctx, Color color)'>625</a> | 87 | 1 :heavy_check_mark: | 0 | 6 | 4 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L350' title='void ImageModule.WriteImageToStream(Image w, Stream s, string extension)'>350</a> | 73 | 2 :heavy_check_mark: | 0 | 4 | 11 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L457' title='Task ImageModule.Yeet(CommandContext ctx)'>457</a> | 84 | 1 :heavy_check_mark: | 0 | 5 | 3 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ImageModule.cs#L461' title='Task ImageModule.Yeet(CommandContext ctx, SdImage img2)'>461</a> | 63 | 1 :heavy_check_mark: | 0 | 10 | 52 / 5 |
 
 <a href="#ImageModule-class-diagram">:link: to `ImageModule` class diagram</a>
 
@@ -4443,35 +4407,38 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 </summary>
 <br>
 
-- The `Input` contains 22 members.
-- 48 total lines of source code.
-- Approximately 62 lines of executable code.
+- The `Input` contains 25 members.
+- 29 total lines of source code.
+- Approximately 13 lines of executable code.
 - The highest cyclomatic complexity is 2 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L265' title='string Input.GuidanceScale'>265</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L271' title='string Input.Height'>271</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L255' title='string Input.InitImage'>255</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L259' title='string Input.NegativePrompt'>259</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L263' title='string Input.NumInferenceSteps'>263</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L261' title='int Input.NumOutputs'>261</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L291' title='string Input.OriginalPrompt'>291</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L287' title='string Input.OutputFormat'>287</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L289' title='string Input.OutputQuality'>289</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L251' title='string Input.Prompt'>251</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L267' title='string Input.PromptStrength'>267</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L293' title='string Input.Sampler'>293</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L257' title='int Input.Seed'>257</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L253' title='long Input.SessionId'>253</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L285' title='bool Input.ShowOnlyFilteredImage'>285</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L283' title='bool Input.StreamImageProgress'>283</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L281' title='bool Input.StreamProgressUpdates'>281</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L273' title='bool Input.Turbo'>273</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L275' title='bool Input.UseFullPrecision'>275</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L277' title='string Input.UseStableDiffusionModel'>277</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L279' title='string Input.UseVaeModel'>279</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L269' title='string Input.Width'>269</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L269' title='object[] Input.active_tags'>269</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L264' title='bool Input.block_nsfw'>264</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L255' title='double Input.guidance_scale'>255</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L257' title='int Input.height'>257</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L270' title='object[] Input.inactive_tags'>270</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L248' title='string Input.init_image'>248</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 2 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L267' title='string Input.metadata_output_format'>267</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L252' title='string Input.negative_prompt'>252</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L254' title='int Input.num_inference_steps'>254</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L253' title='int Input.num_outputs'>253</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L268' title='string Input.original_prompt'>268</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L265' title='string Input.output_format'>265</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L266' title='int Input.output_quality'>266</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L249' title='string Input.prompt'>249</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L271' title='string Input.sampler_name'>271</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L250' title='int Input.seed'>250</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L272' title='string Input.session_id'>272</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L263' title='bool Input.show_only_filtered_image'>263</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L262' title='bool Input.stream_image_progress'>262</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L261' title='bool Input.stream_progress_updates'>261</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L259' title='string Input.use_stable_diffusion_model'>259</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L260' title='string Input.use_vae_model'>260</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L251' title='bool Input.used_random_seed'>251</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L258' title='string Input.vram_usage_level'>258</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L256' title='int Input.width'>256</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
 
 <a href="#Input-class-diagram">:link: to `Input` class diagram</a>
 
@@ -4494,16 +4461,16 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L36' title='Config MiscCommands.Config'>36</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L35' title='DatabaseContext MiscCommands.Database'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L37' title='HttpClient MiscCommands.HttpClient'>37</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L34' title='LanguageService MiscCommands.LanguageService'>34</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L67' title='Task MiscCommands.SetLanguage(CommandContext ctx, string langName)'>67</a> | 64 | 3 :heavy_check_mark: | 0 | 9 | 29 / 11 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L97' title='Task MiscCommands.SetLanguage(CommandContext ctx, bool enable)'>97</a> | 60 | 3 :heavy_check_mark: | 0 | 10 | 34 / 14 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L132' title='Task MiscCommands.TranlateUnknown(CommandContext ctx, string text)'>132</a> | 64 | 2 :heavy_check_mark: | 0 | 13 | 21 / 9 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L154' title='Task MiscCommands.TranlateUnknown(CommandContext ctx, string languageTo, string text)'>154</a> | 60 | 4 :heavy_check_mark: | 0 | 13 | 36 / 13 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L58' title='Task MiscCommands.VersionInfoCmd(CommandContext ctx)'>58</a> | 73 | 1 :heavy_check_mark: | 0 | 9 | 8 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L38' title='DiscordEmbed MiscCommands.VersionInfoEmbed(Language lang, dynamic ctx)'>38</a> | 88 | 1 :heavy_check_mark: | 0 | 5 | 16 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L37' title='Config MiscCommands.Config'>37</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L36' title='DatabaseContext MiscCommands.Database'>36</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L38' title='HttpClient MiscCommands.HttpClient'>38</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L35' title='LanguageService MiscCommands.LanguageService'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L68' title='Task MiscCommands.SetLanguage(CommandContext ctx, string langName)'>68</a> | 64 | 3 :heavy_check_mark: | 0 | 9 | 29 / 11 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L98' title='Task MiscCommands.SetLanguage(CommandContext ctx, bool enable)'>98</a> | 60 | 3 :heavy_check_mark: | 0 | 10 | 34 / 14 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L133' title='Task MiscCommands.TranlateUnknown(CommandContext ctx, string text)'>133</a> | 64 | 2 :heavy_check_mark: | 0 | 12 | 21 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L155' title='Task MiscCommands.TranlateUnknown(CommandContext ctx, string languageTo, string text)'>155</a> | 60 | 4 :heavy_check_mark: | 0 | 12 | 36 / 13 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L59' title='Task MiscCommands.VersionInfoCmd(CommandContext ctx)'>59</a> | 73 | 1 :heavy_check_mark: | 0 | 9 | 8 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Misc.cs#L39' title='DiscordEmbed MiscCommands.VersionInfoEmbed(Language lang, dynamic ctx)'>39</a> | 89 | 1 :heavy_check_mark: | 0 | 5 | 16 / 1 |
 
 <a href="#MiscCommands-class-diagram">:link: to `MiscCommands` class diagram</a>
 
@@ -4519,20 +4486,79 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 </summary>
 <br>
 
-- The `ModCommands` contains 5 members.
-- 139 total lines of source code.
+- The `ModCommands` contains 6 members.
+- 141 total lines of source code.
 - Approximately 64 lines of executable code.
 - The highest cyclomatic complexity is 6 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L65' title='Task ModCommands.Ban(CommandContext ctx, DiscordUser a, string reason = "The ban hammer has spoken")'>65</a> | 53 | 6 :heavy_check_mark: | 0 | 10 | 38 / 20 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L30' title='Task ModCommands.Kick(CommandContext ctx, DiscordMember a, string reason = "The kick boot has spoken")'>30</a> | 53 | 6 :heavy_check_mark: | 0 | 10 | 34 / 19 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L104' title='Task ModCommands.Kms(CommandContext ctx, bool ban = false)'>104</a> | 68 | 2 :heavy_check_mark: | 0 | 6 | 16 / 8 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L67' title='Task ModCommands.Ban(CommandContext ctx, DiscordUser a, string reason = "The ban hammer has spoken")'>67</a> | 53 | 6 :heavy_check_mark: | 0 | 11 | 38 / 20 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L27' title='ColourService ModCommands.ColourService'>27</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L32' title='Task ModCommands.Kick(CommandContext ctx, DiscordMember a, string reason = "The kick boot has spoken")'>32</a> | 53 | 6 :heavy_check_mark: | 0 | 11 | 34 / 19 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L106' title='Task ModCommands.Kms(CommandContext ctx, bool ban = false)'>106</a> | 68 | 2 :heavy_check_mark: | 0 | 6 | 16 / 8 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L26' title='LanguageService ModCommands.LanguageService'>26</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L122' title='Task ModCommands.Purge(CommandContext ctx, int amount)'>122</a> | 59 | 4 :heavy_check_mark: | 0 | 10 | 41 / 13 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ModCommands.cs#L124' title='Task ModCommands.Purge(CommandContext ctx, int amount)'>124</a> | 59 | 4 :heavy_check_mark: | 0 | 11 | 41 / 13 |
 
 <a href="#ModCommands-class-diagram">:link: to `ModCommands` class diagram</a>
+
+<a href="#silverbotds-commands">:top: back to SilverBotDS.Commands</a>
+
+</details>
+
+<details>
+<summary>
+  <strong id="neutralaudio">
+    NeutralAudio :exploding_head:
+  </strong>
+</summary>
+<br>
+
+- The `NeutralAudio` contains 36 members.
+- 598 total lines of source code.
+- Approximately 280 lines of executable code.
+- The highest cyclomatic complexity is 15 :exploding_head:.
+
+| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L488' title='Task NeutralAudio.Aliases(ISilverBotContext ctx)'>488</a> | 73 | 2 :heavy_check_mark: | 0 | 8 | 11 / 6 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L45' title='ArtworkService NeutralAudio.ArtworkService'>45</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L42' title='LavalinkNode NeutralAudio.AudioService'>42</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L277' title='Task NeutralAudio.ClearQueue(ISilverBotContext ctx)'>277</a> | 61 | 4 :heavy_check_mark: | 0 | 8 | 19 / 11 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L47' title='ColourService NeutralAudio.ColourService'>47</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L44' title='Config NeutralAudio.Config'>44</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L626' title='Task NeutralAudio.Disconnect(ISilverBotContext ctx)'>626</a> | 65 | 4 :heavy_check_mark: | 0 | 9 | 12 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L308' title='Task NeutralAudio.ExportQueue(ISilverBotContext ctx, string? playlistName = null)'>308</a> | 58 | 11 :radioactive: | 0 | 11 | 22 / 12 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L609' title='Task NeutralAudio.ForceDisconnect(ISilverBotContext ctx)'>609</a> | 64 | 2 :heavy_check_mark: | 0 | 9 | 16 / 11 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L449' title='string NeutralAudio.GetMessageOfLoopSetting(Language lang, LoopSettings setting)'>449</a> | 91 | 1 :heavy_check_mark: | 0 | 5 | 8 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L48' title='bool NeutralAudio.IsInVc(ISilverBotContext ctx)'>48</a> | 94 | 1 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L50' title='bool NeutralAudio.IsInVc(ISilverBotContext ctx, LavalinkNode lavalinkNode)'>50</a> | 92 | 2 :heavy_check_mark: | 0 | 3 | 2 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L515' title='Task NeutralAudio.Join(ISilverBotContext ctx)'>515</a> | 81 | 1 :heavy_check_mark: | 0 | 8 | 6 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L46' title='LanguageService NeutralAudio.LanguageService'>46</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L440' title='Task NeutralAudio.Loop(ISilverBotContext ctx, LoopSettings settings)'>440</a> | 67 | 1 :heavy_check_mark: | 0 | 9 | 11 / 8 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L43' title='LyricsService NeutralAudio.LyricsService'>43</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L260' title='Task NeutralAudio.MakeSureBothAreInVC(ISilverBotContext ctx, Language lang)'>260</a> | 84 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L243' title='Task NeutralAudio.MakeSureBotIsInVC(ISilverBotContext ctx, Language lang)'>243</a> | 80 | 2 :heavy_check_mark: | 0 | 6 | 8 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L266' title='Task NeutralAudio.MakeSurePlayerIsntNull(ISilverBotContext ctx, Language lang, BetterVoteLavalinkPlayer? player)'>266</a> | 80 | 2 :heavy_check_mark: | 0 | 8 | 8 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L251' title='Task NeutralAudio.MakeSureUserIsInVC(ISilverBotContext ctx, Language lang)'>251</a> | 79 | 4 :heavy_check_mark: | 0 | 6 | 9 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L475' title='Task NeutralAudio.Ovh(ISilverBotContext ctx, string name, string artist)'>475</a> | 71 | 2 :heavy_check_mark: | 0 | 6 | 12 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L460' title='Task NeutralAudio.Pause(ISilverBotContext ctx)'>460</a> | 66 | 4 :heavy_check_mark: | 0 | 7 | 14 / 8 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L123' title='Task NeutralAudio.Play(ISilverBotContext ctx)'>123</a> | 64 | 5 :heavy_check_mark: | 0 | 9 | 26 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L148' title='Task NeutralAudio.Play(ISilverBotContext ctx, SongORSongs song)'>148</a> | 52 | 10 :radioactive: | 0 | 12 | 49 / 20 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L83' title='Task NeutralAudio.PlayNext(ISilverBotContext ctx, SongORSongs song)'>83</a> | 54 | 10 :radioactive: | 0 | 14 | 39 / 19 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L381' title='Task NeutralAudio.Queue(ISilverBotContext ctx)'>381</a> | 49 | 12 :x: | 0 | 14 | 58 / 24 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L354' title='Task NeutralAudio.QueueHistory(ISilverBotContext ctx)'>354</a> | 58 | 5 :heavy_check_mark: | 0 | 14 | 26 / 13 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L331' title='Task NeutralAudio.Remove(ISilverBotContext ctx, int songindex)'>331</a> | 60 | 4 :heavy_check_mark: | 0 | 9 | 21 / 12 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L500' title='Task NeutralAudio.Resume(ISilverBotContext ctx)'>500</a> | 66 | 4 :heavy_check_mark: | 0 | 7 | 14 / 8 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L229' title='Task NeutralAudio.Seek(ISilverBotContext ctx, TimeSpan time)'>229</a> | 66 | 2 :heavy_check_mark: | 0 | 9 | 17 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L297' title='Task NeutralAudio.Shuffle(ISilverBotContext ctx)'>297</a> | 68 | 2 :heavy_check_mark: | 0 | 8 | 11 / 8 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L542' title='Task NeutralAudio.Skip(ISilverBotContext ctx)'>542</a> | 58 | 10 :radioactive: | 0 | 10 | 21 / 13 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L520' title='Task NeutralAudio.StaticJoin(ISilverBotContext ctx, LavalinkNode audioService, Language? language = null)'>520</a> | 64 | 10 :radioactive: | 0 | 6 | 17 / 8 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L55' title='TimeSpan NeutralAudio.TimeTillSongPlays(QueuedLavalinkPlayer player, int song)'>55</a> | 62 | 6 :heavy_check_mark: | 0 | 3 | 24 / 10 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L201' title='Task NeutralAudio.Volume(ISilverBotContext ctx, ushort volume)'>201</a> | 59 | 6 :heavy_check_mark: | 0 | 9 | 28 / 13 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/NeutralAudio.cs#L563' title='Task NeutralAudio.VoteSkip(ISilverBotContext ctx)'>563</a> | 52 | 15 :exploding_head: | 0 | 13 | 44 / 20 |
+
+<a href="#NeutralAudio-class-diagram">:link: to `NeutralAudio` class diagram</a>
 
 <a href="#silverbotds-commands">:top: back to SilverBotDS.Commands</a>
 
@@ -4553,9 +4579,9 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L302' title='string Output.Data'>302</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L308' title='object Output.PathAbs'>308</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L305' title='int Output.Seed'>305</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L282' title='string Output.Data'>282</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L288' title='object Output.PathAbs'>288</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L285' title='int Output.Seed'>285</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 3 / 2 |
 
 <a href="#Output-class-diagram">:link: to `Output` class diagram</a>
 
@@ -4572,41 +4598,41 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 <br>
 
 - The `OwnerOnly` contains 29 members.
-- 593 total lines of source code.
-- Approximately 224 lines of executable code.
+- 580 total lines of source code.
+- Approximately 220 lines of executable code.
 - The highest cyclomatic complexity is 11 :radioactive:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L171' title='string[] OwnerOnly._imports'>171</a> | 81 | 0 :heavy_check_mark: | 0 | 0 | 5 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L513' title='Task OwnerOnly.Addemotez(CommandContext ctx)'>513</a> | 46 | 8 :warning: | 0 | 13 | 71 / 37 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L98' title='Task OwnerOnly.Category(CommandContext ctx, DiscordRole role)'>98</a> | 62 | 1 :heavy_check_mark: | 0 | 10 | 39 / 10 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L138' title='Task OwnerOnly.Category(CommandContext ctx, DiscordMember person)'>138</a> | 63 | 1 :heavy_check_mark: | 0 | 8 | 35 / 9 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L41' title='Config OwnerOnly.Config'>41</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L40' title='DatabaseContext OwnerOnly.Database'>40</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L311' title='Task OwnerOnly.Dependencies(CommandContext ctx)'>311</a> | 68 | 3 :heavy_check_mark: | 0 | 8 | 20 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L337' title='Task OwnerOnly.Eval(CommandContext ctx, string code)'>337</a> | 43 | 10 :radioactive: | 0 | 14 | 112 / 44 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L582' title='Task OwnerOnly.Guilds(CommandContext ctx)'>582</a> | 74 | 2 :heavy_check_mark: | 0 | 6 | 12 / 5 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L42' title='HttpClient OwnerOnly.HttpClient'>42</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L43' title='LanguageService OwnerOnly.LanguageService'>43</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L44' title='ModuleRegistrationService OwnerOnly.ModuleRegistrationService'>44</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L304' title='JsonSerializerOptions OwnerOnly.Options'>304</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 3 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L74' title='Task OwnerOnly.RegMod(CommandContext ctx, string mod)'>74</a> | 80 | 1 :heavy_check_mark: | 0 | 6 | 7 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L49' title='Task OwnerOnly.ReloadColors(CommandContext ctx)'>49</a> | 70 | 2 :heavy_check_mark: | 0 | 8 | 18 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L604' title='Task OwnerOnly.Reloadsplashes(CommandContext ctx)'>604</a> | 79 | 1 :heavy_check_mark: | 0 | 5 | 7 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L612' title='Task OwnerOnly.Reloadsplashesas(CommandContext ctx)'>612</a> | 75 | 1 :heavy_check_mark: | 0 | 6 | 8 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L178' title='string OwnerOnly.RemoveCodeBraces(string str)'>178</a> | 52 | 11 :radioactive: | 0 | 1 | 54 / 21 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L620' title='Task OwnerOnly.RemoveUser(CommandContext ctx, DiscordUser userid)'>620</a> | 77 | 1 :heavy_check_mark: | 0 | 6 | 7 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L445' title='Task OwnerOnly.RunConsole(CommandContext ctx, string command)'>445</a> | 52 | 8 :warning: | 0 | 10 | 33 / 21 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L479' title='Task OwnerOnly.Runsql(CommandContext ctx, string sql)'>479</a> | 76 | 1 :heavy_check_mark: | 0 | 8 | 8 / 4 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L247' title='Task OwnerOnly.SendBestRepresentationAsync(object ob, CommandContext ctx)'>247</a> | 56 | 11 :radioactive: | 0 | 9 | 56 / 15 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L233' title='Task OwnerOnly.SendStringFileWithContent(CommandContext ctx, string title, string file, string filename = "message.txt")'>233</a> | 81 | 1 :heavy_check_mark: | 0 | 5 | 7 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L240' title='Task OwnerOnly.SendStringFileWithContent(BaseContext ctx, string title, string file, string filename = "message.txt")'>240</a> | 81 | 1 :heavy_check_mark: | 0 | 5 | 7 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L85' title='Task OwnerOnly.Sudo(CommandContext ctx, DiscordMember member, string command)'>85</a> | 68 | 1 :heavy_check_mark: | 0 | 10 | 12 / 8 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L46' title='TaskService OwnerOnly.TaskService'>46</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L595' title='Task OwnerOnly.ToggleBanUser(CommandContext ctx, DiscordUser userid, bool ban = true)'>595</a> | 71 | 2 :heavy_check_mark: | 0 | 6 | 7 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L67' title='Task OwnerOnly.UnRegCmd(CommandContext ctx, string cmdwithparm)'>67</a> | 83 | 1 :heavy_check_mark: | 0 | 6 | 6 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L94' title='Regex OwnerOnly.Whitespace()'>94</a> | 93 | 1 :heavy_check_mark: | 0 | 2 | 2 / 2 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L173' title='string[] OwnerOnly._imports'>173</a> | 81 | 0 :heavy_check_mark: | 0 | 0 | 5 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L500' title='Task OwnerOnly.Addemotez(CommandContext ctx)'>500</a> | 46 | 8 :warning: | 0 | 13 | 71 / 37 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L100' title='Task OwnerOnly.Category(CommandContext ctx, DiscordRole role)'>100</a> | 62 | 1 :heavy_check_mark: | 0 | 10 | 39 / 10 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L140' title='Task OwnerOnly.Category(CommandContext ctx, DiscordMember person)'>140</a> | 63 | 1 :heavy_check_mark: | 0 | 9 | 35 / 9 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L46' title='ColourService OwnerOnly.ColourService'>46</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L42' title='Config OwnerOnly.Config'>42</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L41' title='DatabaseContext OwnerOnly.Database'>41</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L300' title='Task OwnerOnly.Dependencies(CommandContext ctx)'>300</a> | 68 | 3 :heavy_check_mark: | 0 | 8 | 20 / 8 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L326' title='Task OwnerOnly.Eval(CommandContext ctx, string code)'>326</a> | 43 | 10 :radioactive: | 0 | 14 | 110 / 42 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L569' title='Task OwnerOnly.Guilds(CommandContext ctx)'>569</a> | 74 | 2 :heavy_check_mark: | 0 | 6 | 12 / 5 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L43' title='HttpClient OwnerOnly.HttpClient'>43</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L44' title='LanguageService OwnerOnly.LanguageService'>44</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L45' title='ModuleRegistrationService OwnerOnly.ModuleRegistrationService'>45</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L615' title='Regex OwnerOnly.MyRegex()'>615</a> | 93 | 1 :heavy_check_mark: | 0 | 2 | 2 / 2 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L293' title='JsonSerializerOptions OwnerOnly.Options'>293</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 3 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L76' title='Task OwnerOnly.RegMod(CommandContext ctx, string mod)'>76</a> | 80 | 1 :heavy_check_mark: | 0 | 6 | 7 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L51' title='Task OwnerOnly.ReloadColors(CommandContext ctx)'>51</a> | 71 | 2 :heavy_check_mark: | 0 | 9 | 18 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L591' title='Task OwnerOnly.Reloadsplashes(CommandContext ctx)'>591</a> | 79 | 1 :heavy_check_mark: | 0 | 5 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L599' title='Task OwnerOnly.Reloadsplashesas(CommandContext ctx)'>599</a> | 75 | 1 :heavy_check_mark: | 0 | 6 | 8 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L180' title='string OwnerOnly.RemoveCodeBraces(string str)'>180</a> | 52 | 11 :radioactive: | 0 | 1 | 54 / 21 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L607' title='Task OwnerOnly.RemoveUser(CommandContext ctx, DiscordUser userid)'>607</a> | 77 | 1 :heavy_check_mark: | 0 | 6 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L432' title='Task OwnerOnly.RunConsole(CommandContext ctx, string command)'>432</a> | 52 | 8 :warning: | 0 | 10 | 33 / 21 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L466' title='Task OwnerOnly.Runsql(CommandContext ctx, string sql)'>466</a> | 76 | 1 :heavy_check_mark: | 0 | 8 | 8 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L236' title='Task OwnerOnly.SendBestRepresentationAsync(object ob, CommandContext ctx)'>236</a> | 56 | 11 :radioactive: | 0 | 9 | 56 / 15 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L87' title='Task OwnerOnly.Sudo(CommandContext ctx, DiscordMember member, string command)'>87</a> | 68 | 1 :heavy_check_mark: | 0 | 10 | 12 / 8 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L48' title='TaskService OwnerOnly.TaskService'>48</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L582' title='Task OwnerOnly.ToggleBanUser(CommandContext ctx, DiscordUser userid, bool ban = true)'>582</a> | 71 | 2 :heavy_check_mark: | 0 | 6 | 7 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L69' title='Task OwnerOnly.UnRegCmd(CommandContext ctx, string cmdwithparm)'>69</a> | 83 | 1 :heavy_check_mark: | 0 | 6 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L96' title='Regex OwnerOnly.Whitespace()'>96</a> | 93 | 1 :heavy_check_mark: | 0 | 2 | 2 / 2 |
 
 <a href="#OwnerOnly-class-diagram">:link: to `OwnerOnly` class diagram</a>
 
@@ -4629,9 +4655,9 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L241' title='int PartialResponse.Step'>241</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L243' title='double PartialResponse.StepTime'>243</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L245' title='int PartialResponse.TotalSteps'>245</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L238' title='int PartialResponse.Step'>238</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L240' title='double PartialResponse.StepTime'>240</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L242' title='int PartialResponse.TotalSteps'>242</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
 
 <a href="#PartialResponse-class-diagram">:link: to `PartialResponse` class diagram</a>
 
@@ -4648,8 +4674,8 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 <br>
 
 - The `ReactionRoleCommands` contains 5 members.
-- 168 total lines of source code.
-- Approximately 98 lines of executable code.
+- 158 total lines of source code.
+- Approximately 96 lines of executable code.
 - The highest cyclomatic complexity is 33 :exploding_head:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
@@ -4658,7 +4684,7 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReactionRoleCommands.cs#L43' title='Regex ReactionRoleCommands.Emote()'>43</a> | 88 | 1 :heavy_check_mark: | 0 | 3 | 2 / 2 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReactionRoleCommands.cs#L38' title='Task<bool> ReactionRoleCommands.ExecuteRequirements(Config conf)'>38</a> | 100 | 1 :heavy_check_mark: | 0 | 3 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReactionRoleCommands.cs#L44' title='LanguageService ReactionRoleCommands.LanguageService'>44</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReactionRoleCommands.cs#L47' title='Task ReactionRoleCommands.ReactionRoleAdd(CommandContext ctx)'>47</a> | 31 | 33 :exploding_head: | 0 | 22 | 148 / 85 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ReactionRoleCommands.cs#L47' title='Task ReactionRoleCommands.ReactionRoleAdd(CommandContext ctx)'>47</a> | 31 | 33 :exploding_head: | 0 | 22 | 138 / 83 |
 
 <a href="#ReactionRoleCommands-class-diagram">:link: to `ReactionRoleCommands` class diagram</a>
 
@@ -4710,10 +4736,10 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L230' title='int Response.Queue'>230</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L228' title='string Response.Status'>228</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L232' title='string Response.Stream'>232</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L234' title='long Response.Task'>234</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L227' title='int Response.Queue'>227</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L225' title='string Response.Status'>225</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L229' title='string Response.Stream'>229</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L231' title='long Response.Task'>231</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 2 |
 
 <a href="#Response-class-diagram">:link: to `Response` class diagram</a>
 
@@ -4736,9 +4762,9 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L490' title='string Rootobject.Author'>490</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L492' title='Emote[] Rootobject.Emotes'>492</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 1 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L488' title='string Rootobject.Name'>488</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L477' title='string Rootobject.Author'>477</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L479' title='Emote[] Rootobject.Emotes'>479</a> | 100 | 2 :heavy_check_mark: | 0 | 2 | 1 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L475' title='string Rootobject.Name'>475</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 2 |
 
 <a href="#OwnerOnly.Rootobject-class-diagram">:link: to `OwnerOnly.Rootobject` class diagram</a>
 
@@ -4761,13 +4787,13 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L28' title='Regex ServerStatsCommands._emote'>28</a> | 90 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L31' title='DatabaseContext ServerStatsCommands.Database'>31</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L37' title='Task ServerStatsCommands.EmoteAnalytics(CommandContext ctx, DiscordChannel channel, int limit = 10000)'>37</a> | 50 | 6 :heavy_check_mark: | 0 | 14 | 47 / 23 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L32' title='LanguageService ServerStatsCommands.LanguageService'>32</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L85' title='Task ServerStatsCommands.SetCategory(CommandContext ctx, DiscordChannel category)'>85</a> | 66 | 3 :heavy_check_mark: | 0 | 10 | 25 / 9 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L111' title='Task ServerStatsCommands.SetStatisticStrings(CommandContext ctx)'>111</a> | 73 | 1 :heavy_check_mark: | 0 | 9 | 12 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L124' title='Task ServerStatsCommands.SetStatisticStrings(CommandContext ctx, params string[] cake)'>124</a> | 71 | 1 :heavy_check_mark: | 0 | 10 | 12 / 7 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L29' title='Regex ServerStatsCommands._emote'>29</a> | 90 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L32' title='DatabaseContext ServerStatsCommands.Database'>32</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L38' title='Task ServerStatsCommands.EmoteAnalytics(CommandContext ctx, DiscordChannel channel, int limit = 10000)'>38</a> | 50 | 6 :heavy_check_mark: | 0 | 13 | 47 / 23 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L33' title='LanguageService ServerStatsCommands.LanguageService'>33</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L86' title='Task ServerStatsCommands.SetCategory(CommandContext ctx, DiscordChannel category)'>86</a> | 66 | 3 :heavy_check_mark: | 0 | 10 | 25 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L112' title='Task ServerStatsCommands.SetStatisticStrings(CommandContext ctx)'>112</a> | 73 | 1 :heavy_check_mark: | 0 | 9 | 12 / 6 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/ServerStatsCommands.cs#L125' title='Task ServerStatsCommands.SetStatisticStrings(CommandContext ctx, params string[] cake)'>125</a> | 71 | 1 :heavy_check_mark: | 0 | 10 | 12 / 7 |
 
 <a href="#ServerStatsCommands-class-diagram">:link: to `ServerStatsCommands` class diagram</a>
 
@@ -4790,9 +4816,9 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L505' title='string SourceFile.Extension'>505</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L506' title='byte[] SourceFile.FileBytes'>506</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L504' title='string SourceFile.Name'>504</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L492' title='string SourceFile.Extension'>492</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L493' title='byte[] SourceFile.FileBytes'>493</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/OwnerOnly.cs#L491' title='string SourceFile.Name'>491</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 0 |
 
 <a href="#OwnerOnly.SourceFile-class-diagram">:link: to `OwnerOnly.SourceFile` class diagram</a>
 
@@ -4808,19 +4834,16 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 </summary>
 <br>
 
-- The `StableDiff` contains 6 members.
-- 196 total lines of source code.
-- Approximately 82 lines of executable code.
-- The highest cyclomatic complexity is 31 :exploding_head:.
+- The `StableDiff` contains 3 members.
+- 191 total lines of source code.
+- Approximately 85 lines of executable code.
+- The highest cyclomatic complexity is 33 :exploding_head:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L33' title='Config StableDiff.Config'>33</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L32' title='HttpClient StableDiff.HttpClient'>32</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L35' title='string[] StableDiff.NotSafeModel'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L34' title='string[] StableDiff.SafeModel'>34</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L40' title='Task StableDiff.TImagine(CommandContext ctx, string prompt = "space", string model = "sd-v1-4", int? seed = null, string negative_prompt = "", int resolution = 512, int steps = 25)'>40</a> | 30 | 31 :exploding_head: | 0 | 16 | 184 / 75 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L36' title='ulong[] StableDiff.Trusted'>36</a> | 100 | 2 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L35' title='Config StableDiff.Config'>35</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L34' title='HttpClient StableDiff.HttpClient'>34</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/StableDiff.cs#L39' title='Task StableDiff.TImagine(CommandContext ctx, string prompt = "space", string model = "sd-v1-4", int? seed = null, string negative_prompt = "", int resolution = 512, int steps = 25)'>39</a> | 29 | 33 :exploding_head: | 0 | 17 | 182 / 81 |
 
 <a href="#StableDiff-class-diagram">:link: to `StableDiff` class diagram</a>
 
@@ -4836,9 +4859,9 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 </summary>
 <br>
 
-- The `TranslatorCommands` contains 10 members.
-- 187 total lines of source code.
-- Approximately 88 lines of executable code.
+- The `TranslatorCommands` contains 9 members.
+- 180 total lines of source code.
+- Approximately 85 lines of executable code.
 - The highest cyclomatic complexity is 7 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
@@ -4846,13 +4869,12 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L32' title='Regex TranslatorCommands._customlangregex'>32</a> | 93 | 0 :heavy_check_mark: | 0 | 1 | 1 / 1 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L34' title='JsonSerializerOptions TranslatorCommands._options'>34</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 3 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L39' title='DatabaseContext TranslatorCommands.DatabaseContext'>39</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L45' title='Task TranslatorCommands.Edit(CommandContext ctx)'>45</a> | 82 | 1 :heavy_check_mark: | 0 | 5 | 7 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L156' title='Task TranslatorCommands.GenerateLanguageTemplate(CommandContext ctx, string? lang = null)'>156</a> | 49 | 6 :heavy_check_mark: | 0 | 13 | 59 / 28 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L53' title='Task TranslatorCommands.Get(CommandContext ctx, string name)'>53</a> | 77 | 1 :heavy_check_mark: | 0 | 7 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L149' title='Task TranslatorCommands.GenerateLanguageTemplate(CommandContext ctx, string? lang = null)'>149</a> | 49 | 6 :heavy_check_mark: | 0 | 13 | 59 / 28 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L46' title='Task TranslatorCommands.Get(CommandContext ctx, string name)'>46</a> | 77 | 1 :heavy_check_mark: | 0 | 7 | 7 / 4 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L40' title='HttpClient TranslatorCommands.HttpClient'>40</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L41' title='LanguageService TranslatorCommands.LanguageService'>41</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L61' title='Task TranslatorCommands.SetLanguage(CommandContext ctx, string lang)'>61</a> | 49 | 7 :heavy_check_mark: | 0 | 12 | 64 / 30 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L126' title='Task TranslatorCommands.UploadCustomLanguage(CommandContext ctx)'>126</a> | 58 | 2 :heavy_check_mark: | 0 | 10 | 29 / 17 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L54' title='Task TranslatorCommands.SetLanguage(CommandContext ctx, string lang)'>54</a> | 49 | 7 :heavy_check_mark: | 0 | 12 | 64 / 30 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/TranslatorCommands.cs#L119' title='Task TranslatorCommands.UploadCustomLanguage(CommandContext ctx)'>119</a> | 58 | 2 :heavy_check_mark: | 0 | 10 | 29 / 17 |
 
 <a href="#TranslatorCommands-class-diagram">:link: to `TranslatorCommands` class diagram</a>
 
@@ -4892,7 +4914,7 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 <details>
 <summary>
   <strong id="silverbotds-converters">
-    SilverBotDS.Converters :x:
+    SilverBotDS.Converters :exploding_head:
   </strong>
 </summary>
 <br>
@@ -4900,9 +4922,9 @@ The `SilverBotDS.Commands` namespace contains 26 named types.
 The `SilverBotDS.Converters` namespace contains 5 named types.
 
 - 5 named types.
-- 155 total lines of source code.
-- Approximately 49 lines of executable code.
-- The highest cyclomatic complexity is 14 :x:.
+- 198 total lines of source code.
+- Approximately 67 lines of executable code.
+- The highest cyclomatic complexity is 23 :exploding_head:.
 
 <details>
 <summary>
@@ -4999,20 +5021,23 @@ The `SilverBotDS.Converters` namespace contains 5 named types.
 <details>
 <summary>
   <strong id="songorsongsconverter">
-    SongOrSongsConverter :x:
+    SongOrSongsConverter :exploding_head:
   </strong>
 </summary>
 <br>
 
-- The `SongOrSongsConverter` contains 2 members.
-- 73 total lines of source code.
-- Approximately 33 lines of executable code.
-- The highest cyclomatic complexity is 14 :x:.
+- The `SongOrSongsConverter` contains 5 members.
+- 116 total lines of source code.
+- Approximately 51 lines of executable code.
+- The highest cyclomatic complexity is 23 :exploding_head:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Converters/SongOrSongsConverter.cs#L30' title='Task<Optional<SongORSongs>> SongOrSongsConverter.ConvertAsync(string value, CommandContext ctx)'>30</a> | 46 | 14 :x: | 0 | 10 | 62 / 32 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Converters/SongOrSongsConverter.cs#L93' title='bool SongOrSongsConverter.IsInVc(CommandContext ctx, IAudioService audioService)'>93</a> | 90 | 4 :heavy_check_mark: | 0 | 3 | 6 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Converters/SongOrSongsConverter.cs#L135' title='Task<Optional<SongORSongs>> SongOrSongsConverter.ConvertAsync(string value, CommandContext ctx)'>135</a> | 95 | 2 :heavy_check_mark: | 0 | 7 | 4 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Converters/SongOrSongsConverter.cs#L127' title='Task<SongORSongs?> SongOrSongsConverter.ConvertToSong(InteractionContext ctx, string value, Language? language = null)'>127</a> | 82 | 1 :heavy_check_mark: | 0 | 7 | 6 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Converters/SongOrSongsConverter.cs#L35' title='Task<SongORSongs?> SongOrSongsConverter.ConvertToSongSB(ISilverBotContext ctx, string value, Language? language = null)'>35</a> | 40 | 23 :exploding_head: | 0 | 12 | 92 / 46 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Converters/SongOrSongsConverter.cs#L141' title='bool SongOrSongsConverter.IsInVc(ISilverBotContext ctx, IAudioService audioService)'>141</a> | 89 | 3 :heavy_check_mark: | 0 | 3 | 5 / 1 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Converters/SongOrSongsConverter.cs#L34' title='string SongOrSongsConverter.JellyStart'>34</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 
 <a href="#SongOrSongsConverter-class-diagram">:link: to `SongOrSongsConverter` class diagram</a>
 
@@ -5033,7 +5058,7 @@ The `SilverBotDS.Converters` namespace contains 5 named types.
 The `SilverBotDS.Commands.Gamering` namespace contains 2 named types.
 
 - 2 named types.
-- 116 total lines of source code.
+- 117 total lines of source code.
 - Approximately 50 lines of executable code.
 - The highest cyclomatic complexity is 9 :warning:.
 
@@ -5045,14 +5070,15 @@ The `SilverBotDS.Commands.Gamering` namespace contains 2 named types.
 </summary>
 <br>
 
-- The `MinecraftModule` contains 2 members.
-- 26 total lines of source code.
+- The `MinecraftModule` contains 3 members.
+- 27 total lines of source code.
 - Approximately 15 lines of executable code.
 - The highest cyclomatic complexity is 2 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Minecraft.cs#L33' title='Task MinecraftModule.Calculate(CommandContext ctx, string input)'>33</a> | 68 | 1 :heavy_check_mark: | 0 | 9 | 15 / 7 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Minecraft.cs#L34' title='Task MinecraftModule.Calculate(CommandContext ctx, string input)'>34</a> | 68 | 1 :heavy_check_mark: | 0 | 10 | 15 / 7 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Minecraft.cs#L29' title='ColourService MinecraftModule.ColourService'>29</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Gamering/Minecraft.cs#L28' title='HttpClient MinecraftModule.HttpClient'>28</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 2 / 0 |
 
 <a href="#MinecraftModule-class-diagram">:link: to `MinecraftModule` class diagram</a>
@@ -5264,7 +5290,7 @@ The `SilverBotDS.ProgramExtensions` namespace contains 8 named types.
 
 - 8 named types.
 - 840 total lines of source code.
-- Approximately 259 lines of executable code.
+- Approximately 231 lines of executable code.
 - The highest cyclomatic complexity is 27 :exploding_head:.
 
 <details>
@@ -5457,20 +5483,20 @@ The `SilverBotDS.ProgramExtensions` namespace contains 8 named types.
 <details>
 <summary>
   <strong id="versioninfo">
-    VersionInfo :radioactive:
+    VersionInfo :heavy_check_mark:
   </strong>
 </summary>
 <br>
 
 - The `VersionInfo` contains 2 members.
 - 93 total lines of source code.
-- Approximately 33 lines of executable code.
-- The highest cyclomatic complexity is 11 :radioactive:.
+- Approximately 5 lines of executable code.
+- The highest cyclomatic complexity is 1 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/ProgramExtensions/VersionInfo.cs#L23' title='Task VersionInfo.Checkforupdates(HttpClient client, Logger log)'>23</a> | 47 | 11 :radioactive: | 0 | 10 | 87 / 32 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/ProgramExtensions/VersionInfo.cs#L20' title='string VersionInfo.VNumber'>20</a> | 88 | 0 :heavy_check_mark: | 0 | 1 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/ProgramExtensions/VersionInfo.cs#L23' title='Task VersionInfo.Checkforupdates(HttpClient client, Logger log)'>23</a> | 79 | 1 :heavy_check_mark: | 0 | 6 | 87 / 4 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/ProgramExtensions/VersionInfo.cs#L20' title='string VersionInfo.VNumber'>20</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
 
 <a href="#VersionInfo-class-diagram">:link: to `VersionInfo` class diagram</a>
 
@@ -5488,12 +5514,12 @@ The `SilverBotDS.ProgramExtensions` namespace contains 8 named types.
 </summary>
 <br>
 
-The `SilverBotDS` namespace contains 6 named types.
+The `SilverBotDS` namespace contains 8 named types.
 
-- 6 named types.
-- 982 total lines of source code.
-- Approximately 370 lines of executable code.
-- The highest cyclomatic complexity is 41 :exploding_head:.
+- 8 named types.
+- 1,105 total lines of source code.
+- Approximately 389 lines of executable code.
+- The highest cyclomatic complexity is 43 :exploding_head:.
 
 <details>
 <summary>
@@ -5550,22 +5576,22 @@ The `SilverBotDS` namespace contains 6 named types.
 <br>
 
 - The `EventsRunner` contains 10 members.
-- 182 total lines of source code.
-- Approximately 80 lines of executable code.
+- 170 total lines of source code.
+- Approximately 76 lines of executable code.
 - The highest cyclomatic complexity is 8 :warning:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L29' title='void EventsRunner.InjectEvents(ServiceProvider sp, Logger log)'>29</a> | 85 | 1 :heavy_check_mark: | 0 | 2 | 5 / 2 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L27' title='Logger EventsRunner.Log'>27</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L35' title='Task EventsRunner.RunEmojiEvent(PlannedEvent @event, DatabaseContext dbctx)'>35</a> | 72 | 3 :heavy_check_mark: | 0 | 7 | 12 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L48' title='Task EventsRunner.RunEmojiEventAsync(PlannedEvent @event, DatabaseContext dbctx)'>48</a> | 50 | 6 :heavy_check_mark: | 0 | 11 | 38 / 23 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L157' title='Task EventsRunner.RunEventsAsync()'>157</a> | 56 | 8 :warning: | 0 | 7 | 48 / 16 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L117' title='Task EventsRunner.RunGiveAwayEvent(PlannedEvent @event, DatabaseContext dbctx)'>117</a> | 72 | 3 :heavy_check_mark: | 0 | 7 | 12 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L130' title='Task EventsRunner.RunGiveAwayEventAsync(PlannedEvent @event, DatabaseContext dbctx)'>130</a> | 58 | 5 :heavy_check_mark: | 0 | 9 | 26 / 13 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L87' title='Task EventsRunner.RunReminderEvent(PlannedEvent @event, DatabaseContext dbctx)'>87</a> | 72 | 3 :heavy_check_mark: | 0 | 7 | 12 / 5 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L100' title='Task EventsRunner.RunReminderEventAsync(PlannedEvent @event, DatabaseContext dbctx)'>100</a> | 63 | 2 :heavy_check_mark: | 0 | 11 | 16 / 11 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L26' title='ServiceProvider EventsRunner.ServiceProvider'>26</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L30' title='void EventsRunner.InjectEvents(ServiceProvider sp, Logger log)'>30</a> | 85 | 1 :heavy_check_mark: | 0 | 2 | 5 / 2 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L28' title='Logger EventsRunner.Log'>28</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L36' title='Task EventsRunner.RunEmojiEvent(PlannedEvent @event)'>36</a> | 80 | 2 :heavy_check_mark: | 0 | 5 | 8 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L45' title='Task EventsRunner.RunEmojiEventAsync(PlannedEvent @event)'>45</a> | 51 | 6 :heavy_check_mark: | 0 | 11 | 38 / 23 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L145' title='Task EventsRunner.RunEventsAsync()'>145</a> | 55 | 8 :warning: | 0 | 7 | 49 / 18 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L110' title='Task EventsRunner.RunGiveAwayEvent(PlannedEvent @event)'>110</a> | 80 | 2 :heavy_check_mark: | 0 | 5 | 8 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L119' title='Task EventsRunner.RunGiveAwayEventAsync(PlannedEvent @event)'>119</a> | 58 | 5 :heavy_check_mark: | 0 | 10 | 25 / 13 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L84' title='Task EventsRunner.RunReminderEvent(PlannedEvent @event)'>84</a> | 80 | 2 :heavy_check_mark: | 0 | 5 | 8 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L93' title='Task EventsRunner.RunReminderEventAsync(PlannedEvent @event)'>93</a> | 63 | 2 :heavy_check_mark: | 0 | 9 | 16 / 11 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/EventsRunner.cs#L27' title='ServiceProvider EventsRunner.ServiceProvider'>27</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 
 <a href="#EventsRunner-class-diagram">:link: to `EventsRunner` class diagram</a>
 
@@ -5598,46 +5624,97 @@ The `SilverBotDS` namespace contains 6 named types.
 
 <details>
 <summary>
+  <strong id="itrackoralbumlookupservice">
+    ITrackOrAlbumLookupService :heavy_check_mark:
+  </strong>
+</summary>
+<br>
+
+- The `ITrackOrAlbumLookupService` contains 1 members.
+- 4 total lines of source code.
+- Approximately 0 lines of executable code.
+- The highest cyclomatic complexity is 1 :heavy_check_mark:.
+
+| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/ITrackOrAlbumLookupService.cs#L13' title='Task<List<string>?> ITrackOrAlbumLookupService.TryGettingTrackOrAlbum(string name)'>13</a> | 100 | 1 :heavy_check_mark: | 0 | 3 | 1 / 0 |
+
+<a href="#ITrackOrAlbumLookupService-class-diagram">:link: to `ITrackOrAlbumLookupService` class diagram</a>
+
+<a href="#silverbotds">:top: back to SilverBotDS</a>
+
+</details>
+
+<details>
+<summary>
+  <strong id="jellyfinlookupservice">
+    JellyFinLookupService :exploding_head:
+  </strong>
+</summary>
+<br>
+
+- The `JellyFinLookupService` contains 4 members.
+- 93 total lines of source code.
+- Approximately 8 lines of executable code.
+- The highest cyclomatic complexity is 40 :exploding_head:.
+
+| Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/ITrackOrAlbumLookupService.cs#L19' title='Config JellyFinLookupService._config'>19</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/ITrackOrAlbumLookupService.cs#L18' title='IItemsClient JellyFinLookupService._itemsClient'>18</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/ITrackOrAlbumLookupService.cs#L20' title='JellyFinLookupService.JellyFinLookupService(HttpClient client, Config config)'>20</a> | 77 | 1 :heavy_check_mark: | 0 | 6 | 12 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/ITrackOrAlbumLookupService.cs#L33' title='Task<List<string>?> JellyFinLookupService.TryGettingTrackOrAlbum(string name)'>33</a> | 60 | 40 :exploding_head: | 0 | 9 | 75 / 5 |
+
+<a href="#JellyFinLookupService-class-diagram">:link: to `JellyFinLookupService` class diagram</a>
+
+<a href="#silverbotds">:top: back to SilverBotDS</a>
+
+</details>
+
+<details>
+<summary>
   <strong id="program">
     Program :exploding_head:
   </strong>
 </summary>
 <br>
 
-- The `Program` contains 28 members.
-- 765 total lines of source code.
-- Approximately 285 lines of executable code.
-- The highest cyclomatic complexity is 41 :exploding_head:.
+- The `Program` contains 30 members.
+- 799 total lines of source code.
+- Approximately 300 lines of executable code.
+- The highest cyclomatic complexity is 43 :exploding_head:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L67' title='LavalinkNode Program._audioService'>67</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L64' title='Config Program._config'>64</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L66' title='DiscordClient Program._discord'>66</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L72' title='int Program._lastFriday'>72</a> | 100 | 0 :heavy_check_mark: | 0 | 0 | 1 / 0 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L69' title='Logger Program._log'>69</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L68' title='InactivityTrackingService Program._trackingService'>68</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L68' title='LavalinkNode Program._audioService'>68</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L65' title='Config Program._config'>65</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L67' title='DiscordClient Program._discord'>67</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L70' title='Logger Program._log'>70</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L69' title='InactivityTrackingService Program._trackingService'>69</a> | 100 | 0 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L145' title='bool Program.AssetPresent(string asset)'>145</a> | 84 | 2 :heavy_check_mark: | 0 | 3 | 2 / 2 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L148' title='List<IAssetSchemeChecker> Program.AssetSchemeCheckers'>148</a> | 93 | 0 :heavy_check_mark: | 0 | 5 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L606' title='Task Program.Commands_CommandExecuted(CommandsNextExtension sender, CommandExecutionEventArgs e)'>606</a> | 78 | 3 :heavy_check_mark: | 0 | 6 | 14 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L619' title='Task Program.Commands_CommandExecuted(CommandsNextExtension sender, CommandExecutionEventArgs e)'>619</a> | 78 | 3 :heavy_check_mark: | 0 | 6 | 14 / 3 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L89' title='IHostBuilder Program.CreateHostBuilder(string[] args)'>89</a> | 100 | 1 :heavy_check_mark: | 0 | 1 | 5 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L768' title='Task Program.Discord_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)'>768</a> | 55 | 16 :exploding_head: | 0 | 12 | 58 / 15 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L728' title='Task Program.ExecuteFridayAsync(bool friday = true, CancellationToken ct = null)'>728</a> | 62 | 2 :heavy_check_mark: | 0 | 5 | 17 / 10 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L621' title='Dictionary<string, string> Program.GetStringDictionary(DiscordClient client, ServiceProvider provider)'>621</a> | 88 | 3 :heavy_check_mark: | 0 | 4 | 10 / 1 |
-| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L70' title='HttpClient Program.HttpClient'>70</a> | 93 | 0 :heavy_check_mark: | 0 | 1 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L746' title='Task Program.IncreaseXp(ulong id, ulong count = null)'>746</a> | 61 | 3 :heavy_check_mark: | 0 | 4 | 21 / 12 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L803' title='Task Program.Discord_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)'>803</a> | 55 | 16 :exploding_head: | 0 | 12 | 58 / 15 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L763' title='Task Program.ExecuteFridayAsync(bool friday = true, CancellationToken ct = null)'>763</a> | 62 | 2 :heavy_check_mark: | 0 | 5 | 17 / 10 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L717' title='string Program.FridayFileName'>717</a> | 93 | 0 :heavy_check_mark: | 0 | 0 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L634' title='Dictionary<string, string> Program.GetStringDictionary(DiscordClient client, ServiceProvider provider)'>634</a> | 88 | 3 :heavy_check_mark: | 0 | 4 | 10 / 1 |
+| Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L71' title='HttpClient Program.HttpClient'>71</a> | 93 | 0 :heavy_check_mark: | 0 | 1 | 1 / 1 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L781' title='Task Program.IncreaseXp(ulong id, ulong count = null)'>781</a> | 61 | 3 :heavy_check_mark: | 0 | 4 | 21 / 12 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L133' title='bool Program.IsNotNullAndIsNotB(object? a, object? b)'>133</a> | 76 | 5 :heavy_check_mark: | 0 | 2 | 9 / 3 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L92' title='void Program.Main(string[] args)'>92</a> | 64 | 8 :warning: | 0 | 3 | 25 / 9 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L153' title='Task Program.MainAsync(string[] args, bool ExitAfterbootup = false, CancellationToken cancellationToken = null)'>153</a> | 21 | 41 :exploding_head: | 0 | 58 | 406 / 161 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L153' title='Task Program.MainAsync(string[] args, bool ExitAfterbootup = false, CancellationToken cancellationToken = null)'>153</a> | 20 | 43 :exploding_head: | 0 | 61 | 419 / 167 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L82' title='TimeSpan Program.MessageLimit'>82</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L74' title='string[] Program.MessagesToRepeat'>74</a> | 83 | 0 :heavy_check_mark: | 0 | 0 | 5 / 1 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L126' title='HttpClient Program.NewHttpClientWithUserAgent()'>126</a> | 84 | 1 :heavy_check_mark: | 0 | 2 | 6 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L561' title='Task<int> Program.ResolvePrefixAsync(DiscordMessage msg)'>561</a> | 53 | 11 :radioactive: | 0 | 7 | 44 / 21 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L574' title='Task<int> Program.ResolvePrefixAsync(DiscordMessage msg)'>574</a> | 53 | 11 :radioactive: | 0 | 7 | 44 / 21 |
 | Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L120' title='void Program.SendLog(Exception exception)'>120</a> | 94 | 1 :heavy_check_mark: | 0 | 3 | 4 / 1 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L83' title='ServiceProvider Program.ServiceProvider'>83</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L151' title='ServiceCollection Program.services'>151</a> | 93 | 0 :heavy_check_mark: | 0 | 1 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L632' title='Task Program.StatisticsMainAsync(CancellationToken ct = null)'>632</a> | 47 | 8 :warning: | 0 | 10 | 72 / 32 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L705' title='Task Program.WaitForFridayAsync(CancellationToken ct = null)'>705</a> | 62 | 6 :heavy_check_mark: | 0 | 3 | 22 / 9 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L730' title='bool Program.ShouldCleanUpFriday()'>730</a> | 73 | 3 :heavy_check_mark: | 0 | 1 | 12 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L718' title='bool Program.ShouldDoFriday()'>718</a> | 74 | 3 :heavy_check_mark: | 0 | 1 | 12 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L645' title='Task Program.StatisticsMainAsync(CancellationToken ct = null)'>645</a> | 47 | 8 :warning: | 0 | 10 | 72 / 32 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L742' title='Task Program.WaitForFridayAsync(CancellationToken ct = null)'>742</a> | 65 | 5 :heavy_check_mark: | 0 | 3 | 20 / 8 |
 | Field | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Program.cs#L81' title='Dictionary<ulong, DateTime> Program.XpLevelling'>81</a> | 93 | 0 :heavy_check_mark: | 0 | 2 | 1 / 1 |
 
 <a href="#Program-class-diagram">:link: to `Program` class diagram</a>
@@ -5673,7 +5750,7 @@ The `SilverBotDS` namespace contains 6 named types.
 <details>
 <summary>
   <strong id="silverbotds-commands-slash">
-    SilverBotDS.Commands.Slash :x:
+    SilverBotDS.Commands.Slash :heavy_check_mark:
   </strong>
 </summary>
 <br>
@@ -5681,57 +5758,42 @@ The `SilverBotDS` namespace contains 6 named types.
 The `SilverBotDS.Commands.Slash` namespace contains 3 named types.
 
 - 3 named types.
-- 879 total lines of source code.
-- Approximately 294 lines of executable code.
-- The highest cyclomatic complexity is 12 :x:.
+- 293 total lines of source code.
+- Approximately 98 lines of executable code.
+- The highest cyclomatic complexity is 5 :heavy_check_mark:.
 
 <details>
 <summary>
   <strong id="audioslash">
-    AudioSlash :x:
+    AudioSlash :heavy_check_mark:
   </strong>
 </summary>
 <br>
 
-- The `AudioSlash` contains 32 members.
-- 723 total lines of source code.
-- Approximately 253 lines of executable code.
-- The highest cyclomatic complexity is 12 :x:.
+- The `AudioSlash` contains 17 members.
+- 138 total lines of source code.
+- Approximately 57 lines of executable code.
+- The highest cyclomatic complexity is 2 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L41' title='ArtworkService AudioSlash.ArtworkService'>41</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L36' title='LavalinkNode AudioSlash.AudioService'>36</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L391' title='Task AudioSlash.ClearQueue(InteractionContext ctx)'>391</a> | 61 | 4 :heavy_check_mark: | 0 | 7 | 19 / 11 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L39' title='Config AudioSlash.Config'>39</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L129' title='Task<SongORSongs?> AudioSlash.ConvertToSong(InteractionContext ctx, string value, Language lang = null)'>129</a> | 48 | 12 :x: | 0 | 11 | 56 / 27 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L690' title='Task AudioSlash.Disconnect(InteractionContext ctx)'>690</a> | 67 | 3 :heavy_check_mark: | 0 | 7 | 11 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L425' title='Task AudioSlash.ExportQueue(InteractionContext ctx, string? playlistName = null)'>425</a> | 61 | 1 :heavy_check_mark: | 0 | 11 | 18 / 11 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L40' title='HttpClient AudioSlash.HttpClient'>40</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L44' title='bool AudioSlash.IsInVc(BaseContext ctx)'>44</a> | 94 | 1 :heavy_check_mark: | 0 | 2 | 1 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L46' title='bool AudioSlash.IsInVc(BaseContext ctx, LavalinkNode lavalinkNode)'>46</a> | 92 | 2 :heavy_check_mark: | 0 | 3 | 2 / 1 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L641' title='Task AudioSlash.Join(InteractionContext ctx)'>641</a> | 80 | 1 :heavy_check_mark: | 0 | 5 | 8 / 3 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L42' title='LanguageService AudioSlash.LanguageService'>42</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L464' title='Task AudioSlash.Loop(InteractionContext ctx, LoopSettings settings)'>464</a> | 66 | 5 :heavy_check_mark: | 0 | 10 | 28 / 7 |
-| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L37' title='LyricsService AudioSlash.LyricsService'>37</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L375' title='Task AudioSlash.MakeSureBothAreInVC(InteractionContext ctx, Language lang)'>375</a> | 84 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L359' title='Task AudioSlash.MakeSureBotIsInVC(InteractionContext ctx, Language lang)'>359</a> | 82 | 2 :heavy_check_mark: | 0 | 6 | 8 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L381' title='Task AudioSlash.MakeSurePlayerIsntNull(InteractionContext ctx, Language lang, BetterVoteLavalinkPlayer? player)'>381</a> | 80 | 2 :heavy_check_mark: | 0 | 8 | 8 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L367' title='Task AudioSlash.MakeSureUserIsInVC(InteractionContext ctx, Language lang)'>367</a> | 79 | 4 :heavy_check_mark: | 0 | 6 | 8 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L581' title='Task AudioSlash.Pause(InteractionContext ctx)'>581</a> | 67 | 2 :heavy_check_mark: | 0 | 6 | 105 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L258' title='Task AudioSlash.Play(InteractionContext ctx, string sg)'>258</a> | 50 | 10 :radioactive: | 0 | 15 | 77 / 23 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L187' title='Task AudioSlash.PlayNext(InteractionContext ctx, string sg)'>187</a> | 53 | 8 :warning: | 0 | 15 | 47 / 20 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L445' title='Task AudioSlash.Remove(InteractionContext ctx, long songindex)'>445</a> | 62 | 3 :heavy_check_mark: | 0 | 7 | 19 / 10 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L625' title='Task AudioSlash.Resume(InteractionContext ctx)'>625</a> | 67 | 2 :heavy_check_mark: | 0 | 6 | 42 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L344' title='Task AudioSlash.Seek(InteractionContext ctx, TimeSpan? time)'>344</a> | 66 | 1 :heavy_check_mark: | 0 | 10 | 18 / 9 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L49' title='Task AudioSlash.SendNowPlayingMessage(BaseContext ctx, string title = "", string message = "", string imageurl = "", string url = "", Language? language = null)'>49</a> | 54 | 7 :heavy_check_mark: | 0 | 7 | 29 / 18 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L79' title='Task AudioSlash.SendSimpleMessage(BaseContext ctx, string title = "", string message = "", string image = "", Language? language = null)'>79</a> | 57 | 6 :heavy_check_mark: | 0 | 7 | 25 / 15 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L412' title='Task AudioSlash.Shuffle(InteractionContext ctx)'>412</a> | 68 | 1 :heavy_check_mark: | 0 | 7 | 12 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L666' title='Task AudioSlash.Skip(InteractionContext ctx)'>666</a> | 60 | 6 :heavy_check_mark: | 0 | 8 | 25 / 12 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L648' title='Task AudioSlash.StaticJoin(InteractionContext ctx, LavalinkNode audioService)'>648</a> | 70 | 6 :heavy_check_mark: | 0 | 4 | 14 / 6 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L105' title='TimeSpan AudioSlash.TimeTillSongPlays(QueuedLavalinkPlayer player, int song)'>105</a> | 65 | 4 :heavy_check_mark: | 0 | 3 | 23 / 8 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L315' title='Task AudioSlash.Volume(InteractionContext ctx, long volume)'>315</a> | 60 | 7 :heavy_check_mark: | 0 | 8 | 28 / 12 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L701' title='Task AudioSlash.VoteSkip(InteractionContext ctx)'>701</a> | 57 | 7 :heavy_check_mark: | 0 | 8 | 37 / 16 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L69' title='Task AudioSlash.ClearQueue(InteractionContext ctx)'>69</a> | 80 | 1 :heavy_check_mark: | 0 | 7 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L143' title='Task AudioSlash.Disconnect(InteractionContext ctx)'>143</a> | 80 | 1 :heavy_check_mark: | 0 | 7 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L85' title='Task AudioSlash.ExportQueue(InteractionContext ctx, string? playlistName = null)'>85</a> | 76 | 1 :heavy_check_mark: | 0 | 8 | 8 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L126' title='Task AudioSlash.Join(InteractionContext ctx)'>126</a> | 83 | 1 :heavy_check_mark: | 0 | 6 | 6 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L21' title='LanguageService AudioSlash.LanguageService'>21</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L102' title='Task AudioSlash.Loop(InteractionContext ctx, LoopSettings settings)'>102</a> | 81 | 1 :heavy_check_mark: | 0 | 8 | 8 / 3 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L20' title='NeutralAudio AudioSlash.NeutralAudio'>20</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L112' title='Task AudioSlash.Pause(InteractionContext ctx)'>112</a> | 83 | 1 :heavy_check_mark: | 0 | 6 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L38' title='Task AudioSlash.Play(InteractionContext ctx, string sg)'>38</a> | 73 | 1 :heavy_check_mark: | 0 | 12 | 11 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L25' title='Task AudioSlash.PlayNext(InteractionContext ctx, string sg)'>25</a> | 73 | 1 :heavy_check_mark: | 0 | 12 | 10 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L95' title='Task AudioSlash.Remove(InteractionContext ctx, long songindex)'>95</a> | 81 | 1 :heavy_check_mark: | 0 | 7 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L119' title='Task AudioSlash.Resume(InteractionContext ctx)'>119</a> | 83 | 1 :heavy_check_mark: | 0 | 6 | 6 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L58' title='Task AudioSlash.Seek(InteractionContext ctx, TimeSpan? time)'>58</a> | 75 | 2 :heavy_check_mark: | 0 | 10 | 10 / 5 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L77' title='Task AudioSlash.Shuffle(InteractionContext ctx)'>77</a> | 80 | 1 :heavy_check_mark: | 0 | 7 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L135' title='Task AudioSlash.Skip(InteractionContext ctx)'>135</a> | 80 | 1 :heavy_check_mark: | 0 | 7 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L50' title='Task AudioSlash.Volume(InteractionContext ctx, long volume)'>50</a> | 78 | 1 :heavy_check_mark: | 0 | 8 | 7 / 4 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/AudioSlash.cs#L150' title='Task AudioSlash.VoteSkip(InteractionContext ctx)'>150</a> | 83 | 1 :heavy_check_mark: | 0 | 6 | 6 / 3 |
 
 <a href="#AudioSlash-class-diagram">:link: to `AudioSlash` class diagram</a>
 
@@ -5779,23 +5841,24 @@ The `SilverBotDS.Commands.Slash` namespace contains 3 named types.
 </summary>
 <br>
 
-- The `GeneralCommands` contains 10 members.
-- 84 total lines of source code.
+- The `GeneralCommands` contains 11 members.
+- 83 total lines of source code.
 - Approximately 17 lines of executable code.
 - The highest cyclomatic complexity is 5 :heavy_check_mark:.
 
 | Member kind | Line number | Maintainability index | Cyclomatic complexity | Depth of inheritance | Class coupling | Lines of source / executable code |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L23' title='Config GeneralCommands.Cnf'>23</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
+| Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L25' title='ColourService GeneralCommands.ColourService'>25</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L22' title='DatabaseContext GeneralCommands.Dbctx'>22</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L80' title='Task GeneralCommands.DuktHostingCommand(InteractionContext ctx)'>80</a> | 79 | 1 :heavy_check_mark: | 0 | 7 | 13 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L94' title='Task GeneralCommands.DumpCommand(ContextMenuContext ctx)'>94</a> | 80 | 1 :heavy_check_mark: | 0 | 6 | 10 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L79' title='Task GeneralCommands.DuktHostingCommand(InteractionContext ctx)'>79</a> | 79 | 1 :heavy_check_mark: | 0 | 8 | 13 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L93' title='Task GeneralCommands.DumpCommand(ContextMenuContext ctx)'>93</a> | 80 | 1 :heavy_check_mark: | 0 | 6 | 10 / 3 |
 | Property | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L24' title='LanguageService GeneralCommands.LanguageService'>24</a> | 100 | 2 :heavy_check_mark: | 0 | 1 | 1 / 0 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L28' title='Task GeneralCommands.TestCommand(InteractionContext ctx)'>28</a> | 86 | 1 :heavy_check_mark: | 0 | 5 | 6 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L66' title='Task GeneralCommands.UserMenu(ContextMenuContext ctx)'>66</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L72' title='Task GeneralCommands.VersionInfoCommand(InteractionContext ctx)'>72</a> | 80 | 1 :heavy_check_mark: | 0 | 8 | 7 / 3 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L60' title='Task GeneralCommands.WhoIsCommand(InteractionContext ctx, DiscordUser user)'>60</a> | 86 | 1 :heavy_check_mark: | 0 | 5 | 5 / 2 |
-| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L34' title='Task GeneralCommands.WhoIsTask(BaseContext ctx, DiscordUser user)'>34</a> | 77 | 5 :heavy_check_mark: | 0 | 11 | 24 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L27' title='Task GeneralCommands.TestCommand(InteractionContext ctx)'>27</a> | 86 | 1 :heavy_check_mark: | 0 | 5 | 6 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L65' title='Task GeneralCommands.UserMenu(ContextMenuContext ctx)'>65</a> | 89 | 1 :heavy_check_mark: | 0 | 4 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L71' title='Task GeneralCommands.VersionInfoCommand(InteractionContext ctx)'>71</a> | 80 | 1 :heavy_check_mark: | 0 | 8 | 7 / 3 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L59' title='Task GeneralCommands.WhoIsCommand(InteractionContext ctx, DiscordUser user)'>59</a> | 86 | 1 :heavy_check_mark: | 0 | 5 | 5 / 2 |
+| Method | <a href='https://github.com/thesilvercraft/SilverCraft.SilverBot/blob/master/SilverBotDS/Commands/Slash/GeneralCommands.cs#L33' title='Task GeneralCommands.WhoIsTask(BaseContext ctx, DiscordUser user)'>33</a> | 77 | 5 :heavy_check_mark: | 0 | 12 | 24 / 2 |
 
 <a href="#GeneralCommands-class-diagram">:link: to `GeneralCommands` class diagram</a>
 
@@ -5962,7 +6025,8 @@ classDiagram
 class CoolerHelpFormatter{
     +DiscordEmbedBuilder EmbedBuilder
     +Command Command
-    +Language Lang
+    +ColourService? ColourService
+    +Language Language
     +.ctor(CommandContext ctx) CoolerHelpFormatter
     +WithCommand(Command command) BaseHelpFormatter
     +WithSubcommands(IEnumerable<Command> subcommands) BaseHelpFormatter
@@ -6046,10 +6110,10 @@ classDiagram
 class SongORSongs{
     +LavalinkTrack? Song
     +TimeSpan? SongStartTime
-    +string NameOfPlayList
+    +string? NameOfPlayList
     +IAsyncEnumerable<LavalinkTrack>? GetRestOfSongs
-    +.ctor(LavalinkTrack song, string nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs) SongORSongs
-    +.ctor(LavalinkTrack song, string nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs, TimeSpan startime) SongORSongs
+    +.ctor(LavalinkTrack song, string? nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs) SongORSongs
+    +.ctor(LavalinkTrack song, string? nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs, TimeSpan startime) SongORSongs
 }
 
 ```
@@ -6402,8 +6466,8 @@ class Language{
     +string NothingInQueue
     +string NothingInQueueToRemove
     +string NothingInQueueHistory
-    +string SongByAuthor
     +string RemovedFront
+    +string RemovedFrontWithAuthorName
     +string RemovedXSongOrSongs
     +string RemovedSong
     +string RemovedSongs
@@ -6458,7 +6522,9 @@ class Language{
     +string PeriodExpired
     +string UserIsntBot
     +string NowPlaying
+    +string NowPlayingBy
     +string Enqueued
+    +string EnqueuedBy
     +string SkippedNP
     +string CanForceSkip
     +string NotPaused
@@ -6617,6 +6683,9 @@ class Language{
     +string WebsiteBLoopQueue
     +string WebsiteBVolumeDown
     +string WebsiteBVolumeUp
+    +GetRemovedTitle(string trackName, string? authorName) string
+    +GetNowPlaying(string trackName, string? authorName) string
+    +GetEnqueuedTitle(string trackName, string? authorName) string
     +GetCultureInfo() CultureInfo
 }
 
@@ -6634,13 +6703,17 @@ class LanguageService{
     +geService.GetLoadedLanguages() Dictionary<string,
     +LoadedLanguages() IEnumerable<string>
     +Get(string languageName) Language
+    +GetDefaultAsync() Task<Language>
+    +GetDefault() Language
     +GetAsync(string languageName) Task<Language>
     +SerialiseDefaultAsync(string loc)$ Task
     +SerialiseDefault(string loc)$ void
     +GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db) Task<Language>
     +FromCtx(CommandContext ctx) Language
+    +FromCtx(ISilverBotContext ctx) Language
     +FromCtxAsync(CommandContext ctx) Task<Language>
     +FromCtxAsync(BaseContext ctx) Task<Language>
+    +FromCtxAsync(ISilverBotContext ctx) Task<Language>
     +FromUserId(ulong userId, DatabaseContext databaseContext) Language
     +FromUserIdAsync(ulong userId, DatabaseContext databaseContext) Task<Language>
     +FromCtxAsync(dynamic ctx, Config config, DatabaseContext databaseContext) Task<Language>
@@ -6736,6 +6809,7 @@ class Config{
     +string LavalinkRestUri
     +string LavalinkWebSocketUri
     +string LavalinkPassword
+    +bool EnableJellyFinLookupService
     +ulong FridayTextChannel
     +bool ColorConfig
     +bool EmulateBubot
@@ -6760,7 +6834,7 @@ class Config{
     +bool AllowedToRead
     +OutdatedConfigTask(Config readConfig, CommentXmlConfigReaderNotifyWhenChanged<Config> configReader)$ Task
     +GetAsync()$ Task<Config?>
-    +PropertyChanged(object e, PropertyChangedEventArgs a) void
+    +PropertyChanged(object sender, PropertyChangedEventArgs e) void
 }
 
 ```
@@ -6981,6 +7055,36 @@ class ReactionRoleType{
 
 ```
 
+<div id="BasedCommandContext-class-diagram"></div>
+
+##### `BasedCommandContext` class diagram
+
+```mermaid
+classDiagram
+ISilverBotContext <|-- BasedCommandContext : implements
+class BasedCommandContext{
+    +CommandContext Org
+    +DiscordGuild? Guild
+    +DiscordChannel Channel
+    +IServiceProvider Services
+    +DiscordClient Client
+    +DiscordUser User
+    +DiscordMessage Message
+    +DiscordMember? Member
+    +CommandsNextExtension? CommandsNext
+    +dContext(CommandContext d)$ BasedCommandContext.implicit
+    +or CommandContext(BasedCommandContext d)$ CommandContext
+    +RespondAsync(string content) Task<DiscordMessage>
+    +RespondAsync(DiscordEmbed embed) Task<DiscordMessage>
+    +RespondAsync(string content, DiscordEmbed embed) Task<DiscordMessage>
+    +RespondAsync(DiscordMessageBuilder builder) Task<DiscordMessage>
+    +RespondAsync(Action<DiscordMessageBuilder> action) Task<DiscordMessage>
+    +.ctor(CommandContext ctx) BasedCommandContext
+    +GetOriginal() object
+}
+
+```
+
 <div id="CommentXmlConfigReaderNotifyWhenChanged&lt;T&gt;-class-diagram"></div>
 
 ##### `CommentXmlConfigReaderNotifyWhenChanged<T>` class diagram
@@ -6993,6 +7097,32 @@ class CommentXmlConfigReaderNotifyWhenChanged<T>{
     +Dispose() void
     +Dispose(bool disposing) void
     +Read(string path) T?
+}
+
+```
+
+<div id="ContextExtensions-class-diagram"></div>
+
+##### `ContextExtensions` class diagram
+
+```mermaid
+classDiagram
+class ContextExtensions{
+    +GetLanguageAsync(BaseContext ctx, Language? language = null)$ Task<Language?>
+    +GetLanguageAsync(CommandContext ctx, Language? language = null)$ Task<Language?>
+    +GetLanguageAsync(ISilverBotContext ctx, Language? language = null)$ Task<Language?>
+    +GetLanguage(ISilverBotContext ctx, Language? language = null)$ Language?
+    +GetLanguage(CommandContext ctx, Language? language = null)$ Language?
+    +SendStringFileWithContent(CommandContext ctx, string title, string file, string filename = "message.txt")$ Task
+    +SendStringFileWithContent(BaseContext ctx, string title, string file, string filename = "message.txt")$ Task
+    +SendStringFileWithContent(ISilverBotContext ctx, string title, string file, string filename = "message.txt")$ Task
+    +CommonSendMessageLogic(DiscordEmbedBuilder embedBuilder, string title = "", string message = "", string imageUrl = "", string url = "")$ void
+    +SendMessageAsync(CommandContext ctx, string title = "", string message = "", string imageUrl = "", string url = "", Language? language = null)$ Task
+    +SendMessageAsync(ISilverBotContext ctx, string title = "", string message = "", string imageUrl = "", string url = "", Language? language = null)$ Task
+    +SendMessageAsync(BaseContext ctx, string title = "", string message = "", string imageUrl = "", string url = "", Language? language = null)$ Task
+    +GetNewBuilder(BaseContext ctx, Language language)$ DiscordEmbedBuilder
+    +GetNewBuilder(ISilverBotContext ctx, Language language)$ DiscordEmbedBuilder
+    +GetNewBuilder(CommandContext ctx, Language language)$ DiscordEmbedBuilder
 }
 
 ```
@@ -7033,6 +7163,59 @@ classDiagram
 class ICanBeToldThatAPartOfMeIsChanged{
     +bool AllowedToRead*
     +PropertyChanged(object sender, PropertyChangedEventArgs e)* void
+}
+
+```
+
+<div id="ISilverBotContext-class-diagram"></div>
+
+##### `ISilverBotContext` class diagram
+
+```mermaid
+classDiagram
+class ISilverBotContext{
+    +DiscordGuild? Guild*
+    +DiscordClient Client*
+    +DiscordUser User*
+    +DiscordChannel Channel*
+    +IServiceProvider Services*
+    +DiscordMember? Member*
+    +CommandsNextExtension? CommandsNext*
+    +GetOriginal()* object
+    +RespondAsync(string content)* Task<DiscordMessage>
+    +RespondAsync(DiscordEmbed embed)* Task<DiscordMessage>
+    +RespondAsync(string content, DiscordEmbed embed)* Task<DiscordMessage>
+    +RespondAsync(DiscordMessageBuilder builder)* Task<DiscordMessage>
+    +RespondAsync(Action<DiscordMessageBuilder> action)* Task<DiscordMessage>
+}
+
+```
+
+<div id="UnBasedCommandContext-class-diagram"></div>
+
+##### `UnBasedCommandContext` class diagram
+
+```mermaid
+classDiagram
+ISilverBotContext <|-- UnBasedCommandContext : implements
+class UnBasedCommandContext{
+    +InteractionContext Org
+    +DiscordGuild? Guild
+    +DiscordChannel Channel
+    +IServiceProvider Services
+    +DiscordClient Client
+    +DiscordUser User
+    +DiscordMember? Member
+    +CommandsNextExtension? CommandsNext
+    +dContext(InteractionContext d)$ UnBasedCommandContext.implicit
+    +nteractionContext(UnBasedCommandContext d)$ InteractionContext
+    +RespondAsync(string content) Task<DiscordMessage>
+    +RespondAsync(DiscordEmbed embed) Task<DiscordMessage>
+    +RespondAsync(string content, DiscordEmbed embed) Task<DiscordMessage>
+    +RespondAsync(DiscordMessageBuilder builder) Task<DiscordMessage>
+    +RespondAsync(Action<DiscordMessageBuilder> action) Task<DiscordMessage>
+    +.ctor(InteractionContext ctx) UnBasedCommandContext
+    +GetOriginal() object
 }
 
 ```
@@ -7131,21 +7314,19 @@ class Author1{
 
 ```
 
-<div id="ColorUtils-class-diagram"></div>
+<div id="ColourService-class-diagram"></div>
 
-##### `ColorUtils` class diagram
+##### `ColourService` class diagram
 
 ```mermaid
 classDiagram
-class ColorUtils{
-    -DiscordColor[] cache$
-    +DiscordColor[] Internal$
-    +CreateInstance()$ ColorUtils
-    +GetAsync(bool ignorecache = false, bool useinternal = false)$ Task<DiscordColor[]>
-    +Get(bool ignorecache = false, bool useinternal = false)$ DiscordColor[]
-    +ReloadConfig()$ Task
-    +GetSingle(bool ignorecache = false, bool useinternal = false)$ DiscordColor
-    +GetSingleAsync(bool ignorecache = false, bool useinternal = false)$ Task<DiscordColor>
+class ColourService{
+    -DiscordColor[] cache
+    +DiscordColor[] Internal
+    +Get(bool ignorecache = false, bool useinternal = false) DiscordColor[]
+    +ReadConfig() void
+    +WriteConfig() void
+    +GetSingle(bool ignorecache = false, bool useinternal = false) DiscordColor
 }
 
 ```
@@ -7332,9 +7513,10 @@ class Defenition{
 ```mermaid
 classDiagram
 class EmbedBuilderUtils{
-    +AddRequestedByFooter(DiscordEmbedBuilder builder, CommandContext ctx, Language lang)$ DiscordEmbedBuilder
-    +AddRequestedByFooter(DiscordEmbedBuilder builder, BaseContext ctx, Language lang)$ DiscordEmbedBuilder
-    +AddRequestedByFooter(DiscordEmbedBuilder builder, DiscordUser user, Language lang)$ DiscordEmbedBuilder
+    +AddRequestedByFooter(DiscordEmbedBuilder builder, CommandContext ctx, Language language)$ DiscordEmbedBuilder
+    +AddRequestedByFooter(DiscordEmbedBuilder builder, BaseContext ctx, Language language)$ DiscordEmbedBuilder
+    +AddRequestedByFooter(DiscordEmbedBuilder builder, ISilverBotContext ctx, Language language)$ DiscordEmbedBuilder
+    +AddRequestedByFooter(DiscordEmbedBuilder builder, DiscordUser user, Language language)$ DiscordEmbedBuilder
 }
 
 ```
@@ -7597,9 +7779,9 @@ class Rootobject{
 
 ```
 
-<div id="ColorUtils.SdColor-class-diagram"></div>
+<div id="ColourService.SdColor-class-diagram"></div>
 
-##### `ColorUtils.SdColor` class diagram
+##### `ColourService.SdColor` class diagram
 
 ```mermaid
 classDiagram
@@ -7868,106 +8050,6 @@ class Program{
 
 ```
 
-<div id="BrowserConfig.browserconfig-class-diagram"></div>
-
-##### `BrowserConfig.browserconfig` class diagram
-
-```mermaid
-classDiagram
-class browserconfig{
-    +browserconfigMsapplication msapplication
-}
-
-```
-
-<div id="BrowserConfig-class-diagram"></div>
-
-##### `BrowserConfig` class diagram
-
-```mermaid
-classDiagram
-class BrowserConfig{
-    +Index() browserconfig
-}
-
-```
-
-<div id="BrowserConfig.browserconfigMsapplication-class-diagram"></div>
-
-##### `BrowserConfig.browserconfigMsapplication` class diagram
-
-```mermaid
-classDiagram
-class browserconfigMsapplication{
-    +browserconfigMsapplicationTile tile
-}
-
-```
-
-<div id="BrowserConfig.browserconfigMsapplicationTile-class-diagram"></div>
-
-##### `BrowserConfig.browserconfigMsapplicationTile` class diagram
-
-```mermaid
-classDiagram
-class browserconfigMsapplicationTile{
-    +browserconfigMsapplicationTileSquare70x70logo square70x70logo
-    +browserconfigMsapplicationTileSquare150x150logo square150x150logo
-    +browserconfigMsapplicationTileSquare310x310logo square310x310logo
-    +browserconfigMsapplicationTileWide310x150logo wide310x150logo
-    +string TileColor
-}
-
-```
-
-<div id="BrowserConfig.browserconfigMsapplicationTileSquare150x150logo-class-diagram"></div>
-
-##### `BrowserConfig.browserconfigMsapplicationTileSquare150x150logo` class diagram
-
-```mermaid
-classDiagram
-class browserconfigMsapplicationTileSquare150x150logo{
-    +string src
-}
-
-```
-
-<div id="BrowserConfig.browserconfigMsapplicationTileSquare310x310logo-class-diagram"></div>
-
-##### `BrowserConfig.browserconfigMsapplicationTileSquare310x310logo` class diagram
-
-```mermaid
-classDiagram
-class browserconfigMsapplicationTileSquare310x310logo{
-    +string src
-}
-
-```
-
-<div id="BrowserConfig.browserconfigMsapplicationTileSquare70x70logo-class-diagram"></div>
-
-##### `BrowserConfig.browserconfigMsapplicationTileSquare70x70logo` class diagram
-
-```mermaid
-classDiagram
-class browserconfigMsapplicationTileSquare70x70logo{
-    +string src
-}
-
-```
-
-<div id="BrowserConfig.browserconfigMsapplicationTileWide310x150logo-class-diagram"></div>
-
-##### `BrowserConfig.browserconfigMsapplicationTileWide310x150logo` class diagram
-
-```mermaid
-classDiagram
-class browserconfigMsapplicationTileWide310x150logo{
-    +string src
-}
-
-```
-
 <div id="Manifest.Icon-class-diagram"></div>
 
 ##### `Manifest.Icon` class diagram
@@ -8125,10 +8207,13 @@ class RootObject{
 ```mermaid
 classDiagram
 class AdminCommands{
-    -DiscordEmoji[] _pollEmojiCache
+    -DiscordEmoji YesEmoji$
+    -DiscordEmoji NoEmoji$
+    -DiscordEmoji EntryEmoji$
     +DatabaseContext Database
     +HttpClient HttpClient
     +LanguageService LanguageService
+    +ColourService ColourService
     +SetPrefix(CommandContext ctx, params string[] cake) Task
     +EmojiPollAsync(CommandContext commandContext, TimeSpan duration, string question) Task
     +GiveAway(CommandContext commandContext, TimeSpan duration, string item) Task
@@ -8145,25 +8230,12 @@ class AdminCommands{
 ```mermaid
 classDiagram
 class Audio{
-    +LavalinkNode AudioService
-    +LyricsService LyricsService
-    +Config Config
-    +ArtworkService ArtworkService
-    +LanguageService LanguageService
-    +IsInVc(CommandContext ctx) bool
-    +IsInVc(CommandContext ctx, LavalinkNode lavalinkNode)$ bool
-    +SendNowPlayingMessage(CommandContext ctx, string title = "", string message = "", string imageurl = "", string url = "", Language? language = null)$ Task
-    +SendSimpleMessage(CommandContext ctx, string title = "", string message = "", string? image = null, Language? language = null)$ Task
-    +TimeTillSongPlays(QueuedLavalinkPlayer player, int song) TimeSpan
+    +NeutralAudio NeutralAudio
     +PlayNext(CommandContext ctx, SongORSongs song) Task
     +Play(CommandContext ctx) Task
     +Play(CommandContext ctx, SongORSongs song) Task
     +Volume(CommandContext ctx, ushort volume) Task
     +Seek(CommandContext ctx, TimeSpan time) Task
-    +MakeSureBotIsInVC(CommandContext ctx, Language lang) Task
-    +MakeSureUserIsInVC(CommandContext ctx, Language lang)$ Task
-    +MakeSureBothAreInVC(CommandContext ctx, Language lang) Task
-    +MakeSurePlayerIsntNull(CommandContext ctx, Language lang, BetterVoteLavalinkPlayer? player) Task
     +ClearQueue(CommandContext ctx) Task
     +Shuffle(CommandContext ctx) Task
     +ExportQueue(CommandContext ctx, string? playlistName = null) Task
@@ -8171,13 +8243,11 @@ class Audio{
     +QueueHistory(CommandContext ctx) Task
     +Queue(CommandContext ctx) Task
     +Loop(CommandContext ctx, LoopSettings settings) Task
-    +GetMessageOfLoopSetting(Language lang, LoopSettings setting) string
     +Pause(CommandContext ctx) Task
     +Ovh(CommandContext ctx, string name, string artist) Task
     +Aliases(CommandContext ctx) Task
     +Resume(CommandContext ctx) Task
     +Join(CommandContext ctx) Task
-    +StaticJoin(CommandContext ctx, LavalinkNode audioService)$ Task
     +Skip(CommandContext ctx) Task
     +VoteSkip(CommandContext ctx) Task
     +ForceDisconnect(CommandContext ctx) Task
@@ -8248,7 +8318,7 @@ class Bubot{
 classDiagram
 class CodeEnv{
     +CommandContext Ctx
-    +DiscordMember Member
+    +DiscordMember? Member
     +DiscordUser User
     +DiscordGuild Guild
     +DiscordClient Client
@@ -8287,6 +8357,7 @@ class Experience{
     +DatabaseContext Database
     +HttpClient HttpClient
     +LanguageService LanguageService
+    +ColourService ColourService
     +BonusXp(CommandContext ctx, byte percent) Task
     +BonusXpPerperson(CommandContext ctx, ulong xp) Task
     +XpCommand(CommandContext ctx) Task
@@ -8301,13 +8372,13 @@ class Experience{
 
 ```
 
-<div id="fullresponse-class-diagram"></div>
+<div id="Fullresponse-class-diagram"></div>
 
-##### `fullresponse` class diagram
+##### `Fullresponse` class diagram
 
 ```mermaid
 classDiagram
-class fullresponse{
+class Fullresponse{
     +string Status
     +Input Request
     +Output[] Output
@@ -8325,6 +8396,7 @@ class Genericcommands{
     +Config Config
     +HttpClient HttpClient
     +LanguageService LanguageService
+    +ColourService ColourService
     +GreetCommand(CommandContext ctx) Task
     +Time(CommandContext ctx) Task
     +Invite(CommandContext ctx) Task
@@ -8386,7 +8458,7 @@ class ImageModule{
     +AdventureTime(CommandContext ctx) Task
     +AdventureTime(CommandContext ctx, DiscordUser friendo) Task
     +AdventureTime(CommandContext ctx, DiscordUser person, DiscordUser friendo) Task
-    +CommonCodeWithTemplateGIFMagick(CommandContext ctx, string template, Func<MagickImageCollection, Task<Tuple<bool, MagickImageCollection>>> func, bool TriggerTyping = true, string filename = "sbimg.png", MagickFormat? encoder = null, int quality = 75) Task
+    +CommonCodeWithTemplateGIFMagick(CommandContext ctx, string template, Func<MagickImageCollection, Task<Tuple<bool, MagickImageCollection>>> func, bool TriggerTyping = true, string filename = "sbimg.png", MagickFormat? encoder = null) Task
     +Seal(CommandContext ctx, string text) Task
     +Linus(CommandContext ctx, string company = "NVIDIA") Task
     +Resize(CommandContext ctx, SdImage image, int x = 0, int y = 0, MagickFormat? format = null) Task
@@ -8405,6 +8477,7 @@ class ImageModule{
     +GrayScaleAsync(byte[] photoBytes, string extension)$ Task<Tuple<MemoryStream, string>>
     +Grayscale(CommandContext ctx) Task
     +Grayscale(CommandContext ctx, SdImage image) Task
+    +CatGeneration(CommandContext ctx, string name = null) Task
 }
 
 ```
@@ -8416,28 +8489,31 @@ class ImageModule{
 ```mermaid
 classDiagram
 class Input{
-    +string Prompt
-    +long SessionId
-    +string InitImage
-    +int Seed
-    +string NegativePrompt
-    +int NumOutputs
-    +string NumInferenceSteps
-    +string GuidanceScale
-    +string PromptStrength
-    +string Width
-    +string Height
-    +bool Turbo
-    +bool UseFullPrecision
-    +string UseStableDiffusionModel
-    +string UseVaeModel
-    +bool StreamProgressUpdates
-    +bool StreamImageProgress
-    +bool ShowOnlyFilteredImage
-    +string OutputFormat
-    +string OutputQuality
-    +string OriginalPrompt
-    +string Sampler
+    +string init_image
+    +string prompt
+    +int seed
+    +bool used_random_seed
+    +string negative_prompt
+    +int num_outputs
+    +int num_inference_steps
+    +double guidance_scale
+    +int width
+    +int height
+    +string vram_usage_level
+    +string use_stable_diffusion_model
+    +string use_vae_model
+    +bool stream_progress_updates
+    +bool stream_image_progress
+    +bool show_only_filtered_image
+    +bool block_nsfw
+    +string output_format
+    +int output_quality
+    +string metadata_output_format
+    +string original_prompt
+    +object[] active_tags
+    +object[] inactive_tags
+    +string sampler_name
+    +string session_id
 }
 
 ```
@@ -8471,10 +8547,58 @@ class MiscCommands{
 classDiagram
 class ModCommands{
     +LanguageService LanguageService
+    +ColourService ColourService
     +Kick(CommandContext ctx, DiscordMember a, string reason = "The kick boot has spoken") Task
     +Ban(CommandContext ctx, DiscordUser a, string reason = "The ban hammer has spoken") Task
     +Kms(CommandContext ctx, bool ban = false) Task
     +Purge(CommandContext ctx, int amount) Task
+}
+
+```
+
+<div id="NeutralAudio-class-diagram"></div>
+
+##### `NeutralAudio` class diagram
+
+```mermaid
+classDiagram
+class NeutralAudio{
+    +LavalinkNode AudioService
+    +LyricsService LyricsService
+    +Config Config
+    +ArtworkService ArtworkService
+    +LanguageService LanguageService
+    +ColourService ColourService
+    +IsInVc(ISilverBotContext ctx) bool
+    +IsInVc(ISilverBotContext ctx, LavalinkNode lavalinkNode)$ bool
+    +TimeTillSongPlays(QueuedLavalinkPlayer player, int song) TimeSpan
+    +PlayNext(ISilverBotContext ctx, SongORSongs song) Task
+    +Play(ISilverBotContext ctx) Task
+    +Play(ISilverBotContext ctx, SongORSongs song) Task
+    +Volume(ISilverBotContext ctx, ushort volume) Task
+    +Seek(ISilverBotContext ctx, TimeSpan time) Task
+    +MakeSureBotIsInVC(ISilverBotContext ctx, Language lang) Task
+    +MakeSureUserIsInVC(ISilverBotContext ctx, Language lang)$ Task
+    +MakeSureBothAreInVC(ISilverBotContext ctx, Language lang) Task
+    +MakeSurePlayerIsntNull(ISilverBotContext ctx, Language lang, BetterVoteLavalinkPlayer? player) Task
+    +ClearQueue(ISilverBotContext ctx) Task
+    +Shuffle(ISilverBotContext ctx) Task
+    +ExportQueue(ISilverBotContext ctx, string? playlistName = null) Task
+    +Remove(ISilverBotContext ctx, int songindex) Task
+    +QueueHistory(ISilverBotContext ctx) Task
+    +Queue(ISilverBotContext ctx) Task
+    +Loop(ISilverBotContext ctx, LoopSettings settings) Task
+    +GetMessageOfLoopSetting(Language lang, LoopSettings setting) string
+    +Pause(ISilverBotContext ctx) Task
+    +Ovh(ISilverBotContext ctx, string name, string artist) Task
+    +Aliases(ISilverBotContext ctx) Task
+    +Resume(ISilverBotContext ctx) Task
+    +Join(ISilverBotContext ctx) Task
+    +StaticJoin(ISilverBotContext ctx, LavalinkNode audioService, Language? language = null)$ Task
+    +Skip(ISilverBotContext ctx) Task
+    +VoteSkip(ISilverBotContext ctx) Task
+    +ForceDisconnect(ISilverBotContext ctx) Task
+    +Disconnect(ISilverBotContext ctx) Task
 }
 
 ```
@@ -8507,6 +8631,7 @@ class OwnerOnly{
     +HttpClient HttpClient
     +LanguageService LanguageService
     +ModuleRegistrationService ModuleRegistrationService
+    +ColourService ColourService
     +TaskService TaskService
     +ReloadColors(CommandContext ctx) Task
     +UnRegCmd(CommandContext ctx, string cmdwithparm) Task
@@ -8516,8 +8641,6 @@ class OwnerOnly{
     +Category(CommandContext ctx, DiscordRole role) Task
     +Category(CommandContext ctx, DiscordMember person) Task
     +RemoveCodeBraces(string str)$ string
-    +SendStringFileWithContent(CommandContext ctx, string title, string file, string filename = "message.txt")$ Task
-    +SendStringFileWithContent(BaseContext ctx, string title, string file, string filename = "message.txt")$ Task
     +SendBestRepresentationAsync(object ob, CommandContext ctx)$ Task
     +Dependencies(CommandContext ctx) Task
     +Eval(CommandContext ctx, string code) Task
@@ -8529,6 +8652,7 @@ class OwnerOnly{
     +Reloadsplashes(CommandContext ctx) Task
     +Reloadsplashesas(CommandContext ctx) Task
     +RemoveUser(CommandContext ctx, DiscordUser userid) Task
+    +MyRegex()$ Regex
 }
 
 ```
@@ -8652,9 +8776,6 @@ classDiagram
 class StableDiff{
     +HttpClient HttpClient
     +Config Config
-    +string[] SafeModel
-    +string[] NotSafeModel
-    +ulong[] Trusted
     +TImagine(CommandContext ctx, string prompt = "space", string model = "sd-v1-4", int? seed = null, string negative_prompt = "", int resolution = 512, int steps = 25) Task
 }
 
@@ -8672,7 +8793,6 @@ class TranslatorCommands{
     +DatabaseContext DatabaseContext
     +HttpClient HttpClient
     +LanguageService LanguageService
-    +Edit(CommandContext ctx) Task
     +Get(CommandContext ctx, string name) Task
     +SetLanguage(CommandContext ctx, string lang) Task
     +UploadCustomLanguage(CommandContext ctx) Task
@@ -8752,8 +8872,11 @@ class SColorConverter{
 ```mermaid
 classDiagram
 class SongOrSongsConverter{
+    -string JellyStart$
+    +ConvertToSongSB(ISilverBotContext ctx, string value, Language? language = null)$ Task<SongORSongs?>
+    +ConvertToSong(InteractionContext ctx, string value, Language? language = null)$ Task<SongORSongs?>
     +ConvertAsync(string value, CommandContext ctx) Task<Optional<SongORSongs>>
-    +IsInVc(CommandContext ctx, IAudioService audioService) bool
+    +IsInVc(ISilverBotContext ctx, IAudioService audioService)$ bool
 }
 
 ```
@@ -8766,6 +8889,7 @@ class SongOrSongsConverter{
 classDiagram
 class MinecraftModule{
     +HttpClient HttpClient
+    +ColourService ColourService
     +Calculate(CommandContext ctx, string input) Task
 }
 
@@ -9024,12 +9148,12 @@ class EventsRunner{
     +ServiceProvider ServiceProvider$
     +Logger Log$
     +InjectEvents(ServiceProvider sp, Logger log)$ void
-    +RunEmojiEvent(PlannedEvent @event, DatabaseContext dbctx)$ Task
-    +RunEmojiEventAsync(PlannedEvent @event, DatabaseContext dbctx)$ Task
-    +RunReminderEvent(PlannedEvent @event, DatabaseContext dbctx)$ Task
-    +RunReminderEventAsync(PlannedEvent @event, DatabaseContext dbctx)$ Task
-    +RunGiveAwayEvent(PlannedEvent @event, DatabaseContext dbctx)$ Task
-    +RunGiveAwayEventAsync(PlannedEvent @event, DatabaseContext dbctx)$ Task
+    +RunEmojiEvent(PlannedEvent @event)$ Task
+    +RunEmojiEventAsync(PlannedEvent @event)$ Task
+    +RunReminderEvent(PlannedEvent @event)$ Task
+    +RunReminderEventAsync(PlannedEvent @event)$ Task
+    +RunGiveAwayEvent(PlannedEvent @event)$ Task
+    +RunGiveAwayEventAsync(PlannedEvent @event)$ Task
     +RunEventsAsync()$ Task
 }
 
@@ -9047,6 +9171,34 @@ class IAnalyse{
 
 ```
 
+<div id="ITrackOrAlbumLookupService-class-diagram"></div>
+
+##### `ITrackOrAlbumLookupService` class diagram
+
+```mermaid
+classDiagram
+class ITrackOrAlbumLookupService{
+    +TryGettingTrackOrAlbum(string name)* Task<List<string>?>
+}
+
+```
+
+<div id="JellyFinLookupService-class-diagram"></div>
+
+##### `JellyFinLookupService` class diagram
+
+```mermaid
+classDiagram
+ITrackOrAlbumLookupService <|-- JellyFinLookupService : implements
+class JellyFinLookupService{
+    -IItemsClient _itemsClient
+    -Config _config
+    +.ctor(HttpClient client, Config config) JellyFinLookupService
+    +TryGettingTrackOrAlbum(string name) Task<List<string>?>
+}
+
+```
+
 <div id="Program-class-diagram"></div>
 
 ##### `Program` class diagram
@@ -9060,12 +9212,12 @@ class Program{
     -InactivityTrackingService _trackingService$
     -Logger _log$
     -HttpClient HttpClient$
-    -int _lastFriday$
     -string[] MessagesToRepeat$
     -Dictionary<ulong, DateTime> XpLevelling$
     -TimeSpan MessageLimit$
     -List<IAssetSchemeChecker> AssetSchemeCheckers$
     -ServiceCollection services$
+    -string FridayFileName$
     +ServiceProvider ServiceProvider$
     +CreateHostBuilder(string[] args)$ IHostBuilder
     +Main(string[] args)$ void
@@ -9078,6 +9230,8 @@ class Program{
     +Commands_CommandExecuted(CommandsNextExtension sender, CommandExecutionEventArgs e)$ Task
     +GetStringDictionary(DiscordClient client, ServiceProvider provider)$ Dictionary<string, string>
     +StatisticsMainAsync(CancellationToken ct = null)$ Task
+    +ShouldDoFriday()$ bool
+    +ShouldCleanUpFriday()$ bool
     +WaitForFridayAsync(CancellationToken ct = null)$ Task
     +ExecuteFridayAsync(bool friday = true, CancellationToken ct = null)$ Task
     +IncreaseXp(ulong id, ulong count = null)$ Task
@@ -9105,26 +9259,12 @@ class ProgramHelper{
 ```mermaid
 classDiagram
 class AudioSlash{
-    +LavalinkNode AudioService
-    +LyricsService LyricsService
-    +Config Config
-    +HttpClient HttpClient
-    +ArtworkService ArtworkService
+    +NeutralAudio NeutralAudio
     +LanguageService LanguageService
-    +IsInVc(BaseContext ctx) bool
-    +IsInVc(BaseContext ctx, LavalinkNode lavalinkNode)$ bool
-    +SendNowPlayingMessage(BaseContext ctx, string title = "", string message = "", string imageurl = "", string url = "", Language? language = null)$ Task
-    +SendSimpleMessage(BaseContext ctx, string title = "", string message = "", string image = "", Language? language = null)$ Task
-    +TimeTillSongPlays(QueuedLavalinkPlayer player, int song) TimeSpan
-    +ConvertToSong(InteractionContext ctx, string value, Language lang = null) Task<SongORSongs?>
     +PlayNext(InteractionContext ctx, string sg) Task
     +Play(InteractionContext ctx, string sg) Task
     +Volume(InteractionContext ctx, long volume) Task
     +Seek(InteractionContext ctx, TimeSpan? time) Task
-    +MakeSureBotIsInVC(InteractionContext ctx, Language lang) Task
-    +MakeSureUserIsInVC(InteractionContext ctx, Language lang)$ Task
-    +MakeSureBothAreInVC(InteractionContext ctx, Language lang) Task
-    +MakeSurePlayerIsntNull(InteractionContext ctx, Language lang, BetterVoteLavalinkPlayer? player) Task
     +ClearQueue(InteractionContext ctx) Task
     +Shuffle(InteractionContext ctx) Task
     +ExportQueue(InteractionContext ctx, string? playlistName = null) Task
@@ -9133,7 +9273,6 @@ class AudioSlash{
     +Pause(InteractionContext ctx) Task
     +Resume(InteractionContext ctx) Task
     +Join(InteractionContext ctx) Task
-    +StaticJoin(InteractionContext ctx, LavalinkNode audioService)$ Task
     +Skip(InteractionContext ctx) Task
     +Disconnect(InteractionContext ctx) Task
     +VoteSkip(InteractionContext ctx) Task
@@ -9174,6 +9313,7 @@ class GeneralCommands{
     +DatabaseContext Dbctx
     +Config Cnf
     +LanguageService LanguageService
+    +ColourService ColourService
     +TestCommand(InteractionContext ctx) Task
     +WhoIsTask(BaseContext ctx, DiscordUser user) Task
     +WhoIsCommand(InteractionContext ctx, DiscordUser user) Task

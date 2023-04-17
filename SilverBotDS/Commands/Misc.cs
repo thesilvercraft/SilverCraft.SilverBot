@@ -9,6 +9,8 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Humanizer;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
@@ -16,13 +18,14 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SilverBot.Shared;
 using SilverBot.Shared.Attributes;
-using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Database;
 using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Utils;
 using SilverBotDS.ProgramExtensions;
 using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
+using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SilverBotDS.Commands;
 
@@ -31,18 +34,17 @@ namespace SilverBotDS.Commands;
 
 public class MiscCommands : BaseCommandModule
 {
-    
+
     public LanguageService LanguageService { private get; set; }
     public DatabaseContext Database { private get; set; }
-    public Config Config { private get; set; }
     public HttpClient HttpClient { private get; set; }
     public static DiscordEmbed VersionInfoEmbed(Language lang, dynamic ctx)
     {
         return new DiscordEmbedBuilder()
             .WithTitle(lang.VersionInfoTitle)
             .AddField(lang.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
-            //.AddField(lang.GitRepo, ThisAssembly.Git.RepositoryUrl)
-           // .AddField(lang.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
+            .AddField(lang.GitRepo, VersionInfo.GitRepo)
+            // .AddField(lang.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
             //.AddField(lang.GitBranch, Formatter.InlineCode(ThisAssembly.Git.Branch))
             //.AddField(lang.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
             .AddField(lang.CLR, Formatter.InlineCode(RuntimeInformation.FrameworkDescription))
@@ -59,7 +61,7 @@ public class MiscCommands : BaseCommandModule
     public async Task VersionInfoCmd(CommandContext ctx)
     {
         var lang = await LanguageService.FromCtxAsync(ctx);
-        await new DiscordMessageBuilder().WithEmbed(VersionInfoEmbed(lang,ctx)).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
+        await new DiscordMessageBuilder().WithEmbed(VersionInfoEmbed(lang, ctx)).WithReply(ctx.Message.Id).SendAsync(ctx.Channel);
     }
 
     [Command("setlang")]
@@ -137,7 +139,7 @@ public class MiscCommands : BaseCommandModule
         var translation = await translator.TranslateAsync(text, "auto", lang.LangCodeGoogleTranslate);
         if (translation.Item1.Length > 4095)
         {
-            await ctx.SendStringFileWithContent( $"TTS URL: <{translation.Item2}>", translation.Item1);
+            await ctx.SendStringFileWithContent($"TTS URL: <{translation.Item2}>", translation.Item1);
         }
         else
         {
@@ -149,6 +151,124 @@ public class MiscCommands : BaseCommandModule
         }
     }
 
+    [Command("whereis")]
+    [Description("get the location of a silverbot command through the silvercraftspec.md file")]
+    public async Task WhereIs(CommandContext ctx, [RemainingText] string commandname)
+    {
+        var lang = await LanguageService.FromCtxAsync(ctx);
+        var req = await HttpClient.GetAsync(
+            "https://raw.githubusercontent.com/thesilvercraft/SilverCraft.SilverBot/master/SilverCraftSpec.md");
+        var text = await req.Content.ReadAsStringAsync();
+        int x = text.Length - 1;
+        while (x > 2)
+        {
+            x--;
+            if (text[x] == '`' && text[x - 1] == '`' && text[x - 2] == '`')
+            {
+                x--;
+                x--;
+                break;
+            }
+        }
+
+        int y = x - 3;
+        while (y > 6)
+        {
+            y--;
+            if (text[y] == 'n' && text[y - 1] == 'o' && text[y - 2] == 's' && text[y - 3] == 'j' && text[y - 4] == '`' && text[y - 5] == '`' && text[y - 6] == '`')
+            {
+                y++;
+                break;
+            }
+        }
+
+        var importantjson = text[y..x];
+        var list = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, SilverCraftSpecificData>>(importantjson);
+        var commandNameLower = '"' + commandname.ToLower() + '"';
+        var commandMatches = list.SelectMany(x => x.Value.CommandModules.SelectMany(y => y.Commands.Where(z => z.Name == commandNameLower || z.Aliases?.Contains(commandNameLower) == true)));
+        if (commandMatches.Any())
+        {
+            StringBuilder builder = new();
+            foreach (var commandMatch in commandMatches)
+            {
+                builder.Append('`').Append(commandMatch.Name);
+                foreach (var argument in commandMatch.Arguments)
+                {
+                    builder.Append(' ');
+                    if (argument.Optional || argument.RemainingText)
+                    {
+                        builder.Append('[');
+                    }
+                    else
+                    {
+                        builder.Append('<');
+                    }
+
+                    builder.Append(argument.Name);
+                    if (argument.RemainingText)
+                    {
+                        builder.Append("...");
+                    }
+
+                    if (argument.Optional || argument.RemainingText)
+                    {
+                        builder.Append(']');
+                    }
+                    else
+                    {
+                        builder.Append('>');
+                    }
+                }
+                builder.Append('`');
+                builder.AppendLine();
+                builder.AppendLine($"{VersionInfo.GitRepo}/blob/master{commandMatch.Location}");
+            }
+            await ctx.SendMessageAsync(message: builder.ToString());
+        }
+        else
+        {
+            await ctx.SendMessageAsync(message: "command code not found, help command is a meta command");
+        }
+    }
+    public class SilverCraftSpecificData
+    {
+        /// <summary>
+        /// List of command modules in project (if any)
+        /// </summary>
+        public List<CommandModule> CommandModules { get; set; } = new();
+    }
+    public class CommandModule
+    {
+        public string Name { get; set; }
+        public List<Command> Commands { get; set; } = new();
+
+    }
+    public class Command
+    {
+        public string Location { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string[]? Aliases { get; set; }
+        public List<string> CustomAttributes { get; set; } = new();
+        public List<Argument> Arguments { get; set; } = new();
+    }
+
+    public class Argument
+    {
+        public Argument(string name, string type)
+        {
+            Name = name;
+            Type = type;
+        }
+
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string? Description { get; set; }
+        public bool RemainingText { get; set; }
+        public bool Optional { get; set; }
+        public List<string> CustomAttributes { get; set; } = new();
+
+    }
     [Command("translateunknownto")]
     [Aliases("translateto")]
     [Description("translate from an unknown language to a specified one")]
@@ -164,7 +284,7 @@ public class MiscCommands : BaseCommandModule
         {
             await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
                 .WithContent(string.Format(lang.NotValidLanguage,
-                        string.Join(", ",Translator.Languages.ToArray())))
+                        string.Join(", ", Translator.Languages.ToArray())))
                 .WithAllowedMentions(Mentions.None)
                 .SendAsync(ctx.Channel);
             return;
@@ -174,7 +294,7 @@ public class MiscCommands : BaseCommandModule
         var translation = await translator.TranslateAsync(text, "auto", languageTo);
         if (translation.Item1.Length > 4095)
         {
-            await ctx.SendStringFileWithContent( $"TTS URL: <{translation.Item2}>", translation.Item1);
+            await ctx.SendStringFileWithContent($"TTS URL: <{translation.Item2}>", translation.Item1);
         }
         else
         {
@@ -186,5 +306,5 @@ public class MiscCommands : BaseCommandModule
         }
     }
 
- 
+
 }

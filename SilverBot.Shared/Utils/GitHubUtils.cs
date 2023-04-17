@@ -12,10 +12,9 @@ using DSharpPlus.Entities;
 
 namespace SilverBot.Shared.Utils;
 
-public class GitHubUtils
+public partial class GitHubUtils
 {
-    private static readonly Regex R = new("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)",
-        RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    private static readonly Regex R = MyRegex();
 
     public class Repo
     {
@@ -33,19 +32,22 @@ public class GitHubUtils
 
         public string Reponame { get; set; }
 
-        public static Optional<Repo> TryParseUrl(string url)
+        public static bool TryParseUrl(string url, out Repo? r)
         {
             var m = R.Match(url);
-            if (m.Success)
+            if (!m.Success)
             {
-                return Optional.FromValue(new Repo
-                {
-                    User = m.Groups["user"].Value,
-                    Reponame = m.Groups["repo"].Value
-                });
+                r = null;
+                return false;
             }
 
-            return Optional.FromNoValue<Repo>();
+            r= new Repo
+            {
+                User = m.Groups["user"].Value,
+                Reponame = m.Groups["repo"].Value
+            };
+            return true;
+
         }
     }
 
@@ -451,4 +453,7 @@ public class GitHubUtils
 
         [JsonPropertyName("site_admin")] public bool SiteAdmin { get; set; }
     }
+
+    [GeneratedRegex("(?:https?://)?github.com/(?<user>.+)/(?<repo>.+)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant)]
+    private static partial Regex MyRegex();
 }

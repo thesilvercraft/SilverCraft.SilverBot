@@ -216,7 +216,7 @@ public class Experience : BaseCommandModule, IRequireAssets
 
         var picturetext = Image.Text(HttpUtility.HtmlEncode($"{user.Username}#{user.Discriminator}"), "Twemoji Color Emoji, Diavlo Light", 596,
             42, Enums.Align.Low,
-            rgba: true);
+            rgba: true, fontfile: "fonts/twemoji.otf");
         picture = picture.Composite(picturetext, Enums.BlendMode.Over, 287, 19);
         picture = picture.Mutate(x => { x.DrawRect(new double[] { 0, 0, 0, 255 }, 280, 76, 570, 52, true); });
         var o = await Database.userExperiences.FirstOrDefaultAsync(x => x.Id == user.Id);
@@ -228,15 +228,15 @@ public class Experience : BaseCommandModule, IRequireAssets
             {
                 x.DrawRect(new double[] { 69, 69, 255, 255 }, 281, 77, progress, 50, true);
             });
-            using var lvlText = Image.Text(HttpUtility.HtmlEncode($"Level: {levelcount}"), "Twemoji Color Emoji, Diavlo Light", 433,
+            using var lvlText = Image.Text(HttpUtility.HtmlEncode($"Level: {levelcount}"), "Diavlo Light", 433,
                 38, Enums.Align.Centre,
                 rgba: true);
             picture = picture.Composite(lvlText, Enums.BlendMode.Over, 287, 224);
-            using var xpText = Image.Text(HttpUtility.HtmlEncode($"{o.XP}XP"), "Twemoji Color Emoji, Diavlo Light", 229,
+            using var xpText = Image.Text(HttpUtility.HtmlEncode($"{o.XP}XP"), "Diavlo Light", 229,
                 22, Enums.Align.Centre,
                 rgba: true);
             picture = picture.Composite(xpText, Enums.BlendMode.Over, (280+progress)-(xpText.Width/2), 132);
-            using var nextLvlText = Image.Text(HttpUtility.HtmlEncode($"{GetNeededXpForNextLevel(o.XP)}XP"), "Twemoji Color Emoji, Diavlo Light", 229,
+            using var nextLvlText = Image.Text(HttpUtility.HtmlEncode($"{GetNeededXpForNextLevel(o.XP)}XP"), "Diavlo Light", 229,
                 22, Enums.Align.Low,
                 rgba: true);
             picture = picture.Composite(nextLvlText, Enums.BlendMode.Over, (570+280)-(xpText.Width/2), 132);

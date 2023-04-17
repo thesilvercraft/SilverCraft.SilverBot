@@ -9,8 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ImageMagick;
+using System.Web;
 using DSharpPlus.SlashCommands.Attributes;
+using NetVips;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Utils;
@@ -59,25 +60,18 @@ namespace SilverBotDS.Commands.Slash
         [SlashCooldown(1,2,SlashCooldownBucketType.User)]
         public async Task Bibi(InteractionContext ctx, [Option("text", "Bibi is **text**")]  string input)
         {
-            //await ctx.TriggerTypingAsync();
             input = $"bibi is {input}";
             var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
-            await using var file = File.OpenRead(Path.Combine(Config.LocalBibiPictures, $"{randomnumber}.png"));
-            using var picture = new MagickImage(file);
-            MagickReadSettings settings = new()
-            {
-                FillColor = randomnumber is 10 or 9 ? MagickColors.Gray : MagickColors.White,
-                Font = "Arial",
-                FontPointsize = picture.Width / 14,
-                BackgroundColor = MagickColors.Transparent,
-                Width = picture.Width,
-            };
-            using var label = new MagickImage($"caption:{input}", settings);
-            picture.Composite(label, 4, 230, CompositeOperator.Over);
+            using var picture = Image.NewFromFile(Path.Combine(Config.LocalBibiPictures,$"{randomnumber}.png"));
+            using var textImage = Image.Text($"<span foreground=\"{(randomnumber is 10 or 9 ? "#808080ff" : "#ffffffff")}\">" + HttpUtility.HtmlEncode(input) + "</span>",
+                "Noto Color Emoji, Arial normal " + 30,
+                rgba: true,
+                align: Enums.Align.Low, width: picture.Width);
+            using var compositedImage = picture.Composite(textImage, Enums.BlendMode.Over, x: 4, y: 230); // overlay text image
             await using var outStream = new MemoryStream();
-            await picture.WriteAsync(outStream, MagickFormat.Png);
+            compositedImage.WriteToStream(outStream, ".png");
             outStream.Position = 0;
-            await ImageModule.SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, content: input);
+            await ImageModule.SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream:true, content: input);
         }
 
     }

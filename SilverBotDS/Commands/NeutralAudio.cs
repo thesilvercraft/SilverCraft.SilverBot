@@ -28,12 +28,142 @@ using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Utils;
 using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
-using ImageMagick;
 using SilverBot.Shared.Exceptions;
 using SilverBot.Shared;
 
 namespace SilverBotDS.Commands;
 
+public class MusicController
+{
+    public BetterVoteLavalinkPlayer Player { get; set; }
+    public DiscordGuild Guild { get; set; }
+    public DiscordMessage Message { get; set; }
+}
+
+public class MusicControllerService
+{
+    public MusicController GetControllerViaMessage(DiscordMessage message)
+    {
+        return Controllers[message.Id];
+    }
+
+    public async Task<DiscordEmbed> GetEmbedFromController(MusicController controller,ArtworkService ArtworkService, Language lang )
+    {
+
+        var player = controller.Player;
+        var currentTrack = player.CurrentTrack;
+        var e = new DiscordEmbedBuilder().WithTitle(currentTrack.Title)
+            .WithUrl(currentTrack.Uri?.ToString())
+            .AddField(lang.SongLength, player.CurrentTrack.Duration.ToString())
+            .AddField(lang.SongTimePosition, player.Position.Position.ToString()).AddField(lang.SongTimeLeft,
+                player.LoopSettings == LoopSettings.LoopingSong
+                    ? lang.SongTimeLeftSongLoopingCurrent
+                    : (currentTrack.Duration - player.Position.Position).Humanize(
+                        culture: lang.GetCultureInfo()));
+        var artwrk = await ArtworkService.ResolveAsync(currentTrack);
+        if (artwrk != null)
+        {
+            e.WithThumbnail(artwrk);
+        }
+
+        return e.Build();
+    }
+    public Dictionary<ulong, MusicController> Controllers = new();
+    public IEnumerable<DiscordButtonComponent> GetButtons(BetterVoteLavalinkPlayer player)
+    {
+        switch (player.State)
+        {
+            case PlayerState.Paused:
+                yield return new DiscordButtonComponent(ButtonStyle.Primary, "MCP" + player.VoiceChannelId, null, false,
+                    new DiscordComponentEmoji("▶️"));
+                break;
+            case PlayerState.Playing:
+                yield return new DiscordButtonComponent(ButtonStyle.Primary, "MCP" + player.VoiceChannelId, null, false,
+                    new DiscordComponentEmoji("⏸️"));
+                break;
+        }
+        if (player.Queue.Any())
+        {
+            yield return new DiscordButtonComponent(ButtonStyle.Secondary, "MCR" + player.VoiceChannelId, null, false,
+                new DiscordComponentEmoji("⏭️"));
+            yield return new DiscordButtonComponent(ButtonStyle.Danger, "MCF" + player.VoiceChannelId, null, false,
+                new DiscordComponentEmoji("💣"));
+        }
+        yield return new DiscordButtonComponent(ButtonStyle.Success, "MCZ" + player.VoiceChannelId, null, false,
+            new DiscordComponentEmoji("🔄"));
+    }
+
+    public async Task SendMessageController(DiscordChannel channel, BetterVoteLavalinkPlayer player,ArtworkService artworkService, LanguageService languageService)
+    {
+        var controller = new MusicController() { Guild = channel.Guild, Player = player };
+        controller.Message = await channel.SendMessageAsync(new DiscordMessageBuilder().AddEmbed(await GetEmbedFromController(controller, artworkService, await languageService.GetDefaultAsync())).AddComponents(GetButtons(controller.Player)));
+        if (Controllers.ContainsKey((ulong)controller.Player.VoiceChannelId!))
+        {
+            Controllers[(ulong)controller.Player.VoiceChannelId!] = controller;
+        }
+        else
+        {
+            Controllers.Add((ulong)controller.Player.VoiceChannelId!,controller);
+        }
+        controller.Player.OnChangedState += (sender, data) =>
+        {
+            Task.Run(async () =>
+            {
+               await controller.Message.ModifyAsync(new DiscordMessageBuilder()
+                    .AddEmbed(await GetEmbedFromController(controller, artworkService,
+                        await languageService.GetDefaultAsync())).AddComponents(GetButtons(controller.Player)));
+            });
+        };
+    }
+    public MusicControllerService(DiscordClient discord, ArtworkService artworkService, LanguageService languageService)
+    {
+        discord.ComponentInteractionCreated += (async (sender, args) =>
+            {
+                if (args.Id.StartsWith("MC") && ulong.TryParse(args.Id[3..], out var id) && Controllers.TryGetValue(id, out var controller))
+                {
+                        
+                    switch (args.Id[2])
+                    {
+                            
+                        case 'P':
+                            if (controller.Player.State == PlayerState.Paused)
+                            {
+                                await controller.Player.ResumeAsync();
+                            }
+                            else if (controller.Player.State == PlayerState.Playing)
+                            {
+                                await controller.Player.PauseAsync();
+                            }
+
+                            break;
+                        case 'R':
+                            await controller.Player?.VoteAsync(args.User.Id)!;
+                            break;
+                        case 'F':
+                            if (args.User is DiscordMember m && (m.Roles.Any(e =>
+                                                                     e.CheckPermission(Permissions
+                                                                         .ManageChannels) ==
+                                                                     PermissionLevel.Allowed ||
+                                                                     e.Name.Contains("dj",
+                                                                         StringComparison.OrdinalIgnoreCase)) ||
+                                                                 m.VoiceState?.Channel?.Users?.LongCount(x =>
+                                                                     !x.IsBot) == 1))
+                            {
+                                await controller.Player?.SkipAsync();
+                            }
+                            break;
+                        case 'Z':
+                            break;
+                    }
+                    await args.Interaction.CreateResponseAsync(
+                        InteractionResponseType.UpdateMessage,
+                        new DiscordInteractionResponseBuilder()
+                            .AddEmbed(await GetEmbedFromController(controller, artworkService, await languageService.GetDefaultAsync() )).AddComponents(GetButtons(controller.Player)));
+                    args.Handled = true;
+                }
+            });
+    }
+}
 [RequireGuild]
 [Category("Audio")]
 [RequireModuleGuildEnabled(EnabledModules.Audio, false)]
@@ -45,23 +175,39 @@ public class NeutralAudio
     public ArtworkService ArtworkService { private get; set; }
     public LanguageService LanguageService { private get; set; }
     public ColourService ColourService {private get; set;}
+    public MusicControllerService MusicControllerService { private get; set; }
     private bool IsInVc(ISilverBotContext ctx) => IsInVc(ctx, AudioService);
 
     private static bool IsInVc(ISilverBotContext ctx, LavalinkNode lavalinkNode) => lavalinkNode.HasPlayer(ctx.Guild.Id) &&
         lavalinkNode.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null and not { State: PlayerState.NotConnected } and not { State: PlayerState.Destroyed };
 
-   
+    [Command("musiccontroller")]
+    [Description("Controls music playback")]
+    public async Task MusicController(ISilverBotContext ctx)
+    {
+        var lang = await LanguageService.FromCtxAsync(ctx);
+        await MakeSureBothAreInVC(ctx, lang);
+        var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) ?? throw new PlayerIsNullException();
+        await MusicControllerService.SendMessageController(ctx.Channel, player, ArtworkService, LanguageService);
+    }
 
-    private TimeSpan TimeTillSongPlays(QueuedLavalinkPlayer player, int song)
+    public static TimeSpan TimeTillSongPlays(QueuedLavalinkPlayer player, int song)
     {
         if (player.LoopMode == PlayerLoopMode.Track)
         {
             return TimeSpan.MaxValue;
         }
         var time=TimeSpan.FromHours(20);
-        if (player.CurrentTrack != null && player.CurrentTrack.IsLiveStream)
+        if (player.CurrentTrack is { IsLiveStream: true })
         {
-            time = TimeSpan.FromHours(20) - player.Position.Position;
+            if (player.Position.Position > TimeSpan.FromHours(20))
+            {
+                time = player.Position.Position + TimeSpan.FromHours(20); 
+            }
+            else
+            {
+                time = TimeSpan.FromHours(20) - player.Position.Position;
+            }
         }
         else
         {
@@ -363,12 +509,14 @@ public class NeutralAudio
         }
 
         var pages = new List<Page>();
-        for (var i = 0; i < player.QueueHistory.Count; i++)
+        int a = 1;
+        foreach(var qh in player.QueueHistory)
         {
-            pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(player.QueueHistory[i].Item1.Title)
-                .WithUrl(player.QueueHistory[i].Item1.Uri?.ToString()).WithColor(ColourService.GetSingle())
-                .AddField(lang.TimeWhenTrackPlayed, Formatter.Timestamp(player.QueueHistory[i].Item2))
-                .WithAuthor(string.Format(lang.PageNuget, i + 1, player.QueueHistory.Count))));
+            pages.Add(new Page(embed: new DiscordEmbedBuilder().WithTitle(qh.Value.Track.Title)
+                .WithUrl(qh.Value.Track.Uri?.ToString()).WithColor(ColourService.GetSingle())
+                .AddField("Time added", Formatter.Timestamp(qh.Value.TimeAdded))
+                .AddField("Times played/skipped", qh.Value.Playbacks.Count.ToString())
+                .WithAuthor(string.Format(lang.PageNuget, a++, player.QueueHistory.Count))));
         }
 
         var interactivity = ctx.Client.GetInteractivity();

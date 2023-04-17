@@ -98,7 +98,10 @@ namespace SilverBot.Shared.Objects.Language
             using var streamWriter = new StreamWriter(loc);
             streamWriter.Write(JsonSerializer.Serialize(new Language(), options));
         }
-
+        public static string SerialiseDefault()
+        {
+            return JsonSerializer.Serialize(new Language(), options);
+        }
         public async Task<Language> GetLanguageFromGuildIdAsync(ulong id, DatabaseContext db)
         {
             return await GetAsync(db.GetLangCodeGuild(id));

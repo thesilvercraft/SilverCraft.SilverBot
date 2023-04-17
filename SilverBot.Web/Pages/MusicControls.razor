@@ -186,7 +186,7 @@
            <p id="maintext"><RadzenIcon Icon="volume_up" style="top: 50%;transform: translateY(30%);"/>@guild.Members[user.Id].VoiceState.Channel.Name in @guild.Name</p>
             <p>
                 Currently playing:
-                <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : player.CurrentTrack.Source)">
+                <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : player.CurrentTrack.Uri)">
                     <strong>@(player.CurrentTrack is null ? lang.WebsitePlayingNothingTrackName : player.CurrentTrack.Title)</strong>
                 </a>
             </p>
@@ -240,7 +240,7 @@
             <div class="window-body">
             <p>
                 Currently playing:
-                <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : player.CurrentTrack.Source)">
+                <a target="_blank" href="@(player.CurrentTrack is null ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : player.CurrentTrack.Uri)">
                     <strong>@(player.CurrentTrack is null ? "Nothing by Noone" : player.CurrentTrack.Title)</strong>
                 </a>
             </p>

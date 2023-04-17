@@ -6,10 +6,9 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
-using ImageMagick;
 using System.Threading.Tasks;
 namespace SilverBotDS.Converters;
-
+/*
 internal class ImageFormatConverter : IArgumentConverter<MagickFormat>
 {
     public Task<Optional<MagickFormat>> ConvertAsync(string value, CommandContext ctx)
@@ -33,4 +32,4 @@ internal class ImageFormatConverter : IArgumentConverter<MagickFormat>
         };
     }
 }
-
+*/

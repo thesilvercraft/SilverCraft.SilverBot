@@ -17,7 +17,7 @@ if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\n
         ? "\\bin\\Debug\\net7.0"
         : "/bin/Debug/net7.0";
 }
-await SilverBotDS.Program.MainAsync(args,true);
+await SilverBotDS.Program.MainAsync(true);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

@@ -33,6 +33,10 @@ public class Audio : BaseCommandModule
     [Aliases("p")]
     public Task Play(CommandContext ctx) => NeutralAudio.Play(new BasedCommandContext(ctx));
 
+    [Command("musiccontroller")]
+    [Description("Controls music playback")]
+    public Task MusicController(CommandContext ctx) => NeutralAudio.MusicController(new BasedCommandContext(ctx));
+    
     [Command("play")]
     public Task Play(CommandContext ctx, [RemainingText] SongORSongs song) => NeutralAudio.Play(new BasedCommandContext(ctx), song);
 

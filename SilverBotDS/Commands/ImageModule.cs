@@ -22,7 +22,6 @@ using static NetVips.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Unicode;
-using ImageMagick;
 using Image = NetVips.Image;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
@@ -214,7 +213,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
         }
 
         stream.Position = 0;
-        return LoadFromStream(ResizeAsyncOP(stream.ToArray(), size, size));
+        return LoadFromStream(ResizeAsyncOP(stream.ToArray(), size, size).Item1);
     }
 
     public static Image LoadFromStream(Stream s, bool? gif = null)
@@ -244,33 +243,7 @@ public class ImageModule : BaseCommandModule, IRequireAssets
                (bytes[4] == 0x37 || bytes[4] == 0x39) && bytes[5] == 0x61;
     }
 
-    public static Stream ResizeAsyncOP(byte[] photoBytes, int x, int y)
-    {
-        //TODO Port to libvips
-        using var memStream = new MemoryStream(photoBytes);
-        var memStream2 = new MemoryStream();
-
-        if (IsAnimated(photoBytes))
-        {
-            using var picture = new MagickImageCollection(memStream);
-            foreach (var image in picture)
-            {
-                image.Resize(x, y);
-            }
-
-            picture.Write(memStream2);
-            memStream2.Position = 0;
-            return memStream2;
-        }
-        else
-        {
-            var picture = new MagickImage(memStream);
-            picture.Resize(x, y);
-            picture.Write(memStream2);
-            memStream2.Position = 0;
-            return memStream2;
-        }
-    }
+   
 
     private const string _captionFont = "Futura Extra Black Condensed";
 
@@ -511,7 +484,6 @@ public class ImageModule : BaseCommandModule, IRequireAssets
 
     private async Task<Image> EpicGifComposite(Image img, SdImage img2, Tuple<int, int, int>[] gaming)
     {
-        //TODO: possibly see if cropping can be avoided
         if (!img.Contains("n-pages") || !img.Contains("page-height"))
         {
             return null;
@@ -657,33 +629,6 @@ public class ImageModule : BaseCommandModule, IRequireAssets
             $"adventure time come on grab your friends we will go to very distant lands with {person.Mention} the {(person.IsBot ? "bot" : "human")} and {friendo.Mention} the {(friendo.IsBot ? "bot" : "human")} the fun will never end its adventure time!");
     }
 
-    private async Task CommonCodeWithTemplateGIFMagick(CommandContext ctx, string template,
-        Func<ImageMagick.MagickImageCollection, Task<Tuple<bool, ImageMagick.MagickImageCollection>>> func,
-        bool TriggerTyping = true, string filename = "sbimg.png", ImageMagick.MagickFormat? encoder = null)
-    {
-        if (TriggerTyping)
-        {
-            await ctx.TriggerTypingAsync();
-        }
-
-        await using var inputStream = (Assembly.GetExecutingAssembly()
-            .GetManifestResourceStream(template) ?? throw new TemplateReturningNullException(template));
-        using var img = new MagickImageCollection(inputStream);
-        var r = await func.Invoke(img);
-        if (!r.Item1)
-        {
-            await Send_img_plsAsync(
-                ctx, "Command error, please try again later"
-            ).ConfigureAwait(false);
-            return;
-        }
-
-        await using MemoryStream outStream = new();
-        await r.Item2.WriteAsync(outStream, encoder ?? ImageMagick.MagickFormat.Png);
-        outStream.Position = 0;
-        await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, filename, "there");
-    }
-
     [Command("seal")]
     [Description("He was forced to use Microsoft Windows when he was 6")]
     public async Task Seal(CommandContext ctx, [RemainingText] string text) =>
@@ -695,71 +640,95 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     [Description("NVIDIA, fuck you.")]
     public async Task Linus(CommandContext ctx,
         [RemainingText] [Description("company,or thing you want linus to swear at")] string company = "NVIDIA") =>
-        await CommonCodeWithTemplateGIFMagick(ctx, "SilverBotDS.SilverBotAssets.linus-linus-torvalds.gif", (img) =>
+        await CommonCodeWithTemplate(ctx, "SilverBotDS.SilverBotAssets.linus-linus-torvalds.gif", (img) =>
         {
-            //TODO PORT TO LIBVIPS
-            MagickReadSettings settings = new()
+            if (!img.HasAlpha())
             {
-                FillColor = MagickColors.White,
-                Font = _subtitlesFont,
-                FontPointsize = 30,
-                BackgroundColor = MagickColors.Transparent, //new MagickColor(0, 0, 0, 60)
-                Width = 498,
-                TextGravity = Gravity.Center,
-            };
-            using var label = new MagickImage($"caption:so {company}, fuck you.", settings);
-            img[0].Composite(label, Gravity.South, 0, 0, CompositeOperator.Over);
-            return Task.FromResult(new Tuple<bool, MagickImageCollection>(true, img));
-        }, filename: "sblinus.gif", encoder: MagickFormat.Gif);
+                img = img.Bandjoin(255);
+            }
+
+            using var textimga = Image.Text(
+                "<span background=\"#000000\" color=\"white\">" + HttpUtility.HtmlEncode($"so {company}, fuck you.") + "</span>",
+                "Twemoji Color Emoji, " + _subtitlesFont + " normal " + 30,
+                width: img.Width,
+                rgba: true,
+                align: Align.Centre, fontfile: "fonts/twemoji.otf");
+
+            if (img.Contains("n-pages") && img.Contains("page-height"))
+            {
+                var nPages = (int)img.Get("n-pages");
+                List<Image> imgs = new();
+                for (var i = 0; i < nPages; i++)
+                {
+                    using var img_frame =
+                        img.Crop(0, i * img.PageHeight, img.Width, img.PageHeight);
+                    var frame = img_frame.Composite2(textimga, BlendMode.Over, y: img_frame.Height - textimga.Height, x: img_frame.Width/2 - textimga.Width/2);
+                    imgs.Add(frame);
+                }
+
+                var final = Image.Arrayjoin(imgs.ToArray(), 1);
+                foreach (var img_frame in imgs)
+                {
+                    img_frame.Dispose();
+                }
+
+                return Task.FromResult(new Tuple<bool, Image>(true, final) );
+            }
+            else
+            {
+                return Task.FromResult(new Tuple<bool, Image>(true, img.Composite2(textimga, BlendMode.Over, y: img.Height - textimga.Height)) );
+           
+            }
+           
+        }, filename: "sblinus.gif", encoder:".gif");
 
     [Command("resize")]
     public async Task Resize(CommandContext ctx, [Description("the url of the image")] SdImage image,
-        [Description("Width")] int x = 0, [Description("Height")] int y = 0, MagickFormat? format = null)
+        [Description("Width")] int x = 0, [Description("Height")] int y = 0, string? format = null)
     {
         await ctx.TriggerTypingAsync();
         var thing = ResizeAsyncOP(await image.GetBytesAsync(HttpClient), x, y, format);
         await SendImageStreamIfAllowed(ctx, thing.Item1, DisposeOfStream: true, $"sbimg.{thing.Item2}", "There you go");
     }
 
-    private Tuple<Stream, string> ResizeAsyncOP(byte[] bytes, int x, int y, MagickFormat? format)
+    private static Tuple<Stream, string> ResizeAsyncOP(byte[] bytes, int x, int y, string? format =null)
     {
-        //TODO PORT TO LIBVIPS
         using var memStream = new MemoryStream(bytes);
         var memStream2 = new MemoryStream();
 
         if (IsAnimated(bytes))
         {
-            using var picture = new MagickImageCollection(memStream);
-            foreach (var image in picture)
-            {
-                image.Resize(x, y);
-            }
-
-            picture.Write(memStream2, format ?? MagickFormat.Gif);
+            using var picture = Image.NewFromBuffer(bytes);
+            double scale = Math.Min((double)x / picture.Width, (double)y / picture.Height);
+            using var scaledPicture  = picture.Resize(scale);
+            using var letterboxedPicture = scaledPicture.Gravity(Enums.CompassDirection.Centre, x, y); // letterbox with black background
+            letterboxedPicture.WriteToStream(memStream2, format ?? ".gif");
             memStream2.Position = 0;
-            return new(memStream2, (format ?? MagickFormat.Gif).ToString().ToLowerInvariant());
+            return new(memStream2, (format ?? ".gif").ToLowerInvariant());
         }
         else
         {
-            var picture = new MagickImage(memStream);
-            picture.Resize(x, y);
-            picture.Write(memStream2, format ?? picture.Format);
+            using var picture = Image.NewFromBuffer(bytes);
+            double scale = Math.Min((double)x / picture.Width, (double)y / picture.Height);
+            using var scaledPicture  = picture.Resize(scale);
+            using var letterboxedPicture = scaledPicture.Gravity(Enums.CompassDirection.Centre, x, y); // letterbox with black background
+            letterboxedPicture.WriteToStream(memStream2,format ?? ".png");
             memStream2.Position = 0;
-            return new(memStream2, (format ?? picture.Format).ToString().ToLowerInvariant());
+            return new(memStream2, (format ?? ".png").ToLowerInvariant());
         }
     }
 
     [Command("resize")]
-    public async Task Resize(CommandContext ctx, SdImage image, MagickFormat? format) =>
+    public async Task Resize(CommandContext ctx, SdImage image, string? format) =>
         await Resize(ctx, image, 0, 0, format);
 
     [Command("resize")]
-    public async Task Resize(CommandContext ctx, MagickFormat? format) =>
+    public async Task Resize(CommandContext ctx, string? format) =>
         await Resize(ctx, SdImage.FromContext(ctx), 0, 0, format);
 
     [Command("resize")]
     public async Task Resize(CommandContext ctx, [Description("Width")] int x = 0, [Description("Height")] int y = 0,
-        MagickFormat? format = null) => await Resize(ctx, SdImage.FromContext(ctx), x, y, format);
+        string? format = null) => await Resize(ctx, SdImage.FromContext(ctx), x, y, format);
 
     [Command("reliable")]
     public async Task Reliable(CommandContext ctx) => await Reliable(ctx, ctx.User, ctx.Client.CurrentUser);
@@ -776,17 +745,17 @@ public class ImageModule : BaseCommandModule, IRequireAssets
                 .GetManifestResourceStream("SilverBotDS.SilverBotAssets.weeb_reliable_template.png") ??
             throw new TemplateReturningNullException("SilverBotDS.SilverBotAssets.weeb_reliable_template.png"));
 
-        using (var internalimage = await GetProfilePictureAsyncStatic(jotaro))
+        using (var jotaroImage = await GetProfilePictureAsyncStatic(jotaro))
         {
             var i = img;
-            img = img.Composite2(internalimage, BlendMode.Over, 276, 92);
+            img = img.Composite2(jotaroImage, BlendMode.Over, 276, 92);
             i.Dispose();
         }
 
-        using (var internalimage = await GetProfilePictureAsyncStatic(koichi))
+        using (var koichiImage = await GetProfilePictureAsyncStatic(koichi))
         {
             var i = img;
-            img = img.Composite2(internalimage, BlendMode.Over, 1138, 369);
+            img = img.Composite2(koichiImage, BlendMode.Over, 1138, 369);
             i.Dispose();
         }
 
@@ -801,9 +770,9 @@ public class ImageModule : BaseCommandModule, IRequireAssets
 
         var textimga = Image.Text(
             "<span foreground=\"white\">" + HttpUtility.HtmlEncode(text) + "</span>",
-            _subtitlesFont + ", Twitter Color Emoji normal " + 70,
+            _subtitlesFont + ", Twemoji Color Emoji normal " + 70,
             rgba: true,
-            align: Align.Centre, fontfile: "twemoji.otf");
+            align: Align.Centre, fontfile: "fonts/twemoji.otf");
         textimga = textimga.Embed(5, 5, textimga.Width + 10, textimga.Height + 10);
         var textshadow = textimga[3].Gaussblur(1);
         textshadow *= 64;
@@ -830,14 +799,13 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     {
         await CommonCodeWithTemplate(ctx, "SilverBotDS.SilverBotAssets.obamamedal.jpg", async (img) =>
         {
-            using (var internalimage = await GetProfilePictureAsyncStatic(obama))
+            using (var obamaImage = await GetProfilePictureAsyncStatic(obama))
             {
                 var i = img;
-                img = img.Composite2(internalimage, BlendMode.Over, 120, 62);
-                img = img.Composite2(internalimage, BlendMode.Over, 377, 3);
+                img = img.Composite2(obamaImage, BlendMode.Over, 120, 62);
+                img = img.Composite2(obamaImage, BlendMode.Over, 377, 3);
                 i.Dispose();
             }
-
             return new Tuple<bool, Image>(true, img);
         }, msgcontent: $"{obama.Mention} Awards {obama.Mention} a Medal.");
     }
@@ -847,17 +815,17 @@ public class ImageModule : BaseCommandModule, IRequireAssets
     {
         await CommonCodeWithTemplate(ctx, "SilverBotDS.SilverBotAssets.obamamedal.jpg", async (img) =>
         {
-            using (var internalimage = await GetProfilePictureAsyncStatic(obama))
+            using (var obamaImage = await GetProfilePictureAsyncStatic(obama))
             {
                 var i = img;
-                img = img.Composite2(internalimage, BlendMode.Over, 377, 3);
+                img = img.Composite2(obamaImage, BlendMode.Over, 377, 3);
                 i.Dispose();
             }
 
-            using (var internalimage = await GetProfilePictureAsyncStatic(secondPerson))
+            using (var secondPersonImage = await GetProfilePictureAsyncStatic(secondPerson))
             {
                 var i = img;
-                img = img.Composite2(internalimage, BlendMode.Over, 120, 62);
+                img = img.Composite2(secondPersonImage, BlendMode.Over, 120, 62);
                 i.Dispose();
             }
 
@@ -966,6 +934,6 @@ public class ImageModule : BaseCommandModule, IRequireAssets
                 .Composite2(accessorie, BlendMode.Over), outStream, ".png");
         outStream.Position = 0;
         await SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream: true, "cat.png",
-            "catte licensed under CC BY 4.0, by David Revoy, do **NOT** use as an NFT (check out https://www.peppercarrot.com/extras/html/2016_cat-generator/ )");
+            "catte licensed under CC BY 4.0, by David Revoy, do **NOT** use as an NFT (check out <https://www.peppercarrot.com/extras/html/2016_cat-generator/> )");
     }
 }

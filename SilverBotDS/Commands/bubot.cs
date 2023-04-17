@@ -11,13 +11,14 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
-using ImageMagick;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
+using NetVips;
 using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Database.Classes;
@@ -71,23 +72,16 @@ internal class BibiCommands : BaseCommandModule, IHaveExecutableRequirements, IR
     [Cooldown(1, 2, CooldownBucketType.User)]
     public async Task Bibi(CommandContext ctx, [RemainingText][Description("Bibi is")] string input)
     {
-        //await ctx.TriggerTypingAsync();
         input = $"bibi is {input}";
         var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
-        await using var file = File.OpenRead(Path.Combine(Config.LocalBibiPictures,$"{randomnumber}.png"));
-        using var picture = new MagickImage(file);
-        MagickReadSettings settings = new()
-        {
-            FillColor = randomnumber is 10 or 9 ? MagickColors.Gray : MagickColors.White,
-            Font = "Arial",
-            FontPointsize = picture.Width / 14,
-            BackgroundColor = MagickColors.Transparent,
-            Width = picture.Width,
-        };
-        using var label = new MagickImage($"caption:{input}", settings);
-        picture.Composite(label, 4, 230, CompositeOperator.Over);
+        using var picture = Image.NewFromFile(Path.Combine(Config.LocalBibiPictures,$"{randomnumber}.png"));
+        using var textImage = Image.Text($"<span foreground=\"{(randomnumber is 10 or 9 ? "#808080ff" : "#ffffffff")}\">" + HttpUtility.HtmlEncode(input) + "</span>",
+            "Twemoji Color Emoji, Arial normal " + 30,
+            rgba: true,
+            align: Enums.Align.Low, width: picture.Width, fontfile: "fonts/twemoji.otf");
+        using var compositedImage = picture.Composite(textImage, Enums.BlendMode.Over, x: 4, y: 230); // overlay text image
         await using var outStream = new MemoryStream();
-        await picture.WriteAsync(outStream, MagickFormat.Png);
+        compositedImage.WriteToStream(outStream, ".png");
         outStream.Position = 0;
         await ImageModule.SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream:true, content: input);
     }

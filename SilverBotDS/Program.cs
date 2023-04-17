@@ -15,7 +15,6 @@ using DSharpPlus.Interactivity.EventHandling;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using Humanizer;
-using ImageMagick;
 using Lavalink4NET;
 using Lavalink4NET.Artwork;
 using Lavalink4NET.DSharpPlus;
@@ -55,6 +54,7 @@ using SilverBot.Shared.Pagination;
 using SilverBot.Shared.Utils;
 using SilverBotDS.Commands;
 using SilverBotDS.ProgramExtensions;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace SilverBotDS
 {
@@ -103,7 +103,12 @@ namespace SilverBotDS
                 Environment.Exit(70);
                 return;
             }
-
+            if (args is ["generatelang"])
+            {
+                Console.WriteLine( LanguageService.SerialiseDefault());
+                Environment.Exit(70);
+                return;
+            }
             if (Debugger.IsAttached && !(Environment.CurrentDirectory.EndsWith("bin\\Debug\\net7.0") ||
                                          Environment.CurrentDirectory.EndsWith("bin/Debug/net7.0")))
             {
@@ -111,8 +116,7 @@ namespace SilverBotDS
                     ? "\\bin\\Debug\\net7.0"
                     : "/bin/Debug/net7.0";
             }
-
-            MainAsync(args).GetAwaiter().GetResult();
+            MainAsync().GetAwaiter().GetResult();
         }
 
     
@@ -150,10 +154,8 @@ namespace SilverBotDS
 
         public static ServiceCollection services = new();
 
-        public static async Task MainAsync(string[] args, bool ExitAfterbootup = false,
-            CancellationToken cancellationToken = default)
+        private static Task SetupLogging()
         {
-            _config = await Config.GetAsync() ?? throw new InvalidOperationException();
             var loggerConfiguration = new LoggerConfiguration();
             switch (_config.MinimumLogLevel)
             {
@@ -180,35 +182,19 @@ namespace SilverBotDS
                 default:
                     throw new NotImplementedException(nameof(_config.MinimumLogLevel));
             }
-
             loggerConfiguration.WriteTo.Console(theme: AnsiConsoleTheme.Code);
             if (_config.UseTxtFilesAsLogs)
             {
                 loggerConfiguration.WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, shared: true);
             }
-
             loggerConfiguration.Enrich.FromLogContext();
-
             _log = loggerConfiguration.CreateLogger();
             Log.Logger = _log;
-            if (_config.EnableUpdateChecking)
-            {
-                _log.Information("Checking for updates");
-                await VersionInfo.Checkforupdates(HttpClient, _log);
-            }
+            return Task.CompletedTask;
+        }
 
-            var logFactory = new LoggerFactory().AddSerilog(logger: _log);
-            var mainlog = logFactory.CreateLogger<ProgramHelper>();
-            using (mainlog.BeginScope("Creating discord client"))
-            {
-                _discord = new DiscordClient(new DiscordConfiguration
-                {
-                    LoggerFactory = logFactory,
-                    Token = _config.Token,
-                    Intents = DiscordIntents.All.RemoveIntent(DiscordIntents.GuildPresences)
-                });
-            }
-
+        private static Task InitializeInteractivity(ILogger mainlog)
+        {
             using (mainlog.BeginScope("Initializing interactivity"))
             {
                 _discord.UseInteractivity(new InteractivityConfiguration
@@ -236,130 +222,208 @@ namespace SilverBotDS
                 _discord.MessageCreated += Discord_MessageCreated;
             }
 
-            TaskService taskService = new();
-            services.AddSingleton(taskService);
-            using (mainlog.BeginScope("Initializing Commands"))
-            {
-                services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
-                services.AddSingleton(new LanguageService());
-                services.AddSingleton<IPaginator>(new CoolerPaginatior(_discord));
-                services.AddSingleton(new ColourService());
-                services.AddDbContext<DatabaseContext>(
-                    options =>
-                    {
-                        options.UseLazyLoadingProxies().UseSqlite("Filename=./silverbotdatabasev3.db",
-                            b => b.MigrationsAssembly("SilverBotDS"));
-                        if (Debugger.IsAttached)
-                        {
-                            options.EnableSensitiveDataLogging();
-                        }
-                    }, ServiceLifetime.Transient);
+            return Task.CompletedTask;
+        }
 
-                services.AddSingleton(_config);
-                services.AddSingleton(HttpClient);
-                if (_config.AutoDownloadAndStartLavalink)
+        private static Task SetupCommandServices()
+        {
+            services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
+            services.AddSingleton(new LanguageService());
+            services.AddSingleton<IPaginator>(new CoolerPaginatior(_discord));
+            
+            services.AddSingleton(new ColourService());
+            services.AddDbContext<DatabaseContext>(
+                options =>
                 {
-                    using (mainlog.BeginScope("AutoStart Lavalink"))
+                    options.UseLazyLoadingProxies().UseSqlite("Filename=./silverbotdatabasev3.db",
+                        b => b.MigrationsAssembly("SilverBotDS"));
+                    if (Debugger.IsAttached)
                     {
-                        if (!File.Exists("Lavalink.jar"))
-                        {
-                            using (mainlog.BeginScope("Downloading lavalink"))
-                            {
-                                await (await GitHubUtils.Release.GetLatestFromRepoAsync(
-                                        new GitHubUtils.Repo(_config.LavalinkBuildsSourceGitHubUser,
-                                            _config.LavalinkBuildsSourceGitHubRepo),
-                                        HttpClient))
-                                    .DownloadLatestAsync(HttpClient);
-                            }
-                        }
+                        options.EnableSensitiveDataLogging();
+                    }
+                }, ServiceLifetime.Transient);
 
-                        if (!Process.GetProcesses().Any(x => x.ProcessName.Contains("java")))
-                        {
-                            using (mainlog.BeginScope("Launching lavalink"))
-                            {
-                                new Process
-                                {
-                                    StartInfo = new ProcessStartInfo
-                                    {
-                                        FileName = _config.JavaLoc,
-                                        Arguments = "-jar Lavalink.jar",
-                                        UseShellExecute = true
-                                    }
-                                }.Start();
-                            }
-                        }
+            services.AddSingleton(_config);
+            services.AddSingleton(HttpClient);
+            return Task.CompletedTask;
+        }
+
+        private static async Task SetupCommandLavalink(ILogger mainlog)
+        {
+            using (mainlog.BeginScope("AutoStart Lavalink"))
+            {
+                if (!File.Exists("Lavalink.jar"))
+                {
+                    using (mainlog.BeginScope("Downloading lavalink"))
+                    {
+                        await (await GitHubUtils.Release.GetLatestFromRepoAsync(
+                                new GitHubUtils.Repo(_config.LavalinkBuildsSourceGitHubUser,
+                                    _config.LavalinkBuildsSourceGitHubRepo),
+                                HttpClient))
+                            .DownloadLatestAsync(HttpClient);
                     }
                 }
 
+                if (!Process.GetProcesses().Any(x => x.ProcessName.Contains("java")))
+                {
+                    using (mainlog.BeginScope("Launching lavalink"))
+                    {
+                        new Process
+                        {
+                            StartInfo = new ProcessStartInfo
+                            {
+                                FileName = _config.JavaLoc,
+                                Arguments = "-jar Lavalink.jar",
+                                UseShellExecute = true
+                            }
+                        }.Start();
+                    }
+                }
+            }
+        }
 
+        private static Task SetupCommandsLavalinkService(ILogger mainlog)
+        {
+            using (mainlog.BeginScope("Lavalink"))
+            {
+                        
+                mainlog.LogInformation("Creating lavalink wrapper");
+                var discordClientWrapper = new DiscordClientWrapper(_discord);
+                _audioService = new LavalinkNode(new LavalinkNodeOptions
+                {
+                    RestUri = _config.LavalinkRestUri,
+                    WebSocketUri = _config.LavalinkWebSocketUri,
+                    Password = _config.LavalinkPassword
+                }, discordClientWrapper);
+                _trackingService = new InactivityTrackingService(_audioService, discordClientWrapper,
+                    new InactivityTrackingOptions());
+                mainlog.LogDebug("Activating audio service");
+                services.AddSingleton(_audioService);
+                mainlog.LogDebug("Activating artwork service");
+                var artworkService = new ArtworkService();
+                services.AddSingleton(artworkService);
+                mainlog.LogDebug("Activating MusicController service");
+                services.AddSingleton(new MusicControllerService(_discord,artworkService , services.BuildServiceProvider().GetRequiredService<LanguageService>() ));
+                if (_config.EnableJellyFinLookupService)
+                {
+                    services.AddSingleton<ITrackOrAlbumLookupService>(new JellyFinLookupService(HttpClient, _config));
+                }
+                if (!_config.SitInVc)
+                {
+                    mainlog.LogDebug("Activating tracking service");
+                    services.AddSingleton(_trackingService);
+                }
+
+                mainlog.LogDebug("Activating lyrics service");
+                services.AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private static async Task SetupCommandsExternalServices(ILogger mainlog, ModuleRegistrationService moduleRegistrationService)
+        {
+            using (mainlog.BeginScope("External services"))
+            {
+                foreach (var group in _config.ServicesToLoadExternal.GroupBy(x => x.Key))
+                {
+                    if (File.Exists(group.Key))
+                    {
+                        var assembly = Assembly.LoadFrom(group.Key);
+                        foreach (var module in group.Select(module=>module.Value))
+                        {
+                            try
+                            {
+                                var t = assembly.GetType(module);
+                                await moduleRegistrationService.ProcessExternalServiceType(t,services);
+                            }
+                            catch (Exception ex)
+                            {
+                                mainlog.LogError(ex, "Failed to load service {Module} Exception occured",
+                                    module);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        mainlog.LogInformation("Services from the {File} won't be loaded as its file doesn't exist",
+                            group.Key);
+                    }
+                }
+            } 
+        }
+
+        private static async Task SetupCommandsInternal(ILogger mainlog, ModuleRegistrationService moduleRegistrationService, CommandsNextExtension commands, SlashCommandsExtension slash)
+        {
+            using (mainlog.BeginScope("Registering internal commands"))
+            {
+                foreach (var module in _config.ModulesToLoad)
+                {
+                    try
+                    {
+                        await moduleRegistrationService.ProcessModuleType(Type.GetType(module),_config,commands,slash);
+                    }
+                    catch (Exception ex)
+                    {
+                        mainlog.LogError(ex, "Failed to load internal module {Module} Exception occured",
+                            module);
+                    }
+                }
+            }
+        }
+        private static async Task SetupCommandsExternal(ILogger mainlog, ModuleRegistrationService moduleRegistrationService, CommandsNextExtension commands, SlashCommandsExtension slash)
+        {
+            using (mainlog.BeginScope("Registering external commands"))
+            {
+                foreach (var group in _config.ModulesFilesToLoadExternal)
+                {
+                    if (File.Exists(group))
+                    {
+                        var assembly = Assembly.LoadFrom(group);
+                        foreach (var module in assembly.ExportedTypes.Where(x =>
+                                     x.IsSubclassOf(typeof(ApplicationCommandModule)) ||
+                                     x.IsSubclassOf(typeof(BaseCommandModule))))
+                        {
+                            try
+                            {
+                                await moduleRegistrationService.ProcessModuleType(module,_config,commands,slash);
+                            }
+                            catch (Exception ex)
+                            {
+                                mainlog.LogError(ex,
+                                    "Failed to load external module {Module} Exception occured",
+                                    module);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        mainlog.LogWarning("Modules from the {File} won't be loaded as its file doesn't exist",
+                            group);
+                    }
+                }
+            }
+        }
+        private static async Task SetupCommands(ILogger mainlog, CancellationToken cancellationToken )
+        {
+            using (mainlog.BeginScope("Initializing Commands"))
+            {
+                await SetupCommandServices();
+                if (_config.AutoDownloadAndStartLavalink)
+                {
+                    await SetupCommandLavalink(mainlog);
+                }
                 await Task.Delay(2000, cancellationToken);
                 if (_config.UseLavaLink)
                 {
-                    using (mainlog.BeginScope("Lavalink"))
-                    {
-                        
-                        mainlog.LogInformation("Creating lavalink wrapper");
-                        var discordClientWrapper = new DiscordClientWrapper(_discord);
-                        _audioService = new LavalinkNode(new LavalinkNodeOptions
-                        {
-                            RestUri = _config.LavalinkRestUri,
-                            WebSocketUri = _config.LavalinkWebSocketUri,
-                            Password = _config.LavalinkPassword
-                        }, discordClientWrapper);
-                        _trackingService = new InactivityTrackingService(_audioService, discordClientWrapper,
-                            new InactivityTrackingOptions());
-                        mainlog.LogDebug("Activating audio service");
-                        services.AddSingleton(_audioService);
-                        mainlog.LogDebug("Activating artwork service");
-                        services.AddSingleton(new ArtworkService());
-                        if (_config.EnableJellyFinLookupService)
-                        {
-                            services.AddSingleton<ITrackOrAlbumLookupService>(new JellyFinLookupService(HttpClient, _config));
-                        }
-                        if (!_config.SitInVc)
-                        {
-                            mainlog.LogDebug("Activating tracking service");
-                            services.AddSingleton(_trackingService);
-                        }
-
-                        mainlog.LogDebug("Activating lyrics service");
-                        services.AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
-                    }
+                    await SetupCommandsLavalinkService(mainlog);
                 }
-
                 services.AddSingleton(_log);
                 services.AddSingleton(_discord);
                 ModuleRegistrationService moduleRegistrationService = new();
                 services.AddSingleton(moduleRegistrationService);
-               
-                using (mainlog.BeginScope("External services"))
-                {
-                    foreach (var group in _config.ServicesToLoadExternal.GroupBy(x => x.Key))
-                    {
-                        if (File.Exists(group.Key))
-                        {
-                            var assembly = Assembly.LoadFrom(group.Key);
-                            foreach (var module in group.Select(module=>module.Value))
-                            {
-                                try
-                                {
-                                    var t = assembly.GetType(module);
-                                    await moduleRegistrationService.ProcessExternalServiceType(t,services);
-                                }
-                                catch (Exception ex)
-                                {
-                                    mainlog.LogError(ex, "Failed to load service {Module} Exception occured",
-                                        module);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            mainlog.LogInformation("Services from the {File} won't be loaded as its file doesn't exist",
-                                group.Key);
-                        }
-                    }
-                }
+
+                await SetupCommandsExternalServices(mainlog, moduleRegistrationService);
 
                 if (_config.UseLavaLink)
                 {
@@ -395,56 +459,12 @@ namespace SilverBotDS
                         commands.RegisterConverter(new SColorConverter());
                         commands.RegisterConverter(new LoopSettingsConverter());
                         commands.RegisterConverter(new SongOrSongsConverter());
-                        commands.RegisterConverter(new ImageFormatConverter());
+                        //commands.RegisterConverter(new ImageFormatConverter());
                     }
 
-
-                    using (mainlog.BeginScope("Registering internal commands"))
-                    {
-                        foreach (var module in _config.ModulesToLoad)
-                        {
-                            try
-                            {
-                                await moduleRegistrationService.ProcessModuleType(Type.GetType(module),_config,commands,slash);
-                            }
-                            catch (Exception ex)
-                            {
-                                mainlog.LogError(ex, "Failed to load internal module {Module} Exception occured",
-                                    module);
-                            }
-                        }
-                    }
-
-                    using (mainlog.BeginScope("Registering external commands"))
-                    {
-                        foreach (var group in _config.ModulesFilesToLoadExternal)
-                        {
-                            if (File.Exists(group))
-                            {
-                                var assembly = Assembly.LoadFrom(group);
-                                foreach (var module in assembly.ExportedTypes.Where(x =>
-                                             x.IsSubclassOf(typeof(ApplicationCommandModule)) ||
-                                             x.IsSubclassOf(typeof(BaseCommandModule))))
-                                {
-                                    try
-                                    {
-                                        await moduleRegistrationService.ProcessModuleType(module,_config,commands,slash);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        mainlog.LogError(ex,
-                                            "Failed to load external module {Module} Exception occured",
-                                            module);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                mainlog.LogWarning("Modules from the {File} won't be loaded as its file doesn't exist",
-                                    group);
-                            }
-                        }
-                    }
+                    await SetupCommandsInternal(mainlog, moduleRegistrationService, commands, slash);
+                    await SetupCommandsExternal(mainlog, moduleRegistrationService, commands, slash);
+                   
 
                     commands.CommandExecuted += Commands_CommandExecuted;
                     await SlashErrorHandler.RegisterErrorHandler(ServiceProvider, _log, slash);
@@ -453,21 +473,11 @@ namespace SilverBotDS
                     #endregion Registering Commands
                 }
             }
+        }
 
-            //🥁🥁🥁 drum-roll
-            _log.Information("Connecting to discord");
-            var wait = new ManualResetEvent(false); 
-            _discord.Ready += (_, _) =>
-            {
-                wait.Set();
-                return Task.CompletedTask;
-            };
-            await _discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
-            _log.Information("Waiting for client to connect");
-            wait.WaitOne();
-            await Task.Delay(2000, cancellationToken);
-            if (_config.UseLavaLink)
-            {
+        private static async Task ConnectToLavaLink()
+        {
+           
                 await _discord.UpdateStatusAsync(
                     new("console logs while connecting to lavalink", ActivityType.Watching));
 
@@ -499,16 +509,59 @@ namespace SilverBotDS
                 {
                     _log.Error(e, "Error occured while trying to connect to lavalink");
                 }
+        }
+        static async Task SplashTask()
+        {
+            _log.Verbose("Updating the status to a random one");
+            await _discord.UpdateStatusAsync(_config.Splashes.RandomFrom()
+                .GetDiscordActivity(GetStringDictionary(_discord,ServiceProvider)));
+        }
+        public static async Task MainAsync(bool exitAfterStartup = false,
+            CancellationToken cancellationToken = default)
+        {
+            _config = await Config.GetAsync() ?? throw new InvalidOperationException();
+            await SetupLogging();
+            VersionInfo.SetRepoURL();
+            if (_config.EnableUpdateChecking)
+            {
+                _log.Information("Checking for updates");
+                await VersionInfo.Checkforupdates(HttpClient, _log);
             }
-
+            var logFactory = new LoggerFactory().AddSerilog(logger: _log);
+            var mainlog = logFactory.CreateLogger<ProgramHelper>();
+            using (mainlog.BeginScope("Creating discord client"))
+            {
+                _discord = new DiscordClient(new DiscordConfiguration
+                {
+                    LoggerFactory = logFactory,
+                    Token = _config.Token,
+                    Intents = DiscordIntents.All.RemoveIntent(DiscordIntents.GuildPresences)
+                });
+            }
+            await InitializeInteractivity(mainlog);
+            TaskService taskService = new();
+            services.AddSingleton(taskService);
+            await SetupCommands(mainlog, cancellationToken);
+            _log.Information("Connecting to discord");
+            var wait = new ManualResetEvent(false); 
+            _discord.Ready += (_, _) =>
+            {
+                wait.Set();
+                return Task.CompletedTask;
+            };
+            await _discord.ConnectAsync(new("console logs while booting up", ActivityType.Watching));
+            _log.Information("Waiting for client to connect");
+            wait.WaitOne();
+            await Task.Delay(2000, cancellationToken);
+            if (_config.UseLavaLink)
+            {
+                await ConnectToLavaLink();
+            }
             if (IsNotNullAndIsNotB(_config.FridayTextChannel, 0))
             {
                 CancellationTokenSource s = new();
                 taskService.AddMain("WaitForFridayTask", new(Task.Run(() => WaitForFridayAsync(s.Token), s.Token), s));
             }
-
-            await _discord.UpdateStatusAsync(new("console logs while configuring server statistics",
-                ActivityType.Watching));
             ProgramHelper helper = new();
             if (_config.ChannelsToArchivePicturesFrom.Length > 0 && (_config.ArchiveWebhooks.Length > 1 ||
                                                                      (_config.ArchiveWebhooks.Length == 1 &&
@@ -521,13 +574,11 @@ namespace SilverBotDS
             {
                 _discord.AddReactionRolesHandlers();
             }
-
             if (_config.EnableServerStatistics)
             {
                 CancellationTokenSource s = new();
                 taskService.AddMain("StatisticsTask", new(Task.Run(() => StatisticsMainAsync(s.Token), s.Token), s));
             }
-
             CancellationTokenSource ets = new();
             EventsRunner.InjectEvents(ServiceProvider, _log);
             taskService.AddMain("EventsTask", new(Task.Run(EventsRunner.RunEventsAsync, ets.Token), ets));
@@ -538,35 +589,24 @@ namespace SilverBotDS
                     ActivityType.Watching));
                 _log.Information("Creating host");
             }
-
-            async Task SplashTask()
-            {
-                _log.Verbose("Updating the status to a random one");
-                await _discord.UpdateStatusAsync(_config.Splashes.RandomFrom()
-                    .GetDiscordActivity(GetStringDictionary(_discord,ServiceProvider)));
-            }
-
             await SplashTask();
             _log.Information("Booted up");
-            while (!ExitAfterbootup&& !cancellationToken.IsCancellationRequested)
+            Console.CancelKeyPress += delegate {
+                Console.WriteLine("Cleaning up");
+                taskService.ClearDeadTasks();
+                taskService.CancelTasks();
+                Console.WriteLine("bye");
+            };
+            while (!exitAfterStartup&& !cancellationToken.IsCancellationRequested)
             {
-                if (_config.CallGcOnSplashChange)
-                {
-                    _log.Verbose("Calling the garbage collector");
-                    GC.Collect();
-                }
-
                 if (_config.ClearTasks)
                 {
                     _log.Verbose("Going through the task lists");
                     taskService.ClearDeadTasks();
                 }
-
-                //wait the specified time
                 _log.Verbose("Waiting {V}", new TimeSpan(0, 0, 0, 0, _config.MsInterval).Humanize(precision: 5));
                 await Task.Delay(_config.MsInterval, cancellationToken);
                 await SplashTask();
-                //repeat🔁
             }
         }
 
@@ -658,6 +698,10 @@ namespace SilverBotDS
                             var dict = await ServerStatString.GetStringDictionaryAsync(server);
                             try
                             {
+                                if (item2 == null)
+                                {
+                                    continue;
+                                }
                                 var category = server.Channels[(ulong)item2];
                                 if (category.Type is ChannelType.Category)
                                 {
@@ -668,7 +712,6 @@ namespace SilverBotDS
                                         {
                                             await child.ModifyAsync(a => a.Name = item3[e].Serialize(dict));
                                         }
-
                                         e++;
                                     }
                                 }
@@ -686,7 +729,7 @@ namespace SilverBotDS
                                 {
                                     var dmChannel = await server.Owner.CreateDmChannelAsync();
                                     await dmChannel.SendMessageAsync(
-                                        $"Hello SilverBot here,\n it appears that you own `{server.Name}` and i just wanted to let you know that you will have to set the stats category again for stats to work as something broke.");
+                                        $"You will have to set up statistics again for `{server.Name}` as something broke. This might happen if any channel used for it was deleted, or if necessary permissions were denied.");
                                     dbctx.SetServerStatsCategory(item1, null);
                                     await dbctx.SaveChangesAsync(CancellationToken.None);
                                 }
@@ -701,8 +744,11 @@ namespace SilverBotDS
                                                    ex.GetType() == typeof(UnauthorizedException))
                         {
                             var serverSettings = dbctx.serverSettings.FirstOrDefault(x => x.ServerId == item1);
-                            dbctx.serverSettings.Remove(serverSettings);
-                            await dbctx.SaveChangesAsync(CancellationToken.None);
+                            if (serverSettings != null)
+                            {
+                                dbctx.serverSettings.Remove(serverSettings);
+                                await dbctx.SaveChangesAsync(CancellationToken.None);
+                            }
                         }
                     }
                 }
@@ -717,25 +763,29 @@ namespace SilverBotDS
         const string FridayFileName = "_LastFriday.txt";
         public static bool ShouldDoFriday()
         {
-            if(File.Exists(FridayFileName))
+            if (!File.Exists(FridayFileName))
             {
-                var a = File.ReadAllText(FridayFileName, Encoding.UTF8);
-                if(int.TryParse(a, out int x))
-                {
-                    return x != DateTime.Now.DayOfYear;
-                }
+                return true;
+            }
+
+            var lastFridayFileText = File.ReadAllText(FridayFileName, Encoding.UTF8);
+            if(int.TryParse(lastFridayFileText, out var x))
+            {
+                return x != DateTime.Now.DayOfYear;
             }
             return true;
         }
         public static bool ShouldCleanUpFriday()
         {
-            if (File.Exists(FridayFileName))
+            if (!File.Exists(FridayFileName))
             {
-                var a = File.ReadAllText(FridayFileName, Encoding.UTF8);
-                if (int.TryParse(a, out int x))
-                {
-                    return x == DateTime.Now.DayOfYear - 1;
-                }
+                return false;
+            }
+
+            var lastFridayFileText = File.ReadAllText(FridayFileName, Encoding.UTF8);
+            if (int.TryParse(lastFridayFileText, out var x))
+            {
+                return x == DateTime.Now.DayOfYear - 1;
             }
             return false;
         }
@@ -753,6 +803,7 @@ namespace SilverBotDS
                     if (ShouldCleanUpFriday())
                     {
                         await ExecuteFridayAsync(false, ct);
+                        File.Delete(FridayFileName);
                     }
                 }
 
@@ -800,32 +851,25 @@ namespace SilverBotDS
             }
         }
 
-        private static async Task Discord_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
+        private static async Task DoXpLogic(MessageCreateEventArgs e)
         {
-            if (e.Author.IsBot)
+            if (XpLevelling.TryGetValue(e.Author.Id, out var value))
             {
-                //ha nice try
-                return;
-            }
-
-            if (!e.Channel.IsPrivate)
-            {
-                if (XpLevelling.TryGetValue(e.Author.Id, out var value))
+                if ((DateTime.UtcNow - value) > MessageLimit)
                 {
-                    if ((DateTime.UtcNow - value) > MessageLimit)
-                    {
-                        await IncreaseXp(e.Author.Id);
-                    }
-                }
-                else
-                {
-                    XpLevelling.Add(e.Author.Id, DateTime.UtcNow);
                     await IncreaseXp(e.Author.Id);
                 }
             }
+            else
+            {
+                XpLevelling.Add(e.Author.Id, DateTime.UtcNow);
+                await IncreaseXp(e.Author.Id);
+            }
+        }
 
+        private static async Task DoRepeatingLogic(MessageCreateEventArgs e)
+        {
             await using var context = ServiceProvider.GetService<DatabaseContext>();
-
             if (context != null)
             {
                 var o = e.Channel.IsPrivate
@@ -857,6 +901,21 @@ namespace SilverBotDS
                         .SendAsync(e.Channel);
                 }
             }
+        }
+        private static async Task Discord_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
+        {
+            if (e.Author.IsBot)
+            {
+                //ha nice try
+                return;
+            }
+
+            if (!e.Channel.IsPrivate)
+            {
+                await DoXpLogic(e);
+            }
+
+            await DoRepeatingLogic(e);
         }
     }
 }

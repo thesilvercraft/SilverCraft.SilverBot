@@ -20,16 +20,16 @@ namespace SilverBotDS.ProgramExtensions
             DiscordWebhookClient webhookClient = new();
             foreach (var aa in config.ArchiveWebhooks)
             {
-                WebHookUtils.ParseWebhookUrlNullable(aa, out var ida, out var tokena);
-                if (ida is not null && !string.IsNullOrWhiteSpace(tokena))
+                WebHookUtils.ParseWebhookUrlNullable(aa, out var ida, out var token);
+                if (ida is not null && !string.IsNullOrWhiteSpace(token))
                 {
-                    await webhookClient.AddWebhookAsync(ida.Value, tokena);
+                    await webhookClient.AddWebhookAsync(ida.Value, token);
                 }
             }
 
             log.Information("Archive webhooks configured");
 
-            async Task OnDiscordOnMessagewhatever(DiscordClient e, DiscordMessage a)
+            async Task OnMessage(DiscordMessage a)
             {
                 if (config.ChannelsToArchivePicturesFrom.Contains(a.Channel.Id))
                 {
@@ -116,8 +116,8 @@ namespace SilverBotDS.ProgramExtensions
                 }
             }
 
-            discord.MessageCreated += (e, a) => OnDiscordOnMessagewhatever(e, a.Message);
-            discord.MessageUpdated += (e, a) => OnDiscordOnMessagewhatever(e, a.Message);
+            discord.MessageCreated += (e, a) => OnMessage(a.Message);
+            discord.MessageUpdated += (e, a) => OnMessage(a.Message);
         }
     }
 }

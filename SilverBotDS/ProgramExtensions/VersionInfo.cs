@@ -6,28 +6,66 @@ You should have received a copy of the GNU General Public License along with Sil
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Mono.Cecil;
 using Serilog.Core;
 using static SilverBot.Shared.Utils.GitHubUtils;
 using File = System.IO.File;
 
 namespace SilverBotDS.ProgramExtensions;
 
-internal static class VersionInfo
+public static class VersionInfo
 {
+  
     public const string VNumber =
         "";
 
+    public static string GitRepo { get; private set; }= "https://github.com/thesilvercraft/SilverCraft.SilverBot/L";
+
+    public static void SetRepoURL()
+    {
+        var definition = AssemblyDefinition.ReadAssembly( typeof(VersionInfo).Assembly.Location);
+        CustomAttribute attribute = null;
+        foreach (var ca in definition.CustomAttributes)
+        {
+            if (ca.AttributeType.FullName == typeof(AssemblyMetadataAttribute).FullName &&
+                ca.ConstructorArguments.Count == 2 &&
+                ca.ConstructorArguments[0].Value is string key &&
+                key == "RepositoryUrl")
+            {
+                attribute = ca;
+                break;
+            }
+        }
+
+// get the value from the second constructor argument
+        if (attribute != null && attribute.ConstructorArguments[1].Value is string url)
+        {
+            GitRepo = url;
+            // do something with the value
+        }
+
+    }
     public static async Task Checkforupdates(HttpClient client, Logger log)
     {
         try
         {
             log.Information("Running on {OS}", Environment.OSVersion.VersionString);
-            log.Information("Getting latest version info from {Source}", "GitHub");
-           /* Repo repo = new("thesilvercraft", "silverbot");
-            var info = await CommitInfo.GetLatestFromRepoAsync(repo, client);
+        
+           
+              
+                if (Repo.TryParseUrl(GitRepo, out var repo) )
+                {
+                    log.Information("Getting latest version info from {Source}", "GitHub");
+                    var info = await CommitInfo.GetLatestFromRepoAsync(repo, client);
+                    log.Information("The latest sha is {Sha}", info.Sha);
+                }
+           /* 
             if (info.Sha == ThisAssembly.Git.Sha)
             {
                 log.Information("You are running {VNumber} which has the same Sha as the newest commit on master",

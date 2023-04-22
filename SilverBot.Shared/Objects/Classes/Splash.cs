@@ -7,39 +7,40 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus.Entities;
 using SilverBot.Shared.Utils;
 
-namespace SilverBot.Shared.Objects.Classes;
-
-public class Splash
+namespace SilverBot.Shared.Objects.Classes
 {
-    public Splash()
+    public class Splash
     {
-    }
-
-    public Splash(string namewithparameters, ActivityType type)
-    {
-        Name = namewithparameters;
-        Type = type;
-    }
-
-    public string Name { get; set; }
-    public ActivityType Type { get; set; }
-    public string StreamUrl { get; set; }
-
-    public static Splash GetFromDiscordActivity(DiscordActivity discordActivity)
-    {
-        return new()
+        public Splash()
         {
-            Name = discordActivity.Name,
-            Type = discordActivity.ActivityType,
-            StreamUrl = discordActivity.StreamUrl
-        };
-    }
+        }
 
-    public DiscordActivity GetDiscordActivity(Dictionary<string, string> pairs)
-    {
-        return new(StringUtils.FormatFromDictionary(Name, pairs), Type)
+        public Splash(string namewithparameters, ActivityType type)
         {
-            StreamUrl = StreamUrl
-        };
+            Name = namewithparameters;
+            Type = type;
+        }
+
+        public string Name { get; set; }
+        public ActivityType Type { get; set; }
+        public string StreamUrl { get; set; }
+
+        public static Splash GetFromDiscordActivity(DiscordActivity discordActivity)
+        {
+            return new Splash
+            {
+                Name = discordActivity.Name,
+                Type = discordActivity.ActivityType,
+                StreamUrl = discordActivity.StreamUrl
+            };
+        }
+
+        public DiscordActivity GetDiscordActivity(Dictionary<string, string> pairs)
+        {
+            return new DiscordActivity(StringUtils.FormatFromDictionary(Name, pairs), Type)
+            {
+                StreamUrl = StreamUrl
+            };
+        }
     }
 }

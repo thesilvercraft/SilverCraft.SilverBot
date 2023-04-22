@@ -6,14 +6,15 @@ You should have received a copy of the GNU General Public License along with Sil
 
 using System.ComponentModel.DataAnnotations;
 
-namespace SilverBot.Shared.Objects.Database.Classes;
-
-public class TranslatorSettings
+namespace SilverBot.Shared.Objects.Database.Classes
 {
-    [Key] public ulong Id { get; init; }
+    public class TranslatorSettings
+    {
+        [Key] public ulong Id { get; init; }
 
-    public bool IsTranslator { get; set; }
+        public bool IsTranslator { get; set; }
 
-    public Language.Language? CurrentCustomLanguage { get; set; }
-    public ICollection<Language.Language> CustomLanguages { get; set; } = new List<Language.Language>();
+        public Language.Language? CurrentCustomLanguage { get; set; }
+        public ICollection<Language.Language> CustomLanguages { get; set; } = new List<Language.Language>();
+    }
 }

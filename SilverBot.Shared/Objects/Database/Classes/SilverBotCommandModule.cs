@@ -4,13 +4,14 @@ SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace SilverBot.Shared.Objects.Database.Classes;
-
-public interface IHaveExecutableRequirements 
+namespace SilverBot.Shared.Objects.Database.Classes
 {
-    public Task<bool> ExecuteRequirements(Config conf);
-}
+    public interface IHaveExecutableRequirements
+    {
+        public Task<bool> ExecuteRequirements(Config conf);
+    }
 
-public interface IRequireAssets
-{
+    public interface IRequireAssets
+    {
+    }
 }

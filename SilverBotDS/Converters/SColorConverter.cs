@@ -3,6 +3,7 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
@@ -11,38 +12,45 @@ using System.Drawing;
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace SilverBotDS.Converters;
-public static class ColorConverter
+namespace SilverBotDS.Converters
 {
-    public static Color? Convert(string value)
+    public static class ColorConverter
     {
-        if (uint.TryParse(value.Replace("#", ""), NumberStyles.HexNumber, null, out var color))
+        public static Color? Convert(string value)
         {
-            var intBytes = BitConverter.GetBytes(color);
-            return intBytes[3] != 0 ? Color.FromArgb(intBytes[3],intBytes[2], intBytes[1], intBytes[0]) : Color.FromArgb(intBytes[2], intBytes[1], intBytes[0]);
-        }
+            if (uint.TryParse(value.Replace("#", ""), NumberStyles.HexNumber, null, out var color))
+            {
+                var intBytes = BitConverter.GetBytes(color);
+                return intBytes[3] != 0
+                    ? Color.FromArgb(intBytes[3], intBytes[2], intBytes[1], intBytes[0])
+                    : Color.FromArgb(intBytes[2], intBytes[1], intBytes[0]);
+            }
 
-        if (!Enum.TryParse(typeof(KnownColor), value, out var result))
-        {
+            if (!Enum.TryParse(typeof(KnownColor), value, out var result))
+            {
+                return null;
+            }
+
+            if (result is KnownColor kc)
+            {
+                return Color.FromKnownColor(kc);
+            }
+
             return null;
         }
-
-        if(result is KnownColor kc)
-        {
-            return Color.FromKnownColor(kc);
-        }
-        return null;
     }
-}
-public class SColorConverter : IArgumentConverter<Color>
-{
-    public Task<Optional<Color>> ConvertAsync(string value, CommandContext ctx)
+
+    public class SColorConverter : IArgumentConverter<Color>
     {
-        var c = ColorConverter.Convert(value);
-        if(c is { } col)
+        public Task<Optional<Color>> ConvertAsync(string value, CommandContext ctx)
         {
-            return Task.FromResult(Optional.FromValue(col));
+            var c = ColorConverter.Convert(value);
+            if (c is { } col)
+            {
+                return Task.FromResult(Optional.FromValue(col));
+            }
+
+            return Task.FromResult(Optional.FromNoValue<Color>());
         }
-        return Task.FromResult(Optional.FromNoValue<Color>());
     }
 }

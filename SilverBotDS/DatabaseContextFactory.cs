@@ -8,15 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using SilverBot.Shared.Objects.Database;
 
-namespace SilverBotDS;
-
-public class DatabaseContextFactory : IDesignTimeDbContextFactory<DatabaseContext>
+namespace SilverBotDS
 {
-    public DatabaseContext CreateDbContext(string[] args)
+    public class DatabaseContextFactory : IDesignTimeDbContextFactory<DatabaseContext>
     {
-        //should only be used by Add-Migration
-        var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-        optionsBuilder.UseLazyLoadingProxies().UseSqlite("Data Source=test.db", b => b.MigrationsAssembly("SilverBotDS"));
-        return new DatabaseContext(optionsBuilder.Options);
+        public DatabaseContext CreateDbContext(string[] args)
+        {
+            //should only be used by Add-Migration
+            var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
+            optionsBuilder.UseLazyLoadingProxies()
+                .UseSqlite("Data Source=test.db", b => b.MigrationsAssembly("SilverBotDS"));
+            return new DatabaseContext(optionsBuilder.Options);
+        }
     }
 }

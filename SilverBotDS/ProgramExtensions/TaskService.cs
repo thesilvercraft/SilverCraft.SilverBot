@@ -29,7 +29,7 @@ namespace SilverBotDS.ProgramExtensions
         {
             return RunningTasks.Count + RunningTasksOfSecondRow.Count;
         }
-      
+
         public void ClearDeadTasks()
         {
             foreach (var task in RunningTasks.Where(task => task.Value.Item1.IsCompleted))
@@ -42,11 +42,12 @@ namespace SilverBotDS.ProgramExtensions
                 RunningTasksOfSecondRow.Remove(task.Key);
             }
         }
+
         public void AddMain(string taskName, Tuple<Task, CancellationTokenSource> task)
         {
             RunningTasks.Add(taskName, task);
         }
-        
+
         public void AddSecondaryTask(Guid a, Tuple<Task, CancellationTokenSource> b)
         {
             RunningTasksOfSecondRow.Add(a, b);

@@ -3,6 +3,7 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
 namespace SilverBot.SysAdminModule
 {
     internal class ScoopPackage : IPackage
@@ -12,10 +13,12 @@ namespace SilverBot.SysAdminModule
             Name = name;
             Version = version;
         }
-        public ScoopPackage(string name, string version, string newversion):this(name,version)
+
+        public ScoopPackage(string name, string version, string newversion) : this(name, version)
         {
             NewVersion = newversion;
         }
+
         public ScoopPackage(string name, string version, string bucket, string date, string time)
         {
             Name = name;
@@ -24,6 +27,7 @@ namespace SilverBot.SysAdminModule
             Date = date;
             Time = time;
         }
+
         public string Date { get; }
         public string Time { get; }
 
@@ -38,6 +42,5 @@ namespace SilverBot.SysAdminModule
         public string? Description => null;
 
         public string? FullDescription => throw new NotImplementedException();
-
     }
 }

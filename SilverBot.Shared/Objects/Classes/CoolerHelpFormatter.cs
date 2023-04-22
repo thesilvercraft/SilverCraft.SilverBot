@@ -14,99 +14,120 @@ using Microsoft.Extensions.DependencyInjection;
 using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Utils;
 
-namespace SilverBot.Shared.Objects.Classes;
-
-public class CoolerHelpFormatter : BaseHelpFormatter
+namespace SilverBot.Shared.Objects.Classes
 {
-    /// <summary>
-    ///     Creates a new default help formatter.
-    /// </summary>
-    /// <param name="ctx">Context in which this formatter is being invoked.</param>
-    public CoolerHelpFormatter(CommandContext ctx)
-        : base(ctx)
+    public class CoolerHelpFormatter : BaseHelpFormatter
     {
-        Language = ctx.GetLanguage();
-        ColourService = ctx.Services.GetService<ColourService>();
-        EmbedBuilder = new DiscordEmbedBuilder()
-            .WithTitle(Language.HelpCommandHelpString).AddRequestedByFooter(ctx, Language);
-    }
-
-    public DiscordEmbedBuilder EmbedBuilder { get; }
-    private Command Command { get; set; }
-    private ColourService? ColourService { get; }
-    private Language.Language Language { get; }
-
-    /// <summary>
-    ///     Sets the command this help message will be for.
-    /// </summary>
-    /// <param name="command">Command for which the help message is being produced.</param>
-    /// <returns>This help formatter.</returns>
-    public override BaseHelpFormatter WithCommand(Command command)
-    {
-        Command = command;
-        EmbedBuilder.WithDescription(
-            $"{Formatter.InlineCode(command.Name)}: {command.Description ?? Language.HelpCommandNoDescription}");
-        if (command is CommandGroup { IsExecutableWithoutSubcommands: true })
+        /// <summary>
+        ///     Creates a new default help formatter.
+        /// </summary>
+        /// <param name="ctx">Context in which this formatter is being invoked.</param>
+        public CoolerHelpFormatter(CommandContext ctx)
+            : base(ctx)
         {
-            EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\n{Language.HelpCommandGroupCanBeExecuted}");
+            Language = ctx.GetLanguage();
+            ColourService = ctx.Services.GetService<ColourService>();
+            EmbedBuilder = new DiscordEmbedBuilder()
+                .WithTitle(Language.HelpCommandHelpString).AddRequestedByFooter(ctx, Language);
         }
 
-        if (command.Aliases?.Any() == true)
-        {
-            EmbedBuilder.AddField(Language.HelpCommandGroupAliases,
-                string.Join(", ", command.Aliases.Select(Formatter.InlineCode)));
-        }
+        public DiscordEmbedBuilder EmbedBuilder { get; }
+        private Command Command { get; set; }
+        private ColourService? ColourService { get; }
+        private Language.Language Language { get; }
 
-        if (command.Overloads?.Any() != true)
+        /// <summary>
+        ///     Sets the command this help message will be for.
+        /// </summary>
+        /// <param name="command">Command for which the help message is being produced.</param>
+        /// <returns>This help formatter.</returns>
+        public override BaseHelpFormatter WithCommand(Command command)
         {
+            Command = command;
+            EmbedBuilder.WithDescription(
+                $"{Formatter.InlineCode(command.Name)}: {command.Description ?? Language.HelpCommandNoDescription}");
+            if (command is CommandGroup { IsExecutableWithoutSubcommands: true })
+            {
+                EmbedBuilder.WithDescription($"{EmbedBuilder.Description}\n{Language.HelpCommandGroupCanBeExecuted}");
+            }
+
+            if (command.Aliases?.Any() == true)
+            {
+                EmbedBuilder.AddField(Language.HelpCommandGroupAliases,
+                    string.Join(", ", command.Aliases.Select(Formatter.InlineCode)));
+            }
+
+            if (command.Overloads?.Any() != true)
+            {
+                return this;
+            }
+
+            var sb = new StringBuilder();
+            foreach (var ovl in command.Overloads.OrderByDescending(x => x.Priority).Select(ovl => ovl.Arguments))
+            {
+                sb.Append('`').Append(command.QualifiedName);
+                foreach (var arg in ovl)
+                {
+                    sb.Append(arg.IsOptional || arg.IsCatchAll ? " [" : " <").Append(arg.Name)
+                        .Append(arg.IsCatchAll ? "..." : "").Append(arg.IsOptional || arg.IsCatchAll ? ']' : '>');
+                }
+
+                sb.Append("`\n");
+                foreach (var arg in ovl)
+                {
+                    sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type))
+                        .Append(")`: ").Append(arg.Description ?? Language.HelpCommandNoDescription).Append('\n');
+                }
+
+                sb.Append('\n');
+            }
+
+            var groupArguments = sb.ToString().Trim();
+            if (groupArguments.Length < 1024)
+            {
+                EmbedBuilder.AddField(Language.HelpCommandGroupArguments, groupArguments);
+            }
+
             return this;
         }
 
-        var sb = new StringBuilder();
-        foreach (var ovl in command.Overloads.OrderByDescending(x => x.Priority).Select(ovl => ovl.Arguments))
+        /// <summary>
+        ///     Sets the subcommands for this command, if applicable. This method will be called with filtered data.
+        /// </summary>
+        /// <param name="subcommands">Subcommands for this command group.</param>
+        /// <returns>This help formatter.</returns>
+        public override BaseHelpFormatter WithSubcommands(IEnumerable<Command> subcommands)
         {
-            sb.Append('`').Append(command.QualifiedName);
-            foreach (var arg in ovl)
+            if (Command == null)
             {
-                sb.Append(arg.IsOptional || arg.IsCatchAll ? " [" : " <").Append(arg.Name)
-                    .Append(arg.IsCatchAll ? "..." : "").Append(arg.IsOptional || arg.IsCatchAll ? ']' : '>');
-            }
-
-            sb.Append("`\n");
-            foreach (var arg in ovl)
-            {
-                sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type))
-                    .Append(")`: ").Append(arg.Description ?? Language.HelpCommandNoDescription).Append('\n');
-            }
-
-            sb.Append('\n');
-        }
-
-        var groupArguments = sb.ToString().Trim();
-        if (groupArguments.Length < 1024)
-        {
-            EmbedBuilder.AddField(Language.HelpCommandGroupArguments, groupArguments);
-        }
-
-        return this;
-    }
-
-    /// <summary>
-    ///     Sets the subcommands for this command, if applicable. This method will be called with filtered data.
-    /// </summary>
-    /// <param name="subcommands">Subcommands for this command group.</param>
-    /// <returns>This help formatter.</returns>
-    public override BaseHelpFormatter WithSubcommands(IEnumerable<Command> subcommands)
-    {
-        if (Command == null)
-        {
-            Dictionary<string, HashSet<string>> commands = new();
-            foreach (var command in subcommands)
-            {
-                if (command.CustomAttributes.Any(x => x.GetType() == typeof(CategoryAttribute)))
+                Dictionary<string, HashSet<string>> commands = new();
+                foreach (var command in subcommands)
                 {
-                    foreach (var attribute in command.CustomAttributes.Where(x =>
-                                 x.GetType() == typeof(CategoryAttribute)))
+                    if (command.CustomAttributes.Any(x => x.GetType() == typeof(CategoryAttribute)))
+                    {
+                        foreach (var attribute in command.CustomAttributes.Where(x =>
+                                     x.GetType() == typeof(CategoryAttribute)))
+                        {
+                            foreach (var category in ((CategoryAttribute)attribute).Category)
+                            {
+                                if (!commands.ContainsKey(category))
+                                {
+                                    commands.Add(category, new HashSet<string>());
+                                }
+
+                                commands[category].Add(command.Name);
+                            }
+                        }
+                    }
+
+                    if (command.Module == null || command.Module.ModuleType.GetCustomAttributes(true)
+                            .All(x => x.GetType() != typeof(CategoryAttribute)))
+                    {
+                        continue;
+                    }
+
+                    foreach (var attribute in command.Module.ModuleType.GetCustomAttributes(true)
+                                 .Where(x => x is CategoryAttribute))
                     {
                         foreach (var category in ((CategoryAttribute)attribute).Category)
                         {
@@ -120,57 +141,38 @@ public class CoolerHelpFormatter : BaseHelpFormatter
                     }
                 }
 
-                if (command.Module == null || command.Module.ModuleType.GetCustomAttributes(true)
-                        .All(x => x.GetType() != typeof(CategoryAttribute)))
+                foreach (var category in commands.Keys)
                 {
-                    continue;
-                }
-                foreach (var attribute in command.Module.ModuleType.GetCustomAttributes(true)
-                             .Where(x => x is CategoryAttribute))
-                {
-                    foreach (var category in ((CategoryAttribute)attribute).Category)
-                    {
-                        if (!commands.ContainsKey(category))
-                        {
-                            commands.Add(category, new HashSet<string>());
-                        }
-
-                        commands[category].Add(command.Name);
-                    }
+                    EmbedBuilder.AddField(category,
+                        string.Join(", ", commands[category].Select(x => Formatter.InlineCode(x))));
                 }
             }
-
-            foreach (var category in commands.Keys)
+            else
             {
-                EmbedBuilder.AddField(category,
-                    string.Join(", ", commands[category].Select(x => Formatter.InlineCode(x))));
+                EmbedBuilder.AddField(Language.HelpCommandGroupSubcommands,
+                    string.Join(", ", subcommands.Select(x => Formatter.InlineCode(x.Name))));
             }
+
+            return this;
         }
-        else
+
+        /// <summary>
+        ///     Construct the help message.
+        /// </summary>
+        /// <returns>Data for the help message.</returns>
+        public override CommandHelpMessage Build()
         {
-            EmbedBuilder.AddField(Language.HelpCommandGroupSubcommands,
-                string.Join(", ", subcommands.Select(x => Formatter.InlineCode(x.Name))));
+            if (Command == null)
+            {
+                EmbedBuilder.WithDescription(Language.HelpCommandGroupListingAllCommands);
+            }
+
+            if (ColourService != null)
+            {
+                EmbedBuilder.Color = ColourService.GetSingle();
+            }
+
+            return new CommandHelpMessage(embed: EmbedBuilder.Build());
         }
-
-        return this;
-    }
-
-    /// <summary>
-    ///     Construct the help message.
-    /// </summary>
-    /// <returns>Data for the help message.</returns>
-    public override CommandHelpMessage Build()
-    {
-        if (Command == null)
-        {
-            EmbedBuilder.WithDescription(Language.HelpCommandGroupListingAllCommands);
-        }
-
-        if (ColourService != null)
-        {
-            EmbedBuilder.Color = ColourService.GetSingle();
-        }
-
-        return new CommandHelpMessage(embed: EmbedBuilder.Build());
     }
 }

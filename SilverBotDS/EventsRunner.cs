@@ -3,6 +3,7 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
 using DSharpPlus;
 using DSharpPlus.Entities;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,7 @@ namespace SilverBotDS
             {
                 throw new ArgumentException("The parameter @event needs to be an EmojiPoll", nameof(@event));
             }
+
             return RunEmojiEventAsync(@event);
         }
 
@@ -74,7 +76,9 @@ namespace SilverBotDS
                     pollResultText.Append(lang.PollResultsResultNo);
                 }
 
-                pollResultText.Append("**\n").Append(lang.PollResultsResultYes).Append(':').Append(yesVotes).Append(' ').Append(lang.PollResultsResultNo).Append(':').Append(noVotes).Append(' ').Append(lang.PollResultsResultUndecided).Append(": ")
+                pollResultText.Append("**\n").Append(lang.PollResultsResultYes).Append(':').Append(yesVotes).Append(' ')
+                    .Append(lang.PollResultsResultNo).Append(':').Append(noVotes).Append(' ')
+                    .Append(lang.PollResultsResultUndecided).Append(": ")
                     .Append(channel.Guild.Members.Count(x => !x.Value.IsBot) - (yesVotes + noVotes));
                 bob.WithDescription(pollResultText.ToString());
                 await msg.ModifyAsync(bob.Build());
@@ -87,6 +91,7 @@ namespace SilverBotDS
             {
                 throw new ArgumentException("The parameter @event needs to be an Reminder", nameof(@event));
             }
+
             return RunReminderEventAsync(@event);
         }
 
@@ -102,7 +107,8 @@ namespace SilverBotDS
                 DiscordMessageBuilder a = new();
                 a.WithReply(@event.MessageID, true);
                 a.WithContent($"<@!{@event.UserID.ToString(CultureInfo.InvariantCulture)}>");
-                a.AddEmbed(new DiscordEmbedBuilder().WithTitle(lang.ReminderContent).WithDescription(@event.Data).Build());
+                a.AddEmbed(new DiscordEmbedBuilder().WithTitle(lang.ReminderContent).WithDescription(@event.Data)
+                    .Build());
                 await a.SendAsync(channel);
             }
         }
@@ -113,6 +119,7 @@ namespace SilverBotDS
             {
                 throw new ArgumentException("The parameter @event needs to be an GiveAway", nameof(@event));
             }
+
             return RunGiveAwayEventAsync(@event);
         }
 
@@ -136,10 +143,10 @@ namespace SilverBotDS
                 }
                 else
                 {
-                    await channel.SendMessageAsync(string.Format(lang.GiveawayResultsWon, discordUsers[RandomGenerator.Next(0, discordUsers.Length)].Mention, msg.Embeds[0].Title));
+                    await channel.SendMessageAsync(string.Format(lang.GiveawayResultsWon,
+                        discordUsers[RandomGenerator.Next(0, discordUsers.Length)].Mention, msg.Embeds[0].Title));
                 }
             }
-         
         }
 
         public static async Task RunEventsAsync()
@@ -150,37 +157,44 @@ namespace SilverBotDS
             {
                 try
                 {
-                    var plannedEvents = dbctx.plannedEvents.Where(x=>x.Time < DateTime.Now && !x.Handled).ToArray();
+                    var plannedEvents = dbctx.plannedEvents.Where(x => x.Time < DateTime.Now && !x.Handled).ToArray();
                     foreach (var @event in plannedEvents)
                     {
-                            try
+                        try
+                        {
+                            CancellationTokenSource cts = new(15 * 1007);
+                            switch (@event.Type)
                             {
-                                CancellationTokenSource cts = new(15 * 1007);
-                                switch (@event.Type)
-                                {
-                                    case PlannedEventType.EmojiPoll: 
-                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunEmojiEvent(@event), cts.Token), cts));
-                                        break;
+                                case PlannedEventType.EmojiPoll:
+                                    taskService.AddSecondaryTask(Guid.NewGuid(),
+                                        new Tuple<Task, CancellationTokenSource>(
+                                            Task.Run(() => RunEmojiEvent(@event), cts.Token), cts));
+                                    break;
 
-                                    case PlannedEventType.GiveAway:
-                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunGiveAwayEvent(@event), cts.Token), cts));
-                                        break;
+                                case PlannedEventType.GiveAway:
+                                    taskService.AddSecondaryTask(Guid.NewGuid(),
+                                        new Tuple<Task, CancellationTokenSource>(
+                                            Task.Run(() => RunGiveAwayEvent(@event), cts.Token), cts));
+                                    break;
 
-                                    case PlannedEventType.Reminder:
-                                        taskService.AddSecondaryTask(Guid.NewGuid(), new(Task.Run(() => RunReminderEvent(@event), cts.Token), cts));
-                                        break;
+                                case PlannedEventType.Reminder:
+                                    taskService.AddSecondaryTask(Guid.NewGuid(),
+                                        new Tuple<Task, CancellationTokenSource>(
+                                            Task.Run(() => RunReminderEvent(@event), cts.Token), cts));
+                                    break;
 
-                                    default:
-                                        Log.Warning("DB event with unknown type was ignored, Type: {Type}", @event.Type);
-                                        break;
-                                }
-                                dbctx.plannedEvents.Remove(@event);
-                                await dbctx.SaveChangesAsync(cts.Token);
+                                default:
+                                    Log.Warning("DB event with unknown type was ignored, Type: {Type}", @event.Type);
+                                    break;
                             }
-                            catch (Exception e)
-                            {
-                                Log.Error(e, "exception happened in events thread in the switch case");
-                            }
+
+                            dbctx.plannedEvents.Remove(@event);
+                            await dbctx.SaveChangesAsync(cts.Token);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(e, "exception happened in events thread in the switch case");
+                        }
                     }
                 }
                 catch (Exception e)

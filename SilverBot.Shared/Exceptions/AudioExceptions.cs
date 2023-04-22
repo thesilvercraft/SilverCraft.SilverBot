@@ -15,9 +15,8 @@ namespace SilverBot.Shared.Exceptions
         public BotNotInVCException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
-
-
     }
+
     public class UserNotInVCException : Exception
     {
         public UserNotInVCException(string? message) : base(message)
@@ -27,14 +26,14 @@ namespace SilverBot.Shared.Exceptions
         public UserNotInVCException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
-
     }
+
     public class PlayerIsNullException : Exception
     {
         public PlayerIsNullException()
         {
-
         }
+
         public PlayerIsNullException(string? message) : base(message)
         {
         }
@@ -42,6 +41,5 @@ namespace SilverBot.Shared.Exceptions
         public PlayerIsNullException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
-
     }
 }

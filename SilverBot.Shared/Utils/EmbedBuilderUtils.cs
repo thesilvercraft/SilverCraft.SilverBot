@@ -9,14 +9,29 @@ namespace SilverBot.Shared.Utils
 {
     public static class EmbedBuilderUtils
     {
-        public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, CommandContext ctx, Language language) => 
-            AddRequestedByFooter(builder, ctx.User, language);
-        public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, BaseContext ctx, Language language) => 
-            AddRequestedByFooter(builder, ctx.User, language);
-        public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, ISilverBotContext ctx, Language language) => 
-            AddRequestedByFooter(builder, ctx.User, language);
-        public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, DiscordUser user, Language language) =>
-            builder.WithFooter(string.Format(language.RequestedBy, user.Username),
+        public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, CommandContext ctx,
+            Language language)
+        {
+            return AddRequestedByFooter(builder, ctx.User, language);
+        }
+
+        public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, BaseContext ctx,
+            Language language)
+        {
+            return AddRequestedByFooter(builder, ctx.User, language);
+        }
+
+        public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, ISilverBotContext ctx,
+            Language language)
+        {
+            return AddRequestedByFooter(builder, ctx.User, language);
+        }
+
+        public static DiscordEmbedBuilder AddRequestedByFooter(this DiscordEmbedBuilder builder, DiscordUser user,
+            Language language)
+        {
+            return builder.WithFooter(string.Format(language.RequestedBy, user.Username),
                 user.GetAvatarUrl(ImageFormat.Png));
+        }
     }
 }

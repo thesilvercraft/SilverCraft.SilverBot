@@ -8,51 +8,52 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using SilverBot.Shared.Exceptions;
 
-namespace SilverBot.Shared.Utils;
-
-public static class MinecraftUtils
+namespace SilverBot.Shared.Utils
 {
-    private const string GetProfileUrl = "https://api.mojang.com/users/profiles/minecraft/{0}";
-    private const string CrafatarBaseUrl = "https://crafatar.com/";
-
-    public static async Task<Player> GetPlayerAsync(string name, HttpClient httpClient)
+    public static class MinecraftUtils
     {
-        var uri = new UriBuilder(string.Format(GetProfileUrl, name));
-        var rm = await httpClient.GetAsync(uri.Uri);
-        var player = JsonSerializer.Deserialize<Player>(await rm.Content.ReadAsStringAsync());
-        if (player != null && !string.IsNullOrEmpty(player.Error))
+        private const string GetProfileUrl = "https://api.mojang.com/users/profiles/minecraft/{0}";
+        private const string CrafatarBaseUrl = "https://crafatar.com/";
+
+        public static async Task<Player> GetPlayerAsync(string name, HttpClient httpClient)
         {
-            throw new MojangException(player.Error, player.ErrorMessage);
+            var uri = new UriBuilder(string.Format(GetProfileUrl, name));
+            var rm = await httpClient.GetAsync(uri.Uri);
+            var player = JsonSerializer.Deserialize<Player>(await rm.Content.ReadAsStringAsync());
+            if (player != null && !string.IsNullOrEmpty(player.Error))
+            {
+                throw new MojangException(player.Error, player.ErrorMessage);
+            }
+
+            return player;
         }
 
-        return player;
-    }
-
-    public class Player
-    {
-        [JsonPropertyName("name")] public string Name { get; set; }
-
-        [JsonPropertyName("id")] public string Id { get; set; }
-
-        [JsonPropertyName("error")] public string Error { get; set; }
-
-        [JsonPropertyName("errorMessage")] public string ErrorMessage { get; set; }
-
-        [JsonPropertyName("demo")] public bool Demo { get; set; }
-
-        public string GetAvatarUrl()
+        public class Player
         {
-            return $"{CrafatarBaseUrl}avatars/{Id}";
-        }
+            [JsonPropertyName("name")] public string Name { get; set; }
 
-        public string GetHeadUrl()
-        {
-            return $"{CrafatarBaseUrl}renders/head/{Id}";
-        }
+            [JsonPropertyName("id")] public string Id { get; set; }
 
-        public string GetBodyUrl()
-        {
-            return $"{CrafatarBaseUrl}renders/body/{Id}";
+            [JsonPropertyName("error")] public string Error { get; set; }
+
+            [JsonPropertyName("errorMessage")] public string ErrorMessage { get; set; }
+
+            [JsonPropertyName("demo")] public bool Demo { get; set; }
+
+            public string GetAvatarUrl()
+            {
+                return $"{CrafatarBaseUrl}avatars/{Id}";
+            }
+
+            public string GetHeadUrl()
+            {
+                return $"{CrafatarBaseUrl}renders/head/{Id}";
+            }
+
+            public string GetBodyUrl()
+            {
+                return $"{CrafatarBaseUrl}renders/body/{Id}";
+            }
         }
     }
 }

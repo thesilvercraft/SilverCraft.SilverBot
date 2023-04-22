@@ -11,14 +11,16 @@ namespace SilverBot.Shared.Pagination
             BibiDescText = _bibiDescText;
             Lang = lang;
             User = user;
-            AllowedRange= new Range(0,_bibiDescText.Length);
+            AllowedRange = new Range(0, _bibiDescText.Length);
         }
+
         private string[] BibiDescText;
         private Language Lang;
         private DiscordUser User;
 
         private string UrlFormat;
         public int DefaultId { get; } = 0;
+
         public ILazyPage GetPageAtId(int id)
         {
             return new BibiPage(id, UrlFormat, BibiDescText, Lang, User);

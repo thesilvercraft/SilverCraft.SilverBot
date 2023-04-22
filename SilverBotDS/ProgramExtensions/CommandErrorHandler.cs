@@ -16,6 +16,8 @@ using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using DSharpPlus.SlashCommands;
+using DSharpPlus.SlashCommands.EventArgs;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
@@ -123,27 +125,130 @@ namespace SilverBotDS.ProgramExtensions
                     userAndBotPermissions.Permissions.Humanize(LetterCasing.LowerCase)),
                 RequireAttachmentAttribute attachmentAttribute when
                     e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount =>
-                    ((string?)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang)) ??
+                    (string?)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang) ??
                     "Too many attachments (mini error 21d74757-ee71-42e0-a4e7-02d3b17336a2)",
                 RequireAttachmentAttribute attachmentAttribute => (string?)typeof(Language)
                                                                       .GetProperty(attachmentAttribute.LessThenLang)
                                                                       ?.GetValue(lang) ??
                                                                   "Not enough attachments (mini error 80d5e4d1-3c5c-43b3-8b97-5d3e419d275e)",
                 _ => string.Format(lang.CheckFailed,
-                    checkBase.GetType().Name.RemoveStringFromEnd("Attribute").Humanize()),
+                    checkBase.GetType().Name.RemoveStringFromEnd("Attribute").Humanize())
             };
+        }
+
+        private static string RenderErrorMessageForAttribute(SlashCheckBaseAttribute checkBase, Language lang,
+            bool isinguild, SlashCommandErrorEventArgs e)
+        {
+            var type = checkBase.GetType();
+            return checkBase switch
+            {
+                _ => string.Format(lang.CheckFailed, type.Name.RemoveStringFromEnd("Attribute").Humanize())
+            };
+        }
+
+        public static async Task ExceptionFormatAndHandle(dynamic e, Func<string, Task> respondWithContent)
+        {
+            var languageService = ServiceProvider.GetService<LanguageService>();
+            var lang = await languageService?.FromCtxAsync(e.Context)!;
+            if (e is CommandErrorEventArgs a)
+            {
+                switch (e.Exception)
+                {
+                    case InvalidOverloadException:
+                    case ArgumentException { Message: "Could not find a suitable overload for the command." }:
+
+                        await respondWithContent(string.Format(lang.InvalidOverload, a.Context.Command?.Name));
+                        return;
+                    case ChecksFailedException { FailedChecks.Count: 1 } cfe:
+                        await respondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
+                            e.Context.Guild != null, a));
+                        return;
+                    case ChecksFailedException cfe:
+                    {
+                        var embedBuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
+                        var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: embedBuilder
+                                .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
+                                .WithDescription(
+                                    RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, a))))
+                            .ToList();
+
+                        var interactivity = e.Context.Client.GetInteractivity();
+                        await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
+                            token: new CancellationToken());
+                        return;
+                    }
+                }
+            }
+            else if (e is SlashCommandErrorEventArgs b)
+            {
+                switch (e.Exception)
+                {
+                    case SlashExecutionChecksFailedException cfe when cfe.FailedChecks.Count is 1:
+                        await respondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
+                            e.Context.Guild != null, e));
+                        return;
+                    case SlashExecutionChecksFailedException cfe:
+                    {
+                        var builder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
+                        var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: builder
+                                .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
+                                .WithDescription(
+                                    RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
+                            .ToList();
+                        var interactivity = e.Context.Client.GetInteractivity();
+                        await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
+                            token: new CancellationToken());
+                        return;
+                    }
+                    case InvalidOverloadException:
+                    case ArgumentException { Message: "Could not find a suitable overload for the command." }:
+                        await respondWithContent(string.Format(lang.InvalidOverload, e.Context.CommandName));
+                        return;
+                }
+            }
+
+            switch (e.Exception)
+            {
+                case InvalidOperationException
+                {
+                    Message: "No matching subcommands were found, and this group is not executable."
+                }:
+                    await respondWithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable);
+                    break;
+                case InvalidOperationException
+                {
+                    Message:
+                    "The node socket has not been initialized. Call 'InitializeAsync()' before sending payloads."
+                }:
+                    await respondWithContent(lang.LavalinkNotSetup);
+                    break;
+                case NetVips.VipsException
+                {
+                    Message:
+                    "unable to load from source\nVipsForeignLoad: buffer is not in a known format\n"
+                }:
+                    await respondWithContent(lang.UnknownImageFormat);
+                    break;
+                case AttachmentCountIncorrectException
+                {
+                    AttachmentCount: AttachmentCountIncorrect.TooManyAttachments
+                }:
+                    await respondWithContent(lang.WrongImageCount);
+                    break;
+                case AttachmentCountIncorrectException:
+                    await respondWithContent(lang.NoImageGeneric);
+                    break;
+                case OutOfMemoryException:
+                    await respondWithContent("bot OOM");
+                    break;
+                default:
+                    await respondWithContent(lang.GeneralException);
+                    break;
+            }
         }
 
         private static async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
-            async Task RespondWithContent(string content)
-            {
-                await new DiscordMessageBuilder()
-                    .WithReply(e.Context.Message.Id)
-                    .WithContent(content)
-                    .SendAsync(e.Context.Channel);
-            }
-
             if (UseAnalytics)
             {
                 var analytics = ServiceProvider.GetService<IAnalyse>();
@@ -161,73 +266,13 @@ namespace SilverBotDS.ProgramExtensions
                     .PermissionsFor(await e.Context.Guild.GetMemberAsync(sender.Client.CurrentUser.Id))
                     .HasPermission(Permissions.SendMessages)) && e.Exception is not CommandNotFoundException)
             {
-                var languageService = ServiceProvider.GetService<LanguageService>();
-                var lang = await languageService?.FromCtxAsync(e.Context)!;
-                switch (e.Exception)
+                await ExceptionFormatAndHandle(e, async (x) =>
                 {
-                    case ChecksFailedException { FailedChecks.Count: 1 } cfe:
-                        await RespondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
-                            e.Context.Guild != null, e));
-                        break;
-
-                    case ChecksFailedException cfe:
-                    {
-                        var embedBuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
-                        var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: embedBuilder
-                                .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
-                                .WithDescription(
-                                    RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
-                            .ToList();
-
-                        var interactivity = e.Context.Client.GetInteractivity();
-                        await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
-                            token: new CancellationToken());
-                        break;
-                    }
-                    case InvalidOverloadException:
-                    case ArgumentException { Message: "Could not find a suitable overload for the command." }:
-                        await RespondWithContent(string.Format(lang.InvalidOverload, e.Context.Command?.Name));
-                        break;
-
-                    case InvalidOperationException
-                    {
-                        Message: "No matching subcommands were found, and this group is not executable."
-                    }:
-                        await RespondWithContent(lang.NoMatchingSubcommandsAndGroupNotExecutable);
-                        break;
-                    case InvalidOperationException
-                    {
-                        Message:
-                        "The node socket has not been initialized. Call 'InitializeAsync()' before sending payloads."
-                    }:
-                        await RespondWithContent(lang.LavalinkNotSetup);
-                        break;
-                    case NetVips.VipsException
-                    {
-                        Message:
-                        "unable to load from source\nVipsForeignLoad: buffer is not in a known format\n"
-                    }:
-                        await RespondWithContent(lang.UnknownImageFormat);
-                        break;
-
-
-                    case AttachmentCountIncorrectException
-                    {
-                        AttachmentCount: AttachmentCountIncorrect.TooManyAttachments
-                    }:
-                        await RespondWithContent(lang.WrongImageCount);
-                        break;
-
-                    case AttachmentCountIncorrectException:
-                        await RespondWithContent(lang.NoImageGeneric);
-                        break;
-                    case OutOfMemoryException:
-                        await RespondWithContent("bot OOM");
-                        break;
-                    default:
-                        await RespondWithContent(lang.GeneralException);
-                        break;
-                }
+                    await new DiscordMessageBuilder()
+                        .WithReply(e.Context.Message.Id)
+                        .WithContent(x)
+                        .SendAsync(e.Context.Channel);
+                });
             }
 
             Log.Error(e.Exception,

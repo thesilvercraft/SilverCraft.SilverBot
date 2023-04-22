@@ -17,6 +17,7 @@ namespace SilverBotDS
     {
         private readonly IItemsClient _itemsClient;
         private readonly Config _config;
+
         public JellyFinLookupService(HttpClient client, Config config)
         {
             _config = config;
@@ -35,36 +36,46 @@ namespace SilverBotDS
             BaseItemDtoQueryResult? itemsResponse;
             if (Guid.TryParse(name, out var x))
             {
-                 itemsResponse = await _itemsClient.GetItemsAsync(userId: Guid.Parse(_config.ExtraParams["JellyFinLookupService.ParentUserId"]),
-                    recursive: true, parentId: Guid.Parse( _config.ExtraParams["JellyFinLookupService.ParentLibId"]), ids: new []{x},
+                itemsResponse = await _itemsClient.GetItemsAsync(
+                    Guid.Parse(_config.ExtraParams["JellyFinLookupService.ParentUserId"]),
+                    recursive: true, parentId: Guid.Parse(_config.ExtraParams["JellyFinLookupService.ParentLibId"]),
+                    ids: new[] { x },
                     includeItemTypes: new List<BaseItemKind>
                     {
                         BaseItemKind.Audio, BaseItemKind.MusicAlbum
-                    }, sortBy: new []{"ParentIndexNumber","IndexNumber","SortName"}).ConfigureAwait(false);
+                    }, sortBy: new[] { "ParentIndexNumber", "IndexNumber", "SortName" }).ConfigureAwait(false);
             }
             else
             {
-                itemsResponse= await _itemsClient.GetItemsAsync(userId: Guid.Parse(_config.ExtraParams["JellyFinLookupService.ParentUserId"]),
-                    searchTerm: name, recursive: true, parentId: Guid.Parse( _config.ExtraParams["JellyFinLookupService.ParentLibId"]),
+                itemsResponse = await _itemsClient.GetItemsAsync(
+                    Guid.Parse(_config.ExtraParams["JellyFinLookupService.ParentUserId"]),
+                    searchTerm: name, recursive: true,
+                    parentId: Guid.Parse(_config.ExtraParams["JellyFinLookupService.ParentLibId"]),
                     includeItemTypes: new List<BaseItemKind>
                     {
                         BaseItemKind.Audio, BaseItemKind.MusicAlbum
                     }).ConfigureAwait(false);
             }
- 
+
             switch (itemsResponse.Items[0].Type)
             {
                 case BaseItemKind.MusicAlbum:
-                    itemsResponse = await _itemsClient.GetItemsAsync(userId: Guid.Parse(_config.ExtraParams["JellyFinLookupService.ParentUserId"]),
+                    itemsResponse = await _itemsClient.GetItemsAsync(
+                        Guid.Parse(_config.ExtraParams["JellyFinLookupService.ParentUserId"]),
                         parentId: itemsResponse.Items[0].Id, includeItemTypes: new List<BaseItemKind>
                         {
                             BaseItemKind.Audio
-                        }, sortBy: new []{"ParentIndexNumber","IndexNumber","SortName"}).ConfigureAwait(false);
-                    return itemsResponse.Items.Select(s => _config.ExtraParams["JellyFinLookupService.BaseUrlNoSlash"]+ "/Items/" + s.Id + "/Download?api_key=" + _config.ExtraParams["JellyFinLookupService.ApiKey"]+"&ignoreplsindex="+s.IndexNumber).ToList();
+                        }, sortBy: new[] { "ParentIndexNumber", "IndexNumber", "SortName" }).ConfigureAwait(false);
+                    return itemsResponse.Items.Select(s =>
+                        _config.ExtraParams["JellyFinLookupService.BaseUrlNoSlash"] + "/Items/" + s.Id +
+                        "/Download?api_key=" + _config.ExtraParams["JellyFinLookupService.ApiKey"] +
+                        "&ignoreplsindex=" + s.IndexNumber).ToList();
                 case BaseItemKind.Audio:
                     return new List<string>()
                     {
-                        _config.ExtraParams["JellyFinLookupService.BaseUrlNoSlash"]+"/Items/" + itemsResponse.Items[0].Id + "/Download?api_key=" + _config.ExtraParams["JellyFinLookupService.ApiKey"]
+                        _config.ExtraParams["JellyFinLookupService.BaseUrlNoSlash"] + "/Items/" +
+                        itemsResponse.Items[0].Id + "/Download?api_key=" +
+                        _config.ExtraParams["JellyFinLookupService.ApiKey"]
                     };
                 case BaseItemKind.AggregateFolder:
                 case BaseItemKind.AudioBook:

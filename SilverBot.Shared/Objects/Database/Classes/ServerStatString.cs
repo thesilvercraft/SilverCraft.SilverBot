@@ -7,34 +7,36 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus.Entities;
 using SilverBot.Shared.Utils;
 
-namespace SilverBot.Shared.Objects.Database.Classes;
-
-public class ServerStatString
+namespace SilverBot.Shared.Objects.Database.Classes
 {
-    public ServerStatString()
+    public class ServerStatString
     {
-    }
-
-    public ServerStatString(string template)
-    {
-        Template = template;
-    }
-
-    public string Template { get; set; }
-    public string Serialize(Dictionary<string, string> dict)
-    {
-        return Template.FormatFromDictionary(dict);
-    }
-
-    public static async Task<Dictionary<string, string>> GetStringDictionaryAsync(DiscordGuild guild)
-    {
-        var allmembers = await guild.GetAllMembersAsync();
-        return new Dictionary<string, string>
+        public ServerStatString()
         {
-            ["AllMembersCount"] = NumberUtils.FormatSize(guild.MemberCount),
-            ["MemberCount"] = NumberUtils.FormatSize(allmembers.LongCount(x => !x.IsBot)),
-            ["BotsCount"] = NumberUtils.FormatSize(allmembers.LongCount(x => x.IsBot)),
-            ["BoostCount"] = NumberUtils.FormatSize((int)guild.PremiumSubscriptionCount)
-        };
+        }
+
+        public ServerStatString(string template)
+        {
+            Template = template;
+        }
+
+        public string Template { get; set; }
+
+        public string Serialize(Dictionary<string, string> dict)
+        {
+            return Template.FormatFromDictionary(dict);
+        }
+
+        public static async Task<Dictionary<string, string>> GetStringDictionaryAsync(DiscordGuild guild)
+        {
+            var allmembers = await guild.GetAllMembersAsync();
+            return new Dictionary<string, string>
+            {
+                ["AllMembersCount"] = NumberUtils.FormatSize(guild.MemberCount),
+                ["MemberCount"] = NumberUtils.FormatSize(allmembers.LongCount(x => !x.IsBot)),
+                ["BotsCount"] = NumberUtils.FormatSize(allmembers.LongCount(x => x.IsBot)),
+                ["BoostCount"] = NumberUtils.FormatSize((int)guild.PremiumSubscriptionCount)
+            };
+        }
     }
 }

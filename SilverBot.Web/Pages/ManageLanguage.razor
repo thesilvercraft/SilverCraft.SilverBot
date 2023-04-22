@@ -26,7 +26,7 @@
 @{
     JsonSerializerOptions options = new()
     {
-        WriteIndented = true,
+        WriteIndented = true
     };
     var auser = AuthenticationStateProvider.AuthState();
     var uid = auser.User.PUID();
@@ -42,14 +42,17 @@
     }
     var language = translator.CustomLanguages.ToList().ElementAt(Id);
     var json = JsonSerializer.Serialize(language, options);
+
     async Task Downloadlanguage()
     {
         await _jsRuntime.InvokeVoidAsync("download", json, "language.json", "application/json");
     }
+
     void UpdateHeading()
     {
         _bindmaterial = json;
     }
+
     void HandleValidSubmit()
     {
         var o = _dbctx.translatorSettings.FirstOrDefault(x => x.Id == uid);

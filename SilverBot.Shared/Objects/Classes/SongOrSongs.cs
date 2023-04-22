@@ -8,28 +8,29 @@ You should have received a copy of the GNU General Public License along with Sil
 
 using Lavalink4NET.Player;
 
-namespace SilverBot.Shared.Objects.Classes;
-
-public class SongORSongs
+namespace SilverBot.Shared.Objects.Classes
 {
-    public SongORSongs(LavalinkTrack song, string? nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs)
+    public class SongORSongs
     {
-        Song = song;
-        NameOfPlayList = nameofplaylist;
-        GetRestOfSongs = songs;
-    }
+        public SongORSongs(LavalinkTrack song, string? nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs)
+        {
+            Song = song;
+            NameOfPlayList = nameofplaylist;
+            GetRestOfSongs = songs;
+        }
 
-    public SongORSongs(LavalinkTrack song, string? nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs,
-        TimeSpan startime)
-    {
-        Song = song;
-        NameOfPlayList = nameofplaylist;
-        GetRestOfSongs = songs;
-        SongStartTime = startime;
-    }
+        public SongORSongs(LavalinkTrack song, string? nameofplaylist, IAsyncEnumerable<LavalinkTrack>? songs,
+            TimeSpan startime)
+        {
+            Song = song;
+            NameOfPlayList = nameofplaylist;
+            GetRestOfSongs = songs;
+            SongStartTime = startime;
+        }
 
-    public LavalinkTrack? Song { get; set; }
-    public TimeSpan? SongStartTime { get; set; }
-    public string? NameOfPlayList { get; set; }
-    public IAsyncEnumerable<LavalinkTrack>? GetRestOfSongs { get; set; }
+        public LavalinkTrack? Song { get; set; }
+        public TimeSpan? SongStartTime { get; set; }
+        public string? NameOfPlayList { get; set; }
+        public IAsyncEnumerable<LavalinkTrack>? GetRestOfSongs { get; set; }
+    }
 }

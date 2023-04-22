@@ -5,26 +5,30 @@ You should have received a copy of the GNU General Public License along with Sil
 */
 
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
-namespace SilverBot.Shared.Objects.Database.Classes;
-
-public class UserSettings
+namespace SilverBot.Shared.Objects.Database.Classes
 {
-    /// <summary>
-    ///     The user id
-    /// </summary>
-    [Key]
-    public ulong Id { get; init; }
+    [PrimaryKey("Id")]
+    public class UserSettings
+    {
+        /// <summary>
+        ///     The user id
+        /// </summary>
+        [Key]
+        public ulong Id { get; init; }
 
-    /// <summary>
-    ///     The two (to four) letter code for the language
-    /// </summary>
-    public string LangName { get; set; }
+        /// <summary>
+        ///     The two (to four) letter code for the language
+        /// </summary>
+        public string LangName { get; set; } = "en";
 
-    /// <summary>
-    ///     See if an user is banned
-    /// </summary>
-    public bool IsBanned { get; set; }
+        /// <summary>
+        ///     See if an user is banned
+        /// </summary>
+        public bool IsBanned { get; set; }
 
-    public bool UsesNewMusicPage { get; set; } = false;
+        public bool UsesNewMusicPage { get; set; } = false;
+        public virtual List<BingRankingData> BingRankingData { get; set; } = new();
+    }
 }

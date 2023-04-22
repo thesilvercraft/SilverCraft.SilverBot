@@ -10,32 +10,35 @@ using DSharpPlus.CommandsNext.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using SilverBot.Shared.Objects;
 
-namespace SilverBot.Shared.Attributes;
-
-public class RequireTranslatorAttribute : CheckBaseAttribute
+namespace SilverBot.Shared.Attributes
 {
-    public RequireTranslatorAttribute(bool inchannel = false)
+    public class RequireTranslatorAttribute : CheckBaseAttribute
     {
-        InChannel = inchannel;
-    }
-
-    private bool InChannel { get; }
-
-    public override async Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
-    {
-        var conf = ctx.CommandsNext.Services.GetService<Config>();
-        return await IsTranslator(conf, ctx.Client, ctx.User.Id, InChannel ? ctx.Channel.Id : null);
-    }
-
-    public static async Task<bool> IsTranslator(Config cnf, DiscordClient client, ulong userid, ulong? channelid = null)
-    {
-        if (!(!channelid.HasValue || channelid == cnf.TranslatorModeChannel))
+        public RequireTranslatorAttribute(bool inchannel = false)
         {
-            return false;
+            InChannel = inchannel;
         }
-        var gld = await client.GetGuildAsync(cnf.ServerId);
-        return gld.Members.ContainsKey(userid)
-               && gld.Members[userid].Roles
-               .Any(x => x.Id == cnf.TranslatorRoleId);
+
+        private bool InChannel { get; }
+
+        public override async Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
+        {
+            var conf = ctx.CommandsNext.Services.GetService<Config>();
+            return await IsTranslator(conf, ctx.Client, ctx.User.Id, InChannel ? ctx.Channel.Id : null);
+        }
+
+        public static async Task<bool> IsTranslator(Config cnf, DiscordClient client, ulong userid,
+            ulong? channelid = null)
+        {
+            if (!(!channelid.HasValue || channelid == cnf.TranslatorModeChannel))
+            {
+                return false;
+            }
+
+            var gld = await client.GetGuildAsync(cnf.ServerId);
+            return gld.Members.ContainsKey(userid)
+                   && gld.Members[userid].Roles
+                       .Any(x => x.Id == cnf.TranslatorRoleId);
+        }
     }
 }

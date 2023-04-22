@@ -9,14 +9,14 @@ namespace SilverBot.Shared
         public bool CheckForAsset(string asset);
     }
 
-    public class FileAssetSchemeChecker :IAssetSchemeChecker
+    public class FileAssetSchemeChecker : IAssetSchemeChecker
     {
         public string Scheme => "file://";
+
         public bool CheckForAsset(string asset)
         {
             var file = asset.RemoveStringFromStart("file://");
             return File.Exists(file);
         }
     }
-    
 }

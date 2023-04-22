@@ -10,7 +10,8 @@ namespace SilverBot.Shared.Utils
 {
     public static class DateTimeUtils
     {
-        public static string DateTimeToTimeStamp(this DateTime? dt, TimestampFormat tf = TimestampFormat.RelativeTime, string def = "NA")
+        public static string DateTimeToTimeStamp(this DateTime? dt, TimestampFormat tf = TimestampFormat.RelativeTime,
+            string def = "NA")
         {
             return dt != null ? DateTimeToTimeStamp((DateTime)dt, tf) : def;
         }

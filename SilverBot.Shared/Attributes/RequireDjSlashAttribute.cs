@@ -7,16 +7,17 @@ You should have received a copy of the GNU General Public License along with Sil
 using DSharpPlus;
 using DSharpPlus.SlashCommands;
 
-namespace SilverBot.Shared.Attributes;
-
-public class RequireDjSlashAttribute : SlashCheckBaseAttribute
+namespace SilverBot.Shared.Attributes
 {
-    public override Task<bool> ExecuteChecksAsync(InteractionContext ctx)
+    public class RequireDjSlashAttribute : SlashCheckBaseAttribute
     {
-        return Task.FromResult(
-              ctx.Member.Roles.Any(e =>
-                  e.CheckPermission(Permissions.ManageChannels) == PermissionLevel.Allowed ||
-                  e.Name.Contains("dj", StringComparison.OrdinalIgnoreCase)) ||
-              ctx.Member.VoiceState?.Channel?.Users?.LongCount(x => !x.IsBot) == 1);
+        public override Task<bool> ExecuteChecksAsync(InteractionContext ctx)
+        {
+            return Task.FromResult(
+                ctx.Member.Roles.Any(e =>
+                    e.CheckPermission(Permissions.ManageChannels) == PermissionLevel.Allowed ||
+                    e.Name.Contains("dj", StringComparison.OrdinalIgnoreCase)) ||
+                ctx.Member.VoiceState?.Channel?.Users?.LongCount(x => !x.IsBot) == 1);
+        }
     }
 }

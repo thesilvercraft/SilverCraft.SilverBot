@@ -3,14 +3,16 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
-namespace SilverBot.Shared.Utils;
 
-public static class ArrayUtils
+namespace SilverBot.Shared.Utils
 {
-    public static T RandomFrom<T>(this T[] vs)
+    public static class ArrayUtils
     {
-        return vs.Length == 0
-            ? throw new ArgumentOutOfRangeException(nameof(vs), "Array must not be empty")
-            : vs[RandomGenerator.Next(0, vs.Length - 1)];
+        public static T RandomFrom<T>(this T[] vs)
+        {
+            return vs.Length == 0
+                ? throw new ArgumentOutOfRangeException(nameof(vs), "Array must not be empty")
+                : vs[RandomGenerator.Next(0, vs.Length - 1)];
+        }
     }
 }

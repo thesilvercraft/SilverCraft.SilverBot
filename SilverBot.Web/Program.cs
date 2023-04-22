@@ -3,6 +3,7 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Radzen;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ if (Debugger.IsAttached && !Environment.CurrentDirectory.EndsWith("bin\\Debug\\n
         ? "\\bin\\Debug\\net7.0"
         : "/bin/Debug/net7.0";
 }
+
 await SilverBotDS.Program.MainAsync(true);
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -32,7 +34,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.LoginPath = "/api/unauthorized";
     //options.LogoutPath = "/logout";
     options.ExpireTimeSpan = new TimeSpan(7, 0, 0, 0);
-}).AddDiscord(options => {
+}).AddDiscord(options =>
+{
     options.ClientId = SilverBotDS.Program._config.LoginPageDiscordClientId.ToString();
     options.ClientSecret = SilverBotDS.Program._config.LoginPageDiscordClientSecret;
     options.SaveTokens = true;
@@ -41,7 +44,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         OnCreatingTicket = context =>
         {
-            var guildClaim = new Claim( "DiscordToken",context.AccessToken ?? throw new InvalidOperationException());
+            var guildClaim = new Claim("DiscordToken", context.AccessToken ?? throw new InvalidOperationException());
             context.Identity?.AddClaim(guildClaim);
             return Task.CompletedTask;
         }

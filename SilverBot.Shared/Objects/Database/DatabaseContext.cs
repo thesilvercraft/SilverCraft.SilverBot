@@ -11,267 +11,238 @@ using Serilog;
 using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Database.Classes.ReactionRole;
 
-namespace SilverBot.Shared.Objects.Database;
-
-public class DatabaseContext : DbContext
+namespace SilverBot.Shared.Objects.Database
 {
-    private readonly ServerStatString[] StatsTemplates =
+    public class DatabaseContext : DbContext
     {
-        new("All Members: {AllMembersCount}"), new("Members: {MemberCount}"), new("Bots: {BotsCount}"),
-        new("Boosts: {BoostCount}")
-    };
-
-    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
-    {
-    }
-
-    /// <summary>
-    ///     This method is used to delete all references of a user from the database.
-    /// </summary>
-    public async Task RemoveUser(ulong userId)
-    {
-        var user = await userSettings.FirstOrDefaultAsync(x => x.Id == userId);
-        if (user != null)
+        private readonly ServerStatString[] StatsTemplates =
         {
-            userSettings.Remove(user);
-            await SaveChangesAsync();
+            new("All Members: {AllMembersCount}"), new("Members: {MemberCount}"), new("Bots: {BotsCount}"),
+            new("Boosts: {BoostCount}")
+        };
+
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        {
         }
 
-        var userExp = await userExperiences.FirstOrDefaultAsync(x => x.Id == userId);
-        if (userExp != null)
+        /// <summary>
+        ///     This method is used to delete all references of a user from the database.
+        /// </summary>
+        public async Task RemoveUser(ulong userId)
         {
-            userExperiences.Remove(userExp);
-            await SaveChangesAsync();
+            var user = await userSettings.FirstOrDefaultAsync(x => x.Id == userId);
+            if (user != null)
+            {
+                userSettings.Remove(user);
+                await SaveChangesAsync();
+            }
+
+            var userExp = await userExperiences.FirstOrDefaultAsync(x => x.Id == userId);
+            if (userExp != null)
+            {
+                userExperiences.Remove(userExp);
+                await SaveChangesAsync();
+            }
+
+
+            var translatorSetting = await translatorSettings.FirstOrDefaultAsync(x => x.Id == userId);
+            if (translatorSetting != null)
+            {
+                translatorSettings.Remove(translatorSetting);
+                await SaveChangesAsync();
+            }
+
+            var plannedevents = await plannedEvents.Where(x => x.UserID == userId).ToListAsync();
+            if (plannedevents.Count > 0)
+            {
+                plannedEvents.RemoveRange(plannedevents);
+                await SaveChangesAsync();
+            }
         }
 
-        var userQuote = await userQuotes.FirstOrDefaultAsync(x => x.UserId == userId);
-        if (userQuote != null)
+
+        public string GetLangCodeUser(ulong id)
         {
-            userQuotes.Remove(userQuote);
-            await SaveChangesAsync();
+            return userSettings.FirstOrDefault(x => x.Id == id)?.LangName ?? "en";
         }
 
-        var translatorSetting = await translatorSettings.FirstOrDefaultAsync(x => x.Id == userId);
-        if (translatorSetting != null)
+        public Tuple<ulong, ulong?, ServerStatString[]>[] GetStatisticSettings()
         {
-            translatorSettings.Remove(translatorSetting);
-            await SaveChangesAsync();
+            return serverSettings.Where(x => x.ServerStatsCategoryId != null).Select(x =>
+                    new Tuple<ulong, ulong?, ServerStatString[]>(x.ServerId, x.ServerStatsCategoryId,
+                        x.ServerStatsTemplates))
+                .ToArray();
         }
 
-        var plannedevents = await plannedEvents.Where(x => x.UserID == userId).ToListAsync();
-        if (plannedevents.Count > 0)
+        public ServerSettings GetServerSettings(ulong id)
         {
-            plannedEvents.RemoveRange(plannedevents);
-            await SaveChangesAsync();
-        }
-    }
+            var a = serverSettings.FirstOrDefault(x => x.ServerId == id);
+            if (a != null)
+            {
+                return a;
+            }
 
-
-    public string GetLangCodeUser(ulong id)
-    {
-        return userSettings.FirstOrDefault(x => x.Id == id)?.LangName ?? "en";
-    }
-
-    public Tuple<ulong, ulong?, ServerStatString[]>[] GetStatisticSettings()
-    {
-        return serverSettings.Where(x => x.ServerStatsCategoryId != null).Select(x =>
-                new Tuple<ulong, ulong?, ServerStatString[]>(x.ServerId, x.ServerStatsCategoryId,
-                    x.ServerStatsTemplates))
-            .ToArray();
-    }
-
-    public ServerSettings GetServerSettings(ulong id)
-    {
-        var a = serverSettings.FirstOrDefault(x => x.ServerId == id);
-        if (a != null)
-        {
+            a = new ServerSettings
+            {
+                ServerId = id
+            };
+            serverSettings.Add(a);
+            SaveChanges();
             return a;
         }
-        a = new ServerSettings
+
+        public string GetLangCodeGuild(ulong id)
         {
-            ServerId = id
-        };
-        serverSettings.Add(a);
-        SaveChanges();
-        return a;
-    }
-
-    public string GetLangCodeGuild(ulong id)
-    {
-        return serverSettings.FirstOrDefault(x => x.ServerId == id)?.LangName ?? "en";
-    }
-
-
-    public bool IsBanned(ulong id)
-    {
-        return userSettings.Any(x => x.Id == id && x.IsBanned);
-    }
-
-
-
-    public void SetServerStatsCategory(ulong sid, ulong? id)
-    {
-        var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
-        if (serversettings is not null)
-        {
-            serversettings.ServerStatsCategoryId = id;
-            serverSettings.Update(serversettings);
+            return serverSettings.FirstOrDefault(x => x.ServerId == id)?.LangName ?? "en";
         }
-        else
+
+        public bool IsBanned(ulong id)
         {
-            serverSettings.Add(new ServerSettings
+            return userSettings.Any(x => x.Id == id && x.IsBanned);
+        }
+
+        public void SetServerStatsCategory(ulong sid, ulong? id)
+        {
+            UpsertServerSettings(sid, (settings, _) => settings.ServerStatsCategoryId = id);
+        }
+
+        public void UpsertServerSettings(ulong serverId, Action<ServerSettings, bool> action)
+        {
+            var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == serverId);
+            if (serversettings is not null)
             {
-                ServerId = sid,
-                ServerStatsCategoryId = id
-            });
-        }
-
-        SaveChanges();
-    }
-
-    public void SetServerPrefixes(ulong sid, string[] prefixes)
-    {
-        var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
-        if (serversettings is not null)
-        {
-            serversettings.Prefixes = prefixes;
-            serverSettings.Update(serversettings);
-        }
-        else
-        {
-            serverSettings.Add(new ServerSettings
-            {
-                ServerId = sid,
-                Prefixes = prefixes
-            });
-        }
-
-        SaveChanges();
-    }
-
-    public void SetServerStatStrings(ulong sid, ServerStatString[]? id)
-    {
-        id ??= StatsTemplates;
-        var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == sid);
-        if (serversettings is not null)
-        {
-            serversettings.ServerStatsTemplates = id;
-            serverSettings.Update(serversettings);
-        }
-        else
-        {
-            serverSettings.Add(new ServerSettings
-            {
-                ServerId = sid,
-                ServerStatsTemplates = id
-            });
-        }
-
-        SaveChanges();
-    }
-
-    public void ToggleBanUser(ulong id, bool BAN)
-    {
-        var usersettings = userSettings.FirstOrDefault(x => x.Id == id);
-        if (usersettings is not null)
-        {
-            usersettings.IsBanned = BAN;
-            userSettings.Update(usersettings);
-        }
-        else
-        {
-            userSettings.Add(new UserSettings
-            {
-                Id = id,
-                IsBanned = BAN
-            });
-        }
-
-        SaveChanges();
-    }
-
-    public void InserOrUpdateLangCodeUser(ulong id, string lang)
-    {
-        var usersettings = userSettings.FirstOrDefault(x => x.Id == id);
-        if (usersettings is not null)
-        {
-            usersettings.LangName = lang;
-            userSettings.Update(usersettings);
-        }
-        else
-        {
-            userSettings.Add(new UserSettings
-            {
-                LangName = lang,
-                Id = id,
-                IsBanned = false
-            });
-        }
-
-        SaveChanges();
-    }
-
-    public async Task<string> RunSqlAsync(string sql)
-    {
-        await using var cmd = Database.GetDbConnection().CreateCommand();
-        cmd.CommandText = sql;
-        Database.OpenConnection();
-        await using var result = await cmd.ExecuteReaderAsync();
-        try
-        {
-            var dataTable = new DataTable();
-            dataTable.Load(result);
-            if (dataTable.Rows.Count == 0)
-            {
-                return "nodata";
+                action.Invoke(serversettings, true);
+                serverSettings.Update(serversettings);
             }
-            StringBuilder builder = new("```" + Environment.NewLine);
-            foreach (DataRow dataRow in dataTable.Rows)
+            else
             {
-                foreach (var item in dataRow.ItemArray)
+                serversettings = new ServerSettings
                 {
-                    builder.Append('|').AppendFormat("{0,5}", item);
+                    ServerId = serverId
+                };
+                serverSettings.Add(serversettings);
+                action.Invoke(serversettings, false);
+            }
+
+            SaveChanges();
+        }
+
+        public void UpsertUserSettings(ulong userId, Action<UserSettings, bool> action)
+        {
+            var usersettings = userSettings.Find(userId);
+            if (usersettings is not null)
+            {
+                action.Invoke(usersettings, true);
+                userSettings.Update(usersettings);
+            }
+            else
+            {
+                usersettings = new UserSettings
+                {
+                    Id = userId
+                };
+                userSettings.Add(usersettings);
+                action.Invoke(usersettings, false);
+            }
+
+            SaveChanges();
+        }
+
+        public void SetServerPrefixes(ulong sid, string[] prefixes)
+        {
+            UpsertServerSettings(sid, (settings, _) => settings.Prefixes = prefixes);
+        }
+
+        public void SetServerStatStrings(ulong sid, ServerStatString[]? id)
+        {
+            id ??= StatsTemplates;
+            UpsertServerSettings(sid, (settings, _) => settings.ServerStatsTemplates = id);
+        }
+
+        public void ToggleBanUser(ulong id, bool BAN)
+        {
+            UpsertUserSettings(id, (settings, _) => settings.IsBanned = BAN);
+        }
+
+        public void UpsertUserLanguageCode(ulong id, string lang)
+        {
+            UpsertUserSettings(id, (settings, _) => settings.LangName = lang);
+        }
+
+        public void UpsertBing(ulong userId, ServerSettings s, Action<BingRankingData, bool> action)
+        {
+            var userRankingData = s.BingRankingData.FirstOrDefault(x => x.UserId == userId);
+            if (userRankingData is not null)
+            {
+                action.Invoke(userRankingData, true);
+                serverSettings.Update(s);
+            }
+            else
+            {
+                userRankingData = new BingRankingData
+                {
+                    UserId = userId, ServerId = s.ServerId, BingCount = 0
+                };
+                s.BingRankingData.Add(userRankingData);
+                UpsertUserSettings(userId, (settings, b) => { settings.BingRankingData.Add(userRankingData); });
+                action.Invoke(userRankingData, false);
+            }
+        }
+
+        public ulong UpsertIncrementUserBing(ulong userId, ulong serverId)
+        {
+            ulong bc = 0;
+            UpsertServerSettings(serverId, (x, y) => { UpsertBing(userId, x, (z, u) => { bc = ++z.BingCount; }); });
+            return bc;
+        }
+
+        public async Task<string> RunSqlAsync(string sql)
+        {
+            await using var cmd = Database.GetDbConnection().CreateCommand();
+            cmd.CommandText = sql;
+            await Database.OpenConnectionAsync();
+            await using var result = await cmd.ExecuteReaderAsync();
+            try
+            {
+                var dataTable = new DataTable();
+                dataTable.Load(result);
+                if (dataTable.Rows.Count == 0)
+                {
+                    return "nodata";
                 }
 
-                builder.AppendLine();
+                StringBuilder builder = new("```" + Environment.NewLine);
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    foreach (var item in dataRow.ItemArray)
+                    {
+                        builder.Append('|').AppendFormat("{0,5}", item);
+                    }
+
+                    builder.AppendLine();
+                }
+
+                return builder.Append("```").ToString();
             }
-
-            return builder.Append("```").ToString();
-        }
-        catch (Exception e)
-        {
-            Log.Error(e, "Error in dbCtx.RunSQL");
-            return "Error";
-        }
-    }
-
-    public void InserOrUpdateLangCodeGuild(ulong id, string lang)
-    {
-        var serversettings = serverSettings.FirstOrDefault(x => x.ServerId == id);
-        if (serversettings is not null)
-        {
-            serversettings.LangName = lang;
-            serverSettings.Update(serversettings);
-        }
-        else
-        {
-            serverSettings.Add(new ServerSettings
+            catch (Exception e)
             {
-                LangName = lang,
-                ServerId = id
-            });
+                Log.Error(e, "Error in dbCtx.RunSQL");
+                return "Error";
+            }
         }
 
-        SaveChanges();
-    }
+        public void UpsertGuildLanguageCode(ulong id, string lang)
+        {
+            UpsertServerSettings(id, (settings, _) => settings.LangName = lang);
+        }
 
 #pragma warning disable IDE1006 // Naming Styles
-    public DbSet<ServerSettings> serverSettings => Set<ServerSettings>();
-    public DbSet<UserSettings> userSettings => Set<UserSettings>();
-    public DbSet<UserExperience> userExperiences => Set<UserExperience>();
-    public DbSet<UserQuote> userQuotes => Set<UserQuote>();
-    public DbSet<PlannedEvent> plannedEvents => Set<PlannedEvent>();
-    public DbSet<TranslatorSettings> translatorSettings => Set<TranslatorSettings>();
-    public DbSet<ReactionRoleMapping> ReactionRoleMappings => Set<ReactionRoleMapping>();
+        public DbSet<ServerSettings> serverSettings => Set<ServerSettings>();
+        public DbSet<UserSettings> userSettings => Set<UserSettings>();
+        public DbSet<UserExperience> userExperiences => Set<UserExperience>();
+        public DbSet<PlannedEvent> plannedEvents => Set<PlannedEvent>();
+        public DbSet<TranslatorSettings> translatorSettings => Set<TranslatorSettings>();
+        public DbSet<ReactionRoleMapping> ReactionRoleMappings => Set<ReactionRoleMapping>();
 #pragma warning restore IDE1006 // Naming Styles
+    }
 }

@@ -1,8 +1,9 @@
-namespace SilverBot.Shared.Pagination;
-
-public interface IPagination
+namespace SilverBot.Shared.Pagination
 {
-    public int DefaultId { get; }
-    public ILazyPage GetPageAtId(int id);
-    public Range AllowedRange { get; }
+    public interface IPagination
+    {
+        public int DefaultId { get; }
+        public ILazyPage GetPageAtId(int id);
+        public Range AllowedRange { get; }
+    }
 }

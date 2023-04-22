@@ -20,16 +20,16 @@ namespace SilverBotDS.ProgramExtensions
     public abstract class MessageReactionChangeEventArgs
     {
         public DiscordMessage Message { get; }
-        public DiscordChannel Channel => this.Message.Channel;
+        public DiscordChannel Channel => Message.Channel;
         public DiscordGuild? Guild { get; }
-        public DiscordUser User { get;  }
-        public DiscordEmoji Emoji { get;  }
-
+        public DiscordUser User { get; }
+        public DiscordEmoji Emoji { get; }
     }
 
     public class MessageReactionAddedEventArgs : MessageReactionChangeEventArgs
     {
         private MessageReactionAddEventArgs _args;
+
         public MessageReactionAddedEventArgs(MessageReactionAddEventArgs args)
         {
             _args = args;
@@ -42,11 +42,12 @@ namespace SilverBotDS.ProgramExtensions
         public DiscordUser User => _args.User;
 
         public DiscordEmoji Emoji => _args.Emoji;
-        
     }
+
     public class MessageReactionRemovedEventArgs : MessageReactionChangeEventArgs
     {
         private MessageReactionRemoveEventArgs _args;
+
         public MessageReactionRemovedEventArgs(MessageReactionRemoveEventArgs args)
         {
             _args = args;
@@ -60,6 +61,7 @@ namespace SilverBotDS.ProgramExtensions
 
         public DiscordEmoji Emoji => _args.Emoji;
     }
+
     public static class ReactionRolesHandlers
     {
         public static void AddReactionRolesHandlers(this DiscordClient discord)
@@ -91,7 +93,7 @@ namespace SilverBotDS.ProgramExtensions
         }
 
         private static async Task ReactionGeneric(DiscordClient sender, MessageReactionChangeEventArgs e,
-            Func<ReactionRoleMapping, DiscordMember,  Task> logic)
+            Func<ReactionRoleMapping, DiscordMember, Task> logic)
         {
             if (e.Guild == null || e.User.IsBot)
             {
@@ -100,16 +102,19 @@ namespace SilverBotDS.ProgramExtensions
 
             var services = sender.GetExtension<CommandsNextExtension>().Services;
             await using var db = services.GetRequiredService<DatabaseContext>();
-            var reactionRoleMapping = db?.ReactionRoleMappings.FirstOrDefault(a => a.ChannelId == e.Channel.Id && a.MessageId == e.Message.Id && a.EmojiId == e.Emoji.Id && a.Emoji == e.Emoji.Name);
+            var reactionRoleMapping = db?.ReactionRoleMappings.FirstOrDefault(a =>
+                a.ChannelId == e.Channel.Id && a.MessageId == e.Message.Id && a.EmojiId == e.Emoji.Id &&
+                a.Emoji == e.Emoji.Name);
             if (reactionRoleMapping != null && e.Guild.Roles[reactionRoleMapping.RoleId] != null)
             {
                 var user = await e.Guild.GetMemberAsync(e.User.Id);
                 await logic.Invoke(reactionRoleMapping, user);
             }
         }
+
         private static async Task Discord_MessageReactionRemoved(DiscordClient sender, MessageReactionRemoveEventArgs e)
         {
-            await ReactionGeneric(sender, new MessageReactionRemovedEventArgs(e), async (mapping,  user) =>
+            await ReactionGeneric(sender, new MessageReactionRemovedEventArgs(e), async (mapping, user) =>
             {
                 switch (mapping.Mode)
                 {
@@ -121,8 +126,6 @@ namespace SilverBotDS.ProgramExtensions
                         break;
                 }
             });
-
-           
         }
     }
 }

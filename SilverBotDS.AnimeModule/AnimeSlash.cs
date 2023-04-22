@@ -10,74 +10,73 @@ using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
-namespace SilverBotDS.AnimeModule;
-
-[Category("Anime")]
-public class AnimeSlash : ApplicationCommandModule
+namespace SilverBotDS.AnimeModule
 {
-    private const string BaseUrl = "https://anime-api.hisoka17.repl.co/";
-    public HttpClient Client { private get; set; }
-
-    private async Task<string> GetAnimeUrl(string endpoint)
+    [Category("Anime")]
+    public class AnimeSlash : ApplicationCommandModule
     {
-        return JsonSerializer
-            .Deserialize<RootObject>(await (await Client.GetAsync(BaseUrl + endpoint)).Content.ReadAsStringAsync())!.Url;
-    }
+        private const string BaseUrl = "https://anime-api.hisoka17.repl.co/";
+        public HttpClient Client { private get; set; }
 
-    private async Task SendImage(InteractionContext ctx, string url)
-    {
-        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
-            new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder().WithImageUrl(url)));
-     
-    }
+        private async Task<string> GetAnimeUrl(string endpoint)
+        {
+            return JsonSerializer
+                .Deserialize<RootObject>(await (await Client.GetAsync(BaseUrl + endpoint)).Content.ReadAsStringAsync())!
+                .Url;
+        }
 
-    [SlashCommand("hug", "i have no idea what this means")]
-    public async Task Hug(InteractionContext ctx)
-    {
-        await SendImage(ctx, await GetAnimeUrl("img/hug"));
-    }
+        private async Task SendImage(InteractionContext ctx, string url)
+        {
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
+                new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder().WithImageUrl(url)));
+        }
 
-    [SlashCommand("kiss", "i have no idea what this means")]
-    public async Task Kiss(InteractionContext ctx)
-    {
-        await SendImage(ctx, await GetAnimeUrl("img/kiss"));
-    }
+        [SlashCommand("hug", "i have no idea what this means")]
+        public async Task Hug(InteractionContext ctx)
+        {
+            await SendImage(ctx, await GetAnimeUrl("img/hug"));
+        }
 
-    [SlashCommand("slap", "i have no idea what this means")]
-    public async Task Slap(InteractionContext ctx)
-    {
-        await SendImage(ctx, await GetAnimeUrl("img/slap"));
-    }
+        [SlashCommand("kiss", "i have no idea what this means")]
+        public async Task Kiss(InteractionContext ctx)
+        {
+            await SendImage(ctx, await GetAnimeUrl("img/kiss"));
+        }
 
-    [SlashCommand("wink", "i have no idea what this means")]
-    public async Task Wink(InteractionContext ctx)
-    {
-        await SendImage(ctx, await GetAnimeUrl("img/wink"));
-    }
+        [SlashCommand("slap", "i have no idea what this means")]
+        public async Task Slap(InteractionContext ctx)
+        {
+            await SendImage(ctx, await GetAnimeUrl("img/slap"));
+        }
 
-    [SlashCommand("pat", "i have no idea what this means")]
-    public async Task Pat(InteractionContext ctx)
-    {
-        await SendImage(ctx, await GetAnimeUrl("img/pat"));
-    }
+        [SlashCommand("wink", "i have no idea what this means")]
+        public async Task Wink(InteractionContext ctx)
+        {
+            await SendImage(ctx, await GetAnimeUrl("img/wink"));
+        }
 
-    [SlashCommand("kill", "the thing im gonna do to bub in fartnite")]
-    public async Task Kill(InteractionContext ctx)
-    {
-        await SendImage(ctx, await GetAnimeUrl("img/kill"));
-    }
+        [SlashCommand("pat", "i have no idea what this means")]
+        public async Task Pat(InteractionContext ctx)
+        {
+            await SendImage(ctx, await GetAnimeUrl("img/pat"));
+        }
 
-    [SlashCommand("cuddle", "i have no idea what this means")]
-    public async Task Cuddle(InteractionContext ctx)
-    {
-        await SendImage(ctx, await GetAnimeUrl("img/cuddle"));
-    }
+        [SlashCommand("kill", "the thing im gonna do to bub in fartnite")]
+        public async Task Kill(InteractionContext ctx)
+        {
+            await SendImage(ctx, await GetAnimeUrl("img/kill"));
+        }
 
-    [SlashCommand("punch", "i have no idea what this means")]
-    public async Task Punch(InteractionContext ctx)
-    {
-        await SendImage(ctx, await GetAnimeUrl("img/punch"));
-    }
+        [SlashCommand("cuddle", "i have no idea what this means")]
+        public async Task Cuddle(InteractionContext ctx)
+        {
+            await SendImage(ctx, await GetAnimeUrl("img/cuddle"));
+        }
 
-    
+        [SlashCommand("punch", "i have no idea what this means")]
+        public async Task Punch(InteractionContext ctx)
+        {
+            await SendImage(ctx, await GetAnimeUrl("img/punch"));
+        }
+    }
 }

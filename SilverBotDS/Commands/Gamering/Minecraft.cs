@@ -3,6 +3,7 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -13,34 +14,34 @@ using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Utils;
 using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
-namespace SilverBotDS.Commands.Gamering;
-
-using CategoryAttribute = CategoryAttribute;
-
-[Category("Gaming")]
-[Group("minecraft")]
-[Aliases("mc")]
-[RequireModuleGuildEnabled(EnabledModules.Minecraft, true)]
-
-public class MinecraftModule : BaseCommandModule
+namespace SilverBotDS.Commands.Gamering
 {
-    //HEY LOIS IM PLAYING MINECRAFT
-    public HttpClient HttpClient { private get; set; }
-    public ColourService ColourService {private get; set;}
+    using CategoryAttribute = CategoryAttribute;
 
-    [Command("getfromusername")]
-    [Description("Get a minecraft players UUID from their username")]
-    [Aliases("username")]
-    public async Task Calculate(CommandContext ctx, string input)
+    [Category("Gaming")]
+    [Group("minecraft")]
+    [Aliases("mc")]
+    [RequireModuleGuildEnabled(EnabledModules.Minecraft, true)]
+    public class MinecraftModule : BaseCommandModule
     {
-        var player = await MinecraftUtils.GetPlayerAsync(input, HttpClient);
-        var b = new DiscordEmbedBuilder();
-        b.WithThumbnail(player.GetAvatarUrl())
-            .WithImageUrl(player.GetBodyUrl())
-            .AddField("uuid", "`" + player.Id + "`")
-            .WithColor(ColourService.GetSingle());
-        await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
-            .WithEmbed(b.Build())
-            .SendAsync(ctx.Channel);
+        //HEY LOIS IM PLAYING MINECRAFT
+        public HttpClient HttpClient { private get; set; }
+        public ColourService ColourService { private get; set; }
+
+        [Command("getfromusername")]
+        [Description("Get a minecraft players UUID from their username")]
+        [Aliases("username")]
+        public async Task Calculate(CommandContext ctx, string input)
+        {
+            var player = await MinecraftUtils.GetPlayerAsync(input, HttpClient);
+            var b = new DiscordEmbedBuilder();
+            b.WithThumbnail(player.GetAvatarUrl())
+                .WithImageUrl(player.GetBodyUrl())
+                .AddField("uuid", "`" + player.Id + "`")
+                .WithColor(ColourService.GetSingle());
+            await new DiscordMessageBuilder().WithReply(ctx.Message.Id)
+                .WithEmbed(b.Build())
+                .SendAsync(ctx.Channel);
+        }
     }
 }

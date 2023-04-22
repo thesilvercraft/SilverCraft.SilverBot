@@ -9,32 +9,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Numerics;
 
-namespace SilverBot.Shared.Objects.Database.Classes;
-
-public class UserExperience
+namespace SilverBot.Shared.Objects.Database.Classes
 {
-    [Key] public ulong Id { get; init; }
-
-
-  public ulong XP { get; set; }
-
-    public void Increase()
+    public class UserExperience
     {
-         XP++;
-    }
+        [Key] public ulong Id { get; init; }
 
-    public void Increase(ulong count)
-    {
-        XP += count;
-    }
 
-    public void Decrease()
-    {
+        public ulong XP { get; set; }
+
+        public void Increase()
+        {
+            XP++;
+        }
+
+        public void Increase(ulong count)
+        {
+            XP += count;
+        }
+
+        public void Decrease()
+        {
             XP--;
-    }
+        }
 
-    public void Decrease(ulong count)
-    {
+        public void Decrease(ulong count)
+        {
             XP -= count;
+        }
     }
 }

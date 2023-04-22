@@ -7,34 +7,36 @@ You should have received a copy of the GNU General Public License along with Sil
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace SilverBot.Shared.Utils;
-
-public static partial class WebHookUtils
+namespace SilverBot.Shared.Utils
 {
-  
-    [GeneratedRegex("^.*(discord|discordapp)\\.com\\/api\\/webhooks\\/([\\d]+)\\/([a-z0-9_-]+)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant)]
-    private static partial Regex WebhookUrlRegex();
-    public static void ParseWebhookUrlNullable(string webhookUrl, out ulong? webhookIdnullable, out string webhookToken)
+    public static partial class WebHookUtils
     {
-        webhookIdnullable = null;
-        webhookToken = null;
-        if (string.IsNullOrWhiteSpace(webhookUrl))
-        {
-            return;
-        }
-        var match = WebhookUrlRegex().Match(webhookUrl);
-        if (match?.Groups[2].Success != true || !ulong.TryParse(match.Groups[2].Value, NumberStyles.None,
-                CultureInfo.InvariantCulture, out var webhookId))
-        {
-            return;
-        }
+        [GeneratedRegex("^.*(discord|discordapp)\\.com\\/api\\/webhooks\\/([\\d]+)\\/([a-z0-9_-]+)$",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant)]
+        private static partial Regex WebhookUrlRegex();
 
-        webhookIdnullable = webhookId;
-        if (match.Groups[3].Success)
+        public static void ParseWebhookUrlNullable(string webhookUrl, out ulong? webhookIdnullable,
+            out string webhookToken)
         {
-            webhookToken = match.Groups[3].Value;
+            webhookIdnullable = null;
+            webhookToken = null;
+            if (string.IsNullOrWhiteSpace(webhookUrl))
+            {
+                return;
+            }
+
+            var match = WebhookUrlRegex().Match(webhookUrl);
+            if (match?.Groups[2].Success != true || !ulong.TryParse(match.Groups[2].Value, NumberStyles.None,
+                    CultureInfo.InvariantCulture, out var webhookId))
+            {
+                return;
+            }
+
+            webhookIdnullable = webhookId;
+            if (match.Groups[3].Success)
+            {
+                webhookToken = match.Groups[3].Value;
+            }
         }
     }
-
-
 }

@@ -34,17 +34,20 @@ namespace SilverBotDS.Commands
         public HttpClient HttpClient { private get; set; }
         public Config Config { private get; set; }
 
-        
+
         [Command("imagine")]
-        public async Task TImagine(CommandContext ctx, string prompt = "space", string model = "sd-v1-4", int? seed = null, string negative_prompt = "", 
-           int resolution = 512, int steps = 25)
+        public async Task TImagine(CommandContext ctx, string prompt = "space", string model = "sd-v1-4",
+            int? seed = null, string negative_prompt = "",
+            int resolution = 512, int steps = 25)
         {
             if (!ctx.Channel.IsNSFW && (Config.ExtraParams["StableDiff.NotSafeModel"].Contains(model.ToLower()) ||
-                                        Config.ExtraParams["StableDiff.NotSafeModel"].Contains(model.ToLower() + ".ckpt")))
+                                        Config.ExtraParams["StableDiff.NotSafeModel"]
+                                            .Contains(model.ToLower() + ".ckpt")))
             {
                 //disappointment
-                model = Config.ExtraParams["StableDiff.SafeModel"].Split(",").Select(x=>x.Trim()).ToArray()[0];
+                model = Config.ExtraParams["StableDiff.SafeModel"].Split(",").Select(x => x.Trim()).ToArray()[0];
             }
+
             var language = await ctx.GetLanguageAsync();
             string? promptimg = null;
             if (ctx.Message.Attachments.Count == 1)
@@ -66,7 +69,8 @@ namespace SilverBotDS.Commands
                 height = resolution,
                 num_inference_steps = steps
             };
-            if (promptimg != null && (promptimg.EndsWith(".png") || promptimg.EndsWith(".jpeg")|| promptimg.EndsWith(".jpg")))
+            if (promptimg != null &&
+                (promptimg.EndsWith(".png") || promptimg.EndsWith(".jpeg") || promptimg.EndsWith(".jpg")))
             {
                 try
                 {
@@ -78,18 +82,18 @@ namespace SilverBotDS.Commands
                         return !x.Where((t, j) => t != null && t != bytearray[j]).Any();
                     }
 
-                    byte?[] jpgs1 = new byte?[] { 0xFF, 0xD8, 0xFF, 0xDB };
-                    byte?[] jpgs2 = new byte?[]
+                    var jpgs1 = new byte?[] { 0xFF, 0xD8, 0xFF, 0xDB };
+                    var jpgs2 = new byte?[]
                         { 0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x01 };
-                    byte?[] jpgs3 = new byte?[] { 0xFF, 0xD8, 0xFF, 0xEE };
-                    byte?[] jpgs4 = new byte?[]
+                    var jpgs3 = new byte?[] { 0xFF, 0xD8, 0xFF, 0xEE };
+                    var jpgs4 = new byte?[]
                         { 0xFF, 0xD8, 0xFF, 0xE1, null, null, 0x45, 0x78, 0x69, 0x66, 0x00, 0x00 };
-                    byte?[] png = new byte?[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
+                    var png = new byte?[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
 
 
                     if (Matches(jpgs1) || Matches(jpgs2) || Matches(jpgs3) || Matches(jpgs4))
                     {
-                       i.init_image = "data:image/jpeg;base64," + Convert.ToBase64String(bytearray);
+                        i.init_image = "data:image/jpeg;base64," + Convert.ToBase64String(bytearray);
                     }
                     else if (Matches(png))
                     {
@@ -115,16 +119,17 @@ namespace SilverBotDS.Commands
                     {
                         return x.Message == ctx.Message &&
                                (ctx.Client.CurrentApplication.Owners.Any(y => y.Id == x.User.Id) ||
-                                Config.ExtraParams["StableDiff.Trusted"].Split(",").Select(z=> Convert.ToUInt64(z.Trim())).Contains(x.User.Id)) && x.Emoji.Name == "upvote";
+                                Config.ExtraParams["StableDiff.Trusted"].Split(",")
+                                    .Select(z => Convert.ToUInt64(z.Trim())).Contains(x.User.Id)) &&
+                               x.Emoji.Name == "upvote";
                     }, TimeSpan.FromMinutes(5));
                 if (r.TimedOut)
                 {
                     return;
                 }
-
             }
-           
-            var res = await HttpClient.PostAsync( Config.ExtraParams["StableDiff.BaseUrl"]+"/render",
+
+            var res = await HttpClient.PostAsync(Config.ExtraParams["StableDiff.BaseUrl"] + "/render",
                 new StringContent(sent, Encoding.UTF8, "application/json"));
             var response = JsonSerializer.Deserialize<Response>(await res.Content.ReadAsStringAsync());
             DiscordMessage og;
@@ -139,14 +144,14 @@ namespace SilverBotDS.Commands
             {
                 og = await new DiscordMessageBuilder()
                     .WithEmbed(ctx.GetNewBuilder(language).WithTitle("Rendering " + response.Stream)
-                    .Build()).WithReply(ctx.Message.Id)
+                        .Build()).WithReply(ctx.Message.Id)
                     .SendAsync(ctx.Channel);
             }
             else
             {
                 og = await new DiscordMessageBuilder()
                     .WithEmbed(ctx.GetNewBuilder(language).WithTitle("Added to generation queue " + response.Stream)
-                    .Build()).WithReply(ctx.Message.Id)
+                        .Build()).WithReply(ctx.Message.Id)
                     .SendAsync(ctx.Channel);
             }
 
@@ -156,7 +161,7 @@ namespace SilverBotDS.Commands
             {
                 try
                 {
-                    var res2 = await HttpClient.GetAsync(Config.ExtraParams["StableDiff.BaseUrl"]+ response.Stream);
+                    var res2 = await HttpClient.GetAsync(Config.ExtraParams["StableDiff.BaseUrl"] + response.Stream);
                     var rescont = await res2.Content.ReadAsStringAsync();
                     if (rescont.StartsWith("{\"step\":"))
                     {
@@ -171,7 +176,7 @@ namespace SilverBotDS.Commands
                             x.WithEmbed(ctx.GetNewBuilder(language).WithTitle("Generating " + response.Stream)
                                 .WithDescription(
                                     $"{deserialized.Step} / {deserialized.TotalSteps} @ {deserialized.StepTime}s per step")
-                                );
+                            );
                         });
                     }
 
@@ -221,83 +226,63 @@ namespace SilverBotDS.Commands
 
     public class Response
     {
-        [JsonPropertyName("status")]
-        public string Status { get; set; }
-        [JsonPropertyName("queue")]
-        public int Queue { get; set; }
-        [JsonPropertyName("stream")]
-        public string Stream { get; set; }
-        [JsonPropertyName("task")]
-        public long Task { get; set; }
+        [JsonPropertyName("status")] public string Status { get; set; }
+        [JsonPropertyName("queue")] public int Queue { get; set; }
+        [JsonPropertyName("stream")] public string Stream { get; set; }
+        [JsonPropertyName("task")] public long Task { get; set; }
     }
 
 
     public class PartialResponse
     {
-        [JsonPropertyName("step")]
-        public int Step { get; set; }
-        [JsonPropertyName("step_time")]
-        public double StepTime { get; set; }
-        [JsonPropertyName("total_steps")]
-        public int TotalSteps { get; set; }
+        [JsonPropertyName("step")] public int Step { get; set; }
+        [JsonPropertyName("step_time")] public double StepTime { get; set; }
+        [JsonPropertyName("total_steps")] public int TotalSteps { get; set; }
     }
 
     public class Input
-{
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string init_image { get; set; }
-    public string prompt { get; set; }
-    public int seed { get; set; }
-    public bool used_random_seed { get; set; }
-    public string negative_prompt { get; set; }
-    public int num_outputs { get; set; } = 1;
-    public int num_inference_steps { get; set; } = 25;
-    public double guidance_scale { get; set; } = 7.5;
-    public int width { get; set; }
-    public int height { get; set; }
-    public string vram_usage_level { get; set; } = "balanced";
-    public string use_stable_diffusion_model { get; set; }
-    public string use_vae_model { get; set; }
-    public bool stream_progress_updates { get; set; }
-    public bool stream_image_progress { get; set; }
-    public bool show_only_filtered_image { get; set; } = true;
-    public bool block_nsfw { get; set; }
-    public string output_format { get; set; } = "png";
-    public int output_quality { get; set; }
-    public string metadata_output_format { get; set; } = "none";
-    public string original_prompt { get; set; }
-    public object[] active_tags { get; set; } = new Object[] { };
-    public object[] inactive_tags { get; set; }= new Object[] { };
-    public string sampler_name { get; set; } = "euler_a";
-    public string session_id { get; set; } = "1678465790977";
-}
+    {
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string init_image { get; set; }
 
-
+        public string prompt { get; set; }
+        public int seed { get; set; }
+        public bool used_random_seed { get; set; }
+        public string negative_prompt { get; set; }
+        public int num_outputs { get; set; } = 1;
+        public int num_inference_steps { get; set; } = 25;
+        public double guidance_scale { get; set; } = 7.5;
+        public int width { get; set; }
+        public int height { get; set; }
+        public string vram_usage_level { get; set; } = "balanced";
+        public string use_stable_diffusion_model { get; set; }
+        public string use_vae_model { get; set; }
+        public bool stream_progress_updates { get; set; }
+        public bool stream_image_progress { get; set; }
+        public bool show_only_filtered_image { get; set; } = true;
+        public bool block_nsfw { get; set; }
+        public string output_format { get; set; } = "png";
+        public int output_quality { get; set; }
+        public string metadata_output_format { get; set; } = "none";
+        public string original_prompt { get; set; }
+        public object[] active_tags { get; set; } = new Object[] { };
+        public object[] inactive_tags { get; set; } = new Object[] { };
+        public string sampler_name { get; set; } = "euler_a";
+        public string session_id { get; set; } = "1678465790977";
+    }
 
 
     public class Output
     {
-        [JsonPropertyName("data")]
-
-        public string Data { get; set; }
-        [JsonPropertyName("seed")]
-
-        public int Seed { get; set; }
-        [JsonPropertyName("path_abs")]
-
-        public object PathAbs { get; set; }
+        [JsonPropertyName("data")] public string Data { get; set; }
+        [JsonPropertyName("seed")] public int Seed { get; set; }
+        [JsonPropertyName("path_abs")] public object PathAbs { get; set; }
     }
 
     public class Fullresponse
     {
-        [JsonPropertyName("status")]
-
-        public string Status { get; set; }
-        [JsonPropertyName("request")]
-
-        public Input Request { get; set; }
-        [JsonPropertyName("output")]
-
-        public Output[] Output { get; set; }
+        [JsonPropertyName("status")] public string Status { get; set; }
+        [JsonPropertyName("request")] public Input Request { get; set; }
+        [JsonPropertyName("output")] public Output[] Output { get; set; }
     }
 }

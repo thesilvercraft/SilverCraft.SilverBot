@@ -27,121 +27,131 @@ using SilverBot.Shared;
 using SilverBot.Shared.Utils;
 using SilverBotDS.Commands.Slash;
 
-namespace SilverBotDS.Converters;
-
-public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
+namespace SilverBotDS.Converters
 {
-    private const string JellyStart = "sjelly:";
-      public static async Task<SongORSongs?> ConvertToSongSB(ISilverBotContext ctx, string value,
-        Language? language = null)
+    public class SongOrSongsConverter : IArgumentConverter<SongORSongs>
     {
-        var conf = ctx.Services.GetService<Config>();
-        var languageService = ctx.Services.GetService<LanguageService>();
-        var audioService = ctx.Services.GetService<LavalinkNode>();
-        language ??= await languageService?.FromCtxAsync(ctx)!;
-        if ( !IsInVc(ctx, audioService))
-        {
-            if (ctx.Member?.VoiceState?.Channel == null)
-            {
-                await ctx.SendMessageAsync(language.UserNotConnected, language: language);
-                return null;
-            }
-            await NeutralAudio.StaticJoin(ctx, audioService, language:language);
-        }
+        private const string JellyStart = "sjelly:";
 
-        if (conf.SongAliases.ContainsKey(value))
+        public static async Task<SongORSongs?> ConvertToSongSB(ISilverBotContext ctx, string value,
+            Language? language = null)
         {
-            value = conf.SongAliases[value];
-        }
-        var lookupService = ctx.Services.GetService<ITrackOrAlbumLookupService>();
-        if (lookupService != null && value.StartsWith(JellyStart))
-        {
-            var x = await lookupService.TryGettingTrackOrAlbum(value.RemoveStringFromStart(JellyStart));
-            if (x is not null)
+            var conf = ctx.Services.GetService<Config>();
+            var languageService = ctx.Services.GetService<LanguageService>();
+            var audioService = ctx.Services.GetService<LavalinkNode>();
+            language ??= await languageService?.FromCtxAsync(ctx)!;
+            if (!IsInVc(ctx, audioService))
             {
-                List<LavalinkTrack> tracks = new();
-                foreach (var song in x)
+                if (ctx.Member?.VoiceState?.Channel == null)
                 {
-                    var s = await audioService.GetTrackAsync(song);
-                    byte tries = 3;
-                    while (s is null && tries!=0)
-                    {
-                        s = await audioService.GetTrackAsync(song);
-                        tries--;
-                    }
-
-                    if (s != null)
-                    {
-                        tracks.Add(s);
-                    }
-
-                    await Task.Delay(10);
-                }
-                return new SongORSongs(tracks.First(), null,
-                    tracks.Skip(1).ToAsyncEnumerable());
-            }
-        }
-        if (value.EndsWith(".json"))
-        {
-            var client = ctx.Services.GetService<HttpClient>();
-            if (client is not null)
-            {
-                var tracks =
-                    JsonSerializer.Deserialize<SilverBotPlaylist>(await (await client.GetAsync(value)).Content
-                        .ReadAsStringAsync());
-                if (!string.IsNullOrEmpty(tracks.PlaylistTitle))
-                {
-                    await ctx.SendMessageAsync(
-                        string.Format(language.LoadedSilverBotPlaylistWithTitle, tracks.PlaylistTitle),
-                        language: language);
+                    await ctx.SendMessageAsync(language.UserNotConnected, language: language);
+                    return null;
                 }
 
-                return (new SongORSongs(TrackDecoder.DecodeTrack(tracks.Identifiers[0]), null,
-                    tracks.Identifiers.Skip(1).Select(TrackDecoder.DecodeTrack).ToAsyncEnumerable(),
-                    TimeSpan.FromMilliseconds(tracks.CurrentSongTimems)));
+                await NeutralAudio.StaticJoin(ctx, audioService, language);
             }
+
+            if (conf.SongAliases.ContainsKey(value))
+            {
+                value = conf.SongAliases[value];
+            }
+
+            var lookupService = ctx.Services.GetService<ITrackOrAlbumLookupService>();
+            if (lookupService != null && value.StartsWith(JellyStart))
+            {
+                var x = await lookupService.TryGettingTrackOrAlbum(value.RemoveStringFromStart(JellyStart));
+                if (x is not null)
+                {
+                    List<LavalinkTrack> tracks = new();
+                    foreach (var song in x)
+                    {
+                        var s = await audioService.GetTrackAsync(song);
+                        byte tries = 3;
+                        while (s is null && tries != 0)
+                        {
+                            s = await audioService.GetTrackAsync(song);
+                            tries--;
+                        }
+
+                        if (s != null)
+                        {
+                            tracks.Add(s);
+                        }
+
+                        await Task.Delay(10);
+                    }
+
+                    return new SongORSongs(tracks.First(), null,
+                        tracks.Skip(1).ToAsyncEnumerable());
+                }
+            }
+
+            if (value.EndsWith(".json"))
+            {
+                var client = ctx.Services.GetService<HttpClient>();
+                if (client is not null)
+                {
+                    var tracks =
+                        JsonSerializer.Deserialize<SilverBotPlaylist>(await (await client.GetAsync(value)).Content
+                            .ReadAsStringAsync());
+                    if (!string.IsNullOrEmpty(tracks.PlaylistTitle))
+                    {
+                        await ctx.SendMessageAsync(
+                            string.Format(language.LoadedSilverBotPlaylistWithTitle, tracks.PlaylistTitle),
+                            language: language);
+                    }
+
+                    return new SongORSongs(TrackDecoder.DecodeTrack(tracks.Identifiers[0]), null,
+                        tracks.Identifiers.Skip(1).Select(TrackDecoder.DecodeTrack).ToAsyncEnumerable(),
+                        TimeSpan.FromMilliseconds(tracks.CurrentSongTimems));
+                }
+            }
+
+            IEnumerable<LavalinkTrack?>? track = await audioService.GetTracksAsync(value);
+            var lavalinkTracks = track.ToList();
+            if (lavalinkTracks.Any() && lavalinkTracks.First() is { } firstRawTrack)
+            {
+                return new SongORSongs(firstRawTrack, null,
+                    lavalinkTracks.Skip(1).Cast<LavalinkTrack>().ToAsyncEnumerable());
+            }
+
+            track = new[] { await audioService.GetTrackAsync(value, SearchMode.YouTube) };
+            if (track.Any() && track.First() is { } firstYtTrack)
+            {
+                return new SongORSongs(firstYtTrack, null, track.Skip(1).Cast<LavalinkTrack>().ToAsyncEnumerable());
+            }
+
+            track = new[] { await audioService.GetTrackAsync(value, SearchMode.SoundCloud) };
+            if (track.Any() && track.First() is { } firstSCTrack)
+            {
+                return new SongORSongs(firstSCTrack, null, track.Skip(1).Cast<LavalinkTrack>().ToAsyncEnumerable());
+            }
+
+            await ctx.SendMessageAsync(string.Format(language.NoResults, value), language: language);
+            return null;
         }
 
-        IEnumerable<LavalinkTrack?>? track = await audioService.GetTracksAsync(value);
-        var lavalinkTracks = track.ToList();
-        if (lavalinkTracks.Any() && lavalinkTracks.First() is {} firstRawTrack)
+        public static async Task<SongORSongs?> ConvertToSong(InteractionContext ctx, string value,
+            Language? language = null)
         {
-            return (new SongORSongs(firstRawTrack, null, lavalinkTracks.Skip(1).Cast<LavalinkTrack>().ToAsyncEnumerable()));
+            return await ConvertToSongSB(new SlashNeutralCommandContext(ctx), value, language);
         }
 
-        track = new[] { await audioService.GetTrackAsync(value, SearchMode.YouTube) };
-        if (track.Any() && track.First() is { } firstYtTrack)
+
+        public async Task<Optional<SongORSongs>> ConvertAsync(string value, CommandContext ctx)
         {
-            return (new SongORSongs(firstYtTrack, null, track.Skip(1).Cast<LavalinkTrack>().ToAsyncEnumerable()));
+            return await ConvertToSongSB(new TextNeutralCommandContext(ctx), value) ??
+                   Optional.FromNoValue<SongORSongs>();
         }
 
-        track = new[] { await audioService.GetTrackAsync(value, SearchMode.SoundCloud) };
-        if (track.Any() && track.First() is  { } firstSCTrack)
+
+        private static bool IsInVc(ISilverBotContext ctx, IAudioService audioService)
         {
-            return (new SongORSongs(firstSCTrack, null, track.Skip(1).Cast<LavalinkTrack>().ToAsyncEnumerable()));
+            return ctx.Guild != null &&
+                   audioService.HasPlayer(ctx.Guild.Id) &&
+                   audioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null and not
+                       { State: PlayerState.NotConnected }
+                       and not { State: PlayerState.Destroyed };
         }
-
-        await ctx.SendMessageAsync(string.Format(language.NoResults, value), language: language);
-        return null;
     }
-    public static async Task<SongORSongs?> ConvertToSong(InteractionContext ctx, string value,
-        Language? language = null)
-    {
-     
-        return await ConvertToSongSB(new UnBasedCommandContext(ctx), value, language);
-    }
-
-     
-    public async Task<Optional<SongORSongs>> ConvertAsync(string value, CommandContext ctx)
-    {
-        return await ConvertToSongSB(new BasedCommandContext(ctx), value) ?? Optional.FromNoValue<SongORSongs>();
-    }
-
-
-    private static bool IsInVc(ISilverBotContext ctx, IAudioService audioService) =>
-        ctx.Guild != null &&
-        audioService.HasPlayer(ctx.Guild.Id) &&
-        audioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) is not null and not { State: PlayerState.NotConnected}
-            and not { State: PlayerState.Destroyed };
- 
 }

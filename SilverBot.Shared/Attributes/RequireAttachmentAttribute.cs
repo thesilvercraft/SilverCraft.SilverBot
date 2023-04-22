@@ -8,60 +8,61 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using SilverBot.Shared.Objects.Language;
 
-namespace SilverBot.Shared.Attributes;
-
-public class RequireAttachmentAttribute : CheckBaseAttribute
+namespace SilverBot.Shared.Attributes
 {
-    public RequireAttachmentAttribute(uint attachmentcount = 1, string lessthen = "NoImageGeneric",
-        string morethen = "MoreThanOneImageGeneric", int argumentCountThatOverloadsCheck = -1)
+    public class RequireAttachmentAttribute : CheckBaseAttribute
     {
-        AttachmentCount = attachmentcount;
-        if (typeof(Language)?.GetProperty(lessthen)?.CanRead==true)
+        public RequireAttachmentAttribute(uint attachmentcount = 1, string lessthen = "NoImageGeneric",
+            string morethen = "MoreThanOneImageGeneric", int argumentCountThatOverloadsCheck = -1)
         {
-            LessThenLang = lessthen;
-        }
-        else
-        {
-            throw new InvalidOperationException(nameof(lessthen)+" cannot be read");
+            AttachmentCount = attachmentcount;
+            if (typeof(Language)?.GetProperty(lessthen)?.CanRead == true)
+            {
+                LessThenLang = lessthen;
+            }
+            else
+            {
+                throw new InvalidOperationException(nameof(lessthen) + " cannot be read");
+            }
+
+            if (typeof(Language)?.GetProperty(morethen)?.CanRead == true)
+            {
+                MoreThenLang = morethen;
+            }
+            else
+            {
+                throw new InvalidOperationException(nameof(morethen) + " cannot be read");
+            }
+
+            OverloadCount = argumentCountThatOverloadsCheck;
         }
 
-        if (typeof(Language)?.GetProperty(morethen)?.CanRead==true)
-        {
-            MoreThenLang = morethen;
-        }
-        else
-        {
-            throw new InvalidOperationException(nameof(morethen)+" cannot be read");
-        }
+        public uint AttachmentCount { get; init; }
+        public string LessThenLang { get; set; }
+        public string MoreThenLang { get; set; }
+        public int OverloadCount { get; set; }
 
-        OverloadCount = argumentCountThatOverloadsCheck;
+        public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
+        {
+            return help || OverloadCount == ctx.RawArgumentString.Split(" ").Length
+                ? Task.FromResult(true)
+                : Task.FromResult(ctx.Message.Attachments.Count == AttachmentCount);
+        }
     }
 
-    public uint AttachmentCount { get; init; }
-    public string LessThenLang { get; set; }
-    public string MoreThenLang { get; set; }
-    public int OverloadCount { get; set; }
-
-    public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
+    public class AiGenChannelAttribute : CheckBaseAttribute
     {
-        return help || OverloadCount == ctx.RawArgumentString.Split(" ").Length
-            ? Task.FromResult(true)
-            : Task.FromResult(ctx.Message.Attachments.Count == AttachmentCount);
-    }
-}
-public class AiGenChannelAttribute : CheckBaseAttribute
-{
-    public AiGenChannelAttribute(ulong id)
-    {
-        Id = id;
-    }
+        public AiGenChannelAttribute(ulong id)
+        {
+            Id = id;
+        }
 
-    public ulong Id { get; init; }
+        public ulong Id { get; init; }
 
-    public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
-    {
-        return
-            Task.FromResult(ctx.Channel.Id==Id);
-
+        public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
+        {
+            return
+                Task.FromResult(ctx.Channel.Id == Id);
+        }
     }
 }

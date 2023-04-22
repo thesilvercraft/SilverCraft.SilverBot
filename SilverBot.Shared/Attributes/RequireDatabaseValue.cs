@@ -10,44 +10,45 @@ using Microsoft.Extensions.DependencyInjection;
 using SilverBot.Shared.Objects.Database;
 using SilverBot.Shared.Objects.Database.Classes;
 
-namespace SilverBot.Shared.Attributes;
-
-
-[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
-public class RequireModuleGuildEnabled : CheckBaseAttribute
+namespace SilverBot.Shared.Attributes
 {
-    public RequireModuleGuildEnabled(EnabledModules module,  bool allowdms)
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
+    public class RequireModuleGuildEnabled : CheckBaseAttribute
     {
-        Module = module;
-        AllowDirectMessages = allowdms;
-    }
-
-    public EnabledModules Module { get; }
-    public bool AllowDirectMessages { get; }
-
-    public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
-    {
-        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (ctx.Guild == null)
+        public RequireModuleGuildEnabled(EnabledModules module, bool allowdms)
         {
-            return Task.FromResult(AllowDirectMessages);
+            Module = module;
+            AllowDirectMessages = allowdms;
         }
-        using var dbCtx = ctx.Services.GetService<DatabaseContext>();
-        var guildSettings = dbCtx?.serverSettings.Select(ServerSettings => new
+
+        public EnabledModules Module { get; }
+        public bool AllowDirectMessages { get; }
+
+        public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
         {
-            ServerSettings.ServerId, ServerSettings.EnabledModules
-        }).FirstOrDefault(x => x.ServerId == ctx.Guild.Id);
-        if (guildSettings != null)
-        {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+            if (ctx.Guild == null)
+            {
+                return Task.FromResult(AllowDirectMessages);
+            }
+
+            using var dbCtx = ctx.Services.GetService<DatabaseContext>();
+            var guildSettings = dbCtx?.serverSettings.Select(ServerSettings => new
+            {
+                ServerSettings.ServerId, ServerSettings.EnabledModules
+            }).FirstOrDefault(x => x.ServerId == ctx.Guild.Id);
+            if (guildSettings != null)
+            {
+                return Task.FromResult(guildSettings.EnabledModules.HasFlag(Module));
+            }
+
+            dbCtx?.GetServerSettings(ctx.Guild.Id);
+            guildSettings = new
+            {
+                ServerId = ctx.Guild.Id,
+                EnabledModules = EnabledModules.AllExceptReminders
+            };
             return Task.FromResult(guildSettings.EnabledModules.HasFlag(Module));
         }
-        dbCtx?.GetServerSettings(ctx.Guild.Id);
-        guildSettings = new
-        {
-            ServerId = ctx.Guild.Id,
-            EnabledModules = EnabledModules.AllExceptReminders
-        };
-        return Task.FromResult(guildSettings.EnabledModules.HasFlag(Module));
     }
 }
-

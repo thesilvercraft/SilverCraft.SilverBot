@@ -9,50 +9,51 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Web;
 
-namespace SilverBot.Shared.Utils;
-
-internal static class UrbanDictUtils
+namespace SilverBot.Shared.Utils
 {
-    public static async Task<Defenition[]> GetDefinition(string word, HttpClient httpClient)
+    internal static class UrbanDictUtils
     {
-        var uri = new UriBuilder($"http://api.urbandictionary.com/v0/define?term={HttpUtility.UrlEncode(word)}");
-        var rm = await httpClient.GetAsync(uri.Uri);
-        if (rm.StatusCode == HttpStatusCode.OK)
+        public static async Task<Defenition[]> GetDefinition(string word, HttpClient httpClient)
         {
-            return JsonSerializer.Deserialize<Rootobject>(await rm.Content.ReadAsStringAsync()).List;
+            var uri = new UriBuilder($"http://api.urbandictionary.com/v0/define?term={HttpUtility.UrlEncode(word)}");
+            var rm = await httpClient.GetAsync(uri.Uri);
+            if (rm.StatusCode == HttpStatusCode.OK)
+            {
+                return JsonSerializer.Deserialize<Rootobject>(await rm.Content.ReadAsStringAsync()).List;
+            }
+
+            return await Task.FromException<Defenition[]>(
+                new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}"));
         }
 
-        return await Task.FromException<Defenition[]>(
-            new Exception($"Request yielded a statuscode that isnt OK it is {rm.StatusCode}"));
-    }
+        public class Rootobject
+        {
+            [JsonPropertyName("list")] public Defenition[] List { get; set; }
+        }
 
-    public class Rootobject
-    {
-        [JsonPropertyName("list")] public Defenition[] List { get; set; }
-    }
+        public class Defenition
+        {
+            [JsonPropertyName("definition")] public string Definition { get; set; }
 
-    public class Defenition
-    {
-        [JsonPropertyName("definition")] public string Definition { get; set; }
+            [JsonPropertyName("permalink")] public string Permalink { get; set; }
 
-        [JsonPropertyName("permalink")] public string Permalink { get; set; }
+            [JsonPropertyName("thumbs_up")] public int ThumbsUp { get; set; }
 
-        [JsonPropertyName("thumbs_up")] public int ThumbsUp { get; set; }
+            [JsonPropertyName("sound_urls")] public object[] SoundUrls { get; set; }
 
-        [JsonPropertyName("sound_urls")] public object[] SoundUrls { get; set; }
+            [JsonPropertyName("author")] public string Author { get; set; }
 
-        [JsonPropertyName("author")] public string Author { get; set; }
+            [JsonPropertyName("word")] public string Word { get; set; }
 
-        [JsonPropertyName("word")] public string Word { get; set; }
+            [JsonPropertyName("defid")] public int DefId { get; set; }
 
-        [JsonPropertyName("defid")] public int DefId { get; set; }
+            [JsonPropertyName("current_vote")] public string CurrentVote { get; set; }
 
-        [JsonPropertyName("current_vote")] public string CurrentVote { get; set; }
+            [JsonPropertyName("written_on")] public DateTime WrittenOn { get; set; }
 
-        [JsonPropertyName("written_on")] public DateTime WrittenOn { get; set; }
+            [JsonPropertyName("example")] public string Example { get; set; }
 
-        [JsonPropertyName("example")] public string Example { get; set; }
-
-        [JsonPropertyName("thumbs_down")] public int ThumbsDown { get; set; }
+            [JsonPropertyName("thumbs_down")] public int ThumbsDown { get; set; }
+        }
     }
 }

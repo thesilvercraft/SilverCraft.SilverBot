@@ -15,7 +15,8 @@ namespace SilverBotDS.ProgramExtensions
 {
     public static class Archiver
     {
-        public static async Task AddArchiverAsync(this ProgramHelper _, Config config, Logger log, HttpClient httpClient, DiscordClient discord)
+        public static async Task AddArchiverAsync(this ProgramHelper _, Config config, Logger log,
+            HttpClient httpClient, DiscordClient discord)
         {
             DiscordWebhookClient webhookClient = new();
             foreach (var aa in config.ArchiveWebhooks)

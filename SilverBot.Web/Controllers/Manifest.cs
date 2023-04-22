@@ -7,79 +7,92 @@ You should have received a copy of the GNU General Public License along with Sil
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SilverBot.Web.Controllers;
-
-[ApiController]
-[Route("[controller].json")]
-[Route("site.webmanifest")]
-public class Manifest : Controller
+namespace SilverBot.Web.Controllers
 {
-    public Rootobject Index()
+    [ApiController]
+    [Route("[controller].json")]
+    [Route("site.webmanifest")]
+    public class Manifest : Controller
     {
-        var obj = new Rootobject
+        public Rootobject Index()
         {
-            Name = "SilverBot",
-            ShortName = "Silverbot",
-            StartUrl = "/",
-            BackgroundColor = "#C0C0C0",
-            ThemeColor = "#01dff0",
-            Display = "standalone"
-        };
-        switch (DateTime.UtcNow.Month)
-        {
-            case 6:
-                obj.Icons = new[]
-                {
-                    new Icon {Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
-                    new Icon {Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"},
+            var obj = new Rootobject
+            {
+                Name = "SilverBot",
+                ShortName = "Silverbot",
+                StartUrl = "/",
+                BackgroundColor = "#C0C0C0",
+                ThemeColor = "#01dff0",
+                Display = "standalone"
+            };
+            switch (DateTime.UtcNow.Month)
+            {
+                case 6:
+                    obj.Icons = new[]
+                    {
+                        new Icon
+                        {
+                            Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "any"
+                        },
+                        new Icon
+                        {
+                            Sizes = "any", Src = "/pride/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"
+                        }
+                    };
+                    break;
+                case 10 when DateTime.UtcNow.Day == 31:
+                    obj.Icons = new[]
+                    {
+                        new Icon
+                        {
+                            Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "any"
+                        },
+                        new Icon
+                        {
+                            Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml",
+                            Purpose = "maskable"
+                        }
+                    };
+                    obj.ThemeColor = "#EF5B31";
+                    break;
+                default:
+                    obj.Icons = new[]
+                    {
+                        new Icon { Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "any" },
+                        new Icon { Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable" }
+                    };
+                    break;
+            }
 
-                };
-                break;
-            case 10 when DateTime.UtcNow.Day == 31:
-                obj.Icons = new[]
-                {
-                    new Icon {Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
-                    new Icon { Sizes = "any", Src = "/halloween/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable" },
-                };
-                obj.ThemeColor = "#EF5B31";
-                break;
-            default:
-                obj.Icons = new[]
-                {
-                    new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "any"},
-                    new Icon {Sizes = "any", Src = "/silverbot.svg", Type = "image/svg+xml", Purpose = "maskable"},
-                };
-                break;
+            return obj;
         }
 
-        return obj;
-    }
+        public class Rootobject
+        {
+            [JsonPropertyName("name")] public string Name { get; set; }
 
-    public class Rootobject
-    {
-        [JsonPropertyName("name")] public string Name { get; set; }
+            [JsonPropertyName("short_name")] public string ShortName { get; set; }
 
-        [JsonPropertyName("short_name")] public string ShortName { get; set; }
+            [JsonPropertyName("icons")] public Icon[] Icons { get; set; }
 
-        [JsonPropertyName("icons")] public Icon[] Icons { get; set; }
+            [JsonPropertyName("start_url")] public string StartUrl { get; set; }
 
-        [JsonPropertyName("start_url")] public string StartUrl { get; set; }
+            [JsonPropertyName("display")] public string Display { get; set; }
 
-        [JsonPropertyName("display")] public string Display { get; set; }
+            [JsonPropertyName("background_color")] public string BackgroundColor { get; set; }
 
-        [JsonPropertyName("background_color")] public string BackgroundColor { get; set; }
+            [JsonPropertyName("theme_color")] public string ThemeColor { get; set; }
+        }
 
-        [JsonPropertyName("theme_color")] public string ThemeColor { get; set; }
-    }
+        public class Icon
+        {
+            [JsonPropertyName("src")] public string Src { get; set; }
 
-    public class Icon
-    {
-        [JsonPropertyName("src")] public string Src { get; set; }
+            [JsonPropertyName("sizes")] public string Sizes { get; set; }
 
-        [JsonPropertyName("sizes")] public string Sizes { get; set; }
+            [JsonPropertyName("type")] public string Type { get; set; }
 
-        [JsonPropertyName("type")] public string Type { get; set; }
-
-        [JsonPropertyName("purpose")] public string Purpose { get; set; }
+            [JsonPropertyName("purpose")] public string Purpose { get; set; }
+        }
     }
 }

@@ -7,43 +7,48 @@ You should have received a copy of the GNU General Public License along with Sil
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
-namespace SilverBot.Shared.Utils;
-
-public static class RandomGenerator
+namespace SilverBot.Shared.Utils
 {
-    public static int Next(int minValue, int maxExclusiveValue)
+    public static class RandomGenerator
     {
-        if (minValue < maxExclusiveValue)
+        public static int Next(int minValue, int maxExclusiveValue)
         {
-            return RandomNumberGenerator.GetInt32(minValue, maxExclusiveValue);
+            if (minValue < maxExclusiveValue)
+            {
+                return RandomNumberGenerator.GetInt32(minValue, maxExclusiveValue);
+            }
+
+            var argumentOutOfRangeException =
+                new ArgumentOutOfRangeException(nameof(minValue), "minValue must be lower than maxExclusiveValue");
+            throw argumentOutOfRangeException;
         }
 
-        var argumentOutOfRangeException =
-            new ArgumentOutOfRangeException(nameof(minValue), "minValue must be lower than maxExclusiveValue");
-        throw argumentOutOfRangeException;
+        public static uint GetRandomUInt()
+        {
+            var randomBytes = GenerateRandomBytes(sizeof(uint));
+            return BitConverter.ToUInt32(randomBytes, 0);
+        }
+
+        public static byte[] GenerateRandomBytes(int bytesNumber)
+        {
+            return RandomNumberGenerator.GetBytes(bytesNumber);
+        }
+
+        /// <summary>
+        ///  Returns a base64 string, you might want to use <see cref="RandomAbcString"/>
+        /// </summary>
+        /// <param name="length">how much bytes m8</param>
+        /// <returns>a base64 thingy</returns>
+        public static string RandomString(int length)
+        {
+            return Convert.ToBase64String(GenerateRandomBytes(length));
+        }
+
+
+        public static string RandomAbcString(int length, double timespan = 1.5)
+        {
+            return Regex.Replace(RandomString(length), @"[^\w]", string.Empty,
+                RegexOptions.None, TimeSpan.FromSeconds(timespan));
+        }
     }
-
-    public static uint GetRandomUInt()
-    {
-        var randomBytes = GenerateRandomBytes(sizeof(uint));
-        return BitConverter.ToUInt32(randomBytes, 0);
-    }
-
-    public static byte[] GenerateRandomBytes(int bytesNumber)
-    {
-        return RandomNumberGenerator.GetBytes(bytesNumber);
-    }
-
-    /// <summary>
-    ///  Returns a base64 string, you might want to use <see cref="RandomAbcString"/>
-    /// </summary>
-    /// <param name="length">how much bytes m8</param>
-    /// <returns>a base64 thingy</returns>
-    public static string RandomString(int length) => 
-        Convert.ToBase64String(GenerateRandomBytes(length));
-    
-
-    public static string RandomAbcString(int length, double timespan = 1.5) =>
-        Regex.Replace(RandomString(length), @"[^\w]", string.Empty,
-            RegexOptions.None, TimeSpan.FromSeconds(timespan));
 }

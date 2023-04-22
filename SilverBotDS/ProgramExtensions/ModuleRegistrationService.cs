@@ -7,6 +7,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using SilverBot.Shared;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Database.Classes;
 
@@ -22,16 +23,20 @@ namespace SilverBotDS.ProgramExtensions
                 .ToArray();
 
             if (constructors.Length != 1)
+            {
                 throw new ArgumentException(
                     "Specified type does not contain a public constructor or contains more than one public constructor.");
+            }
 
             var constructor = constructors[0];
             var constructorArgs = constructor.GetParameters();
             var args = new object[constructorArgs.Length];
 
             if (constructorArgs.Length != 0 && services == null)
+            {
                 throw new InvalidOperationException(
                     "Dependency collection needs to be specified for parameterized constructors.");
+            }
 
             // inject via constructor
             if (constructorArgs.Length != 0)
@@ -50,11 +55,15 @@ namespace SilverBotDS.ProgramExtensions
             foreach (var prop in props)
             {
                 if (prop.GetCustomAttribute<DSharpPlus.CommandsNext.Attributes.DontInjectAttribute>() != null)
+                {
                     continue;
+                }
 
                 var service = services.GetService(prop.PropertyType);
                 if (service == null)
+                {
                     continue;
+                }
 
                 prop.SetValue(moduleInstance, service);
             }
@@ -64,11 +73,15 @@ namespace SilverBotDS.ProgramExtensions
             foreach (var field in fields)
             {
                 if (field.GetCustomAttribute<DSharpPlus.CommandsNext.Attributes.DontInjectAttribute>() != null)
+                {
                     continue;
+                }
 
                 var service = services.GetService(field.FieldType);
                 if (service == null)
+                {
                     continue;
+                }
 
                 field.SetValue(moduleInstance, service);
             }
@@ -114,16 +127,19 @@ namespace SilverBotDS.ProgramExtensions
                     }
                 }
             }
+
             if (!module.GetInterfaces().Contains(typeof(IService)))
             {
                 return;
             }
+
             var thing = CreateInstance(module, services.BuildServiceProvider());
             await ((IService)thing).Start();
             services.AddSingleton(thing);
         }
 
-        public async Task ProcessModuleType(Type? type, Config _config, CommandsNextExtension commands, SlashCommandsExtension slash)
+        public async Task ProcessModuleType(Type? type, Config _config, CommandsNextExtension commands,
+            SlashCommandsExtension slash)
         {
             if (type == null)
             {
@@ -160,12 +176,24 @@ namespace SilverBotDS.ProgramExtensions
                 }
             }
 
-            if (type.IsSubclassOf(typeof(IHaveExecutableRequirements)))
+            void Register()
+            {
+                if (type.IsSubclassOf(typeof(ApplicationCommandModule)))
+                {
+                    slash.RegisterCommands(type);
+                }
+                if (type.IsSubclassOf(typeof(BaseCommandModule)))
+                {
+                    commands.RegisterCommands(type);
+                }
+            }
+
+            if (type.GetInterfaces().Contains(typeof(IHaveExecutableRequirements)))
             {
                 var n = (IHaveExecutableRequirements)Activator.CreateInstance(type)!;
                 if (await n.ExecuteRequirements(_config))
                 {
-                    commands.RegisterCommands(type);
+                    Register();
                 }
                 else
                 {
@@ -173,13 +201,18 @@ namespace SilverBotDS.ProgramExtensions
                         type.Name);
                 }
             }
-            else if (type.IsSubclassOf(typeof(ApplicationCommandModule)))
+            else
             {
-                slash.RegisterCommands(type);
-            }
-            else if (type.IsSubclassOf(typeof(BaseCommandModule)))
-            {
-                commands.RegisterCommands(type);
+                if (type.GetInterfaces().Contains(typeof(ISpecialModuleRegistration)))
+                {
+                    var n = (ISpecialModuleRegistration)Activator.CreateInstance(type)!;
+                    await n.Register(commands);
+                    Register();
+                }
+                else
+                {
+                    Register();
+                }
             }
         }
     }

@@ -6,89 +6,91 @@ You should have received a copy of the GNU General Public License along with Sil
 
 using System.Text;
 
-namespace SilverBot.Shared.Utils;
-
-public static class StringUtils
+namespace SilverBot.Shared.Utils
 {
-    /// <summary>
-    ///     A random string from an array of strings
-    /// </summary>
-    /// <param name="vs">the array</param>
-    /// <returns>A random string from the array</returns>
-    public static string RandomFromArray(this string[] vs)
+    public static class StringUtils
     {
-        return vs.RandomFrom();
-    }
-
-    public static string FormatFromDictionary(this string formatString, Dictionary<string, string> valueDict)
-    {
-        ulong i = 0;
-        StringBuilder newFormatString = new(formatString);
-        Dictionary<string, ulong> keyToInt = new();
-        foreach (var tuple in valueDict.Select(tuple => tuple.Key))
+        /// <summary>
+        ///     A random string from an array of strings
+        /// </summary>
+        /// <param name="vs">the array</param>
+        /// <returns>A random string from the array</returns>
+        public static string RandomFromArray(this string[] vs)
         {
-            newFormatString = newFormatString.Replace($"{{{tuple}}}", $"{{{i}}}");
-            keyToInt.Add(tuple, i);
-            i++;
+            return vs.RandomFrom();
         }
 
-        return string.Format(newFormatString.ToString(),
-            valueDict.OrderBy(x => keyToInt[x.Key]).Select(x => x.Value).ToArray());
-    }
-
-    /// <summary>
-    ///     Split the string on a specified length
-    /// </summary>
-    /// <param name="s">The string</param>
-    /// <param name="partLength">The length</param>
-    /// <returns>An IEnumerable string containing the parts</returns>
-    public static IEnumerable<string> SplitInParts(this string s, int partLength)
-    {
-        if (s == null)
+        public static string FormatFromDictionary(this string formatString, Dictionary<string, string> valueDict)
         {
-            throw new ArgumentNullException(nameof(s));
+            ulong i = 0;
+            StringBuilder newFormatString = new(formatString);
+            Dictionary<string, ulong> keyToInt = new();
+            foreach (var tuple in valueDict.Select(tuple => tuple.Key))
+            {
+                newFormatString = newFormatString.Replace($"{{{tuple}}}", $"{{{i}}}");
+                keyToInt.Add(tuple, i);
+                i++;
+            }
+
+            return string.Format(newFormatString.ToString(),
+                valueDict.OrderBy(x => keyToInt[x.Key]).Select(x => x.Value).ToArray());
         }
 
-        if (partLength <= 0)
+        /// <summary>
+        ///     Split the string on a specified length
+        /// </summary>
+        /// <param name="s">The string</param>
+        /// <param name="partLength">The length</param>
+        /// <returns>An IEnumerable string containing the parts</returns>
+        public static IEnumerable<string> SplitInParts(this string s, int partLength)
         {
-            throw new ArgumentException("Part length has to be positive.", nameof(partLength));
+            if (s == null)
+            {
+                throw new ArgumentNullException(nameof(s));
+            }
+
+            if (partLength <= 0)
+            {
+                throw new ArgumentException("Part length has to be positive.", nameof(partLength));
+            }
+
+            return SplitInPartsIterator(s, partLength);
         }
 
-        return SplitInPartsIterator(s, partLength);
-    }
-
-    private static IEnumerable<string> SplitInPartsIterator(this string s, int partLength)
-    {
-        for (var i = 0; i < s.Length; i += partLength)
+        private static IEnumerable<string> SplitInPartsIterator(this string s, int partLength)
         {
-            yield return s.Substring(i, Math.Min(partLength, s.Length - i));
+            for (var i = 0; i < s.Length; i += partLength)
+            {
+                yield return s.Substring(i, Math.Min(partLength, s.Length - i));
+            }
         }
-    }
 
-  
-    public static string BoolToEmoteString(bool b)
-    {
-        return b ? ":white_check_mark:" : ":x:";
-    }
 
-    /// <summary>
-    /// Removes a substring if it is found at the end
-    /// </summary>
-    /// <param name="a">the source string</param>
-    /// <param name="sub">the substring</param>
-    /// <returns>the original string with the substring removed if the substring was at the end</returns>
-    public static string RemoveStringFromEnd(this string a, string sub)
-    {
-        return !a.EndsWith(sub) ? a : a[..a.LastIndexOf(sub, StringComparison.Ordinal)];
-    }
-    /// <summary>
-    /// Removes a substring if it is found at the start
-    /// </summary>
-    /// <param name="a">the source string</param>
-    /// <param name="sub">the substring</param>
-    /// <returns>the original string with the substring removed if the substring was at the start</returns>
-    public static string RemoveStringFromStart(this string a, string sub)
-    {
-        return !a.StartsWith(sub) ? a : a[sub.Length..];
+        public static string BoolToEmoteString(bool b)
+        {
+            return b ? ":white_check_mark:" : ":x:";
+        }
+
+        /// <summary>
+        /// Removes a substring if it is found at the end
+        /// </summary>
+        /// <param name="a">the source string</param>
+        /// <param name="sub">the substring</param>
+        /// <returns>the original string with the substring removed if the substring was at the end</returns>
+        public static string RemoveStringFromEnd(this string a, string sub)
+        {
+            return !a.EndsWith(sub) ? a : a[..a.LastIndexOf(sub, StringComparison.Ordinal)];
+        }
+
+        /// <summary>
+        /// Removes a substring if it is found at the start
+        /// </summary>
+        /// <param name="a">the source string</param>
+        /// <param name="sub">the substring</param>
+        /// <returns>the original string with the substring removed if the substring was at the start</returns>
+        public static string RemoveStringFromStart(this string a, string sub)
+        {
+            return !a.StartsWith(sub) ? a : a[sub.Length..];
+        }
     }
 }

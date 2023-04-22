@@ -6,9 +6,9 @@ You should have received a copy of the GNU General Public License along with Sil
 
 using System.Text.Json.Serialization;
 
-namespace SilverBot.Shared.Objects.Classes.OAuth;
-
-public class OAuthGuild
+namespace SilverBot.Shared.Objects.Classes.OAuth
+{
+    public class OAuthGuild
     {
         [JsonPropertyName("id")] public string Id { get; set; }
 
@@ -25,3 +25,4 @@ public class OAuthGuild
         [JsonPropertyName("features")]
         public string[] Features { get; set; } // should be removed if possbile violates CA1819
     }
+}

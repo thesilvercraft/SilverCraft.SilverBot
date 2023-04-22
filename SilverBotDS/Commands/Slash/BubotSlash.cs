@@ -18,13 +18,16 @@ using SilverBot.Shared.Utils;
 
 namespace SilverBotDS.Commands.Slash
 {
-    public class BubotSlash : ApplicationCommandModule, IHaveExecutableRequirements,IRequireAssets
+    public class BubotSlash : ApplicationCommandModule, IHaveExecutableRequirements, IRequireAssets
     {
         private string[] _bibiDescText;
         private string[] _bibiFullDescText;
         public Config Config { private get; set; }
 
-        public Task<bool> ExecuteRequirements(Config conf) => Task.FromResult(Directory.Exists(conf.LocalBibiPictures));
+        public Task<bool> ExecuteRequirements(Config conf)
+        {
+            return Task.FromResult(Directory.Exists(conf.LocalBibiPictures));
+        }
 
         private void EnsureCreated()
         {
@@ -43,36 +46,36 @@ namespace SilverBotDS.Commands.Slash
             using StreamReader reader = new(Config.BibiLibFullConfig);
             return JsonSerializer.Deserialize<string[]>(reader.ReadToEnd());
         }
+
         public static string[] RequiredAssets => new[]
         {
-            "font://Arial",
+            "font://Arial"
         };
 
 
-        private int BibiPictureCount
-        {
-            get { return Directory.EnumerateFiles(Config.LocalBibiPictures).Count(x => x.EndsWith(".png")); }
-        }
+        private int BibiPictureCount =>
+            Directory.EnumerateFiles(Config.LocalBibiPictures).Count(x => x.EndsWith(".png"));
 
-      
 
         [SlashCommand("bibi", "Makes a image with the great cat Bibi.")]
-        [SlashCooldown(1,2,SlashCooldownBucketType.User)]
-        public async Task Bibi(InteractionContext ctx, [Option("text", "Bibi is **text**")]  string input)
+        [SlashCooldown(1, 2, SlashCooldownBucketType.User)]
+        public async Task Bibi(InteractionContext ctx, [Option("text", "Bibi is **text**")] string input)
         {
             input = $"bibi is {input}";
             var randomnumber = RandomGenerator.Next(1, BibiPictureCount);
-            using var picture = Image.NewFromFile(Path.Combine(Config.LocalBibiPictures,$"{randomnumber}.png"));
-            using var textImage = Image.Text($"<span foreground=\"{(randomnumber is 10 or 9 ? "#808080ff" : "#ffffffff")}\">" + HttpUtility.HtmlEncode(input) + "</span>",
+            using var picture = Image.NewFromFile(Path.Combine(Config.LocalBibiPictures, $"{randomnumber}.png"));
+            using var textImage = Image.Text(
+                $"<span foreground=\"{(randomnumber is 10 or 9 ? "#808080ff" : "#ffffffff")}\">" +
+                HttpUtility.HtmlEncode(input) + "</span>",
                 "Noto Color Emoji, Arial normal " + 30,
                 rgba: true,
                 align: Enums.Align.Low, width: picture.Width);
-            using var compositedImage = picture.Composite(textImage, Enums.BlendMode.Over, x: 4, y: 230); // overlay text image
+            using var compositedImage =
+                picture.Composite(textImage, Enums.BlendMode.Over, 4, 230); // overlay text image
             await using var outStream = new MemoryStream();
             compositedImage.WriteToStream(outStream, ".png");
             outStream.Position = 0;
-            await ImageModule.SendImageStreamIfAllowed(ctx, outStream, DisposeOfStream:true, content: input);
+            await ImageModule.SendImageStreamIfAllowed(ctx, outStream, true, content: input);
         }
-
     }
 }

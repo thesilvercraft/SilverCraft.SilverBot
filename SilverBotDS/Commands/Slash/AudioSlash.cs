@@ -29,11 +29,9 @@ namespace SilverBotDS.Commands.Slash
             var lang = await LanguageService.FromCtxAsync(ctx);
             await ctx.DeferAsync();
             var song = await SongOrSongsConverter.ConvertToSong(ctx, sg, lang);
-            await NeutralAudio.PlayNext(new UnBasedCommandContext(ctx), song);
+            await NeutralAudio.PlayNext(new SlashNeutralCommandContext(ctx), song);
         }
 
-
-        //TODO: PLAY ATTACHMENTS AND ATTACHMENTS OF REPLIED MESSAGES
         [SlashCommand("play", "Tell me to play a song")]
         public async Task Play(InteractionContext ctx,
             [Option("songname", "the song to add next in the queue")]
@@ -42,7 +40,7 @@ namespace SilverBotDS.Commands.Slash
             var lang = await LanguageService.FromCtxAsync(ctx);
             await ctx.DeferAsync();
             var song = await SongOrSongsConverter.ConvertToSong(ctx, sg, lang);
-            await NeutralAudio.Play(new UnBasedCommandContext(ctx), song);
+            await NeutralAudio.Play(new SlashNeutralCommandContext(ctx), song);
         }
 
         [RequireDjSlash]
@@ -50,7 +48,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Volume(InteractionContext ctx, [Option("volume", "1-100%")] long volume)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Volume(new UnBasedCommandContext(ctx), (ushort)volume);
+            await NeutralAudio.Volume(new SlashNeutralCommandContext(ctx), (ushort)volume);
         }
 
         [RequireDjSlash]
@@ -60,7 +58,7 @@ namespace SilverBotDS.Commands.Slash
             if (time is not null)
             {
                 await ctx.DeferAsync();
-                await NeutralAudio.Seek(new UnBasedCommandContext(ctx), (TimeSpan)time);
+                await NeutralAudio.Seek(new SlashNeutralCommandContext(ctx), (TimeSpan)time);
             }
         }
 
@@ -69,7 +67,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task ClearQueue(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.ClearQueue(new UnBasedCommandContext(ctx));
+            await NeutralAudio.ClearQueue(new SlashNeutralCommandContext(ctx));
         }
 
         [RequireDjSlash]
@@ -77,7 +75,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Shuffle(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Shuffle(new UnBasedCommandContext(ctx));
+            await NeutralAudio.Shuffle(new SlashNeutralCommandContext(ctx));
         }
 
 
@@ -87,7 +85,7 @@ namespace SilverBotDS.Commands.Slash
             string? playlistName = null)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.ExportQueue(new UnBasedCommandContext(ctx), playlistName);
+            await NeutralAudio.ExportQueue(new SlashNeutralCommandContext(ctx), playlistName);
         }
 
 
@@ -95,7 +93,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Remove(InteractionContext ctx, [Option("songindex", "song index")] long songindex)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Remove(new UnBasedCommandContext(ctx), (int)songindex);
+            await NeutralAudio.Remove(new SlashNeutralCommandContext(ctx), (int)songindex);
         }
 
         [SlashCommand("loop", "Loops nothing/the queue/the currently playing song\"")]
@@ -104,7 +102,7 @@ namespace SilverBotDS.Commands.Slash
             LoopSettings settings)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Loop(new UnBasedCommandContext(ctx), settings);
+            await NeutralAudio.Loop(new SlashNeutralCommandContext(ctx), settings);
         }
 
 
@@ -112,21 +110,21 @@ namespace SilverBotDS.Commands.Slash
         public async Task Pause(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Pause(new UnBasedCommandContext(ctx));
+            await NeutralAudio.Pause(new SlashNeutralCommandContext(ctx));
         }
 
         [SlashCommand("resume", "resume the current song")]
         public async Task Resume(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Resume(new UnBasedCommandContext(ctx));
+            await NeutralAudio.Resume(new SlashNeutralCommandContext(ctx));
         }
 
         [SlashCommand("join", "join the voice chat you're in")]
         public async Task Join(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Join(new UnBasedCommandContext(ctx));
+            await NeutralAudio.Join(new SlashNeutralCommandContext(ctx));
         }
 
 
@@ -135,7 +133,7 @@ namespace SilverBotDS.Commands.Slash
         public async Task Skip(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Skip(new UnBasedCommandContext(ctx));
+            await NeutralAudio.Skip(new SlashNeutralCommandContext(ctx));
         }
 
         [SlashCommand("leave", "disconnect from voice channel")]
@@ -143,14 +141,14 @@ namespace SilverBotDS.Commands.Slash
         public async Task Disconnect(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Disconnect(new UnBasedCommandContext(ctx));
+            await NeutralAudio.Disconnect(new SlashNeutralCommandContext(ctx));
         }
 
         [SlashCommand("skip", "vote skip")]
         public async Task VoteSkip(InteractionContext ctx)
         {
             await ctx.DeferAsync();
-            await NeutralAudio.Skip(new UnBasedCommandContext(ctx));
+            await NeutralAudio.Skip(new SlashNeutralCommandContext(ctx));
         }
     }
 }

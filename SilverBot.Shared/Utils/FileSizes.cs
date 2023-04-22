@@ -3,24 +3,26 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
-namespace SilverBot.Shared.Utils;
 
-internal class FileSizes
+namespace SilverBot.Shared.Utils
 {
-    public static readonly FSize[] FSizes =
+    internal class FileSizes
     {
-        new("Byte", "B"),
-        new("Kilobyte", "KB"),
-        new("Megabyte", "MB"), 
-        new("Gigabyte", "GB"), 
-        new("Terabyte", "TB"),
-        new("Petabyte", "PB"),
-        new("Exabyte", "EB"), 
-        new("Zettabyte", "ZB"),
-        new("Yottabyte", "YB")
-    };
+        public static readonly FSize[] FSizes =
+        {
+            new("Byte", "B"),
+            new("Kilobyte", "KB"),
+            new("Megabyte", "MB"),
+            new("Gigabyte", "GB"),
+            new("Terabyte", "TB"),
+            new("Petabyte", "PB"),
+            new("Exabyte", "EB"),
+            new("Zettabyte", "ZB"),
+            new("Yottabyte", "YB")
+        };
 
-    protected FileSizes()
-    {
+        protected FileSizes()
+        {
+        }
     }
 }

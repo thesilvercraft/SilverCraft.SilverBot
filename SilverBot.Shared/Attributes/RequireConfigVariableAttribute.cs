@@ -9,22 +9,23 @@ using DSharpPlus.CommandsNext.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using SilverBot.Shared.Objects;
 
-namespace SilverBot.Shared.Attributes;
-
-public class RequireConfigVariableAttribute : CheckBaseAttribute
+namespace SilverBot.Shared.Attributes
 {
-    public RequireConfigVariableAttribute(string variable, object? state)
+    public class RequireConfigVariableAttribute : CheckBaseAttribute
     {
-        Variable = variable;
-        State = state;
-    }
+        public RequireConfigVariableAttribute(string variable, object? state)
+        {
+            Variable = variable;
+            State = state;
+        }
 
-    public string Variable { get; }
-    public object? State { get; }
+        public string Variable { get; }
+        public object? State { get; }
 
-    public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
-    {
-        var conf = ctx.CommandsNext.Services.GetService<Config>();
-        return Task.FromResult(Equals(typeof(Config)?.GetProperty(Variable)?.GetValue(conf), State));
+        public override Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
+        {
+            var conf = ctx.CommandsNext.Services.GetService<Config>();
+            return Task.FromResult(Equals(typeof(Config)?.GetProperty(Variable)?.GetValue(conf), State));
+        }
     }
 }

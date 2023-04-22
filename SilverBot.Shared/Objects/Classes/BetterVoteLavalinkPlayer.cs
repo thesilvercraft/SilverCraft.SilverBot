@@ -11,177 +11,188 @@ using DSharpPlus.Entities;
 using Lavalink4NET.Events;
 using Lavalink4NET.Player;
 
-namespace SilverBot.Shared.Objects.Classes;
-
-public enum LoopSettings
+namespace SilverBot.Shared.Objects.Classes
 {
-    [EnumMember(Value = "none")] NotLooping,
-
-    [EnumMember(Value = "song")] LoopingSong,
-
-    [EnumMember(Value = "queue")] LoopingQueue
-}
-
-public enum FinishReason
-{
-    NotFinishedYet,
-    TrackEnd,
-    Skipped,
-    FullySkipped,
-    
-}
-public class QueueHistoryPlayback
-{
-    public DateTime? TimeStartedPlaying { get; set; }
-    public DateTime? TimeFinishedPlaying { get; set; }
-    public FinishReason ReasonFinished { get; set; }
-}
-
-public class QueueHistoryObject
-{
-    public LavalinkTrack Track { get; set; }
-    public DateTime TimeAdded { get; set; }
-    public List<QueueHistoryPlayback> Playbacks { get; set; } = new();
-}
-
-public enum ChangeType
-{
-    QueueChange, 
-    CurrentSongChange,
-    TrackEnd,
-    CurrentStateChangePause,
-    CurrentStateChangeResume,
-
-}
-public class BetterPlayerEventData
-{
-    public ChangeType ChangeType;
-}
-public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
-{
-    public Dictionary<DiscordUser, List<Func<string, DiscordUser, bool>>> OnWebsiteEvent = new();
-    public LoopSettings LoopSettings { get; set; } = LoopSettings.NotLooping;
-    public EventHandler<BetterPlayerEventData> OnChangedState;
-    public ulong LoopTimes { get; set; } = 0;
-    public Dictionary<LavalinkTrack, QueueHistoryObject> QueueHistory { get; set; } = new();
-
-    public override Task<int> PlayAsync(LavalinkTrack track, bool enqueue, TimeSpan? startTime = null,
-        TimeSpan? endTime = null, bool noReplace = false)
+    public enum LoopSettings
     {
-        if (enqueue)
+        [EnumMember(Value = "none")] NotLooping,
+
+        [EnumMember(Value = "song")] LoopingSong,
+
+        [EnumMember(Value = "queue")] LoopingQueue
+    }
+
+    public enum FinishReason
+    {
+        NotFinishedYet,
+        TrackEnd,
+        Skipped,
+        FullySkipped
+    }
+
+    public class QueueHistoryPlayback
+    {
+        public DateTime? TimeStartedPlaying { get; set; }
+        public DateTime? TimeFinishedPlaying { get; set; }
+        public FinishReason ReasonFinished { get; set; }
+    }
+
+    public class QueueHistoryObject
+    {
+        public LavalinkTrack Track { get; set; }
+        public DateTime TimeAdded { get; set; }
+        public List<QueueHistoryPlayback> Playbacks { get; set; } = new();
+    }
+
+    public enum ChangeType
+    {
+        QueueChange,
+        CurrentSongChange,
+        TrackEnd,
+        CurrentStateChangePause,
+        CurrentStateChangeResume
+    }
+
+    public class BetterPlayerEventData
+    {
+        public ChangeType ChangeType;
+    }
+
+    public class BetterVoteLavalinkPlayer : VoteLavalinkPlayer
+    {
+        public Dictionary<DiscordUser, List<Func<string, DiscordUser, bool>>> OnWebsiteEvent = new();
+        public LoopSettings LoopSettings { get; set; } = LoopSettings.NotLooping;
+        public EventHandler<BetterPlayerEventData> OnChangedState;
+        public ulong LoopTimes { get; set; } = 0;
+        public Dictionary<LavalinkTrack, QueueHistoryObject> QueueHistory { get; set; } = new();
+
+        public override Task<int> PlayAsync(LavalinkTrack track, bool enqueue, TimeSpan? startTime = null,
+            TimeSpan? endTime = null, bool noReplace = false)
         {
-            OnChangedState?.Invoke(this, new BetterPlayerEventData(){ChangeType=ChangeType.QueueChange});
-            QueueHistory.Add(track, new QueueHistoryObject(){ Track = track, TimeAdded = DateTime.UtcNow});
+            if (enqueue)
+            {
+                OnChangedState?.Invoke(this, new BetterPlayerEventData() { ChangeType = ChangeType.QueueChange });
+                QueueHistory.Add(track, new QueueHistoryObject() { Track = track, TimeAdded = DateTime.UtcNow });
+            }
+            else if (QueueHistory.TryGetValue(track, out var queueHistoryObject))
+            {
+                queueHistoryObject.Playbacks.Add(new QueueHistoryPlayback
+                    { ReasonFinished = FinishReason.NotFinishedYet, TimeStartedPlaying = DateTime.UtcNow });
+            }
+
+            return base.PlayAsync(track, enqueue, startTime, endTime, noReplace);
         }
-        else if(QueueHistory.TryGetValue(track, out var queueHistoryObject))
+
+        public override Task PauseAsync()
         {
-            queueHistoryObject.Playbacks.Add(new(){ReasonFinished = FinishReason.NotFinishedYet, TimeStartedPlaying = DateTime.UtcNow});
+            OnChangedState?.Invoke(this,
+                new BetterPlayerEventData() { ChangeType = ChangeType.CurrentStateChangePause });
+            return base.PauseAsync();
         }
-        return base.PlayAsync(track, enqueue, startTime, endTime, noReplace);
-    }
 
-    public override Task PauseAsync()
-    {
-        OnChangedState?.Invoke(this, new BetterPlayerEventData(){ChangeType=ChangeType.CurrentStateChangePause});
-        return base.PauseAsync();
-    }
-
-    public override Task ResumeAsync()
-    {
-        OnChangedState?.Invoke(this, new BetterPlayerEventData(){ChangeType=ChangeType.CurrentStateChangeResume});
-        return base.ResumeAsync();
-    }
-
-    public override Task SkipAsync(int count = 1)
-    {
-        return SkipAsync(count, true);
-    }
-
-    public Task SkipAsync(int count, bool command)
-    {
-        if (count <= 0)
+        public override Task ResumeAsync()
         {
+            OnChangedState?.Invoke(this,
+                new BetterPlayerEventData() { ChangeType = ChangeType.CurrentStateChangeResume });
+            return base.ResumeAsync();
+        }
+
+        public override Task SkipAsync(int count = 1)
+        {
+            return SkipAsync(count, true);
+        }
+
+        public Task SkipAsync(int count, bool command)
+        {
+            if (count <= 0)
+            {
+                return Task.CompletedTask;
+            }
+
+            EnsureNotDestroyed();
+            EnsureConnected();
+            if (!command && LoopSettings == LoopSettings.LoopingSong && CurrentTrack != null)
+            {
+                if (QueueHistory.TryGetValue(CurrentTrack, out var queueHistoryObject) &&
+                    queueHistoryObject.Playbacks.Count > 0)
+                {
+                    queueHistoryObject.Playbacks.Last().TimeFinishedPlaying = DateTime.UtcNow;
+                    queueHistoryObject.Playbacks.Add(new QueueHistoryPlayback
+                        { ReasonFinished = FinishReason.NotFinishedYet, TimeStartedPlaying = DateTime.UtcNow });
+                }
+
+                LoopTimes++;
+                return PlayAsync(CurrentTrack, false);
+            }
+
+            if (!Queue.IsEmpty)
+            {
+                LoopTimes = 0;
+                LavalinkTrack? track = null;
+                while (count-- > 0)
+                {
+                    track = Queue.Dequeue();
+                    if (QueueHistory.TryGetValue(track, out var queueHistoryObject) &&
+                        queueHistoryObject.Playbacks.Count > 0)
+                    {
+                        if (count > 0)
+                        {
+                            queueHistoryObject.Playbacks.Add(new QueueHistoryPlayback
+                            {
+                                TimeStartedPlaying = DateTime.UtcNow, TimeFinishedPlaying = DateTime.UtcNow,
+                                ReasonFinished = FinishReason.FullySkipped
+                            });
+                        }
+                        else
+                        {
+                            queueHistoryObject.Playbacks.Add(new QueueHistoryPlayback
+                            {
+                                TimeStartedPlaying = DateTime.UtcNow,
+                                ReasonFinished = FinishReason.NotFinishedYet
+                            });
+                        }
+                    }
+
+                    if (LoopSettings is LoopSettings.LoopingQueue)
+                    {
+                        Queue.Add(track);
+                    }
+                }
+
+                return PlayAsync(track!, false);
+            }
+
+            StopAsync();
             return Task.CompletedTask;
         }
 
-        EnsureNotDestroyed();
-        EnsureConnected();
-        if (!command && LoopSettings == LoopSettings.LoopingSong && CurrentTrack != null)
+        public event EventHandler<TrackStartedEventArgs>? OnNewTrack;
+
+        public void RemoveOnWebsiteEventHandelers(DiscordUser gaming)
         {
-            if(QueueHistory.TryGetValue(CurrentTrack, out var queueHistoryObject) &&  queueHistoryObject.Playbacks.Count>0)
+            OnWebsiteEvent.Remove(gaming);
+        }
+
+        public void TriggerWebsiteEvent(DiscordUser user, string action)
+        {
+            foreach (var eventh in OnWebsiteEvent.Values.SelectMany(eventhandler => eventhandler))
             {
-                queueHistoryObject.Playbacks.Last().TimeFinishedPlaying=DateTime.UtcNow;
-                queueHistoryObject.Playbacks.Add(new(){ReasonFinished = FinishReason.NotFinishedYet, TimeStartedPlaying = DateTime.UtcNow});
+                eventh(action, user);
             }
-            LoopTimes++;
-            return PlayAsync(CurrentTrack, false);
         }
 
-        if (!Queue.IsEmpty)
+        public override Task OnTrackStartedAsync(TrackStartedEventArgs eventArgs)
         {
-            LoopTimes = 0;
-            LavalinkTrack? track = null;
-            while (count-- > 0)
-            {
-                track = Queue.Dequeue();
-                if(QueueHistory.TryGetValue(track, out var queueHistoryObject) &&  queueHistoryObject.Playbacks.Count>0)
-                {
-                    if (count > 0)
-                    {
-                        queueHistoryObject.Playbacks.Add(new()
-                        {
-                            TimeStartedPlaying = DateTime.UtcNow, TimeFinishedPlaying = DateTime.UtcNow,
-                            ReasonFinished = FinishReason.FullySkipped
-                        });
-                    }
-                    else
-                    {
-                        queueHistoryObject.Playbacks.Add(new()
-                        {
-                            TimeStartedPlaying = DateTime.UtcNow, 
-                            ReasonFinished = FinishReason.NotFinishedYet
-                        });
-                    }
-                }
-                if (LoopSettings is LoopSettings.LoopingQueue)
-                {
-                    Queue.Add(track);
-                }
-            }
-
-            return PlayAsync(track!, false);
+            var handler = OnNewTrack;
+            handler?.Invoke(this, eventArgs);
+            OnChangedState?.Invoke(this, new BetterPlayerEventData() { ChangeType = ChangeType.CurrentSongChange });
+            return base.OnTrackStartedAsync(eventArgs);
         }
 
-        StopAsync();
-        return Task.CompletedTask;
-    }
-
-    public event EventHandler<TrackStartedEventArgs>? OnNewTrack;
-
-    public void RemoveOnWebsiteEventHandelers(DiscordUser gaming)
-    {
-        OnWebsiteEvent.Remove(gaming);
-    }
-
-    public void TriggerWebsiteEvent(DiscordUser user, string action)
-    {
-        foreach (var eventh in OnWebsiteEvent.Values.SelectMany(eventhandler => eventhandler))
+        public override Task OnTrackEndAsync(TrackEndEventArgs eventArgs)
         {
-            eventh(action, user);
+            OnChangedState?.Invoke(this, new BetterPlayerEventData() { ChangeType = ChangeType.TrackEnd });
+            return eventArgs.MayStartNext ? SkipAsync(1, false) : Task.CompletedTask;
         }
-    }
-
-    public override Task OnTrackStartedAsync(TrackStartedEventArgs eventArgs)
-    {
-        var handler = OnNewTrack;
-        handler?.Invoke(this, eventArgs);
-        OnChangedState?.Invoke(this, new BetterPlayerEventData(){ChangeType=ChangeType.CurrentSongChange});
-        return base.OnTrackStartedAsync(eventArgs);
-    }
-
-    public override Task OnTrackEndAsync(TrackEndEventArgs eventArgs)
-    {
-        OnChangedState?.Invoke(this, new BetterPlayerEventData(){ChangeType=ChangeType.TrackEnd});
-        return eventArgs.MayStartNext ? SkipAsync(1, false) : Task.CompletedTask;
     }
 }

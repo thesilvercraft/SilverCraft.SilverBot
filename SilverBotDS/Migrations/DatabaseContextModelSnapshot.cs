@@ -16,10 +16,63 @@ namespace SilverBotDS.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "8.0.0-preview.2.23128.3")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true);
+
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.BingRankingData", b =>
+                {
+                    b.Property<Guid>("BingRankingDataId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("BingCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("ServerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("ServerSettingsId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong?>("UserSettingsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("BingRankingDataId");
+
+                    b.HasIndex("ServerSettingsId");
+
+                    b.HasIndex("UserSettingsId");
+
+                    b.ToTable("BingRankingData");
+                });
+
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.DatabaseWebhookData", b =>
+                {
+                    b.Property<Guid>("DatabaseWebhookDataId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("ServerSettingsId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("DatabaseWebhookDataId");
+
+                    b.HasIndex("ServerSettingsId");
+
+                    b.ToTable("DatabaseWebhookData");
+                });
 
             modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.PlannedEvent", b =>
                 {
@@ -194,6 +247,26 @@ namespace SilverBotDS.Migrations
                     b.ToTable("userSettings");
                 });
 
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.BingRankingData", b =>
+                {
+                    b.HasOne("SilverBot.Shared.Objects.Database.Classes.ServerSettings", null)
+                        .WithMany("BingRankingData")
+                        .HasForeignKey("ServerSettingsId");
+
+                    b.HasOne("SilverBot.Shared.Objects.Database.Classes.UserSettings", null)
+                        .WithMany("BingRankingData")
+                        .HasForeignKey("UserSettingsId");
+                });
+
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.DatabaseWebhookData", b =>
+                {
+                    b.HasOne("SilverBot.Shared.Objects.Database.Classes.ServerSettings", null)
+                        .WithMany("BingWebhooks")
+                        .HasForeignKey("ServerSettingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.ReactionRole.ReactionRoleMapping", b =>
                 {
                     b.HasOne("SilverBot.Shared.Objects.Database.Classes.ServerSettings", null)
@@ -215,6 +288,10 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("AccountJoinDate")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("AddedBingToChannel")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
@@ -355,6 +432,10 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Enqueued")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("EnqueuedBy")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
@@ -589,6 +670,10 @@ namespace SilverBotDS.Migrations
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
+                            b1.Property<string>("NowPlayingBy")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
                             b1.Property<string>("NuGetVerified")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
@@ -777,6 +862,10 @@ namespace SilverBotDS.Migrations
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
+                            b1.Property<string>("RemovedFrontWithAuthorName")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
                             b1.Property<string>("RemovedSong")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
@@ -898,10 +987,6 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SomethingsContributors")
-                                .IsRequired()
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("SongByAuthor")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
@@ -1166,6 +1251,10 @@ namespace SilverBotDS.Migrations
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
+                            b1.Property<string>("AddedBingToChannel")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
                             b1.Property<string>("AddedXAmountOfSongs")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
@@ -1303,6 +1392,10 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Enqueued")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("EnqueuedBy")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
@@ -1534,6 +1627,10 @@ namespace SilverBotDS.Migrations
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
+                            b1.Property<string>("NowPlayingBy")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
                             b1.Property<string>("NuGetVerified")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
@@ -1722,6 +1819,10 @@ namespace SilverBotDS.Migrations
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
+                            b1.Property<string>("RemovedFrontWithAuthorName")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
                             b1.Property<string>("RemovedSong")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
@@ -1843,10 +1944,6 @@ namespace SilverBotDS.Migrations
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("SomethingsContributors")
-                                .IsRequired()
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("SongByAuthor")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
@@ -2101,7 +2198,16 @@ namespace SilverBotDS.Migrations
 
             modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.ServerSettings", b =>
                 {
+                    b.Navigation("BingRankingData");
+
+                    b.Navigation("BingWebhooks");
+
                     b.Navigation("ReactionRoleMappings");
+                });
+
+            modelBuilder.Entity("SilverBot.Shared.Objects.Database.Classes.UserSettings", b =>
+                {
+                    b.Navigation("BingRankingData");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,6 +3,7 @@ SilverBot is free software: you can redistribute it and/or modify it under the t
 SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
+
 using DSharpPlus;
 using System.Diagnostics;
 using System.Text;
@@ -13,11 +14,12 @@ namespace SilverBot.SysAdminModule
     public class SysAdminModule : IService
     {
         public DiscordClient client { set; private get; }
-        IPackageManager pm=new ScoopPackageManager();
+        private IPackageManager pm = new ScoopPackageManager();
+
         public Task Start()
         {
-       
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User)?.Contains("scoop")==true)
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment
+                    .GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User)?.Contains("scoop") == true)
             {
                 Console.WriteLine("Scoop version: " + pm.Version);
                 Console.WriteLine("Upgrading index");
@@ -27,11 +29,13 @@ namespace SilverBot.SysAdminModule
                 {
                     Console.WriteLine($"{package.Name}\t\t{package.Version}\t\t{package.Source}");
                 }
+
                 Console.WriteLine("Packages to upgrade:");
                 foreach (var package in pm.GetPackagesReadyToUpdate())
                 {
                     Console.WriteLine($"{package.Name}\t\t{package.Version}\t\t{((ScoopPackage)package).NewVersion}");
                 }
+
                 Console.WriteLine("Upgrading packages");
                 pm.UpgradePackages();
             }
@@ -43,7 +47,7 @@ namespace SilverBot.SysAdminModule
                 {
                     idlike += "ID_LIKE=".Length;
                     StringBuilder entireIdLike = new();
-                    var c=true;
+                    var c = true;
                     while (c)
                     {
                         if (file[idlike] != '\n' && file[idlike] != '\r')
@@ -54,39 +58,44 @@ namespace SilverBot.SysAdminModule
                         {
                             c = false;
                         }
+
                         idlike++;
                     }
+
                     Console.WriteLine($"Running on something like {entireIdLike.ToString()}");
                 }
-
             }
             else
             {
                 Console.WriteLine("SysAdminModule tried to initialise on unsupported platform");
             }
+
             return Task.CompletedTask;
         }
 
-        public  Task Stop()
+        public Task Stop()
         {
             return Task.CompletedTask;
-
         }
     }
+
     public interface IPackage
     {
         /// <summary>
         /// Name of package
         /// </summary>
         public string Name { get; }
+
         /// <summary>
         /// Version of package
         /// </summary>
         public string Version { get; }
+
         /// <summary>
         /// Generic field for description, may be left out if getting it requires another process call
         /// </summary>
         public string? Description { get; }
+
         /// <summary>
         /// Calling this field might take a considarable amount of time and should be avoided because not all package manager wrappers might support it
         /// </summary>
@@ -95,67 +104,82 @@ namespace SilverBot.SysAdminModule
         /// <summary>
         /// Generic field for anything, could be a platform (e.g. Github, Flatpak), could be a package manager specific field like a bucket ("main", "extra", "silvercraft")
         /// </summary>
-        public string? Source { get;  }
+        public string? Source { get; }
     }
+
     public interface IPackageManager
     {
         /// <summary>
         /// The package manager's name
         /// </summary>
         public string Name { get; }
+
         /// <summary>
         /// The package manager's version
         /// </summary>
         public string Version { get; }
+
         /// <summary>
         /// Gets a list of all installed packages
         /// </summary>
         /// <returns>a list of all installed packages</returns>
         public IEnumerable<IPackage> GetInstalledPackages();
+
         /// <summary>
         /// Gets a list of packages ready to update
         /// </summary>
         /// <returns>a list of packages ready to update</returns>
         public IEnumerable<IPackage> GetPackagesReadyToUpdate();
+
         /// <summary>
         /// Upgrades list of avaliable packages
         /// </summary>
         /// <returns>nothing</returns>
         public void UpgradeIndex();
+
         /// <summary>
         /// Upgrades a package
         /// </summary>
         /// <param name="id">the packages name/id depending on the package manager</param>
         public void UpgradePackage(string id);
+
         /// <summary>
         /// Installs a package
         /// </summary>
         /// <param name="id">the packages name/id depending on the package manager</param>
         public void InstallPackage(string id);
+
         /// <summary>
         /// Upgrades all packages ready to update
         /// </summary>
         public void UpgradePackages();
-
     }
+
     public class ScoopPackageManager : IPackageManager
     {
-        public string Name =>  "Scoop";
+        public string Name => "Scoop";
 
         public string Version => GetScoopVer();
+
         public string GetScoopVer()
         {
-            var c= RunCommand("-v");
+            var c = RunCommand("-v");
             c.WaitForExit();
-            var s =c.StandardOutput.ReadToEnd();
+            var s = c.StandardOutput.ReadToEnd();
             var x = s.Split("\n");
-            var y = Array.IndexOf(x, "Current Scoop version:");         
-            return x[y+1];
+            var y = Array.IndexOf(x, "Current Scoop version:");
+            return x[y + 1];
         }
+
         public Process? RunCommand(string args)
         {
-            return Process.Start(new ProcessStartInfo() { Arguments= $"/c \"scoop {args}\"", FileName="cmd", CreateNoWindow=true, RedirectStandardOutput=true, RedirectStandardError=true, UseShellExecute=false});
+            return Process.Start(new ProcessStartInfo()
+            {
+                Arguments = $"/c \"scoop {args}\"", FileName = "cmd", CreateNoWindow = true,
+                RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false
+            });
         }
+
         public IEnumerable<IPackage> GetInstalledPackages()
         {
             var c = RunCommand("list");
@@ -163,16 +187,17 @@ namespace SilverBot.SysAdminModule
             var s = c.StandardOutput.ReadToEnd();
             var x = s.Split("\n");
             int y;
-            for (y=0;y<x.Length;y++)
+            for (y = 0; y < x.Length; y++)
             {
                 if (x[y].StartsWith("----"))
                 {
                     break;
                 }
             }
-            for (var y2 = y+1; y2 < x.Length; y2++)
+
+            for (var y2 = y + 1; y2 < x.Length; y2++)
             {
-                if (!string.IsNullOrWhiteSpace( x[y2]))
+                if (!string.IsNullOrWhiteSpace(x[y2]))
                 {
                     var fields = x[y2].Split("  ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     yield return new ScoopPackage(fields[0], fields[1], fields[2], fields[3], fields[4]);
@@ -194,6 +219,7 @@ namespace SilverBot.SysAdminModule
                     break;
                 }
             }
+
             for (var y2 = y + 1; y2 < x.Length; y2++)
             {
                 if (!string.IsNullOrWhiteSpace(x[y2]))
@@ -208,12 +234,8 @@ namespace SilverBot.SysAdminModule
         public void InstallPackage(string id)
         {
             var c = RunCommand($"install {id}");
-            c.OutputDataReceived += (s, e) => {
-                Console.WriteLine(e.Data);
-            };
-            c.ErrorDataReceived += (s, e) => {
-                Console.WriteLine(e.Data);
-            };
+            c.OutputDataReceived += (s, e) => { Console.WriteLine(e.Data); };
+            c.ErrorDataReceived += (s, e) => { Console.WriteLine(e.Data); };
             c.BeginErrorReadLine();
             c.BeginOutputReadLine();
             c.WaitForExit();
@@ -222,12 +244,8 @@ namespace SilverBot.SysAdminModule
         public void UpgradeIndex()
         {
             var c = RunCommand("update");
-            c.OutputDataReceived += (s, e) => {
-                Console.WriteLine(e.Data);
-            };
-            c.ErrorDataReceived += (s, e) => {
-                Console.WriteLine(e.Data);
-            };
+            c.OutputDataReceived += (s, e) => { Console.WriteLine(e.Data); };
+            c.ErrorDataReceived += (s, e) => { Console.WriteLine(e.Data); };
             c.BeginErrorReadLine();
             c.BeginOutputReadLine();
             c.WaitForExit();
@@ -236,12 +254,8 @@ namespace SilverBot.SysAdminModule
         public void UpgradePackage(string id)
         {
             var c = RunCommand($"update {id}");
-            c.OutputDataReceived += (s, e) => {
-                Console.WriteLine(e.Data);
-            };
-            c.ErrorDataReceived += (s, e) => {
-                Console.WriteLine(e.Data);
-            };
+            c.OutputDataReceived += (s, e) => { Console.WriteLine(e.Data); };
+            c.ErrorDataReceived += (s, e) => { Console.WriteLine(e.Data); };
             c.BeginErrorReadLine();
             c.BeginOutputReadLine();
             c.WaitForExit();
@@ -250,16 +264,11 @@ namespace SilverBot.SysAdminModule
         public void UpgradePackages()
         {
             var c = RunCommand("update *");
-            c.OutputDataReceived += (s, e) => {
-                Console.WriteLine(e.Data);
-            };
-            c.ErrorDataReceived += (s, e) => {
-                Console.WriteLine(e.Data);
-            };
+            c.OutputDataReceived += (s, e) => { Console.WriteLine(e.Data); };
+            c.ErrorDataReceived += (s, e) => { Console.WriteLine(e.Data); };
             c.BeginErrorReadLine();
             c.BeginOutputReadLine();
             c.WaitForExit();
         }
     }
-
 }

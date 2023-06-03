@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -7,30 +8,28 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
+using SilverBot.Shared;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Utils;
 
 namespace SilverBotDS.ProgramExtensions
 {
-    public static class Archiver
+    /// <summary>
+    /// The archiver archives messages from one channel to another using webhooks
+    /// </summary>
+    [ExpectedContextType(typeof(DiscordClient))]
+    public  class Archiver : IProgramExtension
     {
-        public static async Task AddArchiverAsync(this ProgramHelper _, Config config, Logger log,
-            HttpClient httpClient, DiscordClient discord)
-        {
-            DiscordWebhookClient webhookClient = new();
-            foreach (var aa in config.ArchiveWebhooks)
-            {
-                WebHookUtils.ParseWebhookUrlNullable(aa, out var ida, out var token);
-                if (ida is not null && !string.IsNullOrWhiteSpace(token))
-                {
-                    await webhookClient.AddWebhookAsync(ida.Value, token);
-                }
-            }
+        private bool _isLoaded;
+        DiscordWebhookClient webhookClient = new();
+        private Config config;
+        private HttpClient httpClient;
 
-            log.Information("Archive webhooks configured");
 
-            async Task OnMessage(DiscordMessage a)
+        async Task OnMessage(DiscordMessage a)
             {
                 if (config.ChannelsToArchivePicturesFrom.Contains(a.Channel.Id))
                 {
@@ -116,9 +115,56 @@ namespace SilverBotDS.ProgramExtensions
                     }
                 }
             }
+        public async Task Register(ServiceProvider sp, Logger log, params object[] additionalContext)
+        {
+            if (additionalContext[0] is not DiscordClient client)
+            {
+                throw new ArgumentException(
+                    "The additionalContext array must contain one element and that element must be the SlashCommandsExtension",
+                    nameof(additionalContext));
+            }
+            ServiceProvider = sp;
+            config = ServiceProvider.GetRequiredService<Config>();
+            httpClient = ServiceProvider.GetRequiredService<HttpClient>();
+            foreach (var aa in config.ArchiveWebhooks)
+            {
+                WebHookUtils.ParseWebhookUrlNullable(aa, out var ida, out var token);
+                if (ida is not null && !string.IsNullOrWhiteSpace(token))
+                {
+                    await webhookClient.AddWebhookAsync(ida.Value, token);
+                }
+            }
+            log.Information("Archive webhooks configured");
 
-            discord.MessageCreated += (e, a) => OnMessage(a.Message);
-            discord.MessageUpdated += (e, a) => OnMessage(a.Message);
+
+            client.MessageCreated += OnMessageCreated;
+            client.MessageUpdated += OnMessageUpdated;
         }
+
+        private Task OnMessageCreated(DiscordClient sender, MessageCreateEventArgs args) => OnMessage(args.Message);
+        private Task OnMessageUpdated(DiscordClient sender, MessageUpdateEventArgs args) => OnMessage(args.Message);
+
+        private  ServiceProvider ServiceProvider { get; set; }
+
+        public Task Reload()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task Unregister(ServiceProvider sp, Logger log, params object[] additionalContext)
+        {
+            if (additionalContext[0] is not DiscordClient client)
+            {
+                throw new ArgumentException(
+                    "The additionalContext array must contain one element and that element must be the SlashCommandsExtension",
+                    nameof(additionalContext));
+            }
+
+            client.MessageCreated -= OnMessageCreated;
+            client.MessageUpdated -= OnMessageUpdated;
+            return Task.CompletedTask;
+        }
+
+        public bool IsLoaded => _isLoaded;
     }
 }

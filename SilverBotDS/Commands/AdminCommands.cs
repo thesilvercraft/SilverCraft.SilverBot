@@ -22,7 +22,6 @@ using SilverBot.Shared.Objects.Database;
 using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBot.Shared.Utils;
-using static SilverBotDS.Commands.OwnerOnly;
 using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 
 namespace SilverBotDS.Commands
@@ -33,7 +32,7 @@ namespace SilverBotDS.Commands
     public class AdminCommands : BaseCommandModule
     {
         public static readonly DiscordEmoji YesEmoji = DiscordEmoji.FromUnicode("☑️");
-        public static readonly DiscordEmoji NoEmoji = DiscordEmoji.FromUnicode("❌️");
+        public static readonly DiscordEmoji NoEmoji = DiscordEmoji.FromUnicode("❌");
         public static readonly DiscordEmoji EntryEmoji = DiscordEmoji.FromUnicode("☑️");
 
         public DatabaseContext Database { private get; set; }
@@ -74,7 +73,7 @@ namespace SilverBotDS.Commands
             {
                 var bob = new DiscordEmbedBuilder();
                 bob.WithTitle(question)
-                    .WithAuthor(commandContext.Member.Nickname ?? commandContext.User.Username,
+                    .WithAuthor(commandContext.Member?.Nickname ?? commandContext.User.Username,
                         iconUrl: commandContext.User.GetAvatarUrl(ImageFormat.Png))
                     .WithColor(ColourService.GetSingle());
                 var pollStartMessage = await commandContext.RespondAsync(bob.Build());

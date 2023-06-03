@@ -46,7 +46,6 @@ namespace SilverBotDS.Commands
         public ModuleRegistrationService ModuleRegistrationService { private get; set; }
         public ColourService ColourService { private get; set; }
 
-        public TaskService TaskService { private get; set; }
 
         [Command("reloadcolors")]
         [Description("reloads the colors.json")]
@@ -205,6 +204,35 @@ namespace SilverBotDS.Commands
                 await new DiscordMessageBuilder()
                     .WithContent(Formatter.BlockCode(CodeEnvHelper.RemoveCodeBraces(sb.ToString())))
                     .SendAsync(ctx.Channel);
+            }
+        }
+
+        public ICallBack TaskSched { private get; set; }
+        [Command("lsschedtasks")]
+        [Description("list scheduled tasks")]
+        public async Task ListScheduledTasks(CommandContext ctx)
+        {
+            if (TaskSched is TaskSchedulerService taskSchedulerService)
+            {
+                var list = taskSchedulerService.Queue.UnorderedItems.OrderBy(x => x.Priority).ToList();
+                StringBuilder scheduledTaskList = new();
+                foreach (var (Element, _) in list)
+                {
+                    scheduledTaskList.AppendLine(
+                        $"{Element.Id},   {Element.Name},    {Element.NextCall}");
+                }
+
+                var builtScheduledTaskList = scheduledTaskList.ToString();
+                if (builtScheduledTaskList.Length > 1978)
+                {
+                    await ctx.SendStringFileWithContent("Scheduled tasks:", builtScheduledTaskList, "console.txt");
+                }
+                else
+                {
+                    await new DiscordMessageBuilder()
+                        .WithContent($"Scheduled tasks: {Formatter.BlockCode(builtScheduledTaskList)}")
+                        .SendAsync(ctx.Channel);
+                }
             }
         }
 
@@ -462,18 +490,11 @@ namespace SilverBotDS.Commands
         [Description("kill the bot")]
         public async Task Reloadsplashes(CommandContext ctx)
         {
-            await ctx.RespondAsync("bye and try using shutdowngrace next time");
-            Environment.Exit(469);
+            await ctx.RespondAsync("bye");
+            Console.WriteLine("Owner initiated shutdown");
+            Environment.Exit(0);
         }
 
-        [Command("shutdowngrace")]
-        [Description("kill the bot but shutdown the tasks first")]
-        public async Task Reloadsplashesas(CommandContext ctx)
-        {
-            TaskService.CancelTasks();
-            await ctx.RespondAsync("bye");
-            Environment.Exit(469);
-        }
 
         [Command("removeuser")]
         public async Task RemoveUser(CommandContext ctx, DiscordUser userid)

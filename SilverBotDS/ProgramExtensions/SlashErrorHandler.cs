@@ -14,22 +14,54 @@ using DSharpPlus.SlashCommands;
 using DSharpPlus.SlashCommands.EventArgs;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
+using SilverBot.Shared;
 using SilverBot.Shared.Objects;
 
 namespace SilverBotDS.ProgramExtensions
 {
-    public static class SlashErrorHandler
+    public class SlashErrorHandler : IProgramExtension
     {
+        private bool _isLoaded;
         private static ServiceProvider ServiceProvider { get; set; }
         private static Logger Log { get; set; }
 
-        public static Task RegisterErrorHandler(ServiceProvider sp, Logger log, SlashCommandsExtension e)
+        public Task Register(ServiceProvider sp, Logger log, params object[] additionalContext)
         {
+            if (additionalContext[0] is not SlashCommandsExtension extension)
+            {
+                throw new ArgumentException(
+                    "The additionalContext array must contain one element and that element must be the SlashCommandsExtension",
+                    nameof(additionalContext));
+            }
+
             ServiceProvider = sp;
             Log = log;
-            e.SlashCommandErrored += Slash_SlashCommandErrored;
+            extension.SlashCommandErrored += Slash_SlashCommandErrored;
             return Task.CompletedTask;
+
         }
+
+        public async Task Reload()
+        {
+        }
+
+        public Task Unregister(ServiceProvider sp, Logger log, params object[] additionalContext)
+        {
+            if (additionalContext[0] is not SlashCommandsExtension extension)
+            {
+                throw new ArgumentException(
+                    "The additionalContext array must contain one element and that element must be the SlashCommandsExtension",
+                    nameof(additionalContext));
+            }
+
+            ServiceProvider = sp;
+            Log = log;
+            extension.SlashCommandErrored += Slash_SlashCommandErrored;
+            return Task.CompletedTask;
+
+        }
+
+        public bool IsLoaded => _isLoaded;
 
 
         private static async Task Slash_SlashCommandErrored(SlashCommandsExtension sender, SlashCommandErrorEventArgs e)

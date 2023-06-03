@@ -10,7 +10,8 @@ using DSharpPlus.Entities;
 using System;
 using System.Threading.Tasks;
 using SilverBot.Shared.Objects.Classes;
-
+#if NoAudio
+#else
 namespace SilverBotDS.Converters
 {
     internal class LoopSettingsConverter : IArgumentConverter<LoopSettings>
@@ -32,3 +33,4 @@ namespace SilverBotDS.Converters
         }
     }
 }
+#endif

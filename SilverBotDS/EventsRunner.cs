@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using SilverBot.Shared;
 using SilverBot.Shared.Objects.Database;
 using SilverBot.Shared.Objects.Database.Classes;
 using SilverBot.Shared.Objects.Language;
@@ -125,12 +126,12 @@ namespace SilverBotDS
 
         public static async Task RunGiveAwayEventAsync(PlannedEvent @event)
         {
-            var discordClient = (DiscordClient)ServiceProvider.GetService(typeof(DiscordClient));
+            var discordClient = ServiceProvider.GetRequiredService<DiscordClient>();
             var databaseContext = ServiceProvider.GetRequiredService<DatabaseContext>();
             var channel = await discordClient.GetChannelAsync(@event.ChannelID);
             if (@event.ResponseMessageID != null)
             {
-                var languageService = (LanguageService?)ServiceProvider.GetService(typeof(LanguageService));
+                var languageService = ServiceProvider.GetRequiredService<LanguageService>();
                 var lang = await languageService.GetLanguageFromGuildIdAsync((ulong)channel.GuildId, databaseContext);
                 var msg = await channel.GetMessageAsync((ulong)@event.ResponseMessageID);
                 var people =
@@ -149,12 +150,11 @@ namespace SilverBotDS
             }
         }
 
-        public static async Task RunEventsAsync()
+        public static async Task<double> RunEventsAsync()
         {
             var dbctx = ServiceProvider.GetRequiredService<DatabaseContext>();
-            var taskService = ServiceProvider.GetRequiredService<TaskService>();
-            while (true)
-            {
+            var taskService = ServiceProvider.GetRequiredService<ICallBack>();
+          
                 try
                 {
                     var plannedEvents = dbctx.plannedEvents.Where(x => x.Time < DateTime.Now && !x.Handled).ToArray();
@@ -166,28 +166,18 @@ namespace SilverBotDS
                             switch (@event.Type)
                             {
                                 case PlannedEventType.EmojiPoll:
-                                    taskService.AddSecondaryTask(Guid.NewGuid(),
-                                        new Tuple<Task, CancellationTokenSource>(
-                                            Task.Run(() => RunEmojiEvent(@event), cts.Token), cts));
+                                    taskService.AddOnce(() => RunEmojiEvent(@event), DateTime.Now, "EmojiEvent", cts);
                                     break;
-
                                 case PlannedEventType.GiveAway:
-                                    taskService.AddSecondaryTask(Guid.NewGuid(),
-                                        new Tuple<Task, CancellationTokenSource>(
-                                            Task.Run(() => RunGiveAwayEvent(@event), cts.Token), cts));
+                                    taskService.AddOnce(() => RunGiveAwayEvent(@event), DateTime.Now, "GiveAwayEvent", cts);
                                     break;
-
                                 case PlannedEventType.Reminder:
-                                    taskService.AddSecondaryTask(Guid.NewGuid(),
-                                        new Tuple<Task, CancellationTokenSource>(
-                                            Task.Run(() => RunReminderEvent(@event), cts.Token), cts));
+                                    taskService.AddOnce(() => RunReminderEvent(@event), DateTime.Now, "ReminderEvent", cts);
                                     break;
-
                                 default:
                                     Log.Warning("DB event with unknown type was ignored, Type: {Type}", @event.Type);
                                     break;
                             }
-
                             dbctx.plannedEvents.Remove(@event);
                             await dbctx.SaveChangesAsync(cts.Token);
                         }
@@ -202,8 +192,8 @@ namespace SilverBotDS
                     Log.Error(e, "exception happened in events thread");
                 }
 
-                await Task.Delay(3000);
-            }
+                return 3000;
+            
         }
     }
 }

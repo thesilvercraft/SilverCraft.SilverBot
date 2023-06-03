@@ -4,13 +4,10 @@
 @using Microsoft.Extensions.Caching.Memory
 @using SilverBot.Shared.Objects
 @using SilverBot.Web.WebHelpers
-@inject Config _config
 @attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMemoryCache _cache
 @inject DiscordClient _discord
-@inject IJSRuntime _jsRuntime
-@inject NavigationManager _uriHelper
 @inject HttpClient _client
 @{
     var auser = AuthenticationStateProvider.AuthState();

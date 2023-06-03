@@ -12,7 +12,8 @@ using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Objects.Classes;
 using SilverBot.Shared.Objects.Language;
 using SilverBotDS.Converters;
-
+#if NoAudio
+#else
 namespace SilverBotDS.Commands.Slash
 {
     public class AudioSlash : ApplicationCommandModule
@@ -152,3 +153,4 @@ namespace SilverBotDS.Commands.Slash
         }
     }
 }
+#endif

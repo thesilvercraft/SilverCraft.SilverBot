@@ -10,6 +10,10 @@ namespace SilverBot.Shared.Objects.Database.Classes
 {
     public class PlannedEvent
     {
+        public PlannedEvent()
+        {
+            Data ??= string.Empty;
+        }
         /// <summary>
         ///     A random assortment of characters
         /// </summary>

@@ -68,31 +68,30 @@ namespace SilverBotDS.Commands
                     new DiscordFollowupMessageBuilder()
                         .WithContent(string.Format(bings.GetAppropriate(x), args.User.Mention)));
                 var webhook = _webhookClient.Webhooks.FirstOrDefault(y => y.ChannelId == args.Message.ChannelId);
-
                 await webhook?.EditMessageAsync(args.Message.Id,
                     new DiscordWebhookBuilder().WithContent(args.Message.Content))!;
-                args.Handled = true;
             }
         }
-
-        public Task Register(CommandsNextExtension commandsNextExtension)
+        private async Task AddWebHooksToClientAsync(DatabaseContext dbCtx)
         {
-            var taskScheduler = commandsNextExtension.Services.GetService<ICallBack>();
-            var dbCtx = commandsNextExtension.Services.GetService<DatabaseContext>();
-            Console.WriteLine(DateTime.Now.AddMinutes(60 - DateTime.Now.Minute).AddSeconds(-DateTime.Now.Second));
+            var webhooks = dbCtx.serverSettings.SelectMany(x => x.BingWebhooks).ToList();
+            webhooks = webhooks.Where(x => _webhookClient.Webhooks.All(y => y.Id != x.Id)).ToList();
+            foreach (var webhook in webhooks)
+            {
+                await _webhookClient.AddWebhookAsync(webhook.Id, webhook.Token);
+            }
+        }
+        public async Task Register(CommandsNextExtension commandsNextExtension)
+        {
+            var taskScheduler = commandsNextExtension.Services.GetRequiredService<ICallBack>() ;
+            var dbCtx = commandsNextExtension.Services.GetRequiredService<DatabaseContext>();
+            await AddWebHooksToClientAsync(dbCtx);
             taskScheduler.Add(async () =>
             {
-                var webhooks = dbCtx.serverSettings.SelectMany(x => x.BingWebhooks).ToList();
-                webhooks = webhooks.Where(x => _webhookClient.Webhooks.All(y => y.Id != x.Id)).ToList();
-                foreach (var webhook in webhooks)
-                {
-                    await _webhookClient.AddWebhookAsync(webhook.Id, webhook.Token);
-                }
-
+                await AddWebHooksToClientAsync(dbCtx);
                 _ = Task.Run(async () => await DoBong());
                 return DateTime.Now.AddMinutes(60 - DateTime.Now.Minute).AddSeconds(-DateTime.Now.Second);
             }, DateTime.Now.AddMinutes(60 - DateTime.Now.Minute).AddSeconds(-DateTime.Now.Second));
-            return Task.CompletedTask;
         }
 
         private static string _bongContent =
@@ -102,7 +101,7 @@ namespace SilverBotDS.Commands
 
         private static BingsList bings = new();
 
-        public async Task DoBong()
+        private static async Task DoBong()
         {
             await _webhookClient.BroadcastMessageAsync(new DiscordWebhookBuilder().WithContent(_bongContent)
                 .AddComponents(new DiscordButtonComponent(ButtonStyle.Primary, "BING", null, false,

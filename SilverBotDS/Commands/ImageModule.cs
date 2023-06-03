@@ -272,6 +272,7 @@ SOFTWARE.*/
             {
                 Serilog.Log.Information(
                     "Please install the windows fonts, debian `sudo apt install ttf-mscorefonts-installer`, arch https://wiki.archlinux.org/title/Microsoft_fonts");
+                return;
             }
 
             using HttpClient client = new();
@@ -281,7 +282,7 @@ SOFTWARE.*/
             {
                 Directory.CreateDirectory("fonts");
             }
-
+            
             foreach (var missingAsset in groups.First(x => !x.Key))
             {
                 var fn = missingAsset.RemoveStringFromStart("file://fonts/");
@@ -805,8 +806,9 @@ SOFTWARE.*/
                 i.Dispose();
             }
 
+           
             var text =
-                $"{(ctx.Guild?.Members?.ContainsKey(koichi.Id) != null && ctx.Guild?.Members?[koichi.Id].Nickname != null ? ctx.Guild?.Members?[koichi.Id].Nickname : koichi.Username)}, you truly are a reliable guy.";
+                $"{koichi.GetNickOrUsernameInOldCmd()}, you truly are a reliable guy.";
             if (!img.HasAlpha())
             {
                 var i = img;

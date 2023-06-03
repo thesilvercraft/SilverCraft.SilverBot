@@ -5,6 +5,8 @@ You should have received a copy of the GNU General Public License along with Sil
 */
 
 #nullable enable
+#if NoAudio
+#else
 
 using System.Runtime.Serialization;
 using DSharpPlus.Entities;
@@ -196,3 +198,4 @@ namespace SilverBot.Shared.Objects.Classes
         }
     }
 }
+#endif 

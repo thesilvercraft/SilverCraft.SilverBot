@@ -24,11 +24,9 @@
 
 <RadzenNotification/>
 @inject DiscordClient Discord
-@inject IJSRuntime JsRuntime
 @inject LavalinkNode Lavalink
 @inject DatabaseContext DbCtx
 @inject NotificationService NotificationService
-@inject HttpClient Client
 @inject LanguageService LanguageService
 @{
     var usenew = false;
@@ -59,9 +57,6 @@
             case PlayerState.Playing:
                 await player.PauseAsync();
                 player.TriggerWebsiteEvent(user, "PAUSE");
-                break;
-            default:
-                //do nothing
                 break;
         }
     }

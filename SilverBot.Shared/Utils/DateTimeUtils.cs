@@ -10,6 +10,26 @@ namespace SilverBot.Shared.Utils
 {
     public static class DateTimeUtils
     {
+        public static DateTime CalculateNextFriday()
+        {
+            var friday=DateTime.Now;
+            if (friday.DayOfWeek >= DayOfWeek.Friday) //if magically we change to friday the exact millisecond this method is called, or if its saturday
+            {
+                friday = friday.AddDays(1);
+            }
+            return friday.AddDays(DayOfWeek.Friday-friday.DayOfWeek).AddHours(-friday.Hour).AddMinutes(-friday.Minute).AddSeconds(-friday.Second)
+                .AddMilliseconds(-friday.Millisecond).AddMicroseconds(-friday.Microsecond);
+        }
+        public static DateTime CalculateNextSaturday()
+        {
+            var saturday=DateTime.Now;
+            if (saturday.DayOfWeek == DayOfWeek.Saturday)
+            {
+               saturday= saturday.AddDays(1);
+            }
+            return saturday.AddDays(DayOfWeek.Saturday-saturday.DayOfWeek).AddHours(-saturday.Hour).AddMinutes(-saturday.Minute).AddSeconds(-saturday.Second)
+                .AddMilliseconds(-saturday.Millisecond).AddMicroseconds(-saturday.Microsecond);
+        }
         public static string DateTimeToTimeStamp(this DateTime? dt, TimestampFormat tf = TimestampFormat.RelativeTime,
             string def = "NA")
         {

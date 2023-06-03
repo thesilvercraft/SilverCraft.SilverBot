@@ -4,6 +4,8 @@ SilverBot is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 You should have received a copy of the GNU General Public License along with SilverBot. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#if NoAudio
+#else
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
@@ -155,3 +157,4 @@ namespace SilverBotDS.Converters
         }
     }
 }
+#endif

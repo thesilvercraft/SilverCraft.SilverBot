@@ -33,18 +33,20 @@ namespace SilverBotDS.ProgramExtensions
             CustomAttribute attribute = null;
             foreach (var ca in definition.CustomAttributes)
             {
-                if (ca.AttributeType.FullName == typeof(AssemblyMetadataAttribute).FullName &&
-                    ca.ConstructorArguments.Count == 2 &&
-                    ca.ConstructorArguments[0].Value is string key &&
-                    key == "RepositoryUrl")
+                if (ca.AttributeType.FullName != typeof(AssemblyMetadataAttribute).FullName ||
+                    ca.ConstructorArguments.Count != 2 ||
+                    ca.ConstructorArguments[0].Value is not string key ||
+                    key != "RepositoryUrl")
                 {
-                    attribute = ca;
-                    break;
+                    continue;
                 }
+
+                attribute = ca;
+                break;
             }
 
 // get the value from the second constructor argument
-            if (attribute != null && attribute.ConstructorArguments[1].Value is string url)
+            if (attribute?.ConstructorArguments[1].Value is string url)
             {
                 GitRepo = url;
                 // do something with the value

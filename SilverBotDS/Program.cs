@@ -15,12 +15,15 @@ using DSharpPlus.Interactivity.EventHandling;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using Humanizer;
+#if NoAudio
+#else
 using Lavalink4NET;
 using Lavalink4NET.Artwork;
 using Lavalink4NET.DSharpPlus;
 using Lavalink4NET.Integrations.SponsorBlock;
 using Lavalink4NET.Lyrics;
 using Lavalink4NET.Tracking;
+#endif
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,8 +68,11 @@ namespace SilverBotDS
         public static Config _config;
 
         private static DiscordClient _discord;
+#if NoAudio
+#else
         private static LavalinkNode _audioService;
         private static InactivityTrackingService _trackingService;
+#endif
         private static Logger _log;
         private static readonly HttpClient HttpClient = NewHttpClientWithUserAgent();
 
@@ -232,12 +238,13 @@ namespace SilverBotDS
             return Task.CompletedTask;
         }
 
+        private static ICallBack taskService = new TaskSchedulerService();
         private static Task SetupCommandServices()
         {
             services.AddSingleton<IAnalyse>(new ConsoleAnalytics());
             services.AddSingleton(new LanguageService());
             services.AddSingleton<IPaginator>(new CoolerPaginatior(_discord));
-            services.AddSingleton<ICallBack>(new TaskSchedulerService());
+            services.AddSingleton<ICallBack>(taskService);
             services.AddSingleton(new ColourService());
             services.AddDbContext<DatabaseContext>(
                 options =>
@@ -258,6 +265,8 @@ namespace SilverBotDS
 
         private static async Task SetupCommandLavalink(ILogger mainlog)
         {
+#if NoAudio
+#else
             using (mainlog.BeginScope("AutoStart Lavalink"))
             {
                 if (!File.Exists("Lavalink.jar"))
@@ -288,10 +297,13 @@ namespace SilverBotDS
                     }
                 }
             }
+#endif
         }
 
         private static Task SetupCommandsLavalinkService(ILogger mainlog)
         {
+#if NoAudio
+#else
             using (mainlog.BeginScope("Lavalink"))
             {
                 mainlog.LogInformation("Creating lavalink wrapper");
@@ -326,7 +338,7 @@ namespace SilverBotDS
                 mainlog.LogDebug("Activating lyrics service");
                 services.AddSingleton(new LyricsService(new LyricsOptions { UserAgent = "SilverBot" }));
             }
-
+#endif
             return Task.CompletedTask;
         }
 
@@ -447,16 +459,24 @@ namespace SilverBotDS
                 services.AddSingleton(_discord);
                 ModuleRegistrationService moduleRegistrationService = new();
                 services.AddSingleton(moduleRegistrationService);
-
+                var commandErrorHandler = new CommandErrorHandler();
+                services.AddSingleton(commandErrorHandler);
+                var slashErrorHandler = new SlashErrorHandler();
+                services.AddSingleton(slashErrorHandler);
+                var birthdayWatcher = new BirthdayWatcher();
+                services.AddSingleton(birthdayWatcher);
+                
                 await SetupCommandsExternalServices(mainlog, moduleRegistrationService);
-
+#if NoAudio
+#else
                 if (_config.UseLavaLink)
                 {
                     services.AddSingleton(
                         (NeutralAudio)ModuleRegistrationService.CreateInstance(typeof(NeutralAudio),
                             services.BuildServiceProvider()));
                 }
-
+#endif
+                
                 ServiceProvider = services.BuildServiceProvider();
                 using (mainlog.BeginScope("Database migration"))
                 {
@@ -482,8 +502,11 @@ namespace SilverBotDS
                         commands.SetHelpFormatter<CoolerHelpFormatter>();
                         commands.RegisterConverter(new SdImageConverter());
                         commands.RegisterConverter(new SColorConverter());
+#if NoAudio
+#else
                         commands.RegisterConverter(new LoopSettingsConverter());
                         commands.RegisterConverter(new SongOrSongsConverter());
+#endif
                         //commands.RegisterConverter(new ImageFormatConverter());
                     }
 
@@ -492,8 +515,9 @@ namespace SilverBotDS
 
 
                     commands.CommandExecuted += Commands_CommandExecuted;
-                    await SlashErrorHandler.RegisterErrorHandler(ServiceProvider, _log, slash);
-                    await CommandErrorHandler.RegisterErrorHandler(ServiceProvider, _log, commands);
+                    await slashErrorHandler.Register(ServiceProvider, _log, slash);
+                    await commandErrorHandler.Register(ServiceProvider, _log, commands);
+                    await birthdayWatcher.Register(ServiceProvider, _log, _discord);
 
                     #endregion Registering Commands
                 }
@@ -502,6 +526,8 @@ namespace SilverBotDS
 
         private static async Task ConnectToLavaLink()
         {
+#if NoAudio
+#else
             await _discord.UpdateStatusAsync(
                 new DiscordActivity("console logs while connecting to lavalink", ActivityType.Watching));
 
@@ -533,6 +559,7 @@ namespace SilverBotDS
             {
                 _log.Error(e, "Error occured while trying to connect to lavalink");
             }
+#endif
         }
 
         private static async Task SplashTask()
@@ -567,8 +594,7 @@ namespace SilverBotDS
             }
 
             await InitializeInteractivity(mainlog);
-            TaskService taskService = new();
-            services.AddSingleton(taskService);
+         
             await SetupCommands(mainlog, cancellationToken);
             _log.Information("Connecting to discord");
             var wait = new ManualResetEvent(false);
@@ -581,6 +607,7 @@ namespace SilverBotDS
             _log.Information("Waiting for client to connect");
             wait.WaitOne();
             await Task.Delay(2000, cancellationToken);
+            
             if (_config.UseLavaLink)
             {
                 await ConnectToLavaLink();
@@ -589,8 +616,33 @@ namespace SilverBotDS
             if (IsNotNullAndIsNotB(_config.FridayTextChannel, 0))
             {
                 CancellationTokenSource s = new();
-                taskService.AddMain("WaitForFridayTask",
-                    new Tuple<Task, CancellationTokenSource>(Task.Run(() => WaitForFridayAsync(s.Token), s.Token), s));
+                if (DateTime.Now.DayOfWeek != DayOfWeek.Friday)
+                {
+                    if (ShouldCleanUpFriday())
+                    {
+                        _ = Task.Run(async () =>
+                        {
+                            await ExecuteFridayCleanupAsync(s.Token);
+                            File.Delete(FridayFileName);
+                        }, cancellationToken);
+                    }
+                    //Wait for friday
+                    taskService.Add(async () => await FridayTaskAsync(s), DateTimeUtils.CalculateNextFriday(), "FridayTask", s );
+                }
+                else if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
+                {
+                    //It is already friday
+                    if (ShouldDoFriday())
+                    {
+                        taskService.Add(async () => await FridayTaskAsync(s), DateTime.Now, "FridayTask", s );
+                    }
+                }
+                taskService.Add(async () =>
+                {
+                    await ExecuteFridayCleanupAsync(s.Token);
+                    File.Delete(FridayFileName);
+                    return DateTimeUtils.CalculateNextSaturday();
+                }, DateTimeUtils.CalculateNextSaturday(), "CleanUpFridayTask", s );
             }
 
             ProgramHelper helper = new();
@@ -599,7 +651,8 @@ namespace SilverBotDS
                                                                       _config.ArchiveWebhooks[0] !=
                                                                       "https://discordapp.com/api/webhooks/id/key")))
             {
-                await helper.AddArchiverAsync(_config, _log, HttpClient, _discord);
+                var archiverExtension = new Archiver();
+                await archiverExtension.Register(ServiceProvider, _log, _discord);
             }
 
             if (_config.ReactionRolesEnabled)
@@ -610,14 +663,12 @@ namespace SilverBotDS
             if (_config.EnableServerStatistics)
             {
                 CancellationTokenSource s = new();
-                taskService.AddMain("StatisticsTask",
-                    new Tuple<Task, CancellationTokenSource>(Task.Run(() => StatisticsMainAsync(s.Token), s.Token), s));
+                taskService.Add(async () => await StatisticsMainAsync(s.Token), 0, "StatisticsTask", s );
             }
 
             CancellationTokenSource ets = new();
             EventsRunner.InjectEvents(ServiceProvider, _log);
-            taskService.AddMain("EventsTask",
-                new Tuple<Task, CancellationTokenSource>(Task.Run(EventsRunner.RunEventsAsync, ets.Token), ets));
+            taskService.Add(async () => await EventsRunner.RunEventsAsync(), 0, "EventsTask", ets );
 
             if (_config.HostWebsite)
             {
@@ -630,23 +681,25 @@ namespace SilverBotDS
             _log.Information("Booted up");
             Console.CancelKeyPress += delegate
             {
-                Console.WriteLine("Cleaning up");
-                taskService.ClearDeadTasks();
-                taskService.CancelTasks();
                 Console.WriteLine("bye");
             };
             while (!exitAfterStartup && !cancellationToken.IsCancellationRequested)
             {
-                if (_config.ClearTasks)
-                {
-                    _log.Verbose("Going through the task lists");
-                    taskService.ClearDeadTasks();
-                }
-
                 _log.Verbose("Waiting {V}", new TimeSpan(0, 0, 0, 0, _config.MsInterval).Humanize(5));
                 await Task.Delay(_config.MsInterval, cancellationToken);
                 await SplashTask();
             }
+        }
+
+        private static async Task<DateTime> FridayTaskAsync(CancellationTokenSource s)
+        {
+            if (!ShouldDoFriday())
+            {
+                return DateTimeUtils.CalculateNextFriday();
+            }
+            await File.WriteAllTextAsync(FridayFileName, DateTime.Now.DayOfYear.ToString(), Encoding.UTF8, s.Token);
+            await ExecuteFridayAsync(ct: s.Token);
+            return DateTimeUtils.CalculateNextFriday();
         }
 
 
@@ -664,7 +717,7 @@ namespace SilverBotDS
             }
 
             var gld = msg.Channel.Guild;
-            if (gld == null)
+            if (gld is null)
             {
                 _log.Warning("Guild {GuildId} was null on channel {ChannelId}",
                     msg.Channel.GuildId, msg.Channel.Id);
@@ -718,14 +771,13 @@ namespace SilverBotDS
                 ["GuildCount"] = client.Guilds.Values.LongCount().ToString(),
                 ["Platform"] = RuntimeInformation.ProcessArchitecture.ToString(),
                 ["Threads"] = Process.GetCurrentProcess().Threads.Count.ToString(),
-                ["TaskCount"] = provider.GetService<TaskService>()?.NumberOfRunningTasks().ToString() ?? "unknown"
+                ["TaskCount"] = provider.GetService<ICallBack>()?.RunningTaskCount.ToString() ?? "unknown"
             };
         }
 
-        public static async Task StatisticsMainAsync(CancellationToken ct = default)
+        public static async Task<double> StatisticsMainAsync(CancellationToken ct = default)
         {
-            while (!ct.IsCancellationRequested)
-            {
+          
                 try
                 {
                     await using var dbctx = ServiceProvider.GetRequiredService<DatabaseContext>();
@@ -799,8 +851,7 @@ namespace SilverBotDS
                     _log.Error(e, "exception happened in stats thread");
                 }
 
-                await Task.Delay(1800000, ct);
-            }
+                return 1800000;
         }
 
         private const string FridayFileName = "_LastFriday.txt";
@@ -837,44 +888,22 @@ namespace SilverBotDS
             return false;
         }
 
-        public static async Task WaitForFridayAsync(CancellationToken ct = default)
-        {
-            while (!ct.IsCancellationRequested)
-            {
-                if (DayOfWeek.Friday == DateTime.Now.DayOfWeek && ShouldDoFriday())
-                {
-                    await File.WriteAllTextAsync(FridayFileName, DateTime.Now.DayOfYear.ToString(), Encoding.UTF8, ct);
-                    await ExecuteFridayAsync(ct: ct);
-                }
-                else
-                {
-                    if (ShouldCleanUpFriday())
-                    {
-                        await ExecuteFridayAsync(false, ct);
-                        File.Delete(FridayFileName);
-                    }
-                }
+        
 
-                await Task.Delay(1000, ct);
-            }
-        }
-
-        public static async Task ExecuteFridayAsync(bool friday = true, CancellationToken ct = default)
+        public static async Task ExecuteFridayAsync(CancellationToken ct = default)
         {
             ct.ThrowIfCancellationRequested();
-            if (friday)
-            {
-                var channel = await _discord.GetChannelAsync(_config.FridayTextChannel);
-                await channel.SendMessageAsync("It is Friday");
-                await channel.AddOverwriteAsync(channel.Guild.EveryoneRole, Permissions.SendMessages, reason: "friday");
-            }
-            else
-            {
-                var channel = await _discord.GetChannelAsync(_config.FridayTextChannel);
-                await channel.SendMessageAsync("Friday ended :c");
-                await channel.AddOverwriteAsync(channel.Guild.EveryoneRole, deny: Permissions.SendMessages,
-                    reason: "not friday");
-            }
+            var channel = await _discord.GetChannelAsync(_config.FridayTextChannel);
+            await channel.SendMessageAsync("It is Friday");
+            await channel.AddOverwriteAsync(channel.Guild.EveryoneRole, Permissions.SendMessages, reason: "friday");
+        }
+
+        public static async Task ExecuteFridayCleanupAsync(CancellationToken ct = default)
+        {
+            var channel = await _discord.GetChannelAsync(_config.FridayTextChannel);
+            await channel.SendMessageAsync("Friday ended :c");
+            await channel.AddOverwriteAsync(channel.Guild.EveryoneRole, deny: Permissions.SendMessages,
+                reason: "not friday");
         }
 
         private static async Task IncreaseXp(ulong id, ulong count = 1)

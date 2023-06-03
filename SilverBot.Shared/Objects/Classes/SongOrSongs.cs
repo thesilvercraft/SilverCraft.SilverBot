@@ -5,7 +5,8 @@ You should have received a copy of the GNU General Public License along with Sil
 */
 
 #nullable enable
-
+#if NoAudio
+#else
 using Lavalink4NET.Player;
 
 namespace SilverBot.Shared.Objects.Classes
@@ -34,3 +35,4 @@ namespace SilverBot.Shared.Objects.Classes
         public IAsyncEnumerable<LavalinkTrack>? GetRestOfSongs { get; set; }
     }
 }
+#endif

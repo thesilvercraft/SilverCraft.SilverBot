@@ -15,12 +15,12 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
-using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using DSharpPlus.SlashCommands.EventArgs;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
+using SilverBot.Shared;
 using SilverBot.Shared.Attributes;
 using SilverBot.Shared.Exceptions;
 using SilverBot.Shared.Objects;
@@ -29,29 +29,68 @@ using SilverBot.Shared.Utils;
 
 namespace SilverBotDS.ProgramExtensions
 {
-    public static class CommandErrorHandler
+    public class CommandErrorHandler : IProgramExtension
     {
         private static ServiceProvider ServiceProvider { get; set; }
         private static Logger Log { get; set; }
         private static bool UseAnalytics { get; set; }
-        private static CommandsNextExtension E { get; set; }
+        private static CommandsNextExtension CommandsNext { get; set; }
 
-        public static Task RegisterErrorHandler(ServiceProvider sp, Logger log, CommandsNextExtension e)
+        public Task Register(ServiceProvider sp, Logger log, params object[] additionalContext)
         {
+            if (additionalContext[0] is not CommandsNextExtension extension)
+            {
+                throw new ArgumentException(
+                    "The additionalContext array must contain one element and that element must be the CommandsNextExtension",
+                    nameof(additionalContext));
+            }
+            if (_isLoaded)
+            {
+                throw new ProgramExtensionAlreadyLoadedException(nameof(CommandErrorHandler));
+            }
             ServiceProvider = sp;
             Log = log;
-            E = e;
-            E.CommandErrored += Commands_CommandErrored;
+            CommandsNext = extension;
+            CommandsNext.CommandErrored += Commands_CommandErrored;
             UseAnalytics = sp.GetRequiredService<Config>().UseAnalytics;
+            _isLoaded = true;
             return Task.CompletedTask;
         }
 
-        public static void Reload()
+        public Task Reload()
         {
-            E.CommandErrored -= Commands_CommandErrored;
+            if (!_isLoaded)
+            {
+                throw new ProgramExtensionNotLoadedException(nameof(CommandErrorHandler));
+            }
+            CommandsNext.CommandErrored -= Commands_CommandErrored;
             UseAnalytics = ServiceProvider.GetRequiredService<Config>().UseAnalytics;
-            E.CommandErrored += Commands_CommandErrored;
+            CommandsNext.CommandErrored += Commands_CommandErrored;
+            return Task.CompletedTask;
         }
+
+        public Task Unregister(ServiceProvider sp, Logger log, params object[] additionalContext)
+        {
+            if (additionalContext[0] is not CommandsNextExtension extension)
+            {
+                throw new ArgumentException(
+                    "The additionalContext array must contain one element and that element must be the CommandsNextExtension",
+                    nameof(additionalContext));
+            }
+
+            if (!_isLoaded)
+            {
+                throw new ProgramExtensionNotLoadedException(nameof(CommandErrorHandler));
+            }
+            CommandsNext.CommandErrored -= Commands_CommandErrored;
+            CommandsNext = null;
+            Log = null;
+            ServiceProvider = null;
+            _isLoaded = false;
+            return Task.CompletedTask;
+        }
+
+        public bool IsLoaded => _isLoaded;
 
         public static readonly List<string> WaysToPissOffUser = new()
         {
@@ -59,6 +98,8 @@ namespace SilverBotDS.ProgramExtensions
             "📸",
             "think you have outsmarted me? well you haven't"
         };
+
+        private bool _isLoaded;
 
         /// <summary>
         ///     Render the error message for an Attribute
@@ -80,7 +121,7 @@ namespace SilverBotDS.ProgramExtensions
                     return lang.RequireOwnerCheckFailed;
                 }
 
-                var s = WaysToPissOffUser.Where(x => !e.Context.RawArgumentString.Contains(x));
+                var s = WaysToPissOffUser.Where(x => !e.Context.RawArgumentString.Contains(x)).ToArray();
                 return s.Any() ? s.ElementAt(RandomGenerator.Next(0, s.Count())) : lang.RequireOwnerCheckFailed;
             }
 
@@ -126,11 +167,11 @@ namespace SilverBotDS.ProgramExtensions
                 RequireAttachmentAttribute attachmentAttribute when
                     e.Context.Message.Attachments.Count > attachmentAttribute.AttachmentCount =>
                     (string?)typeof(Language).GetProperty(attachmentAttribute.MoreThenLang)?.GetValue(lang) ??
-                    "Too many attachments (mini error 21d74757-ee71-42e0-a4e7-02d3b17336a2)",
+                    "Too many attachments (minerror 21d74757)",
                 RequireAttachmentAttribute attachmentAttribute => (string?)typeof(Language)
                                                                       .GetProperty(attachmentAttribute.LessThenLang)
                                                                       ?.GetValue(lang) ??
-                                                                  "Not enough attachments (mini error 80d5e4d1-3c5c-43b3-8b97-5d3e419d275e)",
+                                                                  "Not enough attachments (minerror 80d5e4d1)",
                 _ => string.Format(lang.CheckFailed,
                     checkBase.GetType().Name.RemoveStringFromEnd("Attribute").Humanize())
             };
@@ -150,61 +191,64 @@ namespace SilverBotDS.ProgramExtensions
         {
             var languageService = ServiceProvider.GetService<LanguageService>();
             var lang = await languageService?.FromCtxAsync(e.Context)!;
-            if (e is CommandErrorEventArgs a)
+            switch (e)
             {
-                switch (e.Exception)
-                {
-                    case InvalidOverloadException:
-                    case ArgumentException { Message: "Could not find a suitable overload for the command." }:
-
-                        await respondWithContent(string.Format(lang.InvalidOverload, a.Context.Command?.Name));
-                        return;
-                    case ChecksFailedException { FailedChecks.Count: 1 } cfe:
-                        await respondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
-                            e.Context.Guild != null, a));
-                        return;
-                    case ChecksFailedException cfe:
+                case CommandErrorEventArgs a:
+                    switch (e.Exception)
                     {
-                        var embedBuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
-                        var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: embedBuilder
-                                .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
-                                .WithDescription(
-                                    RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, a))))
-                            .ToList();
+                        case InvalidOverloadException:
+                        case ArgumentException { Message: "Could not find a suitable overload for the command." }:
 
-                        var interactivity = e.Context.Client.GetInteractivity();
-                        await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
-                            token: new CancellationToken());
-                        return;
+                            await respondWithContent(string.Format(lang.InvalidOverload, a.Context.Command?.Name));
+                            return;
+                        case ChecksFailedException { FailedChecks.Count: 1 } cfe:
+                            await respondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
+                                e.Context.Guild != null, a));
+                            return;
+                        case ChecksFailedException cfe:
+                        {
+                            var embedBuilder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
+                            var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: embedBuilder
+                                    .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
+                                    .WithDescription(
+                                        RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, a))))
+                                .ToList();
+
+                            var interactivity = e.Context.Client.GetInteractivity();
+                            await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
+                                token: new CancellationToken());
+                            return;
+                        }
                     }
-                }
-            }
-            else if (e is SlashCommandErrorEventArgs b)
-            {
-                switch (e.Exception)
-                {
-                    case SlashExecutionChecksFailedException cfe when cfe.FailedChecks.Count is 1:
-                        await respondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
-                            e.Context.Guild != null, e));
-                        return;
-                    case SlashExecutionChecksFailedException cfe:
+
+                    break;
+                case SlashCommandErrorEventArgs b:
+                    switch (e.Exception)
                     {
-                        var builder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
-                        var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: builder
-                                .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
-                                .WithDescription(
-                                    RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
-                            .ToList();
-                        var interactivity = e.Context.Client.GetInteractivity();
-                        await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
-                            token: new CancellationToken());
-                        return;
+                        case SlashExecutionChecksFailedException { FailedChecks.Count: 1 } cfe:
+                            await respondWithContent(RenderErrorMessageForAttribute(cfe.FailedChecks[0], lang,
+                                e.Context.Guild != null, e));
+                            return;
+                        case SlashExecutionChecksFailedException cfe:
+                        {
+                            var builder = new DiscordEmbedBuilder().WithTitle(lang.ChecksFailed);
+                            var pages = cfe.FailedChecks.Select((t, i) => new Page(embed: builder
+                                    .WithFooter($"{i + 1} / {cfe.FailedChecks.Count}")
+                                    .WithDescription(
+                                        RenderErrorMessageForAttribute(t, lang, e.Context.Guild != null, e))))
+                                .ToList();
+                            var interactivity = e.Context.Client.GetInteractivity();
+                            await interactivity.SendPaginatedMessageAsync(e.Context.Channel, e.Context.User, pages,
+                                token: new CancellationToken());
+                            return;
+                        }
+                        case InvalidOverloadException:
+                        case ArgumentException { Message: "Could not find a suitable overload for the command." }:
+                            await respondWithContent(string.Format(lang.InvalidOverload, e.Context.CommandName));
+                            return;
                     }
-                    case InvalidOverloadException:
-                    case ArgumentException { Message: "Could not find a suitable overload for the command." }:
-                        await respondWithContent(string.Format(lang.InvalidOverload, e.Context.CommandName));
-                        return;
-                }
+
+                    break;
             }
 
             switch (e.Exception)
@@ -256,7 +300,7 @@ namespace SilverBotDS.ProgramExtensions
                 {
                     await analytics.EmitEvent(e.Context.User, "CommandErrored", new Dictionary<string, object>()
                     {
-                        { "commandname", e.Context.Command.Name },
+                        { "commandname", e.Context?.Command.Name },
                         { "error", e.Exception }
                     });
                 }

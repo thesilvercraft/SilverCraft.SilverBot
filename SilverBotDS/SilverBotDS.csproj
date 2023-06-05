@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -78,7 +78,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Emzi0767.Common" Version="2.6.2" />
+        <PackageReference Include="Emzi0767.Common" Version="2.6.6" />
         <PackageReference Include="Fortnite-API-Wrapper" Version="2.3.2" />
         <PackageReference Include="GiphyDotNet" Version="2.4.0" />
         <PackageReference Include="Humanizer" Version="2.14.1" />

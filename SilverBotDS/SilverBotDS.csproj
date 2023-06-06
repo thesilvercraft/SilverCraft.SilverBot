@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -87,7 +87,7 @@
 
         <PackageReference Include="Microsoft.Azure.SignalR" Version="1.21.3" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.7.0-1.final" />
-        <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="13.1.2" />
+        <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="13.1.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.4.23259.3">
             <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>

@@ -86,7 +86,10 @@ namespace SilverBot.Shared.Objects
             { "JellyFinLookupService.BaseUrlNoSlash", "http://localhost:8096" },
             { "JellyFinLookupService.ApiKey", "68dc268e4d264dcd9a625ac37e3b4f7b" },
             { "JellyFinLookupService.ParentLibId", "7e64e319657a9516ec78490da03edccb" },
-            { "JellyFinLookupService.ParentUserId", "b981a5d9970c44c184ecd4dfd1202439" }
+            { "JellyFinLookupService.ParentUserId", "b981a5d9970c44c184ecd4dfd1202439" },
+            {"MiscMail.MailUser", ""},
+            {"MiscMail.MailPass", ""},
+            {"MiscMail.MailServer",""}
         };
 
         [Comment("What modules should silverbot load from external dlls")]

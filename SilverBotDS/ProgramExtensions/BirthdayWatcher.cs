@@ -17,9 +17,9 @@ namespace SilverBotDS.ProgramExtensions
     [ExpectedContextType(typeof(DiscordClient))]
     public class BirthdayWatcher : IProgramExtension
     {
-        public ulong ChannelId { get; set; } = 875297517351358474;
-        public string Content { get; set; } = "Happy Birthday!";
-        public int DayOfMonth { get; set; } = 5;
+        public ulong ChannelId { get; set; } = 0;
+        public string Content { get; set; } = "";
+        public int DayOfMonth { get; set; } = 0;
         
         private bool _isLoaded;
         

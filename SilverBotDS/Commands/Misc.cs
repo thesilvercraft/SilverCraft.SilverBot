@@ -26,7 +26,8 @@ using SilverBot.Shared.Utils;
 using SilverBotDS.ProgramExtensions;
 using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 using System.Text;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Text.Json;
+using DSharpPlus.Interactivity.Extensions;
 
 namespace SilverBotDS.Commands
 {
@@ -283,10 +284,45 @@ namespace SilverBotDS.Commands
             public List<string> CustomAttributes { get; set; } = new();
         }
 
+
+        [Command("dotnetrtfm")]
+        [Description("Gives you a documentation link for a .NET entity.")]
+        //THIS FUNCTION MAY CONTAIN NON FREE CODE AS IT WAS PORTED OVER FROM https://github.com/Voxel-Fox-Ltd/Apple.Py/blob/master/cogs/library_docs.py#L541-L563
+        //https://discord.com/channels/208895639164026880/636085718002958336/1115376518944792636
+        public async Task DotnetRtfm(CommandContext ctx, string term)
+        {
+            const string url = "https://docs.microsoft.com/api/apibrowser/dotnet/search";
+            var paras = new Dictionary<string, string>
+            {
+                { "api-version", "0.2" },
+                { "search", term },
+            };
+            var fullUrl = url + "?" + string.Join("&", paras.Select(p => p.Key + "=" + p.Value));
+            var response = await HttpClient.GetAsync(fullUrl);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"The request failed with status code {response.StatusCode}");
+            }
+            var data = JsonSerializer.Deserialize<Dictionary<string, object>>(await response.Content.ReadAsStringAsync());
+            var results = (JsonElement)data["results"];
+            if (!results.EnumerateArray().Any())
+            {
+                await ctx.SendMessageAsync("I couldn't find anything. Sorry.");
+                return;
+            }
+            var embed = new DiscordEmbedBuilder();
+            foreach (var i in results.EnumerateArray().Take(8))
+            {
+                embed.Description +=
+                    $"[`{i.GetProperty("displayName")}`](https://learn.microsoft.com{i.GetProperty("url")})\n";
+            }
+            await ctx.Channel.SendMessageAsync(embed);
+        }
+
         [Command("translateunknownto")]
         [Aliases("translateto")]
         [Description("translate from an unknown language to a specified one")]
-        public async Task TranlateUnknown(CommandContext ctx, string languageTo, [RemainingText] string text)
+        public async Task TranslateUnknown(CommandContext ctx, string languageTo, [RemainingText] string text)
         {
             var lang = await LanguageService.FromCtxAsync(ctx);
             if (!Translator.ContainsKeyOrVal(languageTo))

@@ -665,10 +665,10 @@ namespace SilverBotDS
                 CancellationTokenSource s = new();
                 taskService.Add(async () => await StatisticsMainAsync(s.Token), 0, "StatisticsTask", s );
             }
-
+            EventsRunner eventsRunner=new();
             CancellationTokenSource ets = new();
-            EventsRunner.InjectEvents(ServiceProvider, _log);
-            taskService.Add(async () => await EventsRunner.RunEventsAsync(), 0, "EventsTask", ets );
+            await eventsRunner.Register(ServiceProvider, _log);
+            
 
             if (_config.HostWebsite)
             {

@@ -43,14 +43,12 @@ namespace SilverBotDS
                                 await ctx.SendStringFileWithContent(ob.GetType().FullName ?? "", str, "eval.txt");
                                 return;
                             }
-
                             str = Formatter.BlockCode(str, "json");
                         }
                         else
                         {
-                            str = Formatter.BlockCode(str);
+                            str = Formatter.BlockCode(str??"null");
                         }
-
                         break;
                     }
                 }

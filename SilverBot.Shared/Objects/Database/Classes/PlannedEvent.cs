@@ -8,12 +8,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SilverBot.Shared.Objects.Database.Classes
 {
-    public class PlannedEvent
+    public class PlannedEvent: IEquatable<PlannedEvent>
     {
-        public PlannedEvent()
-        {
-            Data ??= string.Empty;
-        }
+        public PlannedEvent() => Data ??= string.Empty;
         /// <summary>
         ///     A random assortment of characters
         /// </summary>
@@ -60,6 +57,15 @@ namespace SilverBot.Shared.Objects.Database.Classes
         ///     finished and this class should be DELETED from the database.
         /// </summary>
         public bool Handled { get; set; }
+
+        public bool Equals(PlannedEvent? other)
+        {
+            return other switch
+            {
+                null => false,
+                _ => other.EventID == EventID
+            };
+        }
     }
 
     public enum PlannedEventType

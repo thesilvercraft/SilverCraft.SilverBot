@@ -318,6 +318,36 @@ namespace SilverBotDS.Commands
             }
             await ctx.Channel.SendMessageAsync(embed);
         }
+        [Command("fdroid")]
+        [Description("Searches f-droid for an app")]
+        public async Task Fdroid(CommandContext ctx, string term)
+        {
+            const string url = "https://search.f-droid.org/api/search_apps";
+            var paras = new Dictionary<string, string>
+            {
+                { "q", term },
+            };
+            var fullUrl = url + "?" + string.Join("&", paras.Select(p => p.Key + "=" + p.Value));
+            var response = await HttpClient.GetAsync(fullUrl);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"The request failed with status code {response.StatusCode}");
+            }
+            var data = JsonSerializer.Deserialize<Dictionary<string, object>>(await response.Content.ReadAsStringAsync());
+            var results = (JsonElement)data["apps"];
+            if (!results.EnumerateArray().Any())
+            {
+                await ctx.SendMessageAsync("I couldn't find anything. Sorry.");
+                return;
+            }
+            var embed = new DiscordEmbedBuilder();
+            foreach (var i in results.EnumerateArray().Take(8))
+            {
+                embed.Description +=
+                    $"[`{i.GetProperty("name")}`]({i.GetProperty("url")})\n";
+            }
+            await ctx.Channel.SendMessageAsync(embed);
+        }
 
         [Command("translateunknownto")]
         [Aliases("translateto")]

@@ -465,7 +465,9 @@ namespace SilverBotDS
                 services.AddSingleton(slashErrorHandler);
                 var birthdayWatcher = new BirthdayWatcher();
                 services.AddSingleton(birthdayWatcher);
-                
+                //var llama = new Lllama();
+                //services.AddSingleton(llama);
+
                 await SetupCommandsExternalServices(mainlog, moduleRegistrationService);
 #if NoAudio
 #else
@@ -518,6 +520,7 @@ namespace SilverBotDS
                     await slashErrorHandler.Register(ServiceProvider, _log, slash);
                     await commandErrorHandler.Register(ServiceProvider, _log, commands);
                     await birthdayWatcher.Register(ServiceProvider, _log, _discord);
+                    //await llama.Register(ServiceProvider, _log, _discord);
 
                     #endregion Registering Commands
                 }

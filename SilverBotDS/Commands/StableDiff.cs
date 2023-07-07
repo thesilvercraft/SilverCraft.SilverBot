@@ -6,6 +6,7 @@ You should have received a copy of the GNU General Public License along with Sil
 
 using System;
 using System.Buffers.Text;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -34,10 +35,23 @@ namespace SilverBotDS.Commands
         public HttpClient HttpClient { private get; set; }
         public Config Config { private get; set; }
 
+        [Command("sdimodels")]
+        [Description("Gets a list of the models available to the stable diff server")]
+        public async Task GetModelsImagine(CommandContext ctx)
+        {
+            var res = await HttpClient.GetAsync(Config.ExtraParams["StableDiff.BaseUrl"] + "/get/models");
+            var language = await ctx.GetLanguageAsync();
+            var response = await res.Content.ReadAsStringAsync();
+            var a = JsonSerializer.Deserialize<ModelsGetRecord>(response);
+            await new DiscordMessageBuilder()
+                .WithEmbed(ctx.GetNewBuilder(language).WithTitle("Models available").WithDescription(string.Join('\n',a.options.stable_diffusion))
+                    .Build()).WithReply(ctx.Message.Id)
+                .SendAsync(ctx.Channel);
+        }
 
         [Command("imagine")]
-        public async Task TImagine(CommandContext ctx, string prompt = "space", string model = "sd-v1-4",
-            int? seed = null, string negative_prompt = "",
+        public async Task TImagine(CommandContext ctx, [Description("The text prompt to generate")]string prompt = "space",  [Description("The model to use for generation")]string model = "sd-v1-4",
+            [Description("The seed (RNG)")]int? seed = null,  [Description("Guidance scale https://getimg.ai/guides/interactive-guide-to-stable-diffusion-guidance-scale-parameter")]double guidance_scale=7.5, double prompt_strength = 0.61, [Description("The text prompt to AVOID generating")]string negative_prompt = "",
             int resolution = 512, int steps = 25)
         {
             if (!ctx.Channel.IsNSFW && (Config.ExtraParams["StableDiff.NotSafeModel"].Contains(model.ToLower()) ||
@@ -67,7 +81,9 @@ namespace SilverBotDS.Commands
                 seed = seed ?? RandomGenerator.Next(0, Int32.MaxValue),
                 width = resolution,
                 height = resolution,
-                num_inference_steps = steps
+                num_inference_steps = steps,
+                guidance_scale = guidance_scale,
+                prompt_strength = prompt_strength
             };
             if (promptimg != null &&
                 (promptimg.EndsWith(".png") || promptimg.EndsWith(".jpeg") || promptimg.EndsWith(".jpg")))
@@ -77,7 +93,7 @@ namespace SilverBotDS.Commands
                     var promptImgResponseMessage = await HttpClient.GetAsync(promptimg);
                     var bytearray = await promptImgResponseMessage.Content.ReadAsByteArrayAsync();
 
-                    bool Matches(byte?[] x)
+                    bool Matches(IEnumerable<byte?> x)
                     {
                         return !x.Where((t, j) => t != null && t != bytearray[j]).Any();
                     }
@@ -136,7 +152,7 @@ namespace SilverBotDS.Commands
             if (string.IsNullOrWhiteSpace(response.Stream))
             {
                 await Task.Delay(100);
-                await TImagine(ctx, prompt, model, seed, negative_prompt, resolution, steps);
+                await TImagine(ctx, prompt, model, seed,guidance_scale,  prompt_strength, negative_prompt, resolution, steps);
                 return;
             }
 
@@ -170,12 +186,16 @@ namespace SilverBotDS.Commands
                             rescont = rescont[(rescont.LastIndexOf("}{", StringComparison.Ordinal) + 1)..];
                         }
 
+                        string TimeToShow(double StepTime)
+                        {
+                            return StepTime < 1 ? $"{1 / StepTime} steps/s" : $"{StepTime}s/step";
+                        }
                         var deserialized = JsonSerializer.Deserialize<PartialResponse>(rescont);
                         await og.ModifyAsync(x =>
                         {
                             x.WithEmbed(ctx.GetNewBuilder(language).WithTitle("Generating " + response.Stream)
                                 .WithDescription(
-                                    $"{deserialized.Step} / {deserialized.TotalSteps} @ {deserialized.StepTime}s per step")
+                                    $"{deserialized.Step} / {deserialized.TotalSteps} @ {TimeToShow(deserialized.StepTime)}")
                             );
                         });
                     }
@@ -252,6 +272,7 @@ namespace SilverBotDS.Commands
         public int num_outputs { get; set; } = 1;
         public int num_inference_steps { get; set; } = 25;
         public double guidance_scale { get; set; } = 7.5;
+        public double prompt_strength { get; set; } = 0.61;
         public int width { get; set; }
         public int height { get; set; }
         public string vram_usage_level { get; set; } = "balanced";
@@ -284,5 +305,23 @@ namespace SilverBotDS.Commands
         [JsonPropertyName("status")] public string Status { get; set; }
         [JsonPropertyName("request")] public Input Request { get; set; }
         [JsonPropertyName("output")] public Output[] Output { get; set; }
+    }
+    public class ModelsGetRecord
+    {
+        public Options options { get; set; }
+    
+    }
+
+    public class Options
+    {
+        [JsonPropertyName("stable-diffusion")] 
+
+        public string[] stable_diffusion { get; set; }
+        public string[] vae { get; set; }
+        public string[] hypernetwork { get; set; }
+        public string[] lora { get; set; }
+        public string[] codeformer { get; set; }
+        public string[] gfpgan { get; set; }
+
     }
 }

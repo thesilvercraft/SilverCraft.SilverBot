@@ -19,14 +19,12 @@ using SilverBot.Shared.Utils;
 
 namespace SilverBotDS.Commands
 {
-    [DSharpPlus.CommandsNext.Attributes.Category("Bing")]
+    [SilverBot.Shared.Attributes.Category("Bing")]
     [RequireModuleGuildEnabled(EnabledModules.Bing, true)]
     public class BingCommandModule : BaseCommandModule, ISpecialModuleRegistration
     {
         public DatabaseContext Database { private get; set; }
-        public HttpClient HttpClient { private get; set; }
         public LanguageService LanguageService { private get; set; }
-        public ColourService ColourService { private get; set; }
         private static DiscordWebhookClient _webhookClient = new();
 
         [Command("addBingChannel")]
@@ -56,11 +54,18 @@ namespace SilverBotDS.Commands
             }
         }
 
+        private static HashSet<Tuple<ulong, ulong>> HandeledBings { get; set; } = new();
+        public static bool Allow2PeopleToGetBing { get; set; } = false;
+        public static bool AllowPastBings { get; set; } = false;
         public static async Task HandleButton(DiscordClient sender, ComponentInteractionCreateEventArgs args,
             ServiceProvider services)
         {
-            if (args.Id.StartsWith("BING"))
+            var bing = new Tuple<ulong, ulong>(args.Channel.Id, args.Message.Id);
+            if (args.Id.StartsWith("BING") && 
+                (Allow2PeopleToGetBing ||!HandeledBings.Contains(bing)) 
+                &&( AllowPastBings || (args.Message.Timestamp.Hour == DateTime.Now.Hour && args.Message.Timestamp.Date == DateTime.Now.Date)))
             {
+                HandeledBings.Add(bing);
                 await args.Interaction.DeferAsync();
                 var databaseContext = services.GetRequiredService<DatabaseContext>();
                 var x = databaseContext.UpsertIncrementUserBing(args.User.Id, args.Guild.Id);

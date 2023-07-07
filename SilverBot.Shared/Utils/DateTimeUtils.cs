@@ -13,7 +13,7 @@ namespace SilverBot.Shared.Utils
         public static DateTime CalculateNextFriday()
         {
             var friday=DateTime.Now;
-            if (friday.DayOfWeek >= DayOfWeek.Friday) //if magically we change to friday the exact millisecond this method is called, or if its saturday
+            if (friday.DayOfWeek > DayOfWeek.Friday) 
             {
                 friday = friday.AddDays(1);
             }
@@ -23,7 +23,7 @@ namespace SilverBot.Shared.Utils
         public static DateTime CalculateNextSaturday()
         {
             var saturday=DateTime.Now;
-            if (saturday.DayOfWeek == DayOfWeek.Saturday)
+            if (saturday.DayOfWeek >= DayOfWeek.Saturday)
             {
                saturday= saturday.AddDays(1);
             }

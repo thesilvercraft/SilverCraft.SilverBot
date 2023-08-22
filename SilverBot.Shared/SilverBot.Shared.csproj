@@ -11,15 +11,12 @@
         <PackageReference Include="Lavalink4NET.Integrations.SponsorBlock" Version="3.0.1" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DSharpPlus" Version="5.0.0-nightly-01690">
+        <PackageReference Include="DSharpPlus" Version="5.0.0-nightly-01694">
             <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
-        <PackageReference Include="DSharpPlus.CommandsNext" Version="5.0.0-nightly-01690" />
-        <PackageReference Include="DSharpPlus.Interactivity" Version="5.0.0-nightly-01690" />
-        <PackageReference Include="DSharpPlus.SlashCommands" Version="5.0.0-nightly-01690" />
-        <PackageReference Include="DSharpPlus.VoiceNext" Version="5.0.0-nightly-01644">
-            <TreatAsUsed>true</TreatAsUsed>
-        </PackageReference>
+        <PackageReference Include="DSharpPlus.CommandsNext" Version="5.0.0-nightly-01694" />
+        <PackageReference Include="DSharpPlus.Interactivity" Version="5.0.0-nightly-01694" />
+        <PackageReference Include="DSharpPlus.SlashCommands" Version="5.0.0-nightly-01694" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.6.23329.4">
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.6.23329.4">

@@ -38,7 +38,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Net.WebSockets;
@@ -47,7 +46,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using DSharpPlus.VoiceNext;
 using SilverBot.Shared;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Classes;
@@ -58,7 +56,6 @@ using SilverBot.Shared.Pagination;
 using SilverBot.Shared.Utils;
 using SilverBotDS.Commands;
 using SilverBotDS.ProgramExtensions;
-using SilverCraft.SnowdPlayer;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace SilverBotDS
@@ -327,7 +324,6 @@ namespace SilverBotDS
                 mainlog.LogDebug("Activating MusicController service");
                 services.AddSingleton(new MusicControllerService(_discord, artworkService,
                     services.BuildServiceProvider().GetRequiredService<LanguageService>()));
-                services.AddSingleton<ISnowdPlayerService>(new SnowdPlayerService(HttpClient));
 
                 if (_config.EnableJellyFinLookupService)
                 {
@@ -599,11 +595,6 @@ namespace SilverBotDS
                     Intents = DiscordIntents.All.RemoveIntent(DiscordIntents.GuildPresences)
                 });
             }
-
-            _discord.UseVoiceNext(new()
-            {
-                
-            });
             await InitializeInteractivity(mainlog);
          
             await SetupCommands(mainlog, cancellationToken);

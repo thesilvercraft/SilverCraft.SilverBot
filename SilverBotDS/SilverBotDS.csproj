@@ -86,7 +86,7 @@
         <PackageReference Include="Jellyfin.Sdk" Version="2023.6.10-unstable.202306100047" />
 
         <PackageReference Include="Microsoft.Azure.SignalR" Version="1.21.5" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.7.0-2.final" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.7.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.6.23329.4">
             <TreatAsUsed>true</TreatAsUsed>
         </PackageReference>
@@ -107,8 +107,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Mono.Cecil" Version="0.11.5" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.4" />
-        <PackageReference Include="NSwag.ApiDescription.Client" Version="13.19.0">
+        <PackageReference Include="NSwag.ApiDescription.Client" Version="13.20.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -135,9 +134,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SilverBot.Shared\SilverBot.Shared.csproj" />
-        <ProjectReference Include="..\SilverBot.SysAdminModule\SilverBot.SysAdminModule.csproj" />
         <ProjectReference Include="..\SilverBotDS.AnimeModule\SilverBotDS.AnimeModule.csproj" />
-        <ProjectReference Include="..\SilverCraft.SnowdPlayer\SilverCraft.SnowdPlayer.csproj" />
     </ItemGroup>
 
     <ItemGroup>

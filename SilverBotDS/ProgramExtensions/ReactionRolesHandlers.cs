@@ -17,16 +17,16 @@ using SilverBot.Shared.Objects.Database.Classes.ReactionRole;
 
 namespace SilverBotDS.ProgramExtensions
 {
-    public abstract class MessageReactionChangeEventArgs
+    public interface IMessageReactionChangeEventArgs
     {
         public DiscordMessage Message { get; }
         public DiscordChannel Channel => Message.Channel;
-        public DiscordGuild? Guild { get; }
+        public DiscordGuild? Guild => Channel.Guild;
         public DiscordUser User { get; }
         public DiscordEmoji Emoji { get; }
     }
 
-    public class MessageReactionAddedEventArgs : MessageReactionChangeEventArgs
+    public class MessageReactionAddedEventArgs : IMessageReactionChangeEventArgs
     {
         private MessageReactionAddEventArgs _args;
 
@@ -37,14 +37,12 @@ namespace SilverBotDS.ProgramExtensions
 
         public DiscordMessage Message => _args.Message;
 
-        public DiscordGuild? Guild => _args.Guild;
-
         public DiscordUser User => _args.User;
 
         public DiscordEmoji Emoji => _args.Emoji;
     }
 
-    public class MessageReactionRemovedEventArgs : MessageReactionChangeEventArgs
+    public class MessageReactionRemovedEventArgs : IMessageReactionChangeEventArgs
     {
         private MessageReactionRemoveEventArgs _args;
 
@@ -55,7 +53,6 @@ namespace SilverBotDS.ProgramExtensions
 
         public DiscordMessage Message => _args.Message;
 
-        public DiscordGuild? Guild => _args.Guild;
 
         public DiscordUser User => _args.User;
 
@@ -92,7 +89,7 @@ namespace SilverBotDS.ProgramExtensions
             });
         }
 
-        private static async Task ReactionGeneric(DiscordClient sender, MessageReactionChangeEventArgs e,
+        private static async Task ReactionGeneric(DiscordClient sender, IMessageReactionChangeEventArgs e,
             Func<ReactionRoleMapping, DiscordMember, Task> logic)
         {
             if (e.Guild == null || e.User.IsBot)

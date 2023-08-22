@@ -53,7 +53,6 @@ namespace SilverBotDS.Commands
                 .SendAsync(ctx.Channel);
             var startTime = DateTime.Now;
             StringBuilder bob = new("Name,Id,Timestamp\n");
-            ulong e = 0;
             foreach (var message in messages)
             {
                 foreach (var part in message.Content.Split(' '))
@@ -67,12 +66,11 @@ namespace SilverBotDS.Commands
                     foreach (var gr in m.Select(ovl => ovl.Groups))
                     {
                         bob.Append(gr["name"].Value).Append(',').Append(Convert.ToUInt64(gr["id"].Value)).Append(',')
-                            .AppendFormat("{0:yyyy-MM-dd HH:mm:ss}", message.EditedTimestamp ?? message.Timestamp)
+                            .Append($"{message.EditedTimestamp ?? message.Timestamp:yyyy-MM-dd HH:mm:ss}")
                             .AppendLine();
                     }
                 }
 
-                e++;
             }
 
             await ctx.SendStringFileWithContent(

@@ -29,7 +29,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 namespace SilverBotDS.Commands
 {
     [SilverBot.Shared.Attributes.Category("Stable diffusion")]
-    [AiGenChannel(1119373378688655420)]
+    [AiGenChannel(1124503916965539910)]
     public class StableDiff : BaseCommandModule
     {
         public HttpClient HttpClient { private get; set; }

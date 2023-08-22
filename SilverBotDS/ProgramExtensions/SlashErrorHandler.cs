@@ -41,8 +41,9 @@ namespace SilverBotDS.ProgramExtensions
 
         }
 
-        public async Task Reload()
+        public Task Reload()
         {
+            return Task.CompletedTask;
         }
 
         public Task Unregister(ServiceProvider sp, Logger log, params object[] additionalContext)

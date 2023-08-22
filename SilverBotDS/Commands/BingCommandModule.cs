@@ -35,7 +35,7 @@ namespace SilverBotDS.Commands
             var lang = await LanguageService.FromCtxAsync(ctx);
             try
             {
-                var webhook = await bingchannel.CreateWebhookAsync("SilverBing",
+                var webhook = await bingchannel.CreateWebhookAsync("silverbot",
                     reason: "addBingChannel executed by " + ctx.User.Id);
                 Database.UpsertServerSettings(ctx.Guild.Id,
                     (settings, _) =>

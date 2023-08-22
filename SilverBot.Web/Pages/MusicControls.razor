@@ -39,7 +39,9 @@
     }
     var lang = LanguageService.FromUserId(user.Id, DbCtx);
 }
-@foreach (var guild in Discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null && x.Members[user.Id].VoiceState.Channel is not null && Lavalink.HasPlayer(x.Id) && Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))
+@foreach (var guild in Discord.Guilds.Values.Where(x => x.Members.ContainsKey(user.Id) && x.Members[user.Id].VoiceState is not null 
+                                                        && x.Members[user.Id].VoiceState.Channel is not null && Lavalink.HasPlayer(x.Id)
+                                                        && Lavalink.GetPlayer<BetterVoteLavalinkPlayer>(x.Id).VoiceChannelId == x.Members[user.Id].VoiceState.Channel.Id))
 {
     bool CheckForDj()
     {
@@ -125,8 +127,9 @@
             "LOOPSONG" => lang.WebsiteLoopSong,
             "LOOPQUEUE" =>lang.WebsiteLoopQueue,
             _ => action
-            };
+        };
         NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = discordUser.Username, Detail = action, Duration = 4000 });
+        InvokeAsync(StateHasChanged);
     }
 
     async Task VolumeUpPress(LavalinkPlayer player)
@@ -170,11 +173,10 @@
     }
     toggleStateText = player?.State switch
     {
-        //player.OnWebsiteEvent += (refr, parm) => { ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = parm.Item1.Username, Detail = parm.Item2, Duration = 4000 }); };
         PlayerState.Paused => "play_arrow",
         PlayerState.Playing => "pause",
         _ => toggleStateText
-        };
+    };
     if (usenew)
     {
         <div id="audio-player-container">

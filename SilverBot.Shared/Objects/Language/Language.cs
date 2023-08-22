@@ -119,7 +119,7 @@ namespace SilverBot.Shared.Objects.Language
 
 
         public string RemovedFront { get; set; } = "Removed {0}";
-        public string RemovedFrontWithAuthorName { get; set; } = "Removed {0} by {1]";
+        public string RemovedFrontWithAuthorName { get; set; } = "Removed {0} by {1}";
 
         public string GetRemovedTitle(string trackName, string? authorName)
         {

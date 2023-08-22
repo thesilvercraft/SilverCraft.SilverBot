@@ -141,9 +141,8 @@ namespace SilverBot.Shared
         {
             language ??= await ctx.GetLanguageAsync(language);
             var embedBuilder = ctx.GetNewBuilder(language);
-            var messageBuilder = new DiscordMessageBuilder();
             CommonSendMessageLogic(embedBuilder, title, message, imageUrl, url);
-            ctx.RespondAsync(embedBuilder);
+            await ctx.RespondAsync(embedBuilder);
         }
 
         public static async Task SendMessageAsync(this BaseContext ctx, string title = "", string message = "",

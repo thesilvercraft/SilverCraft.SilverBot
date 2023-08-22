@@ -20,7 +20,7 @@ namespace SilverBot.Shared.Pagination
 
         private DiscordUser user;
         private string imgurl;
-        public Optional<string> Content { get; }
+        public Optional<string> Content { get; } = Optional.FromNoValue<string>();
 
         public Optional<DiscordEmbedBuilder> Embed => new DiscordEmbedBuilder().WithTitle(BibiDescText[Id])
             .WithDescription($"{imgurl}\n{string.Format(Lang.PageNuget, Id + 1, BibiDescText.Length)}")

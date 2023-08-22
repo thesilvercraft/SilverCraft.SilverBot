@@ -47,6 +47,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DSharpPlus.VoiceNext;
 using SilverBot.Shared;
 using SilverBot.Shared.Objects;
 using SilverBot.Shared.Objects.Classes;
@@ -57,6 +58,7 @@ using SilverBot.Shared.Pagination;
 using SilverBot.Shared.Utils;
 using SilverBotDS.Commands;
 using SilverBotDS.ProgramExtensions;
+using SilverCraft.SnowdPlayer;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace SilverBotDS
@@ -90,7 +92,7 @@ namespace SilverBotDS
 
 
         /// <summary>
-        /// EFCore Scaring mesure
+        /// EFCore Scaring measure
         /// </summary>
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
@@ -99,24 +101,24 @@ namespace SilverBotDS
 
         private static void Main(string[] args)
         {
-            if (args is ["generatelang", _])
+            switch (args)
             {
-                if (!Directory.Exists(Path.GetDirectoryName(args[1])))
+                case ["generatelang", _]:
                 {
-                    Directory.CreateDirectory(Path.GetDirectoryName(args[1]) ?? string.Empty);
+                    if (!Directory.Exists(Path.GetDirectoryName(args[1])))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(args[1]) ?? string.Empty);
+                    }
+
+                    LanguageService.SerialiseDefault(args[1]);
+                    Console.WriteLine("Serialized en.json");
+                    Environment.Exit(70);
+                    return;
                 }
-
-                LanguageService.SerialiseDefault(args[1]);
-                Console.WriteLine("Serialized en.json");
-                Environment.Exit(70);
-                return;
-            }
-
-            if (args is ["generatelang"])
-            {
-                Console.WriteLine(LanguageService.SerialiseDefault());
-                Environment.Exit(70);
-                return;
+                case ["generatelang"]:
+                    Console.WriteLine(LanguageService.SerialiseDefault());
+                    Environment.Exit(70);
+                    return;
             }
 
             if (Debugger.IsAttached && !(Environment.CurrentDirectory.EndsWith("bin\\Debug\\net7.0") ||
@@ -161,7 +163,7 @@ namespace SilverBotDS
         }
 
         public static List<IAssetSchemeChecker> AssetSchemeCheckers =
-            new() { new FileAssetSchemeChecker(), new FontAssetSchemeChecker() };
+            new() { new FileAssetSchemeChecker(),  };
 
         public static ServiceCollection services = new();
 
@@ -227,7 +229,6 @@ namespace SilverBotDS
                         SkipRight = new DiscordButtonComponent(ButtonStyle.Primary, "skipr", null, false,
                             new DiscordComponentEmoji("⏭️"))
                     },
-                    AckPaginationButtons = true,
                     ButtonBehavior = ButtonPaginationBehavior.Disable,
                     PaginationBehaviour = PaginationBehaviour.WrapAround
                 });
@@ -251,11 +252,13 @@ namespace SilverBotDS
                 {
                     options.UseLazyLoadingProxies().UseSqlite("Filename=./silverbotdatabasev3.db",
                         b => b.MigrationsAssembly("SilverBotDS"));
-                    if (Debugger.IsAttached)
+                    if (!Debugger.IsAttached)
                     {
-                        Console.WriteLine("LOGGING SENSITIVE DATA");
-                        options.EnableSensitiveDataLogging();
+                        return;
                     }
+
+                    Console.WriteLine("LOGGING SENSITIVE DATA");
+                    options.EnableSensitiveDataLogging();
                 }, ServiceLifetime.Transient);
 
             services.AddSingleton(_config);
@@ -324,6 +327,8 @@ namespace SilverBotDS
                 mainlog.LogDebug("Activating MusicController service");
                 services.AddSingleton(new MusicControllerService(_discord, artworkService,
                     services.BuildServiceProvider().GetRequiredService<LanguageService>()));
+                services.AddSingleton<ISnowdPlayerService>(new SnowdPlayerService(HttpClient));
+
                 if (_config.EnableJellyFinLookupService)
                 {
                     services.AddSingleton<ITrackOrAlbumLookupService>(new JellyFinLookupService(HttpClient, _config));
@@ -465,8 +470,7 @@ namespace SilverBotDS
                 services.AddSingleton(slashErrorHandler);
                 var birthdayWatcher = new BirthdayWatcher();
                 services.AddSingleton(birthdayWatcher);
-                //var llama = new Lllama();
-                //services.AddSingleton(llama);
+
 
                 await SetupCommandsExternalServices(mainlog, moduleRegistrationService);
 #if NoAudio
@@ -596,12 +600,16 @@ namespace SilverBotDS
                 });
             }
 
+            _discord.UseVoiceNext(new()
+            {
+                
+            });
             await InitializeInteractivity(mainlog);
          
             await SetupCommands(mainlog, cancellationToken);
             _log.Information("Connecting to discord");
             var wait = new ManualResetEvent(false);
-            _discord.Ready += (_, _) =>
+            _discord.SessionCreated += (_, _) =>
             {
                 wait.Set();
                 return Task.CompletedTask;
@@ -648,7 +656,6 @@ namespace SilverBotDS
                 }, DateTimeUtils.CalculateNextSaturday(), "CleanUpFridayTask", s );
             }
 
-            ProgramHelper helper = new();
             if (_config.ChannelsToArchivePicturesFrom.Length > 0 && (_config.ArchiveWebhooks.Length > 1 ||
                                                                      (_config.ArchiveWebhooks.Length == 1 &&
                                                                       _config.ArchiveWebhooks[0] !=
@@ -669,7 +676,6 @@ namespace SilverBotDS
                 taskService.Add(async () => await StatisticsMainAsync(s.Token), 0, "StatisticsTask", s );
             }
             EventsRunner eventsRunner=new();
-            CancellationTokenSource ets = new();
             await eventsRunner.Register(ServiceProvider, _log);
             
 

@@ -516,12 +516,7 @@ namespace SilverBotDS.Commands
         {
             var lang = await LanguageService.FromCtxAsync(ctx);
             await MakeSureBothAreInVC(ctx, lang);
-            var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id);
-            if (player is null)
-            {
-                throw new PlayerIsNullException();
-            }
-
+            var player = AudioService.GetPlayer<BetterVoteLavalinkPlayer>(ctx.Guild.Id) ?? throw new PlayerIsNullException();
             if (songindex < 0 || songindex > player.Queue.Count)
             {
                 await ctx.SendMessageAsync(lang.SongNotExist, language: lang);
@@ -612,7 +607,7 @@ namespace SilverBotDS.Commands
                             ? lang.SongTimeLeftSongLooping
                             : timetillsongplays.Humanize(culture: lang.GetCultureInfo()))
                     .WithAuthor(string.Format(lang.PageNuget, i + 2, player.Queue.Count + 1));
-                var artwrk = await ArtworkService.ResolveAsync(player.CurrentTrack);
+                var artwrk = await ArtworkService.ResolveAsync(player.Queue[i]);
                 if (artwrk != null)
                 {
                     em.WithThumbnail(artwrk);

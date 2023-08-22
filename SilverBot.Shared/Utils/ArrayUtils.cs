@@ -14,5 +14,11 @@ namespace SilverBot.Shared.Utils
                 ? throw new ArgumentOutOfRangeException(nameof(vs), "Array must not be empty")
                 : vs[RandomGenerator.Next(0, vs.Length - 1)];
         }
+        public static T RandomFrom<T>(this List<T> vs)
+        {
+            return vs.Count == 0
+                ? throw new ArgumentOutOfRangeException(nameof(vs), "Array must not be empty")
+                : vs[RandomGenerator.Next(0, vs.Count - 1)];
+        }
     }
 }

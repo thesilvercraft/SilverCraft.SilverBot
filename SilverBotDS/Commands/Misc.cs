@@ -28,6 +28,7 @@ using CategoryAttribute = SilverBot.Shared.Attributes.CategoryAttribute;
 using System.Text;
 using System.Text.Json;
 using DSharpPlus.Interactivity.Extensions;
+using System.Xml.Serialization;
 
 namespace SilverBotDS.Commands
 {
@@ -39,15 +40,14 @@ namespace SilverBotDS.Commands
         public DatabaseContext Database { private get; set; }
         public HttpClient HttpClient { private get; set; }
 
+      
+
         public static DiscordEmbed VersionInfoEmbed(Language lang, dynamic ctx)
         {
             return new DiscordEmbedBuilder()
                 .WithTitle(lang.VersionInfoTitle)
                 .AddField(lang.VersionNumber, Formatter.InlineCode(VersionInfo.VNumber))
                 .AddField(lang.GitRepo, VersionInfo.GitRepo)
-                // .AddField(lang.GitCommitHash, Formatter.InlineCode(ThisAssembly.Git.Commit))
-                //.AddField(lang.GitBranch, Formatter.InlineCode(ThisAssembly.Git.Branch))
-                //.AddField(lang.IsDirty, StringUtils.BoolToEmoteString(ThisAssembly.Git.IsDirty))
                 .AddField(lang.CLR, Formatter.InlineCode(RuntimeInformation.FrameworkDescription))
                 .AddField(lang.OS, Formatter.InlineCode(Environment.OSVersion.VersionString))
                 .AddField(lang.DsharpplusVersion, Formatter.InlineCode(ctx.Client.VersionString))
@@ -154,12 +154,11 @@ namespace SilverBotDS.Commands
                     .SendAsync(ctx.Channel);
             }
         }
-
+        
         [Command("whereis")]
         [Description("get the location of a silverbot command through the silvercraftspec.md file")]
         public async Task WhereIs(CommandContext ctx, [RemainingText] string commandname)
         {
-            var lang = await LanguageService.FromCtxAsync(ctx);
             var req = await HttpClient.GetAsync(
                 "https://raw.githubusercontent.com/thesilvercraft/SilverCraft.SilverBot/master/SilverCraftSpec.md");
             var text = await req.Content.ReadAsStringAsync();
@@ -192,8 +191,7 @@ namespace SilverBotDS.Commands
             }
 
             var importantjson = text[y..x];
-            var list =
-                System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, SilverCraftSpecificData>>(importantjson);
+            var list = JsonSerializer.Deserialize<Dictionary<string, SilverCraftSpecificData>>(importantjson);
             var commandNameLower = '"' + commandname.ToLower() + '"';
             var commandMatches = list.SelectMany(x => x.Value.CommandModules.SelectMany(y =>
                 y.Commands.Where(z => z.Name == commandNameLower || z.Aliases?.Contains(commandNameLower) == true)));
@@ -303,21 +301,26 @@ namespace SilverBotDS.Commands
             {
                 throw new HttpRequestException($"The request failed with status code {response.StatusCode}");
             }
-            var data = JsonSerializer.Deserialize<Dictionary<string, object>>(await response.Content.ReadAsStringAsync());
+
+            var data = JsonSerializer.Deserialize<Dictionary<string, object>>(
+                await response.Content.ReadAsStringAsync());
             var results = (JsonElement)data["results"];
             if (!results.EnumerateArray().Any())
             {
                 await ctx.SendMessageAsync("I couldn't find anything. Sorry.");
                 return;
             }
+
             var embed = new DiscordEmbedBuilder();
             foreach (var i in results.EnumerateArray().Take(8))
             {
                 embed.Description +=
                     $"[`{i.GetProperty("displayName")}`](https://learn.microsoft.com{i.GetProperty("url")})\n";
             }
+
             await ctx.Channel.SendMessageAsync(embed);
         }
+
         [Command("fdroid")]
         [Description("Searches f-droid for an app")]
         public async Task Fdroid(CommandContext ctx, string term)
@@ -333,19 +336,23 @@ namespace SilverBotDS.Commands
             {
                 throw new HttpRequestException($"The request failed with status code {response.StatusCode}");
             }
-            var data = JsonSerializer.Deserialize<Dictionary<string, object>>(await response.Content.ReadAsStringAsync());
+
+            var data = JsonSerializer.Deserialize<Dictionary<string, object>>(
+                await response.Content.ReadAsStringAsync());
             var results = (JsonElement)data["apps"];
             if (!results.EnumerateArray().Any())
             {
                 await ctx.SendMessageAsync("I couldn't find anything. Sorry.");
                 return;
             }
+
             var embed = new DiscordEmbedBuilder();
             foreach (var i in results.EnumerateArray().Take(8))
             {
                 embed.Description +=
                     $"[`{i.GetProperty("name")}`]({i.GetProperty("url")})\n";
             }
+
             await ctx.Channel.SendMessageAsync(embed);
         }
 
